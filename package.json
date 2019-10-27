@@ -1,0 +1,83 @@
+{
+  "name": "react-bs",
+  "version": "1.0.0",
+  "description": "Bootstrap components built with react",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build:dev": "rollup -c",
+    "build:prod": "rollup -c --compact",
+    "build:doc": "webpack"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xroah/react-bs.git"
+  },
+  "keywords": [
+    "react",
+    "bootstrap",
+    "ui",
+    "component",
+    "js"
+  ],
+  "author": "xroah",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/xroah/react-bs/issues"
+  },
+  "homepage": "https://github.com/xroah/react-bs#readme",
+  "devDependencies": {
+    "@babel/core": "^7.6.4",
+    "@babel/plugin-proposal-class-properties": "^7.5.5",
+    "@babel/plugin-transform-runtime": "^7.6.2",
+    "@babel/preset-env": "^7.6.3",
+    "@babel/preset-react": "^7.6.3",
+    "@babel/preset-typescript": "^7.6.0",
+    "@types/prop-types": "^15.7.3",
+    "@types/react": "^16.9.11",
+    "@types/react-dom": "^16.9.3",
+    "@types/react-router-dom": "^5.1.0",
+    "@types/react-transition-group": "^4.2.3",
+    "babel-loader": "^8.0.6",
+    "babel-plugin-istanbul": "^5.2.0",
+    "bootstrap": "^4.3.1",
+    "chai": "^4.2.0",
+    "cross-env": "^6.0.3",
+    "css-loader": "^3.2.0",
+    "enzyme": "^3.10.0",
+    "eslint": "^6.6.0",
+    "html-webpack-plugin": "^3.2.0",
+    "karma": "^4.4.1",
+    "karma-chrome-launcher": "^3.1.0",
+    "karma-cli": "^2.0.0",
+    "karma-coverage": "^2.0.1",
+    "karma-mocha": "^1.3.0",
+    "karma-mocha-reporter": "^2.2.5",
+    "karma-webpack": "^4.0.2",
+    "mini-css-extract-plugin": "^0.8.0",
+    "mocha": "^6.2.2",
+    "optimize-css-assets-webpack-plugin": "^5.0.3",
+    "react": "^16.11.0",
+    "react-dom": "^16.11.0",
+    "react-router-dom": "^5.1.2",
+    "remove": "^0.1.5",
+    "rollup": "^1.25.2",
+    "rollup-plugin-babel": "^4.3.3",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "rollup-plugin-typescript": "^1.0.1",
+    "rollup-plugin-uglify": "^6.0.3",
+    "terser-webpack-plugin": "^2.2.1",
+    "typescript": "^3.6.4",
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.9",
+    "webpack-dev-server": "^3.9.0"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.6.3",
+    "classnames": "^2.2.6",
+    "prop-types": "^15.7.2",
+    "react-transition-group": "^4.3.0",
+    "warning": "^4.0.3"
+  }
+}
