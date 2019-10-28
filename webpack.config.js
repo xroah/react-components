@@ -46,7 +46,15 @@ module.exports = {
             filename: "style.css"
         }),
         new HTMLWebpackPlugin({
+            title: "React Bootstrap",
             hash: true
         })
-    ]
+    ],
+    devServer: {
+        contentBase: "./docs-dist",
+        hot: true,
+        port: 8008,
+        open: true,
+        inline: true
+    }
 };

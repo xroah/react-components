@@ -4,10 +4,11 @@
   "description": "Bootstrap components built with react",
   "main": "lib/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "cross-env NODE_ENV=test karma start",
     "build:dev": "rollup -c",
     "build:prod": "rollup -c --compact",
-    "build:doc": "webpack"
+    "build:doc": "webpack",
+    "start": "webpack-dev-server --watch"
   },
   "repository": {
     "type": "git",
@@ -75,6 +76,8 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.6.3",
+    "@types/chai": "^4.2.4",
+    "@types/mocha": "^5.2.7",
     "classnames": "^2.2.6",
     "prop-types": "^15.7.2",
     "react-transition-group": "^4.3.0",
