@@ -6,7 +6,7 @@ const TerserPlugin = require("terser-webpack-plugin");
 module.exports = {
     mode: "production",
     entry: "./docs/index.tsx",
-    stats: "errors-only",
+    stats: "minimal",
     optimization: {
         minimizer: [
             new TerserPlugin({
