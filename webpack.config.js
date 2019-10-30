@@ -3,23 +3,24 @@ const HTMLWebpackPlugin = require("html-webpack-plugin");
 const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
 
-module.exports = {
+const optimization = {
+    minimizer: [
+        new TerserPlugin({
+            terserOptions: {
+                output: {
+                    comments: false
+                }
+            },
+            extractComments: false,
+        }),
+        new OptimizeCSSAssetsPlugin()
+    ]
+}
+
+const config = {
     mode: "production",
     entry: "./docs/index.tsx",
     stats: "minimal",
-    optimization: {
-        minimizer: [
-            new TerserPlugin({
-                terserOptions: {
-                    output: {
-                        comments: false
-                    }
-                },
-                extractComments: false,
-            }),
-            new OptimizeCSSAssetsPlugin()
-        ]
-    },
     output: {
         path: `${__dirname}/docs-dist`,
         filename: "bundle.js"
@@ -32,29 +33,45 @@ module.exports = {
             {
                 test: /\.[jt]sx?$/,
                 use: "babel-loader"
-            },{
-                test: /\.css$/,
-                use: [
-                    MiniCssExtractPlugin.loader,
-                    "css-loader"
-                ]
             }
         ]
     },
     plugins: [
-        new MiniCssExtractPlugin({
-            filename: "style.css"
-        }),
         new HTMLWebpackPlugin({
             title: "React Bootstrap",
             hash: true
         })
-    ],
-    devServer: {
-        contentBase: "./docs-dist",
-        hot: true,
-        port: 8008,
-        open: true,
-        inline: true
-    }
+    ]
 };
+
+module.exports = env => {
+    const isDev = env === "development";
+    const cssLoader = {
+        test: /\.css$/,
+        use: [
+            isDev ? "style-loader" : MiniCssExtractPlugin.loader,
+            "css-loader"
+        ]
+    }
+
+    if (isDev) {
+        config.devServer = {
+            contentBase: "./docs-dist",
+            hot: true,
+            port: 8008,
+            open: true,
+            inline: true
+        };
+        config.mode = env;
+        config.optimization = optimization;
+    } else {
+        config.plugins.push(
+            new MiniCssExtractPlugin({
+                filename: "style.css"
+            })
+        );
+    }
+    config.module.rules.push(cssLoader);
+
+    return config;
+}
