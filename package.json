@@ -8,7 +8,7 @@
     "build:dev": "rollup -c",
     "build:prod": "rollup -c --compact",
     "build:doc": "webpack",
-    "start": "webpack-dev-server --watch"
+    "start": "webpack-dev-server --env development --watch"
   },
   "repository": {
     "type": "git",
@@ -69,9 +69,11 @@
     "mini-css-extract-plugin": "^0.8.0",
     "mocha": "^6.2.2",
     "optimize-css-assets-webpack-plugin": "^5.0.3",
+    "raw-loader": "^3.1.0",
     "react": "^16.11.0",
     "react-dom": "^16.11.0",
     "react-router-dom": "^5.1.2",
+    "react-syntax-highlighter": "^11.0.2",
     "rollup": "^1.25.2",
     "rollup-plugin-babel": "^4.3.3",
     "rollup-plugin-commonjs": "^10.1.0",
@@ -79,6 +81,7 @@
     "rollup-plugin-typescript": "^1.0.1",
     "rollup-plugin-uglify": "^6.0.3",
     "sinon": "^7.5.0",
+    "style-loader": "^1.0.0",
     "terser-webpack-plugin": "^2.2.1",
     "typescript": "^3.6.4",
     "webpack": "^4.41.2",
@@ -87,6 +90,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.6.3",
+    "@types/react-syntax-highlighter": "^11.0.1",
     "classnames": "^2.2.6",
     "prop-types": "^15.7.2",
     "react-transition-group": "^4.3.0",

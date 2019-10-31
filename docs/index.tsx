@@ -1,13 +1,15 @@
 import * as React from "react";
 import {render} from "react-dom";
-import Button from "../src/button";
+import Routes from "./routes";
 import "bootstrap/dist/css/bootstrap.css"
+import "./styles/index.css";
 
-const div = document.createElement("div");
+const section = document.createElement("section");
+section.classList.add("container");
 
-document.body.append(div);
+document.body.append(section);
 
 render(
-    <Button/>,
-    div
+    <Routes />,
+    section
 );

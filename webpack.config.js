@@ -23,7 +23,8 @@ const config = {
     stats: "minimal",
     output: {
         path: `${__dirname}/docs-dist`,
-        filename: "bundle.js"
+        filename: "bundle.js",
+        publicPath: "/"
     },
     resolve: {
         extensions: [".js", ".ts", ".jsx", ".tsx"]
@@ -52,7 +53,7 @@ module.exports = env => {
             isDev ? "style-loader" : MiniCssExtractPlugin.loader,
             "css-loader"
         ]
-    }
+    };
 
     if (isDev) {
         config.devServer = {
@@ -60,7 +61,8 @@ module.exports = env => {
             hot: true,
             port: 8008,
             open: true,
-            inline: true
+            inline: true,
+            historyApiFallback: true
         };
         config.mode = env;
         config.optimization = optimization;
@@ -74,4 +76,4 @@ module.exports = env => {
     config.module.rules.push(cssLoader);
 
     return config;
-}
+};
