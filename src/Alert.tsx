@@ -31,6 +31,8 @@ export default class Alert extends React.Component<AlertProps> {
     };
 
     static defaultProps = {
+        dismissible: false,
+        fade: true,
         visible: true
     };
 

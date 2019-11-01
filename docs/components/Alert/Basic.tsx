@@ -1,7 +1,7 @@
 import * as React from "react";
-import Alert, {AlertProps} from "../../../src/Alert";
+import Alert from "../../../src/Alert";
 
-export default function Basic(props: AlertProps) {
+export default function Basic() {
     return (
         <>
             <h4>Basic</h4>
