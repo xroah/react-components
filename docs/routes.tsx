@@ -7,12 +7,22 @@ import {
 import Alert from "./components/Alert";
 import Nav from "./components/Nav";
 import {Redirect} from "react-router";
+import Badge from "./components/Badge";
 
-const ROUTES = [{
-    path: "/components/alert",
-    exact: true,
-    component: Alert
-}];
+export const ROUTES = [
+    {
+        path: "/components/alert",
+        exact: true,
+        component: Alert,
+        name: "Alert"
+    },
+    {
+        path: "/components/badge",
+        exact: true,
+        component: Badge,
+        name: "Badge"
+    }
+];
 
 export default function AppRoute() {
     return (
