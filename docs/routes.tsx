@@ -9,6 +9,7 @@ import Nav from "./components/Nav";
 import {Redirect} from "react-router";
 import Badge from "./components/Badge";
 import Breadcrumb from "./components/Breadcrumb";
+import ButtonGroup from "./components/ButtonGroup";
 
 export const ROUTES = [
     {
@@ -28,6 +29,12 @@ export const ROUTES = [
         exact: true,
         component: Breadcrumb,
         name: "Breadcrumb"
+    },
+    {
+        path: "/components/button-group",
+        exact: true,
+        component: ButtonGroup,
+        name: "ButtonGroup"
     }
 ];
 
@@ -36,7 +43,7 @@ export default function AppRoute() {
         <Router>
             <div className="row">
                 <Nav/>
-                <main className="col-md-9">
+                <main className="col-md-9 pb-3">
                     <Switch>
                         {
                             ROUTES.map(item => {

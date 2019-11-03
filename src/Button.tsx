@@ -1,9 +1,17 @@
 import * as React from "react";
-import classnames from "classnames";
+import classNames from "classnames";
 import PropTypes from "prop-types";
 
 interface ButtonProps extends React.HTMLAttributes<HTMLButtonElement & HTMLAnchorElement> {
-    variant?: string;
+    variant?: "primary" |
+        "secondary" |
+        "success" |
+        "danger" |
+        "warning" |
+        "info" |
+        "dark" |
+        "light" |
+        "link";
     outline?: boolean;
     size?: string;
     active?: boolean;
@@ -24,7 +32,7 @@ const Button = React.forwardRef(
          disabled,
          ...otherProps
      }: ButtonProps, ref: React.Ref<any>) => {
-        const classNames = classnames(
+        const classes = classNames(
             "btn",
             className,
             disabled && "disabled",
@@ -35,7 +43,7 @@ const Button = React.forwardRef(
         );
         let tag = "button";
         let props = {
-            className: classNames,
+            className: classes,
             ref,
             disabled,
             ...otherProps
@@ -54,8 +62,18 @@ const Button = React.forwardRef(
     }
 );
 
-const propTypes = {
-    variant: PropTypes.string,
+Button.propTypes = {
+    variant: PropTypes.oneOf([
+        "primary",
+        "secondary",
+        "success",
+        "danger",
+        "warning",
+        "info",
+        "dark",
+        "light",
+        "link"
+    ]),
     outline: PropTypes.bool,
     size: PropTypes.string,
     active: PropTypes.bool,
@@ -63,13 +81,9 @@ const propTypes = {
     disabled: PropTypes.bool,
     href: PropTypes.string
 };
-
-const defaultProps = {
+Button.defaultProps = {
     variant: "primary"
 };
-
-Button.propTypes = propTypes;
-Button.defaultProps = defaultProps;
 Button.displayName = "Button";
 
 export default Button;
