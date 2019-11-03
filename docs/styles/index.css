@@ -28,3 +28,15 @@
     color: #fff;
     background-color: #027de7;
 }
+
+.props-table {
+    table-layout: fixed;
+}
+
+.props-table th:last-child {
+    width: 50%;
+}
+
+.props-table .default-value {
+    color: #e83e8c;
+}
