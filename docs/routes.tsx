@@ -8,6 +8,7 @@ import Alert from "./components/Alert";
 import Nav from "./components/Nav";
 import {Redirect} from "react-router";
 import Badge from "./components/Badge";
+import Breadcrumb from "./components/Breadcrumb";
 
 export const ROUTES = [
     {
@@ -21,6 +22,12 @@ export const ROUTES = [
         exact: true,
         component: Badge,
         name: "Badge"
+    },
+    {
+        path: "/components/breadcrumb",
+        exact: true,
+        component: Breadcrumb,
+        name: "Breadcrumb"
     }
 ];
 
