@@ -31,13 +31,13 @@ export default () => (
         <div>
             Add any of the below mentioned modifier classes to change the appearance of a badge.
         </div>
-        <DemoExample component={<Contextual/>} source={ContextualSrc}/>
+        <DemoExample className="badge-demo" component={<Contextual/>} source={ContextualSrc}/>
         <DocHeading>Pill badges</DocHeading>
         <div>
             Use the .badge-pill modifier class to make badges more rounded (with a larger border-radius and additional horizontal padding). Useful if you miss the badges from v3.
         </div>
-        <DemoExample component={<Pill/>} source={PillSrc}/>
+        <DemoExample className="badge-demo" component={<Pill/>} source={PillSrc}/>
         <DocHeading>Links</DocHeading>
-        <DemoExample component={<Link/>} source={LinkSrc}/>
+        <DemoExample className="badge-demo" component={<Link/>} source={LinkSrc}/>
     </>
 );

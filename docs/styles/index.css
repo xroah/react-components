@@ -40,3 +40,8 @@
 .props-table .default-value {
     color: #e83e8c;
 }
+
+.btn-demo .btn,
+.badge-demo .badge{
+    margin: 3px;
+}

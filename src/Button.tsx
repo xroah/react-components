@@ -18,6 +18,7 @@ interface ButtonProps extends React.HTMLAttributes<HTMLButtonElement & HTMLAncho
     block?: boolean;
     disabled?: boolean;
     href?: string;
+    type?: "button" | "submit" | "reset";
 }
 
 const Button = React.forwardRef(
@@ -29,6 +30,7 @@ const Button = React.forwardRef(
          block,
          outline,
          children,
+         type,
          disabled,
          ...otherProps
      }: ButtonProps, ref: React.Ref<any>) => {
@@ -45,6 +47,7 @@ const Button = React.forwardRef(
         let props = {
             className: classes,
             ref,
+            type,
             disabled,
             ...otherProps
         };
@@ -52,6 +55,7 @@ const Button = React.forwardRef(
         if (otherProps.href) {
             tag = "a";
             delete props.disabled;
+            delete props.type;
         }
 
         return React.createElement(
@@ -79,10 +83,12 @@ Button.propTypes = {
     active: PropTypes.bool,
     block: PropTypes.bool,
     disabled: PropTypes.bool,
-    href: PropTypes.string
+    href: PropTypes.string,
+    type: PropTypes.oneOf(["button", "submit", "reset"])
 };
 Button.defaultProps = {
-    variant: "primary"
+    variant: "primary",
+    type: "button"
 };
 Button.displayName = "Button";
 
