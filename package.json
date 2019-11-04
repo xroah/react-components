@@ -6,8 +6,10 @@
   "scripts": {
     "test": "cross-env NODE_ENV=test karma start",
     "build:dev": "rollup -c",
+    "build:lib": "babel src --out-dir lib --extensions .ts,.tsx",
     "build:prod": "rollup -c --compact",
     "build:doc": "webpack",
+    "tsc": "tsc",
     "start": "webpack-dev-server --env development --watch"
   },
   "repository": {
@@ -28,6 +30,7 @@
   },
   "homepage": "https://github.com/xroah/react-bs#readme",
   "devDependencies": {
+    "@babel/cli": "^7.6.4",
     "@babel/core": "^7.6.4",
     "@babel/plugin-proposal-class-properties": "^7.5.5",
     "@babel/plugin-transform-runtime": "^7.6.2",
