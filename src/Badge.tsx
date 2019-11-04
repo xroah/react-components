@@ -39,6 +39,7 @@ export default function Badge(props: BadgeProps) {
     return React.createElement(
         tag,
         {
+            href,
             className: classNames,
             ...otherProps
         },

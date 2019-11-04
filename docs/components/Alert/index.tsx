@@ -1,23 +1,25 @@
 import * as React from "react";
 import Basic from "./Basic";
-import Dismissable, {default as Dismissible} from "./Dismissible";
+import Dismissible from "./Dismissible";
 import Toggle from "./Toggle";
-import SyntaxHighlighter from "../SyntaxHighlighter";
+import DocHeading from "../DocHeading";
+import DemoExample from "../DemoExample";
 
-const BasicString = require("!!raw-loader!./Basic");
+const BasicSrc = require("!!raw-loader!./Basic").default;
+const DismissibleSrc = require("!!raw-loader!./Dismissible").default;
+const ToggleSrc = require("!!raw-loader!./Toggle").default;
 
 export default class AlertDemo extends React.Component {
 
     render() {
         return (
             <>
-                <h2>Examples</h2>
-                <div className="bd-example">
-                    <Basic/>
-                    {/*<SyntaxHighlighter code={BasicString.default}/>*/}
-                    <Dismissible/>
-                    <Toggle/>
-                </div>
+                <DocHeading>Basic example</DocHeading>
+                <DemoExample component={<Basic/>} source={BasicSrc}/>
+                <DocHeading>Dismissible</DocHeading>
+                <DemoExample component={<Dismissible/>} source={DismissibleSrc}/>
+                <DocHeading>Toggle</DocHeading>
+                <DemoExample component={<Toggle/>} source={ToggleSrc}/>
             </>
         );
     }

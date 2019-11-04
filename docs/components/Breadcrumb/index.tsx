@@ -1,7 +1,8 @@
 import * as React from "react";
 import Basic from "./Basic";
-import SyntaxHighlighter from "../SyntaxHighlighter";
 import PropsTable from "../PropsTable";
+import DocHeading from "../DocHeading";
+import DemoExample from "../DemoExample";
 
 const BasicSrc = require("!!raw-loader!./Basic").default;
 
@@ -27,11 +28,8 @@ const breadcrumbItemDoc = [{
 export default function Breadcrumb() {
     return(
         <>
-            <h2 className="doc-header">Example</h2>
-            <div className="bd-example">
-                <Basic/>
-                <SyntaxHighlighter code={BasicSrc}/>
-            </div>
+            <DocHeading>Example</DocHeading>
+            <DemoExample component={<Basic/>} source={BasicSrc}/>
             <h2 className="doc-header">API</h2>
             <h3>Breadcrumb</h3>
             <PropsTable data={breadcrumbDoc}/>

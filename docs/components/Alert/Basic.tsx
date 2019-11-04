@@ -4,7 +4,6 @@ import Alert from "../../../src/Alert";
 export default function Basic() {
     return (
         <>
-            <h4>Basic</h4>
             <Alert variant="primary">
                 A simple primary alert—check it out!
             </Alert>
