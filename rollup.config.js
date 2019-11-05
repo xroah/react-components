@@ -5,7 +5,7 @@ import cjs from "rollup-plugin-commonjs";
 import { uglify } from "rollup-plugin-uglify";
 
 const config = {
-    input: "src/index.tsx",
+    input: "src/index.ts",
     output: {
         format: "umd",
         name: "rbs",

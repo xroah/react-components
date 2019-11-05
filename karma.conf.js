@@ -30,7 +30,28 @@ module.exports = function (config) {
         },
 
 
-        webpack: require("./webpack.config"),
+        webpack: {
+            mode: "production",
+            stats: "minimal",
+            resolve: {
+                extensions: [".js", ".ts", ".jsx", ".tsx"]
+            },
+            module: {
+                rules: [
+                    {
+                        test: /\.[jt]sx?$/,
+                        use: "babel-loader"
+                    },
+                    {
+                        test: /\.css$/,
+                        use: [
+                            "style-loader",
+                            "css-loader"
+                        ]
+                    }
+                ]
+            }
+        },
 
         // test results reporter to use
         // possible values: "dots", "progress"
@@ -39,9 +60,9 @@ module.exports = function (config) {
 
         // optionally, configure the reporter
         coverageReporter: {
-            dir : "coverage/"
+            dir: "coverage/"
         },
-        
+
         // web server port
         port: 9876,
 
