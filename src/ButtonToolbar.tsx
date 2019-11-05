@@ -1,17 +1,7 @@
 import * as React from "react";
-import classNames from "classnames";
+import { createComponentByClass } from "./utils";
 
-export default function ButtonToolbar(props: React.HTMLAttributes<HTMLDivElement>) {
-    const {
-        className,
-        children,
-        ...otherProps
-    } = props;
-
-    return (
-        <div className={classNames(
-            className,
-            "btn-toolbar"
-        )} {...otherProps}>{children}</div>
-    );
-}
+export default createComponentByClass({
+    className: "btn-toolbar",
+    displayName: "ButtonToolbar"
+});
