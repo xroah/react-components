@@ -1,6 +1,8 @@
 import * as React from "react";
 import classNames from "classnames";
 import PropTypes from "prop-types";
+import ButtonGroup from "./ButtonGroup";
+import ButtonToolbar from "./ButtonToolbar";
 
 interface ButtonProps extends React.HTMLAttributes<HTMLButtonElement & HTMLAnchorElement> {
     variant?: "primary" |
@@ -21,7 +23,7 @@ interface ButtonProps extends React.HTMLAttributes<HTMLButtonElement & HTMLAncho
     type?: "button" | "submit" | "reset";
 }
 
-const Button = React.forwardRef(
+const Button: any = React.forwardRef(
     ({
          variant,
          size,
@@ -91,5 +93,8 @@ Button.defaultProps = {
     type: "button"
 };
 Button.displayName = "Button";
+
+Button.Group = ButtonGroup;
+Button.Toolbar = ButtonToolbar;
 
 export default Button;

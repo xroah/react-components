@@ -5,7 +5,9 @@ import DemoExample from "../DemoExample";
 import Outlined from "./Outlined";
 import Button from "../../../src/Button";
 import SyntaxHighlighter from "../SyntaxHighlighter";
+import ButtonGroup from "../ButtonGroup";
 import API from "./API";
+import ButtonGroupAPI from "../ButtonGroup/API";
 
 const BasicSrc = require("!!raw-loader!./Basic").default;
 const OutlinedSrc = require("!!raw-loader!./Outlined").default;
@@ -59,6 +61,8 @@ export default () => (
             <SyntaxHighlighter code={`<Button variant="primary" href="#" disabled>Primary Link</Button>
 <Button variant="secondary" href="#" disabled>Link</Button>`}/>
         </div>
+        <ButtonGroup/>
         <API/>
+        <ButtonGroupAPI/>
     </>
 );

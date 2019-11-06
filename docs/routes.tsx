@@ -9,7 +9,6 @@ import Nav from "./components/Nav";
 import {Redirect} from "react-router";
 import Badge from "./components/Badge";
 import Breadcrumb from "./components/Breadcrumb";
-import ButtonGroup from "./components/ButtonGroup";
 import Button from "./components/Button";
 
 export const ROUTES = [
@@ -36,12 +35,6 @@ export const ROUTES = [
         exact: true,
         component: Button,
         name: "Button"
-    },
-    {
-        path: "/components/button-group",
-        exact: true,
-        component: ButtonGroup,
-        name: "ButtonGroup"
     }
 ];
 

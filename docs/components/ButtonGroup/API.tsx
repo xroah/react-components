@@ -15,10 +15,9 @@ const ButtonGroupDoc = [{
 
 export default () => (
     <>
-        <DocHeading>API</DocHeading>
-        <DocHeading tag="h3">ButtonGroup</DocHeading>
+        <DocHeading tag="h3">Button.Group</DocHeading>
         <PropsTable data={ButtonGroupDoc}/>
-        <DocHeading tag="h3">ButtonToolbar</DocHeading>
+        <DocHeading tag="h3">Button.Toolbar</DocHeading>
         <div className="text-muted">
             <em>No public props for this component.</em>
         </div>

@@ -43,7 +43,7 @@ const ButtonDoc = [{
 export default () => (
     <>
         <DocHeading>API</DocHeading>
-        <DocHeading tag="h3">ButtonGroup</DocHeading>
+        <DocHeading tag="h3">Button</DocHeading>
         <PropsTable data={ButtonDoc}/>
     </>
 );
