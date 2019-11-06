@@ -2,6 +2,7 @@ import * as React from "react";
 import classNames from "classnames";
 import PropTypes from "prop-types";
 import { createComponentByClass } from "./utils";
+import CardTitle from "./CardTitle";
 
 type bgType = "primary" |
     "secondary" |
@@ -17,8 +18,6 @@ type colorType = bgType | "white" | "muted";
 export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
     header?: React.ReactNode;
     footer?: React.ReactNode;
-    title?: string;
-    subtitle?: string;
     img?: React.ReactElement;
     imgPosition?: "top" | "bottom";
     isImgOverlay?: boolean;
@@ -35,8 +34,6 @@ export default function Card(props: CardProps) {
     const {
         header,
         footer,
-        title,
-        subtitle,
         img,
         imgPosition,
         className,
@@ -98,16 +95,6 @@ export default function Card(props: CardProps) {
                     isImgOverlay && !!img ? "card-img-overlay" : "card-body"
                     )
             }>
-                {
-                    title && (
-                        <h5 className="card-title">{title}</h5>
-                    )
-                }
-                {
-                    subtitle && (
-                        <h6 className="card-subtitle mb-2 text-muted">{subtitle}</h6>
-                    )
-                }
                 {children}
             </div>
             {bottomImg}
@@ -141,8 +128,6 @@ const color = [...bg, "white", "muted"];
 Card.propTypes = {
     header: PropTypes.node,
     footer: PropTypes.node,
-    title: PropTypes.string,
-    subtitle: PropTypes.string,
     img: PropTypes.element,
     imgPosition: PropTypes.oneOf(["top", "bottom"]),
     isImgOverlay: PropTypes.bool,
@@ -150,7 +135,6 @@ Card.propTypes = {
     bg: PropTypes.oneOf(bg),
     border: PropTypes.oneOf(bg),
     color: PropTypes.oneOf(color),
-    subtitleColor: PropTypes.oneOf(color),
     headerClass: PropTypes.string,
     bodyClass: PropTypes.string,
     footerClass: PropTypes.string
@@ -159,15 +143,14 @@ Card.propTypes = {
 Card.defaultProps = {
     imgPosition: "top",
     isImgOverlay: false,
-    subtitleColor: "muted"
 };
 
 Card.Deck = createComponentByClass({
     className: "card-deck",
     displayName: "CardDeck"
 });
-
 Card.Column = createComponentByClass({
     className: "card-column",
     displayName: "CardColumn"
 });
+Card.Title = CardTitle;
