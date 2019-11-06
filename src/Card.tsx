@@ -1,6 +1,7 @@
 import * as React from "react";
 import classNames from "classnames";
 import PropTypes from "prop-types";
+import { createComponentByClass } from "./utils";
 
 type bgType = "primary" |
     "secondary" |
@@ -25,6 +26,9 @@ export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
     bg?: bgType;
     border?: bgType;
     color?: colorType;
+    headerClass?: string;
+    bodyClass?: string;
+    footerClass?: string;
 }
 
 export default function Card(props: CardProps) {
@@ -42,6 +46,9 @@ export default function Card(props: CardProps) {
         bg,
         color,
         border,
+        headerClass,
+        bodyClass,
+        footerClass,
         ...otherProps
     } = props;
 
@@ -57,9 +64,9 @@ export default function Card(props: CardProps) {
         );
 
         if (imgPosition === "top") {
-            topImg = <div>{_img}</div>;
+            topImg = _img;
         } else {
-            bottomImg = <div>{_img}</div>;
+            bottomImg = _img;
         }
     }
 
@@ -76,12 +83,20 @@ export default function Card(props: CardProps) {
         } {...otherProps}>
             {
                 header && (
-                    <div className="card-header">{header}</div>
+                    <div className={
+                        classNames(
+                            headerClass,
+                            "card-header"
+                        )
+                    }>{header}</div>
                 )
             }
             {topImg}
             <div className={
-                classNames(isImgOverlay && !!img ? "card-img-overlay" : "card-body")
+                classNames(
+                    bodyClass,
+                    isImgOverlay && !!img ? "card-img-overlay" : "card-body"
+                    )
             }>
                 {
                     title && (
@@ -98,7 +113,12 @@ export default function Card(props: CardProps) {
             {bottomImg}
             {
                 footer && (
-                    <div className="card-footer">{footer}</div>
+                    <div className={
+                        classNames(
+                            footerClass,
+                            "card-footer"
+                        )
+                    }>{footer}</div>
                 )
             }
         </div>
@@ -116,7 +136,7 @@ const bg = [
     "light"
 ];
 
-const extra = ["white", "muted"];
+const color = [...bg, "white", "muted"];
 
 Card.propTypes = {
     header: PropTypes.node,
@@ -129,10 +149,25 @@ Card.propTypes = {
     align: PropTypes.oneOf(["left", "center", "right"]),
     bg: PropTypes.oneOf(bg),
     border: PropTypes.oneOf(bg),
-    color: PropTypes.oneOf([...bg, ...extra])
+    color: PropTypes.oneOf(color),
+    subtitleColor: PropTypes.oneOf(color),
+    headerClass: PropTypes.string,
+    bodyClass: PropTypes.string,
+    footerClass: PropTypes.string
 };
 
 Card.defaultProps = {
     imgPosition: "top",
-    isImgOverlay: false
+    isImgOverlay: false,
+    subtitleColor: "muted"
 };
+
+Card.Deck = createComponentByClass({
+    className: "card-deck",
+    displayName: "CardDeck"
+});
+
+Card.Column = createComponentByClass({
+    className: "card-column",
+    displayName: "CardColumn"
+});
