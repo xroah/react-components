@@ -33,12 +33,12 @@ export function reflow(el: HTMLElement) {
     return el.offsetHeight;
 }
 
-export function getTransionDuration(el: HTMLElement) {
+export function getTransitionDuration(el: HTMLElement) {
     let style = getComputedStyle(el);
     let duration = parseFloat(style.getPropertyValue("transition-duration")) || 0;
     duration += parseFloat(style.getPropertyValue("transition-delay")) || 0;
 
-    return duration
+    return duration;
 }
 
 //in case that transitionend event does not fire
@@ -59,5 +59,5 @@ export function emulateTransitionEnd(el: HTMLElement, handler: Function) {
     };
 
     el.addEventListener("transitionend", _handler);
-    timer = setTimeout(_handler, getTransionDuration(el));
+    timer = setTimeout(_handler, getTransitionDuration(el) * 1000);
 }
