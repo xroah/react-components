@@ -10,6 +10,7 @@ import {Redirect} from "react-router";
 import Badge from "./components/Badge";
 import Breadcrumb from "./components/Breadcrumb";
 import Button from "./components/Button";
+import Carousel from "./components/Carousel";
 
 export const ROUTES = [
     {
@@ -35,6 +36,12 @@ export const ROUTES = [
         exact: true,
         component: Button,
         name: "Button"
+    },
+    {
+        path: "/components/carousel",
+        exact: true,
+        component: Carousel,
+        name: "Carousel"
     }
 ];
 
