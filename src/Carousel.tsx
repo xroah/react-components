@@ -110,6 +110,10 @@ export default class Carousel extends React.Component<CarouselProps> {
         });
     }
 
+    componentWillUnmount() {
+        clearTimeout(this.timer);
+    }
+
     to(index: number, dir?: string) {
         let childrenLen = this.getChildren().length;
         let {currentIndex} = this.state;
