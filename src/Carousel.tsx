@@ -102,11 +102,11 @@ export default class Carousel extends React.Component<CarouselProps> {
         el.classList.add(cls2);
         emulateTransitionEnd(el, () => {
             onSlid = handleFuncProp(onSlid);
-
             this.transitioning = false;
+
             el.classList.remove(cls1, cls2);
             el.classList.add("active");
-            onSlid()
+            onSlid();
         });
     }
 
@@ -142,11 +142,6 @@ export default class Carousel extends React.Component<CarouselProps> {
         });
     }
 
-    toPrev() {
-        let {currentIndex} = this.state;
-        this.to(--currentIndex, "prev");
-    }
-
     cycle() {
         this.timer = setTimeout(() => {
             this.toNext();
@@ -160,21 +155,24 @@ export default class Carousel extends React.Component<CarouselProps> {
         children.length > 1 && this.cycle();
     }
 
+    toPrev() {
+        let {currentIndex} = this.state;
+        this.to(--currentIndex, "prev");
+    }
+
+    _toPrev = (evt: React.MouseEvent) => {
+        evt.preventDefault();
+        this.toPrev();
+    };
+
     toNext() {
         let {currentIndex} = this.state;
         this.to(++currentIndex, "next");
     }
 
-    handleClickControl = (evt: React.MouseEvent) => {
-        const hash = (evt.target as HTMLAnchorElement).hash;
-
-        if (hash === "#prev") {
-            this.toPrev();
-        } else {
-            this.toNext();
-        }
-
+    _toNext = (evt: React.MouseEvent) => {
         evt.preventDefault();
+        this.toNext();
     };
 
     handleClickIndicator = (evt: React.MouseEvent) => {
@@ -227,14 +225,14 @@ export default class Carousel extends React.Component<CarouselProps> {
             <>
                 <a
                     className="carousel-control-prev"
-                    href="#prev"
-                    onClick={this.handleClickControl}>
+                    href="#"
+                    onClick={this._toPrev}>
                     <span className="carousel-control-prev-icon"/>
                 </a>
                 <a
                     className="carousel-control-next"
-                    href="#next"
-                    onClick={this.handleClickControl}>
+                    href="#"
+                    onClick={this._toNext}>
                     <span className="carousel-control-next-icon"/>
                 </a>
             </>
