@@ -13,6 +13,7 @@ export interface CarouselProps extends React.HTMLAttributes<HTMLDivElement> {
     pauseOnHover?: boolean;
     onSlide?: Function;
     onSlid?: Function;
+    touch?: boolean;
 }
 
 export default class Carousel extends React.Component<CarouselProps> {
@@ -25,7 +26,8 @@ export default class Carousel extends React.Component<CarouselProps> {
         interval: PropTypes.number,
         pauseOnHover: PropTypes.bool,
         onSlide: PropTypes.func,
-        onSlid: PropTypes.func
+        onSlid: PropTypes.func,
+        touch: PropTypes.bool
     };
     static defaultProps = {
         animation: "slide",
@@ -33,7 +35,8 @@ export default class Carousel extends React.Component<CarouselProps> {
         indicators: true,
         activeIndex: 0,
         interval: 5000,
-        pauseOnHover: true
+        pauseOnHover: true,
+        touch: true
     };
     static Item = CarouselItem;
 
@@ -46,6 +49,7 @@ export default class Carousel extends React.Component<CarouselProps> {
     private timer: any = null;
     private dir: string = "";
     transitioning: boolean = false;
+    startX: number = 0;
 
     componentDidMount() {
         this.to(this.props.activeIndex as number);
@@ -143,7 +147,7 @@ export default class Carousel extends React.Component<CarouselProps> {
         this.to(--currentIndex, "prev");
     }
 
-    cycle = () => {
+    cycle() {
         this.timer = setTimeout(() => {
             this.toNext();
             this.cycle();
@@ -171,24 +175,44 @@ export default class Carousel extends React.Component<CarouselProps> {
         }
 
         evt.preventDefault();
-    }
+    };
 
     handleClickIndicator = (evt: React.MouseEvent) => {
         let tgt = evt.target as HTMLElement;
         let index = parseInt(tgt.dataset.index as any);
 
         this.to(index);
-    }
+    };
 
     handleMouseOver = () => {
         if (this.timer) {
             clearTimeout(this.timer);
         }
-    }
+    };
 
     handleMouseOut = () => {
         this.start();
-    }
+    };
+
+    handleTouchStart = (evt: React.TouchEvent) => {
+        this.startX = evt.changedTouches[0].clientX;
+    };
+
+    handleTouchEnd = (evt: React.TouchEvent) => {
+        //after all touches end
+        if (evt.touches.length) return;
+
+        const THRESHOLD = 100;
+        const distance = evt.changedTouches[0].clientX - this.startX;
+
+        if (Math.abs(distance) < THRESHOLD) return;
+
+        if (distance < 0) {
+            this.toNext();
+        } else {
+            this.toPrev();
+        }
+    };
 
     getChildren() {
         let el = this.el.current;
@@ -246,6 +270,7 @@ export default class Carousel extends React.Component<CarouselProps> {
             activeIndex,
             onSlide,
             onSlid,
+            touch,
             pauseOnHover,
             ...otherProps
         } = this.props;
@@ -255,6 +280,11 @@ export default class Carousel extends React.Component<CarouselProps> {
         if (pauseOnHover) {
             otherProps.onMouseOver = this.handleMouseOver;
             otherProps.onMouseOut = this.handleMouseOut;
+        }
+
+        if (touch) {
+            otherProps.onTouchStart = this.handleTouchStart;
+            otherProps.onTouchEnd = this.handleTouchEnd;
         }
 
         return (
@@ -269,12 +299,13 @@ export default class Carousel extends React.Component<CarouselProps> {
                 <div className="carousel-inner" ref={this.el}>
                     {
                         _children.map((c, i) => {
-                            if (!React.isValidElement(c) || c.type !== CarouselItem) return;
+                            if (!React.isValidElement(c)) return;
 
                             return React.cloneElement(
                                 c,
                                 {
-                                    key: i
+                                    key: i,
+                                    className: "carousel-item"
                                 }
                             );
                         })
