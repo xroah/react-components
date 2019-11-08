@@ -2,7 +2,7 @@ import * as React from "react";
 import classNames from "classnames";
 import PropTypes from "prop-types";
 import CarouselItem from "./CarouselItem"
-import {emulateTransitionEnd, reflow} from "./utils";
+import {emulateTransitionEnd, handleFuncProp, reflow} from "./utils";
 
 export interface CarouselProps extends React.HTMLAttributes<HTMLDivElement> {
     animation?: "slide" | "fade";
@@ -10,6 +10,9 @@ export interface CarouselProps extends React.HTMLAttributes<HTMLDivElement> {
     indicators?: boolean;
     activeIndex?: number;
     interval?: number;
+    pauseOnHover?: boolean;
+    onSlide?: Function;
+    onSlid?: Function;
 }
 
 export default class Carousel extends React.Component<CarouselProps> {
@@ -19,14 +22,18 @@ export default class Carousel extends React.Component<CarouselProps> {
         controls: PropTypes.bool,
         indicators: PropTypes.bool,
         activeIndex: PropTypes.number,
-        interval: PropTypes.number
+        interval: PropTypes.number,
+        pauseOnHover: PropTypes.bool,
+        onSlide: PropTypes.func,
+        onSlid: PropTypes.func
     };
     static defaultProps = {
         animation: "slide",
         controls: true,
         indicators: true,
         activeIndex: 0,
-        interval: 3000
+        interval: 5000,
+        pauseOnHover: true
     };
     static Item = CarouselItem;
 
@@ -34,25 +41,33 @@ export default class Carousel extends React.Component<CarouselProps> {
         prevIndex: -1,
         currentIndex: -1
     };
-    el: React.RefObject<HTMLDivElement> = React.createRef();
-    timer = null;
-    dir: string = "";
+
+    private el: React.RefObject<HTMLDivElement> = React.createRef();
+    private timer: any = null;
+    private dir: string = "";
     transitioning: boolean = false;
 
     componentDidMount() {
         this.to(this.props.activeIndex as number);
+        this.start();
     }
 
     componentDidUpdate() {
         const PREFIX = "carousel-item";
         const children = this.getChildren();
         let {
-            currentIndex,
-            prevIndex
-        } = this.state;
-        let el = children[currentIndex];
-        let prevEl = children[prevIndex];
-        let clsMap = {
+            state: {
+                currentIndex,
+                prevIndex
+            },
+            props: {
+                onSlide,
+                onSlid
+            }
+        } = this;
+        let el = children[currentIndex] as HTMLElement;
+        let prevEl = children[prevIndex] as HTMLElement;
+        let clsMap: any = {
             prev: "right",
             next: "left"
         };
@@ -61,6 +76,7 @@ export default class Carousel extends React.Component<CarouselProps> {
 
         if (!el) return;
 
+        //component just mounted
         if (!this.dir) {
             prevEl && prevEl.classList.remove("active");
             return el.classList.add("active");
@@ -74,40 +90,29 @@ export default class Carousel extends React.Component<CarouselProps> {
         }
 
         this.transitioning = true;
+        onSlide = handleFuncProp(onSlide);
 
         el.classList.add(cls1);
         reflow(el);
+        onSlide();
         el.classList.add(cls2);
         emulateTransitionEnd(el, () => {
+            onSlid = handleFuncProp(onSlid);
+
             this.transitioning = false;
             el.classList.remove(cls1, cls2);
             el.classList.add("active");
+            onSlid()
         });
     }
 
-    renderIndicators(children: Array<React.ReactNode>) {
-        const {
-            currentIndex
-        } = this.state;
-        return (
-            <ol className="carousel-indicators">
-                {
-                    children.map(
-                        (c, i) => <li
-                            key={i}
-                            className={classNames(currentIndex === i && "active")}/>
-                    )
-                }
-            </ol>
-        );
-    }
-
-    to(index: number, dir = "next") {
+    to(index: number, dir?: string) {
         let childrenLen = this.getChildren().length;
         let {currentIndex} = this.state;
 
-        if (this.transitioning) return;
+        if (this.transitioning || childrenLen <= 1) return;
 
+        //cycle
         if (index >= childrenLen) {
             index = 0;
         } else if (index < 0) {
@@ -120,14 +125,17 @@ export default class Carousel extends React.Component<CarouselProps> {
         if (currentIndex === -1) {
             this.dir = "";
         } else {
-            this.dir = dir;
+            if (!dir) {
+                this.dir = index < currentIndex ? "prev" : "next";
+            } else {
+                this.dir = dir;
+            }
         }
 
         this.setState({
             currentIndex: index,
             prevIndex: currentIndex
         });
-
     }
 
     toPrev() {
@@ -135,20 +143,52 @@ export default class Carousel extends React.Component<CarouselProps> {
         this.to(--currentIndex, "prev");
     }
 
+    cycle = () => {
+        this.timer = setTimeout(() => {
+            this.toNext();
+            this.cycle();
+        }, this.props.interval);
+    }
+
+    start() {
+        let children = this.getChildren();
+
+        children.length > 1 && this.cycle();
+    }
+
     toNext() {
         let {currentIndex} = this.state;
         this.to(++currentIndex, "next");
     }
 
-    handleClick = (evt: React.MouseEvent<HTMLAnchorElement>) => {
+    handleClickControl = (evt: React.MouseEvent) => {
         const hash = (evt.target as HTMLAnchorElement).hash;
+
         if (hash === "#prev") {
             this.toPrev();
         } else {
             this.toNext();
         }
+
         evt.preventDefault();
-    };
+    }
+
+    handleClickIndicator = (evt: React.MouseEvent) => {
+        let tgt = evt.target as HTMLElement;
+        let index = parseInt(tgt.dataset.index as any);
+
+        this.to(index);
+    }
+
+    handleMouseOver = () => {
+        if (this.timer) {
+            clearTimeout(this.timer);
+        }
+    }
+
+    handleMouseOut = () => {
+        this.start();
+    }
 
     getChildren() {
         let el = this.el.current;
@@ -164,16 +204,35 @@ export default class Carousel extends React.Component<CarouselProps> {
                 <a
                     className="carousel-control-prev"
                     href="#prev"
-                    onClick={this.handleClick}>
+                    onClick={this.handleClickControl}>
                     <span className="carousel-control-prev-icon"/>
                 </a>
                 <a
                     className="carousel-control-next"
                     href="#next"
-                    onClick={this.handleClick}>
+                    onClick={this.handleClickControl}>
                     <span className="carousel-control-next-icon"/>
                 </a>
             </>
+        );
+    }
+
+    renderIndicators(children: Array<React.ReactNode>) {
+        const {
+            currentIndex
+        } = this.state;
+        return (
+            <ol className="carousel-indicators">
+                {
+                    children.map(
+                        (c, i) => <li
+                            key={i}
+                            data-index={i}
+                            onClick={this.handleClickIndicator}
+                            className={classNames(currentIndex === i && "active")}/>
+                    )
+                }
+            </ol>
         );
     }
 
@@ -185,10 +244,18 @@ export default class Carousel extends React.Component<CarouselProps> {
             indicators,
             children,
             activeIndex,
+            onSlide,
+            onSlid,
+            pauseOnHover,
             ...otherProps
         } = this.props;
 
         const _children = React.Children.toArray(children);
+
+        if (pauseOnHover) {
+            otherProps.onMouseOver = this.handleMouseOver;
+            otherProps.onMouseOut = this.handleMouseOut;
+        }
 
         return (
             <div className={
