@@ -9,11 +9,12 @@ export interface AccordionProps extends React.HTMLAttributes<HTMLDivElement> {
     activeIndex?: number | Array<number>;
 }
 
-interface StateProp {
+interface AccordionStates {
     activeIndex: Set<number>;
+    from?: string;
 }
 
-export default class Accordion extends React.Component<AccordionProps, StateProp> {
+export default class Accordion extends React.Component<AccordionProps, AccordionStates> {
 
     static Panel = AccordionPanel;
     static propTypes = {
@@ -26,6 +27,15 @@ export default class Accordion extends React.Component<AccordionProps, StateProp
 
     constructor(props: AccordionProps) {
         super(props);
+
+
+        this.state = {
+            activeIndex: Accordion.handleProps(props),
+            from: "state"
+        };
+    }
+
+    static handleProps(props: AccordionProps) {
         const {
             activeIndex,
             multiple
@@ -45,9 +55,20 @@ export default class Accordion extends React.Component<AccordionProps, StateProp
             set.add(Number(activeIndex) || 0);
         }
 
-        this.state = {
-            activeIndex: set
-        };
+        return set;
+    }
+
+    static getDerivedStateFromProps(props: AccordionProps, state: AccordionStates) {
+        if (state.from) {
+            return {
+                ...state,
+                from: ""
+            };
+        }
+
+        return {
+            activeIndex: this.handleProps(props)
+        }
     }
 
     handleClick = (index: number) => {
@@ -70,7 +91,10 @@ export default class Accordion extends React.Component<AccordionProps, StateProp
             }
         }
 
-        this.setState({activeIndex});
+        this.setState({
+            activeIndex,
+            from: "state"
+        });
     };
 
     renderChildren(children: Array<React.ReactNode>) {
