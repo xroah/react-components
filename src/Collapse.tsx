@@ -1,7 +1,6 @@
 import * as React from "react";
 import classNames from "classnames";
 import PropTypes from "prop-types";
-import Card from "./Card";
 import {emulateTransitionEnd, handleFuncProp, reflow} from "./utils";
 import {RefObject} from "react";
 
@@ -40,6 +39,10 @@ export default class Collapse extends React.Component<CollapseProps> {
         if (el && isOpen) {
             el.classList.add("show");
         }
+    }
+
+    shouldComponentUpdate(nextProps: CollapseProps) {
+        return nextProps.isOpen !== this.props.isOpen;
     }
 
     componentDidUpdate() {
@@ -104,9 +107,9 @@ export default class Collapse extends React.Component<CollapseProps> {
                 }
                      ref={this.ref}
                      {...otherProps}>
-                    <Card>
+                    <div className="card-body">
                         {children}
-                    </Card>
+                    </div>
                 </div>
             </>
         );
