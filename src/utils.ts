@@ -67,3 +67,5 @@ export function handleFuncProp(prop?: Function) {
 
     return prop;
 }
+
+export const AccordionContext = React.createContext(new Set());
