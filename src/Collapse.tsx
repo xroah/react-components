@@ -1,8 +1,9 @@
 import * as React from "react";
 import classNames from "classnames";
 import PropTypes from "prop-types";
-import {Transition} from "react-transition-group";
-import {handleFuncProp, reflow} from "./utils";
+import Card from "./Card";
+import {emulateTransitionEnd, handleFuncProp, reflow} from "./utils";
+import {RefObject} from "react";
 
 export interface CollapseProps extends React.HTMLAttributes<HTMLDivElement> {
     isOpen?: boolean;
@@ -18,10 +19,6 @@ function getHeight(node: HTMLElement) {
 
 export default class Collapse extends React.Component<CollapseProps> {
 
-    state = {
-        height: undefined
-    };
-
     static defaultProps = {
         isOpen: false
     };
@@ -30,93 +27,88 @@ export default class Collapse extends React.Component<CollapseProps> {
         isOpen: PropTypes.bool
     };
 
-    handleEntering = (node: HTMLElement) => {
-        this.setState({
-            height: getHeight(node)
-        })
-    };
+    private ref: RefObject<HTMLDivElement> = React.createRef();
 
-    handleEntered = () => {
-        this.setState({height: undefined});
-        handleFuncProp(this.props.onShown)();
-    };
+    getRef() {
+        return this.ref.current;
+    }
 
-    handleExit = (node: HTMLElement) => {
-        this.setState({
-            height: getHeight(node)
-        });
-        handleFuncProp(this.props.onHide)();
-    };
+    componentDidMount() {
+        const el = this.getRef();
+        const {isOpen} = this.props;
 
-    handleEnter = () => {
-        handleFuncProp(this.props.onShow)();
-    };
+        if (el && isOpen) {
+            el.classList.add("show");
+        }
+    }
 
-    handleExited = () => {
-        handleFuncProp(this.props.onHidden)();
-    };
+    componentDidUpdate() {
+        const {
+            isOpen,
+            onShow,
+            onShown,
+            onHide,
+            onHidden
+        } = this.props;
+        const el = this.getRef();
 
-    handExiting = (node: HTMLElement) => {
-        reflow(node);
-        this.setState({
-            height: undefined
-        });
-    };
+        if (!el) return;
+
+        el.classList.remove("collapse", "show");
+
+        if (isOpen) {
+            el.classList.add("collapsing");
+            handleFuncProp(onShow)();
+            reflow(el);
+            el.style.height = `${getHeight(el)}px`;
+            emulateTransitionEnd(el, () => {
+                el.classList.remove("collapsing");
+                el.classList.add("collapse", "show");
+                el.style.height = "";
+                handleFuncProp(onShown)();
+            });
+        } else {
+            el.style.height = `${getHeight(el)}px`;
+            reflow(el);
+            el.style.height = "";
+            el.classList.add("collapsing");
+            handleFuncProp(onHide)();
+            emulateTransitionEnd(el, () => {
+                el.classList.remove("collapsing");
+                el.classList.add("collapse");
+                handleFuncProp(onHidden)();
+            });
+        }
+    }
 
     render() {
         const {
-            props: {
-                isOpen,
-                className,
-                children,
-                ...otherProps
-            },
-            state: {
-                height
-            }
-        } = this;
+            className,
+            children,
+            ...otherProps
+        } = this.props;
 
-        const style = {height};
+        delete otherProps.onShow;
+        delete otherProps.onShown;
+        delete otherProps.onHide;
+        delete otherProps.onHidden;
+        delete otherProps.isOpen;
 
         return (
-            <Transition
-                onEnter={this.handleEnter}
-                onEntering={this.handleEntering}
-                onEntered={this.handleEntered}
-                onExit={this.handleExit}
-                onExiting={this.handExiting}
-                onExited={this.handleExited}
-                timeout={350}
-                in={isOpen}>
-                {
-                    state => {
-                        let classes = "";
-
-                        if (state === "entering" || state === "exiting") {
-                            classes = "collapsing";
-                        } else if (state === "entered") {
-                            classes = "collapse show";
-                        } else {
-                            classes = "collapse";
-                        }
-
-                        const _className = classNames(
-                            className,
-                            classes
-                        );
-
-                        return (
-                            <div className={_className}
-                                 style={style}
-                                 {...otherProps}>
-                                <div className="card card-body">
-                                    {children}
-                                </div>
-                            </div>
-                        );
-                    }
+            <>
+                <div className={
+                    classNames(
+                        className,
+                        "collapse"
+                    )
                 }
-            </Transition>
+                     ref={this.ref}
+                     {...otherProps}>
+                    <Card>
+                        {children}
+                    </Card>
+                </div>
+            </>
         );
     }
 
