@@ -27,6 +27,7 @@ export default class Collapse extends React.Component<CollapseProps> {
     };
 
     private ref: RefObject<HTMLDivElement> = React.createRef();
+    private cancelTransition: Function | null = null;
 
     getRef() {
         return this.ref.current;
@@ -45,13 +46,33 @@ export default class Collapse extends React.Component<CollapseProps> {
         return nextProps.isOpen !== this.props.isOpen;
     }
 
+    handleTransitionEnd (el: HTMLElement) {
+        const {
+            onShown,
+            onHidden,
+            isOpen
+        } = this.props;
+
+        el.classList.remove("collapsing");
+        el.classList.add("collapse");
+
+        if (isOpen) {
+            el.classList.add("show");
+            el.style.height = "";
+            handleFuncProp(onShown)();
+        } else {
+            handleFuncProp(onHidden)();
+        }
+
+        this.cancelTransition = null;
+    };
+
+
     componentDidUpdate() {
         const {
             isOpen,
             onShow,
-            onShown,
             onHide,
-            onHidden
         } = this.props;
         const el = this.getRef();
 
@@ -59,27 +80,26 @@ export default class Collapse extends React.Component<CollapseProps> {
 
         el.classList.remove("collapse", "show");
 
+        if (this.cancelTransition) {
+            this.cancelTransition();
+        }
+
         if (isOpen) {
             el.classList.add("collapsing");
             handleFuncProp(onShow)();
             reflow(el);
             el.style.height = `${getHeight(el)}px`;
-            emulateTransitionEnd(el, () => {
-                el.classList.remove("collapsing");
-                el.classList.add("collapse", "show");
-                el.style.height = "";
-                handleFuncProp(onShown)();
+            this.cancelTransition = emulateTransitionEnd(el, () => {
+                this.handleTransitionEnd(el);
             });
         } else {
             el.style.height = `${getHeight(el)}px`;
             reflow(el);
-            el.style.height = "";
             el.classList.add("collapsing");
+            el.style.height = "";
             handleFuncProp(onHide)();
-            emulateTransitionEnd(el, () => {
-                el.classList.remove("collapsing");
-                el.classList.add("collapse");
-                handleFuncProp(onHidden)();
+            this.cancelTransition = emulateTransitionEnd(el, () => {
+                this.handleTransitionEnd(el);
             });
         }
     }
@@ -87,7 +107,6 @@ export default class Collapse extends React.Component<CollapseProps> {
     render() {
         const {
             className,
-            children,
             ...otherProps
         } = this.props;
 
@@ -99,18 +118,12 @@ export default class Collapse extends React.Component<CollapseProps> {
 
         return (
             <>
-                <div className={
-                    classNames(
-                        className,
-                        "collapse"
-                    )
-                }
-                     ref={this.ref}
-                     {...otherProps}>
-                    <div className="card-body">
-                        {children}
-                    </div>
-                </div>
+                <div
+                    className={
+                        classNames(className, "collapse")
+                    }
+                    ref={this.ref}
+                    {...otherProps}/>
             </>
         );
     }
