@@ -8,10 +8,10 @@ interface CreateProps {
 }
 
 export function createComponentByClass(options: CreateProps) {
-    const { className, tag = "div", displayName } = options;
+    const {className, tag = "div", displayName} = options;
 
     let Comp: any = (props: React.HTMLAttributes<Element>) => {
-        const { className: _className, ...otherProps } = props;
+        const {className: _className, ...otherProps} = props;
         return React.createElement(
             tag,
             {
@@ -58,6 +58,12 @@ export function emulateTransitionEnd(el: HTMLElement, handler: Function) {
 
     el.addEventListener("transitionend", _handler);
     timer = setTimeout(_handler, getTransitionDuration(el) * 1000);
+
+    return function cancel() {
+        if (called) return;
+        el.removeEventListener("transitionend", _handler);
+        clearTimeout(timer);
+    };
 }
 
 export function handleFuncProp(prop?: Function) {
