@@ -15,7 +15,7 @@ const optimization = {
         }),
         new OptimizeCSSAssetsPlugin()
     ]
-}
+};
 
 const config = {
     mode: "production",
@@ -66,6 +66,7 @@ module.exports = env => {
         };
         config.mode = env;
         config.optimization = optimization;
+        config.devtool = "eval-source-map";
     } else {
         config.plugins.push(
             new MiniCssExtractPlugin({
