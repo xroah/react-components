@@ -4,58 +4,85 @@ import PropTypes, {number} from "prop-types";
 import AccordionPanel from "./AccordionPanel";
 import {AccordionContext} from "./utils";
 
+type keyType = number | string | number[] | string[];
+
 export interface AccordionProps extends React.HTMLAttributes<HTMLDivElement> {
     multiple?: boolean;
-    activeIndex?: number | Array<number>;
+    activeKey?: keyType;
+    defaultActiveKey?: keyType;
 }
 
 interface AccordionStates {
-    activeIndex: Set<number>;
+    activeKey: Set<string>;
     from?: string;
 }
+
+const _keyType = PropTypes.oneOfType([
+    PropTypes.number,
+    PropTypes.string,
+    PropTypes.arrayOf(PropTypes.number),
+    PropTypes.arrayOf(PropTypes.string)
+]);
 
 export default class Accordion extends React.Component<AccordionProps, AccordionStates> {
 
     static Panel = AccordionPanel;
     static propTypes = {
         multiple: PropTypes.bool,
-        activeIndex: PropTypes.oneOfType([
-            PropTypes.number,
-            PropTypes.arrayOf(PropTypes.number)
-        ])
+        activeKey: _keyType,
+        defaultActiveKey: _keyType
     };
 
     constructor(props: AccordionProps) {
         super(props);
 
+        const {
+            activeKey,
+            defaultActiveKey,
+            multiple
+        } = props;
+
+        let keys = defaultActiveKey;
+
+        if (activeKey) {
+            keys = activeKey;
+        }
 
         this.state = {
-            activeIndex: Accordion.handleProps(props),
+            activeKey: Accordion.handleKeyProp(keys, multiple),
             from: "state"
         };
     }
 
-    static handleProps(props: AccordionProps) {
-        const {
-            activeIndex,
-            multiple
-        } = props;
-        const set = new Set<number>();
+    static handleKeyProp(keys?: keyType, multiple?: boolean) {
+        let set = new Set<string>();
 
-        if (Array.isArray(activeIndex)) {
+        if (Array.isArray(keys)) {
+            let activeKey: string[] = [];
+            keys.forEach((item: any) => {
+                if (item != undefined) {
+                    activeKey.push(item.toString());
+                }
+            });
             if (multiple) {
-                activeIndex.forEach(i => {
-                    i = Number(i) || 0;
-                    set.add(i);
-                });
+                set = new Set<string>(activeKey)
             } else {
-                set.add(Number(activeIndex[0]) || 0);
+                set.add(activeKey[0].toString());
             }
-        } else if (activeIndex != undefined) {
-            set.add(Number(activeIndex) || 0);
+        } else if (keys != undefined) {
+            set.add(keys.toString());
         }
 
         return set;
+    }
+
+    static handleProps(props: AccordionProps) {
+        const {
+            activeKey,
+            multiple
+        } = props;
+
+        return this.handleKeyProp(activeKey, multiple);
     }
 
     static getDerivedStateFromProps(props: AccordionProps, state: AccordionStates) {
@@ -71,42 +98,43 @@ export default class Accordion extends React.Component<AccordionProps, Accordion
         }
     }
 
-    handleClick = (index: number) => {
+    handleClick = (key: string) => {
         let {
             props: {
                 multiple
             },
             state: {
-                activeIndex
+                activeKey
             }
         } = this;
 
-        if (activeIndex.has(index)) {
-            activeIndex.delete(index);
+        if (activeKey.has(key)) {
+            activeKey.delete(key);
         } else {
             if (multiple) {
-                activeIndex.add(index);
+                activeKey.add(key);
             } else {
-                activeIndex = new Set<number>([index]);
+                activeKey = new Set<string>([key]);
             }
         }
 
         this.setState({
-            activeIndex,
+            activeKey,
             from: "state"
         });
     };
 
-    renderChildren(children: Array<React.ReactNode>) {
-        let i = 0;
+    renderChildren(children: React.ReactNode) {
 
-        return children.map(
-            c => {
+        //React.Children.toArray will add ".$" prefix to the key value
+        return React.Children.map(
+            children,
+            (c, i) => {
                 if (React.isValidElement(c) && c.type === AccordionPanel) {
                     return React.cloneElement(
                         c,
                         {
-                            __index__: i++,
+                            __key__: c.key || i.toString(),
                             __onHeaderClick__: this.handleClick
                         }
                     );
@@ -124,19 +152,19 @@ export default class Accordion extends React.Component<AccordionProps, Accordion
                 ...otherProps
             },
             state: {
-                activeIndex
+                activeKey
             }
         } = this;
-
         delete otherProps.multiple;
-        delete otherProps.activeIndex;
+        delete otherProps.activeKey;
+        delete otherProps.defaultActiveKey;
 
         return (
-            <AccordionContext.Provider value={activeIndex}>
+            <AccordionContext.Provider value={activeKey}>
                 <div
                     className={classNames(className, "accordion")}
                     {...otherProps}>
-                    {this.renderChildren(React.Children.toArray(children))}
+                    {this.renderChildren(children)}
                 </div>
             </AccordionContext.Provider>
         );

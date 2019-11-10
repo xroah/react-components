@@ -2,12 +2,11 @@ import * as React from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 import Collapse from "./Collapse";
-import {handleFuncProp} from "./utils";
-import {AccordionContext} from "./utils";
+import {handleFuncProp, AccordionContext} from "./utils";
 
 interface PanelProps extends React.HTMLAttributes<HTMLDivElement> {
     header: React.ReactNode;
-    __index__?: number; //internal only
+    __key__?: string | number; //internal only
     __onHeaderClick__?: Function; //internal only
 }
 
@@ -20,12 +19,12 @@ export default class AccordionPanel extends React.Component<PanelProps> {
 
     handleHeaderClick = () => {
         const {
-            __index__,
+            __key__,
             __onHeaderClick__
         } = this.props;
         const fn = handleFuncProp(__onHeaderClick__);
 
-        fn(__index__);
+        fn(__key__);
     };
 
     render() {
@@ -33,7 +32,7 @@ export default class AccordionPanel extends React.Component<PanelProps> {
             header,
             children,
             className,
-            __index__,
+            __key__,
             ...otherProps
         } = this.props;
 
@@ -45,8 +44,10 @@ export default class AccordionPanel extends React.Component<PanelProps> {
                     style={{cursor: "pointer"}}
                     className="card-header"
                     onClick={this.handleHeaderClick}>{header}</div>
-                <Collapse isOpen={this.context.has(__index__)}>
-                    {children}
+                <Collapse isOpen={this.context.has(__key__)}>
+                    <div className="card-body">
+                        {children}
+                    </div>
                 </Collapse>
             </div>
         );
