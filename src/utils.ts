@@ -45,25 +45,25 @@ export function getTransitionDuration(el: HTMLElement) {
 export function emulateTransitionEnd(el: HTMLElement, handler: Function) {
     let called = false;
     let timer: NodeJS.Timeout;
-    const _handler = () => {
+    const cancel = () => {
+        if (called) return;
+
         el.removeEventListener("transitionend", _handler);
         clearTimeout(timer);
-
+    };
+    const _handler = () => {
         if (called) return;
 
         called = true;
 
         handler();
+        cancel();
     };
 
     el.addEventListener("transitionend", _handler);
     timer = setTimeout(_handler, getTransitionDuration(el) * 1000);
 
-    return function cancel() {
-        if (called) return;
-        el.removeEventListener("transitionend", _handler);
-        clearTimeout(timer);
-    };
+    return cancel;
 }
 
 export function handleFuncProp(prop?: Function) {
