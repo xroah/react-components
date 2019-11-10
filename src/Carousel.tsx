@@ -153,11 +153,18 @@ export default class Carousel extends React.Component<CarouselProps> {
         }, this.props.interval);
     }
 
-    start() {
+    start = () => {
         let children = this.getChildren();
 
+        this.stop();
         children.length > 1 && this.cycle();
-    }
+    };
+
+    stop = () => {
+        if (this.timer) {
+            clearTimeout(this.timer);
+        }
+    };
 
     toPrev() {
         let {currentIndex} = this.state;
@@ -185,27 +192,20 @@ export default class Carousel extends React.Component<CarouselProps> {
 
         this.to(index);
     };
-
-    handleMouseOver = () => {
-        if (this.timer) {
-            clearTimeout(this.timer);
-        }
-    };
-
-    handleMouseOut = () => {
-        this.start();
-    };
-
     handleTouchStart = (evt: React.TouchEvent) => {
         this.startX = evt.changedTouches[0].clientX;
+        this.stop();
     };
 
     handleTouchEnd = (evt: React.TouchEvent) => {
+
         //after all touches end
         if (evt.touches.length) return;
 
         const THRESHOLD = 100;
         const distance = evt.changedTouches[0].clientX - this.startX;
+
+        this.start();
 
         if (Math.abs(distance) < THRESHOLD) return;
 
@@ -280,8 +280,8 @@ export default class Carousel extends React.Component<CarouselProps> {
         const _children = React.Children.toArray(children);
 
         if (pauseOnHover) {
-            otherProps.onMouseOver = this.handleMouseOver;
-            otherProps.onMouseOut = this.handleMouseOut;
+            otherProps.onMouseOver = this.stop;
+            otherProps.onMouseOut = this.start;
         }
 
         if (touch) {
