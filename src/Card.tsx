@@ -2,7 +2,6 @@ import * as React from "react";
 import classNames from "classnames";
 import PropTypes from "prop-types";
 import { createComponentByClass } from "./utils";
-import CardTitle from "./CardTitle";
 
 type bgType = "primary" |
     "secondary" |
@@ -28,6 +27,9 @@ export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
     headerClass?: string;
     bodyClass?: string;
     footerClass?: string;
+    title?: string;
+    subtitle?: string;
+    subtitleColor?: colorType;
 }
 
 export default function Card(props: CardProps) {
@@ -46,6 +48,9 @@ export default function Card(props: CardProps) {
         headerClass,
         bodyClass,
         footerClass,
+        subtitle,
+        subtitleColor,
+        title,
         ...otherProps
     } = props;
 
@@ -95,6 +100,18 @@ export default function Card(props: CardProps) {
                     isImgOverlay && !!img ? "card-img-overlay" : "card-body"
                     )
             }>
+                {
+                    title && (
+                        <div className="card-title">{title}</div>
+                    )
+                }
+                {
+                    subtitle && (
+                        <div className={`card-subtitle mb-2 text-${subtitleColor}`}>
+                            {subtitle}
+                        </div>
+                    )
+                }
                 {children}
             </div>
             {bottomImg}
@@ -137,12 +154,16 @@ Card.propTypes = {
     color: PropTypes.oneOf(color),
     headerClass: PropTypes.string,
     bodyClass: PropTypes.string,
-    footerClass: PropTypes.string
+    footerClass: PropTypes.string,
+    subtitle: PropTypes.string,
+    title: PropTypes.string,
+    subtitleColor: PropTypes.oneOf(color)
 };
 
 Card.defaultProps = {
     imgPosition: "top",
     isImgOverlay: false,
+    subtitleColor: "muted"
 };
 
 Card.Deck = createComponentByClass({
@@ -153,4 +174,3 @@ Card.Column = createComponentByClass({
     className: "card-column",
     displayName: "CardColumn"
 });
-Card.Title = CardTitle;
