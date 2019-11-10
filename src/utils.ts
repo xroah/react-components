@@ -52,12 +52,13 @@ export function emulateTransitionEnd(el: HTMLElement, handler: Function) {
         clearTimeout(timer);
     };
     const _handler = () => {
+        cancel();
+
         if (called) return;
 
         called = true;
 
         handler();
-        cancel();
     };
 
     el.addEventListener("transitionend", _handler);
