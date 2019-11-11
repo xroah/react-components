@@ -24,9 +24,9 @@ export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
     bg?: bgType;
     border?: bgType;
     color?: colorType;
-    headerClass?: string;
+    headerProps?: React.HTMLAttributes<HTMLElement>;
     bodyClass?: string;
-    footerClass?: string;
+    footerProps?: React.HTMLAttributes<HTMLElement>;
     title?: string;
     subtitle?: string;
     subtitleColor?: colorType;
@@ -45,9 +45,15 @@ export default function Card(props: CardProps) {
         bg,
         color,
         border,
-        headerClass,
+        headerProps: {
+            className: headerClass = "",
+            ...otherHeaderProps
+        } = {},
         bodyClass,
-        footerClass,
+        footerProps: {
+            className: footerClass = "",
+            ...otherFooterProps
+        } = {},
         subtitle,
         subtitleColor,
         title,
@@ -90,7 +96,7 @@ export default function Card(props: CardProps) {
                             headerClass,
                             "card-header"
                         )
-                    }>{header}</div>
+                    } {...otherHeaderProps}>{header}</div>
                 )
             }
             {topImg}
@@ -122,7 +128,7 @@ export default function Card(props: CardProps) {
                             footerClass,
                             "card-footer"
                         )
-                    }>{footer}</div>
+                    } {...otherFooterProps}>{footer}</div>
                 )
             }
         </div>
@@ -152,9 +158,9 @@ Card.propTypes = {
     bg: PropTypes.oneOf(bg),
     border: PropTypes.oneOf(bg),
     color: PropTypes.oneOf(color),
-    headerClass: PropTypes.string,
+    headerProps: PropTypes.object,
     bodyClass: PropTypes.string,
-    footerClass: PropTypes.string,
+    footerProps: PropTypes.object,
     subtitle: PropTypes.string,
     title: PropTypes.string,
     subtitleColor: PropTypes.oneOf(color)
