@@ -1,24 +1,13 @@
 import * as React from "react";
 import PropTypes from "prop-types";
-import classnames from "classnames";
+import classNames from "classnames";
 
-export interface BreadcrumbProps extends React.HTMLAttributes<HTMLElement> {
-    listProps?: React.HTMLAttributes<HTMLOListElement>
-}
-
-function Breadcrumb(props: BreadcrumbProps) {
-    const {className, listProps, children, ...otherProps} = props;
-    const {className: listClassName, ...otherListProps} = listProps || {};
+function Breadcrumb(props: React.HTMLAttributes<HTMLElement>) {
+    const {className, children, ...otherProps} = props;
 
     return (
         <nav className={className} {...otherProps}>
-            <ul className={
-                classnames(
-                    "breadcrumb",
-                    listClassName
-                )
-            }
-                {...otherListProps}>
+            <ul className="breadcrumb">
                 {children}
             </ul>
         </nav>
@@ -44,7 +33,7 @@ function Item(props: BreadcrumbItemProps) {
 
     return (
         <li
-            className={classnames(
+            className={classNames(
                 className,
                 "breadcrumb-item",
                 active && "active"
