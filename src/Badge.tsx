@@ -1,5 +1,5 @@
 import * as React from "react";
-import classnames from "classnames";
+import {classNames} from "./utils";
 import PropTypes from "prop-types";
 
 export interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement & HTMLAnchorElement> {
@@ -24,7 +24,7 @@ export default function Badge(props: BadgeProps) {
         children,
         ...otherProps
     } = props;
-    const classNames = classnames(
+    const classes = classNames(
         className,
         "badge",
         variant && `badge-${variant}`,
@@ -40,7 +40,7 @@ export default function Badge(props: BadgeProps) {
         tag,
         {
             href,
-            className: classNames,
+            className: classes,
             ...otherProps
         },
         children

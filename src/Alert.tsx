@@ -1,7 +1,7 @@
 import * as React from "react";
 import {Transition} from "react-transition-group";
-import classnames from "classnames";
 import PropTypes from "prop-types";
+import { classNames } from "./utils";
 
 export interface AlertProps extends React.HTMLAttributes<HTMLDivElement> {
     variant?: 'primary'
@@ -84,7 +84,7 @@ export default class Alert extends React.Component<AlertProps> {
                 unmountOnExit={true}>
                 {
                     state => {
-                        const classNames = classnames(
+                        const classes = classNames(
                             className,
                             "alert",
                             variant && `alert-${variant}`,
@@ -93,7 +93,7 @@ export default class Alert extends React.Component<AlertProps> {
                             state === "entered" ? "show" : ""
                         );
                         return (
-                            <div className={classNames} {...otherProps} role={"alert"}>
+                            <div className={classes} {...otherProps} role={"alert"}>
                                 {children}
                                 {button}
                             </div>

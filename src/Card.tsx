@@ -1,7 +1,6 @@
 import * as React from "react";
-import classNames from "classnames";
 import PropTypes from "prop-types";
-import { createComponentByClass } from "./utils";
+import { createComponentByClass, classNames } from "./utils";
 
 type bgType = "primary" |
     "secondary" |

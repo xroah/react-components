@@ -1,6 +1,6 @@
 import * as React from "react";
-import classNames from "classnames";
 import PropTypes from "prop-types";
+import {classNames} from "./utils";
 
 export interface ButtonGroupProps extends React.HTMLAttributes<HTMLDivElement>{
     size?: "sm" | "lg";

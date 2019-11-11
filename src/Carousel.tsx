@@ -1,8 +1,12 @@
 import * as React from "react";
-import classNames from "classnames";
 import PropTypes from "prop-types";
 import CarouselItem from "./CarouselItem"
-import {emulateTransitionEnd, handleFuncProp, reflow} from "./utils";
+import {
+    emulateTransitionEnd,
+    handleFuncProp,
+    reflow,
+    classNames
+} from "./utils";
 
 export interface CarouselProps extends React.HTMLAttributes<HTMLDivElement> {
     animation?: "slide" | "fade";
@@ -269,15 +273,16 @@ export default class Carousel extends React.Component<CarouselProps> {
             controls,
             indicators,
             children,
-            activeIndex,
-            onSlide,
-            onSlid,
             touch,
             pauseOnHover,
             ...otherProps
         } = this.props;
 
         const _children = React.Children.toArray(children);
+
+        delete otherProps.activeIndex;
+        delete otherProps.onSlide;
+        delete otherProps.onSlid;
 
         if (pauseOnHover) {
             otherProps.onMouseOver = this.stop;

@@ -1,6 +1,6 @@
 import * as React from "react";
-import classNames from "classnames";
 import SyntaxHighlighter from "../SyntaxHighlighter";
+import {classNames} from "../../../src/utils";
 
 interface Props extends React.HTMLAttributes<HTMLHeadingElement> {
     component: React.ReactElement;

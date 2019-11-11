@@ -1,8 +1,11 @@
 import * as React from "react";
 import PropTypes from "prop-types";
-import classNames from "classnames";
 import Collapse from "./Collapse";
-import {handleFuncProp, AccordionContext} from "./utils";
+import {
+    handleFuncProp,
+    AccordionContext,
+    classNames
+} from "./utils";
 
 interface PanelProps extends React.HTMLAttributes<HTMLDivElement> {
     header: React.ReactNode;
@@ -42,6 +45,7 @@ export default class AccordionPanel extends React.Component<PanelProps> {
         } = this.props;
 
         delete otherProps.__onHeaderClick__;
+        delete otherProps.headerClickable;
 
         return (
             <div className={classNames(className, "card")} {...otherProps}>

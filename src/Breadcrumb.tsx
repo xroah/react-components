@@ -1,6 +1,6 @@
 import * as React from "react";
 import PropTypes from "prop-types";
-import classNames from "classnames";
+import {classNames} from "./utils";
 
 function Breadcrumb(props: React.HTMLAttributes<HTMLElement>) {
     const {className, children, ...otherProps} = props;

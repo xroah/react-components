@@ -1,8 +1,11 @@
 import * as React from "react";
-import classNames from "classnames";
 import PropTypes from "prop-types";
-import {emulateTransitionEnd, handleFuncProp, reflow} from "./utils";
-import {RefObject} from "react";
+import {
+    emulateTransitionEnd,
+    handleFuncProp,
+    reflow,
+    classNames
+} from "./utils";
 
 export interface CollapseProps extends React.HTMLAttributes<HTMLDivElement> {
     isOpen?: boolean;
@@ -26,7 +29,7 @@ export default class Collapse extends React.Component<CollapseProps> {
         isOpen: PropTypes.bool
     };
 
-    private ref: RefObject<HTMLDivElement> = React.createRef();
+    private ref: React.RefObject<HTMLDivElement> = React.createRef();
     private cancelTransition: Function | null = null;
 
     getRef() {
@@ -46,7 +49,7 @@ export default class Collapse extends React.Component<CollapseProps> {
         return nextProps.isOpen !== this.props.isOpen;
     }
 
-    handleTransitionEnd (el: HTMLElement) {
+    handleTransitionEnd(el: HTMLElement) {
         const {
             onShown,
             onHidden,

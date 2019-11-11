@@ -1,5 +1,4 @@
 import * as React from "react";
-import classNames from "classnames";
 
 interface CreateProps {
     className?: string;
@@ -73,6 +72,26 @@ export function handleFuncProp(prop?: Function) {
     }
 
     return prop;
+}
+
+export function classNames(...args: any): string　{
+    const classes = [];
+
+    for (let arg of args) {
+        if (!arg) continue;
+
+        const argType = typeof arg;
+
+        if (argType === "string") {
+            classes.push(arg);
+        } else if (Array.isArray(arg)) {
+            classes.push(classNames(...arg));
+        } else if (argType === "object") {
+            Object.keys(arg).forEach(a => arg[a] && classes.push(a));
+        }
+    }
+
+    return classes.join(" ");
 }
 
 export const AccordionContext = React.createContext(new Set());
