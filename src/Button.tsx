@@ -2,7 +2,7 @@ import * as React from "react";
 import classNames from "classnames";
 import PropTypes from "prop-types";
 import ButtonGroup from "./ButtonGroup";
-import ButtonToolbar from "./ButtonToolbar";
+import {createComponentByClass} from "./utils";
 
 interface ButtonProps extends React.HTMLAttributes<HTMLButtonElement & HTMLAnchorElement> {
     variant?: "primary" |
@@ -95,6 +95,9 @@ Button.defaultProps = {
 Button.displayName = "Button";
 
 Button.Group = ButtonGroup;
-Button.Toolbar = ButtonToolbar;
+Button.Toolbar = createComponentByClass({
+    className: "btn-toolbar",
+    displayName: "ButtonToolbar"
+});
 
 export default Button;
