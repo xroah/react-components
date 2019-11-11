@@ -6,6 +6,7 @@ import {handleFuncProp, AccordionContext} from "./utils";
 
 interface PanelProps extends React.HTMLAttributes<HTMLDivElement> {
     header: React.ReactNode;
+    headerClickable?: boolean;
     __key__?: string | number; //internal only
     __onHeaderClick__?: Function; //internal only
 }
@@ -13,7 +14,11 @@ interface PanelProps extends React.HTMLAttributes<HTMLDivElement> {
 export default class AccordionPanel extends React.Component<PanelProps> {
 
     static propTypes = {
-        header: PropTypes.node.isRequired
+        header: PropTypes.node.isRequired,
+        headerClickable: PropTypes.bool
+    };
+    static defaultProps = {
+        headerClickable: true
     };
     static contextType = AccordionContext;
 
