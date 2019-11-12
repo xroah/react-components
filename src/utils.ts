@@ -94,4 +94,27 @@ export function classNames(...args: any): string　{
     return classes.join(" ");
 }
 
+export interface ElementRect {
+    left: number;
+    top: number;
+    width: number;
+    height: number;
+}
+
+export function getElementRect(el: HTMLElement): ElementRect {
+    const body = document.body;
+    const html = document.documentElement;
+    const scrollTop = body.scrollTop || html.scrollTop || 0;
+    const scrollLeft = body.scrollLeft || html.scrollLeft || 0;
+    const rect = el.getBoundingClientRect();
+
+    return {
+        left: rect.left + scrollLeft,
+        top: rect.top + scrollTop,
+        width: rect.width,
+        height: rect.height
+    };
+}
+
 export const AccordionContext = React.createContext(new Set());
+export const OverlayContext = React.createContext({close: () => {}});
