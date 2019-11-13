@@ -27,7 +27,9 @@ export default class DropdownMenuItem extends React.Component<ItemProps> {
     };
 
     handleClick = (evt: React.MouseEvent) => {
-        const {onClick} = this.props;
+        const {onClick, disabled} = this.props;
+
+        if (disabled) return;
 
         if (this.context.close) {
             this.context.close();
@@ -57,7 +59,7 @@ export default class DropdownMenuItem extends React.Component<ItemProps> {
                     className,
                     "dropdown-item",
                     active && "active",
-                    disabled && disabled
+                    disabled && "disabled"
                 ),
                 onClick: this.handleClick,
                 ...otherProps

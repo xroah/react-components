@@ -2,17 +2,21 @@ import * as React from "react";
 import PropTypes from "prop-types";
 import {
     createComponentByClass,
-    OverlayContext
+    OverlayContext,
+    classNames
 } from "./utils";
 import Overlay from "./Overlay";
 import DropdownMenu from "./DropdownMenu";
 import DropdownMenuItem from "./DropdownMenuItem";
 
-type action = "hover" | "click" | "contextmenu";
+type action = "hover" | "click" | "contextmenu" | "focus";
 
 export interface DropdownProps extends React.HTMLAttributes<HTMLDivElement> {
+    position?: "top" | "right" | "bottom" | "left";
+    align?: "left" | "center" | "right";
     overlay?: React.ReactNode;
     trigger?: action[];
+    flip?: boolean;
 }
 
 export default class Dropdown extends React.Component<DropdownProps> {
@@ -22,24 +26,47 @@ export default class Dropdown extends React.Component<DropdownProps> {
         displayName: "DropdownDivider"
     });
     static defaultProps = {
-        trigger: ["hover"]
+        trigger: ["click"],
+        position: "bottom",
+        align: "left",
+        flip: true
+    }
+    static propTypes = {
+        flip: PropTypes.bool
     };
     static Menu = DropdownMenu;
     static MenuItem = DropdownMenuItem;
     static DropdownContext = OverlayContext;
 
-
     render() {
         const {
             children,
             overlay,
+            position,
             ...otherProps
         } = this.props;
-        const child = React.Children.only(children);
+        const positionMap: any = {
+            left: "dropleft",
+            top: "dropup",
+            right: "dropright"
+        };
+        let wrapper: string | undefined = undefined;
+        let _position = positionMap[position as string];
+        let wrapperProps: React.HTMLAttributes<HTMLElement> = {};
+
+        if (_position) {
+            wrapper = "div";
+            wrapperProps.className = classNames(_position, "btn-group");
+        }
 
         return (
-            <Overlay popup={overlay} {...otherProps}>
-                {child}
+            <Overlay
+                popup={overlay}
+                position={position}
+                wrapper={wrapper}
+                wrapperProps={wrapperProps}
+                {...otherProps}>
+                {children}
             </Overlay>
         );
     }

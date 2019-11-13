@@ -6,7 +6,7 @@ export interface MenuProps extends React.HTMLAttributes<HTMLElement> {
     header?: React.ReactNode;
 }
 
-export default function(props: MenuProps) {
+export default function DropdownMenu(props: MenuProps) {
     const {
         header,
         className,
@@ -20,11 +20,16 @@ export default function(props: MenuProps) {
                 className,
                 "dropdown-menu show"
             )
-        } {...otherProps}>
+        }
+        {...otherProps}>
             {
                 header && <div className="dropdown-header">{header}</div>
             }
             {children}
         </div>
     );
+}
+
+DropdownMenu.propTypes = {
+    header: PropTypes.node
 }

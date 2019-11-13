@@ -9,33 +9,36 @@ import {
 } from "./utils";
 
 export interface OverlayProps extends React.HTMLAttributes<HTMLElement> {
-    position?: "top" | "right" | "bottom" | "left";
-    align?: "left" | "center" | "right";
+    position?: string;
+    align?: string;
     mountTo?: HTMLElement;
     visible?: boolean;
-    popup?: React.ReactNode;
+    popup: React.ReactNode;
+    flip?: boolean;
+    trigger?: string[];
+    wrapper?: string;
+    wrapperProps?: React.HTMLAttributes<HTMLElement>
 }
 
 interface OverlayState {
     visible: boolean;
-    from: string;
-    rect?: ElementRect;
+    from?: string;
+    left: number;
+    top: number;
 }
-class Popup extends React.Component {
-    render() {
-        // console.log(this.context)
-        return <div>Popup</div>
-    }
-}
+
 export default class Overlay extends React.Component<OverlayProps, OverlayState> {
 
     private mountNode: HTMLElement | null = null;
+    hasEvent: boolean = false;
 
     constructor(props: OverlayProps) {
         super(props);
 
         this.state = {
             visible: !!props.visible,
+            left: 0,
+            top: 0,
             from: "state"
         };
     }
@@ -45,28 +48,63 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
     }
 
     componentDidUpdate() {
+        const {
+            state: {
+                visible
+            },
+            hasEvent
+        } = this;
 
+        if (visible) {
+            !hasEvent && this.addEvent();
+            return;
+        }
+
+        this.removeEvent();
+    }
+
+    handleClickOutSide = (evt: MouseEvent) => {
+        if (!this.mountNode) return;
+
+        if (!this.mountNode.contains(evt.target as HTMLElement)) {
+            this.close();
+        }
+    };
+
+    addEvent () {
+        this.hasEvent = true;
+        document.addEventListener("click", this.handleClickOutSide);
+    };
+
+    removeEvent() {
+        this.hasEvent = false;
+        document.removeEventListener("click", this.handleClickOutSide);
     }
 
     handleClick = (evt: React.MouseEvent<HTMLElement>) => {
         const { visible } = this.state;
         const src = evt.currentTarget;
 
-        this._setState({
-            visible: !visible,
-            rect: getElementRect(src)
-        });
-        console.log(evt.currentTarget)
+        this.setState(
+            {
+                visible: !visible
+            },
+            () => {
+                if (this.state.visible) {
+                    this.handlePosition(src)
+                }
+            }
+        );
     };
 
-    _setState(arg: any, callback?: () => void) {
+    /* _setState(arg: any, callback?: () => void) {
         this.setState({
             ...arg,
             from: "state"
         }, callback);
-    }
+    } */
 
-    static getDerivedStateFromProps(prop: OverlayProps, state: OverlayState) {
+    /* static getDerivedStateFromProps(prop: OverlayProps, state: OverlayState) {
         if (state.from) {
             return {
                 ...state,
@@ -79,13 +117,13 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
             };
         }
         return null;
-    }
-    
+    } */
+
     open = () => {
         const { visible } = this.state;
 
         if (!visible) {
-            this._setState({
+            this.setState({
                 visible: true
             });
         }
@@ -95,35 +133,94 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
         const { visible } = this.state;
 
         if (visible) {
-            this._setState({
+            this.setState({
                 visible: false
             });
         }
     };
 
-    renderChildren() {
-        const { children, className } = this.props;console.log(this.props)
-        const child = React.Children.only(children) as React.ReactElement;
+    handlePosition(el: HTMLElement) {
+        const {
+            mountNode,
+            props: {
+                position,
+                align,
+                flip
+            }
+        } = this;
+        let left = 0;
+        let top = 0;
 
-        return React.cloneElement(
-            child,
+        if (!mountNode || !mountNode.children.length) return;
+
+        const _el = mountNode.children[0];
+        const width = _el.scrollWidth;
+        const height = _el.scrollHeight;
+        const rect = getElementRect(el);
+        //box-shadow .2rem
+        const offset = parseInt(getComputedStyle(document.documentElement).fontSize) * 0.2;
+
+        switch (position) {
+            case "top":
+                left = rect.left;
+                top = rect.top - height - offset;
+                break;
+            case "right":
+                left = rect.left + rect.width + offset;
+                top = rect.top;
+                break;
+            case "left":
+                left = rect.left - width - offset;
+                top = rect.top;
+                break;
+            default:
+                left = rect.left;
+                top = rect.top + rect.height + offset;
+        }
+
+        this.setState({
+            left,
+            top
+        });
+        // const rect = getElementRect(src);
+    }
+
+    renderChildren() {
+        const {
+            children,
+            className,
+            wrapper,
+            wrapperProps
+        } = this.props as any;
+        // const child = React.Children.only(children) as React.ReactElement;
+
+        if (!children) return null;
+
+        const el = React.cloneElement(
+            children,
             {
-                className: classNames(child.props.className, className),
+                className: classNames(children.props.className, className),
                 onClick: this.handleClick
             }
         );
+
+        if (wrapper) {
+            return React.createElement(
+                wrapper,
+                { ...wrapperProps },
+                el
+            )
+        }
+
+        return el;
     }
 
     renderPortal() {
         let {
             state: {
                 visible,
-                rect = {
-                    left: 0,
-                    top: 0,
-                    width: 0,
-                    height: 0
-                }
+                left,
+                top
             },
             props: {
                 mountTo = document.body,
@@ -134,21 +231,42 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
         let style: React.CSSProperties = {
             position: "absolute",
             display: visible ? "block" : "none",
-            left: rect.left,
-            top: rect.top + rect.height
+            left,
+            top
         };
+        let _popup = popup as React.ReactElement;
 
-        if (!visible && !mountNode) return null;
+        if (typeof popup === "function") {
+            _popup = popup();
+        }
+
+        if ((!visible && !mountNode) || !_popup || !_popup.props.children) return null;
+
+        let isFragment = typeof popup === "object" &&
+            _popup.type.toString().indexOf("react.fragment") > -1 &&
+            (popup as any).props.children.length > 1;
 
         if (!mountNode) {
             mountNode = this.mountNode = document.createElement("div");
             mountNode.style.cssText = "position: absolute; left: 0; top: 0;";
             mountTo.appendChild(mountNode);
         }
+
         return createPortal(
             (
-                <OverlayContext.Provider value={{close: this.close}}>
-                    <div style={style}>{popup}</div>
+                <OverlayContext.Provider value={{ close: this.close }}>
+                    {
+                        isFragment ?
+                            (
+                                <div style={style}>{popup}</div>
+                            ) :
+                            React.cloneElement(
+                                _popup.props.children,
+                                {
+                                    style
+                                }
+                            )
+                    }
                 </OverlayContext.Provider>
             ),
             mountNode
