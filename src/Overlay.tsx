@@ -5,7 +5,8 @@ import {
     classNames,
     ElementRect,
     OverlayContext,
-    getElementRect
+    getElementRect,
+    handleFuncProp
 } from "./utils";
 
 export interface OverlayProps extends React.HTMLAttributes<HTMLElement> {
@@ -18,6 +19,7 @@ export interface OverlayProps extends React.HTMLAttributes<HTMLElement> {
     trigger?: string[];
     wrapper?: string;
     wrapperProps?: React.HTMLAttributes<HTMLElement>
+    onKeydown?: (evt: KeyboardEvent, arg: any) => any;
 }
 
 interface OverlayState {
@@ -71,14 +73,32 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
         }
     };
 
-    addEvent () {
+    handleKeydown = (evt: KeyboardEvent) => {
+        const key = evt.key.toLowerCase();
+        const {
+            state: { visible },
+            props: { onKeydown },
+            mountNode
+        } = this;
+
+        if (visible) {
+            key === "escape" && this.close();
+            handleFuncProp(onKeydown)(evt, mountNode);
+        }
+
+
+    }
+
+    addEvent() {
         this.hasEvent = true;
         document.addEventListener("click", this.handleClickOutSide);
+        document.addEventListener("keydown", this.handleKeydown);
     };
 
     removeEvent() {
         this.hasEvent = false;
         document.removeEventListener("click", this.handleClickOutSide);
+        document.removeEventListener("keydown", this.handleKeydown);
     }
 
     handleClick = (evt: React.MouseEvent<HTMLElement>) => {

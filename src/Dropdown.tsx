@@ -38,6 +38,32 @@ export default class Dropdown extends React.Component<DropdownProps> {
     static MenuItem = DropdownMenuItem;
     static DropdownContext = OverlayContext;
 
+    handleKeydown = (evt: KeyboardEvent, el: HTMLElement) => {
+        if (!el) return;
+
+        const key = evt.key;
+        const focused = el.querySelector(".dropdown-item:focus");
+        const allItems = el.querySelectorAll(".dropdown-item:not(.disabled)");
+        let index = 0;
+        let keyMap: any = {
+            "ArrowUp": -1,
+            "ArrowDown": 1
+        };
+
+        if (key in keyMap) {
+            Array.from(allItems).forEach((e, i) => {
+                if (e === focused) {
+                    index = i + keyMap[key];
+                }
+            });
+
+            const _el = allItems[index] as HTMLElement;
+            
+            _el && _el.focus && _el.focus();
+            evt.preventDefault();
+        }
+    };
+
     render() {
         const {
             children,
@@ -65,6 +91,7 @@ export default class Dropdown extends React.Component<DropdownProps> {
                 position={position}
                 wrapper={wrapper}
                 wrapperProps={wrapperProps}
+                onKeydown={this.handleKeydown}
                 {...otherProps}>
                 {children}
             </Overlay>
