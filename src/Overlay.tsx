@@ -387,7 +387,7 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
             _popup = popup();
         }
 
-        if ((!visible && !mountNode) || !_popup || !_popup.props.children) return null;
+        if ((!visible && !mountNode) || !_popup) return null;
 
         let isFragment = typeof popup === "object" &&
             _popup.type.toString().indexOf("react.fragment") > -1 &&
@@ -398,7 +398,7 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
             mountNode.style.cssText = "position: absolute; left: 0; top: 0;";
             mountTo.appendChild(mountNode);
         }
-
+console.log(_popup.props.children)
         return createPortal(
             (
                 <OverlayContext.Provider value={{ close: this.close }}>
@@ -408,7 +408,7 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
                                 <div style={style} className={className}>{popup}</div>
                             ) :
                             React.cloneElement(
-                                _popup.props.children,
+                                _popup,
                                 {
                                     style,
                                     className
