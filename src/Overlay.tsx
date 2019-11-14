@@ -398,7 +398,7 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
             mountNode.style.cssText = "position: absolute; left: 0; top: 0;";
             mountTo.appendChild(mountNode);
         }
-console.log(_popup.props.children)
+        
         return createPortal(
             (
                 <OverlayContext.Provider value={{ close: this.close }}>
