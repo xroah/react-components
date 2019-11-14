@@ -7,7 +7,9 @@ import {
     getElementRect,
     handleFuncProp,
     reflow,
-    emulateTransitionEnd
+    emulateTransitionEnd,
+    throttle,
+    getWindowSize
 } from "./utils";
 
 function getElementBox(el: HTMLElement) {
@@ -38,6 +40,7 @@ export interface OverlayProps extends React.HTMLAttributes<HTMLElement> {
     wrapper?: string;
     wrapperProps?: React.HTMLAttributes<HTMLElement>
     fade?: boolean;
+    unmountOnclose?: boolean;
     onKeydown?: (evt: KeyboardEvent, arg: any) => any;
 }
 
@@ -52,6 +55,7 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
     private mountNode: HTMLElement | null = null;
     private hasEvent: boolean = false;
     private cancelTransition: Function | null = null;
+    private srcEl: HTMLElement | null = null;
 
     constructor(props: OverlayProps) {
         super(props);
@@ -60,6 +64,8 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
             visible: !!props.visible,
             from: "state"
         };
+
+        this.handleResize = throttle(this.handleResize.bind(this));
     }
 
     componentDidUpdate() {
@@ -79,26 +85,28 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
         const child = mountNode.children[0] as HTMLElement;
 
         if (visible) {
-            !hasEvent && this.addEvent();
-
             if (this.cancelTransition) {
                 this.cancelTransition();
                 this.cancelTransition = null;
             }
 
             if (child) {
-                child.style.display = "block";
+                if (!hasEvent) {
+                    child.style.display = "block";
+                    child.classList.remove("show");
+                    this.setPosition();
 
-                if (fade) {
-                    child.classList.remove("fade", "show");
-                    child.classList.add("fade");
-                    reflow(child);
-                    child.classList.add("show");
+                    if (fade) {
+                        reflow(child);
+                        child.classList.add("show");
+                    }
+                } else {
+                    //just reset the position
+                    this.setPosition();
                 }
-
-                this.setPosition();
             }
 
+            !hasEvent && this.addEvent();
             return;
         }
 
@@ -144,6 +152,7 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
         let src = evt.currentTarget;
         let rect: ElementRect | undefined = undefined;
         visible = !visible;
+        this.srcEl = src;
 
         if (visible) {
             rect = getElementRect(src);
@@ -159,7 +168,8 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
         const {
             mountNode,
             props: {
-                position
+                position,
+                flip
             },
             state: { rect }
         } = this;
@@ -175,24 +185,56 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
         //box-shadow .2rem
         const offset = parseInt(getComputedStyle(document.documentElement).fontSize) * 0.2;
         const leftOffset = box.marginLeft - box.marginRight;
-        const topOffset =  box.marginBottom - box.marginTop;
+        const topOffset = box.marginBottom - box.marginTop;
+        const {
+            width: windowWidth,
+            height: windowHeight
+        } = getWindowSize();
+        const rightFn = () => {
+            left = rect.left + rect.width + offset + leftOffset;
+            top = rect.top + topOffset;
+        };
+        const topFn = () => {
+            left = rect.left + leftOffset;
+            top = rect.top - height - offset + topOffset;
+        };
+        const leftFn = () => {
+            left = rect.left - width - offset + leftOffset;
+            top = rect.top + topOffset;
+        };
+        const bottomFn = () => {
+            left = rect.left + leftOffset;
+            top = rect.top + rect.height + offset + topOffset;
+        };
 
         switch (position) {
             case "top":
-                left = rect.left + leftOffset;
-                top = rect.top - height - offset + topOffset;
+                topFn();
+
+                if (flip && (rect.bottom - rect.height) < height) {
+                    bottomFn();
+                }
                 break;
             case "right":
-                left = rect.left + rect.width + offset + leftOffset;
-                top = rect.top + topOffset;
+                rightFn();
+
+                if (flip && (windowWidth - rect.right) < width) {
+                    leftFn();
+                }
                 break;
             case "left":
-                left = rect.left - width - offset + leftOffset;
-                top = rect.top + topOffset;
+                leftFn();
+
+                if (flip && (rect.right - rect.width - width) < width) {
+                    rightFn();
+                }
                 break;
             default:
-                left = rect.left + leftOffset;
-                top = rect.top + rect.height + offset + topOffset;
+                bottomFn();
+
+                if (flip && (windowHeight - rect.bottom) < height) {
+                    topFn();
+                }
         }
 
         return {
@@ -271,16 +313,26 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
         }
     };
 
+    handleResize() {
+        this.setState({
+            rect: getElementRect(this.srcEl as HTMLElement)
+        });
+    }
+
     addEvent() {
         this.hasEvent = true;
         document.addEventListener("click", this.handleClickOutSide);
         document.addEventListener("keydown", this.handleKeydown);
+        this.props.flip && window.addEventListener("resize", this.handleResize);
+        window.addEventListener("scroll", this.handleResize);
     };
 
     removeEvent() {
         this.hasEvent = false;
         document.removeEventListener("click", this.handleClickOutSide);
         document.removeEventListener("keydown", this.handleKeydown);
+        window.removeEventListener("resize", this.handleResize);
+        window.removeEventListener("scroll", this.handleResize);
     }
 
     renderChildren() {
@@ -320,7 +372,8 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
             },
             props: {
                 mountTo = document.body,
-                popup
+                popup,
+                fade
             },
             mountNode
         } = this;
@@ -328,6 +381,7 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
             position: "absolute"
         };
         let _popup = popup as React.ReactElement;
+        let className = fade ? "fade" : "";
 
         if (typeof popup === "function") {
             _popup = popup();
@@ -351,12 +405,13 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
                     {
                         isFragment ?
                             (
-                                <div style={style}>{popup}</div>
+                                <div style={style} className={className}>{popup}</div>
                             ) :
                             React.cloneElement(
                                 _popup.props.children,
                                 {
-                                    style
+                                    style,
+                                    className
                                 }
                             )
                     }
