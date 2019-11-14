@@ -99,6 +99,8 @@ export interface ElementRect {
     top: number;
     width: number;
     height: number;
+    right: number;
+    bottom: number;
 }
 
 export function getElementRect(el: HTMLElement): ElementRect {
@@ -112,8 +114,44 @@ export function getElementRect(el: HTMLElement): ElementRect {
         left: rect.left + scrollLeft,
         top: rect.top + scrollTop,
         width: rect.width,
-        height: rect.height
+        height: rect.height,
+        right: rect.right,
+        bottom: rect.bottom
     };
+}
+
+export function throttle(fn: Function, timeout: number = 100) {
+    let _fn = function() {
+        if (_fn.timer != undefined) {
+            clearTimeout(_fn.timer);
+        }
+
+        _fn.timer = setTimeout(fn, timeout);
+    } as any;
+
+    return _fn;
+}
+
+export function getWindowSize() {
+    const div = document.createElement("div");
+    div.style.cssText = `
+        position: fixed;
+        left: 0;
+        height: 0;
+        width: 100%;
+        height: 100%;
+    `;
+
+    document.body.append(div);
+
+    const size = {
+        width: div.clientWidth,
+        height: div.clientHeight
+    };
+
+    document.body.removeChild(div);
+
+    return size;
 }
 
 export const AccordionContext = React.createContext(new Set());
