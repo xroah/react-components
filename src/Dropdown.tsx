@@ -17,6 +17,7 @@ export interface DropdownProps extends React.HTMLAttributes<HTMLDivElement> {
     overlay?: React.ReactNode;
     trigger?: action[];
     flip?: boolean;
+    fade?: boolean;
 }
 
 export default class Dropdown extends React.Component<DropdownProps> {
@@ -29,7 +30,8 @@ export default class Dropdown extends React.Component<DropdownProps> {
         trigger: ["click"],
         position: "bottom",
         align: "left",
-        flip: true
+        flip: true,
+        fade: true
     }
     static propTypes = {
         flip: PropTypes.bool
