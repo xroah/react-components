@@ -8,10 +8,11 @@ import {
 import Overlay from "./Overlay";
 import DropdownMenu from "./DropdownMenu";
 import DropdownMenuItem from "./DropdownMenuItem";
+import DropdownButton from "./DropdownButton";
 
 type action = "hover" | "click" | "contextmenu" | "focus";
 
-export interface DropdownProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface DropdownProps extends React.HTMLAttributes<HTMLElement> {
     position?: "top" | "right" | "bottom" | "left";
     align?: "left" | "center" | "right";
     overlay?: React.ReactNode;
@@ -22,10 +23,6 @@ export interface DropdownProps extends React.HTMLAttributes<HTMLDivElement> {
 
 export default class Dropdown extends React.Component<DropdownProps> {
 
-    static Divider = createComponentByClass({
-        className: "dropdown-divider",
-        displayName: "DropdownDivider"
-    });
     static defaultProps = {
         trigger: ["click"],
         position: "bottom",
@@ -39,6 +36,11 @@ export default class Dropdown extends React.Component<DropdownProps> {
     static Menu = DropdownMenu;
     static MenuItem = DropdownMenuItem;
     static DropdownContext = OverlayContext;
+    static Divider = createComponentByClass({
+        className: "dropdown-divider",
+        displayName: "DropdownDivider"
+    });
+    static Button = DropdownButton;
 
     handleKeydown = (evt: KeyboardEvent, el: HTMLElement) => {
         if (!el) return;
@@ -81,6 +83,7 @@ export default class Dropdown extends React.Component<DropdownProps> {
         let wrapper: string | undefined = undefined;
         let _position = positionMap[position as string];
         let wrapperProps: React.HTMLAttributes<HTMLElement> = {};
+        const child = React.Children.only(children) as React.ReactElement;
 
         if (_position) {
             wrapper = "div";
@@ -95,7 +98,7 @@ export default class Dropdown extends React.Component<DropdownProps> {
                 wrapperProps={wrapperProps}
                 onKeydown={this.handleKeydown}
                 {...otherProps}>
-                {children}
+                {child}
             </Overlay>
         );
     }

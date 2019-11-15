@@ -1,5 +1,4 @@
 import * as React from "react";
-import { createPortal } from "react-dom";
 import {
     classNames,
     ElementRect,
@@ -40,7 +39,7 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
         };
     }
 
-    handleClick = (evt: React.MouseEvent<HTMLElement>) => {
+    handleClick = (evt: React.MouseEvent<HTMLElement & HTMLButtonElement>) => {
         let {
             state: { visible },
             props: { children }
@@ -50,6 +49,9 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
         let child = React.Children.only(children) as React.ReactElement;
         visible = !visible;
         this.srcEl = src;
+
+        //disabled
+        if (src.disabled || src.classList.contains("disabled")) return;
 
         if (visible) {
             rect = getElementRect(src);

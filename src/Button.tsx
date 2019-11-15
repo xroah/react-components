@@ -3,8 +3,7 @@ import PropTypes from "prop-types";
 import ButtonGroup from "./ButtonGroup";
 import {createComponentByClass, classNames} from "./utils";
 
-interface ButtonProps extends React.HTMLAttributes<HTMLButtonElement & HTMLAnchorElement> {
-    variant?: "primary" |
+export type variantType = "primary" |
         "secondary" |
         "success" |
         "danger" |
@@ -13,6 +12,9 @@ interface ButtonProps extends React.HTMLAttributes<HTMLButtonElement & HTMLAncho
         "dark" |
         "light" |
         "link";
+
+export interface ButtonProps extends React.HTMLAttributes<HTMLButtonElement & HTMLAnchorElement> {
+    variant?: variantType;
     outline?: boolean;
     size?: string;
     active?: boolean;
@@ -36,8 +38,8 @@ const Button: any = React.forwardRef(
          ...otherProps
      }: ButtonProps, ref: React.Ref<any>) => {
         const classes = classNames(
-            "btn",
             className,
+            "btn",
             disabled && "disabled",
             active && "active",
             size && `btn-${size}`,

@@ -21,7 +21,7 @@ export default function DropdownMenu(props: MenuProps) {
                 "dropdown-menu show"
             )
         }
-        {...otherProps}>
+            {...otherProps}>
             {
                 header && <div className="dropdown-header">{header}</div>
             }
