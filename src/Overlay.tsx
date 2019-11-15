@@ -41,9 +41,13 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
     }
 
     handleClick = (evt: React.MouseEvent<HTMLElement>) => {
-        let { visible } = this.state;
+        let {
+            state: { visible },
+            props: { children }
+        } = this;
         let src = evt.currentTarget;
         let rect: ElementRect | undefined = undefined;
+        let child = React.Children.only(children) as React.ReactElement;
         visible = !visible;
         this.srcEl = src;
 
@@ -55,6 +59,10 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
             visible,
             rect
         });
+        
+        if (children && child.props.onClick) {
+            child.props.onClick(evt);
+        }
     };
 
     handleResetPosition = () => {
@@ -80,7 +88,6 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
             wrapper,
             wrapperProps
         } = this.props as any;
-        // const child = React.Children.only(children) as React.ReactElement;
 
         if (!children) return null;
 

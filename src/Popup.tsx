@@ -4,10 +4,10 @@ import {
     ElementRect,
     OverlayContext,
     handleFuncProp,
-    reflow,
     emulateTransitionEnd,
     throttle,
-    getWindowSize
+    getWindowSize,
+    reflow
 } from "./utils";
 
 export interface PopupProps extends React.HTMLAttributes<HTMLElement> {
@@ -65,8 +65,8 @@ export default class Overlay extends React.Component<PopupProps> {
 
             if (child) {
                 if (!hasEvent) {
-                    child.style.display = "block";
                     child.classList.remove("show");
+                    child.style.display = "block";
                     this.setPosition();
 
                     if (fade) {
@@ -135,7 +135,7 @@ export default class Overlay extends React.Component<PopupProps> {
         if (!mountNode || !mountNode.children.length || !rect) return { left, top };
 
         const _el = mountNode.children[0] as HTMLElement;
-        const width = _el.scrollWidth;
+        const width = _el.clientWidth;
         const height = _el.scrollHeight;
         //box-shadow .2rem
         const offset = parseInt(getComputedStyle(document.documentElement).fontSize) * 0.2;
@@ -190,15 +190,15 @@ export default class Overlay extends React.Component<PopupProps> {
                 }
         }
 
+        left = this.handleAlignment(left, width, windowWidth);
+
         return {
             left,
-            top,
-            width,
-            height
+            top
         };
     }
 
-    handleAlignment(left: number, width: number) {
+    handleAlignment(left: number, width: number, windowWidth: number) {
         const {
             props: {
                 align,
@@ -223,6 +223,12 @@ export default class Overlay extends React.Component<PopupProps> {
             default:
         }
 
+        if (left < 0) {
+            left = 0;
+        } else if (left + width >= windowWidth) {
+            left = windowWidth - width;
+        }
+
         return left;
     };
 
@@ -237,8 +243,7 @@ export default class Overlay extends React.Component<PopupProps> {
 
         if (!child) return;
 
-        let { left, top, width = 0 } = this.handlePosition();
-        left = this.handleAlignment(left, width);
+        let { left, top } = this.handlePosition();
         child.style.left = `${left}px`;
         child.style.top = `${top}px`;
     }
@@ -301,7 +306,7 @@ export default class Overlay extends React.Component<PopupProps> {
         let childStyle: React.CSSProperties = {
             ...popup.props.style,
             margin: 0,
-            position: "relative"
+            position: "static"
         };
 
         return createPortal(
