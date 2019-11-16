@@ -51,7 +51,8 @@ export default function DropdownButton(props: DropdownButtonProps) {
                 <Dropdown {...dropdownProps}>
                     <Button
                         className="dropdown-toggle dropdown-toggle-split"
-                        variant={variant} />
+                        variant={variant}
+                        disabled={disabled} />
                 </Dropdown>
             </Button.Group>
         );

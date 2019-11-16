@@ -16,7 +16,7 @@ export interface DropdownProps extends React.HTMLAttributes<HTMLElement> {
     position?: "top" | "right" | "bottom" | "left";
     align?: "left" | "center" | "right";
     overlay?: React.ReactNode;
-    trigger?: action[];
+    trigger?: action[] | action;
     flip?: boolean;
     fade?: boolean;
 }
@@ -62,7 +62,7 @@ export default class Dropdown extends React.Component<DropdownProps> {
             });
 
             const _el = allItems[index] as HTMLElement;
-            
+
             _el && _el.focus && _el.focus();
             evt.preventDefault();
         }
@@ -73,6 +73,7 @@ export default class Dropdown extends React.Component<DropdownProps> {
             children,
             overlay,
             position,
+            className,
             ...otherProps
         } = this.props;
         const positionMap: any = {
@@ -98,7 +99,12 @@ export default class Dropdown extends React.Component<DropdownProps> {
                 wrapperProps={wrapperProps}
                 onKeydown={this.handleKeydown}
                 {...otherProps}>
-                {child}
+                {React.cloneElement(
+                    child,
+                    {
+                        className: classNames(className, "dropdown-toggle")
+                    }
+                )}
             </Overlay>
         );
     }

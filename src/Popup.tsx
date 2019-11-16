@@ -19,6 +19,9 @@ export interface PopupProps extends React.HTMLAttributes<HTMLElement> {
     fade?: boolean;
     unmountOnclose?: boolean;
     rect?: ElementRect;
+    clearPosition?: boolean;
+    clearMargin?: boolean;
+    onClickOutside?: Function;
     onKeydown?: (evt: KeyboardEvent, arg: any) => any;
     onResetPosition?: Function;
 }
@@ -99,8 +102,10 @@ export default class Overlay extends React.Component<PopupProps> {
     }
 
     handleClickOutSide = (evt: MouseEvent) => {
-        if (this.mountNode && !this.mountNode.contains(evt.target as HTMLElement)) {
-            this.close();
+        const t = evt.target as HTMLElement;
+
+        if (this.mountNode && !this.mountNode.contains(t)) {
+            handleFuncProp(this.props.onClickOutside)(t);
         }
     };
 
@@ -255,6 +260,14 @@ export default class Overlay extends React.Component<PopupProps> {
         }
     };
 
+    handleMouseEnter = (evt: React.MouseEvent<HTMLElement>) => {
+        handleFuncProp(this.props.onMouseEnter)(evt);
+    };
+
+    handleMouseLeave = (evt: React.MouseEvent<HTMLElement>) => {
+        handleFuncProp(this.props.onMouseLeave)(evt);
+    };
+
     handleResize() {
         handleFuncProp(this.props.onResetPosition)();
     }
@@ -281,7 +294,9 @@ export default class Overlay extends React.Component<PopupProps> {
                 mountTo = document.body,
                 children,
                 fade,
-                visible
+                visible,
+                clearMargin,
+                clearPosition
             },
             mountNode
         } = this;
@@ -305,15 +320,17 @@ export default class Overlay extends React.Component<PopupProps> {
 
         let childStyle: React.CSSProperties = {
             ...popup.props.style,
-            margin: 0,
-            position: "static"
         };
+        clearPosition && (childStyle.position = "static");
+        clearMargin && (childStyle.margin = 0)
 
         return createPortal(
             (
                 <div
                     style={style}
-                    className={className}>{
+                    className={className}
+                    onMouseEnter={this.handleMouseEnter}
+                    onMouseLeave={this.handleMouseLeave}>{
                         React.cloneElement(
                             popup,
                             {
