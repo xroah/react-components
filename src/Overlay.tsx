@@ -7,20 +7,24 @@ import {
 } from "./utils";
 import Popup from "./Popup";
 
+export type action = "hover" | "click" | "contextmenu" | "focus";
+export type position = "top" | "right" | "bottom" | "left";
+
 export interface OverlayProps extends React.HTMLAttributes<HTMLElement> {
-    position?: string;
+    position?: position;
     align?: string;
     mountTo?: HTMLElement;
     visible?: boolean;
     popup: React.ReactNode;
     flip?: boolean;
-    trigger?: string | string[];
+    trigger?: action | action[];
     wrapper?: string;
     wrapperProps?: React.HTMLAttributes<HTMLElement>
     fade?: boolean;
     unmountOnclose?: boolean;
     clearPosition?: boolean;
     clearMargin?: boolean;
+    offset?: number;
     onKeydown?: (evt: KeyboardEvent, arg: any) => any;
 }
 
@@ -36,7 +40,8 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
 
     static defaultProps = {
         clearPosition: true,
-        clearMargin: true
+        clearMargin: true,
+        offset: 0
     };
 
     constructor(props: OverlayProps) {
@@ -173,7 +178,6 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
     renderChildren() {
         const {
             children,
-            className,
             wrapper,
             wrapperProps
         } = this.props as any;
@@ -208,7 +212,6 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
         const el = React.cloneElement(
             children,
             {
-                className: classNames(children.props.className, className),
                 ...eventHandlers
             }
         );

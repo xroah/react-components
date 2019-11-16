@@ -1,5 +1,8 @@
 import * as React from "react";
-import { createPortal } from "react-dom";
+import {
+    createPortal,
+    unmountComponentAtNode
+} from "react-dom";
 import {
     ElementRect,
     OverlayContext,
@@ -11,7 +14,7 @@ import {
 } from "./utils";
 
 export interface PopupProps extends React.HTMLAttributes<HTMLElement> {
-    position?: string;
+    placement?: string;
     align?: string;
     mountTo?: HTMLElement;
     visible?: boolean;
@@ -21,6 +24,7 @@ export interface PopupProps extends React.HTMLAttributes<HTMLElement> {
     rect?: ElementRect;
     clearPosition?: boolean;
     clearMargin?: boolean;
+    offset?: number;
     onClickOutside?: Function;
     onKeydown?: (evt: KeyboardEvent, arg: any) => any;
     onResetPosition?: Function;
@@ -50,7 +54,8 @@ export default class Overlay extends React.Component<PopupProps> {
         const {
             props: {
                 fade,
-                visible
+                visible,
+                unmountOnclose
             },
             hasEvent,
             mountNode
@@ -98,7 +103,30 @@ export default class Overlay extends React.Component<PopupProps> {
             }
         }
 
+        if (unmountOnclose) {
+            this.unmount();
+        }
+
         this.removeEvent();
+    }
+
+    componentWillUnmount() {
+        this.unmount();
+    }
+
+    unmount() {
+        const {
+            props: {
+                mountTo = document.body
+            },
+            mountNode
+        } = this;
+
+        if (mountNode) {
+            unmountComponentAtNode(mountNode);
+            mountTo.removeChild(mountNode);
+            this.mountNode = null;
+        }
     }
 
     handleClickOutSide = (evt: MouseEvent) => {
@@ -129,9 +157,10 @@ export default class Overlay extends React.Component<PopupProps> {
         const {
             mountNode,
             props: {
-                position,
+                placement,
                 flip,
-                rect
+                rect,
+                offset = 0
             },
         } = this;
         let left = 0;
@@ -142,8 +171,6 @@ export default class Overlay extends React.Component<PopupProps> {
         const _el = mountNode.children[0] as HTMLElement;
         const width = _el.clientWidth;
         const height = _el.scrollHeight;
-        //box-shadow .2rem
-        const offset = parseInt(getComputedStyle(document.documentElement).fontSize) * 0.2;
         const {
             width: windowWidth,
             height: windowHeight
@@ -165,7 +192,7 @@ export default class Overlay extends React.Component<PopupProps> {
             top = rect.top + rect.height + offset;
         };
 
-        switch (position) {
+        switch (placement) {
             case "top":
                 topFn();
 
@@ -207,7 +234,7 @@ export default class Overlay extends React.Component<PopupProps> {
         const {
             props: {
                 align,
-                position = "",
+                placement = "",
                 rect
             },
         } = this;
@@ -216,7 +243,7 @@ export default class Overlay extends React.Component<PopupProps> {
             "bottom": true
         };
 
-        if (!rect || !(position in posMap)) return left;
+        if (!rect || !(placement in posMap)) return left;
 
         switch (align) {
             case "center":
@@ -296,7 +323,8 @@ export default class Overlay extends React.Component<PopupProps> {
                 fade,
                 visible,
                 clearMargin,
-                clearPosition
+                clearPosition,
+                className: popupClassName
             },
             mountNode
         } = this;
@@ -334,7 +362,8 @@ export default class Overlay extends React.Component<PopupProps> {
                         React.cloneElement(
                             popup,
                             {
-                                style: childStyle
+                                style: childStyle,
+                                className: popupClassName
                             }
                         )
                     }</div>

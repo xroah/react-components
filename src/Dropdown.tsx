@@ -5,15 +5,15 @@ import {
     OverlayContext,
     classNames
 } from "./utils";
-import Overlay from "./Overlay";
+import Overlay, { action, position } from "./Overlay";
 import DropdownMenu from "./DropdownMenu";
 import DropdownMenuItem from "./DropdownMenuItem";
 import DropdownButton from "./DropdownButton";
 
-type action = "hover" | "click" | "contextmenu" | "focus";
+
 
 export interface DropdownProps extends React.HTMLAttributes<HTMLElement> {
-    position?: "top" | "right" | "bottom" | "left";
+    placement?: position;
     align?: "left" | "center" | "right";
     overlay?: React.ReactNode;
     trigger?: action[] | action;
@@ -25,13 +25,19 @@ export default class Dropdown extends React.Component<DropdownProps> {
 
     static defaultProps = {
         trigger: ["click"],
-        position: "bottom",
+        placement: "bottom",
         align: "left",
         flip: true,
         fade: true
     }
     static propTypes = {
-        flip: PropTypes.bool
+        flip: PropTypes.bool,
+        placement: PropTypes.oneOf([
+            "top",
+            "left",
+            "bottom",
+            "right"
+        ])
     };
     static Menu = DropdownMenu;
     static MenuItem = DropdownMenuItem;
@@ -72,8 +78,7 @@ export default class Dropdown extends React.Component<DropdownProps> {
         const {
             children,
             overlay,
-            position,
-            className,
+            placement,
             ...otherProps
         } = this.props;
         const positionMap: any = {
@@ -82,27 +87,33 @@ export default class Dropdown extends React.Component<DropdownProps> {
             right: "dropright"
         };
         let wrapper: string | undefined = undefined;
-        let _position = positionMap[position as string];
+        let position = positionMap[placement as string];
         let wrapperProps: React.HTMLAttributes<HTMLElement> = {};
+        //box-shadow .2rem
+        const offset = parseInt(getComputedStyle(document.documentElement).fontSize) * 0.2;
         const child = React.Children.only(children) as React.ReactElement;
-
-        if (_position) {
+        
+        if (position) {
             wrapper = "div";
-            wrapperProps.className = classNames(_position, "btn-group");
+            wrapperProps.className = classNames(position, "btn-group");
         }
 
         return (
             <Overlay
                 popup={overlay}
-                position={position}
+                position={placement}
                 wrapper={wrapper}
                 wrapperProps={wrapperProps}
                 onKeydown={this.handleKeydown}
+                offset={offset}
                 {...otherProps}>
                 {React.cloneElement(
                     child,
                     {
-                        className: classNames(className, "dropdown-toggle")
+                        className: classNames(
+                            "dropdown-toggle",
+                            child.props.className
+                        )
                     }
                 )}
             </Overlay>
