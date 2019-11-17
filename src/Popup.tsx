@@ -50,7 +50,7 @@ export default class Popup extends React.Component<PopupProps> {
 
     constructor(props: PopupProps) {
         super(props);
-        
+
         this.handleResize = throttle(this.handleResize.bind(this));
     }
 
@@ -78,17 +78,15 @@ export default class Popup extends React.Component<PopupProps> {
                 if (!hasEvent) {
                     child.classList.remove("show");
                     child.style.display = "block";
-                    this.setPosition();
 
                     if (fade) {
                         reflow(child);
                     }
                     //dropdown menu, tooltip need show class
                     child.classList.add("show");
-                } else {
-                    //just reset the position
-                    this.setPosition();
                 }
+                //just reset the position
+                this.setPosition();
             }
 
             !hasEvent && this.addEvent();
@@ -314,10 +312,10 @@ export default class Popup extends React.Component<PopupProps> {
 
         if (alignmentPrefix) {
             const className = _child.props.className;
-            
+
             child.className = classNames(
                 className,
-                fade && "fade",
+                fade && "fade show",
                 `${alignmentPrefix}-${placement}`
             );
         }

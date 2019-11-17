@@ -100,6 +100,7 @@ export default class Dropdown extends React.Component<DropdownProps> {
                 wrapperProps={wrapperProps}
                 onKeydown={this.handleKeydown}
                 escClose={true}
+                clickOutsideClose={true}
                 offset={offset}
                 {...otherProps}>
                 {React.cloneElement(
