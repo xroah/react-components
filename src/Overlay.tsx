@@ -27,7 +27,8 @@ export interface OverlayProps extends CommonProps {
     clearMargin?: boolean;
     verticalCenter?: boolean;
     alignmentPrefix?: string;
-    keyClose?: boolean;
+    escClose?: boolean;
+    clickOutsideClose?: boolean;
     onKeydown?: (evt: KeyboardEvent, arg: any) => any;
 }
 
@@ -160,7 +161,7 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
                 set.has("contextmenu")) &&
             this.srcEl !== target
         ) {
-            this.close();
+            this.props.clickOutsideClose && this.close();
         }
     };
 

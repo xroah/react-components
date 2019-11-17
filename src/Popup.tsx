@@ -29,14 +29,14 @@ export interface PopupProps extends PopupCommonProps {
     clearMargin?: boolean;
     verticalCenter?: boolean;
     alignmentPrefix?: string;
-    keyClose?: boolean;
+    escClose?: boolean;
     onClickOutside?: Function;
     onKeydown?: (evt: KeyboardEvent, arg: any) => any;
     onResetPosition?: Function;
     onFlip?: Function;
 }
 
-export default class Overlay extends React.Component<PopupProps> {
+export default class Popup extends React.Component<PopupProps> {
 
     private mountNode: HTMLElement | null = null;
     private hasEvent: boolean = false;
@@ -154,13 +154,13 @@ export default class Overlay extends React.Component<PopupProps> {
             props: {
                 onKeydown,
                 visible,
-                keyClose
+                escClose
             },
             mountNode
         } = this;
 
         if (visible) {
-            key === "Escape" && keyClose && this.close();
+            key === "Escape" && escClose && this.close();
             handleFuncProp(onKeydown)(evt, mountNode);
         }
     }
@@ -183,8 +183,8 @@ export default class Overlay extends React.Component<PopupProps> {
         if (!mountNode || !mountNode.children.length || !rect) return { left, top };
 
         const _el = mountNode.children[0] as HTMLElement;
-        const width = _el.clientWidth;
-        const height = _el.scrollHeight;
+        const width = _el.offsetWidth;
+        const height = _el.offsetHeight;
         const {
             width: windowWidth,
             height: windowHeight
@@ -314,7 +314,7 @@ export default class Overlay extends React.Component<PopupProps> {
             const cls2 = `${alignmentPrefix}-${p}`;
 
             child.classList.remove(cls1, cls2);
-            
+            console.log(cls1, cls2)
             if (placement !== p) {
                 child.classList.add(cls2);
             } else {
