@@ -82,8 +82,6 @@ export default class Popup extends React.Component<PopupProps> {
                     if (fade) {
                         reflow(child);
                     }
-                    //dropdown menu, tooltip need show class
-                    child.classList.add("show");
                 }
                 //just reset the position
                 this.setPosition();
@@ -315,10 +313,13 @@ export default class Popup extends React.Component<PopupProps> {
 
             child.className = classNames(
                 className,
-                fade && "fade show",
+                fade && "fade",
                 `${alignmentPrefix}-${placement}`
             );
         }
+        
+        //dropdown menu, tooltip need show class
+        child.classList.add("show");
     }
 
 

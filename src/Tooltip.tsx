@@ -38,7 +38,6 @@ export default function Tooltip(props: TooltipProps) {
     const popup = (
         <div className={
             classNames(
-                "show",
                 "tooltip"
             )
         }>
