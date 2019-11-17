@@ -1,30 +1,33 @@
 import * as React from "react";
 import {
-    classNames,
     ElementRect,
     getElementRect,
-    OverlayContext
+    OverlayContext,
+    handleFuncProp
 } from "./utils";
-import Popup from "./Popup";
+import Popup, { PopupCommonProps } from "./Popup";
+import PropTypes from 'prop-types';
 
 export type action = "hover" | "click" | "contextmenu" | "focus";
-export type position = "top" | "right" | "bottom" | "left";
 
-export interface OverlayProps extends React.HTMLAttributes<HTMLElement> {
-    position?: position;
+export interface CommonProps extends PopupCommonProps {
+    trigger?: action[] | action;
+    onVisibleChange?: Function;
+}
+
+export interface OverlayProps extends CommonProps {
     align?: string;
     mountTo?: HTMLElement;
     visible?: boolean;
     popup: React.ReactNode;
-    flip?: boolean;
-    trigger?: action | action[];
     wrapper?: string;
     wrapperProps?: React.HTMLAttributes<HTMLElement>
-    fade?: boolean;
     unmountOnclose?: boolean;
     clearPosition?: boolean;
     clearMargin?: boolean;
-    offset?: number;
+    verticalCenter?: boolean;
+    alignmentPrefix?: string;
+    keyClose?: boolean;
     onKeydown?: (evt: KeyboardEvent, arg: any) => any;
 }
 
@@ -42,6 +45,17 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
         clearPosition: true,
         clearMargin: true,
         offset: 0
+    };
+    static propTypes = {
+        offset: PropTypes.number,
+        placement: PropTypes.oneOf([
+            "top",
+            "left",
+            "bottom",
+            "right"
+        ]),
+        flip: PropTypes.bool,
+        fade: PropTypes.bool
     };
 
     constructor(props: OverlayProps) {
@@ -87,11 +101,13 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
             (c.props as any)[handler](evt);
         }
 
+        this.clearTimer();
+
         switch (type) {
             case "click":
             case "contextmenu":
                 this.toggle();
-                type ==="contextmenu" && evt.preventDefault();
+                type === "contextmenu" && evt.preventDefault();
                 break;
             case "mouseenter":
             case "focus":
@@ -106,23 +122,32 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
         }
     };
 
-    handlePopupMouseEnter = () => {
+    clearTimer() {
         if (this.timer) {
             clearTimeout(this.timer);
+            this.timer = null;
         }
+    }
+
+    handlePopupMouseEnter = () => {
+        this.clearTimer();
     }
 
     handlePopupMouseLeave = () => {
         const action = this.getAction();
 
         if (action.indexOf("hover") > -1) {
-            this.close();
+            this.delayClose();
         }
     }
 
     handleResetPosition = () => {
+        const el = this.srcEl as HTMLElement;
+
+        if (!el) return;
+
         this.setState({
-            rect: getElementRect(this.srcEl as HTMLElement)
+            rect: getElementRect(el)
         });
     };
 
@@ -140,21 +165,33 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
     };
 
     open = () => {
-        if (!this.srcEl || this.state.visible) return;
+        const {
+            state: { visible },
+            props: { onVisibleChange },
+            srcEl
+        } = this;
+
+        if (!srcEl || visible) return;
 
         this.setState({
             visible: true,
-            rect: getElementRect(this.srcEl)
+            rect: getElementRect(srcEl)
         });
+
+        handleFuncProp(onVisibleChange)(visible);
     };
 
     close = () => {
-        const { visible } = this.state;
+        const {
+            state: { visible },
+            props: { onVisibleChange }
+        } = this;
 
         if (visible) {
             this.setState({
                 visible: false
             });
+            handleFuncProp(onVisibleChange)(visible);
         }
 
         this.srcEl = null;

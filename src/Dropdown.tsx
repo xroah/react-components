@@ -5,20 +5,14 @@ import {
     OverlayContext,
     classNames
 } from "./utils";
-import Overlay, { action, position } from "./Overlay";
+import Overlay, { CommonProps } from "./Overlay";
 import DropdownMenu from "./DropdownMenu";
 import DropdownMenuItem from "./DropdownMenuItem";
 import DropdownButton from "./DropdownButton";
 
-
-
-export interface DropdownProps extends React.HTMLAttributes<HTMLElement> {
-    placement?: position;
+export interface DropdownProps extends CommonProps {
     align?: "left" | "center" | "right";
     overlay?: React.ReactNode;
-    trigger?: action[] | action;
-    flip?: boolean;
-    fade?: boolean;
 }
 
 export default class Dropdown extends React.Component<DropdownProps> {
@@ -27,8 +21,8 @@ export default class Dropdown extends React.Component<DropdownProps> {
         trigger: ["click"],
         placement: "bottom",
         align: "left",
-        flip: true,
-        fade: true
+        //offset: box-shadow .2rem
+        offset: parseInt(getComputedStyle(document.documentElement).fontSize) * 0.2
     }
     static propTypes = {
         flip: PropTypes.bool,
@@ -37,7 +31,7 @@ export default class Dropdown extends React.Component<DropdownProps> {
             "left",
             "bottom",
             "right"
-        ])
+        ]),
     };
     static Menu = DropdownMenu;
     static MenuItem = DropdownMenuItem;
@@ -79,6 +73,7 @@ export default class Dropdown extends React.Component<DropdownProps> {
             children,
             overlay,
             placement,
+            offset,
             ...otherProps
         } = this.props;
         const positionMap: any = {
@@ -89,8 +84,7 @@ export default class Dropdown extends React.Component<DropdownProps> {
         let wrapper: string | undefined = undefined;
         let position = positionMap[placement as string];
         let wrapperProps: React.HTMLAttributes<HTMLElement> = {};
-        //box-shadow .2rem
-        const offset = parseInt(getComputedStyle(document.documentElement).fontSize) * 0.2;
+        
         const child = React.Children.only(children) as React.ReactElement;
         
         if (position) {
@@ -101,10 +95,11 @@ export default class Dropdown extends React.Component<DropdownProps> {
         return (
             <Overlay
                 popup={overlay}
-                position={placement}
+                placement={placement}
                 wrapper={wrapper}
                 wrapperProps={wrapperProps}
                 onKeydown={this.handleKeydown}
+                keyClose={true}
                 offset={offset}
                 {...otherProps}>
                 {React.cloneElement(

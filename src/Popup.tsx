@@ -1,8 +1,5 @@
 import * as React from "react";
-import {
-    createPortal,
-    unmountComponentAtNode
-} from "react-dom";
+import { createPortal } from "react-dom";
 import {
     ElementRect,
     OverlayContext,
@@ -10,26 +7,34 @@ import {
     emulateTransitionEnd,
     throttle,
     getWindowSize,
-    reflow
+    reflow,
+    classNames
 } from "./utils";
 
-export interface PopupProps extends React.HTMLAttributes<HTMLElement> {
-    placement?: string;
+export type position = "top" | "right" | "bottom" | "left";
+
+export interface PopupCommonProps extends React.HTMLAttributes<HTMLElement> {
+    placement?: position;
+    flip?: boolean;
+    fade?: boolean;
+    offset?: number;
+}
+
+export interface PopupProps extends PopupCommonProps {
     align?: string;
     mountTo?: HTMLElement;
     visible?: boolean;
-    flip?: boolean;
-    fade?: boolean;
     unmountOnclose?: boolean;
     rect?: ElementRect;
-    clearPosition?: boolean;
     clearMargin?: boolean;
-    offset?: number;
+    verticalCenter?: boolean;
+    alignmentPrefix?: string;
+    keyClose?: boolean;
     onClickOutside?: Function;
     onKeydown?: (evt: KeyboardEvent, arg: any) => any;
     onResetPosition?: Function;
+    onFlip?: Function;
 }
-
 
 export default class Overlay extends React.Component<PopupProps> {
 
@@ -38,15 +43,14 @@ export default class Overlay extends React.Component<PopupProps> {
     private cancelTransition: Function | null = null;
 
     static contextType = OverlayContext;
+    static defaultProps = {
+        flip: true,
+        fade: true
+    };
 
     constructor(props: PopupProps) {
         super(props);
-
-        this.state = {
-            visible: !!props.visible,
-            from: "state"
-        };
-
+        
         this.handleResize = throttle(this.handleResize.bind(this));
     }
 
@@ -54,8 +58,7 @@ export default class Overlay extends React.Component<PopupProps> {
         const {
             props: {
                 fade,
-                visible,
-                unmountOnclose
+                visible
             },
             hasEvent,
             mountNode
@@ -79,8 +82,9 @@ export default class Overlay extends React.Component<PopupProps> {
 
                     if (fade) {
                         reflow(child);
-                        child.classList.add("show");
                     }
+                    //dropdown menu, tooltip need show class
+                    child.classList.add("show");
                 } else {
                     //just reset the position
                     this.setPosition();
@@ -97,24 +101,18 @@ export default class Overlay extends React.Component<PopupProps> {
                 this.cancelTransition = emulateTransitionEnd(child, () => {
                     child.style.display = "none";
                     this.cancelTransition = null;
+                    this.unmount();
                 });
             } else {
                 child.style.display = "none";
+                this.unmount();
             }
-        }
-
-        if (unmountOnclose) {
-            this.unmount();
         }
 
         this.removeEvent();
     }
 
     componentWillUnmount() {
-        this.unmount();
-    }
-
-    unmount() {
         const {
             props: {
                 mountTo = document.body
@@ -122,12 +120,25 @@ export default class Overlay extends React.Component<PopupProps> {
             mountNode
         } = this;
 
-        if (mountNode) {
-            unmountComponentAtNode(mountNode);
+        mountNode && mountTo.removeChild(mountNode);
+
+        this.mountNode = null;
+    }
+
+    unmount() {
+        const {
+            props: {
+                unmountOnclose,
+                mountTo = document.body
+            },
+            mountNode
+        } = this;
+
+        if (unmountOnclose && mountNode) {
             mountTo.removeChild(mountNode);
             this.mountNode = null;
         }
-    }
+    };
 
     handleClickOutSide = (evt: MouseEvent) => {
         const t = evt.target as HTMLElement;
@@ -138,17 +149,18 @@ export default class Overlay extends React.Component<PopupProps> {
     };
 
     handleKeydown = (evt: KeyboardEvent) => {
-        const key = evt.key.toLowerCase();
+        const key = evt.key;
         const {
             props: {
                 onKeydown,
-                visible
+                visible,
+                keyClose
             },
             mountNode
         } = this;
 
         if (visible) {
-            key === "escape" && this.close();
+            key === "Escape" && keyClose && this.close();
             handleFuncProp(onKeydown)(evt, mountNode);
         }
     }
@@ -160,11 +172,13 @@ export default class Overlay extends React.Component<PopupProps> {
                 placement,
                 flip,
                 rect,
-                offset = 0
+                offset = 0,
+                verticalCenter
             },
         } = this;
         let left = 0;
         let top = 0;
+        let _placement = placement;
 
         if (!mountNode || !mountNode.children.length || !rect) return { left, top };
 
@@ -178,18 +192,22 @@ export default class Overlay extends React.Component<PopupProps> {
         const rightFn = () => {
             left = rect.left + rect.width + offset;
             top = rect.top;
+            _placement = "right";
         };
         const topFn = () => {
             left = rect.left;
             top = rect.top - height - offset;
+            _placement = "top";
         };
         const leftFn = () => {
             left = rect.left - width - offset;
             top = rect.top;
+            _placement = "left";
         };
         const bottomFn = () => {
             left = rect.left;
             top = rect.top + rect.height + offset;
+            _placement = "bottom";
         };
 
         switch (placement) {
@@ -224,9 +242,17 @@ export default class Overlay extends React.Component<PopupProps> {
 
         left = this.handleAlignment(left, width, windowWidth);
 
+        if (
+            verticalCenter &&
+            (placement === "left" || placement === "right")
+        ) {
+            top += (rect.height - height) / 2;
+        }
+
         return {
             left,
-            top
+            top,
+            placement: _placement
         };
     }
 
@@ -266,7 +292,11 @@ export default class Overlay extends React.Component<PopupProps> {
 
     setPosition() {
         const {
-            mountNode
+            mountNode,
+            props: {
+                alignmentPrefix,
+                placement
+            }
         } = this;
 
         if (!mountNode) return;
@@ -275,9 +305,22 @@ export default class Overlay extends React.Component<PopupProps> {
 
         if (!child) return;
 
-        let { left, top } = this.handlePosition();
+        let { left, top, placement: p } = this.handlePosition();
         child.style.left = `${left}px`;
         child.style.top = `${top}px`;
+
+        if (alignmentPrefix) {
+            const cls1 = `${alignmentPrefix}-${placement}`;
+            const cls2 = `${alignmentPrefix}-${p}`;
+
+            child.classList.remove(cls1, cls2);
+            
+            if (placement !== p) {
+                child.classList.add(cls2);
+            } else {
+                child.classList.add(cls1);
+            }
+        }
     }
 
 
@@ -287,13 +330,12 @@ export default class Overlay extends React.Component<PopupProps> {
         }
     };
 
-    handleMouseEnter = (evt: React.MouseEvent<HTMLElement>) => {
-        handleFuncProp(this.props.onMouseEnter)(evt);
-    };
+    handleMouseEvent = (evt: React.MouseEvent<HTMLElement>) => {
+        const { onMouseLeave, onMouseEnter } = this.props;
 
-    handleMouseLeave = (evt: React.MouseEvent<HTMLElement>) => {
-        handleFuncProp(this.props.onMouseLeave)(evt);
-    };
+        evt.type === "mouseenter" ? handleFuncProp(onMouseEnter)(evt)
+            : handleFuncProp(onMouseLeave)(evt);
+    }
 
     handleResize() {
         handleFuncProp(this.props.onResetPosition)();
@@ -323,16 +365,19 @@ export default class Overlay extends React.Component<PopupProps> {
                 fade,
                 visible,
                 clearMargin,
-                clearPosition,
                 className: popupClassName
             },
             mountNode
         } = this;
         let style: React.CSSProperties = {
-            position: "absolute"
+            position: "absolute",
         };
         let popup = children as React.ReactElement;
-        let className = fade ? "fade" : "";
+        const className = classNames(fade ? "fade" : "");
+        const classes = classNames(
+            popupClassName,
+            popup.props.className
+        );
 
         if (typeof children === "function") {
             popup = children();
@@ -342,31 +387,53 @@ export default class Overlay extends React.Component<PopupProps> {
 
         if (!mountNode) {
             mountNode = this.mountNode = document.createElement("div");
-            mountNode.style.cssText = "position: absolute; left: 0; top: 0;";
+            mountNode.style.cssText = `
+                position: absolute; 
+                left: 0;
+                top: 0;
+                width:100%;
+                `
             mountTo.appendChild(mountNode);
         }
 
+        const isFragment = (popup.type as string || "").toString().indexOf("react.fragment") > -1;
+        const isMultiple = React.Children.count(children) > 1;
         let childStyle: React.CSSProperties = {
             ...popup.props.style,
         };
-        clearPosition && (childStyle.position = "static");
+        const mouseEvent = {
+            onMouseEnter: this.handleMouseEvent,
+            onMouseLeave: this.handleMouseEvent
+        };
         clearMargin && (childStyle.margin = 0)
 
         return createPortal(
             (
-                <div
-                    style={style}
-                    className={className}
-                    onMouseEnter={this.handleMouseEnter}
-                    onMouseLeave={this.handleMouseLeave}>{
-                        React.cloneElement(
-                            popup,
-                            {
-                                style: childStyle,
-                                className: popupClassName
-                            }
-                        )
-                    }</div>
+                (isFragment || isMultiple) ? (
+                    <div
+                        style={style}
+                        className={className}
+                        {...mouseEvent}>{
+                            React.cloneElement(
+                                popup,
+                                {
+                                    style: childStyle,
+                                    className: classes
+                                }
+                            )
+                        }</div>
+                ) :
+                    React.cloneElement(
+                        popup,
+                        {
+                            style: {
+                                ...childStyle,
+                                ...style
+                            },
+                            className: classNames(className, classes),
+                            ...mouseEvent
+                        }
+                    )
             ),
             mountNode
         )
