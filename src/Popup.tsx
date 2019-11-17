@@ -173,7 +173,8 @@ export default class Popup extends React.Component<PopupProps> {
                 flip,
                 rect,
                 offset = 0,
-                verticalCenter
+                verticalCenter,
+                alignmentPrefix
             },
         } = this;
         let left = 0;
@@ -183,6 +184,8 @@ export default class Popup extends React.Component<PopupProps> {
         if (!mountNode || !mountNode.children.length || !rect) return { left, top };
 
         const _el = mountNode.children[0] as HTMLElement;
+        //for calc height/width  correctly(the class may have padding)
+        alignmentPrefix && _el.classList.add(`${alignmentPrefix}-${placement}`);
         const width = _el.offsetWidth;
         const height = _el.offsetHeight;
         const {
@@ -295,31 +298,28 @@ export default class Popup extends React.Component<PopupProps> {
             mountNode,
             props: {
                 alignmentPrefix,
-                placement
+                children,
+                fade
             }
         } = this;
 
         if (!mountNode) return;
 
         const child = mountNode.children[0] as HTMLElement;
+        const _child = children as React.ReactElement;
 
-        if (!child) return;
-
-        let { left, top, placement: p } = this.handlePosition();
+        let { left, top, placement } = this.handlePosition();
         child.style.left = `${left}px`;
         child.style.top = `${top}px`;
 
         if (alignmentPrefix) {
-            const cls1 = `${alignmentPrefix}-${placement}`;
-            const cls2 = `${alignmentPrefix}-${p}`;
-
-            child.classList.remove(cls1, cls2);
-            console.log(cls1, cls2)
-            if (placement !== p) {
-                child.classList.add(cls2);
-            } else {
-                child.classList.add(cls1);
-            }
+            const className = _child.props.className;
+            
+            child.className = classNames(
+                className,
+                fade && "fade",
+                `${alignmentPrefix}-${placement}`
+            );
         }
     }
 

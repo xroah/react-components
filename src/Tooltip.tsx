@@ -39,8 +39,7 @@ export default function Tooltip(props: TooltipProps) {
         <div className={
             classNames(
                 "show",
-                "tooltip",
-                `bs-tooltip-${placement}`
+                "tooltip"
             )
         }>
             <div className="arrow" style={getStyle(placement)} />
@@ -59,6 +58,7 @@ export default function Tooltip(props: TooltipProps) {
             alignmentPrefix="bs-tooltip"
             unmountOnclose
             verticalCenter
+            clearMargin={false}
             {...otherProps}>
             {children}
         </Overlay>

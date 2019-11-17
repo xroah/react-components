@@ -21,8 +21,7 @@ export default function Popover(props: PopoverProps) {
     const popup = (
         <div className={
             classNames(
-                "popover",
-                `bs-popover-${placement}`
+                "popover"
             )
         }>
             <div className="arrow" style={getStyle(placement)} />
