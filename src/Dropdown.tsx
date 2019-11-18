@@ -24,15 +24,6 @@ export default class Dropdown extends React.Component<DropdownProps> {
         //offset: box-shadow .2rem
         offset: parseInt(getComputedStyle(document.documentElement).fontSize) * 0.2
     }
-    static propTypes = {
-        flip: PropTypes.bool,
-        placement: PropTypes.oneOf([
-            "top",
-            "left",
-            "bottom",
-            "right"
-        ]),
-    };
     static Menu = DropdownMenu;
     static MenuItem = DropdownMenuItem;
     static DropdownContext = OverlayContext;
@@ -84,7 +75,6 @@ export default class Dropdown extends React.Component<DropdownProps> {
         let wrapper: string | undefined = undefined;
         let position = positionMap[placement as string];
         let wrapperProps: React.HTMLAttributes<HTMLElement> = {};
-        
         const child = React.Children.only(children) as React.ReactElement;
         
         if (position) {
