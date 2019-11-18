@@ -11,8 +11,10 @@ export default function DropdownMenu(props: MenuProps) {
         header,
         className,
         children,
+        style = {},
         ...otherProps
     } = props;
+    style.margin = 0;
 
     return (
         <div className={
@@ -21,6 +23,7 @@ export default function DropdownMenu(props: MenuProps) {
                 "dropdown-menu show"
             )
         }
+            style={style}
             {...otherProps}>
             {
                 header && <div className="dropdown-header">{header}</div>

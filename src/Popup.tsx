@@ -20,13 +20,17 @@ export interface PopupCommonProps extends React.HTMLAttributes<HTMLElement> {
     offset?: number;
 }
 
+interface PopupState {
+    pos?: position;
+    status?: "stable" | "measure"
+}
+
 export interface PopupProps extends PopupCommonProps {
     align?: string;
     mountTo?: HTMLElement;
     visible?: boolean;
     unmountOnclose?: boolean;
     rect?: ElementRect;
-    clearMargin?: boolean;
     verticalCenter?: boolean;
     alignmentPrefix?: string;
     escClose?: boolean;
@@ -36,11 +40,12 @@ export interface PopupProps extends PopupCommonProps {
     onFlip?: Function;
 }
 
-export default class Popup extends React.Component<PopupProps> {
+export default class Popup extends React.Component<PopupProps, PopupState> {
 
     private mountNode: HTMLElement | null = null;
     private hasEvent: boolean = false;
     private cancelTransition: Function | null = null;
+    private ref = React.createRef<HTMLDivElement>();
 
     static contextType = OverlayContext;
     static defaultProps = {
@@ -54,6 +59,31 @@ export default class Popup extends React.Component<PopupProps> {
         this.handleResize = throttle(this.handleResize.bind(this));
     }
 
+    getClassNames() {
+        const {
+            props: {
+                alignmentPrefix,
+                placement,
+                className
+            },
+            state: { pos }
+        } = this;
+
+        return classNames(
+            className,
+            alignmentPrefix && `${alignmentPrefix}-${pos || placement}`,
+        );
+    }
+
+    updateNextTick(status?: "stable" | "measure", pos?: position) {
+        requestAnimationFrame(() => {
+            this.setState({
+                status,
+                pos
+            });
+        });
+    };
+
     componentDidUpdate() {
         const {
             props: {
@@ -61,12 +91,14 @@ export default class Popup extends React.Component<PopupProps> {
                 visible
             },
             hasEvent,
-            mountNode
+            mountNode,
+            ref: {
+                current: child
+            },
+            state: { status }
         } = this;
 
-        if (!mountNode) return;
-
-        const child = mountNode.children[0] as HTMLElement;
+        if (!mountNode || !child) return;
 
         if (visible) {
             if (this.cancelTransition) {
@@ -74,35 +106,35 @@ export default class Popup extends React.Component<PopupProps> {
                 this.cancelTransition = null;
             }
 
-            if (child) {
-                if (!hasEvent) {
-                    child.classList.remove("show");
-                    child.style.display = "block";
+            if (!hasEvent) {
+                child.style.display = "block";
 
-                    if (fade) {
-                        reflow(child);
-                    }
+                if (fade) {
+                    reflow(child);
+                    child.classList.add("show");
                 }
-                //just reset the position
-                this.setPosition();
+
+                this.addEvent();
             }
 
-            !hasEvent && this.addEvent();
+            //just reset the position if already visible
+            const placement = this.setPosition();
+
+            if (status !== "stable") {
+                this.updateNextTick("stable", placement);
+            }
+
             return;
         }
 
-        if (child) {
-            if (fade) {
-                child.classList.remove("show");
-                this.cancelTransition = emulateTransitionEnd(child, () => {
-                    child.style.display = "none";
-                    this.cancelTransition = null;
-                    this.unmount();
-                });
-            } else {
-                child.style.display = "none";
-                this.unmount();
-            }
+        if (fade) {
+            child.classList.remove("show");
+            this.cancelTransition = emulateTransitionEnd(child, () => {
+                this.cancelTransition = null;
+                this.hide(child);
+            });
+        } else {
+            this.hide(child);
         }
 
         this.removeEvent();
@@ -119,6 +151,16 @@ export default class Popup extends React.Component<PopupProps> {
         mountNode && mountTo.removeChild(mountNode);
 
         this.mountNode = null;
+        this.removeEvent();
+    }
+
+    hide(child: HTMLElement) {
+        child.style.display = "none";
+        this.setState({
+            status: undefined,
+            pos: undefined
+        });
+        this.unmount();
     }
 
     unmount() {
@@ -169,21 +211,18 @@ export default class Popup extends React.Component<PopupProps> {
                 flip,
                 rect,
                 offset = 0,
-                verticalCenter,
-                alignmentPrefix
+                verticalCenter
             },
+            ref: { current: child }
         } = this;
         let left = 0;
         let top = 0;
         let _placement = placement;
 
-        if (!mountNode || !mountNode.children.length || !rect) return { left, top };
+        if (!mountNode || !child || !rect) return { left, top };
 
-        const _el = mountNode.children[0] as HTMLElement;
-        //for calc height/width  correctly(the class may have padding)
-        alignmentPrefix && _el.classList.add(`${alignmentPrefix}-${placement}`);
-        const width = _el.offsetWidth;
-        const height = _el.offsetHeight;
+        const width = child.offsetWidth;
+        const height = child.offsetHeight;
         const {
             width: windowWidth,
             height: windowHeight
@@ -292,34 +331,16 @@ export default class Popup extends React.Component<PopupProps> {
     setPosition() {
         const {
             mountNode,
-            props: {
-                alignmentPrefix,
-                children,
-                fade
-            }
+            ref: { current: child }
         } = this;
 
-        if (!mountNode) return;
-
-        const child = mountNode.children[0] as HTMLElement;
-        const _child = children as React.ReactElement;
+        if (!mountNode || !child) return;
 
         let { left, top, placement } = this.handlePosition();
         child.style.left = `${left}px`;
         child.style.top = `${top}px`;
 
-        if (alignmentPrefix) {
-            const className = _child.props.className;
-
-            child.className = classNames(
-                className,
-                fade && "fade",
-                `${alignmentPrefix}-${placement}`
-            );
-        }
-        
-        //dropdown menu, tooltip need show class
-        child.classList.add("show");
+        return placement;
     }
 
 
@@ -338,6 +359,7 @@ export default class Popup extends React.Component<PopupProps> {
 
     handleResize() {
         handleFuncProp(this.props.onResetPosition)();
+        this.updateNextTick("measure");
     }
 
     addEvent() {
@@ -349,6 +371,7 @@ export default class Popup extends React.Component<PopupProps> {
     };
 
     removeEvent() {
+        if (!this.hasEvent) return;
         this.hasEvent = false;
         document.removeEventListener("click", this.handleClickOutSide);
         document.removeEventListener("keydown", this.handleKeydown);
@@ -363,7 +386,6 @@ export default class Popup extends React.Component<PopupProps> {
                 children,
                 fade,
                 visible,
-                clearMargin,
                 className: popupClassName
             },
             mountNode
@@ -373,16 +395,18 @@ export default class Popup extends React.Component<PopupProps> {
         };
         let popup = children as React.ReactElement;
         const className = classNames(fade ? "fade" : "");
-        const classes = classNames(
-            popupClassName,
-            popup.props.className
-        );
 
         if (typeof children === "function") {
             popup = children();
         }
 
         if ((!visible && !mountNode) || !popup) return null;
+
+        const childClassNames = classNames(
+            popupClassName,
+            popup.props.className,
+            this.getClassNames(),
+        );
 
         if (!mountNode) {
             mountNode = this.mountNode = document.createElement("div");
@@ -395,45 +419,29 @@ export default class Popup extends React.Component<PopupProps> {
             mountTo.appendChild(mountNode);
         }
 
-        const isFragment = (popup.type as string || "").toString().indexOf("react.fragment") > -1;
-        const isMultiple = React.Children.count(children) > 1;
         let childStyle: React.CSSProperties = {
             ...popup.props.style,
+            position: "relative"
         };
         const mouseEvent = {
             onMouseEnter: this.handleMouseEvent,
             onMouseLeave: this.handleMouseEvent
         };
-        clearMargin && (childStyle.margin = 0)
 
         return createPortal(
-            (
-                (isFragment || isMultiple) ? (
-                    <div
-                        style={style}
-                        className={className}
-                        {...mouseEvent}>{
-                            React.cloneElement(
-                                popup,
-                                {
-                                    style: childStyle,
-                                    className: classes
-                                }
-                            )
-                        }</div>
-                ) :
+            <div
+                style={style}
+                className={className}
+                ref={this.ref}
+                {...mouseEvent}>{
                     React.cloneElement(
                         popup,
                         {
-                            style: {
-                                ...childStyle,
-                                ...style
-                            },
-                            className: classNames(className, classes),
-                            ...mouseEvent
+                            style: childStyle,
+                            className: childClassNames
                         }
                     )
-            ),
+                }</div>,
             mountNode
         )
     }

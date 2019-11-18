@@ -6,7 +6,7 @@ import {
     handleFuncProp
 } from "./utils";
 import Popup, { PopupCommonProps } from "./Popup";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 
 export type action = "hover" | "click" | "contextmenu" | "focus";
 
@@ -23,8 +23,6 @@ export interface OverlayProps extends CommonProps {
     wrapper?: string;
     wrapperProps?: React.HTMLAttributes<HTMLElement>
     unmountOnclose?: boolean;
-    clearPosition?: boolean;
-    clearMargin?: boolean;
     verticalCenter?: boolean;
     alignmentPrefix?: string;
     escClose?: boolean;
@@ -239,7 +237,7 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
         let action = this.getAction();
 
         action.forEach((a: string) => {
-            if (actionMap.hasOwnProperty(a)) {
+            if (a in actionMap) {
                 eventHandlers = {
                     ...eventHandlers,
                     ...actionMap[a]
