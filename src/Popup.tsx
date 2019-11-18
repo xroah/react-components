@@ -2,7 +2,6 @@ import * as React from "react";
 import { createPortal } from "react-dom";
 import {
     ElementRect,
-    OverlayContext,
     handleFuncProp,
     emulateTransitionEnd,
     throttle,
@@ -33,11 +32,9 @@ export interface PopupProps extends PopupCommonProps {
     rect?: ElementRect;
     verticalCenter?: boolean;
     alignmentPrefix?: string;
-    escClose?: boolean;
     onClickOutside?: Function;
-    onKeydown?: (evt: KeyboardEvent, arg: any) => any;
+    onKeydown?: (evt: KeyboardEvent, arg: HTMLElement) => void;
     onResetPosition?: Function;
-    onFlip?: Function;
 }
 
 export default class Popup extends React.Component<PopupProps, PopupState> {
@@ -47,7 +44,6 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
     private cancelTransition: Function | null = null;
     private ref = React.createRef<HTMLDivElement>();
 
-    static contextType = OverlayContext;
     static defaultProps = {
         flip: true,
         fade: true
@@ -56,6 +52,7 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
     constructor(props: PopupProps) {
         super(props);
 
+        this.state = {};
         this.handleResize = throttle(this.handleResize.bind(this));
     }
 
@@ -187,20 +184,14 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
     };
 
     handleKeydown = (evt: KeyboardEvent) => {
-        const key = evt.key;
         const {
             props: {
-                onKeydown,
-                visible,
-                escClose
+                onKeydown
             },
             mountNode
         } = this;
 
-        if (visible) {
-            key === "Escape" && escClose && this.close();
-            handleFuncProp(onKeydown)(evt, mountNode);
-        }
+        handleFuncProp(onKeydown)(evt, mountNode);
     }
 
     handlePosition() {
@@ -343,13 +334,6 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
         return placement;
     }
 
-
-    close = () => {
-        if (this.context.close) {
-            this.context.close();
-        }
-    };
-
     handleMouseEvent = (evt: React.MouseEvent<HTMLElement>) => {
         const { onMouseLeave, onMouseEnter } = this.props;
 
@@ -363,15 +347,21 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
     }
 
     addEvent() {
+        if (this.hasEvent) return;
+
+        const { flip } = this.props;
         this.hasEvent = true;
         document.addEventListener("click", this.handleClickOutSide);
         document.addEventListener("keydown", this.handleKeydown);
-        this.props.flip && window.addEventListener("resize", this.handleResize);
-        window.addEventListener("scroll", this.handleResize);
+        if (flip) {
+            window.addEventListener("resize", this.handleResize);
+            window.addEventListener("scroll", this.handleResize);
+        }
     };
 
     removeEvent() {
         if (!this.hasEvent) return;
+
         this.hasEvent = false;
         document.removeEventListener("click", this.handleClickOutSide);
         document.removeEventListener("keydown", this.handleKeydown);
@@ -429,19 +419,23 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
         };
 
         return createPortal(
-            <div
-                style={style}
-                className={className}
-                ref={this.ref}
-                {...mouseEvent}>{
-                    React.cloneElement(
-                        popup,
-                        {
-                            style: childStyle,
-                            className: childClassNames
-                        }
-                    )
-                }</div>,
+            (
+                <div
+                    style={style}
+                    className={className}
+                    ref={this.ref}
+                    {...mouseEvent}>
+                    {
+                        React.cloneElement(
+                            popup,
+                            {
+                                style: childStyle,
+                                className: childClassNames
+                            }
+                        )
+                    }
+                </div>
+            ),
             mountNode
         )
     }

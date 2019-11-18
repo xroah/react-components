@@ -163,6 +163,17 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
         }
     };
 
+    handleKeydown = (evt: KeyboardEvent, el: HTMLElement) => {
+        const key = evt.key;
+        const { onKeydown, escClose } = this.props;
+
+        if (escClose && key === "Escape") {
+            this.close();
+        }
+
+        handleFuncProp(onKeydown)(evt, el);
+    };
+
     open = () => {
         const {
             state: { visible },
@@ -275,6 +286,8 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
             }
         } = this;
 
+        delete otherProps.onKeydown;
+
         return (
             <>
                 {this.renderChildren()}
@@ -282,6 +295,7 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
                     <Popup
                         visible={visible}
                         rect={rect}
+                        onKeydown={this.handleKeydown}
                         onResetPosition={this.handleResetPosition}
                         onMouseEnter={this.handlePopupMouseEnter}
                         onMouseLeave={this.handlePopupMouseLeave}
