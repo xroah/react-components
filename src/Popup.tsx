@@ -73,6 +73,8 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
     }
 
     updateNextTick(status?: "stable" | "measure", pos?: position) {
+        if (!this.props.visible) return;
+
         requestAnimationFrame(() => {
             this.setState({
                 status,
@@ -114,10 +116,8 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
                 this.addEvent();
             }
 
-            //just reset the position if already visible
-            const placement = this.setPosition();
-
-            if (status !== "stable") {
+            if (status !== "stable") {//just reset the position if already visible
+                const placement = this.setPosition();
                 this.updateNextTick("stable", placement);
             }
 
