@@ -1,13 +1,13 @@
 import * as React from "react";
 import PropTypes from "prop-types";
 import { classNames } from "./utils";
+import ListGroupItem from "./ListGroupItem";
 
 export interface ListGroupProps extends React.HTMLAttributes<HTMLElement> {
     flush?: boolean;
     tag?: string;
     minWidth?: "sm" | "md" | "lg" | "xl";
     horizontal?: boolean;
-    equalWidth?: boolean;
 }
 
 export default function ListGroup(props: ListGroupProps) {
@@ -17,7 +17,6 @@ export default function ListGroup(props: ListGroupProps) {
         minWidth,
         horizontal,
         className,
-        equalWidth,
         ...otherProps
     } = props;
     const PREFIX = "list-group";
@@ -30,8 +29,7 @@ export default function ListGroup(props: ListGroupProps) {
                 PREFIX,
                 flush && `${PREFIX}-flush`,
                 _horizontal,
-                _horizontal && minWidth && `${PREFIX}-horizontal-${minWidth}`,
-                equalWidth && "flex-fill"
+                _horizontal && minWidth && `${PREFIX}-horizontal-${minWidth}`
             ),
             ...otherProps
         }
@@ -42,9 +40,10 @@ ListGroup.propTypes = {
     flush: PropTypes.bool,
     tag: PropTypes.string,
     minWidth: PropTypes.oneOf(["sm", "md", "lg", "xl"]),
-    horizontal: PropTypes.bool,
-    equalWidth: PropTypes.bool
+    horizontal: PropTypes.bool
 };
 ListGroup.defaultProps = {
     tag: "div"
 };
+
+ListGroup.Item = ListGroupItem;
