@@ -214,10 +214,10 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
 
         const width = child.offsetWidth;
         const height = child.offsetHeight;
-        const {
-            width: windowWidth,
-            height: windowHeight
-        } = getWindowSize();
+        const windowWidth = document.documentElement.clientWidth;
+        //innerWidth/innerHeight contains width of scrollbar
+        //usually webpage does not have horizontal scrollbar
+        const windowHeight = window.innerHeight;
         const rightFn = () => {
             left = rect.left + rect.width + offset;
             top = rect.top;
@@ -384,7 +384,7 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
             position: "absolute",
         };
         let popup = children as React.ReactElement;
-        const className = classNames(fade ? "fade" : "");
+        const className = fade ? "fade" : "";
 
         if (typeof children === "function") {
             popup = children();
@@ -405,7 +405,7 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
                 left: 0;
                 top: 0;
                 width:100%;
-                `
+                `;
             mountTo.appendChild(mountNode);
         }
 
