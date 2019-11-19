@@ -238,35 +238,26 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
             top = rect.top + rect.height + offset;
             _placement = "bottom";
         };
+        const handleFlip = (needFlip: boolean, callback: Function) => {
+            if (flip && needFlip) callback();
+        }
 
         switch (placement) {
             case "top":
                 topFn();
-
-                if (flip && (rect.bottom - rect.height) < height) {
-                    bottomFn();
-                }
+                handleFlip(rect.bottom - rect.height < height, bottomFn);
                 break;
             case "right":
                 rightFn();
-
-                if (flip && (windowWidth - rect.right) < width) {
-                    leftFn();
-                }
+                handleFlip(windowWidth - rect.right < width, leftFn);
                 break;
             case "left":
                 leftFn();
-
-                if (flip && (rect.right - rect.width - width) < width) {
-                    rightFn();
-                }
+                handleFlip(rect.right - rect.width < width, rightFn);
                 break;
             default:
                 bottomFn();
-
-                if (flip && (windowHeight - rect.bottom) < height) {
-                    topFn();
-                }
+                handleFlip(windowHeight - rect.bottom < height, topFn);
         }
 
         left = this.handleAlignment(left, width, windowWidth);
@@ -274,9 +265,7 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
         if (
             verticalCenter &&
             (placement === "left" || placement === "right")
-        ) {
-            top += (rect.height - height) / 2;
-        }
+        ) top += (rect.height - height) / 2;
 
         return {
             left,
