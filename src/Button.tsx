@@ -1,20 +1,15 @@
 import * as React from "react";
 import PropTypes from "prop-types";
 import ButtonGroup from "./ButtonGroup";
-import {createComponentByClass, classNames} from "./utils";
-
-export type variantType = "primary" |
-        "secondary" |
-        "success" |
-        "danger" |
-        "warning" |
-        "info" |
-        "dark" |
-        "light" |
-        "link";
+import {
+    createComponentByClass,
+    classNames,
+    variantType,
+    variantArray
+} from "./utils";
 
 export interface ButtonProps extends React.HTMLAttributes<HTMLButtonElement & HTMLAnchorElement> {
-    variant?: variantType;
+    variant?: variantType | "link";
     outline?: boolean;
     size?: string;
     active?: boolean;
@@ -26,17 +21,17 @@ export interface ButtonProps extends React.HTMLAttributes<HTMLButtonElement & HT
 
 const Button: any = React.forwardRef(
     ({
-         variant,
-         size,
-         className,
-         active,
-         block,
-         outline,
-         children,
-         type,
-         disabled,
-         ...otherProps
-     }: ButtonProps, ref: React.Ref<any>) => {
+        variant,
+        size,
+        className,
+        active,
+        block,
+        outline,
+        children,
+        type,
+        disabled,
+        ...otherProps
+    }: ButtonProps, ref: React.Ref<any>) => {
         const classes = classNames(
             className,
             "btn",
@@ -70,17 +65,7 @@ const Button: any = React.forwardRef(
 );
 
 Button.propTypes = {
-    variant: PropTypes.oneOf([
-        "primary",
-        "secondary",
-        "success",
-        "danger",
-        "warning",
-        "info",
-        "dark",
-        "light",
-        "link"
-    ]),
+    variant: PropTypes.oneOf(variantArray),
     outline: PropTypes.bool,
     size: PropTypes.string,
     active: PropTypes.bool,

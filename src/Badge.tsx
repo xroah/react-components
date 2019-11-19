@@ -1,16 +1,9 @@
 import * as React from "react";
-import {classNames} from "./utils";
+import {classNames, variantType, variantArray} from "./utils";
 import PropTypes from "prop-types";
 
 export interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement & HTMLAnchorElement> {
-    variant?: "primary" |
-        "secondary" |
-        "success" |
-        "danger" |
-        "warning" |
-        "info" |
-        "light" |
-        "dark";
+    variant?: variantType;
     href?: string;
     pill?: boolean;
 }
@@ -48,16 +41,7 @@ export default function Badge(props: BadgeProps) {
 }
 
 Badge.propTypes = {
-    variant: PropTypes.oneOf([
-        "primary",
-        "secondary",
-        "success",
-        "danger",
-        "warning",
-        "info",
-        "light",
-        "dark"
-    ]),
+    variant: PropTypes.oneOf(variantArray),
     pill: PropTypes.bool,
     href: PropTypes.string
 };
