@@ -11,7 +11,7 @@ export interface TabsProps extends React.HTMLAttributes<HTMLElement> {
 }
 
 interface TabsState {
-    activeKey: string | undefined;
+    activeKey: string | number | undefined;
 }
 
 interface NavLinkProps extends React.HTMLAttributes<HTMLAnchorElement> {
@@ -70,7 +70,8 @@ export default class Tabs extends React.Component<TabsProps, TabsState> {
 
         const {
             defaultActiveKey,
-            activeKey
+            activeKey,
+            children
         } = props;
         let _activeKey: any = defaultActiveKey;
 
@@ -78,37 +79,22 @@ export default class Tabs extends React.Component<TabsProps, TabsState> {
             _activeKey = activeKey;
         }
 
-        this.state = {
-            activeKey: _activeKey
-        };
-    }
-
-    componentDidMount() {
-        const {
-            activeKey
-        } = this.state;
-
-        if (!activeKey) {
-            const {
-                children
-            } = this.props;
-            let key: any;
-
+        if (_activeKey == undefined) {
             React.Children.forEach(children, c => {
                 if (
                     React.isValidElement(c) &&
                     c.type === TabPane &&
                     c.key != undefined
-                    && !key
+                    && _activeKey == undefined
                 ) {
-                    key = c.key;
+                    _activeKey = c.key;
                 }
             });
-
-            this.setState({
-                activeKey: key
-            });
         }
+
+        this.state = {
+            activeKey: _activeKey
+        };
     }
 
     static getDerivedStateFromProps(nextProps: TabsProps, nextState: TabsState) {
