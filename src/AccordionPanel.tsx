@@ -28,11 +28,13 @@ export default class AccordionPanel extends React.Component<PanelProps> {
     handleHeaderClick = () => {
         const {
             __key__,
-            __onHeaderClick__
+            __onHeaderClick__,
+            headerClickable
         } = this.props;
-        const fn = handleFuncProp(__onHeaderClick__);
 
-        fn(__key__);
+        if (!headerClickable) return;
+
+        handleFuncProp(__onHeaderClick__)(__key__);
     };
 
     render() {

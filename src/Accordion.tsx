@@ -1,7 +1,7 @@
 import * as React from "react";
 import PropTypes from "prop-types";
 import AccordionPanel from "./AccordionPanel";
-import {AccordionContext, classNames} from "./utils";
+import { AccordionContext, classNames } from "./utils";
 
 type keyType = number | string | number[] | string[];
 
@@ -13,7 +13,6 @@ export interface AccordionProps extends React.HTMLAttributes<HTMLDivElement> {
 
 interface AccordionStates {
     activeKey: Set<string>;
-    from?: string;
 }
 
 const _keyType = PropTypes.oneOfType([
@@ -48,8 +47,7 @@ export default class Accordion extends React.Component<AccordionProps, Accordion
         }
 
         this.state = {
-            activeKey: Accordion.handleKeyProp(keys, multiple),
-            from: "state"
+            activeKey: Accordion.handleKeyProp(keys, multiple)
         };
     }
 
@@ -85,16 +83,12 @@ export default class Accordion extends React.Component<AccordionProps, Accordion
     }
 
     static getDerivedStateFromProps(props: AccordionProps, state: AccordionStates) {
-        if (state.from) {
+        if ("activeKey" in props) {
             return {
-                ...state,
-                from: ""
-            };
+                activeIndex: this.handleProps(props)
+            }
         }
-
-        return {
-            activeIndex: this.handleProps(props)
-        }
+        return state;
     }
 
     handleClick = (key: string) => {
@@ -118,8 +112,7 @@ export default class Accordion extends React.Component<AccordionProps, Accordion
         }
 
         this.setState({
-            activeKey,
-            from: "state"
+            activeKey
         });
     };
 
