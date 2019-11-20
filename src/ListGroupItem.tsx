@@ -26,11 +26,7 @@ export default function ListGroupItem(props: ListGroupItemProps) {
         className,
         ...otherProps
     } = props;
-    let _tag = tag || (
-        action ? (
-            href ? "a" : "button"
-        ) : "div"
-    );
+    let _tag = tag || (href ? "a" : action ? "button" : "div");
 
     const el = document.createElement(_tag);
     const PREFIX = `list-group-item`;
