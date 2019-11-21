@@ -14,9 +14,10 @@ interface TabsState {
     activeKey: string | number | undefined;
 }
 
-interface NavLinkProps extends React.HTMLAttributes<HTMLAnchorElement> {
+interface NavLinkProps {
     __key__?: string;
-    __onClick__: (key?: string) => any;
+    onClick: (key?: string) => any;
+    children: React.ReactChild;
     disabled?: boolean;
 }
 
@@ -24,12 +25,12 @@ function NavLink(props: NavLinkProps) {
 
     const handleClick = () => {
         const {
-            __onClick__,
+            onClick,
             __key__,
             disabled
         } = props;
 
-        !disabled && __onClick__(__key__);
+        !disabled && onClick(__key__);
     };
     const {
         children,
@@ -131,7 +132,7 @@ export default class Tabs extends React.Component<TabsProps, TabsState> {
                     <NavLink
                         disabled={c.props.disabled}
                         __key__={c.key != null ? c.key.toString() : ""}
-                        __onClick__={this.handleClickTab}>
+                        onClick={this.handleClickTab}>
                         {c.props.tab}
                     </NavLink>
                 );
