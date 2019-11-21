@@ -1,17 +1,14 @@
 import * as React from "react";
-import {Transition} from "react-transition-group";
+import { Transition } from "react-transition-group";
 import PropTypes from "prop-types";
-import { classNames } from "./utils";
+import {
+    classNames,
+    variantType,
+    variantArray
+} from "./utils";
 
 export interface AlertProps extends React.HTMLAttributes<HTMLDivElement> {
-    variant?: 'primary'
-        | 'secondary'
-        | 'success'
-        | 'danger'
-        | 'warning'
-        | 'info'
-        | 'dark'
-        | 'light';
+    variant?: variantType;
     fade?: boolean;
     dismissible?: boolean;
     visible?: boolean;
@@ -22,7 +19,7 @@ export interface AlertProps extends React.HTMLAttributes<HTMLDivElement> {
 export default class Alert extends React.Component<AlertProps> {
 
     static propTypes = {
-        variant: PropTypes.string,
+        variant: PropTypes.oneOf(variantArray),
         fade: PropTypes.bool,
         dismissible: PropTypes.bool,
         visible: PropTypes.bool,
@@ -68,9 +65,9 @@ export default class Alert extends React.Component<AlertProps> {
         if (dismissible) {
             button = (
                 <button type="button"
-                        className="close"
-                        aria-label="Close"
-                        onClick={this.handleClick}>
+                    className="close"
+                    aria-label="Close"
+                    onClick={this.handleClick}>
                     <span aria-hidden="true">&times;</span>
                 </button>
             );

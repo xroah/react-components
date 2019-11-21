@@ -7,10 +7,10 @@ interface CreateProps {
 }
 
 export function createComponentByClass(options: CreateProps) {
-    const {className, tag = "div", displayName} = options;
+    const { className, tag = "div", displayName } = options;
 
     let Comp: any = (props: React.HTMLAttributes<Element>) => {
-        const {className: _className, ...otherProps} = props;
+        const { className: _className, ...otherProps } = props;
         return React.createElement(
             tag,
             {
@@ -68,13 +68,13 @@ export function emulateTransitionEnd(el: HTMLElement, handler: Function) {
 
 export function handleFuncProp(prop?: Function) {
     if (typeof prop !== "function") {
-        return () => {};
+        return () => { };
     }
 
     return prop;
 }
 
-export function classNames(...args: any): string　{
+export function classNames(...args: any): string {
     const classes = [];
 
     for (let arg of args) {
@@ -121,7 +121,7 @@ export function getElementRect(el: HTMLElement): ElementRect {
 }
 
 export function throttle(fn: Function, timeout: number = 100) {
-    let _fn = function() {
+    let _fn = function () {
         if (_fn.timer != undefined) {
             clearTimeout(_fn.timer);
         }
@@ -156,4 +156,23 @@ export function getWindowSize() {
 }
 
 export const AccordionContext = React.createContext(new Set());
-export const OverlayContext = React.createContext({close: () => {}});
+export const OverlayContext = React.createContext({ close: () => { } });
+export const TabContext = React.createContext("");
+export type variantType = "primary"
+    | "secondary"
+    | "success"
+    | "danger"
+    | "warning"
+    | "info"
+    | "dark"
+    | "light";
+export const variantArray = [
+    "primary",
+    "secondary",
+    "success",
+    "danger",
+    "warning",
+    "info",
+    "light",
+    "dark"
+];

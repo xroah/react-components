@@ -1,17 +1,13 @@
 import * as React from "react";
 import PropTypes from "prop-types";
-import { createComponentByClass, classNames } from "./utils";
+import {
+    createComponentByClass,
+    classNames,
+    variantType,
+    variantArray
+} from "./utils";
 
-type bgType = "primary" |
-    "secondary" |
-    "success" |
-    "danger" |
-    "warning" |
-    "info" |
-    "dark" |
-    "light";
-
-type colorType = bgType | "white" | "muted";
+type colorType = variantType | "white" | "muted";
 
 export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
     header?: React.ReactNode;
@@ -20,8 +16,8 @@ export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
     imgPosition?: "top" | "bottom";
     isImgOverlay?: boolean;
     align?: "left" | "center" | "right";
-    bg?: bgType;
-    border?: bgType;
+    bg?: variantType;
+    border?: variantType;
     color?: colorType;
     headerProps?: React.HTMLAttributes<HTMLElement>;
     bodyClass?: string;
@@ -103,7 +99,7 @@ export default function Card(props: CardProps) {
                 classNames(
                     bodyClass,
                     isImgOverlay && !!img ? "card-img-overlay" : "card-body"
-                    )
+                )
             }>
                 {
                     title && (
@@ -134,18 +130,7 @@ export default function Card(props: CardProps) {
     );
 }
 
-const bg = [
-    "primary",
-    "secondary",
-    "success",
-    "danger",
-    "warning",
-    "info",
-    "dark",
-    "light"
-];
-
-const color = [...bg, "white", "muted"];
+const color = [...variantArray, "white", "muted"];
 
 Card.propTypes = {
     header: PropTypes.node,
@@ -154,8 +139,8 @@ Card.propTypes = {
     imgPosition: PropTypes.oneOf(["top", "bottom"]),
     isImgOverlay: PropTypes.bool,
     align: PropTypes.oneOf(["left", "center", "right"]),
-    bg: PropTypes.oneOf(bg),
-    border: PropTypes.oneOf(bg),
+    bg: PropTypes.oneOf(variantArray),
+    border: PropTypes.oneOf(variantArray),
     color: PropTypes.oneOf(color),
     headerProps: PropTypes.object,
     bodyClass: PropTypes.string,
