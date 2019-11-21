@@ -14,54 +14,49 @@ interface PanelProps extends React.HTMLAttributes<HTMLDivElement> {
     __onHeaderClick__?: Function; //internal only
 }
 
-export default class AccordionPanel extends React.Component<PanelProps> {
-
-    static propTypes = {
-        header: PropTypes.node.isRequired,
-        headerClickable: PropTypes.bool
-    };
-    static defaultProps = {
-        headerClickable: true
-    };
-    static contextType = AccordionContext;
-
-    handleHeaderClick = () => {
+export default function AccordionPanel(props: PanelProps) {
+    const {
+        header,
+        children,
+        className,
+        __key__,
+        ...otherProps
+    } = props;
+    const context = React.useContext(AccordionContext);
+    const handleHeaderClick = () => {
         const {
             __key__,
             __onHeaderClick__,
             headerClickable
-        } = this.props;
+        } = props;
 
         if (!headerClickable) return;
 
         handleFuncProp(__onHeaderClick__)(__key__);
     };
 
-    render() {
-        const {
-            header,
-            children,
-            className,
-            __key__,
-            ...otherProps
-        } = this.props;
+    delete otherProps.__onHeaderClick__;
+    delete otherProps.headerClickable;
 
-        delete otherProps.__onHeaderClick__;
-        delete otherProps.headerClickable;
-
-        return (
-            <div className={classNames(className, "card")} {...otherProps}>
-                <div
-                    style={{cursor: "pointer"}}
-                    className="card-header"
-                    onClick={this.handleHeaderClick}>{header}</div>
-                <Collapse isOpen={this.context.has(__key__)}>
-                    <div className="card-body">
-                        {children}
-                    </div>
-                </Collapse>
-            </div>
-        );
-    }
-
+    return (
+        <div className={classNames(className, "card")} {...otherProps}>
+            <div
+                style={{ cursor: "pointer" }}
+                className="card-header"
+                onClick={handleHeaderClick}>{header}</div>
+            <Collapse isOpen={context.has(__key__)}>
+                <div className="card-body">
+                    {children}
+                </div>
+            </Collapse>
+        </div>
+    );
 }
+
+AccordionPanel.propTypes = {
+    header: PropTypes.node.isRequired,
+    headerClickable: PropTypes.bool
+};
+AccordionPanel.defaultProps = {
+    headerClickable: true
+};
