@@ -11,7 +11,7 @@ export interface TabsProps extends React.HTMLAttributes<HTMLElement> {
 }
 
 interface TabsState {
-    activeKey: string | number | undefined;
+    activeKey?: string | number;
 }
 
 interface NavLinkProps {
@@ -122,53 +122,43 @@ export default class Tabs extends React.Component<TabsProps, TabsState> {
             children,
             pill
         } = this.props;
-        const tabs = React.Children.map(children, c => {
+        const content: any[] = [];
+        const tabs = React.Children.map(children, (c, i) => {
             if (
                 React.isValidElement(c) &&
-                c.type === TabPane &&
-                c.props.tab
+                c.type === TabPane
             ) {
+                content.push(
+                    React.cloneElement(
+                        c,
+                        {
+                            __key__: c.key
+                        }
+                    )
+                );
+
                 return (
                     <NavLink
                         disabled={c.props.disabled}
-                        __key__={c.key != null ? c.key.toString() : ""}
+                        __key__={String(c.key == undefined ? i : c.key)}
                         onClick={this.handleClickTab}>
                         {c.props.tab}
                     </NavLink>
                 );
             }
 
+            content.push(c);
+
             return null;
         });
+        const _tabs = (<div className={
+            classNames(
+                "nav",
+                pill ? "nav-pills" : "nav-tabs"
+            )
+        }>{tabs}</div>);
 
-        return (
-            <div className={
-                classNames(
-                    "nav",
-                    pill ? "nav-pills" : "nav-tabs"
-                )
-            }>{tabs}</div>
-        );
-    }
-
-
-    renderContent() {
-        const {
-            children
-        } = this.props;
-
-        return React.Children.map(children, c => {
-            if (React.isValidElement(c) && c.type === TabPane) {
-                return React.cloneElement(
-                    c,
-                    {
-                        __key__: c.key
-                    }
-                );
-            }
-
-            return c;
-        });
+        return [_tabs, content];
     }
 
     render() {
@@ -181,6 +171,7 @@ export default class Tabs extends React.Component<TabsProps, TabsState> {
                 activeKey
             }
         } = this;
+        const [tabs, content] = this.renderTabs();
 
         delete otherProps.defaultActiveKey;
         delete otherProps.activeKey;
@@ -190,9 +181,9 @@ export default class Tabs extends React.Component<TabsProps, TabsState> {
         return (
             <TabContext.Provider value={activeKey as string}>
                 <div {...otherProps}>
-                    {this.renderTabs()}
+                    {tabs}
                     <div className="tab-content">
-                        {this.renderContent()}
+                        {content}
                     </div>
                 </div>
             </TabContext.Provider>

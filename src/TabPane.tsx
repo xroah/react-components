@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { classNames, TabContext } from "./utils";
 
 export interface TabPaneProps extends React.HTMLAttributes<HTMLElement> {
-    tab?: React.ReactNode;
+    tab: React.ReactNode;
     disabled?: boolean;
     __key__?: string; //internal only
 }
@@ -30,6 +30,6 @@ export default function TabPane(props: TabPaneProps) {
 }
 
 TabPane.propTypes = {
-    tab: PropTypes.node,
+    tab: PropTypes.node.isRequired,
     disabled: PropTypes.bool
 };

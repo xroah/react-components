@@ -126,7 +126,7 @@ export default class Accordion extends React.Component<AccordionProps, Accordion
                     return React.cloneElement(
                         c,
                         {
-                            __key__: c.key || i.toString(),
+                            __key__: c.key == undefined ? i.toString() : c.key,
                             __onHeaderClick__: c.props.headerClickable ? this.handleClick : undefined,
                         }
                     );
