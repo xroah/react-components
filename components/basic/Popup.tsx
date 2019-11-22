@@ -8,7 +8,7 @@ import {
     getWindowSize,
     reflow,
     classNames
-} from "./utils";
+} from "../utils";
 
 export type position = "top" | "right" | "bottom" | "left";
 

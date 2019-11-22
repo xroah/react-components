@@ -1,7 +1,7 @@
 import * as React from "react";
 import PropTypes from "prop-types";
 import TabPane from "./TabPane";
-import { classNames, TabContext, handleFuncProp } from "./utils";
+import { classNames, TabContext, handleFuncProp } from "../utils";
 
 export interface TabsProps extends React.HTMLAttributes<HTMLElement> {
     defaultActiveKey?: string | number;

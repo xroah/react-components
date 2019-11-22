@@ -4,7 +4,7 @@ import {
     classNames,
     variantType,
     variantArray
-} from "./utils";
+} from "../utils";
 
 export interface ProgressProps extends React.HTMLAttributes<HTMLElement> {
     variant?: variantType;

@@ -5,7 +5,7 @@ import {
     classNames,
     variantType,
     variantArray
-} from "./utils";
+} from "../utils";
 
 export interface AlertProps extends React.HTMLAttributes<HTMLDivElement> {
     variant?: variantType;

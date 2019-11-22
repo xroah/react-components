@@ -4,7 +4,7 @@ import {
     classNames,
     variantType,
     variantArray
-} from "./utils";
+} from "../utils";
 
 export interface ListGroupItemProps extends React.HTMLAttributes<HTMLElement> {
     action?: boolean;

@@ -5,7 +5,7 @@ import {
     classNames,
     variantType,
     variantArray
-} from "./utils";
+} from "../utils";
 
 type colorType = variantType | "white" | "muted";
 

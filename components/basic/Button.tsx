@@ -6,7 +6,7 @@ import {
     classNames,
     variantType,
     variantArray
-} from "./utils";
+} from "../utils";
 
 export interface ButtonProps extends React.HTMLAttributes<HTMLButtonElement & HTMLAnchorElement> {
     variant?: variantType | "link";

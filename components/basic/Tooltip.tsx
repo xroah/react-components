@@ -1,7 +1,7 @@
 import * as React from "react";
 import PropTypes from "prop-types";
 import Overlay, { CommonProps } from './Overlay';
-import { classNames } from "./utils";
+import { classNames } from "../utils";
 
 export interface TooltipProps extends CommonProps {
 

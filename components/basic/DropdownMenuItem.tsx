@@ -4,7 +4,7 @@ import {
     classNames,
     OverlayContext,
     handleFuncProp
-} from "./utils";
+} from "../utils";
 
 export interface ItemProps extends React.HTMLAttributes<HTMLElement> {
     tag?: string;

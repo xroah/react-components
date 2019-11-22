@@ -5,7 +5,7 @@ import {
     handleFuncProp,
     reflow,
     classNames
-} from "./utils";
+} from "../utils";
 
 export interface CollapseProps extends React.HTMLAttributes<HTMLDivElement> {
     isOpen?: boolean;

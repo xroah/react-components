@@ -2,7 +2,7 @@ import * as React from "react";
 import PropTypes from "prop-types";
 import Overlay, { CommonProps } from "./Overlay";
 import { getStyle } from "./Tooltip";
-import { classNames } from "./utils";
+import { classNames } from "../utils";
 
 export interface PopoverProps extends CommonProps {
     title?: string;

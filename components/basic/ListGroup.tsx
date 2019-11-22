@@ -1,6 +1,6 @@
 import * as React from "react";
 import PropTypes from "prop-types";
-import { classNames } from "./utils";
+import { classNames } from "../utils";
 import ListGroupItem from "./ListGroupItem";
 
 export interface ListGroupProps extends React.HTMLAttributes<HTMLElement> {

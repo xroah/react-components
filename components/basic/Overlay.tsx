@@ -4,7 +4,7 @@ import {
     getElementRect,
     OverlayContext,
     handleFuncProp
-} from "./utils";
+} from "../utils";
 import Popup, { PopupCommonProps } from "./Popup";
 import PropTypes from "prop-types";
 

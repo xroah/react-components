@@ -6,7 +6,7 @@ import {
     handleFuncProp,
     reflow,
     classNames
-} from "./utils";
+} from "../utils";
 
 export interface CarouselProps extends React.HTMLAttributes<HTMLDivElement> {
     animation?: "slide" | "fade";

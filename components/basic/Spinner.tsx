@@ -4,7 +4,7 @@ import {
     classNames,
     variantArray,
     variantType
-} from "./utils";
+} from "../utils";
 
 export interface SpinnerProps extends React.HTMLAttributes<HTMLElement> {
     variant?: variantType;

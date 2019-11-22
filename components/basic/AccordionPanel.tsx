@@ -5,7 +5,7 @@ import {
     handleFuncProp,
     AccordionContext,
     classNames
-} from "./utils";
+} from "../utils";
 
 interface PanelProps extends React.HTMLAttributes<HTMLDivElement> {
     header: React.ReactNode;

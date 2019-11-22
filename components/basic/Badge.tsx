@@ -1,5 +1,5 @@
 import * as React from "react";
-import {classNames, variantType, variantArray} from "./utils";
+import {classNames, variantType, variantArray} from "../utils";
 import PropTypes from "prop-types";
 
 export interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement & HTMLAnchorElement> {

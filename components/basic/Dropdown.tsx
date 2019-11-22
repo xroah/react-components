@@ -4,7 +4,7 @@ import {
     createComponentByClass,
     OverlayContext,
     classNames
-} from "./utils";
+} from "../utils";
 import Overlay, { CommonProps } from "./Overlay";
 import DropdownMenu from "./DropdownMenu";
 import DropdownMenuItem from "./DropdownMenuItem";

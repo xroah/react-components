@@ -1,6 +1,6 @@
 import * as React from "react";
 import PropTypes from "prop-types";
-import { classNames, TabContext } from "./utils";
+import { classNames, TabContext } from "../utils";
 
 export interface TabPaneProps extends React.HTMLAttributes<HTMLElement> {
     tab: React.ReactNode;

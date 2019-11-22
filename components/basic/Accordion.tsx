@@ -1,7 +1,7 @@
 import * as React from "react";
 import PropTypes from "prop-types";
 import AccordionPanel from "./AccordionPanel";
-import { AccordionContext, classNames } from "./utils";
+import { AccordionContext, classNames } from "../utils";
 
 type keyType = number | string | number[] | string[];
 
