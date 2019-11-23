@@ -11,10 +11,10 @@ export function createComponentByClass(options: CreateProps) {
 
     let Comp: any = (props: React.HTMLAttributes<Element>) => {
         const { className: _className, ...otherProps } = props;
+        
         return React.createElement(
             tag,
             {
-                displayName,
                 className: classNames(className, _className),
                 ...otherProps
             }
