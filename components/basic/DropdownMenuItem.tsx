@@ -50,6 +50,8 @@ export default class DropdownMenuItem extends React.Component<ItemProps> {
         if (tag !== "a") {
             delete otherProps.href;
             delete otherProps.onClick;
+        } else if (!otherProps.href) {
+            otherProps.href = "#";
         }
 
         return React.createElement(
