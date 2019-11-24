@@ -124,17 +124,20 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
             return;
         }
 
-        if (fade) {
-            child.classList.remove("show");
-            this.cancelTransition = emulateTransitionEnd(child, () => {
-                this.cancelTransition = null;
+        //in case update visible prop(invoke hide) infinitely 
+        if (hasEvent) {
+            if (fade) {
+                child.classList.remove("show");
+                this.cancelTransition = emulateTransitionEnd(child, () => {
+                    this.cancelTransition = null;
+                    this.hide(child);
+                });
+            } else {
                 this.hide(child);
-            });
-        } else {
-            this.hide(child);
-        }
+            }
 
-        this.removeEvent();
+            this.removeEvent();
+        }
     }
 
     componentWillUnmount() {
