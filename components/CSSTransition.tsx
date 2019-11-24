@@ -1,6 +1,10 @@
 import * as React from "react";
 import { findDOMNode } from "react-dom";
-import { handleFuncProp, reflow } from './utils';
+import {
+    handleFuncProp,
+    emulateTransitionEnd,
+    reflow
+} from './utils';
 
 const ENTERING = "entering";
 const ENTERED = "entered";
@@ -12,7 +16,7 @@ type stateType = "entering" | "entered" | "exiting" | "exited";
 
 interface CSSTransitionProps extends React.HTMLAttributes<HTMLElement> {
     in: boolean;
-    timeout: number;
+    timeout?: number;
     unmountOnExit?: boolean;
     children: (state: stateType) => React.ReactElement;
     onEnter?: (node?: HTMLElement) => void;
@@ -30,6 +34,7 @@ interface State {
 export default class CSSTransition extends React.Component<CSSTransitionProps, State> {
 
     timer: NodeJS.Timeout | null = null;
+    cancelTransition: Function | null = null;
 
     constructor(props: CSSTransitionProps) {
         super(props);
@@ -59,6 +64,11 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
         } = this;
 
         if (_in !== prevProps.in) {
+            if (this.cancelTransition) {
+                this.cancelTransition();
+                this.cancelTransition = null;
+            }
+
             if (_in) {
                 if (status !== ENTERING && status !== ENTERED) {
                     status = ENTERING;
@@ -73,7 +83,7 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
         }
     }
 
-    //in case findDOMNode return s null
+    //in case findDOMNode returns null
     static getDerivedStateFromProps(nextProps: CSSTransitionProps, prevState: State) {
         if (nextProps.in && prevState.status === UNMOUNTED) {
             return { status: EXITED };
@@ -97,6 +107,12 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
             timeout,
             unmountOnExit
         } = this.props;
+        const enteredCallback = () => {
+            this.setState({
+                status: ENTERED
+            });
+            handleFuncProp(onEntered)(node);
+        };
 
         handleFuncProp(onEnter)(node);
 
@@ -110,13 +126,24 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
             },
             () => handleFuncProp(onEntering)(node)
         );
+
+        if (timeout == undefined) {
+            if (node) {
+                this.cancelTransition = emulateTransitionEnd(node, () => {
+                    this.cancelTransition = null;
+                    enteredCallback();
+                });
+            } else {
+                setTimeout(enteredCallback, 0);
+            }
+
+            return;
+        }
+
         this.clearTimer();
 
         this.timer = setTimeout(() => {
-            this.setState({
-                status: ENTERED
-            });
-            handleFuncProp(onEntered)(node);
+            enteredCallback();
             this.clearTimer();
         }, timeout);
     }
@@ -136,18 +163,7 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
                 });
             }
         }
-
-        handleFuncProp(onExit)(node);
-
-        this.setState(
-            {
-                status: EXITING
-            },
-            () => handleFuncProp(onExiting)(node)
-        );
-        this.clearTimer();
-
-        this.timer = setTimeout(() => {
+        const exitedCallback = () => {
             this.setState(
                 {
                     status: EXITED
@@ -155,6 +171,33 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
                 unmount
             );
             handleFuncProp(onExited)(node);
+        };
+
+        handleFuncProp(onExit)(node);
+        this.setState(
+            {
+                status: EXITING
+            },
+            () => handleFuncProp(onExiting)(node)
+        );
+
+        if (timeout == undefined) {
+            if (node) {
+                this.cancelTransition = emulateTransitionEnd(node, () => {
+                    exitedCallback();
+                    this.cancelTransition = null;
+                });
+            } else {
+                setTimeout(exitedCallback, 0);
+            }
+            
+            return;
+        }
+
+        this.clearTimer();
+
+        this.timer = setTimeout(() => {
+            exitedCallback();
             this.clearTimer();
         }, timeout);
     }
