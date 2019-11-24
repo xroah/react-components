@@ -19,16 +19,13 @@ const Input = React.forwardRef(
         children,
         ...otherProps
     }: InputProps, ref: React.Ref<HTMLInputElement>) => {
+        const classes = classNames(className, "form-control");
         const input = (
             <input
                 ref={ref}
                 type={type}
-                className={
-                    classNames(
-                        className,
-                        "form-control"
-                    )
-                } {...otherProps} />
+                className={classes}
+                {...otherProps} />
         );
         const inputWithAddons = (<>
             {
@@ -51,15 +48,11 @@ const Input = React.forwardRef(
             return input;
         }
 
-        if (__isGroupChild__) {
-            return inputWithAddons;
-        }
-
-        return (
+        return __isGroupChild__ ?
+            inputWithAddons :
             <Input.Group>
                 {inputWithAddons}
             </Input.Group>
-        );
 
     }
 ) as any;
@@ -80,19 +73,18 @@ Input.Group = function InputGroup(props: React.HTMLAttributes<HTMLElement>) {
         className,
         ...otherProps
     } = props;
-    //prevent input-group from nesting
+    //prevent 'input-group' from nesting
     const _children = React.Children.map(children, c => {
         if (React.isValidElement(c)) {
             const type = c.type as any;
 
             if (
                 typeof type === "object" &&
-                type.Group &&
+                type.Group === InputGroup &&
                 (c.props.prepend != undefined ||
                     c.props.append != undefined)
             ) {
-                console.log(React.cloneElement(c, {__isGroupChild__: true}))
-                return React.cloneElement(c, {__isGroupChild__: true});
+                return React.cloneElement(c, { __isGroupChild__: true });
             }
 
             return c;
