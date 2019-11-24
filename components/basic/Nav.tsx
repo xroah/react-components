@@ -6,8 +6,9 @@ import { classNames } from "../utils";
 export interface NavProps extends React.HTMLAttributes<HTMLElement> {
     alignment?: "center" | "right";
     vertical?: boolean;
-    pills?: boolean;
+    pill?: boolean;
     fill?: boolean;
+    tab?: boolean;
 }
 
 export default function Nav(props: NavProps) {
@@ -15,8 +16,9 @@ export default function Nav(props: NavProps) {
         className,
         alignment,
         vertical,
-        pills,
+        pill,
         fill,
+        tab,
         ...otherProps
     } = props;
     const alignmentMap: any = {
@@ -29,7 +31,7 @@ export default function Nav(props: NavProps) {
             classNames(
                 className,
                 "nav",
-                pills && "nav-pills",
+                pill ? "nav-pills" : tab ? "nav-tabs" : "",
                 alignment && alignmentMap[alignment],
                 vertical && "flex-column",
                 fill && "nav-fill"
@@ -41,7 +43,8 @@ export default function Nav(props: NavProps) {
 Nav.propTypes = {
     alignment: PropTypes.oneOf(["right", "center"]),
     vertical: PropTypes.bool,
-    pills: PropTypes.bool,
-    fill: PropTypes.bool
+    pill: PropTypes.bool,
+    fill: PropTypes.bool,
+    tab: PropTypes.bool
 };
 Nav.Item = NavItem;

@@ -1,7 +1,8 @@
 import * as React from "react";
 import PropTypes from "prop-types";
 import TabPane from "./TabPane";
-import { classNames, TabContext, handleFuncProp } from "../utils";
+import Nav from "./Nav";
+import { TabContext, handleFuncProp } from "../utils";
 
 export interface TabsProps extends React.HTMLAttributes<HTMLElement> {
     defaultActiveKey?: string | number;
@@ -37,17 +38,13 @@ function NavLink(props: NavLinkProps) {
         disabled
     } = props;
     const context = React.useContext(TabContext);
-    const classes = classNames(
-        "nav-item",
-        "nav-link",
-        context === props.__key__ && "active",
-        disabled && "disabled"
-    );
 
     return (
-        <a href="#"
-            className={classes}
-            onClick={handleClick}>{children}</a>
+        <Nav.Item
+            active={context === props.__key__}
+            disabled={disabled}
+            onClick={handleClick}
+            children={children} />
     );
 }
 
@@ -124,39 +121,45 @@ export default class Tabs extends React.Component<TabsProps, TabsState> {
         } = this.props;
         const content: any[] = [];
         const tabs = React.Children.map(children, (c, i) => {
-            if (
-                React.isValidElement(c) &&
-                c.type === TabPane
-            ) {
-                content.push(
-                    React.cloneElement(
-                        c,
-                        {
-                            __key__: c.key
-                        }
-                    )
-                );
+            if (React.isValidElement(c)) {
+                const tab = c.props.tab;
 
-                return (
-                    <NavLink
-                        disabled={c.props.disabled}
-                        __key__={String(c.key == undefined ? i : c.key)}
-                        onClick={this.handleClickTab}>
-                        {c.props.tab}
-                    </NavLink>
-                );
+                if (c.type === TabPane) {
+                    content.push(
+                        React.cloneElement(
+                            c,
+                            {
+                                __key__: c.key
+                            }
+                        )
+                    );
+                    // if tab is ReactElement, just render it(eg: dropdown etc)
+                    if (React.isValidElement(tab)) {
+                        return tab;
+                    }
+
+                    return (
+                        <NavLink
+                            disabled={c.props.disabled}
+                            __key__={String(c.key == undefined ? i : c.key)}
+                            onClick={this.handleClickTab}>
+                            {tab}
+                        </NavLink>
+                    );
+                }
+
+                content.push(c);
             }
 
             content.push(c);
 
             return null;
         });
-        const _tabs = (<div className={
-            classNames(
-                "nav",
-                pill ? "nav-pills" : "nav-tabs"
-            )
-        }>{tabs}</div>);
+        const _tabs = (
+            <Nav pill={pill} tab>
+                {tabs}
+            </Nav>
+        );;
 
         return [_tabs, content];
     }
