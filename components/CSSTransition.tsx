@@ -2,7 +2,6 @@ import * as React from "react";
 import { findDOMNode } from "react-dom";
 import {
     handleFuncProp,
-    emulateTransitionEnd,
     reflow
 } from './utils';
 
@@ -128,16 +127,7 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
         );
 
         if (timeout == undefined) {
-            if (node) {
-                this.cancelTransition = emulateTransitionEnd(node, () => {
-                    this.cancelTransition = null;
-                    enteredCallback();
-                });
-            } else {
-                setTimeout(enteredCallback, 0);
-            }
-
-            return;
+            return setTimeout(enteredCallback, 0);
         }
 
         this.clearTimer();
@@ -182,16 +172,7 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
         );
 
         if (timeout == undefined) {
-            if (node) {
-                this.cancelTransition = emulateTransitionEnd(node, () => {
-                    exitedCallback();
-                    this.cancelTransition = null;
-                });
-            } else {
-                setTimeout(exitedCallback, 0);
-            }
-            
-            return;
+            return setTimeout(exitedCallback, 0);
         }
 
         this.clearTimer();
