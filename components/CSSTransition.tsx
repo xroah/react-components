@@ -19,12 +19,12 @@ export interface CSSTransitionProps extends React.HTMLAttributes<HTMLElement> {
     timeout?: number;
     unmountOnExit?: boolean;
     children: ((state: stateType) => React.ReactElement) | React.ReactElement;
-    onEnter?: (node?: HTMLElement) => void;
-    onEntering?: (node?: HTMLElement) => void;
-    onEntered?: (node?: HTMLElement) => void;
-    onExit?: (node?: HTMLElement) => void;
-    onExiting?: (node?: HTMLElement) => void;
-    onExited?: (node?: HTMLElement) => void;
+    onEnter?: (node: HTMLElement) => void;
+    onEntering?: (node: HTMLElement) => void;
+    onEntered?: (node: HTMLElement) => void;
+    onExit?: (node: HTMLElement) => void;
+    onExiting?: (node: HTMLElement) => void;
+    onExited?: (node: HTMLElement) => void;
 }
 
 interface State {
