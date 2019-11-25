@@ -14,11 +14,11 @@ const UNMOUNTED = "unmounted";
 
 type stateType = "entering" | "entered" | "exiting" | "exited";
 
-interface CSSTransitionProps extends React.HTMLAttributes<HTMLElement> {
+export interface CSSTransitionProps extends React.HTMLAttributes<HTMLElement> {
     in: boolean;
     timeout?: number;
     unmountOnExit?: boolean;
-    children: (state: stateType) => React.ReactElement;
+    children: ((state: stateType) => React.ReactElement) | React.ReactElement;
     onEnter?: (node?: HTMLElement) => void;
     onEntering?: (node?: HTMLElement) => void;
     onEntered?: (node?: HTMLElement) => void;
@@ -233,7 +233,11 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
         delete otherProps.onExiting;
         delete otherProps.onExited;
 
-        return children(status);
+       if (typeof children === "function") {
+            return children(status);
+       }
+
+       return React.Children.only(children);
     }
 
 }
