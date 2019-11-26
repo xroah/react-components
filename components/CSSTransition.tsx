@@ -5,13 +5,15 @@ import {
     reflow
 } from './utils';
 
+const ENTER = "enter";
 const ENTERING = "entering";
 const ENTERED = "entered";
+const EXIT = "exit";
 const EXITING = "exiting";
 const EXITED = "exited";
 const UNMOUNTED = "unmounted";
 
-type stateType = "entering" | "entered" | "exiting" | "exited";
+type stateType = "enter" | "entering" | "entered" | "exit" | "exiting" | "exited";
 
 export interface CSSTransitionProps extends React.HTMLAttributes<HTMLElement> {
     in: boolean;
@@ -33,7 +35,7 @@ interface State {
 export default class CSSTransition extends React.Component<CSSTransitionProps, State> {
 
     timer: NodeJS.Timeout | null = null;
-    cancelTransition: Function | null = null;
+    next: Function | null = null;
 
     constructor(props: CSSTransitionProps) {
         super(props);
@@ -61,24 +63,27 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
             props: { in: _in },
             state: { status }
         } = this;
+        const enterSet = new Set([ENTER, ENTERING, ENTERED]);
+        const exitSet = new Set([EXIT, EXITING, EXITED]);
 
         if (_in !== prevProps.in) {
-            if (this.cancelTransition) {
-                this.cancelTransition();
-                this.cancelTransition = null;
-            }
+            this.next = null;
 
             if (_in) {
-                if (status !== ENTERING && status !== ENTERED) {
-                    status = ENTERING;
+                if (!enterSet.has(status)) {
+                    status = ENTER;
                 }
             } else {
-                if (status !== EXITED && status !== EXITING) {
+                if (!exitSet.has(status)) {
                     status = EXITING;
                 }
             }
 
-            this.updateStatus(status);
+            this.updateStatus(status as stateType);
+        } else {
+            if (this.next) {
+                this.next();
+            }
         }
     }
 
@@ -100,11 +105,9 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
 
     handleEnter(node: HTMLElement) {
         const {
-            onEnter,
             onEntering,
             onEntered,
             timeout,
-            unmountOnExit
         } = this.props;
         const enteredCallback = () => {
             this.setState({
@@ -112,35 +115,27 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
             });
             handleFuncProp(onEntered)(node);
         };
+        this.next = () => {
+            this.next = null;
+            if (timeout == undefined) {
+                return setTimeout(enteredCallback, 0);
+            }
 
-        handleFuncProp(onEnter)(node);
-
-        if (node && unmountOnExit) {
-            reflow(node);
-        }
-
-        this.setState(
-            {
-                status: ENTERING
-            },
-            () => handleFuncProp(onEntering)(node)
-        );
-
-        if (timeout == undefined) {
-            return setTimeout(enteredCallback, 0);
+            this.timer = setTimeout(() => {
+                enteredCallback();
+                this.clearTimer();
+            }, timeout);
         }
 
         this.clearTimer();
-
-        this.timer = setTimeout(() => {
-            enteredCallback();
-            this.clearTimer();
-        }, timeout);
+        this.setState({
+            status: ENTERING
+        });
+        handleFuncProp(onEntering)(node);
     }
 
     handleExit(node: HTMLElement) {
         const {
-            onExit,
             onExiting,
             onExited,
             timeout,
@@ -162,34 +157,43 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
             );
             handleFuncProp(onExited)(node);
         };
+        this.next = () => {
+            this.next = null;
+            if (timeout == undefined) {
+                return setTimeout(exitedCallback, 0);
+            }
 
-        handleFuncProp(onExit)(node);
-        this.setState(
-            {
-                status: EXITING
-            },
-            () => handleFuncProp(onExiting)(node)
-        );
-
-        if (timeout == undefined) {
-            return setTimeout(exitedCallback, 0);
-        }
+            this.timer = setTimeout(() => {
+                exitedCallback();
+                this.clearTimer();
+            }, timeout);
+        };
 
         this.clearTimer();
-
-        this.timer = setTimeout(() => {
-            exitedCallback();
-            this.clearTimer();
-        }, timeout);
+        this.setState({
+            status: EXITING
+        });
+        handleFuncProp(onExiting)(node)
     }
 
     updateStatus(status: stateType) {
+        const { onEnter, onExit } = this.props;
         const node = findDOMNode(this);
 
-        if (status === ENTERING) {
-            this.handleEnter(node as HTMLElement);
+        this.setState({
+            status
+        });
+
+        if (status === ENTER) {
+            this.next = () => {
+                setTimeout(() => this.handleEnter(node as HTMLElement));
+            };
+            handleFuncProp(onEnter)(node);
         } else if (status === EXITING) {
-            this.handleExit(node as HTMLElement);
+            this.next = () => {
+                setTimeout(() => this.handleExit(node as HTMLElement));
+            }
+            handleFuncProp(onExit)(node);
         }
     }
 
@@ -214,11 +218,11 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
         delete otherProps.onExiting;
         delete otherProps.onExited;
 
-       if (typeof children === "function") {
+        if (typeof children === "function") {
             return children(status);
-       }
+        }
 
-       return React.Children.only(children);
+        return React.Children.only(children);
     }
 
 }

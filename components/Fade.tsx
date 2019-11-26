@@ -10,20 +10,20 @@ export default function Fade(props: FadeProps) {
     const {
         children,
         hidingClass,
-        onEnter,
+        // onEnter,
         ...otherProps
     } = props;
-    const handleEnter = (node: HTMLElement) => {
+    /* const handleEnter = (node: HTMLElement) => {
         if (node && hidingClass) {
             node.classList.remove(hidingClass);
             reflow(node);
         }
 
         handleFuncProp(onEnter)(node);
-    };
+    }; */
 
     return (
-        <CSSTransition onEnter={handleEnter} {...otherProps}>
+        <CSSTransition /* onEnter={handleEnter}  */{...otherProps}>
             {
                 state => {
                     const child = React.Children.only(children) as React.ReactElement;
