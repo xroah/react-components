@@ -1,6 +1,6 @@
 import * as React from "react";
 import CSSTransition, { CSSTransitionProps } from "./CSSTransition";
-import { classNames, handleFuncProp, reflow } from "./utils";
+import { classNames } from "./utils";
 
 export interface FadeProps extends CSSTransitionProps {
     hidingClass?: string;
@@ -19,12 +19,15 @@ export default function Fade(props: FadeProps) {
                 state => {
                     const child = React.Children.only(children) as React.ReactElement;
                     const className = child.props.className;
-                    let classes = classNames(className, "fade");
+                    let classes = classNames(className, otherProps.timeout && "fade");
+                    let exitedSet = new Set(["exit", "exiting", "exited"]);
 
                     if (state === "entering" || state === "entered") {
                         classes = classNames(classes, "show");
-                    } else if (state === "exited") {
-                        if (hidingClass) {
+                    } else if (exitedSet.has(state)) {
+                        classes = classNames(classes);
+
+                        if (state === "exited") {
                             classes = classNames(className, hidingClass);
                         }
                     }
