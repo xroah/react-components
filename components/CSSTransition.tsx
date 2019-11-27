@@ -72,7 +72,7 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
                 }
             } else {
                 if (!exitSet.has(status)) {
-                    status = EXITING;
+                    status = EXIT;
                 }
             }
 
@@ -182,14 +182,10 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
         });
 
         if (status === ENTER) {
-            this.next = () => {
-                setTimeout(() => this.handleEnter(node as HTMLElement));
-            };
+            this.next = () => setTimeout(() => this.handleEnter(node as HTMLElement));
             handleFuncProp(onEnter)(node);
-        } else if (status === EXITING) {
-            this.next = () => {
-                setTimeout(() => this.handleExit(node as HTMLElement));
-            }
+        } else if (status === EXIT) {
+            this.next = () => setTimeout(() => this.handleExit(node as HTMLElement));
             handleFuncProp(onExit)(node);
         }
     }
