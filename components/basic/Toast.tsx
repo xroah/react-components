@@ -1,7 +1,7 @@
 import * as React from "react";
 import PropTypes from "prop-types";
 import Fade from "../Fade";
-import { classNames } from "../utils";
+import { classNames, handleFuncProp } from "../utils";
 
 export interface ToastProps extends React.HTMLAttributes<HTMLElement> {
     title?: string;
@@ -14,59 +14,30 @@ export interface ToastProps extends React.HTMLAttributes<HTMLElement> {
     delay?: number;
     fade?: boolean;
     visible?: boolean;
-    defaultVisible?: boolean;
     onClose?: Function;
 }
 
-interface ToastState {
-    visible?: boolean;
-}
-
-export default class Toast extends React.Component<ToastProps, ToastState> {
+export default class Toast extends React.Component<ToastProps> {
 
     timer: NodeJS.Timeout | null = null;
 
-    constructor(props: ToastProps) {
-        super(props);
-
-        let visible = props.defaultVisible;
-
-        if (props.visible !== undefined) {
-            visible = props.visible;
-        }
-
-        this.state = {
-            visible
-        };
-    }
-
-    static getDerivedStateFromProps(nextProps: ToastProps, nextState: ToastState) {
-        if ("visible" in nextProps) {
-            return {
-                visible: nextProps.visible
-            };
-        }
-
-        return nextState;
-    }
-
     componentDidMount() {
-        if (this.state.visible) this.componentDidUpdate();
+        if (this.props.visible) this.componentDidUpdate();
     }
 
     componentDidUpdate() {
         const {
             autoHide,
-            delay = 3000
+            delay = 3000,
+            visible,
+            onClose
         } = this.props;
 
-        if (this.state.visible) {
+        if (visible) {
             if (autoHide && !this.timer) {
                 this.timer = setTimeout(
                     () => {
-                        this.setState({
-                            visible: false
-                        });
+                        this.handleClose();
                         this.timer = null;
                     },
                     delay);
@@ -80,9 +51,7 @@ export default class Toast extends React.Component<ToastProps, ToastState> {
     }
 
     handleClose = () => {
-        this.setState({
-            visible: false
-        });
+        handleFuncProp(this.props.onClose)();
     };
 
     renderHeader() {
@@ -140,10 +109,10 @@ export default class Toast extends React.Component<ToastProps, ToastState> {
         const {
             className,
             children,
+            visible,
             ...otherProps
         } = this.props;
 
-        delete otherProps.visible;
         delete otherProps.title;
         delete otherProps.titleImg;
         delete otherProps.titleMsg;
@@ -156,7 +125,7 @@ export default class Toast extends React.Component<ToastProps, ToastState> {
 
         return (
             <Fade
-                in={!!this.state.visible}
+                in={!!visible}
                 hidingClass="hide"
                 timeout={300}
                 {...otherProps}>
