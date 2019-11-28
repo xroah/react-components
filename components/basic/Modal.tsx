@@ -21,6 +21,7 @@ export interface ModalProps extends React.HTMLAttributes<HTMLElement> {
     centered?: boolean;
     size?: "xl" | "lg" | "sm";
     backdrop?: boolean | "static";
+    scrollable?: boolean;
     onOk?: (event: React.MouseEvent) => void;
     onCancel?: (event: React.MouseEvent) => void;
 }
@@ -45,10 +46,12 @@ export default class Modal extends React.Component<ModalProps> {
         footer: PropTypes.node,
         fade: PropTypes.bool,
         centered: PropTypes.bool,
+        scrollable: PropTypes.bool,
         size: PropTypes.oneOf(["xl", "lg", "sm"])
     };
 
     backdropContainer: HTMLElement | null = null;
+    dialogRef = React.createRef<HTMLDivElement>();
 
     componentWillUnmount() {
         let backdrop = this.backdropContainer;
@@ -58,9 +61,22 @@ export default class Modal extends React.Component<ModalProps> {
         }
     }
 
-    handleClickBackdrop = (evt: React.MouseEvent) => {
-        if (this.props.backdrop !== "static") {
-            this.handleCancel(evt);
+    handleClickBackdrop = (evt: React.MouseEvent<HTMLDivElement>) => {
+        const {
+            props: {
+                backdrop
+            },
+            dialogRef: { current },
+            handleCancel
+        } = this;
+
+        if (backdrop !== "static") {
+            const target = evt.target;
+
+            //click outside of the dialog, close the modal
+            if (current && current !== target && !current.contains(target as Node)) {
+                handleCancel(evt);
+            }
         }
     }
 
@@ -80,7 +96,6 @@ export default class Modal extends React.Component<ModalProps> {
     handleExited = (node: HTMLElement) => {
         node.style.display = "none";
         document.body.classList.remove("modal-open");
-        console.log("exited")
     }
 
     render() {
@@ -98,18 +113,21 @@ export default class Modal extends React.Component<ModalProps> {
             title,
             children,
             className,
+            backdrop,
+            scrollable,
             ...otherProps
         } = this.props;
 
         delete otherProps.onOk;
         delete otherProps.onCancel;
-        delete otherProps.backdrop;
 
         const classes = classNames(className, "modal");
+        const PREFIX = "modal-dialog"; 
         const dialogClasses = classNames(
-            "modal-dialog",
+            PREFIX,
             size && `modal-${size}`,
-            centered && `modal-dialog-centered`
+            centered && `${PREFIX}-centered`,
+            scrollable && `${PREFIX}-scrollable`
         );;
         let _footer = footer;
         let timeout = fade ? 300 : 0;
@@ -146,9 +164,13 @@ export default class Modal extends React.Component<ModalProps> {
                     in={!!visible}
                     timeout={timeout}
                     onEnter={this.handleEnter}
+                    onEntered={this.handleEnter}
                     onExited={this.handleExited}>
-                    <div className={classes} {...otherProps}>
-                        <div className={dialogClasses}>
+                    <div
+                        className={classes}
+                        onClick={this.handleClickBackdrop}
+                        {...otherProps}>
+                        <div className={dialogClasses} ref={this.dialogRef}>
                             <div className="modal-content">
                                 <div className="modal-header">
                                     <h5 className="modal-title">{title}</h5>
@@ -171,9 +193,13 @@ export default class Modal extends React.Component<ModalProps> {
                         </div>
                     </div>
                 </Fade>
-                <Fade timeout={timeout} in={!!visible} unmountOnExit>
-                    <div className="modal-backdrop" />
-                </Fade>
+                {
+                    backdrop && (
+                        <Fade timeout={timeout} in={!!visible} unmountOnExit>
+                            <div className="modal-backdrop" />
+                        </Fade>
+                    )
+                }
             </>,
             this.backdropContainer
         );
