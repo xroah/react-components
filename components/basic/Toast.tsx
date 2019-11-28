@@ -29,9 +29,13 @@ export default class Toast extends React.Component<ToastProps> {
         const {
             autoHide,
             delay = 3000,
-            visible,
-            onClose
+            visible
         } = this.props;
+
+        if (this.timer) {
+            clearTimeout(this.timer);
+            this.timer = null;
+        }
 
         if (visible) {
             if (autoHide && !this.timer) {
@@ -41,11 +45,6 @@ export default class Toast extends React.Component<ToastProps> {
                         this.timer = null;
                     },
                     delay);
-            }
-        } else {
-            if (this.timer) {
-                clearTimeout(this.timer);
-                this.timer = null;
             }
         }
     }
@@ -72,11 +71,11 @@ export default class Toast extends React.Component<ToastProps> {
 
         let img = titleImg;
 
-        if (img && !React.isValidElement(img)) {
+        if (typeof img === "string") {
             img = (
                 <img
                     className="rounded mr-2"
-                    src={img as string}
+                    src={img}
                     width={titleImgSize}
                     height={titleImgSize} />
             );
