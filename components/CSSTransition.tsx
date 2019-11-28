@@ -55,6 +55,15 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
         };
     }
 
+    componentDidMount() {
+        const {
+            onEntered,
+            in: _in
+        } = this.props
+
+        if (_in) handleFuncProp(onEntered)(findDOMNode(this));
+    }
+
     componentDidUpdate(prevProps: CSSTransitionProps) {
         let {
             props: { in: _in },
