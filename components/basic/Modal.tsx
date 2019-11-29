@@ -96,22 +96,20 @@ export default class Modal extends React.Component<ModalProps> {
         handleFuncProp(this.props.onCancel)(evt);
     }
 
-    handleEnter = (node: HTMLElement) => {
-        node.style.display = "block";
-        document.body.classList.add("modal-open");
+    handleEnter = () => {
         handleFuncProp(this.props.onShow)();
     }
 
     handleEntered = () => {
         handleFuncProp(this.props.onShown)();
+        document.body.classList.add("modal-open");
     }
 
     handleExit = () => {
         handleFuncProp(this.props.onHide)();
     }
 
-    handleExited = (node: HTMLElement) => {
-        node.style.display = "none";
+    handleExited = () => {
         document.body.classList.remove("modal-open");
         handleFuncProp(this.props.onHidden)();
     }
@@ -185,6 +183,7 @@ export default class Modal extends React.Component<ModalProps> {
                 <Fade
                     in={!!visible}
                     timeout={timeout}
+                    toggleDisplay
                     onEnter={this.handleEnter}
                     onEntered={this.handleEntered}
                     onExit={this.handleExit}

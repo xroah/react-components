@@ -4,14 +4,18 @@ import { classNames } from "./utils";
 
 export interface FadeProps extends CSSTransitionProps {
     hidingClass?: string;
+    toggleDisplay?: boolean;
 }
 
 export default function Fade(props: FadeProps) {
-    const {
+    let {
         children,
         hidingClass,
+        toggleDisplay,
+        style,
         ...otherProps
     } = props;
+    let display: any;
 
     return (
         <CSSTransition {...otherProps}>
@@ -20,19 +24,33 @@ export default function Fade(props: FadeProps) {
                     const child = React.Children.only(children) as React.ReactElement;
                     const className = child.props.className;
                     let classes = classNames(className, otherProps.timeout && "fade");
-                    let exitedSet = new Set(["exit", "exiting", "exited"]);
+                    let enterSet = new Set(["enter", "entering", "entered"]);
 
-                    if (state === "entering" || state === "entered") {
-                        classes = classNames(classes, "show");
-                    } else if (exitedSet.has(state)) {
+                    if (enterSet.has(state)) {
+                        toggleDisplay && (display = "block");
+
+                        if (state !== "enter") {
+                            classes = classNames(classes, "show");
+                        }
+                    } else {
                         classes = classNames(classes);
 
                         if (state === "exited") {
                             classes = classNames(className, hidingClass);
+                            toggleDisplay && (display = "none");
                         }
                     }
 
-                    return React.cloneElement(child, { className: classes });
+                    return React.cloneElement(
+                        child,
+                        {
+                            className: classes,
+                            style: {
+                                ...style,
+                                display
+                            }
+                        }
+                    );
                 }
             }
         </CSSTransition>
