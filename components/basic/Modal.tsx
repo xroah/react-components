@@ -103,6 +103,7 @@ export default class Modal extends React.Component<ModalProps> {
     handleEntered = () => {
         handleFuncProp(this.props.onShown)();
         document.body.classList.add("modal-open");
+        console.log("entered")
     }
 
     handleExit = () => {
@@ -183,6 +184,7 @@ export default class Modal extends React.Component<ModalProps> {
                 <Fade
                     in={!!visible}
                     timeout={timeout}
+                    appear
                     toggleDisplay
                     onEnter={this.handleEnter}
                     onEntered={this.handleEntered}

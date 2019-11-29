@@ -16,6 +16,7 @@ export interface CSSTransitionProps extends React.HTMLAttributes<HTMLElement> {
     in: boolean;
     timeout?: number;
     unmountOnExit?: boolean;
+    appear?: boolean;
     children: ((state: stateType) => React.ReactElement) | React.ReactElement;
     onEnter?: (node: HTMLElement) => void;
     onEntering?: (node: HTMLElement) => void;
@@ -37,11 +38,15 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
     constructor(props: CSSTransitionProps) {
         super(props);
 
-        const { in: _in, unmountOnExit } = props;
+        const {
+            in: _in,
+            unmountOnExit,
+            appear
+        } = props;
         let status;
 
         if (_in) {
-            status = ENTERED;
+            status = appear ? EXITED : ENTERED;
         } else {
             if (unmountOnExit) {
                 status = UNMOUNTED;
@@ -58,10 +63,17 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
     componentDidMount() {
         const {
             onEntered,
+            appear,
             in: _in
         } = this.props
 
-        if (_in) handleFuncProp(onEntered)(findDOMNode(this));
+        if (_in) {
+            if (appear) {
+                this.componentDidUpdate({ in: false } as CSSTransitionProps);
+            } else {
+                handleFuncProp(onEntered)(findDOMNode(this));
+            }
+        }
     }
 
     componentDidUpdate(prevProps: CSSTransitionProps) {
@@ -71,7 +83,7 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
         } = this;
         const enterSet = new Set([ENTER, ENTERING, ENTERED]);
         const exitSet = new Set([EXIT, EXITING, EXITED]);
-
+        
         if (_in !== prevProps.in) {
             this.next = null;
 
@@ -224,7 +236,9 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
             return children(status);
         }
 
-        return React.Children.only(children);
+        const child = React.Children.only(children) as React.ReactElement;
+
+        return React.cloneElement(child, otherProps);
     }
 
 }
