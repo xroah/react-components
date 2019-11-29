@@ -24,6 +24,10 @@ export interface ModalProps extends React.HTMLAttributes<HTMLElement> {
     scrollable?: boolean;
     onOk?: (event: React.MouseEvent) => void;
     onCancel?: (event: React.MouseEvent) => void;
+    onShow?: Function;
+    onShown?: Function;
+    onHide?: Function;
+    onHidden?: Function;
 }
 
 export default class Modal extends React.Component<ModalProps> {
@@ -47,7 +51,11 @@ export default class Modal extends React.Component<ModalProps> {
         fade: PropTypes.bool,
         centered: PropTypes.bool,
         scrollable: PropTypes.bool,
-        size: PropTypes.oneOf(["xl", "lg", "sm"])
+        size: PropTypes.oneOf(["xl", "lg", "sm"]),
+        onShow: PropTypes.func,
+        onShown: PropTypes.func,
+        onHide: PropTypes.func,
+        onHidden: PropTypes.func
     };
 
     backdropContainer: HTMLElement | null = null;
@@ -91,11 +99,21 @@ export default class Modal extends React.Component<ModalProps> {
     handleEnter = (node: HTMLElement) => {
         node.style.display = "block";
         document.body.classList.add("modal-open");
+        handleFuncProp(this.props.onShow)();
+    }
+
+    handleEntered = () => {
+        handleFuncProp(this.props.onShown)();
+    }
+
+    handleExit = () => {
+        handleFuncProp(this.props.onHide)();
     }
 
     handleExited = (node: HTMLElement) => {
         node.style.display = "none";
         document.body.classList.remove("modal-open");
+        handleFuncProp(this.props.onHidden)();
     }
 
     render() {
@@ -120,6 +138,10 @@ export default class Modal extends React.Component<ModalProps> {
 
         delete otherProps.onOk;
         delete otherProps.onCancel;
+        delete otherProps.onShow;
+        delete otherProps.onShown;
+        delete otherProps.onHidden;
+        delete otherProps.onHide;
 
         const classes = classNames(className, "modal");
         const PREFIX = "modal-dialog"; 
@@ -164,7 +186,8 @@ export default class Modal extends React.Component<ModalProps> {
                     in={!!visible}
                     timeout={timeout}
                     onEnter={this.handleEnter}
-                    onEntered={this.handleEnter}
+                    onEntered={this.handleEntered}
+                    onExit={this.handleExit}
                     onExited={this.handleExited}>
                     <div
                         className={classes}
