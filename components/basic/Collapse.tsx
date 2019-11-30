@@ -1,11 +1,11 @@
 import * as React from "react";
 import PropTypes from "prop-types";
 import {
-    emulateTransitionEnd,
     handleFuncProp,
-    reflow,
-    classNames
+    classNames,
+    reflow
 } from "../utils";
+import CSSTransition from "../CSSTransition";
 
 export interface CollapseProps extends React.HTMLAttributes<HTMLDivElement> {
     isOpen?: boolean;
@@ -21,95 +21,42 @@ function getHeight(node: HTMLElement) {
 
 export default class Collapse extends React.Component<CollapseProps> {
 
-    static defaultProps = {
-        isOpen: false
-    };
-
     static propTypes = {
-        isOpen: PropTypes.bool
+        isOpen: PropTypes.bool,
+        onShow: PropTypes.func,
+        onShown: PropTypes.func,
+        onHide: PropTypes.func,
+        onHidden: PropTypes.func
+    };
+    handleEnter = () => {
+        handleFuncProp(this.props.onShow)();
+    }
+
+    handleEntering = (node: HTMLElement) => {
+        reflow(node);
+        node.style.height = `${getHeight(node)}px`;
     };
 
-    private ref: React.RefObject<HTMLDivElement> = React.createRef();
-    private cancelTransition: Function | null = null;
-
-    getRef() {
-        return this.ref.current;
+    handleEntered = (node: HTMLElement) => {
+        node.style.height = "";
+        handleFuncProp(this.props.onShown)();
     }
 
-    componentDidMount() {
-        const el = this.getRef();
-        const {isOpen} = this.props;
-
-        if (el && isOpen) {
-            el.classList.add("show");
-        }
+    handleExit = (node: HTMLElement) => {
+        node.style.height = `${getHeight(node)}px`;
+        reflow(node);
+        node.style.height = "";
+        handleFuncProp(this.props.onHide)();
     }
 
-    shouldComponentUpdate(nextProps: CollapseProps) {
-        return nextProps.isOpen !== this.props.isOpen;
-    }
-
-    handleTransitionEnd(el: HTMLElement) {
-        const {
-            onShown,
-            onHidden,
-            isOpen
-        } = this.props;
-
-        el.classList.remove("collapsing");
-        el.classList.add("collapse");
-
-        if (isOpen) {
-            el.classList.add("show");
-            el.style.height = "";
-            handleFuncProp(onShown)();
-        } else {
-            handleFuncProp(onHidden)();
-        }
-
-        this.cancelTransition = null;
-    };
-
-
-    componentDidUpdate() {
-        const {
-            isOpen,
-            onShow,
-            onHide,
-        } = this.props;
-        const el = this.getRef();
-
-        if (!el) return;
-
-        el.classList.remove("collapse", "show");
-
-        if (this.cancelTransition) {
-            this.cancelTransition();
-        }
-
-        if (isOpen) {
-            el.classList.add("collapsing");
-            handleFuncProp(onShow)();
-            reflow(el);
-            el.style.height = `${getHeight(el)}px`;
-            this.cancelTransition = emulateTransitionEnd(el, () => {
-                this.handleTransitionEnd(el);
-            });
-        } else {
-            el.style.height = `${getHeight(el)}px`;
-            reflow(el);
-            el.classList.add("collapsing");
-            el.style.height = "";
-            handleFuncProp(onHide)();
-            this.cancelTransition = emulateTransitionEnd(el, () => {
-                this.handleTransitionEnd(el);
-            });
-        }
+    handleExited = () => {
+        handleFuncProp(this.props.onHidden)();
     }
 
     render() {
         const {
             className,
+            isOpen,
             ...otherProps
         } = this.props;
 
@@ -117,17 +64,42 @@ export default class Collapse extends React.Component<CollapseProps> {
         delete otherProps.onShown;
         delete otherProps.onHide;
         delete otherProps.onHidden;
-        delete otherProps.isOpen;
 
         return (
-            <>
-                <div
-                    className={
-                        classNames(className, "collapse")
+            <CSSTransition
+                in={!!isOpen}
+                timeout={350}
+                appear
+                onEnter={this.handleEnter}
+                onEntering={this.handleEntering}
+                onEntered={this.handleEntered}
+                onExit={this.handleExit}
+                onExited={this.handleExited}>
+                {
+                    state => {
+                        let classes = className;
+                        let enterSet = new Set(["enter", "entering", "entered"]);
+
+                        if (enterSet.has(state)) {
+                            classes = classNames(className, "collapsing");
+
+                            if (state === "entered") {
+                                classes = classNames(className, "collapse", "show");
+                            }
+                        } else {
+                            classes = classNames(className, "collapsing");
+console.log(state)
+                            if (state === "exited") {
+                                classes = classNames(className, "collapse");
+                            }
+                        }
+
+                        return (
+                            <div className={classes} {...otherProps} />
+                        );
                     }
-                    ref={this.ref}
-                    {...otherProps}/>
-            </>
+                }
+            </CSSTransition>
         );
     }
 
