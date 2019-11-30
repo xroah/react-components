@@ -1,6 +1,6 @@
 import * as React from "react";
-import { Transition } from "react-transition-group";
 import PropTypes from "prop-types";
+import Fade from "../Fade";
 import {
     classNames,
     variantType,
@@ -61,6 +61,12 @@ export default class Alert extends React.Component<AlertProps> {
         } = this.props;
         let button: React.ReactNode = null;
         let duration = fade ? 300 : 0;
+        const classes = classNames(
+            className,
+            "alert",
+            variant && `alert-${variant}`,
+            dismissible && "alert-dismissible"
+        );
 
         if (dismissible) {
             button = (
@@ -74,30 +80,17 @@ export default class Alert extends React.Component<AlertProps> {
         }
 
         return (
-            <Transition
-                in={visible}
+            <Fade
+                in={!!visible}
                 timeout={duration}
                 onExited={this.handleExited}
                 unmountOnExit={true}>
-                {
-                    state => {
-                        const classes = classNames(
-                            className,
-                            "alert",
-                            variant && `alert-${variant}`,
-                            fade && "fade",
-                            dismissible && "alert-dismissible",
-                            state === "entered" ? "show" : ""
-                        );
-                        return (
-                            <div className={classes} {...otherProps} role={"alert"}>
-                                {children}
-                                {button}
-                            </div>
-                        );
-                    }
-                }
-            </Transition>
+
+                <div className={classes} {...otherProps} role={"alert"}>
+                    {children}
+                    {button}
+                </div>
+            </Fade>
         );
     }
 
