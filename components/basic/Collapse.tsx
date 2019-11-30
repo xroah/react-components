@@ -88,7 +88,7 @@ export default class Collapse extends React.Component<CollapseProps> {
                             }
                         } else {
                             classes = classNames(className, "collapsing");
-console.log(state)
+
                             if (state === "exited") {
                                 classes = classNames(className, "collapse");
                             }
