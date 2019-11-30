@@ -79,11 +79,13 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
     componentDidUpdate(prevProps: CSSTransitionProps) {
         let {
             props: { in: _in },
-            state: { status }
+            state: { status },
+            next,
+            nextTick
         } = this;
         const enterSet = new Set([ENTER, ENTERING, ENTERED]);
         const exitSet = new Set([EXIT, EXITING, EXITED]);
-        
+
         if (_in !== prevProps.in) {
             this.next = null;
 
@@ -99,8 +101,8 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
 
             this.updateStatus(status as stateType);
         } else {
-            if (this.next) {
-                this.next();
+            if (next) {
+                nextTick(next);
             }
         }
     }
@@ -121,6 +123,10 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
         }
     }
 
+    nextTick(callback: Function) {
+        setTimeout(callback, 0);
+    }
+
     handleEnter(node: HTMLElement) {
         const {
             onEntering,
@@ -136,7 +142,7 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
         this.next = () => {
             this.next = null;
             if (timeout == undefined) {
-                return setTimeout(enteredCallback, 0);
+                return this.nextTick(enteredCallback);
             }
 
             this.timer = setTimeout(() => {
@@ -178,7 +184,7 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
         this.next = () => {
             this.next = null;
             if (timeout == undefined) {
-                return setTimeout(exitedCallback, 0);
+                return this.nextTick(exitedCallback);
             }
 
             this.timer = setTimeout(() => {
@@ -196,17 +202,17 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
 
     updateStatus(status: stateType) {
         const { onEnter, onExit } = this.props;
-        const node = findDOMNode(this);
+        const node = findDOMNode(this) as HTMLElement;
 
         this.setState({
             status
         });
 
         if (status === ENTER) {
-            this.next = () => setTimeout(() => this.handleEnter(node as HTMLElement));
+            this.next = () => this.handleEnter(node);
             handleFuncProp(onEnter)(node);
         } else if (status === EXIT) {
-            this.next = () => setTimeout(() => this.handleExit(node as HTMLElement));
+            this.next = () => this.handleExit(node);
             handleFuncProp(onExit)(node);
         }
     }
