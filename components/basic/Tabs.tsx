@@ -2,7 +2,7 @@ import * as React from "react";
 import PropTypes from "prop-types";
 import TabPane from "./TabPane";
 import Nav from "./Nav";
-import { TabContext, handleFuncProp } from "../utils";
+import { TabContext, handleFuncProp, classNames } from "../utils";
 
 export interface TabsProps extends React.HTMLAttributes<HTMLElement> {
     defaultActiveKey?: string | number;
@@ -40,11 +40,13 @@ function NavLink(props: NavLinkProps) {
     const context = React.useContext(TabContext);
 
     return (
-        <Nav.Item
-            active={context === props.__key__}
-            disabled={disabled}
-            onClick={handleClick}
-            children={children} />
+        <Nav.Item tag="div">
+            <Nav.Link
+                active={context === props.__key__}
+                disabled={disabled}
+                onClick={handleClick}
+                children={children} />
+        </Nav.Item>
     );
 }
 
@@ -135,7 +137,16 @@ export default class Tabs extends React.Component<TabsProps, TabsState> {
                     );
                     // if tab is ReactElement, just render it(eg: dropdown etc)
                     if (React.isValidElement(tab)) {
-                        return tab;
+                        const _tab = tab as React.ReactElement;
+                        return React.cloneElement(
+                            _tab,
+                            {
+                                className: classNames(
+                                    _tab.props.className,
+                                    "nav-item"
+                                )
+                            }
+                        );
                     }
 
                     return (
@@ -156,7 +167,7 @@ export default class Tabs extends React.Component<TabsProps, TabsState> {
             return null;
         });
         const _tabs = (
-            <Nav pill={pill} tab>
+            <Nav pill={pill} tab tag="div">
                 {tabs}
             </Nav>
         );;

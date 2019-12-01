@@ -1,5 +1,6 @@
 import * as React from "react";
 import PropTypes from "prop-types";
+import NavLink from "./NavLink";
 import NavItem from "./NavItem";
 import { classNames } from "../utils";
 
@@ -9,6 +10,7 @@ export interface NavProps extends React.HTMLAttributes<HTMLElement> {
     pill?: boolean;
     fill?: boolean;
     tab?: boolean;
+    tag?: string;
 }
 
 export default function Nav(props: NavProps) {
@@ -19,6 +21,7 @@ export default function Nav(props: NavProps) {
         pill,
         fill,
         tab,
+        tag = "ul",
         ...otherProps
     } = props;
     const alignmentMap: any = {
@@ -26,17 +29,19 @@ export default function Nav(props: NavProps) {
         right: "justify-content-end"
     };
 
-    return (
-        <nav className={
-            classNames(
+    return React.createElement(
+        tag,
+        {
+            className: classNames(
                 className,
                 "nav",
                 pill ? "nav-pills" : tab ? "nav-tabs" : "",
                 alignment && alignmentMap[alignment],
                 vertical && "flex-column",
                 fill && "nav-fill"
-            )
-        } {...otherProps} />
+            ),
+            ...otherProps
+        }
     );
 }
 
@@ -45,6 +50,9 @@ Nav.propTypes = {
     vertical: PropTypes.bool,
     pill: PropTypes.bool,
     fill: PropTypes.bool,
-    tab: PropTypes.bool
+    tab: PropTypes.bool,
+    tag: PropTypes.string
 };
+
+Nav.Link = NavLink;
 Nav.Item = NavItem;
