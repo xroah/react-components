@@ -11,6 +11,7 @@ export interface NavProps extends React.HTMLAttributes<HTMLElement> {
     fill?: boolean;
     tab?: boolean;
     tag?: string;
+    navbar?: boolean;
 }
 
 export default function Nav(props: NavProps) {
@@ -22,6 +23,7 @@ export default function Nav(props: NavProps) {
         fill,
         tab,
         tag = "ul",
+        navbar,
         ...otherProps
     } = props;
     const alignmentMap: any = {
@@ -34,7 +36,7 @@ export default function Nav(props: NavProps) {
         {
             className: classNames(
                 className,
-                "nav",
+                navbar ? "navbar-nav" :"nav",
                 pill ? "nav-pills" : tab ? "nav-tabs" : "",
                 alignment && alignmentMap[alignment],
                 vertical && "flex-column",
