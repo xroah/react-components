@@ -86,7 +86,7 @@ export default class Col extends React.Component<ColProps> {
             this.handleOffsetOrOrder("offset", offset),
             this.handleOffsetOrOrder("order", order),
             this.handleSpan(prefix, span)
-        ].join(" ")
+        ];
     }
 
     render() {
@@ -107,7 +107,7 @@ export default class Col extends React.Component<ColProps> {
             this.handleOffsetOrOrder("order", order),
             this.handleOffsetOrOrder("offset", offset)
         );
-        let sizeClasses: string[] = [];
+        let sizeClasses: any[] = [];
         [
             ["sm", sm],
             ["md", md],
