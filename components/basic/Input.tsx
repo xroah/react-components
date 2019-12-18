@@ -19,7 +19,7 @@ const Input = React.forwardRef(
         children,
         ...otherProps
     }: InputProps, ref: React.Ref<HTMLInputElement>) => {
-        const classes = classNames(className, "form-control");
+        const classes = classNames(className, className?.includes("form-control") ? "" : "form-control");
         const input = (
             <input
                 ref={ref}
