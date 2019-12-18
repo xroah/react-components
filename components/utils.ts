@@ -159,6 +159,7 @@ export function getWindowSize() {
 export const AccordionContext = React.createContext(new Set());
 export const OverlayContext = React.createContext({ close: () => { } });
 export const TabContext = React.createContext("");
+export const FormGroupContext = React.createContext(false);
 export type variantType = "primary"
     | "secondary"
     | "success"
