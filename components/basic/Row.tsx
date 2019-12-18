@@ -7,6 +7,7 @@ export interface RowProps extends React.HTMLAttributes<HTMLElement> {
     noGutters?: boolean;
     alignment?: "top" | "center" | "bottom";
     justify?: "left" | "center" | "right" | "between" | "around";
+    form?: boolean;
 }
 
 export default function Row(props: RowProps) {
@@ -16,6 +17,7 @@ export default function Row(props: RowProps) {
         noGutters,
         alignment,
         justify,
+        form,
         ...otherProps
     } = props;
     const ALIGN_PREFIX = "align-items";
@@ -38,7 +40,7 @@ export default function Row(props: RowProps) {
         {
             className: classNames(
                 className,
-                "row",
+                form ? "form-row" : "row",
                 noGutters && "no-gutters",
                 alignment && alignmentMap[alignment],
                 justify && justifyMap[justify]
@@ -55,5 +57,6 @@ Row.propTypes = {
     tag: PropTypes.elementType,
     noGutters: PropTypes.bool,
     alignment: PropTypes.oneOf(["top", "center", "bottom"]),
-    justify: PropTypes.oneOf(["left", "center", "right", "between", "around"])
+    justify: PropTypes.oneOf(["left", "center", "right", "between", "around"]),
+    form: PropTypes.bool
 };
