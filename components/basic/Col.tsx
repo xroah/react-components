@@ -22,19 +22,22 @@ export interface ColProps extends React.HTMLAttributes<HTMLElement> {
     xl?: sizeType;
 }
 
+export const sizePropObject = PropTypes.shape({
+    span: PropTypes.oneOfType([
+        PropTypes.oneOf(["auto"]),
+        PropTypes.number
+    ]),
+    order: PropTypes.number,
+    offset: PropTypes.number
+});
+
 const sizeProp = PropTypes.oneOfType([
     PropTypes.bool,
     PropTypes.number,
     PropTypes.oneOf(["auto"]),
-    PropTypes.shape({
-        span: PropTypes.oneOfType([
-            PropTypes.oneOf(["auto"]),
-            PropTypes.number
-        ]),
-        order: PropTypes.number,
-        offset: PropTypes.number
-    })
+    sizePropObject
 ]);
+
 export default class Col extends React.Component<ColProps> {
 
     static propTypes = {
