@@ -118,5 +118,7 @@ FormItem.propTypes = {
     label: PropTypes.string,
     labelCol: colProp,
     wrapperCol: colProp,
-    htmlFor: PropTypes.string
+    htmlFor: PropTypes.string,
+    size: PropTypes.oneOf(["sm", "lg"]),
+    help: PropTypes.string
 };
