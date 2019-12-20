@@ -25,6 +25,8 @@ export interface FormItemProps extends React.HTMLAttributes<HTMLElement> {
     wrapperCol?: FormCol;
     label?: string;
     htmlFor?: string;
+    help?: string;
+    size?: "lg" | "sm";
 }
 
 export default function FormItem(props: FormItemProps) {
@@ -36,6 +38,8 @@ export default function FormItem(props: FormItemProps) {
         labelCol,
         wrapperCol,
         label,
+        help,
+        size,
         ...otherProps
     } = props;
 
@@ -44,7 +48,9 @@ export default function FormItem(props: FormItemProps) {
     let _children = children;
 
     if (children && React.isValidElement(children)) {
-        let id = children.props.id;
+        let { id, className } = children.props;
+        const PREFIX = "form-control";
+
         if (id) {
             if (!_for) {
                 _for = id;
@@ -61,9 +67,19 @@ export default function FormItem(props: FormItemProps) {
             children,
             {
                 ...children.props,
-                id
+                id,
+                className: classNames(className, PREFIX, size && `${PREFIX}-${size}`)
             }
         );
+
+        if (help) {
+            _children = (
+                <>
+                    {_children}
+                    <small className="form-text text-muted">{help}</small>
+                </>
+            );
+        }
     }
 
     if (label) {
