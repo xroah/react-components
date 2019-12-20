@@ -1,6 +1,7 @@
 import * as React from "react";
 import PropTypes from "prop-types";
-import { classNames, createComponentByClass } from "../utils";
+import { classNames } from "../utils";
+import InputGroup from "./InputGroup";
 
 export interface InputProps extends React.HtmlHTMLAttributes<HTMLInputElement> {
     prepend?: React.ReactNode;
@@ -27,23 +28,25 @@ const Input = React.forwardRef(
                 className={classes}
                 {...otherProps} />
         );
-        const inputWithAddons = (<>
-            {
-                prepend != undefined && (
-                    <div className="input-group-prepend">
-                        {prepend}
-                    </div>
-                )
-            }
-            {input}
-            {
-                append != undefined && (
-                    <div className="input-group-append">
-                        {append}
-                    </div>
-                )
-            }
-        </>);
+        const inputWithAddons = (
+            <>
+                {
+                    prepend != undefined && (
+                        <div className="input-group-prepend">
+                            {prepend}
+                        </div>
+                    )
+                }
+                {input}
+                {
+                    append != undefined && (
+                        <div className="input-group-append">
+                            {append}
+                        </div>
+                    )
+                }
+            </>
+        );
         if (prepend == undefined && append == undefined) {
             return input;
         }
@@ -67,39 +70,6 @@ Input.propTypes = {
 };
 Input.displayName = "Input";
 
-Input.Group = function InputGroup(props: React.HTMLAttributes<HTMLElement>) {
-    const {
-        children,
-        className,
-        ...otherProps
-    } = props;
-    //prevent 'input-group' from nesting
-    const _children = React.Children.map(children, c => {
-        if (React.isValidElement(c)) {
-            const type = c.type as any;
-
-            if (
-                typeof type === "object" &&
-                type.Group === InputGroup &&
-                (c.props.prepend != undefined ||
-                    c.props.append != undefined)
-            ) {
-                return React.cloneElement(c, { __isGroupChild__: true });
-            }
-
-            return c;
-        }
-
-        return c;
-    });
-
-    return (
-        <div
-            className={classNames(className, "input-group")}
-            {...otherProps}>
-            {_children}
-        </div>
-    );
-}
+Input.Group = InputGroup;
 
 export default Input;
