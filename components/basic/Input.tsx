@@ -3,16 +3,15 @@ import PropTypes from "prop-types";
 import { classNames } from "../utils";
 import InputGroup from "./InputGroup";
 
-export interface InputProps extends React.HtmlHTMLAttributes<HTMLInputElement> {
+export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
     prepend?: React.ReactNode;
     append?: React.ReactNode;
-    type?: string;
     __isGroupChild__?: boolean;
 }
 
 const Input = React.forwardRef(
     ({
-        className,
+        className = "",
         prepend,
         append,
         __isGroupChild__,
@@ -20,7 +19,7 @@ const Input = React.forwardRef(
         children,
         ...otherProps
     }: InputProps, ref: React.Ref<HTMLInputElement>) => {
-        const classes = classNames(className, className?.includes("form-control") ? "" : "form-control");
+        const classes = classNames(className, className.includes("form-control") ? "" : "form-control");
         const input = (
             <input
                 ref={ref}
