@@ -47,9 +47,16 @@ export default function FormItem(props: FormItemProps) {
     let _label: React.ReactElement | null = null;
     let _children = children;
 
-    if (children && React.isValidElement(children)) {
-        let { id, className } = children.props;
+    if (React.isValidElement(children)) {
+        let {
+            id,
+            className,
+            __noControl__,
+            ...otherChildrenProps
+        } = children.props;
         const PREFIX = "form-control";
+        className = __noControl__ ? className :
+            classNames(className, PREFIX, size && `${PREFIX}-${size}`);
 
         if (id) {
             if (!_for) {
@@ -66,9 +73,9 @@ export default function FormItem(props: FormItemProps) {
         _children = React.cloneElement(
             children,
             {
-                ...children.props,
                 id,
-                className: classNames(className, PREFIX, size && `${PREFIX}-${size}`)
+                className,
+                ...otherChildrenProps
             }
         );
 
