@@ -14,7 +14,7 @@ export default function Form(props: FormProps) {
         ...otherProps
     } = props;
 
-    return <Form
+    return <form
         className={
             classNames(className, inline && "form-inline")
         } {...otherProps} />;
