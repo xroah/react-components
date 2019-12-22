@@ -6,9 +6,6 @@ let uuid = 0;
 
 export interface CustomControlProps extends React.InputHTMLAttributes<HTMLInputElement> {
     inline?: boolean;
-    indeterminate?: boolean;
-    //internal only, prevent 'FormItem' from adding 'form-control' class
-    __noControl__?: boolean;
 }
 
 export default function CustomControl(props: CustomControlProps) {
@@ -18,7 +15,6 @@ export default function CustomControl(props: CustomControlProps) {
         id,
         className,
         children,
-        indeterminate,
         ...otherProps
     } = props;
     const PREFIX = "custom-control";
@@ -29,8 +25,6 @@ export default function CustomControl(props: CustomControlProps) {
     let _id = id;
     let htmlFor = "";
     let _label: React.ReactElement | null = null;
-
-    delete otherProps.__noControl__;
 
     if (!_id) {
         htmlFor = _id = `bs-custom-control-${uuid++}`;
@@ -82,6 +76,5 @@ export const Switch: any = factory("switch");
 Switch.displayName = "Switch;"
 
 CustomControl.propTypes = {
-    inline: PropTypes.bool,
-    indeterminate: PropTypes.bool
+    inline: PropTypes.bool
 };

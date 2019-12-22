@@ -27,6 +27,7 @@ export interface FormItemProps extends React.HTMLAttributes<HTMLElement> {
     htmlFor?: string;
     help?: string;
     size?: "lg" | "sm";
+    control?: boolean;
 }
 
 export default function FormItem(props: FormItemProps) {
@@ -40,6 +41,7 @@ export default function FormItem(props: FormItemProps) {
         label,
         help,
         size,
+        control,
         ...otherProps
     } = props;
 
@@ -51,12 +53,13 @@ export default function FormItem(props: FormItemProps) {
         let {
             id,
             className,
-            __noControl__,
             ...otherChildrenProps
         } = children.props;
         const PREFIX = "form-control";
-        className = __noControl__ ? className :
-            classNames(className, PREFIX, size && `${PREFIX}-${size}`);
+        className = control ?
+            classNames(className, PREFIX, size && `${PREFIX}-${size}`)
+            : className;
+
 
         if (id) {
             if (!_for) {
