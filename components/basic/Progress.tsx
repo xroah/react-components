@@ -32,8 +32,8 @@ export default function Progress(props: ProgressProps) {
     const classes = classNames(className, "progress");
     const PREFIX = "progress-bar";
     const width = `${value}%`;
-    const renderBar = () => (
-        <div style={style} className={
+    const bar = (
+        <div style={{...style, width}} className={
             classNames(
                 PREFIX,
                 striped && `${PREFIX}-striped`,
@@ -45,8 +45,6 @@ export default function Progress(props: ProgressProps) {
         </div>
     );
     const wrapper = <div className={classes} {...otherProps} />;
-
-    style.width = width;
 
     if (count) {
         const _children = React.Children.map(children, c => {
@@ -61,8 +59,8 @@ export default function Progress(props: ProgressProps) {
     }
 
     return __isChild__ ?
-        renderBar() :
-        React.cloneElement(wrapper, {}, renderBar());
+        React.cloneElement(bar, otherProps) :
+        React.cloneElement(wrapper, {}, bar);
 }
 
 Progress.defaultProps = {
