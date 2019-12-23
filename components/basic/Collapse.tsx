@@ -70,6 +70,7 @@ export default class Collapse extends React.Component<CollapseProps> {
                 in={!!isOpen}
                 timeout={350}
                 appear
+                unmountOnExit
                 onEnter={this.handleEnter}
                 onEntering={this.handleEntering}
                 onEntered={this.handleEntered}
@@ -77,21 +78,14 @@ export default class Collapse extends React.Component<CollapseProps> {
                 onExited={this.handleExited}>
                 {
                     state => {
-                        let classes = className;
-                        let enterSet = new Set(["enter", "entering", "entered"]);
+                        let classes = classNames(className, "collapsing");
 
-                        if (enterSet.has(state)) {
-                            classes = classNames(className, "collapsing");
-
-                            if (state === "entered") {
-                                classes = classNames(className, "collapse", "show");
-                            }
-                        } else {
-                            classes = classNames(className, "collapsing");
-
-                            if (state === "exited") {
-                                classes = classNames(className, "collapse");
-                            }
+                        if (state === "entered" || state === "exited") {
+                            classes = classNames(
+                                className,
+                                "collapse",
+                                state === "entered" && "show"
+                            );
                         }
 
                         return (

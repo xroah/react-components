@@ -131,7 +131,7 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
         const {
             onEntering,
             onEntered,
-            timeout,
+            timeout = 0,
         } = this.props;
         const enteredCallback = () => {
             this.setState({
@@ -141,14 +141,8 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
         };
         this.next = () => {
             this.next = null;
-            if (timeout == undefined) {
-                return this.nextTick(enteredCallback);
-            }
 
-            this.timer = setTimeout(() => {
-                enteredCallback();
-                this.clearTimer();
-            }, timeout);
+            this.timer = setTimeout(enteredCallback, timeout);
         }
 
         this.clearTimer();
@@ -162,35 +156,28 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
         const {
             onExiting,
             onExited,
-            timeout,
+            timeout = 0,
             unmountOnExit
         } = this.props;
         const unmount = () => {
-            if (unmountOnExit) {
-                this.setState({
-                    status: UNMOUNTED
-                });
-            }
+            this.next = null;
+
+            this.setState({
+                status: UNMOUNTED
+            });
         }
         const exitedCallback = () => {
             this.setState(
                 {
                     status: EXITED
-                },
-                unmount
+                }
             );
             handleFuncProp(onExited)(node);
+
+            this.next = unmountOnExit ? unmount : null;
         };
         this.next = () => {
-            this.next = null;
-            if (timeout == undefined) {
-                return this.nextTick(exitedCallback);
-            }
-
-            this.timer = setTimeout(() => {
-                exitedCallback();
-                this.clearTimer();
-            }, timeout);
+            this.timer = setTimeout(exitedCallback, timeout);
         };
 
         this.clearTimer();
