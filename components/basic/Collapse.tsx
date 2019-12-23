@@ -70,7 +70,6 @@ export default class Collapse extends React.Component<CollapseProps> {
                 in={!!isOpen}
                 timeout={350}
                 appear
-                unmountOnExit
                 onEnter={this.handleEnter}
                 onEntering={this.handleEntering}
                 onEntered={this.handleEntered}
