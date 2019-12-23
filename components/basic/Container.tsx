@@ -5,6 +5,7 @@ import { classNames } from "../utils";
 export interface ContainerProps extends React.HTMLAttributes<HTMLElement> {
     tag?: React.ElementType;
     fluid?: boolean;
+    size?: "sm" | "md" | "lg" | "md";
 }
 
 export default function Container(props: ContainerProps) {
@@ -12,6 +13,7 @@ export default function Container(props: ContainerProps) {
         className,
         tag,
         fluid,
+        size,
         ...otherProps
     } = props;
     const PREFIX = "container";
@@ -22,6 +24,7 @@ export default function Container(props: ContainerProps) {
             className: classNames(
                 className,
                 PREFIX,
+                size && `${PREFIX}-${size}`,
                 fluid && `${PREFIX}-fluid`
             ),
             ...otherProps
