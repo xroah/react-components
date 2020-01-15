@@ -33,10 +33,8 @@ export default function Fade(props: FadeProps) {
                             classes = classNames(classes, "show");
                         }
                     } else {
-                        classes = classNames(classes);
-
                         if (state === "exited") {
-                            classes = classNames(className, hidingClass);
+                            classes = classNames(classes, hidingClass);
                             toggleDisplay && (display = "none");
                         }
                     }
