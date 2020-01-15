@@ -1,6 +1,6 @@
 import * as React from "react";
 import SyntaxHighlighter from "../SyntaxHighlighter";
-import {classNames} from "../../../src/utils";
+import { classNames } from "../../../components/utils";
 
 interface Props extends React.HTMLAttributes<HTMLHeadingElement> {
     component: React.ReactElement;
@@ -24,7 +24,7 @@ export default function DemoExample(props: Props) {
             {React.cloneElement(component)}
             {
                 source &&
-                    <SyntaxHighlighter code={source}/>
+                <SyntaxHighlighter code={source} />
             }
         </div>
     );

@@ -1,5 +1,5 @@
 import * as React from "react";
-import Badge from "../../../src/Badge";
+import { Badge } from "reap-ui";
 
 export default () => (
     <>

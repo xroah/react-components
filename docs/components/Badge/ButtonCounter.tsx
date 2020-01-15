@@ -1,6 +1,5 @@
 import * as React from "react";
-import Badge from "../../../src/Badge";
-import Button from "../../../src/Button";
+import { Badge, Button } from "reap-ui";
 
 export default () => (
     <Button>

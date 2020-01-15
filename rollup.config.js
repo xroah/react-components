@@ -8,7 +8,7 @@ const config = {
     input: "src/index.ts",
     output: {
         format: "umd",
-        name: "rbs",
+        name: "reap",
         globals: {
             "react": "React",
             "react-dom": "ReactDOM"

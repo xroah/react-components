@@ -1,5 +1,5 @@
 import * as React from "react";
-import Alert from "../../../src/Alert";
+import { Alert } from "reap-ui";
 
 export default function Basic() {
     return (

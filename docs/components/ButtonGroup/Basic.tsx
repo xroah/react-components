@@ -1,5 +1,5 @@
 import * as React from "react";
-import Button from "../../../src/Button";
+import { Button } from "reap-ui";
 
 export default () => (
     <>

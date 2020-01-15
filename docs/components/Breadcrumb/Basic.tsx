@@ -1,5 +1,5 @@
 import * as React from "react";
-import Breadcrumb from "../../../src/Breadcrumb";
+import { Breadcrumb } from "reap-ui";
 
 export default () => (
     <>

@@ -1,5 +1,5 @@
 import * as React from "react";
-import {classNames} from "../../../src/utils";
+import {classNames} from "../../../components/utils";
 
 interface Props extends React.HTMLAttributes<HTMLHeadingElement>{
     tag?: string;

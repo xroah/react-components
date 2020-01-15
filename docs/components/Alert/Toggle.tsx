@@ -1,6 +1,5 @@
 import * as React from "react";
-import Alert from "../../../src/Alert";
-import Button from "../../../src/Button";
+import { Alert, Button } from "reap-ui";
 
 export default function Dismissible() {
     const [visible, setVisible] = React.useState(true);

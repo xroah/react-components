@@ -2,6 +2,7 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const HTMLWebpackPlugin = require("html-webpack-plugin");
 const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
+const path = require("path");
 
 const optimization = {
     minimizer: [
@@ -27,7 +28,10 @@ const config = {
         publicPath: "/"
     },
     resolve: {
-        extensions: [".js", ".ts", ".jsx", ".tsx"]
+        extensions: [".js", ".ts", ".jsx", ".tsx"],
+        alias: {
+            "reap-ui$": path.resolve("./components/index.ts")
+        }
     },
     module: {
         rules: [
