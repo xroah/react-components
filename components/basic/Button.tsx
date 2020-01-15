@@ -65,7 +65,7 @@ const Button: any = React.forwardRef(
 );
 
 Button.propTypes = {
-    variant: PropTypes.oneOf(variantArray),
+    variant: PropTypes.oneOf([...variantArray, "link"]),
     outline: PropTypes.bool,
     size: PropTypes.string,
     active: PropTypes.bool,
