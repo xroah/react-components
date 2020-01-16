@@ -1,10 +1,12 @@
 import * as React from "react";
 import PropTypes from "prop-types";
 import Fade from "../Fade";
+import Button from "./Button";
 import {
     classNames,
     variantType,
-    variantArray
+    variantArray,
+    handleFuncProp
 } from "../utils";
 
 export interface AlertProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -16,82 +18,68 @@ export interface AlertProps extends React.HTMLAttributes<HTMLDivElement> {
     onClosed?: Function;
 }
 
-export default class Alert extends React.Component<AlertProps> {
-
-    static propTypes = {
-        variant: PropTypes.oneOf(variantArray),
-        fade: PropTypes.bool,
-        dismissible: PropTypes.bool,
-        visible: PropTypes.bool,
-        onClose: PropTypes.func,
-        onClosed: PropTypes.func
+export default function Alert(props: AlertProps) {
+    const {
+        className,
+        variant,
+        fade,
+        dismissible,
+        visible,
+        children,
+        ...otherProps
+    } = props;
+    let button: React.ReactNode = null;
+    let duration = fade ? 150 : 0;
+    const classes = classNames(
+        className,
+        "alert",
+        variant && `alert-${variant}`,
+        dismissible && "alert-dismissible"
+    );
+    const handleClick = () => {
+        handleFuncProp(props.onClose)();
+    };
+    const handleExited = () => {
+        handleFuncProp(props.onClosed)();
     };
 
-    static defaultProps = {
-        dismissible: false,
-        fade: true,
-        visible: true
-    };
-
-    handleClick = () => {
-        let {
-            onClose = () => {
-            }
-        } = this.props;
-        onClose();
-    };
-
-    handleExited = () => {
-        let {
-            onClosed = () => {
-            }
-        } = this.props;
-        onClosed();
-    };
-
-    render() {
-        const {
-            className,
-            variant,
-            fade,
-            dismissible,
-            visible,
-            children,
-            ...otherProps
-        } = this.props;
-        let button: React.ReactNode = null;
-        let duration = fade ? 300 : 0;
-        const classes = classNames(
-            className,
-            "alert",
-            variant && `alert-${variant}`,
-            dismissible && "alert-dismissible"
-        );
-
-        if (dismissible) {
-            button = (
-                <button type="button"
-                    className="close"
-                    aria-label="Close"
-                    onClick={this.handleClick}>
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            );
-        }
-
-        return (
-            <Fade
-                in={!!visible}
-                timeout={duration}
-                onExited={this.handleExited}
-                unmountOnExit={true}>
-
-                <div className={classes} {...otherProps} role={"alert"}>
-                    {children}
-                    {button}
-                </div>
-            </Fade>
+    if (dismissible) {
+        button = (
+            <Button
+                variant="link"
+                type="button"
+                className="close"
+                onClick={handleClick}>
+                <span>&times;</span>
+            </Button>
         );
     }
 
+    return (
+        <Fade
+            in={!!visible}
+            timeout={duration}
+            onExited={handleExited}
+            unmountOnExit={true}>
+
+            <div className={classes} {...otherProps}>
+                {children}
+                {button}
+            </div>
+        </Fade>
+    );
 }
+
+Alert.propTypes = {
+    variant: PropTypes.oneOf(variantArray),
+    fade: PropTypes.bool,
+    dismissible: PropTypes.bool,
+    visible: PropTypes.bool,
+    onClose: PropTypes.func,
+    onClosed: PropTypes.func
+};
+Alert.defaultProps = {
+    dismissible: false,
+    fade: true,
+    visible: true
+};
