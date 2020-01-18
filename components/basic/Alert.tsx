@@ -6,7 +6,8 @@ import {
     classNames,
     variantType,
     variantArray,
-    handleFuncProp
+    handleFuncProp,
+    createComponentByClass
 } from "../utils";
 
 export interface AlertProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -83,3 +84,9 @@ Alert.defaultProps = {
     fade: true,
     visible: true
 };
+
+Alert.Link = createComponentByClass({
+    tag: "a",
+    displayName: "AlertLink",
+    className: "alert-link"
+});
