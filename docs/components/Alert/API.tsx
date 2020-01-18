@@ -44,5 +44,9 @@ export default () => (
         <DocHeading>API</DocHeading>
         <DocHeading tag="h3">Alert</DocHeading>
         <PropsTable data={ButtonDoc}/>
+        <DocHeading>Alert.Link</DocHeading>
+        <div className="text-muted">
+            <em>No public props for this component.</em>
+        </div>
     </>
 );
