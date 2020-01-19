@@ -13,12 +13,14 @@ export default function DemoExample(props: Props) {
         component,
         className,
         source,
-        title
+        title,
+        children
     } = props;
 
     return (
         <>
-            <DocHeading>{title}</DocHeading>
+            {title && <DocHeading>{title}</DocHeading>}
+            {children}
             <div className={
                 classNames(
                     className,

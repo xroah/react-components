@@ -2,7 +2,7 @@ import * as React from "react";
 import PropsTable from "../PropsTable";
 import DocHeading from "../DocHeading";
 
-const ButtonDoc = [{
+const ButtonProps = [{
     name: "variant",
     type: `"primary" |
         "secondary" |
@@ -44,6 +44,6 @@ export default () => (
     <>
         <DocHeading>API</DocHeading>
         <DocHeading tag="h3">Button</DocHeading>
-        <PropsTable data={ButtonDoc}/>
+        <PropsTable data={ButtonProps}/>
     </>
 );

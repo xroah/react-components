@@ -2,7 +2,7 @@ import * as React from "react";
 import PropsTable from "../PropsTable";
 import DocHeading from "../DocHeading";
 
-const ButtonDoc = [{
+const AlertProps = [{
     name: "variant",
     type: `"primary" |
         "secondary" |
@@ -13,7 +13,7 @@ const ButtonDoc = [{
         "dark" |
         "light"`,
     default: "",
-    description: "Alert style"
+    description: "Appearance of a Alert"
 }, {
     name: "Fade",
     type: "boolean",
@@ -43,7 +43,7 @@ export default () => (
     <>
         <DocHeading>API</DocHeading>
         <DocHeading tag="h3">Alert</DocHeading>
-        <PropsTable data={ButtonDoc}/>
+        <PropsTable data={AlertProps}/>
         <DocHeading>Alert.Link</DocHeading>
         <div className="text-muted">
             <em>No public props for this component.</em>
