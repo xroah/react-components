@@ -6,13 +6,6 @@ import DemoExample from "../DemoExample";
 
 const BasicSrc = require("!!raw-loader!./Basic").default;
 
-const breadcrumbDoc = [{
-    name: "listProps",
-    type: "string",
-    default: "{}",
-    description: "Additional props passed to the underlying ol element"
-}];
-
 const breadcrumbItemDoc = [{
     name: "active",
     type: "boolean",
@@ -26,15 +19,17 @@ const breadcrumbItemDoc = [{
 }];
 
 export default function Breadcrumb() {
-    return(
+    return (
         <>
             <DocHeading>Example</DocHeading>
-            <DemoExample component={<Basic/>} source={BasicSrc}/>
+            <DemoExample component={<Basic />} source={BasicSrc} />
             <h2 className="doc-header">API</h2>
             <h3>Breadcrumb</h3>
-            <PropsTable data={breadcrumbDoc}/>
+            <div className="text-muted">
+                <em>No public props for this component.</em>
+            </div>
             <h3>Breadcrumb.Item</h3>
-            <PropsTable data={breadcrumbItemDoc}/>
+            <PropsTable data={breadcrumbItemDoc} />
         </>
     );
 }
