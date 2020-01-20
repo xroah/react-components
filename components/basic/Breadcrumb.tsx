@@ -7,16 +7,12 @@ function Breadcrumb(props: React.HTMLAttributes<HTMLElement>) {
 
     return (
         <nav className={className} {...otherProps}>
-            <ul className="breadcrumb">
+            <ol className="breadcrumb">
                 {children}
-            </ul>
+            </ol>
         </nav>
     );
 }
-
-Breadcrumb.defaultProps = {
-    listProps: {}
-};
 
 export interface BreadcrumbItemProps extends React.HTMLAttributes<HTMLLIElement> {
     active?: boolean;
