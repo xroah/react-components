@@ -45,3 +45,6 @@ Badge.propTypes = {
     pill: PropTypes.bool,
     href: PropTypes.string
 };
+Badge.defaultProps = {
+    pill: false
+};
