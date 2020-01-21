@@ -1,6 +1,7 @@
 import * as React from "react";
 import PropsTable from "../PropsTable";
 import DocHeading from "../DocHeading";
+import NoAPI from "../NoAPI";
 
 const AlertProps = [{
     name: "variant",
@@ -45,8 +46,6 @@ export default () => (
         <DocHeading tag="h3">Alert</DocHeading>
         <PropsTable data={AlertProps}/>
         <DocHeading>Alert.Link</DocHeading>
-        <div className="text-muted">
-            <em>No public props for this component.</em>
-        </div>
+        <NoAPI/>
     </>
 );

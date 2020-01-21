@@ -14,10 +14,16 @@ const OutlinedSrc = require("!!raw-loader!./Outlined").default;
 
 export default () => (
     <>
-        <DocHeading>Basic examples</DocHeading>
-        <DemoExample className="btn-demo" component={<Basic />} source={BasicSrc} />
-        <DocHeading>Outline buttons</DocHeading>
-        <DemoExample className="btn-demo" component={<Outlined />} source={OutlinedSrc} />
+        <DemoExample
+            title="Basic examples"
+            className="btn-demo"
+            component={<Basic />}
+            source={BasicSrc} />
+        <DemoExample
+            title="Outline buttons"
+            className="btn-demo"
+            component={<Outlined />}
+            source={OutlinedSrc} />
         <DocHeading>Sizes</DocHeading>
         <div className="btn-demo bd-example">
             <div>

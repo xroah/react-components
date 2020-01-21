@@ -1,6 +1,7 @@
 import * as React from "react";
 import PropsTable from "../PropsTable";
 import DocHeading from "../DocHeading";
+import NoAPI from "../NoAPI";
 
 const ButtonGroupDoc = [{
     name: "size",
@@ -18,8 +19,6 @@ export default () => (
         <DocHeading tag="h3">Button.Group</DocHeading>
         <PropsTable data={ButtonGroupDoc}/>
         <DocHeading tag="h3">Button.Toolbar</DocHeading>
-        <div className="text-muted">
-            <em>No public props for this component.</em>
-        </div>
+        <NoAPI/>
     </>
 );
