@@ -29,7 +29,6 @@ const BadgeProps = [{
 export default () => (
     <>
         <DocHeading>API</DocHeading>
-        <DocHeading tag="h3">Badge</DocHeading>
-        <PropsTable data={BadgeProps}/>
+        <PropsTable title="Badge" data={BadgeProps}/>
     </>
 );

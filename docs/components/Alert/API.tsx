@@ -43,9 +43,8 @@ const AlertProps = [{
 export default () => (
     <>
         <DocHeading>API</DocHeading>
-        <DocHeading tag="h3">Alert</DocHeading>
-        <PropsTable data={AlertProps}/>
-        <DocHeading>Alert.Link</DocHeading>
-        <NoAPI/>
+        <PropsTable title="Alert" data={AlertProps}/>
+        <DocHeading></DocHeading>
+        <NoAPI title="Alert.Link"/>
     </>
 );

@@ -16,9 +16,7 @@ const ButtonGroupDoc = [{
 
 export default () => (
     <>
-        <DocHeading tag="h3">Button.Group</DocHeading>
-        <PropsTable data={ButtonGroupDoc}/>
-        <DocHeading tag="h3">Button.Toolbar</DocHeading>
-        <NoAPI/>
+        <PropsTable title="Button.Group" data={ButtonGroupDoc}/>
+        <NoAPI title="Button.Toolbar"/>
     </>
 );

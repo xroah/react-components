@@ -3,6 +3,7 @@ import Basic from "./Basic";
 import PropsTable from "../PropsTable";
 import DocHeading from "../DocHeading";
 import DemoExample from "../DemoExample";
+import NoAPI from "../NoAPI";
 
 const BasicSrc = require("!!raw-loader!./Basic").default;
 
@@ -23,13 +24,9 @@ export default function Breadcrumb() {
         <>
             <DocHeading>Example</DocHeading>
             <DemoExample component={<Basic />} source={BasicSrc} />
-            <h2 className="doc-header">API</h2>
-            <h3>Breadcrumb</h3>
-            <div className="text-muted">
-                <em>No public props for this component.</em>
-            </div>
-            <h3>Breadcrumb.Item</h3>
-            <PropsTable data={breadcrumbItemDoc} />
+            <h2 className="doc-heading">API</h2>
+            <NoAPI title="Breadcrumb"/>
+            <PropsTable title="Breadcrumb.Item" data={breadcrumbItemDoc} />
         </>
     );
 }
