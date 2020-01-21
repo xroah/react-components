@@ -14,8 +14,18 @@ const ButtonProps = [{
         "light" |
         "link"`,
     default: "primary",
-    description: "Button type"
+    description: "Appearance of Button"
 }, {
+    name: "type",
+    type: `"button" |
+        "submit" |
+        "reset" |
+        "checkbox" |
+        "radio"`,
+    default: "button",
+    description: "Button type"
+},
+{
     name: "active",
     type: "boolean",
     default: "false",
@@ -43,6 +53,6 @@ const ButtonProps = [{
 export default () => (
     <>
         <DocHeading>API</DocHeading>
-        <PropsTable title="Button" data={ButtonProps}/>
+        <PropsTable title="Button" data={ButtonProps} />
     </>
 );
