@@ -1,14 +1,15 @@
 import * as React from "react";
 import PropTypes from "prop-types";
-import ButtonGroup from "./ButtonGroup";
+import ButtonGroup,{ButtonGroupProps} from "./ButtonGroup";
 import {
     createComponentByClass,
     classNames,
     variantType,
-    variantArray
+    variantArray,
+    handleFuncProp
 } from "../utils";
 
-export interface ButtonProps extends React.HTMLAttributes<HTMLButtonElement & HTMLAnchorElement> {
+export interface ButtonProps extends React.HTMLAttributes<HTMLElement> {
     variant?: variantType | "link";
     outline?: boolean;
     size?: string;
@@ -21,8 +22,8 @@ export interface ButtonProps extends React.HTMLAttributes<HTMLButtonElement & HT
 
 interface ButtonType extends React.RefForwardingComponent<any, ButtonProps & React.RefAttributes<any>> {
     propTypes?: any;
-    Group?: any;
-    Toolbar?: any;
+    Group?: React.FunctionComponent<ButtonGroupProps>;
+    Toolbar?: React.FunctionComponent;
 }
 
 const Button: ButtonType = React.forwardRef(
@@ -60,6 +61,8 @@ const Button: ButtonType = React.forwardRef(
             tag = "a";
             delete props.disabled;
             delete props.type;
+        } else {
+            delete props.href;
         }
 
         return React.createElement(
@@ -86,7 +89,7 @@ Button.defaultProps = {
 };
 Button.displayName = "Button";
 
-Button.Group = ButtonGroup;
+Button.Group = ButtonGroup as React.FunctionComponent<ButtonGroupProps>;
 Button.Toolbar = createComponentByClass({
     className: "btn-toolbar",
     displayName: "ButtonToolbar"
