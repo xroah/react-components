@@ -1,8 +1,8 @@
 import * as React from "react";
 import PropTypes from "prop-types";
-import {classNames} from "../utils";
+import { classNames } from "../utils";
 
-export interface ButtonGroupProps extends React.HTMLAttributes<HTMLDivElement>{
+export interface ButtonGroupProps extends React.HTMLAttributes<HTMLDivElement> {
     size?: "sm" | "lg";
     vertical?: boolean;
 }
@@ -15,16 +15,17 @@ export default function ButtonGroup(props: ButtonGroupProps) {
         children,
         ...otherProps
     } = props;
+    const PREFIX = "btn-group";
 
     return (
         <div
-        className={
-            classNames(
-                className,
-                vertical ? "btn-group-vertical" : "btn-group",
-                size && `btn-group-${size}`
-            )
-        } {...otherProps}>
+            className={
+                classNames(
+                    className,
+                    vertical ? `${PREFIX}-vertical` : PREFIX,
+                    size && `${PREFIX}-${size}`
+                )
+            } {...otherProps}>
             {children}
         </div>
     );
@@ -36,5 +37,6 @@ ButtonGroup.propTypes = {
 };
 
 ButtonGroup.defaultProps = {
-    vertical: false
+    vertical: false,
+    toggle: false
 };
