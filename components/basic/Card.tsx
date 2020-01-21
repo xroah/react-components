@@ -12,16 +12,16 @@ type colorType = variantType | "white" | "muted";
 export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
     header?: React.ReactNode;
     footer?: React.ReactNode;
-    img?: React.ReactElement;
+    headerStyle?: React.CSSProperties;
+    bodyStyle?: React.CSSProperties;
+    footerStyle?: React.CSSProperties;
+    img?: React.ReactElement | string;
     imgPosition?: "top" | "bottom";
     isImgOverlay?: boolean;
     align?: "left" | "center" | "right";
     bg?: variantType;
     border?: variantType;
     color?: colorType;
-    headerProps?: React.HTMLAttributes<HTMLElement>;
-    bodyClass?: string;
-    footerProps?: React.HTMLAttributes<HTMLElement>;
     title?: string;
     subtitle?: string;
     subtitleColor?: colorType;
@@ -40,18 +40,12 @@ export default function Card(props: CardProps) {
         bg,
         color,
         border,
-        headerProps: {
-            className: headerClass = "",
-            ...otherHeaderProps
-        } = {},
-        bodyClass,
-        footerProps: {
-            className: footerClass = "",
-            ...otherFooterProps
-        } = {},
         subtitle,
         subtitleColor,
         title,
+        headerStyle,
+        bodyStyle,
+        footerStyle,
         ...otherProps
     } = props;
 
@@ -59,12 +53,23 @@ export default function Card(props: CardProps) {
     let bottomImg;
 
     if (img) {
-        let _img = React.cloneElement(
-            img,
-            {
-                className: `card-img-${imgPosition}`
-            }
-        );
+        let _img: React.ReactElement;
+        let cls = `card-img-${imgPosition}`;
+
+        if (React.isValidElement(img)) {
+            _img = React.cloneElement(
+                img,
+                {
+                    className: cls
+                }
+            );
+        } else {
+            _img = (
+                <img
+                    className={cls}
+                    src={img} />
+            );
+        }
 
         if (imgPosition === "top") {
             topImg = _img;
@@ -86,21 +91,13 @@ export default function Card(props: CardProps) {
         } {...otherProps}>
             {
                 header && (
-                    <div className={
-                        classNames(
-                            headerClass,
-                            "card-header"
-                        )
-                    } {...otherHeaderProps}>{header}</div>
+                    <div style={headerStyle} className="card-header">{header}</div>
                 )
             }
             {topImg}
-            <div className={
-                classNames(
-                    bodyClass,
-                    isImgOverlay && !!img ? "card-img-overlay" : "card-body"
-                )
-            }>
+            <div
+                style={bodyStyle}
+                className={isImgOverlay && !!img ? "card-img-overlay" : "card-body"}>
                 {
                     title && (
                         <div className="card-title">{title}</div>
@@ -118,12 +115,7 @@ export default function Card(props: CardProps) {
             {bottomImg}
             {
                 footer && (
-                    <div className={
-                        classNames(
-                            footerClass,
-                            "card-footer"
-                        )
-                    } {...otherFooterProps}>{footer}</div>
+                    <div style={footerStyle} className="card-footer">{footer}</div>
                 )
             }
         </div>
@@ -135,16 +127,16 @@ const color = [...variantArray, "white", "muted"];
 Card.propTypes = {
     header: PropTypes.node,
     footer: PropTypes.node,
-    img: PropTypes.element,
+    headerStyle: PropTypes.object,
+    bodyStyle: PropTypes.object,
+    footerStyle: PropTypes.object,
+    img: PropTypes.oneOfType([PropTypes.element, PropTypes.string]),
     imgPosition: PropTypes.oneOf(["top", "bottom"]),
     isImgOverlay: PropTypes.bool,
     align: PropTypes.oneOf(["left", "center", "right"]),
     bg: PropTypes.oneOf(variantArray),
     border: PropTypes.oneOf(variantArray),
     color: PropTypes.oneOf(color),
-    headerProps: PropTypes.object,
-    bodyClass: PropTypes.string,
-    footerProps: PropTypes.object,
     subtitle: PropTypes.string,
     title: PropTypes.string,
     subtitleColor: PropTypes.oneOf(color)
