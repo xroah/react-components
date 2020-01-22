@@ -9,7 +9,7 @@ interface CreateProps {
 export function createComponentByClass(options: CreateProps) {
     const { className, tag = "div", displayName } = options;
 
-    let Comp: any = (props: React.HTMLAttributes<Element>) => {
+    let Comp: any = (props: React.AllHTMLAttributes<HTMLElement>) => {
         const { className: _className, ...otherProps } = props;
         
         return React.createElement(
