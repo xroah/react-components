@@ -38,6 +38,14 @@ const config = {
             {
                 test: /\.[jt]sx?$/,
                 use: "babel-loader"
+            }, {
+                test: /\.(png|jgp|svg)$/,
+                use: [{
+                    loader: "url-loader",
+                    options: {
+                        limit: 8192
+                    }
+                }]
             }
         ]
     },
