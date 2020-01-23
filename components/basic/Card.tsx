@@ -6,8 +6,7 @@ import {
     variantType,
     variantArray
 } from "../utils";
-
-type colorType = variantType | "white" | "muted";
+import CardTitle, {colorType, color} from "./CardTitle";
 
 export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
     header?: React.ReactNode;
@@ -22,9 +21,6 @@ export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
     bg?: variantType;
     border?: variantType;
     color?: colorType;
-    title?: string;
-    subtitle?: string;
-    subtitleColor?: colorType;
 }
 
 export default function Card(props: CardProps) {
@@ -40,9 +36,6 @@ export default function Card(props: CardProps) {
         bg,
         color,
         border,
-        subtitle,
-        subtitleColor,
-        title,
         headerStyle,
         bodyStyle,
         footerStyle,
@@ -98,18 +91,6 @@ export default function Card(props: CardProps) {
             <div
                 style={bodyStyle}
                 className={isImgOverlay && !!img ? "card-img-overlay" : "card-body"}>
-                {
-                    title && (
-                        <div className="card-title">{title}</div>
-                    )
-                }
-                {
-                    subtitle && (
-                        <div className={`card-subtitle mb-2 text-${subtitleColor}`}>
-                            {subtitle}
-                        </div>
-                    )
-                }
                 {children}
             </div>
             {bottomImg}
@@ -122,8 +103,6 @@ export default function Card(props: CardProps) {
     );
 }
 
-const color = [...variantArray, "white", "muted"];
-
 Card.propTypes = {
     header: PropTypes.node,
     footer: PropTypes.node,
@@ -135,19 +114,25 @@ Card.propTypes = {
     isImgOverlay: PropTypes.bool,
     align: PropTypes.oneOf(["left", "center", "right"]),
     bg: PropTypes.oneOf(variantArray),
-    border: PropTypes.oneOf(variantArray),
+    border: PropTypes.oneOf(variantArray, ),
     color: PropTypes.oneOf(color),
-    subtitle: PropTypes.string,
-    title: PropTypes.string,
-    subtitleColor: PropTypes.oneOf(color)
 };
 
 Card.defaultProps = {
     imgPosition: "top",
-    isImgOverlay: false,
-    subtitleColor: "muted"
+    isImgOverlay: false
 };
 
+Card.Text = createComponentByClass({
+    className: "card-text",
+    tag: "p",
+    displayName: "CardText"
+});
+Card.Link = createComponentByClass({
+    className: "card-link",
+    tag: "a",
+    displayName: "CardLink"
+});
 Card.Deck = createComponentByClass({
     className: "card-deck",
     displayName: "CardDeck"
