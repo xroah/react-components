@@ -7,7 +7,7 @@ export type colorType = variantType | "white" | "muted" | "white-50" | "black-50
 export interface CardTitleProps extends React.HTMLAttributes<HTMLDivElement> {
     subtitle?: string;
     subTitleColor?: colorType;
-    color: colorType;
+    color?: colorType;
 }
 
 export default function CardTitle(props: CardTitleProps) {
