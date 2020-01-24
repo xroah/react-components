@@ -123,6 +123,7 @@ Card.defaultProps = {
     isImgOverlay: false
 };
 
+Card.Title = CardTitle;
 Card.Text = createComponentByClass({
     className: "card-text",
     tag: "p",
