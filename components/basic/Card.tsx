@@ -6,14 +6,14 @@ import {
     variantType,
     variantArray
 } from "../utils";
-import CardTitle, {colorType, color} from "./CardTitle";
+import CardTitle, { colorType, color } from "./CardTitle";
 
 export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
     header?: React.ReactNode;
     footer?: React.ReactNode;
     headerStyle?: React.CSSProperties;
-    bodyStyle?: React.CSSProperties;
     footerStyle?: React.CSSProperties;
+    body?: boolean;
     img?: React.ReactElement | string;
     imgPosition?: "top" | "bottom";
     isImgOverlay?: boolean;
@@ -37,7 +37,7 @@ export default function Card(props: CardProps) {
         color,
         border,
         headerStyle,
-        bodyStyle,
+        body,
         footerStyle,
         ...otherProps
     } = props;
@@ -88,11 +88,15 @@ export default function Card(props: CardProps) {
                 )
             }
             {topImg}
-            <div
-                style={bodyStyle}
-                className={isImgOverlay && !!img ? "card-img-overlay" : "card-body"}>
-                {children}
-            </div>
+            {isImgOverlay && !!img ? (
+                <div className="card-img-overlay">
+                    {children}
+                </div>
+            ) : body ? (
+                <Card.Body>
+                    {children}
+                </Card.Body>
+            ) : children}
             {bottomImg}
             {
                 footer && (
@@ -107,23 +111,28 @@ Card.propTypes = {
     header: PropTypes.node,
     footer: PropTypes.node,
     headerStyle: PropTypes.object,
-    bodyStyle: PropTypes.object,
     footerStyle: PropTypes.object,
+    body: PropTypes.bool,
     img: PropTypes.oneOfType([PropTypes.element, PropTypes.string]),
     imgPosition: PropTypes.oneOf(["top", "bottom"]),
     isImgOverlay: PropTypes.bool,
     align: PropTypes.oneOf(["left", "center", "right"]),
     bg: PropTypes.oneOf(variantArray),
-    border: PropTypes.oneOf(variantArray, ),
+    border: PropTypes.oneOf(variantArray),
     color: PropTypes.oneOf(color),
 };
 
 Card.defaultProps = {
     imgPosition: "top",
-    isImgOverlay: false
+    isImgOverlay: false,
+    body: false
 };
 
 Card.Title = CardTitle;
+Card.Body = createComponentByClass({
+    className: "card-body",
+    displayName: "CardBody"
+});
 Card.Text = createComponentByClass({
     className: "card-text",
     tag: "p",
