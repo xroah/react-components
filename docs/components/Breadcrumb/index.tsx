@@ -4,8 +4,7 @@ import PropsTable from "../PropsTable";
 import DocHeading from "../DocHeading";
 import DemoExample from "../DemoExample";
 import NoAPI from "../NoAPI";
-
-const BasicSrc = require("!!raw-loader!./Basic").default;
+import BasicSrc from "!!raw-loader!./Basic";
 
 const breadcrumbItemDoc = [{
     name: "active",

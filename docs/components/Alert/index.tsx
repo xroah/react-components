@@ -5,11 +5,10 @@ import Dismissible from "./Dismissible";
 import Toggle from "./Toggle";
 import DemoExample from "../DemoExample";
 import API from "./API";
-
-const BasicSrc = require("!!raw-loader!./Basic").default;
-const DismissibleSrc = require("!!raw-loader!./Dismissible").default;
-const ToggleSrc = require("!!raw-loader!./Toggle").default;
-const LinkSrc = require("!!raw-loader!./Link").default;
+import BasicSrc from "!!raw-loader!./Basic";
+import DismissibleSrc from "!!raw-loader!./Dismissible";
+import ToggleSrc from "!!raw-loader!./Toggle";
+import LinkSrc from "!!raw-loader!./Link";
 
 export default class AlertDemo extends React.Component {
 

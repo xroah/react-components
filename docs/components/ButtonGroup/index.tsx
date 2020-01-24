@@ -4,11 +4,10 @@ import ButtonToolbar from "./ButtonToolbar";
 import Sizing from "./Sizing"
 import Vertical from "./Vertical";
 import DemoExample from "../DemoExample";
-
-const BasicSrc = require("!!raw-loader!./Basic").default;
-const ButtonToolbarSrc = require("!!raw-loader!./ButtonToolbar").default;
-const SizingSrc = require("!!raw-loader!./Sizing").default;
-const VerticalSrc = require("!!raw-loader!./Vertical").default;
+import BasicSrc from "!!raw-loader!./Basic";
+import ButtonToolbarSrc from "!!raw-loader!./ButtonToolbar";
+import SizingSrc from "!!raw-loader!./Sizing";
+import VerticalSrc from "!!raw-loader!./Vertical";
 
 export default () => (
     <>

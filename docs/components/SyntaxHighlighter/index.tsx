@@ -2,23 +2,22 @@ import * as React from "react";
 import Highlighter from "react-syntax-highlighter/dist/esm/prism";
 import {tomorrow} from "react-syntax-highlighter/dist/esm/styles/prism";
 
-export default function SyntaxHighlighter(props: { code: string }) {
-
-    function handleClick() {
+export default function SyntaxHighlighter(props: { code: any }) {
+    const { code } = props;
+    const handleClick = function handleClick() {
         const input = document.createElement("input");
-        input.value = props.code;
+        input.value = code;
         document.body.append(input);
         input.select();
         document.execCommand("copy");
         input.remove();
     }
-
     return (
         <div className="position-relative">
             <Highlighter
                 language="javascript"
                 style={tomorrow}>
-                {props.code}
+                {code}
             </Highlighter>
             <button className="btn-clipboard" onClick={handleClick}>copy</button>
         </div>

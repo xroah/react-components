@@ -8,9 +8,8 @@ import SyntaxHighlighter from "../SyntaxHighlighter";
 import ButtonGroup from "../ButtonGroup";
 import API from "./API";
 import ButtonGroupAPI from "../ButtonGroup/API";
-
-const BasicSrc = require("!!raw-loader!./Basic").default;
-const OutlinedSrc = require("!!raw-loader!./Outlined").default;
+import BasicSrc from "!!raw-loader!./Basic";
+import OutlinedSrc from "!!raw-loader!./Outlined";
 
 export default () => (
     <>

@@ -7,12 +7,11 @@ import Link from "./Link";
 import API from "./API";
 import DocHeading from "../DocHeading";
 import DemoExample from "../DemoExample";
-
-const ScaleMathSrc = require("!!raw-loader!./ScaleMatch").default;
-const ButtonCounterSrc = require("!!raw-loader!./ButtonCounter").default;
-const ContextualSrc = require("!!raw-loader!./Contextual").default;
-const PillSrc = require("!!raw-loader!./Pill").default;
-const LinkSrc = require("!!raw-loader!./Link").default;
+import ScaleMathSrc from "!!raw-loader!./ScaleMatch";
+import ButtonCounterSrc from "!!raw-loader!./ButtonCounter";
+import ContextualSrc from "!!raw-loader!./Contextual";
+import PillSrc from "!!raw-loader!./Pill";
+import LinkSrc from "!!raw-loader!./Link";
 
 export default () => (
     <>
