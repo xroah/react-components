@@ -25,17 +25,17 @@ export default function CardTitle(props: CardTitleProps) {
             className,
             "card-title-wrapper"
         )} {...otherProps}>
-            <div className={
+            <h5 className={
                 classNames(
                     "card-title",
                     color && `text-${color}`
                 )
-            }>{children}</div>
+            }>{children}</h5>
             {
                 subtitle != undefined && (
-                    <div className={`card-subtitle mb-2 text-${subTitleColor}`}>
+                    <h6 className={`card-subtitle mb-2 text-${subTitleColor}`}>
                         {subtitle}
-                    </div>
+                    </h6>
                 )
             }
         </div>
