@@ -37,6 +37,5 @@ ButtonGroup.propTypes = {
 };
 
 ButtonGroup.defaultProps = {
-    vertical: false,
-    toggle: false
+    vertical: false
 };
