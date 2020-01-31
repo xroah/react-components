@@ -19,7 +19,7 @@ export default function DemoExample(props: Props) {
 
     return (
         <>
-            {title && <DocHeading>{title}</DocHeading>}
+            {title && <DocHeading tag="h3">{title}</DocHeading>}
             {children}
             <div className={
                 classNames(
