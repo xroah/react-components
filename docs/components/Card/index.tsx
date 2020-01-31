@@ -13,6 +13,7 @@ import KitchenSink from "./KitchenSink";
 import KitchenSinkSrc from "!!raw-loader!./KitchenSink";
 import FooterHeader from "./FooterHeader";
 import FooterHeaderSrc from "!!raw-loader!./FooterHeader";
+import API from "./API";
 
 export default () => (
     <>
@@ -70,5 +71,6 @@ export default () => (
             source={FooterHeaderSrc}>
 
         </DemoExample>
+        <API/>
     </>
 );

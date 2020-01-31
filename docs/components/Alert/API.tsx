@@ -44,7 +44,6 @@ export default () => (
     <>
         <DocHeading>API</DocHeading>
         <PropsTable title="Alert" data={AlertProps}/>
-        <DocHeading></DocHeading>
         <NoAPI title="Alert.Link"/>
     </>
 );
