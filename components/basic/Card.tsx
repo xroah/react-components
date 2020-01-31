@@ -17,7 +17,7 @@ export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
     img?: React.ReactElement | string;
     imgPosition?: "top" | "bottom";
     isImgOverlay?: boolean;
-    align?: "left" | "center" | "right";
+    alignment?: "left" | "center" | "right";
     bg?: variantType;
     border?: variantType;
     color?: colorType;
@@ -32,7 +32,7 @@ export default function Card(props: CardProps) {
         className,
         children,
         isImgOverlay,
-        align,
+        alignment,
         bg,
         color,
         border,
@@ -76,7 +76,7 @@ export default function Card(props: CardProps) {
             classNames(
                 className,
                 "card",
-                align && `text-${align}`,
+                alignment && `text-${alignment}`,
                 bg && `bg-${bg}`,
                 border && `border-${border}`,
                 color && `text-${color}`
@@ -150,4 +150,8 @@ Card.Deck = createComponentByClass({
 Card.Column = createComponentByClass({
     className: "card-column",
     displayName: "CardColumn"
+});
+Card.Group = createComponentByClass({
+    className: "card-group",
+    displayName: "CardGroup"
 });
