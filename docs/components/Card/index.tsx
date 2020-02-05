@@ -13,6 +13,10 @@ import KitchenSink from "./KitchenSink";
 import KitchenSinkSrc from "!!raw-loader!./KitchenSink";
 import FooterHeader from "./FooterHeader";
 import FooterHeaderSrc from "!!raw-loader!./FooterHeader";
+import ImageCap from "./ImageCap";
+import ImageCapSrc from "!!raw-loader!./ImageCap";
+import ImageOverlay from "./ImageOverlay";
+import ImageOverlaySrc from "!!raw-loader!./ImageOverlay";
 import API from "./API";
 
 export default () => (
@@ -68,9 +72,15 @@ export default () => (
         <DemoExample
             title="Header and footer"
             component={<FooterHeader />}
-            source={FooterHeaderSrc}>
-
-        </DemoExample>
-        <API/>
+            source={FooterHeaderSrc} />
+        <DemoExample
+            title="Image cap"
+            component={<ImageCap />}
+            source={ImageCapSrc} />
+        <DemoExample
+            title="Image overlay"
+            component={<ImageOverlay />}
+            source={ImageOverlaySrc} />
+        <API />
     </>
 );
