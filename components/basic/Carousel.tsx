@@ -107,6 +107,7 @@ export default class Carousel extends React.Component<CarouselProps> {
         emulateTransitionEnd(el, () => {
             onSlid = handleFuncProp(onSlid);
             this.transitioning = false;
+            this.dir = "";
 
             el.classList.remove(cls1, cls2);
             el.classList.add("active");
@@ -118,9 +119,11 @@ export default class Carousel extends React.Component<CarouselProps> {
         clearTimeout(this.timer);
     }
 
-    to(index: number, dir?: string) {
+    to(index: number) {
         let childrenLen = this.getChildren().length;
         let {currentIndex} = this.state;
+
+        if (typeof index !== "number") throw new Error("The param must be a number");
 
         if (this.transitioning || childrenLen <= 1) return;
 
@@ -137,11 +140,7 @@ export default class Carousel extends React.Component<CarouselProps> {
         if (currentIndex === -1) {
             this.dir = "";
         } else {
-            if (!dir) {
-                this.dir = index < currentIndex ? "prev" : "next";
-            } else {
-                this.dir = dir;
-            }
+            if (!this.dir) this.dir = index > currentIndex ? "next" : "prev";
         }
 
         this.setState({
@@ -172,7 +171,8 @@ export default class Carousel extends React.Component<CarouselProps> {
 
     toPrev() {
         let {currentIndex} = this.state;
-        this.to(--currentIndex, "prev");
+        this.dir = "prev";
+        this.to(--currentIndex);
     }
 
     _toPrev = (evt: React.MouseEvent) => {
@@ -182,7 +182,8 @@ export default class Carousel extends React.Component<CarouselProps> {
 
     toNext() {
         let {currentIndex} = this.state;
-        this.to(++currentIndex, "next");
+        this.dir = "next";
+        this.to(++currentIndex);
     }
 
     _toNext = (evt: React.MouseEvent) => {
