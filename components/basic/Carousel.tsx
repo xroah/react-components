@@ -306,13 +306,12 @@ export default class Carousel extends React.Component<CarouselProps> {
                 <div className="carousel-inner" ref={this.el}>
                     {
                         _children.map((c, i) => {
-                            if (!React.isValidElement(c)) return;
+                            if (!React.isValidElement(c) || c.type !== CarouselItem) return;
 
                             return React.cloneElement(
                                 c,
                                 {
-                                    key: i,
-                                    className: "carousel-item"
+                                    key: i
                                 }
                             );
                         })
