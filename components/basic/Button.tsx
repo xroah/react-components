@@ -20,13 +20,7 @@ export interface ButtonProps extends React.HTMLAttributes<HTMLElement> {
     type?: "button" | "submit" | "reset";
 }
 
-interface ButtonType extends React.RefForwardingComponent<any, ButtonProps & React.RefAttributes<any>> {
-    propTypes?: any;
-    Group?: React.FunctionComponent<ButtonGroupProps>;
-    Toolbar?: React.FunctionComponent;
-}
-
-const Button: ButtonType = React.forwardRef(
+const Button: any = React.forwardRef(
     ({
         variant,
         size,
