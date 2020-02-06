@@ -1,9 +1,8 @@
 import * as React from "react";
-import PropTypes from "prop-types";
-import {classNames} from "../utils";
+import BreadcrumbItem from "./BreadCrumbItem";
 
 function Breadcrumb(props: React.HTMLAttributes<HTMLElement>) {
-    const {className, children, ...otherProps} = props;
+    const { className, children, ...otherProps } = props;
 
     return (
         <nav className={className} {...otherProps}>
@@ -14,39 +13,6 @@ function Breadcrumb(props: React.HTMLAttributes<HTMLElement>) {
     );
 }
 
-export interface BreadcrumbItemProps extends React.HTMLAttributes<HTMLLIElement> {
-    active?: boolean;
-    href?: string;
-}
-
-function Item(props: BreadcrumbItemProps) {
-    const {
-        className,
-        children,
-        href,
-        active
-    } = props;
-
-    return (
-        <li
-            className={classNames(
-                className,
-                "breadcrumb-item",
-                active && "active"
-            )}>
-            <a href={href}>{children}</a>
-        </li>
-    );
-}
-
-Item.propTypes = {
-    active: PropTypes.bool,
-    href: PropTypes.string
-};
-Item.defaultProps = {
-    active: false
-};
-
-Breadcrumb.Item = Item;
+Breadcrumb.Item = BreadcrumbItem;
 
 export default Breadcrumb;
