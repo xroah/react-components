@@ -45,8 +45,11 @@ export default class Collapse extends React.Component<CollapseProps> {
     handleExit = (node: HTMLElement) => {
         node.style.height = `${getHeight(node)}px`;
         reflow(node);
-        node.style.height = "";
         handleFuncProp(this.props.onHide)();
+    }
+
+    handleExiting = (node: HTMLElement) => {
+        node.style.height = "";
     }
 
     handleExited = () => {
@@ -74,6 +77,7 @@ export default class Collapse extends React.Component<CollapseProps> {
                 onEntering={this.handleEntering}
                 onEntered={this.handleEntered}
                 onExit={this.handleExit}
+                onExiting={this.handleExiting}
                 onExited={this.handleExited}>
                 {
                     state => {

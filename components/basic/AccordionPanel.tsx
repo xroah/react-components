@@ -9,7 +9,6 @@ import {
 
 interface PanelProps extends React.HTMLAttributes<HTMLDivElement> {
     header: React.ReactNode;
-    headerClickable?: boolean;
     __key__?: string | number; //internal only
     __onHeaderClick__?: Function; //internal only
 }
@@ -26,17 +25,13 @@ export default function AccordionPanel(props: PanelProps) {
     const handleHeaderClick = () => {
         const {
             __key__,
-            __onHeaderClick__,
-            headerClickable
+            __onHeaderClick__
         } = props;
-
-        if (!headerClickable) return;
 
         handleFuncProp(__onHeaderClick__)(__key__);
     };
 
     delete otherProps.__onHeaderClick__;
-    delete otherProps.headerClickable;
 
     return (
         <div className={classNames(className, "card")} {...otherProps}>
@@ -56,7 +51,4 @@ export default function AccordionPanel(props: PanelProps) {
 AccordionPanel.propTypes = {
     header: PropTypes.node.isRequired,
     headerClickable: PropTypes.bool
-};
-AccordionPanel.defaultProps = {
-    headerClickable: true
 };

@@ -85,7 +85,7 @@ export default class Accordion extends React.Component<AccordionProps, Accordion
     static getDerivedStateFromProps(props: AccordionProps, state: AccordionStates) {
         if ("activeKey" in props) {
             return {
-                activeIndex: this.handleProps(props)
+                activeIndex: Accordion.handleProps(props)
             }
         }
         return state;
@@ -123,11 +123,12 @@ export default class Accordion extends React.Component<AccordionProps, Accordion
             children,
             (c, i) => {
                 if (React.isValidElement(c) && c.type === AccordionPanel) {
-                    return React.cloneElement(
+
+                    return React.cloneElement<any>(
                         c,
                         {
                             __key__: c.key == undefined ? i.toString() : c.key,
-                            __onHeaderClick__: c.props.headerClickable ? this.handleClick : undefined,
+                            __onHeaderClick__: this.props.activeKey ? undefined : this.handleClick,
                         }
                     );
                 }
