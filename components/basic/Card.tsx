@@ -50,7 +50,7 @@ export default function Card(props: CardProps) {
         let cls = `card-img-${imgPosition}`;
 
         if (React.isValidElement(img)) {
-            _img = React.cloneElement(
+            _img = React.cloneElement<any>(
                 img,
                 {
                     className: cls
@@ -60,7 +60,7 @@ export default function Card(props: CardProps) {
             _img = (
                 <img
                     className={cls}
-                    src={img} />
+                    src={img as string} />
             );
         }
 
