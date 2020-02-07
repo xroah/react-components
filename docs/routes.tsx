@@ -12,43 +12,43 @@ import Breadcrumb from "./components/Breadcrumb";
 import Button from "./components/Button";
 import Card from "./components/Card";
 import Carousel from "./components/Carousel";
+import Collapse from "./components/Collapse";
 
 export const ROUTES = [
     {
         path: "/components/alert",
-        exact: true,
         component: Alert,
         name: "Alert"
     },
     {
         path: "/components/badge",
-        exact: true,
         component: Badge,
         name: "Badge"
     },
     {
         path: "/components/breadcrumb",
-        exact: true,
         component: Breadcrumb,
         name: "Breadcrumb"
     },
     {
         path: "/components/button",
-        exact: true,
         component: Button,
         name: "Button"
     },
     {
         path: "/components/card",
-        exact: true,
         component: Card,
         name: "Card"
     },
     {
         path: "/components/carousel",
-        exact: true,
         component: Carousel,
         name: "Carousel"
+    },
+    {
+        path: "/components/collapse",
+        component: Collapse,
+        name: "Collapse"
     }
 ];
 
@@ -65,7 +65,7 @@ export default function AppRoute() {
                                     <Route
                                         key={item.path}
                                         path={item.path}
-                                        exact={item.exact}
+                                        exact={true}
                                         component={item.component}/>
                                 );
                             })
