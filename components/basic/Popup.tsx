@@ -3,12 +3,10 @@ import { createPortal } from "react-dom";
 import {
     ElementRect,
     handleFuncProp,
-    emulateTransitionEnd,
     throttle,
-    getWindowSize,
-    reflow,
     classNames
 } from "../utils";
+import Fade from "../Fade";
 
 export type position = "top" | "right" | "bottom" | "left";
 
@@ -19,9 +17,14 @@ export interface PopupCommonProps extends React.HTMLAttributes<HTMLElement> {
     offset?: number;
 }
 
+type status = "stable" | "measure" | "update";
+
 interface PopupState {
     pos?: position;
-    status?: "stable" | "measure"
+    status?: status;
+    placement?: position;
+    left?: number;
+    top?: number;
 }
 
 export interface PopupProps extends PopupCommonProps {
@@ -41,7 +44,6 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
 
     private mountNode: HTMLElement | null = null;
     private hasEvent: boolean = false;
-    private cancelTransition: Function | null = null;
     private ref = React.createRef<HTMLDivElement>();
 
     static defaultProps = {
@@ -72,7 +74,7 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
         );
     }
 
-    updateNextTick(status?: "stable" | "measure", pos?: position) {
+    updateNextTick(status?: status, pos?: position) {
         if (!this.props.visible) return;
 
         requestAnimationFrame(() => {
@@ -86,39 +88,33 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
     componentDidUpdate() {
         const {
             props: {
-                fade,
-                visible
+                visible,
+                fade
             },
             hasEvent,
-            mountNode,
-            ref: {
-                current: child
-            },
-            state: { status }
+            state: {
+                status,
+                placement
+            }
         } = this;
 
-        if (!mountNode || !child) return;
-
         if (visible) {
-            if (this.cancelTransition) {
-                this.cancelTransition();
-                this.cancelTransition = null;
-            }
-
             if (!hasEvent) {
-                child.style.display = "block";
-
-                if (fade) {
-                    reflow(child);
-                    child.classList.add("show");
-                }
-
                 this.addEvent();
             }
 
             if (status !== "stable") {//just reset the position if already visible
-                const placement = this.setPosition();
-                this.updateNextTick("stable", placement);
+                if (
+                    status === "measure" ||
+                    // update when onEntering invoked if enable fade,
+                    //in case update doubly
+                     (!fade && !status) 
+                    ) {
+                    this.updatePosition();
+                } else if (status === "update"){
+                    this.updateNextTick("stable", placement);
+                }
+
             }
 
             return;
@@ -126,16 +122,6 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
 
         //in case update visible prop(invoke hide) infinitely 
         if (hasEvent) {
-            if (fade) {
-                child.classList.remove("show");
-                this.cancelTransition = emulateTransitionEnd(child, () => {
-                    this.cancelTransition = null;
-                    this.hide(child);
-                });
-            } else {
-                this.hide(child);
-            }
-
             this.removeEvent();
         }
     }
@@ -311,19 +297,15 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
         return left;
     };
 
-    setPosition() {
-        const {
-            mountNode,
-            ref: { current: child }
-        } = this;
-
-        if (!mountNode || !child) return;
-
+    updatePosition() {
         let { left, top, placement } = this.handlePosition();
-        child.style.left = `${left}px`;
-        child.style.top = `${top}px`;
 
-        return placement;
+        this.setState({
+            left,
+            top,
+            placement,
+            status: "update"
+        });
     }
 
     handleMouseEvent = (evt: React.MouseEvent<HTMLElement>) => {
@@ -361,6 +343,13 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
         window.removeEventListener("scroll", this.handleResize);
     }
 
+    handleEntering = () => {
+        //update position, in case calc indirectly when fade in
+        this.setState({
+            status: "measure"
+        });
+    }
+
     render() {
         let {
             props: {
@@ -370,13 +359,18 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
                 visible,
                 className: popupClassName
             },
+            state: {
+                left,
+                top
+            },
             mountNode
         } = this;
         let style: React.CSSProperties = {
             position: "absolute",
+            left,
+            top
         };
         let popup = children as React.ReactElement;
-        const className = fade ? "fade" : "";
 
         if (typeof children === "function") {
             popup = children();
@@ -401,7 +395,7 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
             mountTo.appendChild(mountNode);
         }
 
-        let childStyle: React.CSSProperties = {
+        const childStyle: React.CSSProperties = {
             ...popup.props.style,
             position: "relative"
         };
@@ -409,24 +403,43 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
             onMouseEnter: this.handleMouseEvent,
             onMouseLeave: this.handleMouseEvent
         };
+        const child = (
+            <div
+                style={style}
+                ref={this.ref}
+                {...mouseEvent}>
+                {
+                    React.cloneElement(
+                        popup,
+                        {
+                            style: childStyle,
+                            className: childClassNames
+                        }
+                    )
+                }
+            </div>
+        );
 
         return createPortal(
             (
-                <div
-                    style={style}
-                    className={className}
-                    ref={this.ref}
-                    {...mouseEvent}>
+                fade ? (
+                    <Fade
+                        appear
+                        toggleDisplay
+                        onEntering={this.handleEntering}
+                        in={!!visible}
+                        timeout={150}>
+                        {child}
+                    </Fade>
+                ) : React.cloneElement(
+                    child,
                     {
-                        React.cloneElement(
-                            popup,
-                            {
-                                style: childStyle,
-                                className: childClassNames
-                            }
-                        )
+                        style: {
+                            ...style,
+                            display: visible ? "block" : "none"
+                        }
                     }
-                </div>
+                )
             ),
             mountNode
         )
