@@ -45,6 +45,7 @@ export default function Fade(props: FadeProps) {
                             className: classes,
                             style: {
                                 ...style,
+                                ...child.props.style,
                                 display
                             }
                         }
