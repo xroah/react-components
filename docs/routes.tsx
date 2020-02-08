@@ -13,6 +13,7 @@ import Button from "./components/Button";
 import Card from "./components/Card";
 import Carousel from "./components/Carousel";
 import Collapse from "./components/Collapse";
+import Dropdown from "./components/Dropdown";
 
 export const ROUTES = [
     {
@@ -49,6 +50,11 @@ export const ROUTES = [
         path: "/components/collapse",
         component: Collapse,
         name: "Collapse"
+    },
+    {
+        path: "/components/dropdown",
+        component: Dropdown,
+        name: "Dropdown"
     }
 ];
 

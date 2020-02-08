@@ -25,11 +25,11 @@ const CollapseProps = [{
 }];
 const AccordionProps = [{
     name: "activeKey",
-    type: "string|number|string[]|number[]",
+    type: "string | number | string[] | number[]",
     description: "Key of the active panel"
 }, {
     name: "defaultActiveKey",
-    type: "string|number|string[]|number[]",
+    type: "string | number | string[] | number[]",
     description: "Key of the initial active panel"
 }, {
     name: "multiple",
@@ -39,11 +39,11 @@ const AccordionProps = [{
 }];
 const PanelProps = [{
     name: "key",
-    type: "string|number",
+    type: "string | number",
     description: "Unique key for identifying the panel"
 }, {
     name: "header",
-    type: "string|ReactNode",
+    type: "string | ReactNode",
     description: "Header of the panel"
 }];
 
