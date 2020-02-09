@@ -30,7 +30,6 @@ export default function Alert(props: AlertProps) {
         ...otherProps
     } = props;
     let button: React.ReactNode = null;
-    let duration = fade ? 150 : 0;
     const classes = classNames(
         className,
         "alert",
@@ -43,32 +42,35 @@ export default function Alert(props: AlertProps) {
     const handleExited = () => {
         handleFuncProp(props.onClosed)();
     };
-
+    
     if (dismissible) {
         button = (
             <Button
-                variant="link"
-                type="button"
-                className="close"
-                onClick={handleClick}>
+            variant="link"
+            type="button"
+            className="close"
+            onClick={handleClick}>
                 <span>&times;</span>
             </Button>
         );
     }
-
-    return (
+    
+    const child = (
+        <div className={classes} {...otherProps}>
+            {children}
+            {button}
+        </div>
+    );
+    
+    return fade ? (
         <Fade
             in={!!visible}
-            timeout={duration}
+            timeout={150}
             onExited={handleExited}
-            unmountOnExit={true}>
-
-            <div className={classes} {...otherProps}>
-                {children}
-                {button}
-            </div>
+            unmountOnExit>
+            {child}
         </Fade>
-    );
+    ) : visible ? child : null;
 }
 
 Alert.propTypes = {
