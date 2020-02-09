@@ -11,7 +11,7 @@ export function createComponentByClass(options: CreateProps) {
 
     let Comp: any = (props: React.AllHTMLAttributes<HTMLElement>) => {
         const { className: _className, ...otherProps } = props;
-        
+
         return React.createElement(
             tag,
             {
@@ -154,6 +154,24 @@ export function getWindowSize() {
     document.body.removeChild(div);
 
     return size;
+}
+
+export function chainFunction(...fn: any[]) {
+    return fn.reduce(
+        (acc, cur) => {
+            return function chainedFunction() {
+                const args = Array.from(arguments);
+
+                acc.apply(null, args);
+
+                if (typeof cur === "function") {
+                    cur.apply(null, args);
+                }
+            };
+        },
+        () => {}
+    );
+
 }
 
 export const AccordionContext = React.createContext(new Set());
