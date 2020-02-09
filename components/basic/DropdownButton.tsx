@@ -16,7 +16,7 @@ export default function DropdownButton(props: DropdownButtonProps) {
 
     const {
         placement,
-        align,
+        alignment,
         overlay,
         trigger,
         flip,
@@ -32,7 +32,7 @@ export default function DropdownButton(props: DropdownButtonProps) {
     } = props;
     const dropdownProps = {
         placement,
-        align,
+        alignment,
         overlay,
         trigger,
         flip,

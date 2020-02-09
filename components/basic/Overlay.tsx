@@ -16,12 +16,11 @@ export interface CommonProps extends PopupCommonProps {
 }
 
 export interface OverlayProps extends CommonProps {
-    align?: string;
+    alignment?: string;
     mountTo?: HTMLElement;
     visible?: boolean;
     popup: React.ReactNode;
-    wrapper?: string;
-    wrapperProps?: React.HTMLAttributes<HTMLElement>
+    wrapper?: React.ReactElement;
     unmountOnclose?: boolean;
     verticalCenter?: boolean;
     alignmentPrefix?: string;
@@ -225,8 +224,7 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
     renderChildren() {
         const {
             children,
-            wrapper,
-            wrapperProps
+            wrapper
         } = this.props as any;
         const actionMap: any = {
             hover: {
@@ -263,15 +261,7 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
             }
         );
 
-        if (wrapper) {
-            return React.createElement(
-                wrapper,
-                { ...wrapperProps },
-                el
-            )
-        }
-
-        return el;
+        return wrapper ? React.cloneElement(wrapper, {}, el) : el;
     }
 
     render() {

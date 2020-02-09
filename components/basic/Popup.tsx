@@ -28,7 +28,7 @@ interface PopupState {
 }
 
 export interface PopupProps extends PopupCommonProps {
-    align?: string;
+    alignment?: string;
     mountTo?: HTMLElement;
     visible?: boolean;
     unmountOnclose?: boolean;
@@ -65,7 +65,7 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
                 placement,
                 className
             },
-            state: { pos }
+            state: { placement: pos }
         } = this;
 
         return classNames(
@@ -74,13 +74,12 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
         );
     }
 
-    updateNextTick(status?: status, pos?: position) {
+    updateNextTick(status?: status) {
         if (!this.props.visible) return;
 
         requestAnimationFrame(() => {
             this.setState({
-                status,
-                pos
+                status
             });
         });
     };
@@ -103,18 +102,16 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
                 this.addEvent();
             }
 
-            if (status !== "stable") {//just reset the position if already visible
-                if (
-                    status === "measure" ||
-                    // update when onEntering invoked if enable fade,
-                    //in case update doubly
-                     (!fade && !status) 
-                    ) {
-                    this.updatePosition();
-                } else if (status === "update"){
-                    this.updateNextTick("stable", placement);
-                }
-
+            //just reset the position if already visible
+            if (
+                status === "measure" ||
+                // update when onEntering invoked if enable fade,
+                //in case update doubly
+                 (!fade && !status) 
+                ) {
+                this.updatePosition();
+            } else if (status === "update"){
+                this.updateNextTick("stable");
             }
 
             return;
@@ -266,7 +263,7 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
     handleAlignment(left: number, width: number, windowWidth: number) {
         const {
             props: {
-                align,
+                alignment,
                 placement = "",
                 rect
             },
@@ -278,7 +275,7 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
 
         if (!rect || !(placement in posMap)) return left;
 
-        switch (align) {
+        switch (alignment) {
             case "center":
                 left += (rect.width - width) / 2;
                 break;

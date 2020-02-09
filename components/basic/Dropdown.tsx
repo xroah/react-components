@@ -11,7 +11,7 @@ import DropdownMenuItem from "./DropdownMenuItem";
 import DropdownButton from "./DropdownButton";
 
 export interface DropdownProps extends CommonProps {
-    align?: "left" | "center" | "right";
+    alignment?: "left" | "center" | "right";
     overlay?: React.ReactNode;
 }
 
@@ -20,9 +20,9 @@ export default class Dropdown extends React.Component<DropdownProps> {
     static defaultProps = {
         trigger: ["click"],
         placement: "bottom",
-        align: "left",
+        alignment: "left",
         //offset: box-shadow .2rem
-        offset: parseInt(getComputedStyle(document.documentElement).fontSize) * 0.2
+        offset: parseFloat(getComputedStyle(document.documentElement).fontSize || "16") * 0.2
     }
     static Menu = DropdownMenu;
     static MenuItem = DropdownMenuItem;
@@ -72,14 +72,14 @@ export default class Dropdown extends React.Component<DropdownProps> {
             top: "dropup",
             right: "dropright"
         };
-        let wrapper: string | undefined = undefined;
+        let wrapper: React.ReactElement | undefined = undefined;
         let position = positionMap[placement as string];
-        let wrapperProps: React.HTMLAttributes<HTMLElement> = {};
         const child = React.Children.only(children) as React.ReactElement;
         
         if (position) {
-            wrapper = "div";
-            wrapperProps.className = classNames(position, "btn-group");
+            wrapper = (
+                <div className={classNames(position, "btn-group")}></div>
+            );
         }
 
         return (
@@ -87,7 +87,6 @@ export default class Dropdown extends React.Component<DropdownProps> {
                 popup={overlay}
                 placement={placement}
                 wrapper={wrapper}
-                wrapperProps={wrapperProps}
                 onKeydown={this.handleKeydown}
                 escClose={true}
                 clickOutsideClose={true}
