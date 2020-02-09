@@ -38,22 +38,30 @@ export default function DropdownButton(props: DropdownButtonProps) {
         flip,
         fade
     };
-    const classes = classNames(className, "dropdown-toggle");
+    const btn = (
+        <Button
+            variant={variant}
+            disabled={disabled}
+            href={href}
+            {...otherProps}>{children}</Button>
+    );
+    const dropdown = (
+        <Dropdown {...dropdownProps}>
+            <Button
+                className={classNames(className, "dropdown-toggle-split")}
+                variant={variant}
+                disabled={disabled} />
+        </Dropdown>
+    );
 
     if (split) {
         return (
-            <Button.Group size={size} className={className}>
-                <Button
-                    variant={variant}
-                    disabled={disabled}
-                    href={href}
-                    {...otherProps}>{children}</Button>
-                <Dropdown {...dropdownProps}>
-                    <Button
-                        className="dropdown-toggle dropdown-toggle-split"
-                        variant={variant}
-                        disabled={disabled} />
-                </Dropdown>
+            <Button.Group size={size}>
+                {
+                    placement === "left" ?
+                        <>{dropdown}{btn}</> :
+                        <>{btn}{dropdown}</>
+                }
             </Button.Group>
         );
     }
@@ -61,10 +69,11 @@ export default function DropdownButton(props: DropdownButtonProps) {
     return (
         <Dropdown {...dropdownProps}>
             <Button
-                className={classes}
+                className={className}
                 variant={variant}
                 disabled={disabled}
                 size={size}
+                href={href}
                 {...otherProps}>
                 {children}
             </Button>
