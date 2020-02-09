@@ -124,7 +124,7 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
     }
 
     nextTick(callback: Function) {
-        setTimeout(callback, 0);
+        setTimeout(callback, 20);
     }
 
     handleEnter(node: HTMLElement) {
