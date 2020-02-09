@@ -106,6 +106,7 @@ export default class Col extends React.Component<ColProps> {
             ...otherProps
         } = this.props;
         let classes = classNames(
+            className,
             this.handleSpan("col", span),
             this.handleOffsetOrOrder("order", order),
             this.handleOffsetOrOrder("offset", offset)
