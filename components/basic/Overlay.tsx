@@ -3,7 +3,8 @@ import {
     ElementRect,
     getElementRect,
     OverlayContext,
-    handleFuncProp
+    handleFuncProp,
+    chainFunction
 } from "../utils";
 import Popup, { PopupCommonProps } from "./Popup";
 import PropTypes from "prop-types";
@@ -20,6 +21,7 @@ export interface OverlayProps extends CommonProps {
     mountTo?: HTMLElement;
     visible?: boolean;
     popup: React.ReactNode;
+    popupProps?: React.HTMLAttributes<HTMLElement>;
     wrapper?: React.ReactElement;
     unmountOnclose?: boolean;
     verticalCenter?: boolean;
@@ -38,23 +40,6 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
 
     private srcEl: HTMLElement | null = null;
     private timer: NodeJS.Timeout | null = null;
-
-    static defaultProps = {
-        clearPosition: true,
-        clearMargin: true,
-        offset: 0
-    };
-    static propTypes = {
-        offset: PropTypes.number,
-        placement: PropTypes.oneOf([
-            "top",
-            "left",
-            "bottom",
-            "right"
-        ]),
-        flip: PropTypes.bool,
-        fade: PropTypes.bool
-    };
 
     constructor(props: OverlayProps) {
         super(props);
@@ -81,23 +66,10 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
         const src = evt.currentTarget;
         const c = this.props.children as React.ReactElement;
         const type = evt.type;
-        const eventMap: any = {
-            click: "onClick",
-            contextmenu: "onContextMenu",
-            focus: "onFocus",
-            blur: "onBlur",
-            mouseenter: "onMouseEnter",
-            mouseLeave: "onMouseLeave"
-        };
-        const handler = eventMap[type];
         this.srcEl = src;
 
         //disabled
         if (src.disabled || src.classList.contains("disabled")) return;
-
-        if (handler in c.props) {
-            (c.props as any)[handler](evt);
-        }
 
         this.clearTimer();
 
@@ -105,7 +77,7 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
             case "click":
             case "contextmenu":
                 this.toggle();
-                type === "contextmenu" && evt.preventDefault();
+                evt.preventDefault();
                 break;
             case "mouseenter":
             case "focus":
@@ -224,26 +196,46 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
     renderChildren() {
         const {
             children,
-            wrapper
-        } = this.props as any;
+            wrapper,
+            ...otherProps
+        } = this.props;
+        const handler = this.handleEvent;
+        const {
+            onClick,
+            onMouseEnter,
+            onMouseLeave,
+            onContextMenu,
+            onBlur,
+            onFocus
+        } = (children as React.ReactElement<React.HTMLAttributes<HTMLElement>>).props;
         const actionMap: any = {
             hover: {
-                onMouseEnter: this.handleEvent,
-                onMouseLeave: this.handleEvent
+                onMouseEnter: chainFunction(handler, otherProps.onMouseEnter, onMouseEnter),
+                onMouseLeave: chainFunction(handler, otherProps.onMouseLeave, onMouseLeave)
             },
             click: {
-                onClick: this.handleEvent
+                onClick: chainFunction(handler, otherProps.onClick, onClick)
             },
             contextmenu: {
-                onContextMenu: this.handleEvent
+                onContextMenu: chainFunction(handler, otherProps.onContextMenu, onContextMenu)
             },
             focus: {
-                onFocus: this.handleEvent,
-                onBlur: this.handleEvent
+                onFocus: chainFunction(handler, otherProps.onFocus, onFocus),
+                onBlur: chainFunction(handler, otherProps.onBlur, onBlur)
             }
         };
         let eventHandlers: any = {};
         let action = this.getAction();
+
+        delete otherProps.popup;
+        delete otherProps.popupProps;
+        delete otherProps.onKeydown;
+        delete otherProps.placement;
+        delete otherProps.alignment;
+        delete otherProps.offset;
+        delete otherProps.clickOutsideClose;
+        delete otherProps.escClose;
+        delete otherProps.fade;
 
         action.forEach((a: string) => {
             if (a in actionMap) {
@@ -255,8 +247,9 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
         });
 
         const el = React.cloneElement(
-            children,
+            children as React.ReactElement,
             {
+                ...otherProps,
                 ...eventHandlers
             }
         );
@@ -268,15 +261,24 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
         const {
             props: {
                 popup,
-                ...otherProps
+                popupProps,
+                placement,
+                alignment,
+                offset,
+                fade
             },
             state: {
                 rect,
                 visible
             }
         } = this;
-
-        delete otherProps.onKeydown;
+        const props = {
+            fade,
+            offset,
+            placement,
+            alignment,
+            ...popupProps
+        };
 
         return (
             <>
@@ -290,7 +292,9 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
                         onMouseEnter={this.handlePopupMouseEnter}
                         onMouseLeave={this.handlePopupMouseLeave}
                         onClickOutside={this.handleClickOutside}
-                        {...otherProps}>{popup}</Popup>
+                        {...props}>
+                        {popup}
+                    </Popup>
                 </OverlayContext.Provider>
             </>
         );

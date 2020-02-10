@@ -14,16 +14,19 @@ export default function DropdownMenu(props: MenuProps) {
         style = {},
         ...otherProps
     } = props;
-    style.margin = 0;
+    style.left = 0;
+    style.top = 0;
+    style.position = "relative";
 
     return (
-        <div className={
-            classNames(
-                className,
-                "dropdown-menu show"
-            )
-        }
+        <div
             style={style}
+            className={
+                classNames(
+                    className,
+                    "dropdown-menu show"
+                )
+            }
             {...otherProps}>
             {
                 header && <div className="dropdown-header">{header}</div>

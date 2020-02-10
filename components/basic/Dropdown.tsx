@@ -9,29 +9,32 @@ import Overlay, { CommonProps } from "./Overlay";
 import DropdownMenu from "./DropdownMenu";
 import DropdownMenuItem from "./DropdownMenuItem";
 import DropdownButton from "./DropdownButton";
+import Button from "./Button";
 
 export interface DropdownProps extends CommonProps {
     alignment?: "left" | "center" | "right";
-    overlay?: React.ReactNode;
+    overlay?: React.ReactElement;
 }
 
 export default class Dropdown extends React.Component<DropdownProps> {
 
+    static propTypes = {
+        alignment: PropTypes.oneOf(["left", "center", "right"]),
+        overlay: PropTypes.element
+    };
     static defaultProps = {
         trigger: ["click"],
         placement: "bottom",
-        alignment: "left",
-        //offset: box-shadow .2rem
-        offset: parseFloat(getComputedStyle(document.documentElement).fontSize || "16") * 0.2
+        alignment: "left"
     }
     static Menu = DropdownMenu;
     static MenuItem = DropdownMenuItem;
-    static DropdownContext = OverlayContext;
     static Divider = createComponentByClass({
         className: "dropdown-divider",
         displayName: "DropdownDivider"
     });
     static Button = DropdownButton;
+    static Context = OverlayContext;
 
     handleKeydown = (evt: KeyboardEvent, el: HTMLElement) => {
         if (!el) return;
@@ -65,6 +68,7 @@ export default class Dropdown extends React.Component<DropdownProps> {
             overlay,
             placement,
             offset,
+            className,
             ...otherProps
         } = this.props;
         const positionMap: any = {
@@ -72,35 +76,29 @@ export default class Dropdown extends React.Component<DropdownProps> {
             top: "dropup",
             right: "dropright"
         };
+        let popupProps: any = {};
         let wrapper: React.ReactElement | undefined = undefined;
         let position = positionMap[placement as string];
         const child = React.Children.only(children) as React.ReactElement;
-        
+
         if (position) {
-            wrapper = (
-                <div className={classNames(position, "btn-group")}></div>
-            );
+            wrapper = <Button.Group className={position} />;
+            popupProps.className = position;
         }
 
         return (
             <Overlay
                 popup={overlay}
+                popupProps={popupProps}
                 placement={placement}
                 wrapper={wrapper}
                 onKeydown={this.handleKeydown}
                 escClose={true}
                 clickOutsideClose={true}
                 offset={offset}
+                className={classNames(className, "dropdown-toggle")}
                 {...otherProps}>
-                {React.cloneElement(
-                    child,
-                    {
-                        className: classNames(
-                            "dropdown-toggle",
-                            child.props.className
-                        )
-                    }
-                )}
+                {child}
             </Overlay>
         );
     }

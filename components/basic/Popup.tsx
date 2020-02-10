@@ -1,5 +1,6 @@
 import * as React from "react";
 import { createPortal } from "react-dom";
+import PropTypes, { number } from "prop-types";
 import {
     ElementRect,
     handleFuncProp,
@@ -14,7 +15,7 @@ export interface PopupCommonProps extends React.HTMLAttributes<HTMLElement> {
     placement?: position;
     flip?: boolean;
     fade?: boolean;
-    offset?: number;
+    offset?: number | number[];
 }
 
 type status = "stable" | "measure" | "update";
@@ -46,9 +47,19 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
     private hasEvent: boolean = false;
     private ref = React.createRef<HTMLDivElement>();
 
+    static propTypes = {
+        placement: PropTypes.oneOf(["top", "bottom", "left", "right"]),
+        flip: PropTypes.bool,
+        fade: PropTypes.bool,
+        offset: PropTypes.oneOfType([
+            PropTypes.number,
+            PropTypes.arrayOf(PropTypes.number)
+        ])
+    };
     static defaultProps = {
         flip: true,
-        fade: true
+        fade: true,
+        offset: [0, 0]
     };
 
     constructor(props: PopupProps) {
@@ -58,20 +69,16 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
         this.handleResize = throttle(this.handleResize.bind(this));
     }
 
-    getClassNames() {
+    getAlimentClass() {
         const {
             props: {
                 alignmentPrefix,
-                placement,
-                className
+                placement
             },
             state: { placement: pos }
         } = this;
 
-        return classNames(
-            className,
-            alignmentPrefix && `${alignmentPrefix}-${pos || placement}`,
-        );
+        return alignmentPrefix && `${alignmentPrefix}-${pos || placement}`;
     }
 
     updateNextTick(status?: status) {
@@ -92,8 +99,7 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
             },
             hasEvent,
             state: {
-                status,
-                placement
+                status
             }
         } = this;
 
@@ -107,10 +113,10 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
                 status === "measure" ||
                 // update when onEntering invoked if enable fade,
                 //in case update doubly
-                 (!fade && !status) 
-                ) {
+                (!fade && !status)
+            ) {
                 this.updatePosition();
-            } else if (status === "update"){
+            } else if (status === "update") {
                 this.updateNextTick("stable");
             }
 
@@ -180,6 +186,60 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
         handleFuncProp(onKeydown)(evt, mountNode);
     }
 
+    handleOffset(offset: number | number[]) {
+        let ret: number[];
+
+        if (Array.isArray(offset)) {
+            const len = number.length;
+
+            switch (len) {
+                case 0:
+                    ret = [0, 0];
+                    break;
+                case 1:
+                    ret = Array(2).fill(offset[0]);
+                default:
+                    ret = offset.slice(0, 2);
+            }
+
+            if (!len) {
+                ret = [0, 0];
+            }
+        } else {
+            ret = Array(2).fill(offset);
+        }
+
+        return ret;
+    }
+
+    alignRight = (rect: ElementRect, hOffset: number, vOffset: number) => {
+        let left = rect.left + rect.width + hOffset;
+        let top = rect.top + vOffset;
+
+        return { left, top, placement: "right" };
+    }
+
+    alignTop = (rect: ElementRect, height: number, hOffset: number, vOffset: number) => {
+        let left = rect.left + hOffset;
+        let top = rect.top - height - vOffset;
+
+        return { left, top, placement: "top" }
+    }
+
+    alignLeft = (rect: ElementRect, width: number, hOffset: number, vOffset: number) => {
+        let left = rect.left - width - hOffset;
+        let top = rect.top + vOffset;
+
+        return { left, top, placement: "left" }
+    }
+
+    alignBottom = (rect: ElementRect, hOffset: number, vOffset: number) => {
+        let left = rect.left + hOffset;
+        let top = rect.top + rect.height + vOffset;
+
+        return { left, top, placement: "bottom" }
+    }
+
     handlePosition() {
         const {
             mountNode,
@@ -187,16 +247,14 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
                 placement,
                 flip,
                 rect,
-                offset = 0,
+                offset,
                 verticalCenter
             },
             ref: { current: child }
         } = this;
-        let left = 0;
-        let top = 0;
-        let _placement = placement;
+        let obj: any;
 
-        if (!mountNode || !child || !rect) return { left, top };
+        if (!mountNode || !child || !rect) return { left: 0, top: 0 };
 
         const width = child.offsetWidth;
         const height = child.offsetHeight;
@@ -204,48 +262,39 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
         //innerWidth/innerHeight contains width of scrollbar
         //usually webpage does not have horizontal scrollbar
         const windowHeight = window.innerHeight;
-        const rightFn = () => {
-            left = rect.left + rect.width + offset;
-            top = rect.top;
-            _placement = "right";
-        };
-        const topFn = () => {
-            left = rect.left;
-            top = rect.top - height - offset;
-            _placement = "top";
-        };
-        const leftFn = () => {
-            left = rect.left - width - offset;
-            top = rect.top;
-            _placement = "left";
-        };
-        const bottomFn = () => {
-            left = rect.left;
-            top = rect.top + rect.height + offset;
-            _placement = "bottom";
-        };
-        const handleFlip = (needFlip: boolean, callback: Function) => {
-            if (flip && needFlip) callback();
-        }
+        const [hOffset, vOffset] = this.handleOffset(offset as number);
 
         switch (placement) {
             case "top":
-                topFn();
-                handleFlip(rect.bottom - rect.height < height, bottomFn);
+                obj = this.alignTop(rect, height, hOffset, vOffset);
+
+                if (flip && rect.bottom - rect.height < height) {
+                    obj = this.alignBottom(rect, hOffset, vOffset);
+                }
                 break;
             case "right":
-                rightFn();
-                handleFlip(windowWidth - rect.right < width, leftFn);
+                obj = this.alignRight(rect, hOffset, vOffset);
+
+                if (flip && windowWidth - rect.right < width) {
+                    obj = this.alignLeft(rect, width, hOffset, vOffset);
+                }
                 break;
             case "left":
-                leftFn();
-                handleFlip(rect.right - rect.width < width, rightFn);
+                obj = this.alignLeft(rect, width, hOffset, vOffset);
+
+                if (flip && rect.right - rect.width < width) {
+                    obj = this.alignRight(rect, hOffset, vOffset);
+                }
                 break;
             default:
-                bottomFn();
-                handleFlip(windowHeight - rect.bottom < height, topFn);
+                obj = this.alignBottom(rect, hOffset, vOffset);
+
+                if (flip && windowHeight - rect.bottom < height) {
+                    obj = this.alignTop(rect, height, hOffset, vOffset);
+                }
         }
 
+        let {left, top, placement: _placement} = obj;
         left = this.handleAlignment(left, width, windowWidth);
 
         if (
@@ -354,7 +403,7 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
                 children,
                 fade,
                 visible,
-                className: popupClassName
+                className
             },
             state: {
                 left,
@@ -367,18 +416,17 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
             left,
             top
         };
-        let popup = children as React.ReactElement;
+        let _children = children as React.ReactElement;
 
         if (typeof children === "function") {
-            popup = children();
+            _children = children();
         }
 
-        if ((!visible && !mountNode) || !popup) return null;
+        if ((!visible && !mountNode) || !_children) return null;
 
         const childClassNames = classNames(
-            popupClassName,
-            popup.props.className,
-            this.getClassNames(),
+            _children.props.className,
+            this.getAlimentClass(),
         );
 
         if (!mountNode) {
@@ -391,11 +439,6 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
                 `;
             mountTo.appendChild(mountNode);
         }
-
-        const childStyle: React.CSSProperties = {
-            ...popup.props.style,
-            position: "relative"
-        };
         const mouseEvent = {
             onMouseEnter: this.handleMouseEvent,
             onMouseLeave: this.handleMouseEvent
@@ -404,12 +447,12 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
             <div
                 style={style}
                 ref={this.ref}
+                className={className}
                 {...mouseEvent}>
                 {
                     React.cloneElement(
-                        popup,
+                        _children,
                         {
-                            style: childStyle,
                             className: childClassNames
                         }
                     )
