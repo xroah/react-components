@@ -14,6 +14,7 @@ import Card from "./components/Card";
 import Carousel from "./components/Carousel";
 import Collapse from "./components/Collapse";
 import Dropdown from "./components/Dropdown";
+import Tooltip from "./components/Tooltip";
 
 export const ROUTES = [
     {
@@ -55,6 +56,11 @@ export const ROUTES = [
         path: "/components/dropdown",
         component: Dropdown,
         name: "Dropdown"
+    },
+    {
+        path: "/components/tooltip",
+        component: Tooltip,
+        name: "Tooltip"
     }
 ];
 

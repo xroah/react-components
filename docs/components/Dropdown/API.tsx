@@ -3,35 +3,45 @@ import PropsTable from "../PropsTable";
 import DocHeading from "../DocHeading";
 import NoAPI from "../NoAPI";
 
-const DropdownProps = [{
-    name: "placement",
-    type: "top | bottom | left | right",
-    default: "bottom",
-    description: "The dropdown popup position"
-}, {
-    name: "flip",
-    type: "boolean",
-    default: "true",
-    description: "If true, the popup will flip to opposite position if space is insufficient"
-}, {
-    name: "fade",
-    type: "boolean",
-    default: "true",
-    description: "Fade effect of dropdown popup"
-}, {
-    name: "offset",
-    type: "number | number[]",
-    default: "[0, 0]",
-    description: "Offset of dropdown popup"
-}, {
-    name: "alignment",
-    type: "left | center | right",
-    default: "left",
-    description: "Horizontal alignment of dropdown popup"
-}, {
+export const TRIGGER_TYPE = "hover | contextment | focus | Array<hover | contextmenu | focus>";
+export const commonProps = [
+    {
+        name: "placement",
+        type: "top | bottom | left | right",
+        default: "bottom",
+        description: "The dropdown popup position"
+    }, {
+        name: "flip",
+        type: "boolean",
+        default: "true",
+        description: "If true, the popup will flip to opposite position if space is insufficient"
+    }, {
+        name: "fade",
+        type: "boolean",
+        default: "true",
+        description: "Enable fade effect of dropdown popup or not"
+    }, {
+        name: "offset",
+        type: "number | number[]",
+        default: "[0, 0]",
+        description: "Offset of dropdown popup"
+    }, {
+        name: "alignment",
+        type: "left | center | right",
+        default: "left",
+        description: "Horizontal alignment of dropdown popup"
+    }
+];
+
+const DropdownProps = [...commonProps, {
     name: "overlay",
     type: "ReactElement",
     description: "The dropdown popup"
+}, {
+    name: "trigger",
+    type: TRIGGER_TYPE,
+    default: "click",
+    description: "How dropdown is triggered"
 }];
 const DropdownButtonProps = [{
     name: "variant",
@@ -97,6 +107,6 @@ export default () => (
         <PropsTable title="Dropdown.Button" data={DropdownButtonProps} />
         <PropsTable title="Dropdown.Menu" data={DropdownMenuProps} />
         <PropsTable title="Dropdown.MenuItem" data={MenuItemProps} />
-        <NoAPI title="Dropdown.Divider"/>
+        <NoAPI title="Dropdown.Divider" />
     </>
 );
