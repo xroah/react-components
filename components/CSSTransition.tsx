@@ -33,6 +33,7 @@ interface State {
 export default class CSSTransition extends React.Component<CSSTransitionProps, State> {
 
     timer: NodeJS.Timeout | null = null;
+    nextTimer: NodeJS.Timeout | null = null;
     next: Function | null = null;
 
     constructor(props: CSSTransitionProps) {
@@ -80,14 +81,14 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
         let {
             props: { in: _in },
             state: { status },
-            next,
-            nextTick
+            next
         } = this;
         const enterSet = new Set([ENTER, ENTERING, ENTERED]);
         const exitSet = new Set([EXIT, EXITING, EXITED]);
 
         if (_in !== prevProps.in) {
-            this.next = null;
+            this.clearTimer();
+            this.clearNext();
 
             if (_in) {
                 if (!enterSet.has(status)) {
@@ -102,9 +103,14 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
             this.updateStatus(status as stateType);
         } else {
             if (next) {
-                nextTick(next);
+                this.nextTick(next);
             }
         }
+    }
+
+    componentWillUnmount() {
+        this.clearTimer();
+        this.clearNext();
     }
 
     //in case findDOMNode returns null
@@ -124,7 +130,32 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
     }
 
     nextTick(callback: Function) {
-        setTimeout(callback, 20);
+        this.nextTimer = setTimeout(
+            this.safeCallback(callback),
+            20
+        );
+    }
+
+    clearNext() {
+        this.next = null;
+
+        if (this.nextTimer) {
+            clearTimeout(this.nextTimer);
+            this.nextTimer = null;
+        }
+    }
+
+    safeCallback(callback: Function) {
+        const node = findDOMNode(this) as HTMLElement;
+        const _callback = () => {
+            //node may removed(unmounted) 
+            //Can't perform a React state update on an unmounted component
+            if (node && !node.parentNode) return;
+
+            callback();
+        };
+
+        return _callback;
     }
 
     handleEnter(node: HTMLElement) {
@@ -133,19 +164,18 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
             onEntered,
             timeout = 0,
         } = this.props;
-        const enteredCallback = () => {
+        const enteredCallback = this.safeCallback(() => {
             this.setState({
                 status: ENTERED
             });
             handleFuncProp(onEntered)(node);
-        };
+        });
         this.next = () => {
             this.next = null;
 
             this.timer = setTimeout(enteredCallback, timeout);
         }
 
-        this.clearTimer();
         this.setState({
             status: ENTERING
         });
@@ -166,7 +196,7 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
                 status: UNMOUNTED
             });
         }
-        const exitedCallback = () => {
+        const exitedCallback = this.safeCallback(() => {
             this.setState(
                 {
                     status: EXITED
@@ -175,12 +205,11 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
             handleFuncProp(onExited)(node);
 
             this.next = unmountOnExit ? unmount : null;
-        };
+        });
         this.next = () => {
             this.timer = setTimeout(exitedCallback, timeout);
         };
 
-        this.clearTimer();
         this.setState({
             status: EXITING
         });
