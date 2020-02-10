@@ -149,23 +149,7 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
             status: undefined,
             pos: undefined
         });
-        this.unmount();
     }
-
-    unmount() {
-        const {
-            props: {
-                unmountOnclose,
-                mountTo = document.body
-            },
-            mountNode
-        } = this;
-
-        if (unmountOnclose && mountNode) {
-            mountTo.removeChild(mountNode);
-            this.mountNode = null;
-        }
-    };
 
     handleClickOutSide = (evt: MouseEvent) => {
         const t = evt.target as HTMLElement;
@@ -403,7 +387,8 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
                 children,
                 fade,
                 visible,
-                className
+                className,
+                unmountOnclose
             },
             state: {
                 left,
@@ -422,7 +407,10 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
             _children = children();
         }
 
-        if ((!visible && !mountNode) || !_children) return null;
+        if (
+            ((!visible && !mountNode) || !_children) ||
+            (!visible && unmountOnclose)
+            ) return null;
 
         const childClassNames = classNames(
             _children.props.className,

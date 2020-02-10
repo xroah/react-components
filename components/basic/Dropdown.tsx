@@ -23,7 +23,7 @@ export default class Dropdown extends React.Component<DropdownProps> {
         overlay: PropTypes.element
     };
     static defaultProps = {
-        trigger: ["click"],
+        trigger: "click",
         placement: "bottom",
         alignment: "left"
     }

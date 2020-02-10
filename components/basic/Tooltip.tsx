@@ -1,10 +1,9 @@
 import * as React from "react";
 import PropTypes from "prop-types";
 import Overlay, { CommonProps } from './Overlay';
-import { classNames } from "../utils";
 
 export interface TooltipProps extends CommonProps {
-
+    text?: string | React.ReactNode;
 }
 
 export function getStyle(placement: any) {
@@ -28,37 +27,34 @@ export function getStyle(placement: any) {
 
 export default function Tooltip(props: TooltipProps) {
     const {
-        title,
+        text,
         children,
-        placement = "top",
+        placement,
         offset,
+        style = {},
         ...otherProps
     } = props;
+    style.position = "relative";
+    style.willChange = "transform";
 
-    const popup = (
-        <div className={
-            classNames(
-                "show",
-                "tooltip"
-            )
-        }>
+    const popup = text ? (
+        <div className="tooltip show" style={style}>
             <div className="arrow" style={getStyle(placement)} />
             <div className="tooltip-inner">
-                {title}
+                {text}
             </div>
         </div>
-    );
+    ) : null;
 
     return (
         <Overlay
             placement={placement}
             popup={popup}
-            align="center"
+            alignment="center"
             offset={offset}
             alignmentPrefix="bs-tooltip"
             unmountOnclose
             verticalCenter
-            clearMargin={false}
             {...otherProps}>
             {children}
         </Overlay>
@@ -66,7 +62,8 @@ export default function Tooltip(props: TooltipProps) {
 }
 
 Tooltip.defaultProps = {
-    trigger: ["hover"]
+    trigger: "hover",
+    placement: "top"
 };
 Tooltip.propTypes = {
     title: PropTypes.node.isRequired

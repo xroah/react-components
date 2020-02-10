@@ -232,10 +232,13 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
         delete otherProps.onKeydown;
         delete otherProps.placement;
         delete otherProps.alignment;
+        delete otherProps.alignmentPrefix
         delete otherProps.offset;
         delete otherProps.clickOutsideClose;
         delete otherProps.escClose;
         delete otherProps.fade;
+        delete otherProps.unmountOnclose;
+        delete otherProps.verticalCenter;
 
         action.forEach((a: string) => {
             if (a in actionMap) {
@@ -260,12 +263,15 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
     render() {
         const {
             props: {
+                children,
                 popup,
                 popupProps,
                 placement,
                 alignment,
                 offset,
-                fade
+                fade,
+                unmountOnclose,
+                alignmentPrefix
             },
             state: {
                 rect,
@@ -277,8 +283,12 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
             offset,
             placement,
             alignment,
+            unmountOnclose,
+            alignmentPrefix,
             ...popupProps
         };
+
+        if (!popup) return children;
 
         return (
             <>
