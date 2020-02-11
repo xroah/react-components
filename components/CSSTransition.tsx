@@ -49,11 +49,7 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
         if (_in) {
             status = appear ? EXITED : ENTERED;
         } else {
-            if (unmountOnExit) {
-                status = UNMOUNTED;
-            } else {
-                status = EXITED;
-            }
+            status = unmountOnExit ? UNMOUNTED : EXITED;
         }
 
         this.state = {
@@ -83,23 +79,12 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
             state: { status },
             next
         } = this;
-        const enterSet = new Set([ENTER, ENTERING, ENTERED]);
-        const exitSet = new Set([EXIT, EXITING, EXITED]);
-
+        
         if (_in !== prevProps.in) {
+            status = _in ? ENTER : EXIT;
+
             this.clearTimer();
             this.clearNext();
-
-            if (_in) {
-                if (!enterSet.has(status)) {
-                    status = ENTER;
-                }
-            } else {
-                if (!exitSet.has(status)) {
-                    status = EXIT;
-                }
-            }
-
             this.updateStatus(status as stateType);
         } else {
             if (next) {
