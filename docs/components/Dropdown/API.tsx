@@ -6,11 +6,6 @@ import NoAPI from "../NoAPI";
 export const TRIGGER_TYPE = "hover | contextment | focus | Array<hover | contextmenu | focus>";
 export const commonProps = [
     {
-        name: "placement",
-        type: "top | bottom | left | right",
-        default: "bottom",
-        description: "The dropdown popup position"
-    }, {
         name: "flip",
         type: "boolean",
         default: "true",
@@ -26,23 +21,34 @@ export const commonProps = [
         default: "[0, 0]",
         description: "Offset of dropdown popup"
     }, {
+        name: "onVisibleChange",
+        type: "Function",
+        description: "Callback when visibility changed"
+    }
+];
+
+const DropdownProps = [
+    ...commonProps,
+    {
+        name: "placement",
+        type: "top | bottom | left | right",
+        default: "bottom",
+        description: "The dropdown popup position"
+    }, {
         name: "alignment",
         type: "left | center | right",
         default: "left",
         description: "Horizontal alignment of dropdown popup"
-    }
-];
-
-const DropdownProps = [...commonProps, {
-    name: "overlay",
-    type: "ReactElement",
-    description: "The dropdown popup"
-}, {
-    name: "trigger",
-    type: TRIGGER_TYPE,
-    default: "click",
-    description: "How dropdown is triggered"
-}];
+    }, {
+        name: "overlay",
+        type: "ReactElement",
+        description: "The dropdown popup"
+    }, {
+        name: "trigger",
+        type: TRIGGER_TYPE,
+        default: "click",
+        description: "How dropdown is triggered"
+    }];
 const DropdownButtonProps = [{
     name: "variant",
     type: `"primary" |

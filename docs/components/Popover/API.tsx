@@ -9,16 +9,20 @@ const TooltipProps = [
         name: "placement",
         type: "top | bottom | left | right",
         default: "top",
-        description: "The tooltip popup position"
+        description: "The popover popup position"
     }, {
-        name: "text",
+        name: "header",
         type: "string | ReactNode",
-        description: "The text shown in the tooltip"
+        description: "Header of the popover"
+    }, {
+        name: "content",
+        type: "string | ReactNode",
+        description: "Content of the popover"
     }, {
         name: "trigger",
         type: TRIGGER_TYPE,
-        default: "hover",
-        description: "How tooltip is triggered"
+        default: "click",
+        description: "How popover is triggered"
     }
 ];
 

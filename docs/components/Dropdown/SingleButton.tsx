@@ -15,6 +15,6 @@ export default () => {
             variant="secondary"
             overlay={overlay}>
             Dropdown button
-    </Dropdown.Button>
+        </Dropdown.Button>
     )
 };
