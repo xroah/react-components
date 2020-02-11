@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import Overlay, { CommonProps } from './Overlay';
 
 export interface TooltipProps extends CommonProps {
-    text?: string | React.ReactNode;
+    text: string | React.ReactNode;
 }
 
 export function getStyle(placement: any) {
@@ -30,7 +30,6 @@ export default function Tooltip(props: TooltipProps) {
         text,
         children,
         placement,
-        offset,
         style = {},
         ...otherProps
     } = props;
@@ -51,7 +50,6 @@ export default function Tooltip(props: TooltipProps) {
             placement={placement}
             popup={popup}
             alignment="center"
-            offset={offset}
             alignmentPrefix="bs-tooltip"
             unmountOnclose
             verticalCenter
@@ -66,5 +64,8 @@ Tooltip.defaultProps = {
     placement: "top"
 };
 Tooltip.propTypes = {
-    title: PropTypes.node.isRequired
+    text: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.node
+    ]).isRequired
 };
