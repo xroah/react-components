@@ -5,7 +5,8 @@ import {
     ElementRect,
     handleFuncProp,
     throttle,
-    classNames
+    classNames,
+    getElementRect
 } from "../utils";
 import Fade from "../Fade";
 
@@ -16,6 +17,7 @@ export interface PopupCommonProps extends React.HTMLAttributes<HTMLElement> {
     flip?: boolean;
     fade?: boolean;
     offset?: number | number[];
+    defaultVisible?: boolean;
 }
 
 type status = "stable" | "measure" | "update";
@@ -33,7 +35,7 @@ export interface PopupProps extends PopupCommonProps {
     mountTo?: HTMLElement;
     visible?: boolean;
     unmountOnclose?: boolean;
-    rect?: ElementRect;
+    node?: HTMLElement;
     verticalCenter?: boolean;
     alignmentPrefix?: string;
     onClickOutside?: Function;
@@ -59,7 +61,8 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
     static defaultProps = {
         flip: true,
         fade: true,
-        offset: [0, 0]
+        offset: [0, 0],
+        defaultVisible: false
     };
 
     constructor(props: PopupProps) {
@@ -230,7 +233,7 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
             props: {
                 placement,
                 flip,
-                rect,
+                node,
                 offset,
                 verticalCenter
             },
@@ -238,7 +241,7 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
         } = this;
         let obj: any;
 
-        if (!mountNode || !child || !rect) return { left: 0, top: 0 };
+        if (!mountNode || !child || !node) return {};
 
         const width = child.offsetWidth;
         const height = child.offsetHeight;
@@ -247,6 +250,7 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
         //usually webpage does not have horizontal scrollbar
         const windowHeight = window.innerHeight;
         const [hOffset, vOffset] = this.handleOffset(offset as number);
+        const rect = getElementRect(node);
 
         switch (placement) {
             case "top":
@@ -278,8 +282,8 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
                 }
         }
 
-        let {left, top, placement: _placement} = obj;
-        left = this.handleAlignment(left, width, windowWidth);
+        let { left, top, placement: _placement } = obj;
+        left = this.handleAlignment(rect, left, width, windowWidth);
 
         if (
             verticalCenter &&
@@ -293,12 +297,12 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
         };
     }
 
-    handleAlignment(left: number, width: number, windowWidth: number) {
+    handleAlignment(rect: ElementRect, left: number, width: number, windowWidth: number) {
         const {
             props: {
                 alignment,
                 placement = "",
-                rect
+                node
             },
         } = this;
         const posMap: any = {
@@ -306,22 +310,22 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
             "bottom": true
         };
 
-        if (!rect || !(placement in posMap)) return left;
+        if (node && (placement in posMap)) {
+            switch (alignment) {
+                case "center":
+                    left += (rect.width - width) / 2;
+                    break;
+                case "right":
+                    left += (rect.width - width);
+                    break;
+                default:
+            }
 
-        switch (alignment) {
-            case "center":
-                left += (rect.width - width) / 2;
-                break;
-            case "right":
-                left += (rect.width - width);
-                break;
-            default:
-        }
-
-        if (left < 0) {
-            left = 0;
-        } else if (left + width >= windowWidth) {
-            left = windowWidth - width;
+            if (left < 0) {
+                left = 0;
+            } else if (left + width >= windowWidth) {
+                left = windowWidth - width;
+            }
         }
 
         return left;
@@ -346,7 +350,6 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
     }
 
     handleResize() {
-        handleFuncProp(this.props.onResetPosition)();
         this.updateNextTick("measure");
     }
 
@@ -380,6 +383,20 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
         });
     }
 
+    mount(el: React.ReactElement, props?: any) {
+        const {
+            visible,
+            unmountOnclose
+        } = this.props;
+        const { style = {} } = props;
+
+        if (!visible && unmountOnclose) return null;
+
+        style.display = visible ? "block" : "none";
+
+        return React.cloneElement(el, { style });
+    }
+
     render() {
         let {
             props: {
@@ -388,7 +405,8 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
                 fade,
                 visible,
                 className,
-                unmountOnclose
+                unmountOnclose,
+                node
             },
             state: {
                 left,
@@ -409,8 +427,8 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
 
         if (
             ((!visible && !mountNode) || !_children) ||
-            (!visible && unmountOnclose)
-            ) return null;
+            !node
+        ) return null;
 
         const childClassNames = classNames(
             _children.props.className,
@@ -456,18 +474,11 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
                         toggleDisplay
                         onEntering={this.handleEntering}
                         in={!!visible}
+                        unmountOnExit={unmountOnclose}
                         timeout={150}>
                         {child}
                     </Fade>
-                ) : React.cloneElement(
-                    child,
-                    {
-                        style: {
-                            ...style,
-                            display: visible ? "block" : "none"
-                        }
-                    }
-                )
+                ) : this.mount(child, { style })
             ),
             mountNode
         )

@@ -1,13 +1,12 @@
 import * as React from "react";
 import {
-    ElementRect,
-    getElementRect,
     OverlayContext,
     handleFuncProp,
     chainFunction
 } from "../utils";
 import Popup, { PopupCommonProps } from "./Popup";
 import PropTypes from "prop-types";
+import { findDOMNode } from "react-dom";
 
 export type action = "hover" | "click" | "contextmenu" | "focus";
 
@@ -19,7 +18,6 @@ export interface CommonProps extends PopupCommonProps {
 export interface OverlayProps extends CommonProps {
     alignment?: string;
     mountTo?: HTMLElement;
-    visible?: boolean;
     popup: React.ReactNode;
     popupProps?: React.HTMLAttributes<HTMLElement>;
     wrapper?: React.ReactElement;
@@ -33,20 +31,37 @@ export interface OverlayProps extends CommonProps {
 
 interface OverlayState {
     visible: boolean;
-    rect?: ElementRect;
+    node?: HTMLElement;
 }
+
+const actionType = ["hover", "contextmenu", "click", "focus"];
 
 export default class Overlay extends React.Component<OverlayProps, OverlayState> {
 
     private srcEl: HTMLElement | null = null;
     private timer: NodeJS.Timeout | null = null;
 
+    static propTypes = {
+        trigger: PropTypes.oneOfType([
+            PropTypes.oneOf(actionType),
+            PropTypes.arrayOf(PropTypes.oneOf(actionType))
+        ])
+    };
+
     constructor(props: OverlayProps) {
         super(props);
 
         this.state = {
-            visible: !!props.visible
+            visible: !!props.defaultVisible
         };
+    }
+
+    componentDidMount() {
+        const node = findDOMNode(this) as HTMLElement;
+
+        this.setState({
+            node
+        });
     }
 
     getAction() {
@@ -64,7 +79,6 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
 
     handleEvent = (evt: React.MouseEvent<HTMLElement & HTMLButtonElement>) => {
         const src = evt.currentTarget;
-        const c = this.props.children as React.ReactElement;
         const type = evt.type;
         this.srcEl = src;
 
@@ -111,16 +125,6 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
         }
     }
 
-    handleResetPosition = () => {
-        const el = this.srcEl as HTMLElement;
-
-        if (!el) return;
-
-        this.setState({
-            rect: getElementRect(el)
-        });
-    };
-
     handleClickOutside = (target: HTMLElement) => {
         const action = this.getAction();
         const set = new Set<any>(action);
@@ -155,11 +159,10 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
         if (!srcEl || visible) return;
 
         this.setState({
-            visible: true,
-            rect: getElementRect(srcEl)
+            visible: true
         });
 
-        handleFuncProp(onVisibleChange)(visible);
+        handleFuncProp(onVisibleChange)(true);
     };
 
     close = () => {
@@ -172,7 +175,7 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
             this.setState({
                 visible: false
             });
-            handleFuncProp(onVisibleChange)(visible);
+            handleFuncProp(onVisibleChange)(false);
         }
 
         this.srcEl = null;
@@ -237,8 +240,12 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
         delete otherProps.clickOutsideClose;
         delete otherProps.escClose;
         delete otherProps.fade;
+        delete otherProps.flip;
         delete otherProps.unmountOnclose;
         delete otherProps.verticalCenter;
+        delete otherProps.onVisibleChange;
+        delete otherProps.trigger;
+        delete otherProps.defaultVisible;
 
         action.forEach((a: string) => {
             if (a in actionMap) {
@@ -271,11 +278,12 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
                 offset,
                 fade,
                 unmountOnclose,
-                alignmentPrefix
+                alignmentPrefix,
+                verticalCenter
             },
             state: {
-                rect,
-                visible
+                visible,
+                node
             }
         } = this;
         const props = {
@@ -285,6 +293,7 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
             alignment,
             unmountOnclose,
             alignmentPrefix,
+            verticalCenter,
             ...popupProps
         };
 
@@ -296,12 +305,11 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
                 <OverlayContext.Provider value={{ close: this.close }}>
                     <Popup
                         visible={visible}
-                        rect={rect}
                         onKeydown={this.handleKeydown}
-                        onResetPosition={this.handleResetPosition}
                         onMouseEnter={this.handlePopupMouseEnter}
                         onMouseLeave={this.handlePopupMouseLeave}
                         onClickOutside={this.handleClickOutside}
+                        node={node}
                         {...props}>
                         {popup}
                     </Popup>
