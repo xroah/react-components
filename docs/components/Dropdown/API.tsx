@@ -21,6 +21,11 @@ export const commonProps = [
         default: "[0, 0]",
         description: "Offset of dropdown popup"
     }, {
+        name: "delay",
+        type: "number | {show?: number, hide?: number}",
+        default: "0",
+        description: "A millisecond delay to show or hide the popup"
+    }, {
         name: "onVisibleChange",
         type: "Function",
         description: "Callback when visibility changed"
