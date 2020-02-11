@@ -2,32 +2,32 @@ import * as React from "react";
 import PropTypes from "prop-types";
 import Overlay, { CommonProps } from "./Overlay";
 import { getStyle } from "./Tooltip";
-import { classNames } from "../utils";
 
 export interface PopoverProps extends CommonProps {
-    title?: string;
+    header?: string | React.ReactNode;
     content: React.ReactNode;
 }
 
 export default function Popover(props: PopoverProps) {
     const {
-        title,
+        header,
         children,
-        placement = "right",
+        placement,
         content,
-        offset,
+        style = {},
         ...otherProps
     } = props;
+    style.position = "relative";
+
     const popup = (
-        <div className={
-            classNames(
-                "popover"
-            )
-        }>
-            <div className="arrow" style={getStyle(placement)} />
+        <div style={style} className="popover">
+            <div className="arrow" style={{
+                ...getStyle(placement),
+                margin: 0
+            }} />
             {
-                !!title && (
-                    <div className="popover-header">{title}</div>
+                !!header && (
+                    <h3 className="popover-header">{header}</h3>
                 )
             }
             <div className="popover-body">
@@ -39,11 +39,9 @@ export default function Popover(props: PopoverProps) {
         <Overlay
             unmountOnclose
             alignmentPrefix="bs-popover"
-            align="center"
-            offset={offset}
+            alignment="center"
             placement={placement}
             popup={popup}
-            clearMargin={false}
             verticalCenter
             {...otherProps}>
             {children}
@@ -53,8 +51,16 @@ export default function Popover(props: PopoverProps) {
 }
 
 Popover.propTypes = {
-    content: PropTypes.node.isRequired
+    header: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.node
+    ]),
+    content: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.node
+    ]).isRequired
 };
 Popover.defaultProps = {
-    trigger: ["click"]
+    trigger: "click",
+    placement: "right"
 };
