@@ -146,14 +146,6 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
         this.removeEvent();
     }
 
-    hide(child: HTMLElement) {
-        child.style.display = "none";
-        this.setState({
-            status: undefined,
-            pos: undefined
-        });
-    }
-
     handleClickOutSide = (evt: MouseEvent) => {
         const t = evt.target as HTMLElement;
 
