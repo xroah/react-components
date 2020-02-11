@@ -67,7 +67,6 @@ export default class Dropdown extends React.Component<DropdownProps> {
             children,
             overlay,
             placement,
-            offset,
             className,
             ...otherProps
         } = this.props;
@@ -95,7 +94,6 @@ export default class Dropdown extends React.Component<DropdownProps> {
                 onKeydown={this.handleKeydown}
                 escClose={true}
                 clickOutsideClose={true}
-                offset={offset}
                 className={classNames(className, "dropdown-toggle")}
                 {...otherProps}>
                 {child}
