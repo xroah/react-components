@@ -10,9 +10,15 @@ import { findDOMNode } from "react-dom";
 
 export type action = "hover" | "click" | "contextmenu" | "focus";
 
+interface DelayObject {
+    show?: number;
+    hide?: number;
+}
+
 export interface CommonProps extends PopupCommonProps {
     trigger?: action[] | action;
     onVisibleChange?: Function;
+    delay?: number | DelayObject;
 }
 
 export interface OverlayProps extends CommonProps {
@@ -40,12 +46,21 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
 
     private srcEl: HTMLElement | null = null;
     private timer: NodeJS.Timeout | null = null;
+    private delayTimer: NodeJS.Timeout | null = null;
 
     static propTypes = {
         trigger: PropTypes.oneOfType([
             PropTypes.oneOf(actionType),
             PropTypes.arrayOf(PropTypes.oneOf(actionType))
-        ])
+        ]),
+        delay: PropTypes.oneOfType([
+            PropTypes.number,
+            PropTypes.shape({
+                show: PropTypes.number,
+                hide: PropTypes.number
+            })
+        ]),
+        onVisibleChange: PropTypes.func
     };
 
     constructor(props: OverlayProps) {
@@ -86,6 +101,7 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
         if (src.disabled || src.classList.contains("disabled")) return;
 
         this.clearTimer();
+        this.clearDelayTimer();
 
         switch (type) {
             case "click":
@@ -149,36 +165,69 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
         handleFuncProp(onKeydown)(evt, el);
     };
 
-    open = () => {
-        const {
-            state: { visible },
-            props: { onVisibleChange },
-            srcEl
-        } = this;
+    handleDelay() {
+        const { delay } = this.props;
+        let ret: DelayObject = {
+            show: 0,
+            hide: 0
+        };
 
-        if (!srcEl || visible) return;
+        if (delay) {
+            if (typeof delay === "number") {
+                ret.show = ret.hide = delay;
+            } else {
+                ret = delay;
+            }
+        }
 
+        return ret;
+    }
+
+    clearDelayTimer() {
+        if (this.delayTimer) {
+            clearTimeout(this.delayTimer);
+            this.delayTimer = null;
+        }
+    }
+
+    changeVisible = (visible: boolean) => {
         this.setState({
-            visible: true
+            visible
         });
 
-        handleFuncProp(onVisibleChange)(true);
+        handleFuncProp(this.props.onVisibleChange)(visible);
+    }
+
+    open = () => {
+        const { visible } = this.state;
+        const open = () => this.changeVisible(true);
+
+        if (visible) return;
+
+        const { show = 0 } = this.handleDelay();
+
+        if (show > 0) {
+            this.delayTimer = setTimeout(open, show);
+        } else {
+            open();
+        }
+
     };
 
     close = () => {
-        const {
-            state: { visible },
-            props: { onVisibleChange }
-        } = this;
-
-        if (visible) {
-            this.setState({
-                visible: false
-            });
-            handleFuncProp(onVisibleChange)(false);
-        }
-
+        const { visible } = this.state;
         this.srcEl = null;
+        const close = () => this.changeVisible(false);
+
+        if (!visible) return;
+
+        const { hide = 0 } = this.handleDelay();
+
+        if (hide > 0) {
+            this.delayTimer = setTimeout(close, hide);
+        } else {
+            close();
+        }
     };
 
     toggle = () => {
@@ -188,12 +237,14 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
     };
 
     delayClose() {
+        const { hide = 0 } = this.handleDelay();
+
         if (this.timer != null) {
             clearTimeout(this.timer);
             this.timer = null;
         }
 
-        this.timer = setTimeout(this.close, 150);
+        this.timer = setTimeout(this.close, hide > 100 ? 0 : 150);
     }
 
     renderChildren() {
@@ -246,6 +297,7 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
         delete otherProps.onVisibleChange;
         delete otherProps.trigger;
         delete otherProps.defaultVisible;
+        delete otherProps.delay;
 
         action.forEach((a: string) => {
             if (a in actionMap) {
