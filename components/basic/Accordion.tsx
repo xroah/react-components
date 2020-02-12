@@ -39,12 +39,7 @@ export default class Accordion extends React.Component<AccordionProps, Accordion
             defaultActiveKey,
             multiple
         } = props;
-
-        let keys = defaultActiveKey;
-
-        if (activeKey) {
-            keys = activeKey;
-        }
+        let keys = activeKey || defaultActiveKey;
 
         this.state = {
             activeKey: Accordion.handleKeyProp(keys, multiple)
@@ -122,8 +117,7 @@ export default class Accordion extends React.Component<AccordionProps, Accordion
         return React.Children.map(
             children,
             (c, i) => {
-                if (React.isValidElement(c) && c.type === AccordionPanel) {
-
+                if (React.isValidElement(c)) {
                     return React.cloneElement<any>(
                         c,
                         {
@@ -132,6 +126,7 @@ export default class Accordion extends React.Component<AccordionProps, Accordion
                         }
                     );
                 }
+
                 return c;
             }
         );

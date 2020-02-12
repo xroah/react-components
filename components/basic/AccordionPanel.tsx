@@ -19,24 +19,21 @@ export default function AccordionPanel(props: PanelProps) {
         children,
         className,
         __key__,
+        __onHeaderClick__,
         ...otherProps
     } = props;
     const context = React.useContext(AccordionContext);
     const handleHeaderClick = () => {
-        const {
-            __key__,
-            __onHeaderClick__
-        } = props;
-
         handleFuncProp(__onHeaderClick__)(__key__);
     };
+    const style: React.CSSProperties = {};
 
-    delete otherProps.__onHeaderClick__;
+    if (__onHeaderClick__) style.cursor = "pointer";
 
     return (
         <div className={classNames(className, "card")} {...otherProps}>
             <div
-                style={{ cursor: "pointer" }}
+                style={style}
                 className="card-header"
                 onClick={handleHeaderClick}>{header}</div>
             <Collapse isOpen={context.has(__key__)}>
