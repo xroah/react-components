@@ -3,9 +3,9 @@ import PropTypes from "prop-types";
 import Collapse from "./Collapse";
 import {
     handleFuncProp,
-    AccordionContext,
     classNames
 } from "../utils";
+import { AccordionContext } from "../contexts";
 
 interface PanelProps extends React.HTMLAttributes<HTMLDivElement> {
     header: React.ReactNode;
@@ -22,7 +22,6 @@ export default function AccordionPanel(props: PanelProps) {
         __onHeaderClick__,
         ...otherProps
     } = props;
-    const context = React.useContext(AccordionContext);
     const handleHeaderClick = () => {
         handleFuncProp(__onHeaderClick__)(__key__);
     };
@@ -31,17 +30,23 @@ export default function AccordionPanel(props: PanelProps) {
     if (__onHeaderClick__) style.cursor = "pointer";
 
     return (
-        <div className={classNames(className, "card")} {...otherProps}>
-            <div
-                style={style}
-                className="card-header"
-                onClick={handleHeaderClick}>{header}</div>
-            <Collapse isOpen={context.has(__key__)}>
-                <div className="card-body">
-                    {children}
-                </div>
-            </Collapse>
-        </div>
+        <AccordionContext.Consumer>
+            {
+                context => (
+                    <div className={classNames(className, "card")} {...otherProps}>
+                        <div
+                            style={style}
+                            className="card-header"
+                            onClick={handleHeaderClick}>{header}</div>
+                        <Collapse isOpen={context.has(__key__)}>
+                            <div className="card-body">
+                                {children}
+                            </div>
+                        </Collapse>
+                    </div>
+                )
+            }
+        </AccordionContext.Consumer>
     );
 }
 
