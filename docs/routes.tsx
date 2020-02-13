@@ -16,6 +16,7 @@ import Collapse from "./components/Collapse";
 import Dropdown from "./components/Dropdown";
 import Tooltip from "./components/Tooltip";
 import Popover from "./components/Popover";
+import Form from "./components/Form";
 
 export const ROUTES = [
     {
@@ -67,6 +68,11 @@ export const ROUTES = [
         path: "/components/popover",
         component: Popover,
         name: "Popover"
+    },
+    {
+        path: "/components/form",
+        component: Form,
+        name: "Form"
     }
 ];
 

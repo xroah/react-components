@@ -19,9 +19,7 @@ const ButtonProps = [{
     name: "type",
     type: `"button" |
         "submit" |
-        "reset" |
-        "checkbox" |
-        "radio"`,
+        "reset"`,
     default: "button",
     description: "Button type"
 },

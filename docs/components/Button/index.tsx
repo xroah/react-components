@@ -66,7 +66,6 @@ export default () => (
             <SyntaxHighlighter code={`<Button variant="primary" href="#" disabled>Primary Link</Button>
 <Button variant="secondary" href="#" disabled>Link</Button>`} />
         </div>
-        <DocHeading>Checkbox and radio buttons</DocHeading>
         <ButtonGroup />
         <API />
         <ButtonGroupAPI />

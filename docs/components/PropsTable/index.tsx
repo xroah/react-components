@@ -35,7 +35,7 @@ export default function PropsTable(props: Props) {
                                 <tr key={item.name}>
                                     <td>{item.name}</td>
                                     <td>{item.type}</td>
-                                    <td className="default-value">{item.default}</td>
+                                    <td className="default-value">{item.default || "-"}</td>
                                     <td>{item.description}</td>
                                 </tr>
                             )

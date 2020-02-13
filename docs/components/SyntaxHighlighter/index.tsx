@@ -13,7 +13,7 @@ export default function SyntaxHighlighter(props: { code: any }) {
         input.remove();
     }
     return (
-        <div className="position-relative">
+        <div className="position-relative" style={{marginTop: 10}}>
             <Highlighter
                 language="javascript"
                 style={tomorrow}>
