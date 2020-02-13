@@ -8,72 +8,82 @@ export interface CustomControlProps extends React.InputHTMLAttributes<HTMLInputE
     inline?: boolean;
 }
 
-export default function CustomControl(props: CustomControlProps) {
-    const {
-        type,
-        inline,
-        id,
-        className,
-        children,
-        ...otherProps
-    } = props;
-    const PREFIX = "custom-control";
-    let _props: any = {
-        ...otherProps
-    };
-    let _type = type === "switch" ? "checkbox" : type;
-    let _id = id;
-    let htmlFor = "";
-    let _label: React.ReactElement | null = null;
+const CustomControl = React.forwardRef(
+    (
+        {
+            type,
+            inline,
+            id,
+            className,
+            children,
+            ...otherProps
+        }: CustomControlProps,
+        ref
+    ) => {
+        const PREFIX = "custom-control";
+        let _props: any = {
+            ...otherProps
+        };
+        let _type = type === "switch" ? "checkbox" : type;
+        let _id = id;
+        let htmlFor = "";
+        let _label: React.ReactElement | null = null;
 
-    if (!_id) {
-        htmlFor = _id = `bs-custom-control-${uuid++}`;
-    } else {
-        htmlFor = _id;
-    }
+        if (!_id) {
+            htmlFor = _id = `bs-custom-control-${uuid++}`;
+        } else {
+            htmlFor = _id;
+        }
 
-    _label = (
-        <label
-            htmlFor={htmlFor}
-            className={`${PREFIX}-label`}>
-            {children}
-        </label>
-    );
+        _label = (
+            <label
+                htmlFor={htmlFor}
+                className={`${PREFIX}-label`}>
+                {children}
+            </label>
+        );
 
-    return (
-        <div className={
-            classNames(PREFIX, `custom-${type}`, inline && `${PREFIX}-inline`)
-        }>
-            <input
-                type={_type}
-                id={_id}
-                className={
-                    classNames(className, `${PREFIX}-input`)
-                }
-                {..._props} />
-            {_label}
-        </div>
-    );
-}
+        return (
+            <div className={
+                classNames(
+                    PREFIX,
+                    `custom-${type}`,
+                    inline && `${PREFIX}-inline`
+                )
+            }>
+                <input
+                    type={_type}
+                    id={_id}
+                    ref={ref}
+                    className={
+                        classNames(className, `${PREFIX}-input`)
+                    }
+                    {..._props} />
+                {_label}
+            </div>
+        );
+    });
 
 function factory(type: string) {
-    return function (props: CustomControlProps) {
+    return function (props: CustomControlProps, ref: React.Ref<any>) {
         return (
             <CustomControl
                 type={type}
+                ref={ref}
                 {...props} />
         );
     }
 }
 
-export const Checkbox: any = factory("checkbox");
-Checkbox.displayName = "Checkbox;"
 
-export const Radio: any = factory("radio");
-Radio.displayName = "Radio;"
+export const Checkbox = React.forwardRef(factory("checkbox"));
+export const Radio = React.forwardRef(factory("radio"));
+export const Switch = React.forwardRef(factory("switch"));
 
-export const Switch: any = factory("switch");
-Switch.displayName = "Switch;"
+Checkbox.displayName = "Checkbox";
+Radio.displayName = "Radio";
+Switch.displayName = "Switch";
+
 
 CustomControl.propTypes = {
     inline: PropTypes.bool

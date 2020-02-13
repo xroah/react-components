@@ -10,7 +10,7 @@ export { default as Collapse } from "./basic/Collapse";
 export { default as Container } from "./basic/Container";
 export { default as Dropdown } from "./basic/Dropdown";
 export { default as Form } from "./basic/Form";
-export { default as FormItem } from "./basic/FormItem";
+export { Checkbox, Radio, Switch } from "./basic/CustomControl";
 export { default as Input } from "./basic/Input";
 export { default as Jumbotron } from "./basic/Jumbotron";
 export { default as ListGroup } from "./basic/ListGroup";

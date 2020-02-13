@@ -4,7 +4,7 @@ import { classNames } from "../utils";
 
 type spanType = "auto" | boolean | number;
 
-export interface SizeObject {
+interface SizeObject {
     offset?: number;
     span?: spanType;
     order?: number;
@@ -28,7 +28,7 @@ const spanPropType = PropTypes.oneOfType([
     PropTypes.number
 ]);
 
-export const sizePropObject = PropTypes.shape({
+const sizePropObject = PropTypes.shape({
     span: spanPropType,
     order: PropTypes.number,
     offset: PropTypes.number

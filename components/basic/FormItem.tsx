@@ -1,33 +1,101 @@
 import * as React from "react";
 import PropTypes from "prop-types";
-import Col, { SizeObject, sizePropObject } from "./Col";
+import Col, { ColProps } from "./Col";
 import { classNames } from "../utils";
-
-let uuid = 0;
-
-const colProp = PropTypes.shape({
-    sm: sizePropObject,
-    md: sizePropObject,
-    lg: sizePropObject,
-    xl: sizePropObject
-});
-
-export interface FormCol {
-    sm?: SizeObject;
-    md?: SizeObject;
-    lg?: SizeObject;
-    xl?: SizeObject;
-}
+import { FormContext } from "../contexts";
 
 export interface FormItemProps extends React.HTMLAttributes<HTMLElement> {
     horizontal?: boolean;
-    labelCol?: FormCol;
-    wrapperCol?: FormCol;
-    label?: string;
+    wrapperCol?: ColProps;
+    label?: boolean;
+    labelText?: string | React.ReactNode;
+    labelCol?: ColProps;
+    labelAlign?: "left" | "right";
     htmlFor?: string;
     help?: string;
-    size?: "lg" | "sm";
     control?: boolean;
+}
+
+interface LabelProps extends React.HTMLAttributes<HTMLLabelElement> {
+    horizontal?: boolean;
+    label?: boolean;
+    labelCol?: ColProps;
+    labelAlign?: "left" | "right";
+    htmlFor?: string;
+}
+
+function Label(props: LabelProps) {
+    const {
+        children,
+        labelCol,
+        label,
+        labelAlign,
+        horizontal
+    } = props;
+
+    return (
+        <FormContext.Consumer>
+            {
+                ({
+                    labelCol: contextLabelCol,
+                    labelAlign: contextLabelAlign,
+                    horizontal: contextHorizontal
+                }: any) => {
+                    const _labelCol = labelCol || contextLabelCol || { span: false };
+                    const _labelAlign = labelAlign || contextLabelAlign;
+                    const h = horizontal || contextHorizontal || false;
+                    const colCls = _labelAlign === "right" ? "text-right" : undefined;
+                    const labelCls = h ? "col-form-label" : undefined;
+
+                    return (
+                        <Col
+                            className={colCls}
+                            {..._labelCol}>
+                            {
+                                label ?
+                                    <label className={labelCls}>{children}</label> :
+                                    children
+                            }
+                        </Col>
+                    );
+                }
+            }
+        </FormContext.Consumer>
+    );
+}
+
+interface WrapperProps extends React.HTMLAttributes<HTMLElement> {
+    wrapperCol?: ColProps;
+    help?: string | React.ReactNode;
+}
+
+function Wrapper(props: WrapperProps) {
+    const {
+        children,
+        wrapperCol,
+        help
+    } = props;
+
+    return (
+        <FormContext.Consumer>
+            {
+                ({ wrapperCol: contextWrapperCol }: any) => {
+                    const _wrapperCol = wrapperCol || contextWrapperCol || { span: false };
+
+                    return (
+                        <Col {..._wrapperCol}>
+                            {children}
+                            {
+                                help && (
+                                    <small className="form-text text-muted">{help}</small>
+                                )
+                            }
+                        </Col>
+                    )
+                }
+            }
+        </FormContext.Consumer>
+    );
 }
 
 export default function FormItem(props: FormItemProps) {
@@ -36,18 +104,20 @@ export default function FormItem(props: FormItemProps) {
         className,
         children,
         htmlFor,
+        label,
+        labelText,
         labelCol,
         wrapperCol,
-        label,
         help,
-        size,
         control,
+        labelAlign,
         ...otherProps
     } = props;
-
     let _for: string = htmlFor || "";
     let _label: React.ReactElement | null = null;
     let _children = children;
+    const context = React.useContext(FormContext);
+    const h = horizontal || context.horizontal || false;
 
     if (React.isValidElement(children)) {
         let {
@@ -56,10 +126,6 @@ export default function FormItem(props: FormItemProps) {
             ...otherChildrenProps
         } = children.props;
         const PREFIX = "form-control";
-        className = control ?
-            classNames(className, PREFIX, size && `${PREFIX}-${size}`)
-            : className;
-
 
         if (id) {
             if (!_for) {
@@ -68,8 +134,6 @@ export default function FormItem(props: FormItemProps) {
         } else {
             if (_for) {
                 id = _for;
-            } else if (label) {
-                _for = id = `bs-form-item-${uuid++}`
             }
         }
 
@@ -77,36 +141,24 @@ export default function FormItem(props: FormItemProps) {
             children,
             {
                 id,
-                className,
+                className: classNames(
+                    className,
+                    control && PREFIX,
+                ),
                 ...otherChildrenProps
             }
-        );
-
-        if (help) {
-            _children = (
-                <>
-                    {_children}
-                    <small className="form-text text-muted">{help}</small>
-                </>
-            );
-        }
+        );;
     }
 
-    if (label) {
+    if (labelText) {
         let props = {
-            htmlFor: _for,
-            className: classNames(horizontal && "col-form-label")
+            htmlFor: _for || undefined,
+            horizontal,
+            labelCol,
+            labelAlign,
+            label
         };
-
-        _label = <label {...props}>{label}</label>;
-
-        if (labelCol) {
-            _label = <Col {...labelCol}>{_label}</Col>;
-        }
-    }
-
-    if (wrapperCol) {
-        _children = <Col {...wrapperCol}>{_children}</Col>
+        _label = <Label {...props}>{labelText}</Label>;
     }
 
     return (
@@ -114,21 +166,36 @@ export default function FormItem(props: FormItemProps) {
             classNames(
                 className,
                 "form-group",
-                horizontal && "row"
+                h && "row"
             )
         } {...otherProps}>
             {_label}
-            {_children}
+            <Wrapper
+                wrapperCol={wrapperCol}
+                help={help}>
+                {_children}
+            </Wrapper>
         </div>
-    );
+    )
 }
 
 FormItem.propTypes = {
     horizontal: PropTypes.bool,
-    label: PropTypes.string,
-    labelCol: colProp,
-    wrapperCol: colProp,
+    labelText: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.node
+    ]),
+    label: PropTypes.bool,
+    labelCol: PropTypes.object,
+    labelAlign: PropTypes.oneOf(["left", "right"]),
+    wrapperCol: PropTypes.object,
     htmlFor: PropTypes.string,
-    size: PropTypes.oneOf(["sm", "lg"]),
-    help: PropTypes.string
+    help: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.node
+    ])
+};
+FormItem.defaultProps = {
+    control: false,
+    label: true
 };
