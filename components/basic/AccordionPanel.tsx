@@ -9,8 +9,8 @@ import { AccordionContext } from "../contexts";
 
 interface PanelProps extends React.HTMLAttributes<HTMLDivElement> {
     header: React.ReactNode;
-    __key__?: string | number; //internal only
-    __onHeaderClick__?: Function; //internal only
+    panelKey?: string | number; 
+    onHeaderClick?: (key?: string, evt?: React.MouseEvent) => void; 
 }
 
 export default function AccordionPanel(props: PanelProps) {
@@ -18,16 +18,16 @@ export default function AccordionPanel(props: PanelProps) {
         header,
         children,
         className,
-        __key__,
-        __onHeaderClick__,
+        panelKey,
+        onHeaderClick,
         ...otherProps
     } = props;
-    const handleHeaderClick = () => {
-        handleFuncProp(__onHeaderClick__)(__key__);
+    const handleHeaderClick = (evt: React.MouseEvent) => {
+        handleFuncProp(onHeaderClick)(panelKey, evt);
     };
     const style: React.CSSProperties = {};
 
-    if (__onHeaderClick__) style.cursor = "pointer";
+    if (onHeaderClick) style.cursor = "pointer";
 
     return (
         <AccordionContext.Consumer>
@@ -38,7 +38,7 @@ export default function AccordionPanel(props: PanelProps) {
                             style={style}
                             className="card-header"
                             onClick={handleHeaderClick}>{header}</div>
-                        <Collapse isOpen={context.has(__key__)}>
+                        <Collapse isOpen={context.has(panelKey)}>
                             <div className="card-body">
                                 {children}
                             </div>
