@@ -2,17 +2,17 @@ import * as React from "react";
 import PropTypes from "prop-types";
 import { classNames } from "../utils";
 
+type spanType = "auto" | boolean | number;
+
 export interface SizeObject {
     offset?: number;
     span?: spanType;
     order?: number;
 }
 
-type spanType = "auto" | boolean | number;
 type sizeType = SizeObject | number | boolean | "auto";
 
 export interface ColProps extends React.HTMLAttributes<HTMLElement> {
-    tag?: React.ElementType;
     span?: spanType;
     offset?: number;
     order?: number;
@@ -22,11 +22,14 @@ export interface ColProps extends React.HTMLAttributes<HTMLElement> {
     xl?: sizeType;
 }
 
+const spanPropType = PropTypes.oneOfType([
+    PropTypes.oneOf(["auto"]),
+    PropTypes.bool,
+    PropTypes.number
+]);
+
 export const sizePropObject = PropTypes.shape({
-    span: PropTypes.oneOfType([
-        PropTypes.oneOf(["auto"]),
-        PropTypes.number
-    ]),
+    span: spanPropType,
     order: PropTypes.number,
     offset: PropTypes.number
 });
@@ -41,12 +44,7 @@ const sizeProp = PropTypes.oneOfType([
 export default class Col extends React.Component<ColProps> {
 
     static propTypes = {
-        tag: PropTypes.elementType,
-        span: PropTypes.oneOfType([
-            PropTypes.oneOf(["auto"]),
-            PropTypes.bool,
-            PropTypes.number
-        ]),
+        span: spanPropType,
         offset: PropTypes.number,
         order: PropTypes.number,
         sm: sizeProp,
@@ -55,15 +53,15 @@ export default class Col extends React.Component<ColProps> {
         xl: sizeProp
     };
     static defaultProps = {
-        tag: "div"
+        span: true
     };
 
     handleSpan(prefix: string, span?: spanType) {
-        if (span && span !== true) {
-            return `${prefix}-${span}`;
+        if (span) {
+            return span === true ? prefix : `${prefix}-${span}`;
         }
 
-        return prefix;
+        return "";
     }
 
     handleOffsetOrOrder(type: "order" | "offset", val?: number) {
@@ -73,7 +71,7 @@ export default class Col extends React.Component<ColProps> {
     handleSize(defaultVal: SizeObject, val: sizeType, type: "sm" | "md" | "lg" | "xl") {
         const prefix = `col-${type}`;
 
-        if (!val) return "";
+        if (val == undefined || val === false) return "";
 
         if (val === true) {
             return prefix;
@@ -94,7 +92,6 @@ export default class Col extends React.Component<ColProps> {
 
     render() {
         const {
-            tag,
             span,
             offset,
             sm,
@@ -130,12 +127,10 @@ export default class Col extends React.Component<ColProps> {
             sizeClasses.push(tmp);
         });
 
-        return React.createElement(
-            tag as React.ElementType,
-            {
-                className: classNames(classes, sizeClasses),
-                ...otherProps
-            }
+        return (
+            <div className={
+                classNames(classes, sizeClasses)
+            } {...otherProps} />
         );
     }
 

@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import { classNames } from "../utils";
 
 export interface RowProps extends React.HTMLAttributes<HTMLElement> {
-    tag?: React.ElementType;
     noGutters?: boolean;
     alignment?: "top" | "center" | "bottom";
     justify?: "left" | "center" | "right" | "between" | "around";
@@ -12,7 +11,6 @@ export interface RowProps extends React.HTMLAttributes<HTMLElement> {
 
 export default function Row(props: RowProps) {
     const {
-        tag,
         className,
         noGutters,
         alignment,
@@ -35,18 +33,16 @@ export default function Row(props: RowProps) {
         around: `${JUSTIFY_PREFIX}-around`
     };
 
-    return React.createElement(
-        tag as React.ElementType,
-        {
-            className: classNames(
+    return (
+        <div className={
+            classNames(
                 className,
                 form ? "form-row" : "row",
                 noGutters && "no-gutters",
                 alignment && alignmentMap[alignment],
                 justify && justifyMap[justify]
-            ),
-            ...otherProps
-        }
+            )
+        } {...otherProps} />
     );
 }
 
