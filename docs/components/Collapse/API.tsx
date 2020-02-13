@@ -45,6 +45,10 @@ const PanelProps = [{
     name: "header",
     type: "string | ReactNode",
     description: "Header of the panel"
+}, {
+    name: "onHeaderClick",
+    type: "Function(key, e)",
+    description: "Callback when heder clicked, if no activeKey of Accordion, the prop will be overrode by Accordion"
 }];
 
 export default () => (

@@ -29,6 +29,6 @@ const TooltipProps = [
 export default () => (
     <>
         <DocHeading>API</DocHeading>
-        <PropsTable title="Tooltip" data={TooltipProps} />
+        <PropsTable title="Popover" data={TooltipProps} />
     </>
 );

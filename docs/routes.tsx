@@ -60,6 +60,11 @@ export const ROUTES = [
         name: "Dropdown"
     },
     {
+        path: "/components/form",
+        component: Form,
+        name: "Form"
+    },
+    {
         path: "/components/tooltip",
         component: Tooltip,
         name: "Tooltip"
@@ -68,11 +73,6 @@ export const ROUTES = [
         path: "/components/popover",
         component: Popover,
         name: "Popover"
-    },
-    {
-        path: "/components/form",
-        component: Form,
-        name: "Form"
     }
 ];
 
