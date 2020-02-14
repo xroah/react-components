@@ -16,14 +16,12 @@ const CustomControl = React.forwardRef(
             id,
             className,
             children,
+            style,
             ...otherProps
         }: CustomControlProps,
-        ref
+        ref: React.Ref<HTMLInputElement>
     ) => {
         const PREFIX = "custom-control";
-        let _props: any = {
-            ...otherProps
-        };
         let _type = type === "switch" ? "checkbox" : type;
         let _id = id;
         let htmlFor = "";
@@ -46,19 +44,18 @@ const CustomControl = React.forwardRef(
         return (
             <div className={
                 classNames(
+                    className,
                     PREFIX,
                     `custom-${type}`,
                     inline && `${PREFIX}-inline`
                 )
-            }>
+            } style={style}>
                 <input
                     type={_type}
                     id={_id}
                     ref={ref}
-                    className={
-                        classNames(className, `${PREFIX}-input`)
-                    }
-                    {..._props} />
+                    className={`${PREFIX}-input`}
+                    {...otherProps} />
                 {_label}
             </div>
         );
