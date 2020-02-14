@@ -1,11 +1,15 @@
 import * as React from "react";
 import PropTypes from "prop-types";
 import { classNames, createComponentByClass } from "../utils";
+import { InputGroupContext } from "../contexts";
+import InputGroup from "./InputGroup";
 
-export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement & HTMLTextAreaElement> {
     prepend?: React.ReactNode;
     append?: React.ReactNode;
     sizing?: "lg" | "sm";
+    variant?: "input" | "textarea"
+    plaintext?: boolean;
 }
 
 function handleAddon(addon: any) {
@@ -25,37 +29,32 @@ const Input = React.forwardRef(
             sizing,
             type = "text",
             children,
+            variant,
+            plaintext,
             ...otherProps
         }: InputProps,
-        ref: React.Ref<HTMLInputElement>
+        ref: React.Ref<HTMLInputElement & HTMLTextAreaElement>
     ) => {
         const PREFIX = "form-control";
-        const GROUP_PREFIX = "input-group";
-        const classes = classNames(className, PREFIX);
-        const input = (
+        const classes = classNames(
+            className,
+            sizing && `${PREFIX}-${sizing}`,
+            otherProps.readOnly && plaintext ? `${PREFIX}-plaintext` : PREFIX
+        );
+        const input = variant === "input" ? (
             <input
                 ref={ref}
                 type={type}
                 className={classes}
                 {...otherProps} />
-        );
-
-        if (prepend == undefined && append == undefined) {
-            return React.cloneElement(
-                input,
-                {
-                    className: classNames(classes, sizing && `${PREFIX}-${sizing}`)
-                }
+        ) : (
+                <textarea
+                    ref={ref}
+                    className={classes}
+                    {...otherProps} />
             );
-        }
-
-        return (
-            <div className={
-                classNames(
-                    GROUP_PREFIX,
-                    sizing && `${GROUP_PREFIX}-${sizing}`
-                )
-            }>
+        const inputWithAddons = (
+            <>
                 {
                     prepend != undefined && (
                         <div className="input-group-prepend">
@@ -71,17 +70,35 @@ const Input = React.forwardRef(
                         </div>
                     )
                 }
-            </div>
+            </>
+        );
+
+        if (prepend == undefined && append == undefined) {
+            return input;
+        }
+
+        return (
+            <InputGroupContext.Consumer>
+                {
+                    // prevent nesting
+                    value => (
+                        value ?
+                            inputWithAddons :
+                            <InputGroup>{inputWithAddons}</InputGroup>
+                    )
+                }
+            </InputGroupContext.Consumer>
         );
 
     }
 ) as any;
 
 Input.defaultProps = {
-    type: "text"
+    type: "text",
+    variant: "input",
+    plaintext: false
 };
 Input.propTypes = {
-    type: PropTypes.string,
     prepend: PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.node
@@ -89,7 +106,10 @@ Input.propTypes = {
     append: PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.node
-    ])
+    ]),
+    sizing: PropTypes.oneOf(["sm", "lg"]),
+    plaintext: PropTypes.bool,
+    variant: PropTypes.oneOf(["input", "textarea"])
 };
 Input.displayName = "Input";
 
@@ -98,5 +118,6 @@ Input.Text = createComponentByClass({
     className: "input-group-text",
     tag: "span"
 });
+Input.Group = InputGroup;
 
 export default Input;

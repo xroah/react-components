@@ -8,3 +8,5 @@ export const FormContext = createContext({
     wrapperCol: null,
     horizontal: false
 } as any);
+
+export const InputGroupContext = createContext(false);
