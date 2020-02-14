@@ -6,6 +6,7 @@ import { classNames, variantType } from "../utils";
 
 export interface DropdownButtonProps extends DropdownProps {
     variant?: variantType;
+    outline?: boolean;
     disabled?: boolean;
     href?: string;
     size?: "sm" | "lg";
@@ -21,9 +22,6 @@ export default function DropdownButton(props: DropdownButtonProps) {
         trigger,
         flip,
         fade,
-        variant,
-        disabled,
-        href,
         size,
         split,
         children,
@@ -39,24 +37,19 @@ export default function DropdownButton(props: DropdownButtonProps) {
         fade
     };
     const btn = (
-        <Button
-            variant={variant}
-            disabled={disabled}
-            href={href}
-            {...otherProps}>{children}</Button>
+        <Button {...otherProps}>{children}</Button>
     );
     const dropdown = (
         <Dropdown {...dropdownProps}>
             <Button
-                className={classNames(className, "dropdown-toggle-split")}
-                variant={variant}
-                disabled={disabled} />
+                className="dropdown-toggle-split"
+                {...otherProps} />
         </Dropdown>
     );
 
     if (split) {
         return (
-            <Button.Group size={size}>
+            <Button.Group className={className} size={size}>
                 {
                     placement === "left" ?
                         <>{dropdown}{btn}</> :
@@ -70,10 +63,7 @@ export default function DropdownButton(props: DropdownButtonProps) {
         <Dropdown {...dropdownProps}>
             <Button
                 className={className}
-                variant={variant}
-                disabled={disabled}
                 size={size}
-                href={href}
                 {...otherProps}>
                 {children}
             </Button>
