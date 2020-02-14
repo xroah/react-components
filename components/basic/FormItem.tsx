@@ -124,7 +124,7 @@ export default function FormItem(props: FormItemProps) {
             id,
             className,
             ...otherChildrenProps
-        } = children.props;
+        } = children.props as any;
         const PREFIX = "form-control";
 
         if (id) {
@@ -137,7 +137,7 @@ export default function FormItem(props: FormItemProps) {
             }
         }
 
-        _children = React.cloneElement(
+        _children = React.cloneElement<any>(
             children,
             {
                 id,
