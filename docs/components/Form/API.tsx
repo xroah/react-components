@@ -103,5 +103,9 @@ export default () => (
         <PropsTable title="Form" data={FormProps}/>
         <PropsTable title="Form.Item" data={FormItemProps}/>
         <PropsTable title="Checkbox, Radio and Switch" data={CustomProps}/>
+        <div>
+            <strong>Note:</strong>
+            The <code>className</code> and <code>style</code> props will pass to the root element of Checkbox, Radio or Switch, other props will pass to the input element.
+        </div>
     </>
 );

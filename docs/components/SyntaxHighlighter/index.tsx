@@ -5,12 +5,13 @@ import {tomorrow} from "react-syntax-highlighter/dist/esm/styles/prism";
 export default function SyntaxHighlighter(props: { code: any }) {
     const { code } = props;
     const handleClick = function handleClick() {
-        const input = document.createElement("input");
-        input.value = code;
-        document.body.append(input);
-        input.select();
+        const textarea = document.createElement("textarea");
+        textarea.value = code;
+        textarea.style.cssText = `position: absolute; left: -10000px;`;
+        document.body.append(textarea);
+        textarea.select();
         document.execCommand("copy");
-        input.remove();
+        textarea.remove();
     }
     return (
         <div className="position-relative" style={{marginTop: 10}}>

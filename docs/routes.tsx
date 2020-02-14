@@ -14,9 +14,10 @@ import Card from "./components/Card";
 import Carousel from "./components/Carousel";
 import Collapse from "./components/Collapse";
 import Dropdown from "./components/Dropdown";
+import Form from "./components/Form";
+import Input from "./components/Input";
 import Tooltip from "./components/Tooltip";
 import Popover from "./components/Popover";
-import Form from "./components/Form";
 
 export const ROUTES = [
     {
@@ -63,6 +64,11 @@ export const ROUTES = [
         path: "/components/form",
         component: Form,
         name: "Form"
+    },
+    {
+        path: "/components/input",
+        component: Input,
+        name: "Input"
     },
     {
         path: "/components/tooltip",

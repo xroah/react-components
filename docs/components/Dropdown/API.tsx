@@ -76,6 +76,11 @@ const DropdownButtonProps = [{
     default: "false",
     description: "Disable the button and apply 'disabled' class."
 }, {
+    name: "outline",
+    type: "boolean",
+    default: "false",
+    description: "Outlined buttton"
+},{
     name: "href",
     type: "string",
     description: "Render the button as 'a' element, styled like button."

@@ -3,7 +3,7 @@ import SyntaxHighlighter from "../SyntaxHighlighter";
 import DocHeading from "../DocHeading";
 import { classNames } from "../../../components/utils";
 
-interface Props extends React.HTMLAttributes<HTMLHeadingElement> {
+interface Props extends React.HTMLAttributes<HTMLElement> {
     component: React.ReactElement;
     source?: string;
 }

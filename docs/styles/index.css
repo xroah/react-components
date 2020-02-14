@@ -5,6 +5,10 @@
     padding: 1.5rem;
 }
 
+.bd-example .input-group + .input-group {
+    margin: 10px 0;
+}
+
 .doc-heading {
     margin-top: 1rem;
     margin-bottom: .5rem;
