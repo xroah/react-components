@@ -8,41 +8,40 @@ import {
 
 export interface ListGroupItemProps extends React.HTMLAttributes<HTMLElement> {
     action?: boolean;
-    tag?: string;
     active?: boolean;
     variant?: variantType;
     disabled?: boolean;
     href?: string;
+    equalWidth?: boolean;
 }
 
 export default function ListGroupItem(props: ListGroupItemProps) {
     const {
         action,
-        tag,
         active,
         disabled,
         variant,
         href,
         className,
+        equalWidth,
         ...otherProps
     } = props;
-    let _tag = tag || (href ? "a" : action ? "button" : "div");
-
-    const el = document.createElement(_tag);
     const PREFIX = `list-group-item`;
+    let tag = href ? "a" : action ? "button" : "div";
 
     return React.createElement(
-        _tag,
+        tag,
         {
-            href,
-            disabled: (disabled && "disabled" in el) ? true : undefined,
+            href: tag === "a" ? href : undefined,
+            disabled: tag === "button" ? disabled : undefined,
             className: classNames(
                 className,
                 PREFIX,
                 variant && `${PREFIX}-${variant}`,
                 action && `${PREFIX}-action`,
                 disabled && "disabled",
-                active && "active"
+                active && "active",
+                equalWidth && "flex-fill"
             ),
             ...otherProps
         }
@@ -52,9 +51,15 @@ export default function ListGroupItem(props: ListGroupItemProps) {
 
 ListGroupItem.propTypes = {
     variant: PropTypes.oneOf(variantArray),
-    tag: PropTypes.string,
     href: PropTypes.string,
     action: PropTypes.bool,
     active: PropTypes.bool,
-    disabled: PropTypes.bool
+    disabled: PropTypes.bool,
+    equalWidth: PropTypes.bool
+};
+ListGroupItem.defaultProps = {
+    action: false,
+    active: false,
+    disabled: false,
+    equalWidth: false
 };

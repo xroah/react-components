@@ -5,7 +5,6 @@ import ListGroupItem from "./ListGroupItem";
 
 export interface ListGroupProps extends React.HTMLAttributes<HTMLElement> {
     flush?: boolean;
-    tag?: string;
     minWidth?: "sm" | "md" | "lg" | "xl";
     horizontal?: boolean;
 }
@@ -13,37 +12,33 @@ export interface ListGroupProps extends React.HTMLAttributes<HTMLElement> {
 export default function ListGroup(props: ListGroupProps) {
     const {
         flush,
-        tag = "div",
         minWidth,
         horizontal,
         className,
         ...otherProps
     } = props;
     const PREFIX = "list-group";
-    const _horizontal = horizontal && `${PREFIX}-horizontal`;
+    let H_PREFIX = `${PREFIX}-horizontal`;
 
-    return React.createElement(
-        tag,
-        {
-            className: classNames(
+    return (
+        <div className={
+            classNames(
                 PREFIX,
                 flush && `${PREFIX}-flush`,
-                _horizontal,
-                _horizontal && minWidth && `${PREFIX}-horizontal-${minWidth}`
-            ),
-            ...otherProps
-        }
-    )
+                horizontal && minWidth ? `${H_PREFIX}-${minWidth}` : horizontal ? H_PREFIX : ""
+            )
+        } {...otherProps}/>
+    );
 }
 
 ListGroup.propTypes = {
     flush: PropTypes.bool,
-    tag: PropTypes.string,
     minWidth: PropTypes.oneOf(["sm", "md", "lg", "xl"]),
     horizontal: PropTypes.bool
 };
 ListGroup.defaultProps = {
-    tag: "div"
+    horizontal: false,
+    flush: false
 };
 
 ListGroup.Item = ListGroupItem;
