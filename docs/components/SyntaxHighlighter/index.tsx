@@ -1,6 +1,6 @@
 import * as React from "react";
 import Highlighter from "react-syntax-highlighter/dist/esm/prism";
-import {tomorrow} from "react-syntax-highlighter/dist/esm/styles/prism";
+import { tomorrow } from "react-syntax-highlighter/dist/esm/styles/prism";
 
 export default function SyntaxHighlighter(props: { code: any }) {
     const { code } = props;
@@ -14,7 +14,7 @@ export default function SyntaxHighlighter(props: { code: any }) {
         textarea.remove();
     }
     return (
-        <div className="position-relative" style={{marginTop: 10}}>
+        <div className="position-relative" style={{ marginTop: 10 }}>
             <Highlighter
                 language="javascript"
                 style={tomorrow}>

@@ -2,11 +2,11 @@ import * as React from "react";
 import {
     BrowserRouter as Router,
     Switch,
-    Route
+    Route,
+    Redirect
 } from "react-router-dom";
 import Alert from "./components/Alert";
 import Nav from "./components/Nav";
-import {Redirect} from "react-router";
 import Badge from "./components/Badge";
 import Breadcrumb from "./components/Breadcrumb";
 import Button from "./components/Button";
@@ -95,7 +95,7 @@ export default function AppRoute() {
                                     <Route
                                         key={item.path}
                                         path={item.path}
-                                        exact={true}
+                                        exact
                                         component={item.component}/>
                                 );
                             })

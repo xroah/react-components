@@ -1,7 +1,6 @@
 import * as React from "react";
-import {render} from "react-dom";
+import { render } from "react-dom";
 import Routes from "./routes";
-import "bootstrap/dist/css/bootstrap.css"
 import "./styles/index.css";
 
 const section = document.createElement("section");
