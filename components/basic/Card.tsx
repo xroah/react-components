@@ -15,6 +15,7 @@ export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
     footerStyle?: React.CSSProperties;
     body?: boolean;
     img?: React.ReactElement | string;
+    imgAlt?: string;
     imgPosition?: "top" | "bottom";
     isImgOverlay?: boolean;
     alignment?: "left" | "center" | "right";
@@ -32,6 +33,7 @@ export default function Card(props: CardProps) {
         className,
         children,
         isImgOverlay,
+        imgAlt,
         alignment,
         bg,
         color,
@@ -53,14 +55,16 @@ export default function Card(props: CardProps) {
             _img = React.cloneElement<any>(
                 img,
                 {
-                    className: cls
+                    className: classNames((img.props as any).className, cls),
+                    alt: imgAlt
                 }
             );
         } else {
             _img = (
                 <img
                     className={cls}
-                    src={img as string} />
+                    src={img as string}
+                    alt={imgAlt} />
             );
         }
 
@@ -114,6 +118,7 @@ Card.propTypes = {
     footerStyle: PropTypes.object,
     body: PropTypes.bool,
     img: PropTypes.oneOfType([PropTypes.element, PropTypes.string]),
+    imgAlt: PropTypes.string,
     imgPosition: PropTypes.oneOf(["top", "bottom"]),
     isImgOverlay: PropTypes.bool,
     align: PropTypes.oneOf(["left", "center", "right"]),
