@@ -3,6 +3,8 @@ const HTMLWebpackPlugin = require("html-webpack-plugin");
 const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
 const path = require("path");
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
 
 const optimization = {
     minimizer: [
@@ -24,7 +26,8 @@ const config = {
     stats: "minimal",
     output: {
         path: `${__dirname}/docs-dist`,
-        filename: "bundle.js",
+        filename: "js/index.js",
+        chunkFilename: "js/[id].[name].js",
         publicPath: "/"
     },
     resolve: {
@@ -32,6 +35,11 @@ const config = {
         alias: {
             "reap-ui$": path.resolve("./components/index.ts")
         }
+    },
+    externals: {
+        "react": "React",
+        "react-dom": "ReactDOM",
+        "react-router-dom": "ReactRouterDOM"
     },
     module: {
         rules: [
@@ -51,7 +59,7 @@ const config = {
     },
     plugins: [
         new HTMLWebpackPlugin({
-            title: "React Bootstrap",
+            template: "./docs/index.html",
             hash: true
         })
     ]
@@ -77,14 +85,33 @@ module.exports = env => {
             historyApiFallback: true
         };
         config.mode = env;
-        config.optimization = optimization;
         config.devtool = "eval-source-map";
     } else {
         config.plugins.push(
             new MiniCssExtractPlugin({
-                filename: "style.css"
-            })
+                filename: "css/style.css"
+            }),
+            new CleanWebpackPlugin(),
+            new BundleAnalyzerPlugin()
         );
+        config.optimization = {
+            ...optimization,
+            splitChunks: {
+                minSize: 150 * 1024,
+                maxSize: 200 * 1024,
+                cacheGroups: {
+                    vendors: {
+                        test: /[\\/]node_modules[\\/]/,
+                        name: "vendors",
+                        chunks: "all"
+                    },
+                    commons: {
+                        minChunks: 2,
+                        name: "commons"
+                    }
+                }
+            }
+        };
     }
     config.module.rules.push(cssLoader);
 
