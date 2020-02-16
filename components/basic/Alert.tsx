@@ -82,7 +82,7 @@ export default function Alert(props: AlertProps) {
     return (
         <Fade
             in={!!visible}
-            timeout={fade ? 150 : 0}
+            animation={fade}
             onEnter={handleEnter}
             onEntered={handleEntered}
             onExit={handleExit}

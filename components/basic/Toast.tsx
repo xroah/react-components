@@ -109,6 +109,7 @@ export default class Toast extends React.Component<ToastProps> {
             className,
             children,
             visible,
+            fade,
             ...otherProps
         } = this.props;
 
@@ -120,13 +121,12 @@ export default class Toast extends React.Component<ToastProps> {
         delete otherProps.header;
         delete otherProps.delay;
         delete otherProps.onClose;
-        delete otherProps.fade;
 
         return (
             <Fade
                 in={!!visible}
                 hidingClass="hide"
-                timeout={300}
+                animation={fade}
                 {...otherProps}>
                 <div className={
                     classNames(

@@ -151,7 +151,6 @@ export default class Modal extends React.Component<ModalProps> {
             scrollable && `${PREFIX}-scrollable`
         );;
         let _footer = footer;
-        let timeout = fade ? 300 : 0;
 
         if (_footer === undefined) {
             _footer = (
@@ -183,7 +182,7 @@ export default class Modal extends React.Component<ModalProps> {
             <>
                 <Fade
                     in={!!visible}
-                    timeout={timeout}
+                    animation={fade}
                     appear
                     toggleDisplay
                     onEnter={this.handleEnter}
@@ -219,7 +218,7 @@ export default class Modal extends React.Component<ModalProps> {
                 </Fade>
                 {
                     backdrop && (
-                        <Fade timeout={timeout} in={!!visible} unmountOnExit>
+                        <Fade animation={fade} in={!!visible} unmountOnExit>
                             <div className="modal-backdrop" />
                         </Fade>
                     )

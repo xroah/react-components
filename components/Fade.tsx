@@ -5,6 +5,7 @@ import { classNames } from "./utils";
 export interface FadeProps extends CSSTransitionProps {
     hidingClass?: string;
     toggleDisplay?: boolean;
+    animation?: boolean;
 }
 
 export default function Fade(props: FadeProps) {
@@ -13,6 +14,8 @@ export default function Fade(props: FadeProps) {
         hidingClass,
         toggleDisplay,
         style,
+        animation,
+        timeout,
         ...otherProps
     } = props;
     let display: any;
@@ -23,7 +26,7 @@ export default function Fade(props: FadeProps) {
                 state => {
                     const child = React.Children.only(children) as React.ReactElement;
                     const className = child.props.className;
-                    let classes = classNames(className, otherProps.timeout && "fade");
+                    let classes = classNames(className, animation && "fade");
                     let enterSet = new Set(["enter", "entering", "entered"]);
 
                     if (enterSet.has(state)) {
@@ -55,3 +58,8 @@ export default function Fade(props: FadeProps) {
         </CSSTransition>
     );
 }
+
+Fade.defaultProps = {
+    timeout: 150,
+    animation: true
+};

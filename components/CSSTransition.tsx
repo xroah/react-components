@@ -115,6 +115,10 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
     }
 
     nextTick(callback: Function) {
+        if (!this.props.timeout) {
+            return callback();
+        }
+
         this.nextTimer = setTimeout(
             this.safeCallback(callback),
             20

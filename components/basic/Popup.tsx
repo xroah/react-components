@@ -476,7 +476,7 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
                     onExited={this.handleExited}
                     in={!!visible}
                     unmountOnExit={unmountOnclose}
-                    timeout={fade ? 150 : 0}>
+                    animation={fade}>
                     {child}
                 </Fade>
             ),
