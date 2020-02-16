@@ -18,6 +18,10 @@ export interface PopupCommonProps extends React.HTMLAttributes<HTMLElement> {
     fade?: boolean;
     offset?: number | number[];
     defaultVisible?: boolean;
+    onShow?: Function;
+    onShown?: Function;
+    onHide?: Function;
+    onHidden?: Function;
 }
 
 type status = "stable" | "measure" | "update";
@@ -368,26 +372,28 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
         window.removeEventListener("scroll", this.handleResize);
     }
 
+    handleEnter = () => {
+        handleFuncProp(this.props.onShow)();
+    };
+
+    handleEntered = () => {
+        handleFuncProp(this.props.onShown)();
+    };
+
     handleEntering = () => {
-        //update position, in case calc indirectly when fade in
+        //update position, in case calc incorrectly(invisible) when fade in
         this.setState({
             status: "measure"
         });
     }
 
-    mount(el: React.ReactElement, props?: any) {
-        const {
-            visible,
-            unmountOnclose
-        } = this.props;
-        const { style = {} } = props;
+    handleExit = () => {
+        handleFuncProp(this.props.onHide)();
+    };
 
-        if (!visible && unmountOnclose) return null;
-
-        style.display = visible ? "block" : "none";
-
-        return React.cloneElement(el, { style });
-    }
+    handleExited = () => {
+        handleFuncProp(this.props.onHidden)();
+    };
 
     render() {
         let {
@@ -460,17 +466,19 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
 
         return createPortal(
             (
-                fade ? (
-                    <Fade
-                        appear
-                        toggleDisplay
-                        onEntering={this.handleEntering}
-                        in={!!visible}
-                        unmountOnExit={unmountOnclose}
-                        timeout={150}>
-                        {child}
-                    </Fade>
-                ) : this.mount(child, { style })
+                <Fade
+                    appear
+                    toggleDisplay
+                    onEnter={this.handleEnter}
+                    onEntering={this.handleEntering}
+                    onEntered={this.handleEntered}
+                    onExit={this.handleExit}
+                    onExited={this.handleExited}
+                    in={!!visible}
+                    unmountOnExit={unmountOnclose}
+                    timeout={fade ? 150 : 0}>
+                    {child}
+                </Fade>
             ),
             mountNode
         )

@@ -17,7 +17,6 @@ interface DelayObject {
 
 export interface CommonProps extends PopupCommonProps {
     trigger?: action[] | action;
-    onVisibleChange?: Function;
     delay?: number | DelayObject;
 }
 
@@ -194,8 +193,6 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
         this.setState({
             visible
         });
-
-        handleFuncProp(this.props.onVisibleChange)(visible);
     }
 
     open = () => {
@@ -236,6 +233,7 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
         visible ? this.close() : this.open();
     };
 
+    //for hover, prevent the popup from hiding when mouseout fires
     delayClose() {
         const { hide = 0 } = this.handleDelay();
 
@@ -294,11 +292,14 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
         delete otherProps.flip;
         delete otherProps.unmountOnclose;
         delete otherProps.verticalCenter;
-        delete otherProps.onVisibleChange;
         delete otherProps.trigger;
         delete otherProps.defaultVisible;
         delete otherProps.delay;
-
+        delete otherProps.onShow;
+        delete otherProps.onShown;
+        delete otherProps.onHide;
+        delete otherProps.onHidden;
+        
         action.forEach((a: string) => {
             if (a in actionMap) {
                 eventHandlers = {
@@ -329,6 +330,10 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
                 alignment,
                 offset,
                 fade,
+                onShow,
+                onShown,
+                onHidden,
+                onHide,
                 unmountOnclose,
                 alignmentPrefix,
                 verticalCenter
@@ -346,6 +351,10 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
             unmountOnclose,
             alignmentPrefix,
             verticalCenter,
+            onShow,
+            onShown,
+            onHide,
+            onHidden,
             ...popupProps
         };
 

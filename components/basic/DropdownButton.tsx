@@ -26,6 +26,10 @@ export default function DropdownButton(props: DropdownButtonProps) {
         split,
         children,
         className,
+        onShow,
+        onShown,
+        onHide,
+        onHidden,
         ...otherProps
     } = props;
     const dropdownProps = {
@@ -34,7 +38,11 @@ export default function DropdownButton(props: DropdownButtonProps) {
         overlay,
         trigger,
         flip,
-        fade
+        fade,
+        onShow,
+        onShown,
+        onHide,
+        onHidden
     };
     const btn = (
         <Button {...otherProps}>{children}</Button>
