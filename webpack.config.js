@@ -57,12 +57,7 @@ const config = {
             }
         ]
     },
-    plugins: [
-        new HTMLWebpackPlugin({
-            template: "./docs/index.html",
-            hash: true
-        })
-    ]
+    plugins: []
 };
 
 module.exports = env => {
@@ -74,6 +69,12 @@ module.exports = env => {
             "css-loader"
         ]
     };
+    config.plugins.push(
+        new HTMLWebpackPlugin({
+            template: `./docs/index${isDev ? "-dev" : ""}.html`,
+            hash: true
+        })
+    );
 
     if (isDev) {
         config.devServer = {
