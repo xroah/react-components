@@ -26,3 +26,6 @@ export default function Jumbotron(props: JumbotronProps) {
 Jumbotron.propTypes = {
     fluid: PropTypes.bool
 };
+Jumbotron.defaultProps = {
+    fluid: false
+};
