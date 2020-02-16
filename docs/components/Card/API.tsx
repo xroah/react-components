@@ -38,7 +38,11 @@ const CardProps = [{
     name: "img",
     type: "string | ReactNode",
     description: "Card image"
-}, {
+},{
+    name: "imgAlt",
+    type: "string",
+    description: "Alt of the image"
+},  {
     name: "imgPosition",
     type: "top | bottom",
     default: "top",

@@ -15,7 +15,11 @@ import Carousel from "./components/Carousel";
 import Collapse from "./components/Collapse";
 import Dropdown from "./components/Dropdown";
 import Form from "./components/Form";
+import Jumbotron from "./components/Jumbotron";
 import Input from "./components/Input";
+import ListGroup from "./components/ListGroup";
+import Media from "./components/Media";
+import Modal from "./components/Modal";
 import Tooltip from "./components/Tooltip";
 import Popover from "./components/Popover";
 
@@ -65,20 +69,41 @@ export const ROUTES = [
         component: Form,
         name: "Form"
     },
+    
     {
         path: "/components/input",
         component: Input,
         name: "Input"
     },
     {
-        path: "/components/tooltip",
-        component: Tooltip,
-        name: "Tooltip"
+        path: "/components/jumbotron",
+        component: Jumbotron,
+        name: "Jumbotron"
+    },
+    {
+        path: "/components/list-group",
+        component: ListGroup,
+        name: "ListGroup"
+    },
+    {
+        path: "/components/media",
+        component: Media,
+        name: "Media"
+    },
+    {
+        path: "/components/modal",
+        component: Modal,
+        name: "Modal"
     },
     {
         path: "/components/popover",
         component: Popover,
         name: "Popover"
+    },
+    {
+        path: "/components/tooltip",
+        component: Tooltip,
+        name: "Tooltip"
     }
 ];
 
