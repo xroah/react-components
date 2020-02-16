@@ -17,6 +17,8 @@ export interface AlertProps extends React.HTMLAttributes<HTMLDivElement> {
     visible?: boolean;
     onClose?: Function;
     onClosed?: Function;
+    onShow?: Function;
+    onShown?: Function;
 }
 
 export default function Alert(props: AlertProps) {
@@ -27,6 +29,10 @@ export default function Alert(props: AlertProps) {
         dismissible,
         visible,
         children,
+        onShow,
+        onShown,
+        onClose,
+        onClosed,
         ...otherProps
     } = props;
     let button: React.ReactNode = null;
@@ -37,40 +43,54 @@ export default function Alert(props: AlertProps) {
         dismissible && "alert-dismissible"
     );
     const handleClick = () => {
-        handleFuncProp(props.onClose)();
+        handleFuncProp(onClose)();
     };
     const handleExited = () => {
-        handleFuncProp(props.onClosed)();
+        handleFuncProp(onClosed)();
     };
-    
+    const handleEnter = () => {
+        handleFuncProp(onShow)();
+    };
+    const handleEntered = () => {
+        handleFuncProp(onShown)();
+    };
+    const handleExit = () => {
+        if (!dismissible) {
+            handleClick();
+        }
+    };
+
     if (dismissible) {
         button = (
             <Button
-            variant="link"
-            type="button"
-            className="close"
-            onClick={handleClick}>
+                variant="link"
+                type="button"
+                className="close"
+                onClick={handleClick}>
                 <span>&times;</span>
             </Button>
         );
     }
-    
+
     const child = (
         <div className={classes} {...otherProps}>
             {children}
             {button}
         </div>
     );
-    
-    return fade ? (
+
+    return (
         <Fade
             in={!!visible}
-            timeout={150}
+            timeout={fade ? 150 : 0}
+            onEnter={handleEnter}
+            onEntered={handleEntered}
+            onExit={handleExit}
             onExited={handleExited}
             unmountOnExit>
             {child}
         </Fade>
-    ) : visible ? child : null;
+    );
 }
 
 Alert.propTypes = {
