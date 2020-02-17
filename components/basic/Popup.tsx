@@ -373,11 +373,15 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
     }
 
     handleEnter = () => {
-        handleFuncProp(this.props.onShow)();
+        const {onShow, node} = this.props;
+
+        handleFuncProp(onShow)(node);
     };
 
     handleEntered = () => {
-        handleFuncProp(this.props.onShown)();
+        const {onShown, node} = this.props;
+
+        handleFuncProp(onShown)(node);
     };
 
     handleEntering = () => {
@@ -388,11 +392,15 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
     }
 
     handleExit = () => {
-        handleFuncProp(this.props.onHide)();
+        const {onHide, node} = this.props;
+
+        handleFuncProp(onHide)(node);
     };
 
     handleExited = () => {
-        handleFuncProp(this.props.onHidden)();
+        const {onHidden, node} = this.props;
+
+        handleFuncProp(onHidden)(node);
     };
 
     render() {
