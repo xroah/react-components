@@ -147,22 +147,30 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
         return _callback;
     }
 
+    delayEnterOrExit(timeout: number, callback: Function) {
+        if (!timeout) {
+            return callback();
+        }
+
+        this.timer = setTimeout(this.safeCallback(callback), timeout);
+    }
+
     handleEnter(node: HTMLElement) {
         const {
             onEntering,
             onEntered,
             timeout = 0,
         } = this.props;
-        const enteredCallback = this.safeCallback(() => {
+        const enteredCallback = () => {
             this.setState({
                 status: ENTERED
             });
             handleFuncProp(onEntered)(node);
-        });
+        };
         this.next = () => {
             this.next = null;
 
-            this.timer = setTimeout(enteredCallback, timeout);
+            this.delayEnterOrExit(timeout as number, enteredCallback);
         }
 
         this.setState({
@@ -175,7 +183,7 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
         const {
             onExiting,
             onExited,
-            timeout = 0,
+            timeout,
             unmountOnExit
         } = this.props;
         const unmount = () => {
@@ -185,7 +193,7 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
                 status: UNMOUNTED
             });
         }
-        const exitedCallback = this.safeCallback(() => {
+        const exitedCallback = () => {
             this.setState(
                 {
                     status: EXITED
@@ -194,9 +202,9 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
             handleFuncProp(onExited)(node);
 
             this.next = unmountOnExit ? unmount : null;
-        });
+        };
         this.next = () => {
-            this.timer = setTimeout(exitedCallback, timeout);
+            this.delayEnterOrExit(timeout as number, exitedCallback);
         };
 
         this.setState({
