@@ -10,6 +10,7 @@ import DropdownMenu from "./DropdownMenu";
 import DropdownMenuItem from "./DropdownMenuItem";
 import DropdownButton from "./DropdownButton";
 import Button from "./Button";
+import { handleFuncProp } from "../../es/utils";
 
 export interface DropdownProps extends CommonProps {
     alignment?: "left" | "center" | "right";
@@ -62,6 +63,28 @@ export default class Dropdown extends React.Component<DropdownProps> {
         }
     };
 
+    handleShow = (node?: HTMLElement) => {
+        const { onShow } = this.props;
+        let parent: HTMLElement | null;
+
+        if (node && (parent = node.parentElement)) {
+            parent.classList.add("show");
+        }
+
+        handleFuncProp(onShow)(node);
+    }
+
+    handleHide = (node?: HTMLElement) => {
+        const { onHide } = this.props;
+        let parent: HTMLElement | null;
+
+        if (node && (parent = node.parentElement)) {
+            parent.classList.remove("show");
+        }
+
+        handleFuncProp(onHide)(node);
+    }
+
     render() {
         const {
             children,
@@ -85,6 +108,9 @@ export default class Dropdown extends React.Component<DropdownProps> {
             popupProps.className = position;
         }
 
+        delete otherProps.onShow;
+        delete otherProps.onHide;
+
         return (
             <Overlay
                 popup={overlay}
@@ -95,6 +121,8 @@ export default class Dropdown extends React.Component<DropdownProps> {
                 escClose={true}
                 clickOutsideClose={true}
                 className={classNames(className, "dropdown-toggle")}
+                onShow={this.handleShow}
+                onHide={this.handleHide}
                 {...otherProps}>
                 {child}
             </Overlay>
