@@ -14,19 +14,45 @@ export default function Fade(props: FadeProps) {
         hidingClass,
         toggleDisplay,
         style,
+        className,
         animation,
         timeout,
+        in: _in,
+        unmountOnExit,
+        appear,
+        onEnter,
+        onEntering,
+        onEntered,
+        onExit,
+        onExiting,
+        onExited,
         ...otherProps
     } = props;
     let display: any;
+    const _timeout = animation ? timeout : undefined;
+    const transitionProps = {
+        timeout: _timeout,
+        in: _in,
+        unmountOnExit,
+        appear,
+        onEnter,
+        onEntering,
+        onEntered,
+        onExit,
+        onExiting,
+        onExited
+    };
 
     return (
-        <CSSTransition {...otherProps}>
+        <CSSTransition {...transitionProps}>
             {
                 state => {
                     const child = React.Children.only(children) as React.ReactElement;
-                    const className = child.props.className;
-                    let classes = classNames(className, animation && "fade");
+                    let classes = classNames(
+                        className,
+                        child.props.className,
+                        "fade"
+                    );
                     let enterSet = new Set(["enter", "entering", "entered"]);
 
                     if (enterSet.has(state)) {
@@ -50,7 +76,8 @@ export default function Fade(props: FadeProps) {
                                 ...style,
                                 ...child.props.style,
                                 display
-                            }
+                            },
+                            ...otherProps
                         }
                     );
                 }
