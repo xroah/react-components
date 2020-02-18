@@ -51,7 +51,7 @@ export default function Fade(props: FadeProps) {
                     let classes = classNames(
                         className,
                         child.props.className,
-                        "fade"
+                        animation && "fade"
                     );
                     let enterSet = new Set(["enter", "entering", "entered"]);
 

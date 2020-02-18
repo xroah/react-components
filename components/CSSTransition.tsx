@@ -128,7 +128,7 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
     clearNext() {
         this.next = null;
 
-        if (this.nextTimer) {
+        if (this.nextTimer !== null) {
             clearTimeout(this.nextTimer);
             this.nextTimer = null;
         }
