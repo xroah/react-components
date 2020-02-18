@@ -27,6 +27,7 @@ export interface ModalProps extends React.HTMLAttributes<HTMLElement> {
     scrollable?: boolean;
     autoFocus?: boolean;
     keyboard?: boolean;
+    mountTo?: HTMLElement;
     onOk?: (event: React.MouseEvent) => void;
     onCancel?: (event: React.MouseEvent) => void;
     onShow?: Function;
@@ -104,8 +105,6 @@ export default class Modal extends React.Component<ModalProps, ModalState> {
             document.body.removeChild(backdrop);
             this.container = null;
         }
-
-        this.removeKeyEvent();
     }
 
     getScrollWidth() {
@@ -131,7 +130,7 @@ export default class Modal extends React.Component<ModalProps, ModalState> {
         return width;
     }
 
-    handleKeyDown = (evt: KeyboardEvent) => {
+    handleKeyDown = (evt: React.KeyboardEvent) => {
         const { visible, keyboard } = this.props;
         const key = evt.key.toLowerCase();
         const keySet = new Set(["esc", "escape"]);
@@ -139,15 +138,6 @@ export default class Modal extends React.Component<ModalProps, ModalState> {
         if (visible && keyboard && keySet.has(key)) {
             this.handleCancel(evt);
         }
-    }
-
-    addKeyEvent = () => {
-        this.props.keyboard &&
-            document.addEventListener("keydown", this.handleKeyDown);
-    }
-
-    removeKeyEvent = () => {
-        document.removeEventListener("keydown", this.handleKeyDown);
     }
 
     handleClickBackdrop = (evt: React.MouseEvent<HTMLDivElement>) => {
@@ -190,7 +180,7 @@ export default class Modal extends React.Component<ModalProps, ModalState> {
         handleFuncProp(this.props.onOk)(evt);
     }
 
-    handleCancel = (evt: React.MouseEvent | KeyboardEvent) => {
+    handleCancel = (evt: React.MouseEvent | React.KeyboardEvent) => {
         handleFuncProp(this.props.onCancel)(evt);
     }
 
@@ -226,7 +216,7 @@ export default class Modal extends React.Component<ModalProps, ModalState> {
     }
 
     handleEntered = () => {
-        this.addKeyEvent();
+        this.focus();
         handleFuncProp(this.props.onShown)();
     }
 
@@ -247,8 +237,6 @@ export default class Modal extends React.Component<ModalProps, ModalState> {
         this.activeElement = null;
         this.previousBodyClassName = this.previousBodyPadding = "";
 
-        body.classList.remove("modal-open");
-        this.removeKeyEvent();
         handleFuncProp(this.props.onHidden)();
     }
 
@@ -272,6 +260,7 @@ export default class Modal extends React.Component<ModalProps, ModalState> {
                 backdrop,
                 forceRender,
                 scrollable,
+                mountTo,
                 ...otherProps
             },
             state: {
@@ -354,7 +343,7 @@ export default class Modal extends React.Component<ModalProps, ModalState> {
             let div = this.container = document.createElement("div");
             div.style.zIndex = `${zIndex++}`;
 
-            document.body.appendChild(this.container);
+            (mountTo || document.body).appendChild(this.container);
         }
 
         return createPortal(
@@ -371,6 +360,7 @@ export default class Modal extends React.Component<ModalProps, ModalState> {
                     <div
                         className={classes}
                         onClick={this.handleClickBackdrop}
+                        onKeyDown={this.handleKeyDown}
                         ref={this.modalRef}
                         tabIndex={-1}
                         {...otherProps}>
