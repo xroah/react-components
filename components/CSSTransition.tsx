@@ -200,10 +200,10 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
                 }
             );
             handleFuncProp(onExited)(node);
-
-            this.next = unmountOnExit ? unmount : null;
         };
         this.next = () => {
+            this.next = unmountOnExit ? unmount : null;
+
             this.delayEnterOrExit(timeout as number, exitedCallback);
         };
 
