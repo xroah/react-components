@@ -13,22 +13,18 @@ export default function NavLink(props: NavLinkProps) {
         active,
         disabled,
         className,
-        href = "#",
         ...otherProps
     } = props;
 
     return (
-        <a
-            className={
-                classNames(
-                    className,
-                    "nav-link",
-                    active && "active",
-                    disabled && "disabled"
-                )
-            }
-            href={href}
-            {...otherProps} />
+        <a className={
+            classNames(
+                className,
+                "nav-link",
+                active && "active",
+                disabled && "disabled"
+            )
+        } {...otherProps} />
     );
 }
 
@@ -36,4 +32,8 @@ NavLink.propTypes = {
     active: PropTypes.bool,
     disabled: PropTypes.bool,
     href: PropTypes.string
+};
+NavLink.defaultProps = {
+    active: false,
+    disabled: false
 };

@@ -1,17 +1,17 @@
 import * as React from "react";
 import PropTypes from "prop-types";
 import NavLink from "./NavLink";
-import NavItem from "./NavItem";
 import { classNames } from "../utils";
+import { createComponentByClass } from '../../es/utils';
 
 export interface NavProps extends React.HTMLAttributes<HTMLElement> {
-    alignment?: "center" | "right";
+    alignment?: "left" | "center" | "right";
+    minWidth?: "sm" | "md" | "lg" | "xl";
     vertical?: boolean;
-    pill?: boolean;
+    variant?: "tab" | "pill";
     fill?: boolean;
-    tab?: boolean;
-    tag?: string;
     navbar?: boolean;
+    equalWidth?: boolean;
 }
 
 export default function Nav(props: NavProps) {
@@ -19,42 +19,54 @@ export default function Nav(props: NavProps) {
         className,
         alignment,
         vertical,
-        pill,
         fill,
-        tab,
-        tag = "ul",
+        variant,
         navbar,
+        minWidth,
+        equalWidth,
         ...otherProps
     } = props;
     const alignmentMap: any = {
         center: "justify-content-center",
         right: "justify-content-end"
     };
+    const variantMap: any = {
+        tab: "nav-tabs",
+        pill: "nav-pills"
+    };
 
-    return React.createElement(
-        tag,
-        {
-            className: classNames(
+    return (
+        <nav className={
+            classNames(
                 className,
-                navbar ? "navbar-nav" :"nav",
-                pill ? "nav-pills" : tab ? "nav-tabs" : "",
+                navbar ? "navbar-nav" : "nav",
+                variant && variantMap[variant],
                 alignment && alignmentMap[alignment],
-                vertical && "flex-column",
-                fill && "nav-fill"
-            ),
-            ...otherProps
-        }
+                vertical && minWidth ? `flex-${minWidth}-column` : vertical ? "flex-column" : "",
+                fill && equalWidth ? "nav-justified" : fill ? "nav-fill" : ""
+            )
+        } {...otherProps} />
     );
 }
 
 Nav.propTypes = {
-    alignment: PropTypes.oneOf(["right", "center"]),
+    alignment: PropTypes.oneOf(["left", "right", "center"]),
     vertical: PropTypes.bool,
-    pill: PropTypes.bool,
     fill: PropTypes.bool,
-    tab: PropTypes.bool,
-    tag: PropTypes.string
+    navbar: PropTypes.bool,
+    equalWidth: PropTypes.bool,
+    variant: PropTypes.oneOf(["tab", "pill"])
+};
+Nav.defaultProps = {
+    vertical: false,
+    fill: false,
+    navbar: false,
+    equalWidth: false
 };
 
 Nav.Link = NavLink;
-Nav.Item = NavItem;
+Nav.Item = createComponentByClass({
+    tag: "div",
+    className: "nav-item",
+    displayName: "NavItem"
+});
