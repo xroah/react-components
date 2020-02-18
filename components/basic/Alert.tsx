@@ -66,8 +66,9 @@ export default function Alert(props: AlertProps) {
                 variant="link"
                 type="button"
                 className="close"
+                aria-label="Close"
                 onClick={handleClick}>
-                <span>&times;</span>
+                <span aria-hidden="true">&times;</span>
             </Button>
         );
     }
