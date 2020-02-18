@@ -17,6 +17,8 @@ import Contextual from "./Contextual";
 import ContextualSrc from "!!raw-loader!./Contextual";
 import ContextualAction from "./ContextualAction";
 import ContextualActionSrc from "!!raw-loader!./ContextualAction";
+import Tab from "./Tab";
+import TabSrc from "!!raw-loader!./Tab";
 import API from "./API";
 
 export default () => (
@@ -69,6 +71,10 @@ export default () => (
             source={ContextualActionSrc}>
             Contextual classes also work with action. Note the addition of the hover styles here not present in the previous example. Also supported is the active state; apply it to indicate an active selection on a contextual list group item.
         </DemoExample>
+        <DemoExample
+            title="Tabbable panes "
+            component={<Tab />}
+            source={TabSrc}/>
         <API />
     </>
 );

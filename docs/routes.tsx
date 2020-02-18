@@ -20,6 +20,7 @@ import Input from "./components/Input";
 import ListGroup from "./components/ListGroup";
 import Media from "./components/Media";
 import Modal from "./components/Modal";
+import NavDemo from "./components/NavDemo";
 import Tooltip from "./components/Tooltip";
 import Popover from "./components/Popover";
 
@@ -94,6 +95,11 @@ export const ROUTES = [
         path: "/components/modal",
         component: Modal,
         name: "Modal"
+    },
+    {
+        path: "/components/nav",
+        component: NavDemo,
+        name: "Nav"
     },
     {
         path: "/components/popover",

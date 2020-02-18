@@ -26,9 +26,21 @@ export const commonProps = [
         default: "0",
         description: "A millisecond delay to show or hide the popup"
     }, {
-        name: "onVisibleChange",
+        name: "onShow",
         type: "Function",
-        description: "Callback when visibility changed"
+        description: "Callback is invoked when visible changes from false to true"
+    }, {
+        name: "onShown",
+        type: "Function",
+        description: "Callback is invoked when popup has been shown"
+    }, {
+        name: "onHide",
+        type: "Function",
+        description: "Callback is invoked when visible change from true to false"
+    }, {
+        name: "onHidden",
+        type: "Function",
+        description: "Callback is invoked when popup has been hidden"
     }
 ];
 

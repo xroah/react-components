@@ -16,6 +16,6 @@ export default () => {
             variant="secondary"
             overlay={overlay}>
             Split button
-    </Dropdown.Button>
+        </Dropdown.Button>
     )
 };
