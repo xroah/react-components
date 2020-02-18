@@ -16,3 +16,8 @@ export const TabContext = createContext({
     fade: true,
     previousKey: "" //handle next tab active after previous fade out
 });
+
+export const ModalContext = createContext({
+    isModal: false,
+    visible: false
+});

@@ -8,6 +8,7 @@ import {
 import Button from "./Button";
 import Fade from "../Fade";
 import { createPortal } from "react-dom";
+import { ModalContext } from "../contexts";
 
 export interface ModalProps extends React.HTMLAttributes<HTMLElement> {
     visible?: boolean;
@@ -207,7 +208,7 @@ export default class Modal extends React.Component<ModalProps, ModalState> {
 
         //may has style="overflow: scroll" or something else
         const afterHasScrollbar = body.clientWidth < window.innerWidth;
-        
+
         if (hasScrollbar && !afterHasScrollbar) {
             body.style.paddingRight = `${pr + this.scrollWidth}px`;
         }
@@ -337,7 +338,7 @@ export default class Modal extends React.Component<ModalProps, ModalState> {
                 }
             </div>
         );
-        
+
 
         if (!this.container) {
             let div = this.container = document.createElement("div");
@@ -347,7 +348,7 @@ export default class Modal extends React.Component<ModalProps, ModalState> {
         }
 
         return createPortal(
-            <>
+            <ModalContext.Provider value={{isModal: true, visible: !!visible}}>
                 <Fade
                     in={!!visible}
                     animation={fade}
@@ -382,7 +383,7 @@ export default class Modal extends React.Component<ModalProps, ModalState> {
                         </Fade>
                     )
                 }
-            </>,
+            </ModalContext.Provider>,
             this.container
         );
     }

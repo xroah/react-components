@@ -7,6 +7,7 @@ import {
 import Popup, { PopupCommonProps } from "./Popup";
 import PropTypes from "prop-types";
 import { findDOMNode } from "react-dom";
+import { ModalContext } from "../contexts";
 
 export type action = "hover" | "click" | "contextmenu" | "focus";
 
@@ -66,8 +67,19 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
         super(props);
 
         this.state = {
-            visible: !!props.defaultVisible
+            visible: !!props.visible || !!props.defaultVisible
         };
+    }
+    
+    static getDerivedStateFromProps(props: OverlayProps, state: OverlayState) {
+        if ("visible" in props) {
+            return {
+                visible: props.visible,
+                node: state.node
+            };
+        }
+
+        return state;
     }
 
     componentDidMount() {
@@ -299,7 +311,8 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
         delete otherProps.onShown;
         delete otherProps.onHide;
         delete otherProps.onHidden;
-        
+        delete otherProps.visible;
+
         action.forEach((a: string) => {
             if (a in actionMap) {
                 eventHandlers = {
@@ -361,21 +374,30 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
         if (!popup) return children;
 
         return (
-            <>
+            <OverlayContext.Provider value={{ close: this.close }}>
                 {this.renderChildren()}
-                <OverlayContext.Provider value={{ close: this.close }}>
-                    <Popup
-                        visible={visible}
-                        onKeydown={this.handleKeydown}
-                        onMouseEnter={this.handlePopupMouseEnter}
-                        onMouseLeave={this.handlePopupMouseLeave}
-                        onClickOutside={this.handleClickOutside}
-                        node={node}
-                        {...props}>
-                        {popup}
-                    </Popup>
-                </OverlayContext.Provider>
-            </>
+                <ModalContext.Consumer>
+                    {
+                        ({ isModal, visible: mVisible }) => {
+                            if (visible && isModal && !mVisible) {
+                                this.close();
+                            }
+
+                            return null;
+                        }
+                    }
+                </ModalContext.Consumer>
+                <Popup
+                    visible={visible}
+                    onKeydown={this.handleKeydown}
+                    onMouseEnter={this.handlePopupMouseEnter}
+                    onMouseLeave={this.handlePopupMouseLeave}
+                    onClickOutside={this.handleClickOutside}
+                    node={node}
+                    {...props}>
+                    {popup}
+                </Popup>
+            </OverlayContext.Provider>
         );
     }
 
