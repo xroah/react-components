@@ -10,3 +10,9 @@ export const FormContext = createContext({
 } as any);
 
 export const InputGroupContext = createContext(false);
+
+export const TabContext = createContext({
+    activeKey: "",
+    fade: true,
+    previousKey: "" //handle next tab active after previous fade out
+});

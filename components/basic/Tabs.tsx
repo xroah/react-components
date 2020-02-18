@@ -2,51 +2,57 @@ import * as React from "react";
 import PropTypes from "prop-types";
 import TabPane from "./TabPane";
 import Nav from "./Nav";
-import { TabContext, handleFuncProp, classNames } from "../utils";
+import { handleFuncProp } from "../utils";
+import { TabContext } from "../contexts";
 
 export interface TabsProps extends React.HTMLAttributes<HTMLElement> {
     defaultActiveKey?: string | number;
     activeKey?: string | number;
     pill?: boolean;
-    onTabChange?: (key?: string) => void;
+    fade?: boolean;
+    onTabChange?: (prevKey?: string, currentKey?: string) => void;
+    onTabClick?: (key?: string, evt?: React.MouseEvent) => void;
 }
 
 interface TabsState {
     activeKey?: string | number;
+    previousKey?: string | number;
 }
 
 interface NavLinkProps {
-    __key__?: string;
-    onClick: (key?: string) => any;
+    itemKey?: string;
+    onClick: (key?: string, evt?: React.MouseEvent) => any;
     children: React.ReactChild;
     disabled?: boolean;
 }
 
 function NavLink(props: NavLinkProps) {
-
-    const handleClick = () => {
-        const {
-            onClick,
-            __key__,
-            disabled
-        } = props;
-
-        !disabled && onClick(__key__);
-    };
     const {
-        children,
-        disabled
+        onClick,
+        itemKey,
+        disabled,
+        children
     } = props;
-    const context = React.useContext(TabContext);
+
+    const handleClick = (evt: React.MouseEvent) => {
+        !disabled && onClick(itemKey, evt);
+        evt.preventDefault();
+    };
 
     return (
-        <Nav.Item tag="div">
-            <Nav.Link
-                active={context === props.__key__}
-                disabled={disabled}
-                onClick={handleClick}
-                children={children} />
-        </Nav.Item>
+        <TabContext.Consumer>
+            {
+                value => (
+                    <Nav.Link
+                        active={value.activeKey === itemKey}
+                        disabled={disabled}
+                        href="#"
+                        onClick={handleClick}>
+                        {children}
+                    </Nav.Link>
+                )
+            }
+        </TabContext.Consumer>
     );
 }
 
@@ -63,6 +69,10 @@ export default class Tabs extends React.Component<TabsProps, TabsState> {
         ]),
         pill: PropTypes.bool
     };
+    static defaultProps = {
+        fade: true,
+        pill: false
+    };
     static TabPane = TabPane;
 
     constructor(props: TabsProps) {
@@ -73,11 +83,7 @@ export default class Tabs extends React.Component<TabsProps, TabsState> {
             activeKey,
             children
         } = props;
-        let _activeKey: any = defaultActiveKey;
-
-        if (activeKey != undefined) {
-            _activeKey = activeKey;
-        }
+        let _activeKey: any = activeKey || defaultActiveKey;
 
         if (_activeKey == undefined) {
             React.Children.forEach(children, c => {
@@ -97,23 +103,48 @@ export default class Tabs extends React.Component<TabsProps, TabsState> {
         };
     }
 
-    static getDerivedStateFromProps(nextProps: TabsProps, nextState: TabsState) {
-        if ("activeKey" in nextProps) {
+    static getDerivedStateFromProps(props: TabsProps, state: TabsState) {
+        if ("activeKey" in props) {
             return {
-                activeKey: nextProps.activeKey
+                activeKey: props.activeKey,
+                previousKey: props.activeKey === state.activeKey ? "" : state.activeKey
             };
         }
 
-        return nextState;
+        return state;
     }
 
-    handleClickTab = (key?: string) => {
-        const { onTabChange } = this.props
+    componentDidUpdate(prevProps: TabsProps, prevState: TabsState) {
+        const { 
+            state: {activeKey},
+            props: {onTabChange}
+         } = this;
 
+        if (prevState.activeKey !== activeKey) {
+            handleFuncProp(onTabChange)(prevState.activeKey, activeKey);
+        }
+    }
+
+    handleTabHidden = () => {
         this.setState({
-            activeKey: key
+            previousKey: ""
         });
-        handleFuncProp(onTabChange)(key);
+    };
+
+    handleClickTab = (key?: string, evt?: React.MouseEvent) => {
+        const {
+            props: { onTabClick },
+            state: { activeKey }
+        } = this;
+
+        handleFuncProp(onTabClick)(key, evt);
+
+        if (key !== activeKey) {
+            this.setState({
+                activeKey: key,
+                previousKey: activeKey
+            });
+        }
     }
 
     renderTabs() {
@@ -122,55 +153,65 @@ export default class Tabs extends React.Component<TabsProps, TabsState> {
             pill
         } = this.props;
         const content: any[] = [];
-        const tabs = React.Children.map(children, (c, i) => {
+        const tabs: React.ReactElement[] = [];
+        React.Children.forEach(children, (c, i) => {
+            //no tab if child is not a TabPane
             if (React.isValidElement(c)) {
-                const tab = c.props.tab;
+                let {
+                    tab,
+                    children,
+                    disabled,
+                    action
+                } = c.props as any;
 
                 if (c.type === TabPane) {
-                    content.push(
-                        React.cloneElement(
-                            c,
-                            {
-                                __key__: c.key
-                            }
+                    if (children) {
+                        content.push(
+                            React.cloneElement<any>(
+                                c,
+                                {
+                                    panelKey: c.key,
+                                    onHidden: this.handleTabHidden
+                                }
+                            )
                         )
-                    );
-                    // if tab is ReactElement, just render it(eg: dropdown etc)
-                    if (React.isValidElement(tab)) {
-                        const _tab = tab as React.ReactElement;
-                        return React.cloneElement(
-                            _tab,
-                            {
-                                className: classNames(
-                                    _tab.props.className,
-                                    "nav-item"
-                                )
-                            }
-                        );
                     }
 
-                    return (
-                        <NavLink
-                            disabled={c.props.disabled}
-                            __key__={String(c.key == undefined ? i : c.key)}
-                            onClick={this.handleClickTab}>
-                            {tab}
-                        </NavLink>
+                    if (!tab) return;
+
+                    tab = (
+                        <Nav.Item key={c.key}>
+                            {
+                                action ? (
+                                    <NavLink
+                                        disabled={disabled}
+                                        itemKey={String(c.key == undefined ? i : c.key)}
+                                        onClick={this.handleClickTab}>
+                                        {tab}
+                                    </NavLink>
+                                ) : (
+                                        <Nav.Item>
+                                            {tab}
+                                        </Nav.Item>
+                                    )
+                            }
+                        </Nav.Item>
                     );
+
+                    return tabs.push(tab);
                 }
 
+                //just add the content if child is not a TabPane
                 content.push(c);
             }
 
             content.push(c);
-
-            return null;
         });
-        const _tabs = (
-            <Nav pill={pill} tab tag="div">
+        const _tabs = tabs.length ? (
+            <Nav variant={pill ? "pill" : "tab"}>
                 {tabs}
             </Nav>
-        );;
+        ) : null;
 
         return [_tabs, content];
     }
@@ -179,21 +220,25 @@ export default class Tabs extends React.Component<TabsProps, TabsState> {
         const {
             props: {
                 children,
+                fade,
                 ...otherProps
             },
-            state: {
-                activeKey
-            }
+            state
         } = this;
         const [tabs, content] = this.renderTabs();
+        const value: any = { 
+            ...state,
+            fade
+         };
 
         delete otherProps.defaultActiveKey;
         delete otherProps.activeKey;
         delete otherProps.pill;
         delete otherProps.onTabChange;
+        delete otherProps.onTabClick;
 
         return (
-            <TabContext.Provider value={activeKey as string}>
+            <TabContext.Provider value={value}>
                 <div {...otherProps}>
                     {tabs}
                     <div className="tab-content">
