@@ -11,6 +11,7 @@ import { createPortal } from "react-dom";
 
 export interface ModalProps extends React.HTMLAttributes<HTMLElement> {
     visible?: boolean;
+    forceRender?: boolean;
     titleText?: string | React.ReactNode;
     okText?: string | React.ReactNode;
     cancelText?: string | React.ReactNode;
@@ -35,6 +36,7 @@ export interface ModalProps extends React.HTMLAttributes<HTMLElement> {
 }
 
 const stringOrNode = PropTypes.oneOfType([PropTypes.string, PropTypes.node]);
+let zIndex = 2000;
 
 interface ModalState {
     className?: string;
@@ -44,6 +46,7 @@ export default class Modal extends React.Component<ModalProps, ModalState> {
 
     static defaultProps = {
         visible: false,
+        forceRender: false,
         showCancel: true,
         showOk: true,
         closable: true,
@@ -81,23 +84,25 @@ export default class Modal extends React.Component<ModalProps, ModalState> {
         onHidden: PropTypes.func
     };
 
-    backdropContainer: HTMLElement | null = null;
+    container: HTMLElement | null = null;
     dialogRef = React.createRef<HTMLDivElement>();
     scrollWidth: number = 0;
     activeElement: Element | null = null;
     modalRef = React.createRef<HTMLDivElement>();
     state: ModalState = {};
+    previousBodyPadding: string = "";
+    previousBodyClassName: string = "";
 
     componentDidMount() {
         this.scrollWidth = this.getScrollWidth();
     }
 
     componentWillUnmount() {
-        let backdrop = this.backdropContainer;
+        let backdrop = this.container;
 
         if (backdrop) {
             document.body.removeChild(backdrop);
-            this.backdropContainer = null;
+            this.container = null;
         }
 
         this.removeKeyEvent();
@@ -189,15 +194,6 @@ export default class Modal extends React.Component<ModalProps, ModalState> {
         handleFuncProp(this.props.onCancel)(evt);
     }
 
-    handleEnter = () => {
-        const body = document.body;
-        this.activeElement = document.activeElement;
-
-        body.classList.add("modal-open");
-        body.style.paddingRight = `${this.scrollWidth}px`;
-        handleFuncProp(this.props.onShow)();
-    }
-
     focus() {
         const {
             props: { autoFocus },
@@ -207,6 +203,26 @@ export default class Modal extends React.Component<ModalProps, ModalState> {
         if (autoFocus && current) {
             current.focus();
         }
+    }
+
+    handleEnter = () => {
+        const body = document.body;
+        const hasScrollbar = body.clientWidth < window.innerWidth;
+        const pr = parseFloat(getComputedStyle(body).getPropertyValue("padding-right"));
+        this.activeElement = document.activeElement;
+        this.previousBodyClassName = body.className;
+        this.previousBodyPadding = body.style.paddingRight;
+
+        body.classList.add("modal-open");
+
+        //may has style="overflow: scroll" or something else
+        const afterHasScrollbar = body.clientWidth < window.innerWidth;
+        
+        if (hasScrollbar && !afterHasScrollbar) {
+            body.style.paddingRight = `${pr + this.scrollWidth}px`;
+        }
+
+        handleFuncProp(this.props.onShow)();
     }
 
     handleEntered = () => {
@@ -226,8 +242,10 @@ export default class Modal extends React.Component<ModalProps, ModalState> {
             ae.focus();
         }
 
-        body.style.paddingRight = "";
+        body.style.paddingRight = this.previousBodyPadding;
+        body.className = this.previousBodyClassName;
         this.activeElement = null;
+        this.previousBodyClassName = this.previousBodyPadding = "";
 
         body.classList.remove("modal-open");
         this.removeKeyEvent();
@@ -252,6 +270,7 @@ export default class Modal extends React.Component<ModalProps, ModalState> {
                 children,
                 className,
                 backdrop,
+                forceRender,
                 scrollable,
                 ...otherProps
             },
@@ -259,6 +278,8 @@ export default class Modal extends React.Component<ModalProps, ModalState> {
                 className: stateClass
             }
         } = this;
+
+        if (!forceRender && !visible && !this.container) return null;
 
         delete otherProps.onOk;
         delete otherProps.onCancel;
@@ -327,11 +348,13 @@ export default class Modal extends React.Component<ModalProps, ModalState> {
                 }
             </div>
         );
+        
 
+        if (!this.container) {
+            let div = this.container = document.createElement("div");
+            div.style.zIndex = `${zIndex++}`;
 
-        if (!this.backdropContainer) {
-            this.backdropContainer = document.createElement("div");
-            document.body.appendChild(this.backdropContainer);
+            document.body.appendChild(this.container);
         }
 
         return createPortal(
@@ -370,7 +393,7 @@ export default class Modal extends React.Component<ModalProps, ModalState> {
                     )
                 }
             </>,
-            this.backdropContainer
+            this.container
         );
     }
 
