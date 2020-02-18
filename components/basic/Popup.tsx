@@ -14,6 +14,7 @@ export type position = "top" | "right" | "bottom" | "left";
 
 export interface PopupCommonProps extends React.HTMLAttributes<HTMLElement> {
     placement?: position;
+    visible?: boolean;
     flip?: boolean;
     fade?: boolean;
     offset?: number | number[];
@@ -24,11 +25,8 @@ export interface PopupCommonProps extends React.HTMLAttributes<HTMLElement> {
     onHidden?: Function;
 }
 
-type status = "stable" | "measure" | "update";
-
 interface PopupState {
     pos?: position;
-    status?: status;
     placement?: position;
     left?: number;
     top?: number;
@@ -37,7 +35,6 @@ interface PopupState {
 export interface PopupProps extends PopupCommonProps {
     alignment?: string;
     mountTo?: HTMLElement;
-    visible?: boolean;
     unmountOnclose?: boolean;
     node?: HTMLElement;
     verticalCenter?: boolean;
@@ -73,7 +70,7 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
         super(props);
 
         this.state = {};
-        this.handleResize = throttle(this.handleResize.bind(this));
+        this.handleResize = throttle(this.handleResize, 30);
     }
 
     getAlimentClass() {
@@ -88,43 +85,17 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
         return alignmentPrefix && `${alignmentPrefix}-${pos || placement}`;
     }
 
-    updateNextTick(status?: status) {
-        if (!this.props.visible) return;
-
-        requestAnimationFrame(() => {
-            this.setState({
-                status
-            });
-        });
-    };
-
     componentDidUpdate() {
         const {
             props: {
-                visible,
-                fade
+                visible
             },
-            hasEvent,
-            state: {
-                status
-            }
+            hasEvent
         } = this;
 
         if (visible) {
             if (!hasEvent) {
                 this.addEvent();
-            }
-
-            //just reset the position if already visible
-            if (
-                status === "measure" ||
-                // update when onEntering invoked if enable fade,
-                //in case update doubly
-                (!fade && !status)
-            ) {
-                this.updatePosition();
-            } else if (status === "update") {
-                this.updateNextTick("stable");
             }
 
             return;
@@ -333,8 +304,7 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
         this.setState({
             left,
             top,
-            placement,
-            status: "update"
+            placement
         });
     }
 
@@ -345,8 +315,8 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
             : handleFuncProp(onMouseLeave)(evt);
     }
 
-    handleResize() {
-        this.updateNextTick("measure");
+    handleResize = () => {
+        this.updatePosition();
     }
 
     addEvent() {
@@ -356,10 +326,8 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
         this.hasEvent = true;
         document.addEventListener("click", this.handleClickOutSide);
         document.addEventListener("keydown", this.handleKeydown);
-        if (flip) {
-            window.addEventListener("resize", this.handleResize);
-            window.addEventListener("scroll", this.handleResize);
-        }
+        window.addEventListener("resize", this.handleResize);
+        flip && window.addEventListener("scroll", this.handleResize);
     };
 
     removeEvent() {
@@ -373,32 +341,30 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
     }
 
     handleEnter = () => {
-        const {onShow, node} = this.props;
+        const { onShow, node } = this.props;
 
         handleFuncProp(onShow)(node);
     };
 
     handleEntered = () => {
-        const {onShown, node} = this.props;
+        const { onShown, node } = this.props;
 
         handleFuncProp(onShown)(node);
     };
 
     handleEntering = () => {
         //update position, in case calc incorrectly(invisible) when fade in
-        this.setState({
-            status: "measure"
-        });
+        this.updatePosition();
     }
 
     handleExit = () => {
-        const {onHide, node} = this.props;
+        const { onHide, node } = this.props;
 
         handleFuncProp(onHide)(node);
     };
 
     handleExited = () => {
-        const {onHidden, node} = this.props;
+        const { onHidden, node } = this.props;
 
         handleFuncProp(onHidden)(node);
     };
@@ -448,6 +414,7 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
                 left: 0;
                 top: 0;
                 width:100%;
+                z-index: 99999
                 `;
             mountTo.appendChild(mountNode);
         }
