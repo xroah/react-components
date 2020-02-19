@@ -122,13 +122,28 @@ export function getElementRect(el: HTMLElement): ElementRect {
 }
 
 export function throttle(fn: Function, timeout: number = 100) {
-    let _fn = function () {
-        if (_fn.timer != undefined) {
-            clearTimeout(_fn.timer);
-        }
+    let timer: NodeJS.Timeout | null = null;
+    let previous = 0;
+    let _fn = function throttled() {
+        let now = Date.now();
+        let remaining = timeout - (now - previous);
+        const args = Array.from(arguments);
 
-        _fn.timer = setTimeout(fn, timeout);
-    } as any;
+        if (remaining <= 0) {
+            if (timer) {
+                clearTimeout(timer);
+                timer = null;
+            }
+
+            previous = now;
+            fn.apply(null, args);
+        } else if (!timer) {
+            timer = setTimeout(() => {
+                timer = null;
+                fn.apply(null, args);
+            }, timeout);
+        }
+    };
 
     return _fn;
 }
@@ -169,13 +184,12 @@ export function chainFunction(...fn: any[]) {
                 }
             };
         },
-        () => {}
+        () => { }
     );
 
 }
 
 export const OverlayContext = React.createContext({ close: () => { } });
-export const TabContext = React.createContext("");
 export type variantType = "primary"
     | "secondary"
     | "success"
