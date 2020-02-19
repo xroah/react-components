@@ -9,6 +9,7 @@ import {
     getElementRect
 } from "../utils";
 import Fade from "../Fade";
+import { PopupContext } from "../contexts";
 
 export type position = "top" | "right" | "bottom" | "left";
 
@@ -25,8 +26,13 @@ export interface PopupCommonProps extends React.HTMLAttributes<HTMLElement> {
     onHidden?: Function;
 }
 
+interface Position {
+    left: number;
+    top: number;
+}
+
 interface PopupState {
-    pos?: position;
+    arrowPos: Position
     placement?: position;
     left?: number;
     top?: number;
@@ -38,7 +44,6 @@ export interface PopupProps extends PopupCommonProps {
     unmountOnclose?: boolean;
     node?: HTMLElement;
     verticalCenter?: boolean;
-    alignmentPrefix?: string;
     onClickOutside?: Function;
     onKeydown?: (evt: KeyboardEvent, arg: HTMLElement) => void;
     onResetPosition?: Function;
@@ -69,20 +74,13 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
     constructor(props: PopupProps) {
         super(props);
 
-        this.state = {};
-        this.handleResize = throttle(this.handleResize, 30);
-    }
-
-    getAlimentClass() {
-        const {
-            props: {
-                alignmentPrefix,
-                placement
-            },
-            state: { placement: pos }
-        } = this;
-
-        return alignmentPrefix && `${alignmentPrefix}-${pos || placement}`;
+        this.state = {
+            arrowPos: {//for popup arrow(tooltip, popover)
+                left: 0,
+                top: 0
+            }
+        };
+        this.handleResize = throttle(this.handleResize);
     }
 
     componentDidUpdate() {
@@ -298,14 +296,46 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
         return left;
     };
 
+    handleArrowPosition = () => {
+        const {
+            props: {
+                placement,
+                node,
+            },
+            ref: { current: child }
+        } = this;
+
+        if (!node || !child) return;
+
+        const nRect = node.getBoundingClientRect();
+        const cRect = child.getBoundingClientRect();
+        const isArrowVertical = placement === "left" || placement === "right";
+        const arrowPos: Position = {
+            left: 0,
+            top: 0
+        };
+
+        if (isArrowVertical) {
+            arrowPos.top = nRect.top - cRect.top + nRect.height / 2;
+        } else {
+            arrowPos.left = nRect.left - cRect.left + nRect.width / 2;
+        }
+
+        this.setState({ arrowPos });
+    }
+
     updatePosition() {
         let { left, top, placement } = this.handlePosition();
 
-        this.setState({
-            left,
-            top,
-            placement
-        });
+
+        this.setState(
+            {
+                left,
+                top,
+                placement
+            },
+            this.handleArrowPosition
+        );
     }
 
     handleMouseEvent = (evt: React.MouseEvent<HTMLElement>) => {
@@ -382,14 +412,18 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
             },
             state: {
                 left,
-                top
+                top,
+                arrowPos,
+                placement
             },
             mountNode
         } = this;
         let style: React.CSSProperties = {
             position: "absolute",
-            left,
-            top
+            left: 0,
+            top: 0,
+            willChange: "transform",
+            transform: `translate3d(${left}px, ${top}px, 0)`
         };
         let _children = children as React.ReactElement;
 
@@ -401,11 +435,6 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
             ((!visible && !mountNode) || !_children) ||
             !node
         ) return null;
-
-        const childClassNames = classNames(
-            _children.props.className,
-            this.getAlimentClass(),
-        );
 
         if (!mountNode) {
             mountNode = this.mountNode = document.createElement("div");
@@ -428,14 +457,9 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
                 ref={this.ref}
                 className={className}
                 {...mouseEvent}>
-                {
-                    React.cloneElement(
-                        _children,
-                        {
-                            className: childClassNames
-                        }
-                    )
-                }
+                <PopupContext.Provider value={{...arrowPos, placement} as any}>
+                    {_children}
+                </PopupContext.Provider>
             </div>
         );
 

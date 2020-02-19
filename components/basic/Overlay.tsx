@@ -29,7 +29,6 @@ export interface OverlayProps extends CommonProps {
     wrapper?: React.ReactElement;
     unmountOnclose?: boolean;
     verticalCenter?: boolean;
-    alignmentPrefix?: string;
     escClose?: boolean;
     clickOutsideClose?: boolean;
     onKeydown?: (evt: KeyboardEvent, arg: any) => any;
@@ -296,7 +295,6 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
         delete otherProps.onKeydown;
         delete otherProps.placement;
         delete otherProps.alignment;
-        delete otherProps.alignmentPrefix
         delete otherProps.offset;
         delete otherProps.clickOutsideClose;
         delete otherProps.escClose;
@@ -348,7 +346,6 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
                 onHidden,
                 onHide,
                 unmountOnclose,
-                alignmentPrefix,
                 verticalCenter
             },
             state: {
@@ -362,7 +359,6 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
             placement,
             alignment,
             unmountOnclose,
-            alignmentPrefix,
             verticalCenter,
             onShow,
             onShown,

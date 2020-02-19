@@ -1,28 +1,40 @@
 import * as React from "react";
 import PropTypes from "prop-types";
 import Overlay, { CommonProps } from './Overlay';
+import { PopupContext } from "../contexts";
+import { classNames } from "../utils";
 
 export interface TooltipProps extends CommonProps {
     text: string | React.ReactNode;
 }
 
-export function getStyle(placement: any) {
-    const leftStyle = {
-        transform: "translateX(-50%)",
-        left: "50%"
-    };
-    const topStyle = {
-        transform: "translateY(-50%)",
-        top: "50%"
-    };
+export function getTransform(placement: any) {
+    const y = { transform: "translateY(-50%)" };
+    const x = { transform: "translateX(-50%)" };
     const posMap: any = {
-        top: leftStyle,
-        bottom: leftStyle,
-        left: topStyle,
-        right: topStyle
+        top: x,
+        bottom: x,
+        left: y,
+        right: y
     };
 
     return posMap[placement];
+}
+
+export function handleArrowStyle(left: number, top: number, placement: any) {
+    const isVertical = placement === "left" || placement === "right";
+    const style: React.CSSProperties = {};
+
+    if (isVertical) {
+        style.top = `${top}px`;
+    } else {
+        style.left = `${left}px`;
+    }
+
+    return {
+        ...style,
+        ...getTransform(placement)
+    };
 }
 
 export default function Tooltip(props: TooltipProps) {
@@ -37,12 +49,25 @@ export default function Tooltip(props: TooltipProps) {
     style.willChange = "transform";
 
     const popup = text ? (
-        <div className="tooltip show" style={style}>
-            <div className="arrow" style={getStyle(placement)} />
-            <div className="tooltip-inner">
-                {text}
-            </div>
-        </div>
+        <PopupContext.Consumer>
+            {
+                ({ left, top, placement: p }) => (
+                    <div className={
+                        classNames(
+                            "tooltip",//.tooltip{opacity: 0}
+                            "show",//.tooltip.show{opacity: .9},
+                            `bs-tooltip-${p || placement}`
+                        )
+                    } style={style}>
+                        <div className="arrow"
+                            style={handleArrowStyle(left, top, placement)} />
+                        <div className="tooltip-inner">
+                            {text}
+                        </div>
+                    </div>
+                )
+            }
+        </PopupContext.Consumer>
     ) : null;
 
     return (
@@ -50,7 +75,6 @@ export default function Tooltip(props: TooltipProps) {
             placement={placement}
             popup={popup}
             alignment="center"
-            alignmentPrefix="bs-tooltip"
             unmountOnclose
             verticalCenter
             {...otherProps}>

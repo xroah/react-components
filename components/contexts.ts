@@ -21,3 +21,9 @@ export const ModalContext = createContext({
     isModal: false,
     visible: false
 });
+
+export const PopupContext = createContext({
+    left: 0,
+    top: 0,
+    placement: ""
+});

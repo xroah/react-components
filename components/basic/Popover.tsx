@@ -1,7 +1,9 @@
 import * as React from "react";
 import PropTypes from "prop-types";
 import Overlay, { CommonProps } from "./Overlay";
-import { getStyle } from "./Tooltip";
+import { handleArrowStyle } from "./Tooltip";
+import { PopupContext } from "../contexts";
+import { classNames } from "../utils";
 
 export interface PopoverProps extends CommonProps {
     header?: string | React.ReactNode;
@@ -20,25 +22,36 @@ export default function Popover(props: PopoverProps) {
     style.position = "relative";
 
     const popup = (
-        <div style={style} className="popover">
-            <div className="arrow" style={{
-                ...getStyle(placement),
-                margin: 0
-            }} />
+        <PopupContext.Consumer>
             {
-                !!header && (
-                    <h3 className="popover-header">{header}</h3>
+                ({ left, top, placement: p }) => (
+                    <div style={style}
+                        className={
+                            classNames(
+                                "popover",
+                                `bs-popover-${p || placement}`
+                            )
+                        }>
+                        <div className="arrow" style={{
+                            ...handleArrowStyle(left, top, placement),
+                            margin: 0
+                        }} />
+                        {
+                            !!header && (
+                                <h3 className="popover-header">{header}</h3>
+                            )
+                        }
+                        <div className="popover-body">
+                            {content}
+                        </div>
+                    </div>
                 )
             }
-            <div className="popover-body">
-                {content}
-            </div>
-        </div>
+        </PopupContext.Consumer>
     );
     return (
         <Overlay
             unmountOnclose
-            alignmentPrefix="bs-popover"
             alignment="center"
             placement={placement}
             popup={popup}
