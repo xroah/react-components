@@ -1,11 +1,10 @@
 import * as React from "react";
 import { createPortal } from "react-dom";
-import PropTypes, { number } from "prop-types";
+import PropTypes from "prop-types";
 import {
     ElementRect,
     handleFuncProp,
     throttle,
-    classNames,
     getElementRect
 } from "../utils";
 import Fade from "../Fade";
@@ -142,7 +141,7 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
         let ret: number[];
 
         if (Array.isArray(offset)) {
-            const len = number.length;
+            const len = offset.length;
 
             switch (len) {
                 case 0:
