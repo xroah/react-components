@@ -8,7 +8,7 @@
         "build:es": "babel components --out-dir es --extensions .ts,.tsx",
         "build:lib": "cross-env NODE_ENV=lib babel components --out-dir lib --extensions .ts,.tsx",
         "build:dev": "rollup -c",
-        "build:prod": "rollup -c --compact",
+        "build:prod": "cross-env NODE_ENV=production rollup -c",
         "build:doc": "webpack",
         "start": "webpack-dev-server --env development --watch"
     },

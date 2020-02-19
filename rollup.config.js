@@ -5,7 +5,7 @@ import cjs from "rollup-plugin-commonjs";
 import { uglify } from "rollup-plugin-uglify";
 
 const config = {
-    input: "src/index.ts",
+    input: "components/index.ts",
     output: {
         format: "umd",
         name: "reap",
@@ -27,14 +27,13 @@ const config = {
     external: ["react", "react-dom"]
 };
 
-export default args => {
-    const FILE_PREFIX = './dist/react-bs';
+export default () => {
+    const FILE_PREFIX = './dist/reap-ui';
     let file;
     let sourcemap = false;
     let output = config.output;
-    let compact = args.compact;
 
-    if (compact) {
+    if (process.env.NODE_ENV === "production") {
         sourcemap = true;
         file = `${FILE_PREFIX}.min.js`;
         config.plugins.push(uglify());
@@ -45,8 +44,7 @@ export default args => {
     config.output = {
         ...output,
         file,
-        sourcemap,
-        compact
+        sourcemap
     };
 
     return config;
