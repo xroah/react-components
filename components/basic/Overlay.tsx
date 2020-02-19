@@ -69,7 +69,7 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
             visible: !!props.visible || !!props.defaultVisible
         };
     }
-    
+
     static getDerivedStateFromProps(props: OverlayProps, state: OverlayState) {
         if ("visible" in props) {
             return {
@@ -102,22 +102,31 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
         return action;
     }
 
+    isControlled() {
+        return "visible" in this.props;
+    }
+
     handleEvent = (evt: React.MouseEvent<HTMLElement & HTMLButtonElement>) => {
         const src = evt.currentTarget;
         const type = evt.type;
         this.srcEl = src;
 
-        //disabled
-        if (src.disabled || src.classList.contains("disabled")) return;
+        //disabled or controlled
+        if (
+            src.disabled ||
+            src.classList.contains("disabled") ||
+            this.isControlled()
+        ) return;
 
         this.clearTimer();
         this.clearDelayTimer();
+        evt.preventDefault();
+        evt.stopPropagation();
 
         switch (type) {
             case "click":
             case "contextmenu":
                 this.toggle();
-                evt.preventDefault();
                 break;
             case "mouseenter":
             case "focus":
@@ -156,8 +165,8 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
         const set = new Set<any>(action);
 
         if (
-            (set.has("click") ||
-                set.has("contextmenu")) &&
+            !this.isControlled() &&
+            (set.has("click") || set.has("contextmenu")) &&
             this.srcEl !== target
         ) {
             this.props.clickOutsideClose && this.close();
@@ -168,7 +177,7 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
         const key = evt.key;
         const { onKeydown, escClose } = this.props;
 
-        if (escClose && key === "Escape") {
+        if (escClose && key === "Escape" && !this.isControlled()) {
             this.close();
         }
 
