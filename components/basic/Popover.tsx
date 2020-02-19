@@ -56,6 +56,7 @@ export default function Popover(props: PopoverProps) {
             placement={placement}
             popup={popup}
             verticalCenter
+            escClose={false}
             {...otherProps}>
             {children}
         </Overlay>

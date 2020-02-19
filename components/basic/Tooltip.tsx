@@ -77,6 +77,7 @@ export default function Tooltip(props: TooltipProps) {
             alignment="center"
             unmountOnclose
             verticalCenter
+            escClose={false}
             {...otherProps}>
             {children}
         </Overlay>
