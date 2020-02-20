@@ -36,11 +36,6 @@ const config = {
             "reap-ui$": path.resolve("./components/index.ts")
         }
     },
-    externals: {
-        "react": "React",
-        "react-dom": "ReactDOM",
-        "react-router-dom": "ReactRouterDOM"
-    },
     module: {
         rules: [
             {
@@ -57,7 +52,13 @@ const config = {
             }
         ]
     },
-    plugins: []
+    plugins: [
+        new HTMLWebpackPlugin({
+            title: "reap-ui--Bootstrap components built with React",
+            meta: {viewport: "width=device-width, initial-scale=1"},
+            hash: true
+        })
+    ]
 };
 
 module.exports = env => {
@@ -69,12 +70,6 @@ module.exports = env => {
             "css-loader"
         ]
     };
-    config.plugins.push(
-        new HTMLWebpackPlugin({
-            template: `./docs/index${isDev ? "-dev" : ""}.html`,
-            hash: true
-        })
-    );
 
     if (isDev) {
         config.devServer = {
