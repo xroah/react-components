@@ -44,6 +44,8 @@ export function getTransitionDuration(el: HTMLElement) {
 export function emulateTransitionEnd(el: HTMLElement, handler: Function) {
     let called = false;
     let timer: NodeJS.Timeout;
+    const DELAY = 10;
+    const duration = getTransitionDuration(el) * 1000;
     const cancel = () => {
         if (called) return;
 
@@ -61,7 +63,7 @@ export function emulateTransitionEnd(el: HTMLElement, handler: Function) {
     };
 
     el.addEventListener("transitionend", _handler);
-    timer = setTimeout(_handler, getTransitionDuration(el) * 1000);
+    timer = setTimeout(_handler, duration * 1000 + DELAY);
 
     return cancel;
 }
@@ -187,6 +189,20 @@ export function chainFunction(...fn: any[]) {
         () => { }
     );
 
+}
+
+export function deleteObjectProperties(obj: Object, props: string[]) {
+    const copy: any = {
+        ...obj
+    };
+
+    props.forEach(prop => {
+        if (prop in copy) {
+            delete copy[prop];
+        }
+    });
+
+    return copy;
 }
 
 export const OverlayContext = React.createContext({ close: () => { } });
