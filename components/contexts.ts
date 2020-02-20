@@ -23,7 +23,7 @@ export const ModalContext = createContext({
 });
 
 export const PopupContext = createContext({
-    left: 0,
-    top: 0,
+    arrowLeft: 0,
+    arrowTop: 0,
     placement: ""
 });

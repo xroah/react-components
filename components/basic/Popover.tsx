@@ -24,7 +24,7 @@ export default function Popover(props: PopoverProps) {
     const popup = (
         <PopupContext.Consumer>
             {
-                ({ left, top, placement: p }) => (
+                ({ arrowLeft, arrowTop, placement: p }) => (
                     <div style={style}
                         className={
                             classNames(
@@ -33,7 +33,7 @@ export default function Popover(props: PopoverProps) {
                             )
                         }>
                         <div className="arrow" style={{
-                            ...handleArrowStyle(left, top, placement),
+                            ...handleArrowStyle(arrowLeft, arrowTop, placement),
                             margin: 0
                         }} />
                         {
@@ -56,7 +56,6 @@ export default function Popover(props: PopoverProps) {
             placement={placement}
             popup={popup}
             verticalCenter
-            escClose={false}
             {...otherProps}>
             {children}
         </Overlay>

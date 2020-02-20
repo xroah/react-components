@@ -2,7 +2,7 @@ import * as React from "react";
 import PropTypes from "prop-types";
 import Button from "./Button";
 import Dropdown, { DropdownProps } from "./Dropdown";
-import { classNames, variantType } from "../utils";
+import { variantType } from "../utils";
 
 export interface DropdownButtonProps extends DropdownProps {
     variant?: variantType;

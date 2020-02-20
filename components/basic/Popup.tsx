@@ -16,7 +16,6 @@ export interface PopupCommonProps extends React.HTMLAttributes<HTMLElement> {
     placement?: position;
     visible?: boolean;
     flip?: boolean;
-    fade?: boolean;
     offset?: number | number[];
     defaultVisible?: boolean;
     onShow?: Function;
@@ -38,20 +37,19 @@ interface PopupState {
 }
 
 export interface PopupProps extends PopupCommonProps {
-    alignment?: string;
+    alignment?: "left" | "center" | "right";
+    fade?: boolean;
+    //below props are internal temporarily
     mountTo?: HTMLElement;
     unmountOnclose?: boolean;
     node?: HTMLElement;
     verticalCenter?: boolean;
     onClickOutside?: Function;
-    onKeydown?: (evt: KeyboardEvent, arg: HTMLElement) => void;
-    onResetPosition?: Function;
 }
 
 export default class Popup extends React.Component<PopupProps, PopupState> {
 
     private mountNode: HTMLElement | null = null;
-    private hasEvent: boolean = false;
     private ref = React.createRef<HTMLDivElement>();
 
     static propTypes = {
@@ -61,7 +59,12 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
         offset: PropTypes.oneOfType([
             PropTypes.number,
             PropTypes.arrayOf(PropTypes.number)
-        ])
+        ]),
+        onShow: PropTypes.func,
+        onShown: PropTypes.func,
+        onHide: PropTypes.func,
+        onHidden: PropTypes.func,
+        alignment: PropTypes.oneOf(["left", "center", "right"])
     };
     static defaultProps = {
         flip: true,
@@ -82,24 +85,18 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
         this.handleResize = throttle(this.handleResize);
     }
 
-    componentDidUpdate() {
+    componentDidUpdate(prevProps: PopupProps) {
         const {
             props: {
                 visible
-            },
-            hasEvent
+            }
         } = this;
 
-        if (visible) {
-            if (!hasEvent) {
-                this.addEvent();
+        if (prevProps.visible !== visible) {
+            if (visible) {
+                return this.addEvent();
             }
 
-            return;
-        }
-
-        //in case update visible prop(invoke hide) infinitely 
-        if (hasEvent) {
             this.removeEvent();
         }
     }
@@ -120,22 +117,15 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
 
     handleClickOutSide = (evt: MouseEvent) => {
         const t = evt.target as HTMLElement;
+        const { onClickOutside } = this.props;
 
-        if (this.mountNode && !this.mountNode.contains(t)) {
-            handleFuncProp(this.props.onClickOutside)(t);
+        if (
+            this.mountNode &&
+            !this.mountNode.contains(t)
+        ) {
+            handleFuncProp(onClickOutside)();
         }
     };
-
-    handleKeydown = (evt: KeyboardEvent) => {
-        const {
-            props: {
-                onKeydown
-            },
-            mountNode
-        } = this;
-
-        handleFuncProp(onKeydown)(evt, mountNode);
-    }
 
     handleOffset(offset: number | number[]) {
         let ret: number[];
@@ -254,6 +244,13 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
             (placement === "left" || placement === "right")
         ) top += (rect.height - height) / 2;
 
+        //left is negative or left is bigger than window.innerWidth
+        if (left < 0) {
+            left = 0;
+        } else if (left + width >= windowWidth) {
+            left = windowWidth - width;
+        }
+
         return {
             left,
             top,
@@ -283,12 +280,6 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
                     left += (rect.width - width);
                     break;
                 default:
-            }
-
-            if (left < 0) {
-                left = 0;
-            } else if (left + width >= windowWidth) {
-                left = windowWidth - width;
             }
         }
 
@@ -323,7 +314,7 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
         this.setState({ arrowPos });
     }
 
-    updatePosition() {
+    updatePosition = () => {
         let { left, top, placement } = this.handlePosition();
 
 
@@ -345,38 +336,30 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
     }
 
     handleResize = () => {
-        this.updatePosition();
+        requestAnimationFrame(this.updatePosition);
     }
 
     addEvent() {
-        if (this.hasEvent) return;
-
         const { flip } = this.props;
-        this.hasEvent = true;
         document.addEventListener("click", this.handleClickOutSide);
-        document.addEventListener("keydown", this.handleKeydown);
         window.addEventListener("resize", this.handleResize);
         flip && window.addEventListener("scroll", this.handleResize);
     };
 
     removeEvent() {
-        if (!this.hasEvent) return;
-
-        this.hasEvent = false;
         document.removeEventListener("click", this.handleClickOutSide);
-        document.removeEventListener("keydown", this.handleKeydown);
         window.removeEventListener("resize", this.handleResize);
         window.removeEventListener("scroll", this.handleResize);
     }
 
-    handleEnter = () => {
-        const { onShow, node } = this.props;
+    handleEnter = (node: HTMLElement) => {
+        const { onShow } = this.props;
 
         handleFuncProp(onShow)(node);
     };
 
-    handleEntered = () => {
-        const { onShown, node } = this.props;
+    handleEntered = (node: HTMLElement) => {
+        const { onShown } = this.props;
 
         handleFuncProp(onShown)(node);
     };
@@ -386,14 +369,14 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
         this.updatePosition();
     }
 
-    handleExit = () => {
-        const { onHide, node } = this.props;
+    handleExit = (node: HTMLElement) => {
+        const { onHide } = this.props;
 
         handleFuncProp(onHide)(node);
     };
 
-    handleExited = () => {
-        const { onHidden, node } = this.props;
+    handleExited = (node: HTMLElement) => {
+        const { onHidden } = this.props;
 
         handleFuncProp(onHidden)(node);
     };
@@ -405,9 +388,9 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
                 children,
                 fade,
                 visible,
-                className,
                 unmountOnclose,
-                node
+                node,
+                ...otherProps
             },
             state: {
                 left,
@@ -426,14 +409,29 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
         };
         let _children = children as React.ReactElement;
 
-        if (typeof children === "function") {
+        /* if (typeof children === "function") {
             _children = children();
-        }
+        } */
 
         if (
-            ((!visible && !mountNode) || !_children) ||
+            (!visible && !mountNode) ||
+            !_children ||
             !node
         ) return null;
+
+        delete otherProps.offset;
+        delete otherProps.placement;
+        delete otherProps.alignment;
+        delete otherProps.verticalCenter;
+        delete otherProps.alignment;
+        delete otherProps.verticalCenter;
+        delete otherProps.onClickOutside;
+        delete otherProps.flip;
+        delete otherProps.defaultVisible;
+        delete otherProps.onShow;
+        delete otherProps.onShown;
+        delete otherProps.onHide;
+        delete otherProps.onHidden;
 
         if (!mountNode) {
             mountNode = this.mountNode = document.createElement("div");
@@ -450,13 +448,17 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
             onMouseEnter: this.handleMouseEvent,
             onMouseLeave: this.handleMouseEvent
         };
+        const context: any = {
+            arrowLeft: arrowPos.left,
+            arrowTop: arrowPos.top,
+            placement
+        };
         const child = (
             <div
                 style={style}
                 ref={this.ref}
-                className={className}
-                {...mouseEvent}>
-                <PopupContext.Provider value={{...arrowPos, placement} as any}>
+                {...{ ...mouseEvent, ...otherProps }}>
+                <PopupContext.Provider value={context}>
                     {_children}
                 </PopupContext.Provider>
             </div>
@@ -479,6 +481,6 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
                 </Fade>
             ),
             mountNode
-        )
+        );
     }
 }

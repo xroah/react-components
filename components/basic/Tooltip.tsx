@@ -51,7 +51,7 @@ export default function Tooltip(props: TooltipProps) {
     const popup = text ? (
         <PopupContext.Consumer>
             {
-                ({ left, top, placement: p }) => (
+                ({ arrowLeft, arrowTop, placement: p }) => (
                     <div className={
                         classNames(
                             "tooltip",//.tooltip{opacity: 0}
@@ -60,7 +60,7 @@ export default function Tooltip(props: TooltipProps) {
                         )
                     } style={style}>
                         <div className="arrow"
-                            style={handleArrowStyle(left, top, placement)} />
+                            style={handleArrowStyle(arrowLeft, arrowTop, placement)} />
                         <div className="tooltip-inner">
                             {text}
                         </div>
@@ -77,7 +77,6 @@ export default function Tooltip(props: TooltipProps) {
             alignment="center"
             unmountOnclose
             verticalCenter
-            escClose={false}
             {...otherProps}>
             {children}
         </Overlay>

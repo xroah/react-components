@@ -3,25 +3,45 @@ import PropTypes from "prop-types";
 import {
     createComponentByClass,
     OverlayContext,
-    classNames
+    classNames,
+    chainFunction
 } from "../utils";
 import Overlay, { CommonProps } from "./Overlay";
 import DropdownMenu from "./DropdownMenu";
 import DropdownMenuItem from "./DropdownMenuItem";
 import DropdownButton from "./DropdownButton";
 import Button from "./Button";
-import { handleFuncProp } from "../../es/utils";
+import { findDOMNode } from 'react-dom';
 
 export interface DropdownProps extends CommonProps {
     alignment?: "left" | "center" | "right";
     overlay?: React.ReactElement;
 }
 
-export default class Dropdown extends React.Component<DropdownProps> {
+interface DropdownState {
+    visible: boolean;
+    popupId: string;
+}
+
+const ID_PREFIX = "reap-ui-dropdown";
+const VALID_SELECTOR = ".dropdown-menu .dropdown-item:not(.disabled):not(:disabled)";
+const keySet = new Set(
+    [
+        "arrowup",
+        "arrowdown",
+        "escape",
+        "tab",
+        "esc"
+    ]
+);
+let uuid = 0;
+const warning = require("warning");
+
+export default class Dropdown extends React.Component<DropdownProps, DropdownState> {
 
     static propTypes = {
         alignment: PropTypes.oneOf(["left", "center", "right"]),
-        overlay: PropTypes.element
+        overlay: PropTypes.element.isRequired
     };
     static defaultProps = {
         trigger: "click",
@@ -29,7 +49,7 @@ export default class Dropdown extends React.Component<DropdownProps> {
         alignment: "left"
     }
     static Menu = DropdownMenu;
-    static MenuItem = DropdownMenuItem;
+    static Item = DropdownMenuItem;
     static Divider = createComponentByClass({
         className: "dropdown-divider",
         displayName: "DropdownDivider"
@@ -37,52 +57,136 @@ export default class Dropdown extends React.Component<DropdownProps> {
     static Button = DropdownButton;
     static Context = OverlayContext;
 
-    handleKeydown = (evt: KeyboardEvent, el: HTMLElement) => {
-        if (!el) return;
+    constructor(props: DropdownProps) {
+        super(props);
 
-        const key = evt.key;
-        const focused = el.querySelector(".dropdown-item:focus");
-        const allItems = el.querySelectorAll(".dropdown-item:not(.disabled)");
-        let index = 0;
-        let keyMap: any = {
-            "ArrowUp": -1,
-            "ArrowDown": 1
+        this.state = {
+            visible: !!props.visible || !!props.defaultVisible,
+            popupId: `${ID_PREFIX}-${uuid++}`
         };
 
-        if (key in keyMap) {
-            Array.from(allItems).forEach((e, i) => {
-                if (e === focused) {
-                    index = i + keyMap[key];
-                }
-            });
+        if (props.overlay && props.overlay.type !== DropdownMenu) {
 
-            const _el = allItems[index] as HTMLElement;
-
-            _el && _el.focus && _el.focus();
-            evt.preventDefault();
         }
-    };
-
-    handleShow = (node?: HTMLElement) => {
-        const { onShow } = this.props;
-        let parent: HTMLElement | null;
-
-        if (node && (parent = node.parentElement)) {
-            parent.classList.add("show");
-        }
-
-        handleFuncProp(onShow)(node);
     }
 
-    handleHide = (node?: HTMLElement) => {
-        const { onHide } = this.props;
-        let parent: HTMLElement | null;
-
-        if (node && (parent = node.parentElement)) {
-            parent.classList.remove("show");
+    static getDerivedStateFromProps(props: DropdownProps, state: DropdownProps) {
+        if ("visible" in props) {
+            return {
+                visible: props.visible
+            };
         }
 
-        handleFuncProp(onHide)(node);
+        return state;
+    }
+
+    isControlled() {
+        return "visible" in this.props;
+    }
+
+    setVisible(visible: boolean) {
+        const callback = () => {
+            const node = findDOMNode(this);
+            let parent: HTMLElement | null;
+
+            if (node && (parent = node.parentElement)) {
+                visible ?
+                    parent.classList.add("show") :
+                    parent.classList.remove("show");
+            }
+        };
+
+        this.setState({ visible }, callback);
+    }
+
+    escClose(key: string) {
+        if (!this.state.visible) return;
+
+        if (key === "escape" || key === "esc") {
+            const node = findDOMNode(this) as HTMLElement;
+
+            if (node && node.firstChild) {
+                (node.firstChild as HTMLElement).focus();
+            }
+            this.setVisible(false);
+        }
+    }
+
+    handleClick = () => {
+        this.setVisible(!this.state.visible);
+    }
+
+    handleKeyDown = (evt: React.KeyboardEvent) => {
+        const key = evt.key.toLowerCase();
+        const target = evt.target as HTMLButtonElement;
+        const { visible, popupId } = this.state;
+        const tag = target.tagName.toLowerCase();
+        const isInput = /input|textarea/.test(tag);
+
+        if (
+            this.isControlled() ||
+            !keySet.has(key) ||
+            (!visible && key === "tab") ||
+            (isInput && (key === "arrowup" || key === "arrowdown")) ||
+            target.disabled ||
+            target.classList.contains("disabled")
+        ) return;
+
+        evt.preventDefault();
+        evt.stopPropagation();
+
+        if (key === "arrowup" || key === "arrowdown" || key === "tab") {
+            const popupElement = document.getElementById(popupId);
+
+            if (!visible && key !== "tab") {
+                return this.setVisible(true);
+            }
+
+            if (popupElement) {
+                const item = popupElement.querySelector(VALID_SELECTOR) as HTMLElement;
+
+                item && item.focus();
+            }
+        }
+
+        this.escClose(key);
+    }
+
+    handlePopupKeydown = (evt: React.KeyboardEvent) => {
+        const key = evt.key.toLowerCase();
+
+        if (!keySet.has(key)) return;
+
+        evt.preventDefault();
+        evt.stopPropagation();
+
+        const parent = evt.currentTarget as HTMLElement;
+        const target = evt.target as HTMLElement;
+        const allItems = parent.querySelectorAll(VALID_SELECTOR);
+        const len = allItems.length;
+        let index = 0;
+        let el: HTMLElement | null = null;
+
+        Array.from(allItems).forEach((node, i) => {
+            if (node === target) {
+                index = i;
+            }
+        });
+
+        if (key === "arrowup" && index > 0) {
+            index--;
+        } else if ((key === "arrowdown" || key === "tab") && index < len - 1) {
+            index++;
+        } 
+
+        el = allItems[index] as HTMLElement;
+        
+        el.focus();
+        this.escClose(key);
+    }
+
+    handleClickOutside = () => {
+        this.setVisible(false);
     }
 
     render() {
@@ -93,36 +197,52 @@ export default class Dropdown extends React.Component<DropdownProps> {
             className,
             ...otherProps
         } = this.props;
+        const {
+            visible,
+            popupId
+        } = this.state;
+
+        if (!overlay) return children;
+
         const positionMap: any = {
             left: "dropleft",
             top: "dropup",
             right: "dropright"
         };
-        let popupProps: any = {};
-        let wrapper: React.ReactElement | undefined = undefined;
-        let position = positionMap[placement as string];
-        const child = React.Children.only(children) as React.ReactElement;
+        const position = positionMap[placement as string];
+        const classes = classNames(className, "dropdown-toggle");
+        let child = React.Children.only(children) as React.ReactElement<React.HTMLAttributes<HTMLElement>>;
 
-        if (position) {
-            wrapper = <Button.Group className={position} />;
-            popupProps.className = position;
-        }
-
-        delete otherProps.onShow;
-        delete otherProps.onHide;
+        const {
+            onClick,
+            onKeyDown
+        } = child.props;
+        child = (
+            <Button.Group className={position}>
+                {
+                    React.cloneElement<any>(
+                        child,
+                        {
+                            className: classes,
+                            onKeyDown: chainFunction(this.handleKeyDown, onKeyDown),
+                            onClick: chainFunction(this.handleClick, onClick)
+                        }
+                    )
+                }
+            </Button.Group>
+        );
 
         return (
             <Overlay
                 popup={overlay}
-                popupProps={popupProps}
+                visible={visible}
                 placement={placement}
-                wrapper={wrapper}
-                onKeydown={this.handleKeydown}
-                escClose={true}
-                clickOutsideClose={true}
-                className={classNames(className, "dropdown-toggle")}
-                onShow={this.handleShow}
-                onHide={this.handleHide}
+                onClickOutside={this.handleClickOutside}
+                popupProps={{
+                    className: position,
+                    onKeyDown: this.handlePopupKeydown,
+                    id: popupId
+                }}
                 {...otherProps}>
                 {child}
             </Overlay>
