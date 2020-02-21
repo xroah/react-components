@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import NavLink from "./NavLink";
 import { classNames } from "../utils";
 import { createComponentByClass } from '../../es/utils';
+import { NavbarContext } from "../contexts";
 
 export interface NavProps extends React.HTMLAttributes<HTMLElement> {
     alignment?: "left" | "center" | "right";
@@ -36,16 +37,22 @@ export default function Nav(props: NavProps) {
     };
 
     return (
-        <nav className={
-            classNames(
-                className,
-                navbar ? "navbar-nav" : "nav",
-                variant && variantMap[variant],
-                alignment && alignmentMap[alignment],
-                vertical && minWidth ? `flex-${minWidth}-column` : vertical ? "flex-column" : "",
-                fill && equalWidth ? "nav-justified" : fill ? "nav-fill" : ""
-            )
-        } {...otherProps} />
+        <NavbarContext.Consumer>
+            {
+                value => (
+                    <nav className={
+                        classNames(
+                            className,
+                            value || navbar ? "navbar-nav" : "nav",
+                            variant && variantMap[variant],
+                            alignment && alignmentMap[alignment],
+                            vertical && minWidth ? `flex-${minWidth}-column` : vertical ? "flex-column" : "",
+                            fill && equalWidth ? "nav-justified" : fill ? "nav-fill" : ""
+                        )
+                    } {...otherProps} />
+                )
+            }
+        </NavbarContext.Consumer>
     );
 }
 

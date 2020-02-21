@@ -27,3 +27,5 @@ export const PopupContext = createContext({
     arrowTop: 0,
     placement: ""
 });
+
+export const NavbarContext = createContext(false);

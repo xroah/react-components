@@ -7,6 +7,7 @@ import {
     createComponentByClass
 } from "../utils";
 import Collapse, { CollapseProps } from "./Collapse";
+import { NavbarContext } from "../contexts";
 
 export interface NavbarProps extends React.HTMLAttributes<HTMLElement> {
     variant?: "light" | "dark";
@@ -30,26 +31,41 @@ export default function Navbar(props: NavbarProps) {
         expand && (expand === true ? EXPAND_PREFIX : `${EXPAND_PREFIX}-${expand}`)
     );
 
-    return <nav className={classes} {...otherProps} />;
+    return (
+        <NavbarContext.Provider value={true}>
+            <nav className={classes}
+                {...otherProps} />
+        </NavbarContext.Provider>
+    );
 }
 
+Navbar.propTypes = {
+    variant: PropTypes.oneOf(["light", "dark"]),
+    bg: PropTypes.oneOf(variantArray),
+    expand: PropTypes.oneOfType([
+        PropTypes.bool,
+        PropTypes.oneOf(["sm", "md", "lg", "xl"])
+    ])
+};
+Navbar.defaultProps = {
+    expand: false,
+    variant: "light"
+};
+
 interface NavbarBrandProps extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
-    tag?: string;
+    tag?: React.ElementType;
+    href?: string;
 }
 
 function NavbarBrand(props: NavbarBrandProps) {
     const {
         className,
-        tag = "a",
+        tag,
         ...otherProps
     } = props;
 
-    if (tag === "a" && !otherProps.href) {
-        otherProps.href = "#";
-    }
-
     return React.createElement(
-        tag,
+        tag as React.ElementType,
         {
             className: classNames(className, "navbar-brand"),
             ...otherProps
@@ -57,14 +73,11 @@ function NavbarBrand(props: NavbarBrandProps) {
     );
 }
 
-Navbar.propTypes = {
-    variant: PropTypes.oneOf(["light", "dark"]),
-    bg: PropTypes.oneOf(variantArray),
-    expand: PropTypes.oneOf(["sm", "md", "lg", "xl", true, false])
+NavbarBrand.propTypes = {
+    tag: PropTypes.elementType
 };
-Navbar.defaultProps = {
-    expand: "md",
-    variant: "light"
+NavbarBrand.defaultProps = {
+    tag: "a"
 };
 
 Navbar.Brand = NavbarBrand;
@@ -77,7 +90,10 @@ Navbar.Collapse = function NavbarCollapse(props: CollapseProps) {
     return (
         <Collapse
             className={
-                classNames(className, "navbar-collapse")
+                classNames(
+                    className,
+                    "navbar-collapse"
+                )
             }
             {...otherProps} />
     )
@@ -93,10 +109,13 @@ Navbar.Toggle = function NavbarToggle(props: React.ButtonHTMLAttributes<HTMLButt
 
     return (
         <button
-            className={
-                classNames(className, "navbar-toggler")
-            }
             type={type}
+            className={
+                classNames(
+                    className,
+                    "navbar-toggler"
+                )
+            }
             {...otherProps}>
             <span className="navbar-toggler-icon" />
         </button>
