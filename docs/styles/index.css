@@ -14,12 +14,21 @@
 }
 
 .bd-example .input-group + .input-group {
-    margin: 10px 0;
+    margin: 1rem 0;
+}
+
+.bd-example .navbar + .navbar {
+    margin-top: 1rem;
 }
 
 .doc-heading {
     margin-top: 1rem;
     margin-bottom: .5rem;
+}
+
+.code-container {
+    max-height: 300px;
+    overflow: auto;
 }
 
 .btn-clipboard {
@@ -41,7 +50,12 @@
     background-color: #027de7;
 }
 
+.api-container {
+    overflow: auto;
+}
+
 .props-table {
+    min-width: 800px;
     table-layout: fixed;
 }
 

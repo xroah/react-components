@@ -6,6 +6,15 @@ import NoAPI from "../NoAPI";
 export const TRIGGER_TYPE = "hover | click | focus | Array<hover | click | focus>";
 export const commonProps = [
     {
+        name: "visible",
+        type: "boolean",
+        description: "Control the visibility(controlled component)"
+    },{
+        name: "defaultVisible",
+        type: "boolean",
+        default: "false",
+        description: "The initial visibility"
+    },{
         name: "flip",
         type: "boolean",
         default: "true",

@@ -21,6 +21,8 @@ import ListGroup from "./components/ListGroup";
 import Media from "./components/Media";
 import Modal from "./components/Modal";
 import NavDemo from "./components/NavDemo";
+import Navbar from "./components/Navbar";
+import Tab from "./components/Tabs";
 import Tooltip from "./components/Tooltip";
 import Popover from "./components/Popover";
 
@@ -102,9 +104,18 @@ export const ROUTES = [
         name: "Nav"
     },
     {
+        path: "/components/navbar",
+        component: Navbar,
+        name: "Navbar"
+    },
+    {
         path: "/components/popover",
         component: Popover,
         name: "Popover"
+    },{
+        path: "/components/tabs",
+        component: Tab,
+        name: "Tabs"
     },
     {
         path: "/components/tooltip",

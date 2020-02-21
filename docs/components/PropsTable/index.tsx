@@ -17,7 +17,7 @@ export default function PropsTable(props: Props) {
     const { data, title } = props;
 
     return (
-        <div>
+        <div className="api-container">
             {title && <DocHeading tag="h3">{title}</DocHeading>}
             <table className="table table-bordered table-striped props-table">
                 <thead>
