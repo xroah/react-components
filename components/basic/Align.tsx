@@ -16,7 +16,7 @@ export interface AlignProps extends React.HTMLAttributes<HTMLElement> {
     placement?: position;
     flip?: boolean;
     offset?: number | number[];
-    target: HTMLElement;
+    target: HTMLElement | null;
     alignment?: "left" | "center" | "right";
     verticalCenter?: boolean;
 }

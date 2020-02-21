@@ -28,7 +28,7 @@ export interface OverlayProps extends CommonProps, PopupProps {
 
 interface OverlayState {
     visible: boolean;
-    node?: HTMLElement;
+    node: HTMLElement | null;
 }
 
 const actionType = ["hover", "click", "focus"];
@@ -56,7 +56,8 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
         super(props);
 
         this.state = {
-            visible: !!props.visible || !!props.defaultVisible
+            visible: !!props.visible || !!props.defaultVisible,
+            node: null
         };
     }
 

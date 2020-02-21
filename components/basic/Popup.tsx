@@ -19,6 +19,7 @@ export interface PopupCommonProps extends React.HTMLAttributes<HTMLElement> {
     flip?: boolean;
     offset?: number | number[];
     defaultVisible?: boolean;
+    fade?: boolean;
     onShow?: Function;
     onShown?: Function;
     onHide?: Function;
@@ -39,11 +40,10 @@ interface PopupState {
 
 export interface PopupProps extends PopupCommonProps {
     alignment?: "left" | "center" | "right";
-    fade?: boolean;
     //below props are internal temporarily
     mountTo?: HTMLElement;
     unmountOnclose?: boolean;
-    node: HTMLElement;
+    node: HTMLElement | null;
     verticalCenter?: boolean;
     onClickOutside?: Function;
 }
