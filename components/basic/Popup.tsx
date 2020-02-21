@@ -9,6 +9,7 @@ import {
 } from "../utils";
 import Fade from "../Fade";
 import { PopupContext } from "../contexts";
+import Align from "./Align";
 
 export type position = "top" | "right" | "bottom" | "left";
 
@@ -42,7 +43,7 @@ export interface PopupProps extends PopupCommonProps {
     //below props are internal temporarily
     mountTo?: HTMLElement;
     unmountOnclose?: boolean;
-    node?: HTMLElement;
+    node: HTMLElement;
     verticalCenter?: boolean;
     onClickOutside?: Function;
 }
@@ -51,6 +52,7 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
 
     private mountNode: HTMLElement | null = null;
     private ref = React.createRef<HTMLDivElement>();
+    private alignRef = React.createRef<Align>();
 
     static propTypes = {
         placement: PropTypes.oneOf(["top", "bottom", "left", "right"]),
@@ -127,165 +129,6 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
         }
     };
 
-    handleOffset(offset: number | number[]) {
-        let ret: number[];
-
-        if (Array.isArray(offset)) {
-            const len = offset.length;
-
-            switch (len) {
-                case 0:
-                    ret = [0, 0];
-                    break;
-                case 1:
-                    ret = Array(2).fill(offset[0]);
-                default:
-                    ret = offset.slice(0, 2);
-            }
-
-            if (!len) {
-                ret = [0, 0];
-            }
-        } else {
-            ret = Array(2).fill(offset);
-        }
-
-        return ret;
-    }
-
-    alignRight = (rect: ElementRect, hOffset: number, vOffset: number) => {
-        let left = rect.left + rect.width + hOffset;
-        let top = rect.top + vOffset;
-
-        return { left, top, placement: "right" };
-    }
-
-    alignTop = (rect: ElementRect, height: number, hOffset: number, vOffset: number) => {
-        let left = rect.left + hOffset;
-        let top = rect.top - height - vOffset;
-
-        return { left, top, placement: "top" }
-    }
-
-    alignLeft = (rect: ElementRect, width: number, hOffset: number, vOffset: number) => {
-        let left = rect.left - width - hOffset;
-        let top = rect.top + vOffset;
-
-        return { left, top, placement: "left" }
-    }
-
-    alignBottom = (rect: ElementRect, hOffset: number, vOffset: number) => {
-        let left = rect.left + hOffset;
-        let top = rect.top + rect.height + vOffset;
-
-        return { left, top, placement: "bottom" }
-    }
-
-    handlePosition() {
-        const {
-            mountNode,
-            props: {
-                placement,
-                flip,
-                node,
-                offset,
-                verticalCenter
-            },
-            ref: { current: child }
-        } = this;
-        let obj: any;
-
-        if (!mountNode || !child || !node) return {};
-
-        const width = child.offsetWidth;
-        const height = child.offsetHeight;
-        const windowWidth = document.documentElement.clientWidth;
-        //innerWidth/innerHeight contains width of scrollbar
-        //usually webpage does not have horizontal scrollbar
-        const windowHeight = window.innerHeight;
-        const [hOffset, vOffset] = this.handleOffset(offset as number);
-        const rect = getElementRect(node);
-
-        switch (placement) {
-            case "top":
-                obj = this.alignTop(rect, height, hOffset, vOffset);
-
-                if (flip && rect.bottom - rect.height < height) {
-                    obj = this.alignBottom(rect, hOffset, vOffset);
-                }
-                break;
-            case "right":
-                obj = this.alignRight(rect, hOffset, vOffset);
-
-                if (flip && windowWidth - rect.right < width) {
-                    obj = this.alignLeft(rect, width, hOffset, vOffset);
-                }
-                break;
-            case "left":
-                obj = this.alignLeft(rect, width, hOffset, vOffset);
-
-                if (flip && rect.right - rect.width < width) {
-                    obj = this.alignRight(rect, hOffset, vOffset);
-                }
-                break;
-            default:
-                obj = this.alignBottom(rect, hOffset, vOffset);
-
-                if (flip && windowHeight - rect.bottom < height) {
-                    obj = this.alignTop(rect, height, hOffset, vOffset);
-                }
-        }
-
-        let { left, top, placement: _placement } = obj;
-        left = this.handleAlignment(rect, left, width, windowWidth);
-
-        if (
-            verticalCenter &&
-            (placement === "left" || placement === "right")
-        ) top += (rect.height - height) / 2;
-
-        //left is negative or left is bigger than window.innerWidth
-        if (left < 0) {
-            left = 0;
-        } else if (left + width >= windowWidth) {
-            left = windowWidth - width;
-        }
-
-        return {
-            left,
-            top,
-            placement: _placement
-        };
-    }
-
-    handleAlignment(rect: ElementRect, left: number, width: number, windowWidth: number) {
-        const {
-            props: {
-                alignment,
-                placement = "",
-                node
-            },
-        } = this;
-        const posMap: any = {
-            "top": true,
-            "bottom": true
-        };
-
-        if (node && (placement in posMap)) {
-            switch (alignment) {
-                case "center":
-                    left += (rect.width - width) / 2;
-                    break;
-                case "right":
-                    left += (rect.width - width);
-                    break;
-                default:
-            }
-        }
-
-        return left;
-    };
-
     handleArrowPosition = () => {
         const {
             props: {
@@ -315,7 +158,7 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
     }
 
     updatePosition = () => {
-        let { left, top, placement } = this.handlePosition();
+        let { left, top, placement } = this.alignRef.current?.update() || {};
 
 
         this.setState(
@@ -388,8 +231,14 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
                 children,
                 fade,
                 visible,
+                offset,
+                placeholder,
+                alignment,
+                placement: propPlacement,
                 unmountOnclose,
                 node,
+                verticalCenter,
+                flip,
                 ...otherProps
             },
             state: {
@@ -419,14 +268,7 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
             !node
         ) return null;
 
-        delete otherProps.offset;
-        delete otherProps.placement;
-        delete otherProps.alignment;
-        delete otherProps.verticalCenter;
-        delete otherProps.alignment;
-        delete otherProps.verticalCenter;
         delete otherProps.onClickOutside;
-        delete otherProps.flip;
         delete otherProps.defaultVisible;
         delete otherProps.onShow;
         delete otherProps.onShown;
@@ -455,7 +297,6 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
         };
         const child = (
             <div
-                style={style}
                 ref={this.ref}
                 {...{ ...mouseEvent, ...otherProps }}>
                 <PopupContext.Provider value={context}>
@@ -477,7 +318,17 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
                     in={!!visible}
                     unmountOnExit={unmountOnclose}
                     animation={fade}>
-                    {child}
+                    <Align
+                        ref={this.alignRef}
+                        style={style}
+                        flip={flip}
+                        offset={offset}
+                        target={node}
+                        placement={propPlacement}
+                        alignment={alignment}
+                        verticalCenter={verticalCenter}>
+                        {child}
+                    </Align>
                 </Fade>
             ),
             mountNode
