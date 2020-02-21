@@ -35,7 +35,6 @@ const keySet = new Set(
     ]
 );
 let uuid = 0;
-const warning = require("warning");
 
 export default class Dropdown extends React.Component<DropdownProps, DropdownState> {
 
@@ -64,10 +63,6 @@ export default class Dropdown extends React.Component<DropdownProps, DropdownSta
             visible: !!props.visible || !!props.defaultVisible,
             popupId: `${ID_PREFIX}-${uuid++}`
         };
-
-        if (props.overlay && props.overlay.type !== DropdownMenu) {
-
-        }
     }
 
     static getDerivedStateFromProps(props: DropdownProps, state: DropdownProps) {
@@ -112,8 +107,10 @@ export default class Dropdown extends React.Component<DropdownProps, DropdownSta
         }
     }
 
-    handleClick = () => {
+    handleClick = (evt: React.MouseEvent) => {
         this.setVisible(!this.state.visible);
+        evt.preventDefault();
+        evt.stopPropagation();
     }
 
     handleKeyDown = (evt: React.KeyboardEvent) => {

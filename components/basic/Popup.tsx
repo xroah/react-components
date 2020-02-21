@@ -43,7 +43,7 @@ export interface PopupProps extends PopupCommonProps {
     //below props are internal temporarily
     mountTo?: HTMLElement;
     unmountOnclose?: boolean;
-    node: HTMLElement | null;
+    node?: HTMLElement | null;
     verticalCenter?: boolean;
     onClickOutside?: Function;
 }
