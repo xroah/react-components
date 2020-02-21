@@ -44,7 +44,7 @@ export default () => (
             Trigger dropdown menus above,bottom,left or right by <code>placement</code> prop.
         </DemoExample>
         <DemoExample
-            title="Directions"
+            title="Alignment"
             component={<Alignment />}
             source={AlignmentSrc}>
             By default, a dropdown menu is automatically positioned 100% from the top and along the left side. Change it by <code>alignment</code> prop;

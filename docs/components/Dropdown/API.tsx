@@ -3,7 +3,7 @@ import PropsTable from "../PropsTable";
 import DocHeading from "../DocHeading";
 import NoAPI from "../NoAPI";
 
-export const TRIGGER_TYPE = "hover | contextment | focus | Array<hover | contextmenu | focus>";
+export const TRIGGER_TYPE = "hover | click | focus | Array<hover | click | focus>";
 export const commonProps = [
     {
         name: "flip",
@@ -60,11 +60,6 @@ const DropdownProps = [
         name: "overlay",
         type: "ReactElement",
         description: "The dropdown popup"
-    }, {
-        name: "trigger",
-        type: TRIGGER_TYPE,
-        default: "click",
-        description: "How dropdown is triggered"
     }];
 const DropdownButtonProps = [{
     name: "variant",
@@ -92,7 +87,7 @@ const DropdownButtonProps = [{
     type: "boolean",
     default: "false",
     description: "Outlined buttton"
-},{
+}, {
     name: "href",
     type: "string",
     description: "Render the button as 'a' element, styled like button."
@@ -134,7 +129,7 @@ export default () => (
         <PropsTable title="Dropdown" data={DropdownProps} />
         <PropsTable title="Dropdown.Button" data={DropdownButtonProps} />
         <PropsTable title="Dropdown.Menu" data={DropdownMenuProps} />
-        <PropsTable title="Dropdown.MenuItem" data={MenuItemProps} />
+        <PropsTable title="Dropdown.Item" data={MenuItemProps} />
         <NoAPI title="Dropdown.Divider" />
     </>
 );

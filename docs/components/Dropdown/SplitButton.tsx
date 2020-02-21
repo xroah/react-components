@@ -4,9 +4,9 @@ import { Dropdown } from "reap-ui";
 export default () => {
     const overlay = (
         <Dropdown.Menu header="Dropdown header">
-            <Dropdown.MenuItem href="#" active>Action</Dropdown.MenuItem>
-            <Dropdown.MenuItem href="#" disabled>Another action</Dropdown.MenuItem>
-            <Dropdown.MenuItem href="#">Something else here</Dropdown.MenuItem>
+            <Dropdown.Item href="#" active>Action</Dropdown.Item>
+            <Dropdown.Item href="#" disabled>Another action</Dropdown.Item>
+            <Dropdown.Item href="#">Something else here</Dropdown.Item>
         </Dropdown.Menu>
     );
 

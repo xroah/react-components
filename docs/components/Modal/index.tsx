@@ -7,6 +7,8 @@ import Static from "./Static";
 import StaticSrc from "!!raw-loader!./Static";
 import Centered from "./Centered";
 import CenteredSrc from "!!raw-loader!./Centered";
+import Tooltip from "./Tooltip";
+import TooltipSrc from "!!raw-loader!./Tooltip";
 import LongContent from "./LongContent";
 import LongContentSrc from "!!raw-loader!./LongContent";
 import Scrollable from "./Scrollable";
@@ -51,6 +53,12 @@ export default () => (
             component={<Centered />}
             source={CenteredSrc}>
             Set <code>centered</code> prop to vertically center the modal.
+        </DemoExample>
+        <DemoExample
+            title="Tooltips and popovers"
+            component={<Tooltip />}
+            source={TooltipSrc}>
+            <code>Tooltip</code> and <code>Popover</code> can be placed within modals as needed. When modals are closed, any tooltips and popovers within are also automatically dismissed.
         </DemoExample>
         <DemoExample
             title="Without animation"

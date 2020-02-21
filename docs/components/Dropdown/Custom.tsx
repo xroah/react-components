@@ -1,11 +1,14 @@
 import * as React from "react";
 import { Dropdown, Button } from "reap-ui";
 
-function Overlay() {
-    const context = React.useContext(Dropdown.Context);
-    const close = () => context.close();
+export default () => {
+    const [visible, updateVisible] = React.useState(false);
+    const toggle = e => {
+        updateVisible(!visible);
+        e.preventDefault();
+    }
 
-    return (
+    const overlay = (
         <div style={
             {
                 width: 200,
@@ -16,13 +19,14 @@ function Overlay() {
         }>
             Lorem ipsum dolor sit, amet consectetur adipisicing elit. Maxime, illo perspiciatis omnis itaque commodi esse voluptatem tenetur obcaecati porro totam necessitatibus sit. Quis illo laudantium repellat nesciunt blanditiis odit illum.
             <div>
-                <Button variant="danger" onClick={close}>Close</Button>
+                <Button variant="danger" onClick={toggle}>Close</Button>
             </div>
-        </div>);
-}
+        </div>
+    );
 
-export default () => (
-    <Dropdown overlay={<Overlay />} offset={[0, 5]}>
-        <a href="#">Custom dropdown</a>
-    </Dropdown>
-);
+    return (
+        <Dropdown overlay={overlay} visible={visible} offset={[0, 5]}>
+            <a href="#" onClick={toggle}>Custom dropdown</a>
+        </Dropdown>
+    );
+}
