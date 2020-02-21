@@ -6,8 +6,8 @@ import { TabContext } from "../contexts";
 
 export interface TabPaneProps extends React.HTMLAttributes<HTMLElement> {
     tab?: string | React.ReactNode;
+    tabProps?: React.HTMLAttributes<HTMLElement>;
     disabled?: boolean;
-    action?: boolean;
     panelKey?: string; 
     onHidden?: () => void;
 }
@@ -20,22 +20,21 @@ export default function TabPane(props: TabPaneProps) {
         ...otherProps
     } = props;
     const handleExited = () => {
-        setTimeout(() => handleFuncProp(onHidden)(), 20);
+        handleFuncProp(onHidden)();
     };
 
     delete otherProps.tab;
     delete otherProps.disabled;
-    delete otherProps.action;
+    delete otherProps.tabProps;
 
     return (
         <TabContext.Consumer>
             {
-                value => {
-                    const {
-                        activeKey: a,
-                        previousKey: p,
-                        fade
-                    } = value;
+                ({
+                    activeKey: a,
+                    previousKey: p,
+                    fade
+                }) => {
                     const _in = a === panelKey && !p;
 
                     return (
@@ -61,7 +60,4 @@ export default function TabPane(props: TabPaneProps) {
 TabPane.propTypes = {
     tab: PropTypes.node,
     disabled: PropTypes.bool
-};
-TabPane.defaultProps = {
-    action: true
 };

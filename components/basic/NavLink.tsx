@@ -35,5 +35,6 @@ NavLink.propTypes = {
 };
 NavLink.defaultProps = {
     active: false,
-    disabled: false
+    disabled: false,
+    href: "#"
 };

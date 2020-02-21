@@ -4,12 +4,14 @@ import TabPane from "./TabPane";
 import Nav from "./Nav";
 import { handleFuncProp } from "../utils";
 import { TabContext } from "../contexts";
+import { chainFunction } from "../../es/utils";
 
 export interface TabsProps extends React.HTMLAttributes<HTMLElement> {
     defaultActiveKey?: string | number;
     activeKey?: string | number;
     pill?: boolean;
     fade?: boolean;
+    tabProps?: React.HTMLAttributes<HTMLElement>;
     onTabChange?: (prevKey?: string, currentKey?: string) => void;
     onTabClick?: (key?: string, evt?: React.MouseEvent) => void;
 }
@@ -19,19 +21,20 @@ interface TabsState {
     previousKey?: string | number;
 }
 
-interface NavLinkProps {
+interface TabTitleProps {
     itemKey?: string;
-    onClick: (key?: string, evt?: React.MouseEvent) => any;
+    onClick: (key?: string, evt?: React.MouseEvent) => void;
     children: React.ReactChild;
     disabled?: boolean;
 }
 
-function NavLink(props: NavLinkProps) {
+function TabTitle(props: TabTitleProps) {
     const {
         onClick,
         itemKey,
         disabled,
-        children
+        children,
+        ...otherProps
     } = props;
 
     const handleClick = (evt: React.MouseEvent) => {
@@ -47,13 +50,18 @@ function NavLink(props: NavLinkProps) {
                         active={value.activeKey === itemKey}
                         disabled={disabled}
                         href="#"
-                        onClick={handleClick}>
+                        onClick={handleClick}
+                        {...otherProps}>
                         {children}
                     </Nav.Link>
                 )
             }
         </TabContext.Consumer>
     );
+}
+
+function isKeyEmpty(key: any) {
+    return key == undefined || !String(key).trim();
 }
 
 export default class Tabs extends React.Component<TabsProps, TabsState> {
@@ -67,7 +75,11 @@ export default class Tabs extends React.Component<TabsProps, TabsState> {
             PropTypes.string,
             PropTypes.number
         ]),
-        pill: PropTypes.bool
+        pill: PropTypes.bool,
+        fade: PropTypes.bool,
+        tabProps: PropTypes.object,
+        onTabChange: PropTypes.func,
+        onTabClick: PropTypes.func
     };
     static defaultProps = {
         fade: true,
@@ -85,15 +97,14 @@ export default class Tabs extends React.Component<TabsProps, TabsState> {
         } = props;
         let _activeKey: any = activeKey || defaultActiveKey;
 
-        if (_activeKey == undefined) {
-            React.Children.forEach(children, c => {
+        if (isKeyEmpty(_activeKey) && !("activeKey" in props)) {
+            React.Children.forEach(children, (c, i) => {
                 if (
                     React.isValidElement(c) &&
                     c.type === TabPane &&
-                    c.key != undefined
-                    && _activeKey == undefined
+                    isKeyEmpty(_activeKey)
                 ) {
-                    _activeKey = c.key;
+                    _activeKey = c.key || i.toString();
                 }
             });
         }
@@ -115,10 +126,10 @@ export default class Tabs extends React.Component<TabsProps, TabsState> {
     }
 
     componentDidUpdate(prevProps: TabsProps, prevState: TabsState) {
-        const { 
-            state: {activeKey},
-            props: {onTabChange}
-         } = this;
+        const {
+            state: { activeKey },
+            props: { onTabChange }
+        } = this;
 
         if (prevState.activeKey !== activeKey) {
             handleFuncProp(onTabChange)(prevState.activeKey, activeKey);
@@ -134,7 +145,7 @@ export default class Tabs extends React.Component<TabsProps, TabsState> {
     handleClickTab = (key?: string, evt?: React.MouseEvent) => {
         const {
             props: { onTabClick },
-            state: { activeKey }
+            state: { activeKey },
         } = this;
 
         handleFuncProp(onTabClick)(key, evt);
@@ -150,7 +161,8 @@ export default class Tabs extends React.Component<TabsProps, TabsState> {
     renderTabs() {
         const {
             children,
-            pill
+            pill,
+            tabProps
         } = this.props;
         const content: any[] = [];
         const tabs: React.ReactElement[] = [];
@@ -161,16 +173,21 @@ export default class Tabs extends React.Component<TabsProps, TabsState> {
                     tab,
                     children,
                     disabled,
-                    action
+                    tabProps: childProps
                 } = c.props as any;
+                const _tabProps = childProps || tabProps || {};
+                const onClick = chainFunction(this.handleClickTab, _tabProps.onClick);
 
                 if (c.type === TabPane) {
+                    const key = c.key == undefined ? i.toString() : c.key;
+
                     if (children) {
                         content.push(
                             React.cloneElement<any>(
                                 c,
                                 {
-                                    panelKey: c.key,
+                                    key: key,
+                                    panelKey: key,
                                     onHidden: this.handleTabHidden
                                 }
                             )
@@ -180,21 +197,14 @@ export default class Tabs extends React.Component<TabsProps, TabsState> {
                     if (!tab) return;
 
                     tab = (
-                        <Nav.Item key={c.key}>
-                            {
-                                action ? (
-                                    <NavLink
-                                        disabled={disabled}
-                                        itemKey={String(c.key == undefined ? i : c.key)}
-                                        onClick={this.handleClickTab}>
-                                        {tab}
-                                    </NavLink>
-                                ) : (
-                                        <Nav.Item>
-                                            {tab}
-                                        </Nav.Item>
-                                    )
-                            }
+                        <Nav.Item key={key}>
+                            <TabTitle
+                                {..._tabProps}
+                                disabled={disabled}
+                                itemKey={String(key)}
+                                onClick={onClick} >
+                                {tab}
+                            </TabTitle>
                         </Nav.Item>
                     );
 
@@ -226,16 +236,17 @@ export default class Tabs extends React.Component<TabsProps, TabsState> {
             state
         } = this;
         const [tabs, content] = this.renderTabs();
-        const value: any = { 
+        const value: any = {
             ...state,
             fade
-         };
+        };
 
         delete otherProps.defaultActiveKey;
         delete otherProps.activeKey;
         delete otherProps.pill;
         delete otherProps.onTabChange;
         delete otherProps.onTabClick;
+        delete otherProps.tabProps;
 
         return (
             <TabContext.Provider value={value}>
