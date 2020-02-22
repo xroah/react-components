@@ -1,9 +1,5 @@
 import * as React from "react";
-import {
-    OverlayContext,
-    chainFunction,
-    handleFuncProp
-} from "../utils";
+import { chainFunction } from "../utils";
 import Popup, { PopupCommonProps, PopupProps } from "./Popup";
 import PropTypes from "prop-types";
 import { findDOMNode } from "react-dom";
@@ -32,6 +28,23 @@ interface OverlayState {
 }
 
 const actionType = ["hover", "click", "focus"];
+
+export function handleDelay(delay?: number | DelayObject) {
+    let ret: DelayObject = {
+        show: 0,
+        hide: 0
+    };
+
+    if (delay) {
+        if (typeof delay === "number") {
+            ret.show = ret.hide = delay;
+        } else {
+            ret = delay;
+        }
+    }
+
+    return ret;
+}
 
 export default class Overlay extends React.Component<OverlayProps, OverlayState> {
 
@@ -148,24 +161,6 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
         }
     }
 
-    handleDelay() {
-        const { delay } = this.props;
-        let ret: DelayObject = {
-            show: 0,
-            hide: 0
-        };
-
-        if (delay) {
-            if (typeof delay === "number") {
-                ret.show = ret.hide = delay;
-            } else {
-                ret = delay;
-            }
-        }
-
-        return ret;
-    }
-
     clearDelayTimer() {
         if (this.delayTimer) {
             clearTimeout(this.delayTimer);
@@ -180,30 +175,22 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
     }
 
     open = () => {
-        if (this.state.visible) return;
+        if (this.state.visible || this.isControlled()) return;
 
         const open = () => this.setVisible(true);
-        const { show = 0 } = this.handleDelay();
+        const { show = 0 } = handleDelay(this.props.delay);
 
-        if (show > 0) {
-            this.delayTimer = setTimeout(open, show);
-        } else {
-            open();
-        }
+        this.delayTimer = setTimeout(open, show);
 
     };
 
     close = () => {
-        if (!this.state.visible) return;
+        if (!this.state.visible || this.isControlled()) return;
 
         const close = () => this.setVisible(false);
-        const { hide = 0 } = this.handleDelay();
+        const { hide = 0 } = handleDelay(this.props.delay);
 
-        if (hide > 0) {
-            this.delayTimer = setTimeout(close, hide);
-        } else {
-            close();
-        }
+        this.delayTimer = setTimeout(close, hide);
     };
 
     toggle = () => {
@@ -214,7 +201,7 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
 
     //for hover, prevent the popup from hiding when mouseout fires
     delayClose() {
-        const { hide = 0 } = this.handleDelay();
+        const { hide = 0 } = handleDelay(this.props.delay);
 
         if (this.timer != null) {
             clearTimeout(this.timer);
@@ -336,7 +323,7 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
         };
 
         return (
-            <OverlayContext.Provider value={{ close: this.close }}>
+            <>
                 {this.renderChildren()}
                 <ModalContext.Consumer>
                     {
@@ -357,7 +344,7 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
                     {...props}>
                     {popup}
                 </Popup>
-            </OverlayContext.Provider>
+            </>
         );
     }
 

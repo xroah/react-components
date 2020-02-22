@@ -2,68 +2,62 @@ import * as React from "react";
 import PropTypes from "prop-types";
 import {
     classNames,
-    OverlayContext,
     handleFuncProp
 } from "../utils";
+import { DropdownContext } from "../contexts";
 
 export interface ItemProps extends React.HTMLAttributes<HTMLElement> {
-    tag?: string;
+    tag?: React.ElementType;
     disabled?: boolean;
     active?: boolean;
     href?: string;
 }
 
-export default class DropdownMenuItem extends React.Component<ItemProps> {
+export default function DropdownMenuItem(props: ItemProps) {
+    const {
+        tag,
+        className,
+        disabled,
+        active,
+        onClick,
+        ...otherProps
+    } = props;
+    const context = React.useContext(DropdownContext);
+    const handleClick = (evt: React.MouseEvent) => {
+        const target = evt.target as HTMLElement;
 
-    static contextType = OverlayContext;
-    static defaultProps = {
-        tag: "a"
-    };
-    static propTypes = {
-        tag: PropTypes.string,
-        disabled: PropTypes.bool,
-        active: PropTypes.bool,
-        href: PropTypes.string
-    };
-
-    handleClick = (evt: React.MouseEvent) => {
-        const {onClick, disabled} = this.props;
-
-        if (disabled) return;
-
-        if (this.context.close) {
-            this.context.close();
+        if (!/input|textarea/i.test(target.tagName) && !disabled) {
+            context.close();
         }
-
+        
         handleFuncProp(onClick)(evt);
     };
 
-    render() {
-        const {
-            tag,
-            className,
-            disabled,
-            active,
-            ...otherProps
-        } = this.props;
-
-        if (tag !== "a") {
-            delete otherProps.href;
-        }
-
-        return React.createElement(
-            tag as string,
-            {
-                className: classNames(
-                    className,
-                    "dropdown-item",
-                    active && "active",
-                    disabled && "disabled"
-                ),
-                onClick: this.handleClick,
-                ...otherProps
-            }
-        );
+    if (tag !== "a") {
+        delete otherProps.href;
     }
 
+    return React.createElement(
+        tag as string,
+        {
+            className: classNames(
+                className,
+                "dropdown-item",
+                active && "active",
+                disabled && "disabled"
+            ),
+            onClick: handleClick,
+            ...otherProps
+        }
+    );
 }
+
+DropdownMenuItem.defaultProps = {
+    tag: "a"
+};
+DropdownMenuItem.propTypes = {
+    tag: PropTypes.elementType,
+    disabled: PropTypes.bool,
+    active: PropTypes.bool,
+    href: PropTypes.string
+};

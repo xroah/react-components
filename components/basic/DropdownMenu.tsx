@@ -12,14 +12,17 @@ export default function DropdownMenu(props: MenuProps) {
         className,
         children,
         style = {},
+        onClick,
         ...otherProps
     } = props;
     style.left = 0;
     style.top = 0;
     style.position = "relative";
+    style.outline =  style.outline || "none";
 
     return (
         <div
+            tabIndex={-1}
             style={style}
             className={
                 classNames(

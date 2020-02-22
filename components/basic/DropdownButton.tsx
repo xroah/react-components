@@ -19,7 +19,6 @@ export default function DropdownButton(props: DropdownButtonProps) {
         placement,
         alignment,
         overlay,
-        trigger,
         flip,
         fade,
         size,
@@ -30,15 +29,16 @@ export default function DropdownButton(props: DropdownButtonProps) {
         onShown,
         onHide,
         onHidden,
+        delay,
         ...otherProps
     } = props;
     const dropdownProps = {
         placement,
         alignment,
         overlay,
-        trigger,
         flip,
         fade,
+        delay,
         onShow,
         onShown,
         onHide,

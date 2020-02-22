@@ -2,20 +2,20 @@ import * as React from "react";
 import PropTypes from "prop-types";
 import {
     createComponentByClass,
-    OverlayContext,
     classNames,
     chainFunction
 } from "../utils";
-import Overlay, { CommonProps } from "./Overlay";
+import Overlay, { CommonProps, handleDelay } from "./Overlay";
 import DropdownMenu from "./DropdownMenu";
 import DropdownMenuItem from "./DropdownMenuItem";
 import DropdownButton from "./DropdownButton";
 import Button from "./Button";
-import { findDOMNode } from 'react-dom';
+import { findDOMNode } from "react-dom";
+import { DropdownContext } from "../contexts";
 
 export interface DropdownProps extends CommonProps {
     alignment?: "left" | "center" | "right";
-    overlay?: React.ReactElement;
+    overlay: React.ReactElement;
 }
 
 interface DropdownState {
@@ -54,7 +54,8 @@ export default class Dropdown extends React.Component<DropdownProps, DropdownSta
         displayName: "DropdownDivider"
     });
     static Button = DropdownButton;
-    static Context = OverlayContext;
+
+    private delayTimer: NodeJS.Timeout | null = null;
 
     constructor(props: DropdownProps) {
         super(props);
@@ -75,23 +76,56 @@ export default class Dropdown extends React.Component<DropdownProps, DropdownSta
         return state;
     }
 
+    componentDidUpdate(prevProps: DropdownProps, prevState: DropdownState) {
+        if (prevState.visible !== this.state.visible) {
+            this.handleUpdated();
+        }
+    }
+
+    handleUpdated() {
+        const { visible } = this.state;
+        const node = findDOMNode(this);
+        let parent: HTMLElement | null;
+
+        if (node && (parent = node.parentElement)) {
+            visible ?
+                parent.classList.add("show") :
+                parent.classList.remove("show");
+        }
+    };
+
     isControlled() {
         return "visible" in this.props;
     }
 
     setVisible(visible: boolean) {
-        const callback = () => {
-            const node = findDOMNode(this);
-            let parent: HTMLElement | null;
+        if (
+            this.isControlled() ||
+            this.state.visible === visible
+        ) return;
 
-            if (node && (parent = node.parentElement)) {
-                visible ?
-                    parent.classList.add("show") :
-                    parent.classList.remove("show");
-            }
-        };
+        if (this.delayTimer !== null) {
+            clearTimeout(this.delayTimer);
+            this.delayTimer = null;
+        }
 
-        this.setState({ visible }, callback);
+        const {
+            show = 0,
+            hide = 0
+        } = handleDelay(this.props.delay);
+        const callback = () => this.setState({ visible });
+        this.delayTimer = setTimeout(
+            callback,
+            visible ? show : hide
+        );
+    }
+
+    open() {
+        this.setVisible(true);
+    }
+
+    close = () => {
+        this.setVisible(false);
     }
 
     escClose(key: string) {
@@ -100,10 +134,11 @@ export default class Dropdown extends React.Component<DropdownProps, DropdownSta
         if (key === "escape" || key === "esc") {
             const node = findDOMNode(this) as HTMLElement;
 
+            //wrapped by Button.Group
             if (node && node.firstChild) {
                 (node.firstChild as HTMLElement).focus();
             }
-            this.setVisible(false);
+            this.close();
         }
     }
 
@@ -136,7 +171,7 @@ export default class Dropdown extends React.Component<DropdownProps, DropdownSta
             const popupElement = document.getElementById(popupId);
 
             if (!visible && key !== "tab") {
-                return this.setVisible(true);
+                return this.open;
             }
 
             if (popupElement) {
@@ -172,18 +207,17 @@ export default class Dropdown extends React.Component<DropdownProps, DropdownSta
 
         if (key === "arrowup" && index > 0) {
             index--;
-        } else if ((key === "arrowdown" || key === "tab") && index < len - 1) {
+        } else if (
+            (key === "arrowdown" || key === "tab") &&
+            index < len - 1
+        ) {
             index++;
-        } 
+        }
 
         el = allItems[index] as HTMLElement;
-        
+
         el.focus();
         this.escClose(key);
-    }
-
-    handleClickOutside = () => {
-        this.setVisible(false);
     }
 
     render() {
@@ -209,6 +243,12 @@ export default class Dropdown extends React.Component<DropdownProps, DropdownSta
         const position = positionMap[placement as string];
         const classes = classNames(className, "dropdown-toggle");
         let child = React.Children.only(children) as React.ReactElement<React.HTMLAttributes<HTMLElement>>;
+        const _overlay = (
+
+            <DropdownContext.Provider value={{close: this.close}}>
+                {overlay}
+            </DropdownContext.Provider>
+        )
 
         const {
             onClick,
@@ -231,10 +271,10 @@ export default class Dropdown extends React.Component<DropdownProps, DropdownSta
 
         return (
             <Overlay
-                popup={overlay}
+                popup={_overlay}
                 visible={visible}
                 placement={placement}
-                onClickOutside={this.handleClickOutside}
+                onClickOutside={this.close}
                 popupProps={{
                     className: position,
                     onKeyDown: this.handlePopupKeydown,
