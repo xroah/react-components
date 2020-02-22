@@ -11,7 +11,6 @@ export interface TabsProps extends React.HTMLAttributes<HTMLElement> {
     activeKey?: string | number;
     pill?: boolean;
     fade?: boolean;
-    tabProps?: React.HTMLAttributes<HTMLElement>;
     onTabChange?: (prevKey?: string, currentKey?: string) => void;
     onTabClick?: (key?: string, evt?: React.MouseEvent) => void;
 }
@@ -161,8 +160,7 @@ export default class Tabs extends React.Component<TabsProps, TabsState> {
     renderTabs() {
         const {
             children,
-            pill,
-            tabProps
+            pill
         } = this.props;
         const content: any[] = [];
         const tabs: React.ReactElement[] = [];
@@ -172,11 +170,8 @@ export default class Tabs extends React.Component<TabsProps, TabsState> {
                 let {
                     tab,
                     children,
-                    disabled,
-                    tabProps: childProps
+                    disabled
                 } = c.props as any;
-                const _tabProps = childProps || tabProps || {};
-                const onClick = chainFunction(this.handleClickTab, _tabProps.onClick);
 
                 if (c.type === TabPane) {
                     const key = c.key == undefined ? i.toString() : c.key;
@@ -199,10 +194,9 @@ export default class Tabs extends React.Component<TabsProps, TabsState> {
                     tab = (
                         <Nav.Item key={key}>
                             <TabTitle
-                                {..._tabProps}
                                 disabled={disabled}
                                 itemKey={String(key)}
-                                onClick={onClick} >
+                                onClick={this.handleClickTab} >
                                 {tab}
                             </TabTitle>
                         </Nav.Item>
@@ -246,7 +240,6 @@ export default class Tabs extends React.Component<TabsProps, TabsState> {
         delete otherProps.pill;
         delete otherProps.onTabChange;
         delete otherProps.onTabClick;
-        delete otherProps.tabProps;
 
         return (
             <TabContext.Provider value={value}>

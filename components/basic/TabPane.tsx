@@ -6,7 +6,6 @@ import { TabContext } from "../contexts";
 
 export interface TabPaneProps extends React.HTMLAttributes<HTMLElement> {
     tab?: string | React.ReactNode;
-    tabProps?: React.HTMLAttributes<HTMLElement>;
     disabled?: boolean;
     panelKey?: string; 
     onHidden?: () => void;
@@ -25,7 +24,6 @@ export default function TabPane(props: TabPaneProps) {
 
     delete otherProps.tab;
     delete otherProps.disabled;
-    delete otherProps.tabProps;
 
     return (
         <TabContext.Consumer>
