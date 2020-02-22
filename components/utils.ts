@@ -205,7 +205,6 @@ export function deleteObjectProperties(obj: Object, props: string[]) {
     return copy;
 }
 
-export const OverlayContext = React.createContext({ close: () => { } });
 export type variantType = "primary"
     | "secondary"
     | "success"
