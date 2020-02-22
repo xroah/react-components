@@ -229,29 +229,7 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
             children,
             ...otherProps
         } = this.props;
-        const handler = this.handleEvent;
-        const {
-            onClick,
-            onMouseEnter,
-            onMouseLeave,
-            onBlur,
-            onFocus
-        } = (children as React.ReactElement<React.HTMLAttributes<HTMLElement>>).props;
-        const actionMap: any = {
-            hover: {
-                onMouseEnter: chainFunction(handler, otherProps.onMouseEnter || onMouseEnter),
-                onMouseLeave: chainFunction(handler, otherProps.onMouseLeave || onMouseLeave)
-            },
-            click: {
-                onClick: chainFunction(handler, otherProps.onClick || onClick)
-            },
-            focus: {
-                onFocus: chainFunction(handler, otherProps.onFocus || onFocus),
-                onBlur: chainFunction(handler, otherProps.onBlur || onBlur)
-            }
-        };
         let eventHandlers: any = {};
-        let action = this.getAction();
 
         delete otherProps.popup;
         delete otherProps.popupProps;
@@ -264,15 +242,38 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
         delete otherProps.unmountOnclose;
         delete otherProps.verticalCenter;
         delete otherProps.trigger;
+        delete otherProps.visible;
         delete otherProps.defaultVisible;
         delete otherProps.delay;
         delete otherProps.onShow;
         delete otherProps.onShown;
         delete otherProps.onHide;
         delete otherProps.onHidden;
-        delete otherProps.visible;
 
         if (!this.isControlled()) {
+            const handler = this.handleEvent;
+            const {
+                onClick,
+                onMouseEnter,
+                onMouseLeave,
+                onBlur,
+                onFocus
+            } = (children as React.ReactElement<React.HTMLAttributes<HTMLElement>>).props;
+            const actionMap: any = {
+                hover: {
+                    onMouseEnter: chainFunction(handler, otherProps.onMouseEnter || onMouseEnter),
+                    onMouseLeave: chainFunction(handler, otherProps.onMouseLeave || onMouseLeave)
+                },
+                click: {
+                    onClick: chainFunction(handler, otherProps.onClick || onClick)
+                },
+                focus: {
+                    onFocus: chainFunction(handler, otherProps.onFocus || onFocus),
+                    onBlur: chainFunction(handler, otherProps.onBlur || onBlur)
+                }
+            };
+            const action = this.getAction();
+
             action.forEach((a: string) => {
                 if (a in actionMap) {
                     eventHandlers = {
@@ -283,6 +284,7 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
             });
         }
 
+        //The event handlers of child will be overrode
         return React.cloneElement<any>(
             children as React.ReactElement,
             {
