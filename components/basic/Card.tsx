@@ -57,9 +57,7 @@ export default function Card(props: CardProps) {
             _img = React.cloneElement<any>(
                 img,
                 {
-                    className: classNames((img.props as any).className, cls),
-                    alt: imgAlt,
-                    title: imgTitle
+                    className: classNames((img.props as any).className, cls)
                 }
             );
         } else {

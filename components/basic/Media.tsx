@@ -50,23 +50,13 @@ export default function Media(props: MediaProps) {
                 height={imgSize} />
         );
     } else if (React.isValidElement(img)) {
-        const {
-            className,
-            width,
-            height
-        } = img.props as any;
-
         _img = React.cloneElement<any>(
             img,
             {
                 className: classNames(
-                    className,
+                    (img.props as any).className,
                     imgClasses
-                ),
-                alt: imgAlt,
-                title: imgTitle,
-                width: width == undefined ? imgSize : width,
-                height: height == undefined ? imgSize : height
+                )
             }
         );
     }
