@@ -89,7 +89,7 @@ export default function Card(props: CardProps) {
             )
         } {...otherProps}>
             {
-                header && (
+                header != undefined && (
                     <div style={headerStyle} className="card-header">{header}</div>
                 )
             }
@@ -105,7 +105,7 @@ export default function Card(props: CardProps) {
             ) : children}
             {bottomImg}
             {
-                footer && (
+                footer != undefined && (
                     <div style={footerStyle} className="card-footer">{footer}</div>
                 )
             }

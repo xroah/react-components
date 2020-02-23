@@ -64,7 +64,7 @@ export default function Media(props: MediaProps) {
     const body = (
         <div className="media-body">
             {
-                header && (
+                header != undefined && (
                     <h5 className="mt-0 mb-1">{header}</h5>
                 )
             }

@@ -23,7 +23,7 @@ export default function CarouselItem(props: ItemProps) {
         } {...otherProps}>
             {children}
             {
-                caption && (
+                caption != undefined && (
                     <div className="carousel-caption">
                         {caption}
                     </div>

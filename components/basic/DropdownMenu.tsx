@@ -32,7 +32,7 @@ export default function DropdownMenu(props: MenuProps) {
             }
             {...otherProps}>
             {
-                header && <div className="dropdown-header">{header}</div>
+                header != undefined && <div className="dropdown-header">{header}</div>
             }
             {children}
         </div>
