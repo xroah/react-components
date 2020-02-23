@@ -8,6 +8,7 @@ import {
 } from "../utils";
 import Collapse, { CollapseProps } from "./Collapse";
 import { NavbarContext } from "../contexts";
+import NavbarBrand from "./NavbarBrand";
 
 export interface NavbarProps extends React.HTMLAttributes<HTMLElement> {
     variant?: "light" | "dark";
@@ -50,34 +51,6 @@ Navbar.propTypes = {
 Navbar.defaultProps = {
     expand: false,
     variant: "light"
-};
-
-interface NavbarBrandProps extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
-    tag?: React.ElementType;
-    href?: string;
-}
-
-function NavbarBrand(props: NavbarBrandProps) {
-    const {
-        className,
-        tag,
-        ...otherProps
-    } = props;
-
-    return React.createElement(
-        tag as React.ElementType,
-        {
-            className: classNames(className, "navbar-brand"),
-            ...otherProps
-        }
-    );
-}
-
-NavbarBrand.propTypes = {
-    tag: PropTypes.elementType
-};
-NavbarBrand.defaultProps = {
-    tag: "a"
 };
 
 Navbar.Brand = NavbarBrand;

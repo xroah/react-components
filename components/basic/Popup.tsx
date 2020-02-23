@@ -156,7 +156,7 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
     }
 
     updatePosition = () => {
-        let { left, top, placement } = this.alignRef.current?.update() || {};
+        let { left, top, placement } = (this.alignRef.current as any).update();
 
 
         this.setState(
