@@ -4,13 +4,13 @@ import { classNames } from "../utils";
 
 export interface MediaProps extends React.HTMLAttributes<HTMLElement> {
     img?: string | React.ReactNode;
-    alt?: string;
+    imgAlt?: string;
+    imgTitle?: string;
     header?: string | React.ReactNode;
     imgSize?: number;
-    imgRounded?: boolean;
-    imgCircle?: boolean;
-    alignment?: "top" | "center" | "bottom";
-    imgPosition?: "right";
+    imgBorder?: "rounded" | "circle";
+    imgPosition?: "left" | "right";
+    alignment?: "top" | "middle" | "bottom";
 }
 
 export default function Media(props: MediaProps) {
@@ -20,22 +20,21 @@ export default function Media(props: MediaProps) {
         className,
         children,
         imgSize,
-        imgRounded,
-        imgCircle,
+        imgBorder,
         alignment,
         imgPosition,
-        alt,
+        imgAlt,
+        imgTitle,
         ...otherProps
     } = props;
     const alignmentMap: any = {
         top: "align-self-start",
-        center: "align-self-center",
+        middle: "align-self-center",
         bottom: "align-self-end"
     };
     let _img = img;
     const imgClasses = classNames(
-        imgCircle && "rounded-circle",
-        imgRounded && "rounded",
+        imgBorder && (imgBorder === "rounded" ? "rounded" : "rounded-circle"),
         alignmentMap[alignment as string],
         imgPosition === "right" ? "ml-3" : "mr-3"
     );
@@ -44,22 +43,30 @@ export default function Media(props: MediaProps) {
         _img = (
             <img
                 src={img}
-                alt={alt}
+                alt={imgAlt}
+                title={imgTitle}
                 className={imgClasses}
                 width={imgSize}
                 height={imgSize} />
         );
     } else if (React.isValidElement(img)) {
+        const {
+            className,
+            width,
+            height
+        } = img.props as any;
+
         _img = React.cloneElement<any>(
             img,
             {
                 className: classNames(
-                    (img.props as any).className,
+                    className,
                     imgClasses
                 ),
-                alt,
-                width: imgSize,
-                height: imgSize
+                alt: imgAlt,
+                title: imgTitle,
+                width: width == undefined ? imgSize : width,
+                height: height == undefined ? imgSize : height
             }
         );
     }
@@ -93,10 +100,10 @@ Media.defaultProps = {
 };
 Media.propTypes = {
     img: PropTypes.oneOfType([PropTypes.bool, PropTypes.node]),
+    imgAlt: PropTypes.string,
     header: PropTypes.oneOfType([PropTypes.bool, PropTypes.node]),
     imgSize: PropTypes.number,
-    imgRounded: PropTypes.bool,
-    imgCircle: PropTypes.bool,
-    alignment: PropTypes.oneOf(["top", "center", "bottom"]),
-    imgPosition: PropTypes.oneOf(["right"])
+    imgBorder: PropTypes.oneOf(["rounded", "circle"]),
+    imgPosition: PropTypes.oneOf(["left", "right"]),
+    alignment: PropTypes.oneOf(["top", "middle", "bottom"])
 };

@@ -16,6 +16,7 @@ export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
     body?: boolean;
     img?: React.ReactElement | string;
     imgAlt?: string;
+    imgTitle?: string;
     imgPosition?: "top" | "bottom";
     isImgOverlay?: boolean;
     alignment?: "left" | "center" | "right";
@@ -34,6 +35,7 @@ export default function Card(props: CardProps) {
         children,
         isImgOverlay,
         imgAlt,
+        imgTitle,
         alignment,
         bg,
         color,
@@ -56,7 +58,8 @@ export default function Card(props: CardProps) {
                 img,
                 {
                     className: classNames((img.props as any).className, cls),
-                    alt: imgAlt
+                    alt: imgAlt,
+                    title: imgTitle
                 }
             );
         } else {
@@ -64,7 +67,8 @@ export default function Card(props: CardProps) {
                 <img
                     className={cls}
                     src={img as string}
-                    alt={imgAlt} />
+                    alt={imgAlt}
+                    title={imgTitle} />
             );
         }
 
