@@ -36,6 +36,14 @@ const AccordionProps = [{
     type: "boolean",
     default: "false",
     description: "Enable to activate multiple panels or not"
+}, {
+    name: "onHeaderClick",
+    type: "Function(key, e)",
+    description: "Callback when a panel header is clicked"
+}, {
+    name: "onPanelChange",
+    type: "Function(keys: key[])",
+    description: "Callback when any active panel changes"
 }];
 const PanelProps = [{
     name: "key",
@@ -45,10 +53,6 @@ const PanelProps = [{
     name: "header",
     type: "string | ReactNode",
     description: "Header of the panel"
-}, {
-    name: "onHeaderClick",
-    type: "Function(key, e)",
-    description: "Callback when heder clicked, if no activeKey of Accordion, the prop will be overrode by Accordion"
 }];
 
 export default () => (

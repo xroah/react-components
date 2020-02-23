@@ -108,7 +108,7 @@ export default () => (
             <p>
                 Navbars can utilize <code>Navbar.Toggle</code>, <code>Navbar.Collapse</code>, set <code>expand(sm | md | lg | xl)</code> to change when their content collapses behind a button. In combination with other utilities, you can easily choose when to show or hide particular elements.
             </p>
-            For navbars that never collapse, set <code>expand={true}</code> on the navbar. For navbars that always collapse, set <code>expand={false}</code> or pass nothing.
+            For navbars that never collapse, set <code dangerouslySetInnerHTML={{__html: "expand={true}"}}></code> on the navbar. For navbars that always collapse, set <code dangerouslySetInnerHTML={{__html: "expand={false}"}}></code> or pass nothing.
         </div>
         <DemoExample
             title="Toggler"

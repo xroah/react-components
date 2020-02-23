@@ -38,11 +38,15 @@ const CardProps = [{
     name: "img",
     type: "string | ReactNode",
     description: "Card image"
-},{
+}, {
     name: "imgAlt",
     type: "string",
-    description: "Alt of the image"
-},  {
+    description: "Alt attribute for the underlying img element"
+}, {
+    name: "imgTitle",
+    type: "string",
+    description: "Title attribute for the underlying img element"
+}, {
     name: "imgPosition",
     type: "top | bottom",
     default: "top",
@@ -76,8 +80,8 @@ const CardTitleProps = [{
     description: "Title color"
 }, , {
     name: "subtitle",
-    type: "string",
-}, , {
+    type: "string"
+}, {
     name: "subtitleColor",
     type: `Same as Card color prop`,
     description: "Subtitle color"

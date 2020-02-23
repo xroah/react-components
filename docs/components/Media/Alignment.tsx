@@ -9,20 +9,20 @@ export default () => (
     <>
         <Media
             img={img}
-            imgRounded
+            imgBorder="rounded"
             header="Top-aligned media">
             <p>{text}</p>
         </Media>
         <Media
             img={img}
-            imgRounded
-            alignment="center"
+            imgBorder="rounded"
+            alignment="middle"
             header="Center-aligned media">
             <p>{text}</p>
         </Media>
         <Media
             img={img}
-            imgRounded
+            imgBorder="rounded"
             alignment="bottom"
             header="Bottom-aligned media">
             <p className="mb-0">{text}</p>

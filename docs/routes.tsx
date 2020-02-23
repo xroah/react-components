@@ -22,9 +22,10 @@ import Media from "./components/Media";
 import Modal from "./components/Modal";
 import NavDemo from "./components/NavDemo";
 import Navbar from "./components/Navbar";
-import Tab from "./components/Tabs";
-import Tooltip from "./components/Tooltip";
 import Popover from "./components/Popover";
+import Tab from "./components/Tabs";
+import Toast from "./components/Toast";
+import Tooltip from "./components/Tooltip";
 
 export const ROUTES = [
     {
@@ -112,10 +113,16 @@ export const ROUTES = [
         path: "/components/popover",
         component: Popover,
         name: "Popover"
-    },{
+    },
+    {
         path: "/components/tabs",
         component: Tab,
         name: "Tabs"
+    },
+    {
+        path: "/components/toast",
+        component: Toast,
+        name: "Toast"
     },
     {
         path: "/components/tooltip",

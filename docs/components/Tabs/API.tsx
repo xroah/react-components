@@ -21,10 +21,6 @@ const TabProps = [{
     default: "true",
     description: "Enable fade animation when tab switches"
 }, {
-    name: "tabProps",
-    type: "object",
-    description: "Props for every tab title"
-}, {
     name: "onTabChange",
     type: "Function(prevKey, currentKey)",
     description: "Callback when tabs change"
@@ -46,10 +42,6 @@ const TabPaneProps = [{
     name: "key",
     type: "string | number",
     description: "A unique key for identifying the TabPane"
-}, {
-    name: "tabProps",
-    type: "object",
-    description: "Props for tab title(tabProps of Tabs will be overrode)"
 }]
 
 export default () => (

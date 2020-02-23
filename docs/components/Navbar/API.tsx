@@ -11,13 +11,13 @@ const NavbarProps = [{
 }, {
     name: "bg",
     type: `primary |
-    | secondary |
-    | success |
-    | danger |
-    | warning |
-    | info |
-    | dark |
-    | light`,
+        secondary |
+        success |
+        danger |
+        warning |
+        info |
+        dark |
+        light`,
     description: "Background of Navbar"
 }, {
     name: "expand",

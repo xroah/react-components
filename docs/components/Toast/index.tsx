@@ -1,23 +1,39 @@
 import * as React from "react";
-import { Toast } from "reap-ui";
+import DocHeading from "../DocHeading";
+import DemoExample from "../DemoExample";
+import Basic from "./Basic";
+import BasicSrc from "!!raw-loader!./Basic";
+import Dismissing from "./Dismissing";
+import DismissingSrc from "!!raw-loader!./Dismissing";
+import AutoHide from "./AutoHide";
+import AutoHideSrc from "!!raw-loader!./AutoHide";
+import API from "./API";
 
-export default function () {
-    const [visible, setVisible] = React.useState(false);
-    const toggle = () => setVisible(!visible);
-
-    return (
-        <>
-            <button onClick={toggle}>TOGGLE</button>
-            <Toast
-                title="Bootstrap"
-                titleImg="https://img1.360buyimg.com/da/jfs/t1/14716/32/11447/94000/5c90a83bEaa611013/18490bf08654ba09.gif?v=0.07977099006579502"
-                titleMsg="just now"
-                closable={true}
-                onClose={toggle}
-                autoHide
-                visible={visible}>
-                Lorem ipsum, dolor sit amet consectetur adipisicing elit. Excepturi possimus enim tenetur veritatis? Odio quidem a non, libero porro repudiandae excepturi voluptatem ab saepe ullam reprehenderit expedita? Laboriosam, sint at?
-            </Toast>
-        </>
-    );
-}
+export default () => (
+    <>
+        <DocHeading>Toast</DocHeading>
+        <div>
+            Toasts are lightweight notifications designed to mimic the push notifications that have been popularized by mobile and desktop operating systems. They’re built with flexbox, so they’re easy to align and position.
+        </div>
+        <DemoExample
+            title="Basic example"
+            component={<Basic />}
+            source={BasicSrc}>
+            <p>
+                To encourage extensible and predictable toasts, we recommend a header and body. Toast headers use <code>display: flex</code>, allowing easy alignment of content.
+            </p>
+            <p>
+                Toasts are as flexible as you need and have very little required markup. At a minimum, we require a single element to contain your “toasted” content and strongly encourage a dismiss button.
+            </p>
+        </DemoExample>
+        <DemoExample
+            title="Dismissing"
+            component={<Dismissing />}
+            source={DismissingSrc} />
+        <DemoExample
+            title="Auto hide"
+            component={<AutoHide />}
+            source={AutoHideSrc}/>
+        <API />
+    </>
+);
