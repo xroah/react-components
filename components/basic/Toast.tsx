@@ -5,9 +5,9 @@ import { classNames, handleFuncProp } from "../utils";
 
 export interface ToastProps extends React.HTMLAttributes<HTMLElement> {
     title?: string;
-    titleImgSize?: number;
-    titleImg?: React.ReactNode;
-    titleMsg?: React.ReactNode;
+    iconSize?: number;
+    icon?: React.ReactNode;
+    extra?: string;
     autoHide?: boolean;
     closable?: boolean;
     header?: React.ReactNode | null;
@@ -19,87 +19,120 @@ export interface ToastProps extends React.HTMLAttributes<HTMLElement> {
 
 export default class Toast extends React.Component<ToastProps> {
 
-    timer: NodeJS.Timeout | null = null;
+    private timer: NodeJS.Timeout | null = null;
+
+    static propTypes = {
+        title: PropTypes.string,
+        iconSize: PropTypes.number,
+        extra: PropTypes.string,
+        autoHide: PropTypes.bool,
+        closable: PropTypes.bool,
+        header: PropTypes.node,
+        delay: PropTypes.number,
+        fade: PropTypes.bool,
+        visible: PropTypes.bool,
+        onClose: PropTypes.func
+    };
+    static defaultProps = {
+        delay: 3000,
+        fade: true,
+        visible: false,
+        iconSize: 20,
+        closable: true,
+        autoHide: true
+    };
 
     componentDidMount() {
         if (this.props.visible) this.componentDidUpdate();
     }
 
-    componentDidUpdate() {
-        const {
-            autoHide,
-            delay = 3000,
-            visible
-        } = this.props;
+    componentWillUnmount() {
+        this.clearTimer();
+    }
 
+    clearTimer() {
         if (this.timer) {
             clearTimeout(this.timer);
             this.timer = null;
         }
+    }
 
-        if (visible) {
-            if (autoHide && !this.timer) {
-                this.timer = setTimeout(
-                    () => {
-                        this.handleClose();
-                        this.timer = null;
-                    },
-                    delay);
-            }
+    componentDidUpdate() {
+        const {
+            autoHide,
+            delay,
+            visible
+        } = this.props;
+
+        this.clearTimer();
+
+        if (visible && autoHide) {
+            this.timer = setTimeout(this.handleClose, delay as number);
         }
     }
 
     handleClose = () => {
+        this.clearTimer();
         handleFuncProp(this.props.onClose)();
     };
 
     renderHeader() {
-        const {
+        let {
             header,
             title,
-            titleImg,
-            titleMsg,
+            icon,
+            extra,
             closable,
-            titleImgSize = 20
+            iconSize
         } = this.props;
+        let img = icon;
 
         if (header === null) {
             return null;
-        } else if (React.isValidElement(header)) {
-            return header;
         }
 
-        let img = titleImg;
+        if (header === undefined) {
+            if (typeof img === "string") {
+                img = (
+                    <img
+                        className="rounded"
+                        src={img}
+                        width={iconSize}
+                        height={iconSize} />
+                );
+            }
 
-        if (typeof img === "string") {
-            img = (
-                <img
-                    className="rounded mr-2"
-                    src={img}
-                    width={titleImgSize}
-                    height={titleImgSize} />
+            header = (
+                <>
+                    {img}
+                    {
+                        !!title && (
+                            <strong className="ml-2">{title}</strong>
+                        )
+                    }
+                    {
+                        !!extra && (
+                            <small className="text-muted ml-auto">{extra}</small>
+                        )
+                    }
+                    {
+                        closable && (
+                            <button
+                                type="button"
+                                className="ml-2 mb-1 close"
+                                aria-label="Close"
+                                onClick={this.handleClose}>
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        )
+                    }
+                </>
             );
         }
 
         return (
             <div className="toast-header">
-                {img}
-                {
-                    !!title && (<strong className="mr-auto">{title}</strong>)
-                }
-                {
-                    titleMsg && (<small className="text-muted">{titleMsg}</small>)
-                }
-                {
-                    closable && (
-                        <button
-                            type="button"
-                            className="ml-2 mb-1 close"
-                            onClick={this.handleClose}>
-                            <span>&times;</span>
-                        </button>
-                    )
-                }
+                {header}
             </div>
         );
     }
@@ -114,8 +147,9 @@ export default class Toast extends React.Component<ToastProps> {
         } = this.props;
 
         delete otherProps.title;
-        delete otherProps.titleImg;
-        delete otherProps.titleMsg;
+        delete otherProps.icon;
+        delete otherProps.iconSize;
+        delete otherProps.extra;
         delete otherProps.autoHide;
         delete otherProps.closable;
         delete otherProps.header;
@@ -125,7 +159,7 @@ export default class Toast extends React.Component<ToastProps> {
         return (
             <Fade
                 in={!!visible}
-                hidingClass="hide"
+                unmountOnExit
                 animation={fade}
                 {...otherProps}>
                 <div className={
