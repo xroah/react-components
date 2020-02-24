@@ -34,8 +34,7 @@ export default function Navbar(props: NavbarProps) {
 
     return (
         <NavbarContext.Provider value={true}>
-            <nav className={classes}
-                {...otherProps} />
+            <nav className={classes} {...otherProps} />
         </NavbarContext.Provider>
     );
 }
@@ -61,14 +60,12 @@ Navbar.Collapse = function NavbarCollapse(props: CollapseProps) {
     } = props;
 
     return (
-        <Collapse
-            className={
-                classNames(
-                    className,
-                    "navbar-collapse"
-                )
-            }
-            {...otherProps} />
+        <Collapse className={
+            classNames(
+                className,
+                "navbar-collapse"
+            )
+        } {...otherProps} />
     )
 }
 Navbar.Toggle = function NavbarToggle(props: React.ButtonHTMLAttributes<HTMLButtonElement>) {
@@ -88,8 +85,7 @@ Navbar.Toggle = function NavbarToggle(props: React.ButtonHTMLAttributes<HTMLButt
                     className,
                     "navbar-toggler"
                 )
-            }
-            {...otherProps}>
+            } {...otherProps}>
             <span className="navbar-toggler-icon" />
         </button>
     );
