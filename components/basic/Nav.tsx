@@ -39,17 +39,19 @@ export default function Nav(props: NavProps) {
     return (
         <NavbarContext.Consumer>
             {
-                value => (
-                    <nav className={
-                        classNames(
+                value => React.createElement(
+                    value ? "div" : "nav",
+                    {
+                        className: classNames(
                             className,
                             value || navbar ? "navbar-nav" : "nav",
                             variant && variantMap[variant],
                             alignment && alignmentMap[alignment],
                             vertical && minWidth ? `flex-${minWidth}-column` : vertical ? "flex-column" : "",
                             fill && equalWidth ? "nav-justified" : fill ? "nav-fill" : ""
-                        )
-                    } {...otherProps} />
+                        ),
+                        ...otherProps
+                    }
                 )
             }
         </NavbarContext.Consumer>
