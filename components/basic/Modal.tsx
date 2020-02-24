@@ -3,24 +3,22 @@ import PropTypes from "prop-types";
 import {
     classNames,
     handleFuncProp,
-    emulateTransitionEnd
+    emulateTransitionEnd,
+    variantType
 } from "../utils";
 import Button from "./Button";
 import Fade from "../Fade";
 import { createPortal } from "react-dom";
 import { ModalContext } from "../contexts";
+import { variantArray } from "../../es/utils";
 
-export interface ModalProps extends React.HTMLAttributes<HTMLElement> {
+export interface ModalCommonOptions extends React.HTMLAttributes<HTMLElement> {
     visible?: boolean;
     forceRender?: boolean;
-    titleText?: string | React.ReactNode;
     okText?: string | React.ReactNode;
     cancelText?: string | React.ReactNode;
-    closable?: boolean;
-    showCancel?: boolean;
-    showOk?: boolean;
-    header?: string | React.ReactNode;
-    footer?: string | React.ReactNode;
+    okType?: variantType;
+    cancelType?: variantType;
     fade?: boolean;
     centered?: boolean;
     size?: "xl" | "lg" | "sm";
@@ -28,13 +26,23 @@ export interface ModalProps extends React.HTMLAttributes<HTMLElement> {
     scrollable?: boolean;
     autoFocus?: boolean;
     keyboard?: boolean;
-    mountTo?: HTMLElement;
     onOk?: (event: React.MouseEvent) => void;
     onCancel?: (event: React.MouseEvent) => void;
     onShow?: Function;
     onShown?: Function;
     onHide?: Function;
     onHidden?: Function;
+}
+
+export interface ModalProps extends ModalCommonOptions {
+    closable?: boolean;
+    showCancel?: boolean;
+    showOk?: boolean;
+    header?: string | React.ReactNode;
+    footer?: string | React.ReactNode;
+    fade?: boolean;
+    mountTo?: HTMLElement;
+    container?: HTMLElement; //mountTo and container are internal provisionally
 }
 
 const stringOrNode = PropTypes.oneOfType([PropTypes.string, PropTypes.node]);
@@ -57,15 +65,18 @@ export default class Modal extends React.Component<ModalProps, ModalState> {
         autoFocus: true,
         keyboard: true,
         okText: "确定",
-        cancelText: "取消"
+        cancelText: "取消",
+        okType: "primary",
+        cancelType: "light"
     };
     static propTypes = {
         visible: PropTypes.bool,
-        titleText: stringOrNode,
         onOk: PropTypes.func,
         onCancel: PropTypes.func,
         okText: stringOrNode,
         cancelText: stringOrNode,
+        okType: PropTypes.oneOf(variantArray),
+        cancelType: PropTypes.oneOf(variantArray),
         closable: PropTypes.bool,
         showCancel: PropTypes.bool,
         header: stringOrNode,
@@ -88,15 +99,16 @@ export default class Modal extends React.Component<ModalProps, ModalState> {
 
     container: HTMLElement | null = null;
     dialogRef = React.createRef<HTMLDivElement>();
-    scrollWidth: number = 0;
     activeElement: Element | null = null;
     modalRef = React.createRef<HTMLDivElement>();
     state: ModalState = {};
     previousBodyPadding: string = "";
     previousBodyClassName: string = "";
 
-    componentDidMount() {
-        this.scrollWidth = this.getScrollWidth();
+    constructor(props: ModalProps) {
+        super(props);
+
+        this.container = props.container || null;
     }
 
     componentWillUnmount() {
@@ -198,7 +210,8 @@ export default class Modal extends React.Component<ModalProps, ModalState> {
 
     handleEnter = () => {
         const body = document.body;
-        const hasScrollbar = body.clientWidth < window.innerWidth;
+        const hasScrollbar = document.documentElement.clientWidth < window.innerWidth;
+        const scrollWidth = this.getScrollWidth();
         const pr = parseFloat(getComputedStyle(body).getPropertyValue("padding-right"));
         this.activeElement = document.activeElement;
         this.previousBodyClassName = body.className;
@@ -210,7 +223,7 @@ export default class Modal extends React.Component<ModalProps, ModalState> {
         const afterHasScrollbar = body.clientWidth < window.innerWidth;
 
         if (hasScrollbar && !afterHasScrollbar) {
-            body.style.paddingRight = `${pr + this.scrollWidth}px`;
+            body.style.paddingRight = `${pr + scrollWidth}px`;
         }
 
         handleFuncProp(this.props.onShow)();
@@ -241,21 +254,85 @@ export default class Modal extends React.Component<ModalProps, ModalState> {
         handleFuncProp(this.props.onHidden)();
     }
 
+    getHeader() {
+        const {
+            header,
+            title,
+            closable,
+        } = this.props;
+
+        if (header === null) return null;
+
+        const defaultHeader = (
+            <>
+                <h5 className="modal-title">{title}</h5>
+                {
+                    closable && (
+                        <button
+                            type="button"
+                            className="close"
+                            onClick={this.handleCancel}
+                            aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    )
+                }
+            </>
+        );
+
+        return (
+            <div className="modal-header">
+                {header === undefined ? defaultHeader : header}
+            </div>
+        );
+    }
+
+    getFooter() {
+        const {
+            footer,
+            showCancel,
+            cancelText,
+            showOk,
+            okText,
+            okType,
+            cancelType
+        } = this.props;
+
+        if (footer === null) return null;
+
+        const defaultFooter = (
+            <>
+                {
+                    showCancel && (
+                        <Button variant={cancelType} onClick={this.handleCancel}>
+                            {cancelText}
+                        </Button>
+                    )
+                }
+                {
+                    showOk && (
+                        <Button variant={okType} onClick={this.handleOk}>
+                            {okText}
+                        </Button>
+                    )
+                }
+            </>
+        );
+
+        return (
+            <div className="modal-footer">
+                {footer === undefined ? defaultFooter : footer}
+            </div>
+        );
+    }
+
     render() {
         const {
             props: {
                 visible,
-                okText,
-                cancelText,
-                header,
-                footer,
-                closable,
-                showCancel,
-                showOk,
                 fade,
                 centered,
                 size,
-                titleText: title,
                 children,
                 className,
                 backdrop,
@@ -269,7 +346,11 @@ export default class Modal extends React.Component<ModalProps, ModalState> {
             }
         } = this;
 
-        if (!forceRender && !visible && !this.container) return null;
+        if (
+            !forceRender &&
+            !visible &&
+            !this.container
+        ) return null;
 
         delete otherProps.onOk;
         delete otherProps.onCancel;
@@ -279,6 +360,16 @@ export default class Modal extends React.Component<ModalProps, ModalState> {
         delete otherProps.onHide;
         delete otherProps.autoFocus;
         delete otherProps.keyboard;
+        delete otherProps.header;
+        delete otherProps.title;
+        delete otherProps.closable;
+        delete otherProps.footer;
+        delete otherProps.showCancel;
+        delete otherProps.showOk;
+        delete otherProps.okText;
+        delete otherProps.okType;
+        delete otherProps.cancelType;
+        delete otherProps.cancelText;
 
         const classes = classNames(
             className,
@@ -292,63 +383,21 @@ export default class Modal extends React.Component<ModalProps, ModalState> {
             centered && `${PREFIX}-centered`,
             scrollable && `${PREFIX}-scrollable`
         );
-        let _header = header === null ? null : (
-            <div className="modal-header">
-                {
-                    header === undefined ? (
-                        <>
-                            <h5 className="modal-title">{title}</h5>
-                            {
-                                closable && (
-                                    <button
-                                        type="button"
-                                        className="close"
-                                        onClick={this.handleCancel}
-                                        aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                )
-                            }
-                        </>
-                    ) : header
-                }
-            </div>
-        );
-        let _footer = footer === null ? null : (
-            <div className="modal-footer">
-                {
-                    footer === undefined ? (
-                        <>
-                            {
-                                showCancel && (
-                                    <Button variant="secondary" onClick={this.handleCancel}>
-                                        {cancelText}
-                                    </Button>
-                                )
-                            }
-                            {
-                                showOk && (
-                                    <Button onClick={this.handleOk}>
-                                        {okText}
-                                    </Button>
-                                )
-                            }
-                        </>
-                    ) : footer
-                }
-            </div>
-        );
-
+        const parent = mountTo || document.body;
+        const _header = this.getHeader();
+        const _footer = this.getFooter();
 
         if (!this.container) {
-            let div = this.container = document.createElement("div");
+            const div = this.container = document.createElement("div");
             div.style.zIndex = `${zIndex++}`;
 
-            (mountTo || document.body).appendChild(this.container);
+            parent.appendChild(this.container);
+        } else if (!this.container.parentNode) {
+            parent.appendChild(this.container);
         }
 
         return createPortal(
-            <ModalContext.Provider value={{isModal: true, visible: !!visible}}>
+            <ModalContext.Provider value={{ isModal: true, visible: !!visible }}>
                 <Fade
                     in={!!visible}
                     animation={fade}
@@ -363,9 +412,11 @@ export default class Modal extends React.Component<ModalProps, ModalState> {
                         onClick={this.handleClickBackdrop}
                         onKeyDown={this.handleKeyDown}
                         ref={this.modalRef}
-                        tabIndex={-1}
-                        {...otherProps}>
-                        <div className={dialogClasses} ref={this.dialogRef}>
+                        tabIndex={-1}>
+                        <div
+                            className={dialogClasses}
+                            ref={this.dialogRef}
+                            {...otherProps}>
                             <div className="modal-content">
                                 {_header}
                                 <div className="modal-body">
