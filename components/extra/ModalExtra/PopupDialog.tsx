@@ -1,36 +1,33 @@
 import * as React from "react";
 import { render, unmountComponentAtNode } from "react-dom";
-import Modal, { ModalCommonOptions } from "../basic/Modal";
-import { chainFunction, handleFuncProp } from "../utils";
-import Input from "./ModalInput";
+import Modal, { ModalCommonOptions } from "../../basic/Modal";
+import { chainFunction, handleFuncProp, classNames } from "../../utils";
+import Input from "../../basic/Input";
 
-interface ExtraModal {
+export interface ExtraModal {
     alert?: Function;
     confirm?: Function;
     prompt?: Function;
     destroyAll?: Function;
 }
 
-interface Option extends ModalCommonOptions {
+export interface Option extends ModalCommonOptions {
     message?: string | React.ReactNode;
     placeholder?: string;
     defaultValue?: string;
 }
-
-type _Modal = typeof Modal & ExtraModal;
-type dialogType = "alert" | "confirm" | "prompt";
-
-const _Modal = Modal as _Modal;
+export const modals: PopupDialog[] = [];
+export type dialogType = "alert" | "confirm" | "prompt";
 
 let uuid = 0;
 
-class ExtraModal {
+export default class PopupDialog {
     private container = document.createElement("div");
     private uuid = uuid++;
-    private value: string = "";
     private type: dialogType;
     private options: Option;
-    private inputRef = React.createRef<Input>();
+    private inputRef = React.createRef<any>();
+    private closed: boolean = false;
 
     constructor(type: dialogType, options: Option = {}) {
         this.type = type;
@@ -46,7 +43,6 @@ class ExtraModal {
             type,
             options,
             destroy,
-            handleChange,
             onOk,
             onCancel,
             inputRef,
@@ -58,37 +54,47 @@ class ExtraModal {
             defaultValue,
             onHidden,
             onShown,
+            className,
             ...others
         } = options;
-        const showOk = true;
-        const showCancel = type !== "alert";
+        const showOk = type !== "alert";
         const _onHidden = chainFunction(onHidden, destroy);
         const _onShown = chainFunction(onShown, focus);
-        this.value = defaultValue || "";
         others.onOk = onOk;
         others.onCancel = onCancel;
 
         return (
             <Modal
                 {...others}
+                className={classNames(className, "bs-popup-dialog")}
                 closable={false}
                 showOk={showOk}
-                showCancel={showCancel}
+                cancelText={showOk ? "取消" : "关闭"}
+                showCancel
                 header={others.title ? undefined : null}//if no title, remove the header
                 onShown={_onShown}
                 onHidden={_onHidden}>
-                {message}
+                <div className="bs-dialog-message">{message}</div>
                 {
                     this.type === "prompt" && (
                         <Input
                             ref={inputRef}
+                            className="bs-dialog-input"
+                            onKeyDown={this.handleKeydown}
                             placeholder={placeholder}
-                            onChange={handleChange}
                             defaultValue={defaultValue} />
                     )
                 }
             </Modal>
         );
+    }
+
+    handleKeydown = (evt: React.KeyboardEvent) => {
+        const key = evt.key.toLowerCase();
+
+        if (key === "enter") {
+            this.onOk();
+        }
     }
 
     focus = () => {
@@ -97,16 +103,21 @@ class ExtraModal {
         input && input.focus();
     };
 
+    getValue() {
+        const { inputRef: { current: input } } = this;
+
+        if (input) return input.value;
+    }
+
     onOk = () => {
         const {
-            type,
-            options,
-            value
+            type, 
+            options
         } = this;
         const onOk = handleFuncProp(options.onOk);
-        let ret: any = onOk(type === "prompt" ? value : 0);
+        let ret: any = onOk(this.getValue());
 
-        if (ret === false) return;
+        if (type === "alert" || ret === false) return;
 
         if (ret && typeof ret.then === "function") {
             return ret.then(this.close);
@@ -128,11 +139,12 @@ class ExtraModal {
         this.close();
     };
 
-    handleChange = (val: any) => {
-        this.value = val;
-    }
-
     close = () => {
+        //already closed
+        if (this.closed) return;
+
+        this.closed = true;
+
         this.render(false);
     }
 
@@ -142,12 +154,13 @@ class ExtraModal {
         if (ret && this.container.parentNode) {
             this.container.parentNode.removeChild(this.container);
         }
-
-        modals.forEach((m, i) => {
-            if (m.uuid === this.uuid) {
+        
+        for (let i = 0, l = modals.length; i < l; i++) {
+            if (modals[i].uuid === this.uuid) {
                 modals.splice(i, 1);
+                break;
             }
-        });
+        }
     }
 
     update = (options?: Option) => {
@@ -168,42 +181,3 @@ class ExtraModal {
     }
 }
 
-const modals: ExtraModal[] = [];
-const factory = (type: dialogType) => (message?: string | Option, options?: Option) => {
-    let _options: any;
-
-    if (message == null) {
-        _options = options || {};
-    } else if (typeof message === "object"){
-        _options = {
-            ...message
-        };
-    } else {
-        _options = {
-            message: String(message),
-            ...options
-        };
-    }
-
-    const modal = new ExtraModal(type, _options);
-
-    modal.createDialog();
-    modal.render(true);
-
-    modals.push(modal);
-
-    return {
-        destroy: modal.close,
-        update: modal.update
-    };
-}
-
-_Modal.alert = factory("alert");
-_Modal.confirm = factory("confirm");
-_Modal.prompt = factory("prompt");
-_Modal.destroyAll = () => {
-    modals.forEach(m => m.close());
-
-    modals.length = 0;
-}
-export default _Modal;

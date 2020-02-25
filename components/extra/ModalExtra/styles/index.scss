@@ -1,0 +1,21 @@
+.bs-popup-dialog {
+    max-width: 420px;
+
+    .modal-header {
+        border-bottom: none;
+        padding-bottom: 0;
+
+        &+.modal-body {
+            padding-top: .5rem;
+        }
+    }
+
+    .modal-footer {
+        border-top: 0;
+        padding-top: 0;
+    }
+
+    .bs-dialog-input {
+        margin-top: .5rem;
+    }
+}

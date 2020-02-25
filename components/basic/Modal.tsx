@@ -4,13 +4,13 @@ import {
     classNames,
     handleFuncProp,
     emulateTransitionEnd,
-    variantType
+    variantType,
+    variantArray
 } from "../utils";
 import Button from "./Button";
 import Fade from "../Fade";
 import { createPortal } from "react-dom";
 import { ModalContext } from "../contexts";
-import { variantArray } from "../../es/utils";
 
 export interface ModalCommonOptions extends React.HTMLAttributes<HTMLElement> {
     visible?: boolean;
@@ -372,13 +372,13 @@ export default class Modal extends React.Component<ModalProps, ModalState> {
         delete otherProps.cancelText;
 
         const classes = classNames(
-            className,
             stateClass,
             "modal"
         );
         const PREFIX = "modal-dialog";
         const dialogClasses = classNames(
             PREFIX,
+            className,
             size && `modal-${size}`,
             centered && `${PREFIX}-centered`,
             scrollable && `${PREFIX}-scrollable`
