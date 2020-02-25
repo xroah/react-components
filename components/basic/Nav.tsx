@@ -1,8 +1,7 @@
 import * as React from "react";
 import PropTypes from "prop-types";
 import NavLink from "./NavLink";
-import { classNames } from "../utils";
-import { createComponentByClass } from '../../es/utils';
+import { classNames, createComponentByClass } from "../utils";
 import { NavbarContext } from "../contexts";
 
 export interface NavProps extends React.HTMLAttributes<HTMLElement> {

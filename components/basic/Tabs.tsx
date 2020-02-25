@@ -4,7 +4,6 @@ import TabPane from "./TabPane";
 import Nav from "./Nav";
 import { handleFuncProp } from "../utils";
 import { TabContext } from "../contexts";
-import { chainFunction } from "../../es/utils";
 
 export interface TabsProps extends React.HTMLAttributes<HTMLElement> {
     defaultActiveKey?: string | number;
