@@ -64,10 +64,11 @@ const config = {
 module.exports = env => {
     const isDev = env === "development";
     const cssLoader = {
-        test: /\.css$/,
+        test: /\.s?css$/,
         use: [
             isDev ? "style-loader" : MiniCssExtractPlugin.loader,
-            "css-loader"
+            "css-loader",
+            "sass-loader"
         ]
     };
 
