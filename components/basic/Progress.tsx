@@ -19,7 +19,7 @@ export default function Progress(props: ProgressProps) {
     const {
         className,
         variant,
-        value = 0,
+        value,
         striped,
         animated,
         children,
@@ -29,22 +29,25 @@ export default function Progress(props: ProgressProps) {
         ...otherProps
     } = props;
     const count = React.Children.count(children);
-    const classes = classNames(className, "progress");
+    const classes = classNames(__isChild__ ? "" : className, "progress");
     const PREFIX = "progress-bar";
-    const width = `${value}%`;
+    const v = value as number;
+    const width = `${v > 100 ? 100 : v < 0 ? 0 : v}%`;
     const bar = (
-        <div style={{...style, width}} className={
-            classNames(
-                PREFIX,
-                striped && `${PREFIX}-striped`,
-                striped && animated && `${PREFIX}-animated`,
-                variant && `bg-${variant}`
-            )
-        }>
-            {showLabel ? width : null}
+        <div style={{ width }}
+            className={
+                classNames(
+                    PREFIX,
+                    __isChild__ ? className : "",
+                    striped && `${PREFIX}-striped`,
+                    striped && animated && `${PREFIX}-animated`,
+                    variant && `bg-${variant}`
+                )
+            }>
+            {!!showLabel && <span className="label">{width}</span>}
         </div>
     );
-    const wrapper = <div className={classes} {...otherProps} />;
+    const wrapper = <div className={classes} />;
 
     if (count) {
         const _children = React.Children.map(children, c => {
@@ -55,16 +58,19 @@ export default function Progress(props: ProgressProps) {
             return null;
         });
 
-        return React.cloneElement(wrapper, {}, _children);
+        return React.cloneElement(wrapper, { style }, _children);
     }
 
     return __isChild__ ?
-        React.cloneElement(bar, otherProps) :
-        React.cloneElement(wrapper, {}, bar);
+        React.cloneElement<any>(bar, { ...otherProps, style: { ...style, width } }) :
+        React.cloneElement<any>(wrapper, { style, ...otherProps }, bar);
 }
 
 Progress.defaultProps = {
-    value: 0
+    value: 0,
+    showLabel: false,
+    striped: false,
+    animated: false
 };
 Progress.propTypes = {
     value: PropTypes.number,
