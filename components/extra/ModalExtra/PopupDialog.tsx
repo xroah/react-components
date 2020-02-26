@@ -1,79 +1,64 @@
 import * as React from "react";
-import { render, unmountComponentAtNode } from "react-dom";
-import Modal, { ModalCommonOptions } from "../../basic/Modal";
-import { chainFunction, handleFuncProp, classNames } from "../../utils";
+import Modal from "../../basic/Modal";
+import {
+    chainFunction,
+    handleFuncProp,
+    classNames
+} from "../../utils";
 import Input from "../../basic/Input";
+import Dialog from "./Dialog";
+import {
+    PopupDialogOption,
+    popupDialogType
+} from "./interface";
 
-export interface ExtraModal {
-    alert?: Function;
-    confirm?: Function;
-    prompt?: Function;
-    destroyAll?: Function;
-}
-
-export interface Option extends ModalCommonOptions {
-    message?: string | React.ReactNode;
-    placeholder?: string;
-    defaultValue?: string;
-}
-export const modals: PopupDialog[] = [];
-export type dialogType = "alert" | "confirm" | "prompt";
-
-let uuid = 0;
-
-export default class PopupDialog {
-    private container = document.createElement("div");
-    private uuid = uuid++;
-    private type: dialogType;
-    private options: Option;
+export default class PopupDialog extends Dialog {
+    private type: popupDialogType;
     private inputRef = React.createRef<any>();
-    private closed: boolean = false;
+    options: PopupDialogOption;
 
-    constructor(type: dialogType, options: Option = {}) {
+    constructor(type: popupDialogType, options: PopupDialogOption = {}) {
+        super(options);
+
+        if (!options || typeof options !== "object") options = {};
+        
         this.type = type;
         this.options = options;
-
-        if (!options || typeof options !== "object") this.options = {};
-
-        document.body.appendChild(this.container);
     }
 
     createDialog() {
         const {
             type,
             options,
+            inputRef,
+            focus,
             destroy,
             onOk,
-            onCancel,
-            inputRef,
-            focus
+            onCancel
         } = this;
         const {
             message,
             placeholder,
             defaultValue,
-            onHidden,
-            onShown,
             className,
             ...others
         } = options;
         const showOk = type !== "alert";
-        const _onHidden = chainFunction(onHidden, destroy);
-        const _onShown = chainFunction(onShown, focus);
         others.onOk = onOk;
         others.onCancel = onCancel;
+        others.onShown = chainFunction(options.onShown, focus);
+        others.onHidden = chainFunction(options.onHidden, destroy);
 
         return (
             <Modal
                 {...others}
+                container={this.container}
                 className={classNames(className, "bs-popup-dialog")}
                 closable={false}
                 showOk={showOk}
                 cancelText={showOk ? "取消" : "关闭"}
                 showCancel
-                header={others.title ? undefined : null}//if no title, remove the header
-                onShown={_onShown}
-                onHidden={_onHidden}>
+                header={others.title ? undefined : null}>{/* //if no title, remove the header */}
                 <div className="bs-dialog-message">{message}</div>
                 {
                     this.type === "prompt" && (
@@ -111,7 +96,7 @@ export default class PopupDialog {
 
     onOk = () => {
         const {
-            type, 
+            type,
             options
         } = this;
         const onOk = handleFuncProp(options.onOk);
@@ -138,46 +123,5 @@ export default class PopupDialog {
 
         this.close();
     };
-
-    close = () => {
-        //already closed
-        if (this.closed) return;
-
-        this.closed = true;
-
-        this.render(false);
-    }
-
-    destroy = () => {
-        let ret = unmountComponentAtNode(this.container);
-
-        if (ret && this.container.parentNode) {
-            this.container.parentNode.removeChild(this.container);
-        }
-        
-        for (let i = 0, l = modals.length; i < l; i++) {
-            if (modals[i].uuid === this.uuid) {
-                modals.splice(i, 1);
-                break;
-            }
-        }
-    }
-
-    update = (options?: Option) => {
-        this.options = {
-            ...this.options,
-            ...options
-        };
-        this.render(true);
-    }
-
-    render(visible: boolean) {
-        this.options.visible = visible;
-
-        render(
-            this.createDialog(),
-            this.container
-        );
-    }
 }
 

@@ -1,47 +1,56 @@
 import Modal from "../../basic/Modal";
-import PopupDialog, {
+import {
     ExtraModal,
-    dialogType,
-    Option,
-    modals
-} from "./PopupDialog";
+    popupDialogType,
+    PopupDialogOption
+} from "./interface";
+import Dialog, { modals } from "./Dialog";
+import PopupDialog from "./PopupDialog";
+import LoadingDialog from "./LoadingDialog";
+import { chainFunction } from "../../utils";
 
 type _Modal = typeof Modal & ExtraModal;
 
 const _Modal = Modal as _Modal;
 
-const factory = (type: dialogType) => (message?: string | Option, options?: Option) => {
-    let _options: any;
+const factory = (type: popupDialogType | "loading") =>
+    (message?: string | PopupDialogOption, options?: PopupDialogOption) => {
+        let _options: any;
+        let modal: Dialog;
 
-    if (message == null) {
-        _options = options || {};
-    } else if (typeof message === "object"){
-        _options = {
-            ...message
-        };
-    } else {
-        _options = {
-            message: String(message),
-            ...options
+        if (message == null) {
+            _options = options || {};
+        } else if (typeof message === "object") {
+            _options = {
+                ...message
+            };
+        } else {
+            _options = {
+                message: String(message),
+                ...options
+            };
+        }
+
+        if (type === "loading") {
+            modal = new LoadingDialog(_options);
+        } else {
+            modal = new PopupDialog(type, _options);
+        }
+
+        modal.render(true);
+
+        modals.push(modal);
+
+        return {
+            close: modal.close,
+            update: modal.update
         };
     }
-
-    const modal = new PopupDialog(type, _options);
-
-    modal.createDialog();
-    modal.render(true);
-
-    modals.push(modal);
-
-    return {
-        destroy: modal.close,
-        update: modal.update
-    };
-}
 
 _Modal.alert = factory("alert");
 _Modal.confirm = factory("confirm");
 _Modal.prompt = factory("prompt");
+_Modal.loading = factory("loading");
 _Modal.destroyAll = () => {
     modals.forEach(m => m.close());
 
