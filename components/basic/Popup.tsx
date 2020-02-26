@@ -101,7 +101,7 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
         }
     }
 
-    componentWillUnmount() {
+    removeNode() {
         const {
             props: {
                 mountTo = document.body
@@ -112,6 +112,10 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
         mountNode && mountTo.removeChild(mountNode);
 
         this.mountNode = null;
+    }
+
+    componentWillUnmount() {
+        this.removeNode();
         this.removeEvent();
     }
 
@@ -217,8 +221,12 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
     };
 
     handleExited = (node: HTMLElement) => {
-        const { onHidden } = this.props;
+        const {
+            onHidden,
+            unmountOnclose
+        } = this.props;
 
+        unmountOnclose && this.removeNode();
         handleFuncProp(onHidden)(node);
     };
 
