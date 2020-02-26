@@ -30,10 +30,10 @@ export default () => (
             title="Dismissing"
             component={<Dismissing />}
             source={DismissingSrc} />
-        <DemoExample
+        {/* <DemoExample
             title="Auto hide"
             component={<AutoHide />}
-            source={AutoHideSrc}/>
+            source={AutoHideSrc}/> */}
         <API />
     </>
 );

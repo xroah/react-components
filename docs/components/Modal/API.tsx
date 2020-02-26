@@ -8,7 +8,7 @@ const props = [{
     default: "false",
     description: "Visibility of the modal"
 }, {
-    name: "titleText",
+    name: "title",
     type: "string | ReactNode",
     description: "Title text of the modal"
 }, {
@@ -36,6 +36,16 @@ const props = [{
     type: "string | ReactNode",
     default: "取消",
     description: "Text of cancel button"
+}, {
+    name: "okType",
+    type: "same as variant of button",
+    default: "primary",
+    description: "Variant of ok button"
+}, {
+    name: "cancelType",
+    type: "same as variant of button",
+    default: "light",
+    description: "Variant of cancel button"
 }, {
     name: "keyboard",
     type: "boolean",
@@ -90,7 +100,7 @@ const props = [{
 }, {
     name: "onCancel",
     type: "Function(e)",
-    description: "Callback is invoked when cancel button is clicked"
+    description: "Callback is invoked when cancel button or close button is clicked"
 }, {
     name: "onShow",
     type: "Function()",
@@ -112,6 +122,6 @@ const props = [{
 export default () => (
     <>
         <DocHeading>API</DocHeading>
-        <PropsTable title="Modal" data={props}/>
+        <PropsTable title="Modal" data={props} />
     </>
 );

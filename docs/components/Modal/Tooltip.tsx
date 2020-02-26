@@ -10,7 +10,7 @@ export default () => {
             <Button onClick={toggle}>Launch demo modal</Button>
             <Modal
                 visible={visible}
-                titleText="Modal title"
+                title="Modal title"
                 onCancel={toggle}>
                 <h5>Popover in a modal</h5>
                 <p>

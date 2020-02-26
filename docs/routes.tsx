@@ -23,6 +23,7 @@ import Modal from "./components/Modal";
 import NavDemo from "./components/NavDemo";
 import Navbar from "./components/Navbar";
 import Popover from "./components/Popover";
+import Progress from "./components/Progress";
 import Tab from "./components/Tabs";
 import Toast from "./components/Toast";
 import Tooltip from "./components/Tooltip";
@@ -113,6 +114,10 @@ export const ROUTES = [
         path: "/components/popover",
         component: Popover,
         name: "Popover"
+    },{
+        path: "/components/progress",
+        component: Progress,
+        name: "Progress"
     },
     {
         path: "/components/tabs",

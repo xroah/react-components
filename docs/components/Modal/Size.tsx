@@ -18,21 +18,21 @@ export default () => {
             </Button.Group>
             <Modal
                 visible={xlVisible}
-                titleText="Extra large modal"
+                title="Extra large modal"
                 size="xl"
                 onCancel={toggleXl}>
                 Woohoo, you're reading this text in a modal!
             </Modal>
             <Modal
                 visible={lgVisible}
-                titleText="Large modal"
+                title="Large modal"
                 size="lg"
                 onCancel={toggleLg}>
                 Woohoo, you're reading this text in a modal!
             </Modal>
             <Modal
                 visible={smVisible}
-                titleText="Small modal"
+                title="Small modal"
                 size="sm"
                 onCancel={toggleSm}>
                 Woohoo, you're reading this text in a modal!

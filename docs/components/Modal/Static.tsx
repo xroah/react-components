@@ -10,7 +10,7 @@ export default () => {
             <Button onClick={toggle}>Launch static backdrop modal</Button>
             <Modal
                 visible={visible}
-                titleText="Modal title"
+                title="Modal title"
                 backdrop="static"
                 onCancel={toggle}>
                 I will not close if you click outside me.

@@ -11,7 +11,7 @@ export default () => {
             <Button onClick={toggle}>Launch demo modal</Button>
             <Modal
                 visible={visible}
-                titleText="Modal title"
+                title="Modal title"
                 scrollable
                 onCancel={toggle}>
                 {content}

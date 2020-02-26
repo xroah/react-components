@@ -13,7 +13,8 @@
     border-radius: .25rem;
 }
 
-.bd-example .input-group + .input-group {
+.bd-example .input-group + .input-group,
+.bd-example .progress + .progress {
     margin: 1rem 0;
 }
 
