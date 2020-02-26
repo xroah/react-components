@@ -55,7 +55,7 @@ export default function Progress(props: ProgressProps) {
                 return React.cloneElement(c, { __isChild__: true });
             }
 
-            return null;
+            return c;
         });
 
         return React.cloneElement(wrapper, { style }, _children);

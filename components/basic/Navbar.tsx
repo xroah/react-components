@@ -72,10 +72,9 @@ Navbar.Toggle = function NavbarToggle(props: React.ButtonHTMLAttributes<HTMLButt
     const {
         className,
         type = "button",
+        children,
         ...otherProps
     } = props;
-
-    delete otherProps.children;
 
     return (
         <button
@@ -87,6 +86,7 @@ Navbar.Toggle = function NavbarToggle(props: React.ButtonHTMLAttributes<HTMLButt
                 )
             } {...otherProps}>
             <span className="navbar-toggler-icon" />
+            {children}
         </button>
     );
 }
