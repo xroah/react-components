@@ -63,8 +63,8 @@ export function emulateTransitionEnd(el: HTMLElement, handler: Function) {
     };
 
     el.addEventListener("transitionend", _handler);
-    timer = setTimeout(_handler, duration * 1000 + DELAY);
-
+    timer = setTimeout(_handler, duration + DELAY);
+    
     return cancel;
 }
 
