@@ -1,14 +1,8 @@
 import * as React from "react";
-import { createPortal, findDOMNode } from "react-dom";
-import PropTypes from "prop-types";
 import {
     ElementRect,
-    handleFuncProp,
-    throttle,
     getElementRect
 } from "../utils";
-import Fade from "../Fade";
-import { PopupContext } from "../contexts";
 
 export type position = "top" | "right" | "bottom" | "left";
 
