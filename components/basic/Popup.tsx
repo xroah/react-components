@@ -8,6 +8,7 @@ import {
 import Fade from "../Fade";
 import { PopupContext } from "../contexts";
 import Align from "./Align";
+import NoTransition from "../NoTransition";
 
 export type position = "top" | "right" | "bottom" | "left";
 
@@ -40,7 +41,7 @@ export interface PopupProps extends PopupCommonProps {
     alignment?: "left" | "center" | "right";
     //below props are internal temporarily
     mountTo?: HTMLElement;
-    unmountOnclose?: boolean;
+    unmountOnExit?: boolean;
     node?: HTMLElement | null;
     verticalCenter?: boolean;
     onClickOutside?: Function;
@@ -211,7 +212,7 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
 
     handleEntering = () => {
         //update position, in case calc incorrectly(invisible) when fade in
-        this.updatePosition();
+        this.handleResize();
     }
 
     handleExit = (node: HTMLElement) => {
@@ -223,10 +224,10 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
     handleExited = (node: HTMLElement) => {
         const {
             onHidden,
-            unmountOnclose
+            unmountOnExit
         } = this.props;
 
-        unmountOnclose && this.removeNode();
+        unmountOnExit && this.removeNode();
         handleFuncProp(onHidden)(node);
     };
 
@@ -241,7 +242,7 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
                 placeholder,
                 alignment,
                 placement: propPlacement,
-                unmountOnclose,
+                unmountOnExit,
                 node,
                 verticalCenter,
                 flip,
@@ -310,32 +311,35 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
                 </PopupContext.Provider>
             </div>
         );
+        const align = (
+            <Align
+                ref={this.alignRef}
+                style={style}
+                flip={flip}
+                offset={offset}
+                target={node}
+                placement={propPlacement}
+                alignment={alignment}
+                verticalCenter={verticalCenter}>
+                {child}
+            </Align>
+        );
+        const transitionProps = {
+            appear: true,
+            onEnter: this.handleEnter,
+            onEntering: this.handleEntering,
+            onEntered: this.handleEntered,
+            onExit: this.handleExit,
+            onExited: this.handleExited,
+            in: !!visible,
+            unmountOnExit: unmountOnExit,
+        }
 
         return createPortal(
             (
-                <Fade
-                    appear
-                    toggleDisplay
-                    onEnter={this.handleEnter}
-                    onEntering={this.handleEntering}
-                    onEntered={this.handleEntered}
-                    onExit={this.handleExit}
-                    onExited={this.handleExited}
-                    in={!!visible}
-                    unmountOnExit={unmountOnclose}
-                    animation={fade}>
-                    <Align
-                        ref={this.alignRef}
-                        style={style}
-                        flip={flip}
-                        offset={offset}
-                        target={node}
-                        placement={propPlacement}
-                        alignment={alignment}
-                        verticalCenter={verticalCenter}>
-                        {child}
-                    </Align>
-                </Fade>
+                fade ?
+                    <Fade {...transitionProps}>{align}</Fade> :
+                    <NoTransition {...transitionProps}>{align}</NoTransition>
             ),
             mountNode
         );

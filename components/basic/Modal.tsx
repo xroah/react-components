@@ -9,6 +9,7 @@ import {
 } from "../utils";
 import Button from "./Button";
 import Fade from "../Fade";
+import NoTransition from "../NoTransition";
 import { createPortal } from "react-dom";
 import { ModalContext } from "../contexts";
 
@@ -49,7 +50,8 @@ const stringOrNode = PropTypes.oneOfType([PropTypes.string, PropTypes.node]);
 let zIndex = 2000;
 
 interface ModalState {
-    className?: string;
+    className?: string; //for backdrop="static"
+    display?: string;//for toggle display when shown or hidden
 }
 
 export default class Modal extends React.Component<ModalProps, ModalState> {
@@ -97,14 +99,14 @@ export default class Modal extends React.Component<ModalProps, ModalState> {
         onHidden: PropTypes.func
     };
 
-    container: HTMLElement | null = null;
-    dialogRef = React.createRef<HTMLDivElement>();
-    activeElement: Element | null = null;
-    modalRef = React.createRef<HTMLDivElement>();
+    private container: HTMLElement | null = null;
+    private dialogRef = React.createRef<HTMLDivElement>();
+    private activeElement: Element | null = null;
+    private modalRef = React.createRef<HTMLDivElement>();
+    private previousBodyPadding: string = "";
+    private previousBodyClassName: string = "";
     state: ModalState = {};
-    previousBodyPadding: string = "";
-    previousBodyClassName: string = "";
-
+    
     constructor(props: ModalProps) {
         super(props);
 
@@ -227,6 +229,9 @@ export default class Modal extends React.Component<ModalProps, ModalState> {
         }
 
         handleFuncProp(this.props.onShow)();
+        this.setState({
+            display: "block"
+        });
     }
 
     handleEntered = () => {
@@ -252,6 +257,9 @@ export default class Modal extends React.Component<ModalProps, ModalState> {
         this.previousBodyClassName = this.previousBodyPadding = "";
 
         handleFuncProp(this.props.onHidden)();
+        this.setState({
+            display: ""
+        });
     }
 
     getHeader() {
@@ -342,7 +350,8 @@ export default class Modal extends React.Component<ModalProps, ModalState> {
                 ...otherProps
             },
             state: {
-                className: stateClass
+                className: stateClass,
+                display
             }
         } = this;
 
@@ -386,6 +395,41 @@ export default class Modal extends React.Component<ModalProps, ModalState> {
         const parent = mountTo || document.body;
         const _header = this.getHeader();
         const _footer = this.getFooter();
+        const modal = (
+            <div
+                style={{ display }}
+                className={classes}
+                onClick={this.handleClickBackdrop}
+                onKeyDown={this.handleKeyDown}
+                ref={this.modalRef}
+                tabIndex={-1}>
+                <div
+                    className={dialogClasses}
+                    ref={this.dialogRef}
+                    {...otherProps}>
+                    <div className="modal-content">
+                        {_header}
+                        <div className="modal-body">
+                            {children}
+                        </div>
+                        {_footer}
+                    </div>
+                </div>
+            </div>
+        );
+        const backdropEl = <div className="modal-backdrop" />;
+        const transitionProps = {
+            in: !!visible,
+            appear: true,
+            onEnter: this.handleEnter,
+            onEntered: this.handleEntered,
+            onExit: this.handleExit,
+            onExited: this.handleExited,
+        };
+        const backdropProps = {
+            in: !!visible,
+            unmountOnExit: true
+        };
 
         if (!this.container) {
             const div = this.container = document.createElement("div");
@@ -398,40 +442,16 @@ export default class Modal extends React.Component<ModalProps, ModalState> {
 
         return createPortal(
             <ModalContext.Provider value={{ isModal: true, visible: !!visible }}>
-                <Fade
-                    in={!!visible}
-                    animation={fade}
-                    appear
-                    toggleDisplay
-                    onEnter={this.handleEnter}
-                    onEntered={this.handleEntered}
-                    onExit={this.handleExit}
-                    onExited={this.handleExited}>
-                    <div
-                        className={classes}
-                        onClick={this.handleClickBackdrop}
-                        onKeyDown={this.handleKeyDown}
-                        ref={this.modalRef}
-                        tabIndex={-1}>
-                        <div
-                            className={dialogClasses}
-                            ref={this.dialogRef}
-                            {...otherProps}>
-                            <div className="modal-content">
-                                {_header}
-                                <div className="modal-body">
-                                    {children}
-                                </div>
-                                {_footer}
-                            </div>
-                        </div>
-                    </div>
-                </Fade>
+                {
+                    fade ?
+                        <Fade {...transitionProps}>{modal}</Fade> :
+                        <NoTransition {...transitionProps}>{modal}</NoTransition>
+                }
                 {
                     !!backdrop && (
-                        <Fade animation={fade} in={!!visible} unmountOnExit>
-                            <div className="modal-backdrop" />
-                        </Fade>
+                        fade ?
+                            <Fade {...backdropProps}>{backdropEl}</Fade> :
+                            <NoTransition showClass="show" {...backdropProps}>{backdropEl}</NoTransition>
                     )
                 }
             </ModalContext.Provider>,

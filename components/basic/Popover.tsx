@@ -51,7 +51,7 @@ export default function Popover(props: PopoverProps) {
     );
     return (
         <Overlay
-            unmountOnclose
+            unmountOnExit
             alignment="center"
             placement={placement}
             popup={popup}

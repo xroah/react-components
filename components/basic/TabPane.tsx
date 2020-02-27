@@ -3,11 +3,12 @@ import PropTypes from "prop-types";
 import { classNames, handleFuncProp } from "../utils";
 import Fade from "../Fade";
 import { TabContext } from "../contexts";
+import NoTransition from "../NoTransition";
 
 export interface TabPaneProps extends React.HTMLAttributes<HTMLElement> {
     tab?: string | React.ReactNode;
     disabled?: boolean;
-    panelKey?: string; 
+    panelKey?: string;
     onHidden?: () => void;
 }
 
@@ -34,20 +35,24 @@ export default function TabPane(props: TabPaneProps) {
                     fade
                 }) => {
                     const _in = a === panelKey && !p;
+                    const transitionProps = {
+                        in: _in,
+                        onExited: handleExited
+                    };
+                    const pane = (
+                        <div className={
+                            classNames(
+                                className,
+                                "tab-pane",
+                                (_in || p === panelKey) && "active"
+                            )
+                        } {...otherProps} />
+                    );
 
                     return (
-                        <Fade
-                            in={_in}
-                            animation={fade}
-                            onExited={handleExited}>
-                            <div className={
-                                classNames(
-                                    className,
-                                    "tab-pane",
-                                    (_in || p === panelKey) && "active"
-                                )
-                            } {...otherProps} />
-                        </Fade>
+                        fade ?
+                            <Fade {...transitionProps}>{pane}</Fade> :
+                            <NoTransition {...transitionProps}>{pane}</NoTransition>
                     );
                 }
             }

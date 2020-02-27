@@ -75,7 +75,7 @@ export default function Tooltip(props: TooltipProps) {
             placement={placement}
             popup={popup}
             alignment="center"
-            unmountOnclose
+            unmountOnExit
             verticalCenter
             {...otherProps}>
             {children}

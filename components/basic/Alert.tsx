@@ -1,6 +1,7 @@
 import * as React from "react";
 import PropTypes from "prop-types";
 import Fade from "../Fade";
+import NoTransition from "../NoTransition";
 import Button from "./Button";
 import {
     classNames,
@@ -79,18 +80,19 @@ export default function Alert(props: AlertProps) {
             {button}
         </div>
     );
+    const transitionProps = {
+        in: !!visible,
+        unmountOnExit: true,
+        onEnter: handleEnter,
+        onEntered: handleEntered,
+        onExit: handleExit,
+        onExited: handleExited
+    };
 
     return (
-        <Fade
-            in={!!visible}
-            animation={fade}
-            onEnter={handleEnter}
-            onEntered={handleEntered}
-            onExit={handleExit}
-            onExited={handleExited}
-            unmountOnExit>
-            {child}
-        </Fade>
+        fade ?
+            <Fade {...transitionProps}>{child}</Fade> :
+            <NoTransition {...transitionProps}>{child}</NoTransition>
     );
 }
 

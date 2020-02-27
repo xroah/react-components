@@ -15,7 +15,7 @@ export { default as Input } from "./basic/Input";
 export { default as Jumbotron } from "./basic/Jumbotron";
 export { default as ListGroup } from "./basic/ListGroup";
 export { default as Media } from "./basic/Media";
-export { default as Modal } from "./extra/ModalExtra";
+export { default as Modal } from "./basic/Modal";
 export { default as Nav } from "./basic/Nav";
 export { default as Navbar } from "./basic/Navbar";
 export { default as Pagination } from "./basic/Pagination";

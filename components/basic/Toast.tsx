@@ -2,6 +2,7 @@ import * as React from "react";
 import PropTypes from "prop-types";
 import Fade from "../Fade";
 import { classNames, handleFuncProp } from "../utils";
+import NoTransition from "../NoTransition";
 
 export interface ToastProps extends React.HTMLAttributes<HTMLElement> {
     title?: string;
@@ -156,24 +157,28 @@ export default class Toast extends React.Component<ToastProps> {
         delete otherProps.delay;
         delete otherProps.onClose;
 
-        return (
-            <Fade
-                in={!!visible}
-                unmountOnExit
-                animation={fade}
-                {...otherProps}>
-                <div className={
-                    classNames(
-                        className,
-                        "toast"
-                    )
-                }>
-                    {this.renderHeader()}
-                    <div className="toast-body">
-                        {children}
-                    </div>
+        const toast = (
+            <div className={
+                classNames(
+                    className,
+                    "toast"
+                )
+            } {...otherProps}>
+                {this.renderHeader()}
+                <div className="toast-body">
+                    {children}
                 </div>
-            </Fade>
+            </div>
+        );
+        const transitionProps = {
+            in: !!visible,
+            unmountOnExit: true
+        };
+
+        return (
+            fade ?
+                <Fade {...transitionProps}>{toast}</Fade> :
+                <NoTransition showClass="show" {...transitionProps}>{toast}</NoTransition>
         );
     }
 

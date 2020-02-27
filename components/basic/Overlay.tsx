@@ -226,7 +226,7 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
         delete otherProps.onClickOutside;
         delete otherProps.fade;
         delete otherProps.flip;
-        delete otherProps.unmountOnclose;
+        delete otherProps.unmountOnExit;
         delete otherProps.verticalCenter;
         delete otherProps.trigger;
         delete otherProps.visible;
@@ -295,7 +295,7 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
                 onShown,
                 onHidden,
                 onHide,
-                unmountOnclose,
+                unmountOnExit,
                 verticalCenter,
                 onClickOutside
             },
@@ -312,7 +312,7 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
             offset,
             placement,
             alignment,
-            unmountOnclose,
+            unmountOnExit,
             verticalCenter,
             onShow,
             onShown,
