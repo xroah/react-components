@@ -33,7 +33,17 @@ export default function PaginationItem(props: ItemProps) {
             <a 
             href="#" 
             className="page-link"
+            tabIndex={disabled ? -1 : undefined}
             onClick={handleClick}>{children}</a>
         </li>
     );
 }
+
+PaginationItem.propTypes = {
+    active: PropTypes.bool,
+    disabled: PropTypes.bool
+};
+PaginationItem.defaultProps = {
+    active: false,
+    disabled: false
+};

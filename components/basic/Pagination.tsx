@@ -5,7 +5,7 @@ import PaginationItem from "./PaginationItem";
 
 export interface PaginationProps extends React.HTMLAttributes<HTMLElement> {
     size?: "lg" | "sm";
-    alignment?: "center" | "right";
+    alignment?:"left" | "center" | "right";
 }
 
 export default function Pagination(props: PaginationProps) {
@@ -34,7 +34,7 @@ export default function Pagination(props: PaginationProps) {
 
 Pagination.propTypes = {
     size: PropTypes.oneOf(["lg", "sm"]),
-    alignment: PropTypes.oneOf(["center", "right"])
+    alignment: PropTypes.oneOf(["left", "center", "right"])
 };
 
 Pagination.Item = PaginationItem;
