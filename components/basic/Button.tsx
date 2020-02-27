@@ -1,12 +1,11 @@
 import * as React from "react";
 import PropTypes from "prop-types";
-import ButtonGroup,{ButtonGroupProps} from "./ButtonGroup";
+import ButtonGroup, { ButtonGroupProps } from "./ButtonGroup";
 import {
     createComponentByClass,
     classNames,
     variantType,
-    variantArray,
-    handleFuncProp
+    variantArray
 } from "../utils";
 
 export interface ButtonProps extends React.HTMLAttributes<HTMLElement> {
@@ -20,7 +19,14 @@ export interface ButtonProps extends React.HTMLAttributes<HTMLElement> {
     type?: "button" | "submit" | "reset";
 }
 
-const Button: any = React.forwardRef(
+interface ButtonInterface {
+    Group: React.FunctionComponent<ButtonGroupProps>;
+    Toolbar: React.FunctionComponent<React.HTMLAttributes<HTMLElement>>
+}
+
+type ButtonType = ButtonInterface & React.ForwardRefExoticComponent<ButtonProps & React.RefAttributes<HTMLButtonElement>>;
+
+const Button = React.forwardRef(
     ({
         variant,
         size,
@@ -32,7 +38,9 @@ const Button: any = React.forwardRef(
         type,
         disabled,
         ...otherProps
-    }: ButtonProps, ref: React.Ref<any>) => {
+    }: ButtonProps,
+        ref: React.Ref<HTMLButtonElement>
+    ) => {
         const classes = classNames(
             className,
             "btn",
@@ -65,10 +73,10 @@ const Button: any = React.forwardRef(
             children
         );
     }
-);
+) as ButtonType;
 
 Button.propTypes = {
-    variant: PropTypes.oneOf([...variantArray, "link"]),
+    variant: PropTypes.oneOf([...variantArray, "link"] as any),
     outline: PropTypes.bool,
     size: PropTypes.string,
     active: PropTypes.bool,

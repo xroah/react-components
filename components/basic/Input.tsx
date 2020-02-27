@@ -2,7 +2,7 @@ import * as React from "react";
 import PropTypes from "prop-types";
 import { classNames, createComponentByClass } from "../utils";
 import { InputGroupContext } from "../contexts";
-import InputGroup from "./InputGroup";
+import InputGroup, { InputGroupProps } from "./InputGroup";
 
 export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement & HTMLTextAreaElement> {
     prepend?: React.ReactNode;
@@ -11,6 +11,13 @@ export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement &
     variant?: "input" | "textarea"
     plaintext?: boolean;
 }
+
+interface InputInterface {
+    Text: React.FunctionComponent<React.HTMLAttributes<HTMLElement>>;
+    Group: React.FunctionComponent<InputGroupProps>;
+}
+
+type InputType = InputInterface & React.ForwardRefExoticComponent<InputProps & React.RefAttributes<HTMLInputElement & HTMLTextAreaElement>>;
 
 function handleAddon(addon: any) {
     if (!React.isValidElement(addon)) {
@@ -91,7 +98,7 @@ const Input = React.forwardRef(
         );
 
     }
-) as any;
+) as InputType;
 
 Input.defaultProps = {
     type: "text",
@@ -118,6 +125,6 @@ Input.Text = createComponentByClass({
     className: "input-group-text",
     tag: "span"
 });
-Input.Group = InputGroup;
+Input.Group = InputGroup as React.FunctionComponent<InputGroupProps>;
 
 export default Input;
