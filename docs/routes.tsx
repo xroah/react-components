@@ -22,8 +22,10 @@ import Media from "./components/Media";
 import Modal from "./components/Modal";
 import NavDemo from "./components/NavDemo";
 import Navbar from "./components/Navbar";
+import Pagination from "./components/Pagination";
 import Popover from "./components/Popover";
 import Progress from "./components/Progress";
+import Spinner from "./components/Spinner";
 import Tab from "./components/Tabs";
 import Toast from "./components/Toast";
 import Tooltip from "./components/Tooltip";
@@ -111,13 +113,24 @@ export const ROUTES = [
         name: "Navbar"
     },
     {
+        path: "/components/pagination",
+        component: Pagination,
+        name: "Pagination"
+    },
+    {
         path: "/components/popover",
         component: Popover,
         name: "Popover"
-    },{
+    },
+    {
         path: "/components/progress",
         component: Progress,
         name: "Progress"
+    },
+    {
+        path: "/components/spinner",
+        component: Spinner,
+        name: "Spinner"
     },
     {
         path: "/components/tabs",

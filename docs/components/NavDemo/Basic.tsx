@@ -1,21 +1,13 @@
 import * as React from "react";
 import { Nav } from "reap-ui";
 
-const { Item, Link } = Nav;
+const { Link } = Nav;
 
 export default () => (
     <Nav>
-        <Item>
-            <Link active href="#">Active</Link>
-        </Item>
-        <Item>
-            <Link href="#">Link</Link>
-        </Item>
-        <Item>
-            <Link href="#">Link</Link>
-        </Item>
-        <Item>
-            <Link disabled href="#">Disabled</Link>
-        </Item>
+        <Link active href="#">Active</Link>
+        <Link href="#">Link</Link>
+        <Link href="#">Link</Link>
+        <Link disabled href="#">Disabled</Link>
     </Nav>
 );

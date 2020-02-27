@@ -41,7 +41,7 @@ const AlertProps = [{
 }, {
     name: "onClose",
     type: "Function",
-    description: "If dismissible is true the callback is invoked immediately when the dismiss button is clicked, otherwise it is invoked when visible changes from true to false"
+    description: "If dismissible is true the callback is invoked immediately once the dismiss button is clicked, otherwise it will be invoked when visible changes from true to false"
 }, {
     name: "onClosed",
     type: "Function",

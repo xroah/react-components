@@ -5,17 +5,9 @@ const { Item, Link } = Nav;
 
 export default () => (
     <Nav variant="pill">
-        <Item>
-            <Link active href="#">Active</Link>
-        </Item>
-        <Item>
-            <Link href="#">Link</Link>
-        </Item>
-        <Item>
-            <Link href="#">Link</Link>
-        </Item>
-        <Item>
-            <Link disabled href="#">Disabled</Link>
-        </Item>
+        <Link active href="#">Active</Link>
+        <Link href="#">Link</Link>
+        <Link href="#">Link</Link>
+        <Link disabled href="#">Disabled</Link>
     </Nav>
 );

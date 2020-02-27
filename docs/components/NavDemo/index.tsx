@@ -54,7 +54,7 @@ export default () => (
             title="Tabs"
             component={<Tabs />}
             source={TabsSrc}>
-            Takes the basic nav from above and set <code>variant="tab"</code> to generate a tabbed interface. Use them to create tabbable regions with our <code>Tabs</code> component.
+            Takes the basic nav from above and set <code>variant="tab"</code> to generate a tabbed interface(you should use <code>Nav.Item</code> to clear border-bottom when the tab is active). Use them to create tabbable regions with our <code>Tabs</code> component.
         </DemoExample>
         <DemoExample
             title="Pills"
@@ -74,6 +74,7 @@ export default () => (
             For equal-width elements, use <code>equalWidth</code> prop. All horizontal space will be occupied, but unlike the fill above, every nav item will be the same width.
         </DemoExample>
         <DocHeading>Using dropdowns</DocHeading>
+        <div>You should use with <code>Nav.Item</code> for some extra styles.</div>
         <DemoExample
             title="Tabs with dropdowns"
             component={<TabDropdown />}
