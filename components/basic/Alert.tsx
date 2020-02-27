@@ -10,8 +10,9 @@ import {
     handleFuncProp,
     createComponentByClass
 } from "../utils";
+import { CommonProps } from "../CommonPropsInterface";
 
-export interface AlertProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface AlertProps extends CommonProps<HTMLDivElement> {
     variant?: variantType;
     fade?: boolean;
     dismissible?: boolean;

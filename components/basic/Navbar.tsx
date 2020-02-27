@@ -9,8 +9,9 @@ import {
 import Collapse, { CollapseProps } from "./Collapse";
 import { NavbarContext } from "../contexts";
 import NavbarBrand from "./NavbarBrand";
+import { CommonProps, ButtonCommonProps } from "../CommonPropsInterface";
 
-export interface NavbarProps extends React.HTMLAttributes<HTMLElement> {
+export interface NavbarProps extends CommonProps<HTMLElement> {
     variant?: "light" | "dark";
     bg?: variantType;
     expand?: "sm" | "md" | "lg" | "xl" | boolean;
@@ -68,7 +69,7 @@ Navbar.Collapse = function NavbarCollapse(props: CollapseProps) {
         } {...otherProps} />
     )
 }
-Navbar.Toggle = function NavbarToggle(props: React.ButtonHTMLAttributes<HTMLButtonElement>) {
+Navbar.Toggle = function NavbarToggle(props: ButtonCommonProps<HTMLButtonElement>) {
     const {
         className,
         type = "button",

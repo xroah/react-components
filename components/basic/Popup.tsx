@@ -9,10 +9,11 @@ import Fade from "../Fade";
 import { PopupContext } from "../contexts";
 import Align from "./Align";
 import NoTransition from "../NoTransition";
+import { CommonPropsWithoutTitle } from "../CommonPropsInterface";
 
 export type position = "top" | "right" | "bottom" | "left";
 
-export interface PopupCommonProps extends React.HTMLAttributes<HTMLElement> {
+export interface PopupCommonProps extends CommonPropsWithoutTitle<HTMLElement> {
     placement?: position;
     visible?: boolean;
     flip?: boolean;
@@ -239,7 +240,6 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
                 fade,
                 visible,
                 offset,
-                placeholder,
                 alignment,
                 placement: propPlacement,
                 unmountOnExit,

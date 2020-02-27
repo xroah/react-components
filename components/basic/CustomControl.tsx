@@ -1,10 +1,11 @@
 import * as React from "react";
 import PropTypes from "prop-types";
 import { classNames } from "../utils";
+import { InputCommonProps } from "../CommonPropsInterface";
 
 let uuid = 0;
 
-export interface CustomControlProps extends React.InputHTMLAttributes<HTMLInputElement> {
+export interface CustomControlProps extends InputCommonProps<HTMLInputElement> {
     inline?: boolean;
 }
 

@@ -12,7 +12,7 @@ const UNMOUNTED = "unmounted";
 
 type stateType = "enter" | "entering" | "entered" | "exit" | "exiting" | "exited";
 
-export interface CSSTransitionProps extends React.HTMLAttributes<HTMLElement> {
+export interface CSSTransitionProps {
     in: boolean;
     timeout?: number;
     unmountOnExit?: boolean;

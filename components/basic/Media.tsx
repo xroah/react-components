@@ -1,8 +1,9 @@
 import * as React from "react";
 import PropTypes from "prop-types";
 import { classNames } from "../utils";
+import { CommonProps } from "../CommonPropsInterface";
 
-export interface MediaProps extends React.HTMLAttributes<HTMLElement> {
+export interface MediaProps extends CommonProps<HTMLDivElement> {
     img?: string | React.ReactNode;
     imgAlt?: string;
     imgTitle?: string;

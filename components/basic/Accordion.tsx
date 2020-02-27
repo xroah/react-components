@@ -3,10 +3,11 @@ import PropTypes from "prop-types";
 import AccordionPanel from "./AccordionPanel";
 import { classNames, handleFuncProp, chainFunction } from "../utils";
 import { AccordionContext } from "../contexts"
+import { CommonProps } from "../CommonPropsInterface";
 
 type keyType = number | string | number[] | string[];
 
-export interface AccordionProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface AccordionProps extends CommonProps<HTMLDivElement> {
     multiple?: boolean;
     activeKey?: keyType;
     defaultActiveKey?: keyType;

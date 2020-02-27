@@ -1,8 +1,9 @@
 import * as React from "react";
 import PropTypes from "prop-types";
 import { classNames } from "../utils";
+import { CommonProps } from "../CommonPropsInterface";
 
-export interface ContainerProps extends React.HTMLAttributes<HTMLElement> {
+export interface ContainerProps extends CommonProps<HTMLElement> {
     tag?: React.ElementType;
     fluid?: boolean;
     size?: "sm" | "md" | "lg" | "md";

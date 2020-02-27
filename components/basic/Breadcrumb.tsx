@@ -1,7 +1,8 @@
 import * as React from "react";
 import BreadcrumbItem from "./BreadCrumbItem";
+import { CommonProps } from "../CommonPropsInterface";
 
-function Breadcrumb(props: React.HTMLAttributes<HTMLElement>) {
+function Breadcrumb(props: CommonProps<HTMLElement>) {
     const { className, children, ...otherProps } = props;
 
     return (

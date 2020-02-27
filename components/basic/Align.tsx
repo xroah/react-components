@@ -3,10 +3,11 @@ import {
     ElementRect,
     getElementRect
 } from "../utils";
+import { CommonProps } from "../CommonPropsInterface";
 
 export type position = "top" | "right" | "bottom" | "left";
 
-export interface AlignProps extends React.HTMLAttributes<HTMLElement> {
+export interface AlignProps extends CommonProps<HTMLElement> {
     placement?: position;
     flip?: boolean;
     offset?: number | number[];

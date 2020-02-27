@@ -1,8 +1,9 @@
 import * as React from "react";
 import PropTypes from "prop-types";
 import { classNames } from "../utils";
+import { CommonProps } from "../CommonPropsInterface";
 
-export interface RowProps extends React.HTMLAttributes<HTMLElement> {
+export interface RowProps extends CommonProps<HTMLDivElement> {
     noGutters?: boolean;
     alignment?: "top" | "center" | "bottom";
     justify?: "left" | "center" | "right" | "between" | "around";

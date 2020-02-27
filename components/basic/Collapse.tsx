@@ -6,8 +6,9 @@ import {
     reflow
 } from "../utils";
 import CSSTransition from "../CSSTransition";
+import { CommonProps } from "../CommonPropsInterface";
 
-export interface CollapseProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface CollapseProps extends CommonProps<HTMLDivElement> {
     isOpen?: boolean;
     onShow?: Function;
     onShown?: Function;

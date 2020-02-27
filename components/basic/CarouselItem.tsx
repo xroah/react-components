@@ -1,8 +1,9 @@
 import * as React from "react";
 import PropTypes from "prop-types";
-import {classNames} from "../utils";
+import { classNames } from "../utils";
+import { CommonProps } from "../CommonPropsInterface";
 
-export interface ItemProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface ItemProps extends CommonProps<HTMLDivElement> {
     caption?: React.ReactNode;
 }
 

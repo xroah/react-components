@@ -6,8 +6,9 @@ import {
     classNames
 } from "../utils";
 import { AccordionContext } from "../contexts";
+import { CommonProps } from "../CommonPropsInterface";
 
-interface PanelProps extends React.HTMLAttributes<HTMLDivElement> {
+interface PanelProps extends CommonProps<HTMLDivElement> {
     header: React.ReactNode;
     panelKey?: string | number; 
     onHeaderClick?: (key?: string, evt?: React.MouseEvent) => void; 

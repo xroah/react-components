@@ -3,8 +3,9 @@ import PropTypes from "prop-types";
 import Col, { ColProps } from "./Col";
 import { classNames } from "../utils";
 import { FormContext } from "../contexts";
+import { CommonProps } from "../CommonPropsInterface";
 
-export interface FormItemProps extends React.HTMLAttributes<HTMLElement> {
+export interface FormItemProps extends CommonProps<HTMLElement> {
     horizontal?: boolean;
     wrapperCol?: ColProps;
     label?: boolean;

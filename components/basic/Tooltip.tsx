@@ -5,7 +5,7 @@ import { PopupContext } from "../contexts";
 import { classNames } from "../utils";
 
 export interface TooltipProps extends CommonProps {
-    text: string | React.ReactNode;
+    title: string | React.ReactNode;
 }
 
 export function getTransform(placement: any) {
@@ -39,7 +39,7 @@ export function handleArrowStyle(left: number, top: number, placement: any) {
 
 export default function Tooltip(props: TooltipProps) {
     const {
-        text,
+        title,
         children,
         placement,
         style = {},
@@ -48,7 +48,7 @@ export default function Tooltip(props: TooltipProps) {
     style.position = "relative";
     style.willChange = "transform";
 
-    const popup = text ? (
+    const popup = title ? (
         <PopupContext.Consumer>
             {
                 ({ arrowLeft, arrowTop, placement: p }) => (
@@ -62,7 +62,7 @@ export default function Tooltip(props: TooltipProps) {
                         <div className="arrow"
                             style={handleArrowStyle(arrowLeft, arrowTop, placement)} />
                         <div className="tooltip-inner">
-                            {text}
+                            {title}
                         </div>
                     </div>
                 )
@@ -88,7 +88,7 @@ Tooltip.defaultProps = {
     placement: "top"
 };
 Tooltip.propTypes = {
-    text: PropTypes.oneOfType([
+    title: PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.node
     ]).isRequired

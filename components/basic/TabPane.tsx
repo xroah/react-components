@@ -4,8 +4,9 @@ import { classNames, handleFuncProp } from "../utils";
 import Fade from "../Fade";
 import { TabContext } from "../contexts";
 import NoTransition from "../NoTransition";
+import { CommonProps } from "../CommonPropsInterface";
 
-export interface TabPaneProps extends React.HTMLAttributes<HTMLElement> {
+export interface TabPaneProps extends CommonProps<HTMLDivElement> {
     tab?: string | React.ReactNode;
     disabled?: boolean;
     panelKey?: string;

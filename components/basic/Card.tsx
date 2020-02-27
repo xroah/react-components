@@ -7,8 +7,9 @@ import {
     variantArray
 } from "../utils";
 import CardTitle, { colorType, color } from "./CardTitle";
+import { CommonProps } from "../CommonPropsInterface";
 
-export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface CardProps extends CommonProps<HTMLDivElement> {
     header?: React.ReactNode;
     footer?: React.ReactNode;
     headerStyle?: React.CSSProperties;

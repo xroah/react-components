@@ -1,8 +1,9 @@
 import * as React from "react";
 import PropTypes from "prop-types";
 import { classNames } from "../utils";
+import { CommonProps } from "../CommonPropsInterface";
 
-export interface ButtonGroupProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface ButtonGroupProps extends CommonProps<HTMLDivElement> {
     size?: "sm" | "lg";
     vertical?: boolean;
 }

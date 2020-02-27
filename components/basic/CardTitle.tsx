@@ -1,10 +1,11 @@
 import * as React from "react";
 import PropTypes from "prop-types";
 import { variantType, classNames, variantArray } from "../utils";
+import { CommonProps } from "../CommonPropsInterface";
 
 export type colorType = variantType | "white" | "muted" | "white-50" | "black-50";
 
-export interface CardTitleProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface CardTitleProps extends CommonProps<HTMLDivElement> {
     subtitle?: string;
     subTitleColor?: colorType;
     color?: colorType;

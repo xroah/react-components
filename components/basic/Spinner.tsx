@@ -5,8 +5,9 @@ import {
     variantArray,
     variantType
 } from "../utils";
+import { CommonProps } from "../CommonPropsInterface";
 
-export interface SpinnerProps extends React.HTMLAttributes<HTMLElement> {
+export interface SpinnerProps extends CommonProps<HTMLDivElement> {
     variant?: variantType;
     animation: "border" | "grow";
     size?: "sm" | number;
@@ -35,7 +36,7 @@ export default function Spinner(props: SpinnerProps) {
     }
 
     return (
-        <div
+        <span
             className={
                 classNames(
                     className,
@@ -47,7 +48,7 @@ export default function Spinner(props: SpinnerProps) {
             style={style}
             {...otherProps}>
             {children}
-        </div>
+        </span>
     );
 }
 

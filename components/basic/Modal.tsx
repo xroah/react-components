@@ -12,9 +12,11 @@ import Fade from "../Fade";
 import NoTransition from "../NoTransition";
 import { createPortal } from "react-dom";
 import { ModalContext } from "../contexts";
+import { CommonPropsWithoutTitle } from "../CommonPropsInterface";
 
-export interface ModalCommonOptions extends React.HTMLAttributes<HTMLElement> {
+export interface ModalCommonOptions extends CommonPropsWithoutTitle<HTMLDivElement> {
     visible?: boolean;
+    title?: string | React.ReactNode;
     forceRender?: boolean;
     okText?: string | React.ReactNode;
     cancelText?: string | React.ReactNode;
@@ -73,6 +75,7 @@ export default class Modal extends React.Component<ModalProps, ModalState> {
     };
     static propTypes = {
         visible: PropTypes.bool,
+        title: PropTypes.oneOfType([PropTypes.node, PropTypes.string]),
         onOk: PropTypes.func,
         onCancel: PropTypes.func,
         okText: stringOrNode,
@@ -406,7 +409,7 @@ export default class Modal extends React.Component<ModalProps, ModalState> {
                 <div
                     className={dialogClasses}
                     ref={this.dialogRef}
-                    {...otherProps}>
+                    {...otherProps as any}>
                     <div className="modal-content">
                         {_header}
                         <div className="modal-body">

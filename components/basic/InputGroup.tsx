@@ -2,8 +2,9 @@ import * as React from "react";
 import PropTypes from "prop-types";
 import { classNames } from "../utils";
 import { InputGroupContext } from "../contexts";
+import { CommonProps } from "../CommonPropsInterface";
 
-export interface InputGroupProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface InputGroupProps extends CommonProps<HTMLDivElement> {
     size?: "sm" | "lg";
 }
 

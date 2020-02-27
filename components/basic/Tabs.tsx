@@ -4,8 +4,9 @@ import TabPane from "./TabPane";
 import Nav from "./Nav";
 import { handleFuncProp } from "../utils";
 import { TabContext } from "../contexts";
+import { CommonProps } from "../CommonPropsInterface";
 
-export interface TabsProps extends React.HTMLAttributes<HTMLElement> {
+export interface TabsProps extends CommonProps<HTMLDivElement> {
     defaultActiveKey?: string | number;
     activeKey?: string | number;
     pill?: boolean;

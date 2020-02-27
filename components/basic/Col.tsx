@@ -1,6 +1,7 @@
 import * as React from "react";
 import PropTypes from "prop-types";
 import { classNames } from "../utils";
+import { CommonProps } from "../CommonPropsInterface";
 
 type spanType = "auto" | boolean | number;
 
@@ -12,7 +13,7 @@ interface SizeObject {
 
 type sizeType = SizeObject | number | boolean | "auto";
 
-export interface ColProps extends React.HTMLAttributes<HTMLElement> {
+export interface ColProps extends CommonProps<HTMLDivElement> {
     span?: spanType;
     offset?: number;
     order?: number;

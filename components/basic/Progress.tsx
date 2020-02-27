@@ -5,8 +5,9 @@ import {
     variantType,
     variantArray
 } from "../utils";
+import { CommonProps } from "../CommonPropsInterface";
 
-export interface ProgressProps extends React.HTMLAttributes<HTMLElement> {
+export interface ProgressProps extends CommonProps<HTMLElement> {
     variant?: variantType;
     value?: number;
     striped?: boolean;

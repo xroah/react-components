@@ -5,8 +5,9 @@ import {
     handleFuncProp
 } from "../utils";
 import { DropdownContext } from "../contexts";
+import { CommonProps } from "../CommonPropsInterface";
 
-export interface ItemProps extends React.HTMLAttributes<HTMLElement> {
+export interface ItemProps extends CommonProps<HTMLElement> {
     tag?: React.ElementType;
     disabled?: boolean;
     active?: boolean;

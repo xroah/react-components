@@ -1,8 +1,9 @@
 import * as React from "react";
 import PropTypes from "prop-types";
 import { classNames } from "../utils";
+import { CommonProps } from "../CommonPropsInterface";
 
-export interface MenuProps extends React.HTMLAttributes<HTMLElement> {
+export interface MenuProps extends CommonProps<HTMLDivElement> {
     header?: React.ReactNode;
 }
 

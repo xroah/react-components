@@ -2,8 +2,9 @@ import * as React from "react";
 import PropTypes from "prop-types";
 import { classNames } from "../utils";
 import ListGroupItem from "./ListGroupItem";
+import { CommonProps } from "../CommonPropsInterface";
 
-export interface ListGroupProps extends React.HTMLAttributes<HTMLElement> {
+export interface ListGroupProps extends CommonProps<HTMLDivElement> {
     flush?: boolean;
     minWidth?: "sm" | "md" | "lg" | "xl";
     horizontal?: boolean;

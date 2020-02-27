@@ -7,8 +7,9 @@ import {
     reflow,
     classNames
 } from "../utils";
+import { CommonProps } from "../CommonPropsInterface";
 
-export interface CarouselProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface CarouselProps extends CommonProps<HTMLDivElement> {
     animation?: "slide" | "fade";
     controls?: boolean;
     indicators?: boolean;

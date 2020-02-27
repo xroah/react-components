@@ -3,9 +3,10 @@ import PropTypes from "prop-types";
 import Fade from "../Fade";
 import { classNames, handleFuncProp } from "../utils";
 import NoTransition from "../NoTransition";
+import { CommonPropsWithoutTitle } from "../CommonPropsInterface";
 
-export interface ToastProps extends React.HTMLAttributes<HTMLElement> {
-    title?: string;
+export interface ToastProps extends CommonPropsWithoutTitle<HTMLDivElement> {
+    title?: string | React.ReactNode;
     iconSize?: number;
     icon?: React.ReactNode;
     extra?: string;
@@ -23,7 +24,7 @@ export default class Toast extends React.Component<ToastProps> {
     private timer: NodeJS.Timeout | null = null;
 
     static propTypes = {
-        title: PropTypes.string,
+        title: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
         iconSize: PropTypes.number,
         extra: PropTypes.string,
         autoHide: PropTypes.bool,
@@ -147,7 +148,6 @@ export default class Toast extends React.Component<ToastProps> {
             ...otherProps
         } = this.props;
 
-        delete otherProps.title;
         delete otherProps.icon;
         delete otherProps.iconSize;
         delete otherProps.extra;
@@ -156,6 +156,7 @@ export default class Toast extends React.Component<ToastProps> {
         delete otherProps.header;
         delete otherProps.delay;
         delete otherProps.onClose;
+        delete otherProps.title;
 
         const toast = (
             <div className={
@@ -163,7 +164,7 @@ export default class Toast extends React.Component<ToastProps> {
                     className,
                     "toast"
                 )
-            } {...otherProps}>
+            } {...otherProps as any}>
                 {this.renderHeader()}
                 <div className="toast-body">
                     {children}

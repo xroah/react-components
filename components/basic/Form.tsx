@@ -4,8 +4,9 @@ import { classNames } from "../utils";
 import FormItem from "./FormItem";
 import { ColProps } from "./Col";
 import { FormContext } from "../contexts";
+import { FormCommonProps } from "../CommonPropsInterface";
 
-export interface FormProps extends React.HTMLAttributes<HTMLElement> {
+export interface FormProps extends FormCommonProps<HTMLFormElement> {
     inline?: boolean;
     labelCol?: ColProps;
     wrapperCol?: ColProps;

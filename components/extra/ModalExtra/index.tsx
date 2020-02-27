@@ -7,7 +7,6 @@ import {
 import Dialog, { modals } from "./Dialog";
 import PopupDialog from "./PopupDialog";
 import LoadingDialog from "./LoadingDialog";
-import { chainFunction } from "../../utils";
 
 type _Modal = typeof Modal & ExtraModal;
 

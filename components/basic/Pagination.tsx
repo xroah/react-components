@@ -2,8 +2,9 @@ import * as React from "react";
 import PropTypes from "prop-types";
 import { classNames } from "../utils";
 import PaginationItem from "./PaginationItem";
+import { CommonProps } from "../CommonPropsInterface";
 
-export interface PaginationProps extends React.HTMLAttributes<HTMLElement> {
+export interface PaginationProps extends CommonProps<HTMLUListElement> {
     size?: "lg" | "sm";
     alignment?:"left" | "center" | "right";
 }

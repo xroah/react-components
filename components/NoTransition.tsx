@@ -1,19 +1,11 @@
 import * as React from "react";
 import { handleFuncProp, classNames } from "./utils";
 import { findDOMNode } from "react-dom";
+import { CSSTransitionProps } from "./CSSTransition";
 
 //compatible with CSSTransition(some components animation is configurable)
-export interface NoTransitionProps extends React.HTMLAttributes<HTMLElement> {
-    in: boolean;
-    appear?: boolean;
+export interface NoTransitionProps extends CSSTransitionProps {
     showClass?: string;
-    unmountOnExit?: boolean;
-    onEnter?: (node: HTMLElement) => void;
-    onEntering?: (node: HTMLElement) => void;
-    onEntered?: (node: HTMLElement) => void;
-    onExit?: (node: HTMLElement) => void;
-    onExiting?: (node: HTMLElement) => void;
-    onExited?: (node: HTMLElement) => void;
 }
 
 export default class NoTransition extends React.Component<NoTransitionProps> {
@@ -27,7 +19,7 @@ export default class NoTransition extends React.Component<NoTransitionProps> {
 
         if (_in) {
             if (appear) {
-                this.componentDidUpdate({ in: false });
+                this.componentDidUpdate({ in: false } as any);
             } else {
                 handleFuncProp(onEntered);
             }
@@ -70,7 +62,7 @@ export default class NoTransition extends React.Component<NoTransitionProps> {
         if (!_in && unmountOnExit) return null;
 
         if (typeof children === "function") {
-            return children();
+            return children(undefined as any);
         }
 
         delete otherProps.onEnter;

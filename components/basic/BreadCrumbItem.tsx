@@ -1,10 +1,10 @@
 import * as React from "react";
 import PropTypes from "prop-types";
 import {classNames} from "../utils";
+import { AnchorCommonProps } from "../CommonPropsInterface";
 
-export interface BreadcrumbItemProps extends React.HTMLAttributes<HTMLLIElement> {
+export interface BreadcrumbItemProps extends AnchorCommonProps<HTMLLIElement> {
     active?: boolean;
-    href?: string;
 }
 
 function BreadcrumbItem(props: BreadcrumbItemProps) {

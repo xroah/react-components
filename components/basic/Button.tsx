@@ -7,8 +7,9 @@ import {
     variantType,
     variantArray
 } from "../utils";
+import { ButtonCommonProps } from "../CommonPropsInterface";
 
-export interface ButtonProps extends React.HTMLAttributes<HTMLElement> {
+export interface ButtonProps extends ButtonCommonProps<HTMLButtonElement> {
     variant?: variantType | "link";
     outline?: boolean;
     size?: string;
@@ -16,12 +17,11 @@ export interface ButtonProps extends React.HTMLAttributes<HTMLElement> {
     block?: boolean;
     disabled?: boolean;
     href?: string;
-    type?: "button" | "submit" | "reset";
 }
 
 interface ButtonInterface {
     Group: React.FunctionComponent<ButtonGroupProps>;
-    Toolbar: React.FunctionComponent<React.HTMLAttributes<HTMLElement>>
+    Toolbar: React.FunctionComponent<React.HTMLAttributes<HTMLDivElement>>
 }
 
 type ButtonType = ButtonInterface & React.ForwardRefExoticComponent<ButtonProps & React.RefAttributes<HTMLButtonElement>>;

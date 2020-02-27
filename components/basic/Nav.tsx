@@ -3,8 +3,9 @@ import PropTypes from "prop-types";
 import NavLink from "./NavLink";
 import { classNames, createComponentByClass } from "../utils";
 import { NavbarContext } from "../contexts";
+import { CommonProps } from "../CommonPropsInterface";
 
-export interface NavProps extends React.HTMLAttributes<HTMLElement> {
+export interface NavProps extends CommonProps<HTMLElement> {
     alignment?: "left" | "center" | "right";
     minWidth?: "sm" | "md" | "lg" | "xl";
     vertical?: boolean;

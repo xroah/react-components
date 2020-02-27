@@ -5,8 +5,9 @@ import {
     variantType,
     variantArray
 } from "../utils";
+import { CommonProps } from "../CommonPropsInterface";
 
-export interface ListGroupItemProps extends React.HTMLAttributes<HTMLElement> {
+export interface ListGroupItemProps extends CommonProps<HTMLElement> {
     action?: boolean;
     active?: boolean;
     variant?: variantType;

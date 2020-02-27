@@ -3,8 +3,9 @@ import PropTypes from "prop-types";
 import { classNames, createComponentByClass } from "../utils";
 import { InputGroupContext } from "../contexts";
 import InputGroup, { InputGroupProps } from "./InputGroup";
+import { InputCommonProps } from "../CommonPropsInterface";
 
-export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement & HTMLTextAreaElement> {
+export interface InputProps extends InputCommonProps<HTMLInputElement & HTMLTextAreaElement> {
     prepend?: React.ReactNode;
     append?: React.ReactNode;
     sizing?: "lg" | "sm";
