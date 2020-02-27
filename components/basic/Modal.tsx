@@ -217,7 +217,7 @@ export default class Modal extends React.Component<ModalProps, ModalState> {
         const pr = parseFloat(getComputedStyle(body).getPropertyValue("padding-right"));
         this.activeElement = document.activeElement;
         this.previousBodyClassName = body.className;
-        this.previousBodyPadding = body.style.paddingRight;
+        this.previousBodyPadding = body.style.paddingRight || "";
 
         body.classList.add("modal-open");
 

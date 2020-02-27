@@ -52,7 +52,7 @@ export default function Progress(props: ProgressProps) {
     if (count) {
         const _children = React.Children.map(children, c => {
             if (React.isValidElement(c) && c.type === Progress) {
-                return React.cloneElement(c, { __isChild__: true });
+                return React.cloneElement<any>(c, { __isChild__: true });
             }
 
             return c;
