@@ -114,7 +114,7 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
         const src = evt.currentTarget;
         const type = evt.type;
 
-        //disabled or controlled
+        //disabled
         if (
             src.disabled ||
             src.classList.contains("disabled")
@@ -225,7 +225,6 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
         delete otherProps.offset;
         delete otherProps.onClickOutside;
         delete otherProps.fade;
-        delete otherProps.flip;
         delete otherProps.unmountOnExit;
         delete otherProps.verticalCenter;
         delete otherProps.trigger;
@@ -237,6 +236,7 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
         delete otherProps.onHide;
         delete otherProps.onHidden;
 
+        //if controlled do not add these event handlers
         if (!this.isControlled()) {
             const handler = this.handleEvent;
             const {
@@ -327,6 +327,7 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
                 {this.renderChildren()}
                 <ModalContext.Consumer>
                     {
+                        //when placed within modals, dismiss once modals are closed
                         ({ isModal, visible: mVisible }) => {
                             if (visible && isModal && !mVisible) {
                                 this.close();
@@ -340,7 +341,7 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
                     visible={visible}
                     onMouseEnter={this.handlePopupMouseEnter}
                     onMouseLeave={this.handlePopupMouseLeave}
-                    node={node}
+                    target={node}
                     {...props}>
                     {popup}
                 </Popup>
