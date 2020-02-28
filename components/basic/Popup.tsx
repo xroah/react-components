@@ -9,6 +9,7 @@ import Fade from "../Fade";
 import { PopupContext } from "../contexts";
 import Align from "./Align";
 import NoTransition from "../NoTransition";
+import Portal from "../Portal";
 import { CommonPropsWithoutTitle } from "../CommonPropsInterface";
 
 export type position = "top" | "right" | "bottom" | "left";
@@ -16,10 +17,11 @@ export type position = "top" | "right" | "bottom" | "left";
 export interface PopupCommonProps extends CommonPropsWithoutTitle<HTMLElement> {
     placement?: position;
     visible?: boolean;
-    flip?: boolean;
+    mountNode?: HTMLElement | string | false;
     offset?: number | number[];
     defaultVisible?: boolean;
     fade?: boolean;
+    forceRender?: boolean;
     onShow?: Function;
     onShown?: Function;
     onHide?: Function;
@@ -36,27 +38,26 @@ interface PopupState {
     placement?: position;
     left?: number;
     top?: number;
+    display?: "none" | "block";
 }
 
 export interface PopupProps extends PopupCommonProps {
     alignment?: "left" | "center" | "right";
     //below props are internal temporarily
-    mountTo?: HTMLElement;
     unmountOnExit?: boolean;
-    node?: HTMLElement | null;
+    target?: HTMLElement | null;//calc position based on this element
     verticalCenter?: boolean;
     onClickOutside?: Function;
 }
 
 export default class Popup extends React.Component<PopupProps, PopupState> {
 
-    private mountNode: HTMLElement | null = null;
     private ref = React.createRef<HTMLDivElement>();
     private alignRef = React.createRef<Align>();
+    private portalRef = React.createRef<Portal>();
 
     static propTypes = {
         placement: PropTypes.oneOf(["top", "bottom", "left", "right"]),
-        flip: PropTypes.bool,
         fade: PropTypes.bool,
         offset: PropTypes.oneOfType([
             PropTypes.number,
@@ -69,7 +70,6 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
         alignment: PropTypes.oneOf(["left", "center", "right"])
     };
     static defaultProps = {
-        flip: true,
         fade: true,
         offset: [0, 0],
         defaultVisible: false
@@ -103,31 +103,19 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
         }
     }
 
-    removeNode() {
-        const {
-            props: {
-                mountTo = document.body
-            },
-            mountNode
-        } = this;
-
-        mountNode && mountTo.removeChild(mountNode);
-
-        this.mountNode = null;
-    }
-
     componentWillUnmount() {
-        this.removeNode();
         this.removeEvent();
     }
 
     handleClickOutSide = (evt: MouseEvent) => {
         const t = evt.target as HTMLElement;
         const { onClickOutside } = this.props;
+        const parent = this.ref.current;
 
         if (
-            this.mountNode &&
-            !this.mountNode.contains(t)
+            parent &&
+            t !== parent &&
+            !parent.contains(t)
         ) {
             handleFuncProp(onClickOutside)();
         }
@@ -137,14 +125,14 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
         const {
             props: {
                 placement,
-                node,
+                target,
             },
             ref: { current: child }
         } = this;
 
-        if (!node || !child) return;
+        if (!target || !child) return;
 
-        const nRect = node.getBoundingClientRect();
+        const nRect = target.getBoundingClientRect();
         const cRect = child.getBoundingClientRect();
         const isArrowVertical = placement === "left" || placement === "right";
         const arrowPos: Position = {
@@ -162,7 +150,12 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
     }
 
     updatePosition = () => {
-        let { left, top, placement } = (this.alignRef.current as any).update();
+        const align = this.alignRef.current;
+        const portalRef = this.portalRef.current;
+
+        if (!align || !portalRef) return;
+
+        let { left, top, placement } = align.update(portalRef.getParent() as HTMLElement);
 
 
         this.setState(
@@ -187,20 +180,21 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
     }
 
     addEvent() {
-        const { flip } = this.props;
         document.addEventListener("click", this.handleClickOutSide);
         window.addEventListener("resize", this.handleResize);
-        flip && window.addEventListener("scroll", this.handleResize);
     };
 
     removeEvent() {
         document.removeEventListener("click", this.handleClickOutSide);
         window.removeEventListener("resize", this.handleResize);
-        window.removeEventListener("scroll", this.handleResize);
     }
 
     handleEnter = (node: HTMLElement) => {
         const { onShow } = this.props;
+
+        this.setState({
+            display: "block"
+        });
 
         handleFuncProp(onShow)(node);
     };
@@ -227,15 +221,22 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
             onHidden,
             unmountOnExit
         } = this.props;
+        const portal = this.portalRef.current;
 
-        unmountOnExit && this.removeNode();
+        if (unmountOnExit && portal) {
+            portal.unmount();
+        } else {
+            this.setState({
+                display: "none"
+            });
+        }
+
         handleFuncProp(onHidden)(node);
     };
 
     render() {
         let {
             props: {
-                mountTo = document.body,
                 children,
                 fade,
                 visible,
@@ -243,37 +244,27 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
                 alignment,
                 placement: propPlacement,
                 unmountOnExit,
-                node,
+                forceRender,
+                target,
+                mountNode,
                 verticalCenter,
-                flip,
                 ...otherProps
             },
             state: {
                 left,
                 top,
                 arrowPos,
-                placement
-            },
-            mountNode
+                placement,
+                display
+            }
         } = this;
-        let style: React.CSSProperties = {
-            position: "absolute",
-            left: 0,
-            top: 0,
-            willChange: "transform",
-            transform: `translate3d(${left}px, ${top}px, 0)`
-        };
         let _children = children as React.ReactElement;
 
         /* if (typeof children === "function") {
             _children = children();
         } */
 
-        if (
-            (!visible && !mountNode) ||
-            !_children ||
-            !node
-        ) return null;
+        if (!children || !target) return null;
 
         delete otherProps.onClickOutside;
         delete otherProps.defaultVisible;
@@ -282,17 +273,6 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
         delete otherProps.onHide;
         delete otherProps.onHidden;
 
-        if (!mountNode) {
-            mountNode = this.mountNode = document.createElement("div");
-            mountNode.style.cssText = `
-                position: absolute; 
-                left: 0;
-                top: 0;
-                width:100%;
-                z-index: 99999
-                `;
-            mountTo.appendChild(mountNode);
-        }
         const mouseEvent = {
             onMouseEnter: this.handleMouseEvent,
             onMouseLeave: this.handleMouseEvent
@@ -303,21 +283,29 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
             placement
         };
         const child = (
-            <div
-                ref={this.ref}
-                {...{ ...mouseEvent, ...otherProps }}>
-                <PopupContext.Provider value={context}>
-                    {_children}
-                </PopupContext.Provider>
+            <div style={{
+                display,
+                position: "absolute",
+                left: 0,
+                top: 0,
+                willChange: "transform",
+                transform: `translate3d(${left}px, ${top}px, 0)`,
+                zIndex: 99999
+            }}>
+                <div
+                    ref={this.ref}
+                    {...{ ...mouseEvent, ...otherProps }}>
+                    <PopupContext.Provider value={context}>
+                        {_children}
+                    </PopupContext.Provider>
+                </div>
             </div>
         );
         const align = (
             <Align
                 ref={this.alignRef}
-                style={style}
-                flip={flip}
                 offset={offset}
-                target={node}
+                target={target}
                 placement={propPlacement}
                 alignment={alignment}
                 verticalCenter={verticalCenter}>
@@ -335,13 +323,18 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
             unmountOnExit: unmountOnExit,
         }
 
-        return createPortal(
-            (
-                fade ?
-                    <Fade {...transitionProps}>{align}</Fade> :
-                    <NoTransition {...transitionProps}>{align}</NoTransition>
-            ),
-            mountNode
+        return (
+            <Portal
+                ref={this.portalRef}
+                mountNode={mountNode}
+                visible={visible}
+                forceRender={forceRender}>
+                {
+                    fade ?
+                        <Fade {...transitionProps}>{align}</Fade> :
+                        <NoTransition {...transitionProps}>{align}</NoTransition>
+                }
+            </Portal>
         );
     }
 }

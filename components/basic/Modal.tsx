@@ -12,6 +12,7 @@ import Fade from "../Fade";
 import NoTransition from "../NoTransition";
 import { createPortal } from "react-dom";
 import { ModalContext } from "../contexts";
+import Portal from "../Portal";
 import { CommonPropsWithoutTitle } from "../CommonPropsInterface";
 
 export interface ModalCommonOptions extends CommonPropsWithoutTitle<HTMLDivElement> {
@@ -44,8 +45,7 @@ export interface ModalProps extends ModalCommonOptions {
     header?: string | React.ReactNode;
     footer?: string | React.ReactNode;
     fade?: boolean;
-    mountTo?: HTMLElement;
-    container?: HTMLElement; //mountTo and container are internal provisionally
+    mountNode?: HTMLElement;
 }
 
 const stringOrNode = PropTypes.oneOfType([PropTypes.string, PropTypes.node]);
@@ -54,6 +54,7 @@ let zIndex = 2000;
 interface ModalState {
     className?: string; //for backdrop="static"
     display?: string;//for toggle display when shown or hidden
+    zIndex?: number;
 }
 
 export default class Modal extends React.Component<ModalProps, ModalState> {
@@ -102,28 +103,14 @@ export default class Modal extends React.Component<ModalProps, ModalState> {
         onHidden: PropTypes.func
     };
 
-    private container: HTMLElement | null = null;
     private dialogRef = React.createRef<HTMLDivElement>();
     private activeElement: Element | null = null;
     private modalRef = React.createRef<HTMLDivElement>();
     private previousBodyPadding: string = "";
     private previousBodyClassName: string = "";
-    state: ModalState = {};
-    
-    constructor(props: ModalProps) {
-        super(props);
-
-        this.container = props.container || null;
-    }
-
-    componentWillUnmount() {
-        let backdrop = this.container;
-
-        if (backdrop) {
-            document.body.removeChild(backdrop);
-            this.container = null;
-        }
-    }
+    state: ModalState = {
+        zIndex: zIndex++
+    };
 
     getScrollWidth() {
         const div = document.createElement("div");
@@ -349,20 +336,15 @@ export default class Modal extends React.Component<ModalProps, ModalState> {
                 backdrop,
                 forceRender,
                 scrollable,
-                mountTo,
+                mountNode,
                 ...otherProps
             },
             state: {
                 className: stateClass,
-                display
+                display,
+                zIndex
             }
         } = this;
-
-        if (
-            !forceRender &&
-            !visible &&
-            !this.container
-        ) return null;
 
         delete otherProps.onOk;
         delete otherProps.onCancel;
@@ -395,7 +377,6 @@ export default class Modal extends React.Component<ModalProps, ModalState> {
             centered && `${PREFIX}-centered`,
             scrollable && `${PREFIX}-scrollable`
         );
-        const parent = mountTo || document.body;
         const _header = this.getHeader();
         const _footer = this.getFooter();
         const modal = (
@@ -434,31 +415,28 @@ export default class Modal extends React.Component<ModalProps, ModalState> {
             unmountOnExit: true
         };
 
-        if (!this.container) {
-            const div = this.container = document.createElement("div");
-            div.style.zIndex = `${zIndex++}`;
-
-            parent.appendChild(this.container);
-        } else if (!this.container.parentNode) {
-            parent.appendChild(this.container);
-        }
-
-        return createPortal(
-            <ModalContext.Provider value={{ isModal: true, visible: !!visible }}>
-                {
-                    fade ?
-                        <Fade {...transitionProps}>{modal}</Fade> :
-                        <NoTransition {...transitionProps}>{modal}</NoTransition>
-                }
-                {
-                    !!backdrop && (
-                        fade ?
-                            <Fade {...backdropProps}>{backdropEl}</Fade> :
-                            <NoTransition showClass="show" {...backdropProps}>{backdropEl}</NoTransition>
-                    )
-                }
-            </ModalContext.Provider>,
-            this.container
+        return (
+            <Portal
+                mountNode={mountNode}
+                forceRender={forceRender}
+                visible={visible}>
+                <div style={{zIndex}}>
+                    <ModalContext.Provider value={{ isModal: true, visible: !!visible }}>
+                        {
+                            fade ?
+                                <Fade {...transitionProps}>{modal}</Fade> :
+                                <NoTransition {...transitionProps}>{modal}</NoTransition>
+                        }
+                        {
+                            !!backdrop && (
+                                fade ?
+                                    <Fade {...backdropProps}>{backdropEl}</Fade> :
+                                    <NoTransition showClass="show" {...backdropProps}>{backdropEl}</NoTransition>
+                            )
+                        }
+                    </ModalContext.Provider>
+                </div>
+            </Portal>
         );
     }
 

@@ -52,7 +52,7 @@ export default class PopupDialog extends Dialog {
         return (
             <Modal
                 {...others}
-                container={this.container}
+                mountNode={this.container}
                 className={classNames(className, "bs-popup-dialog")}
                 closable={false}
                 showOk={showOk}
