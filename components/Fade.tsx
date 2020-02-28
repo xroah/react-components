@@ -51,9 +51,6 @@ export default function Fade(props: CSSTransitionProps) {
                         child,
                         {
                             className: classes,
-                            style: {
-                                ...child.props.style,
-                            },
                             ...otherProps
                         }
                     );
