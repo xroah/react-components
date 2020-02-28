@@ -9,27 +9,30 @@ export interface ToastProps extends CommonPropsWithoutTitle<HTMLDivElement> {
     title?: string | React.ReactNode;
     iconSize?: number;
     icon?: React.ReactNode;
-    extra?: string;
+    extra?: string | React.ReactNode;
     autoHide?: boolean;
     closable?: boolean;
-    header?: React.ReactNode | null;
+    header?: string | React.ReactNode;
     delay?: number;
     fade?: boolean;
     visible?: boolean;
     onClose?: Function;
 }
 
+const stringOrNode = PropTypes.oneOfType([PropTypes.string, PropTypes.node]);
+
 export default class Toast extends React.Component<ToastProps> {
 
     private timer: NodeJS.Timeout | null = null;
 
     static propTypes = {
-        title: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
+        title: stringOrNode,
+        icon: stringOrNode,
         iconSize: PropTypes.number,
-        extra: PropTypes.string,
+        extra: stringOrNode,
         autoHide: PropTypes.bool,
         closable: PropTypes.bool,
-        header: PropTypes.node,
+        header: stringOrNode,
         delay: PropTypes.number,
         fade: PropTypes.bool,
         visible: PropTypes.bool,
