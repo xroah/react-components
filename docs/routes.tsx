@@ -6,7 +6,7 @@ import {
     Redirect
 } from "react-router-dom";
 import Alert from "./components/Alert";
-import Nav from "./components/Nav";
+import DocNav from "./components/DocNav";
 import Badge from "./components/Badge";
 import Breadcrumb from "./components/Breadcrumb";
 import Button from "./components/Button";
@@ -20,7 +20,7 @@ import Input from "./components/Input";
 import ListGroup from "./components/ListGroup";
 import Media from "./components/Media";
 import Modal from "./components/Modal";
-import NavDemo from "./components/NavDemo";
+import Nav from "./components/Nav";
 import Navbar from "./components/Navbar";
 import Pagination from "./components/Pagination";
 import Popover from "./components/Popover";
@@ -104,7 +104,7 @@ export const ROUTES = [
     },
     {
         path: "/components/nav",
-        component: NavDemo,
+        component: Nav,
         name: "Nav"
     },
     {
@@ -153,8 +153,8 @@ export default function AppRoute() {
     return (
         <Router>
             <div className="row">
-                <Nav/>
-                <main className="col-md-9 pb-3">
+                <DocNav/>
+                <main className="col-sm-9 pb-3">
                     <Switch>
                         {
                             ROUTES.map(item => {
