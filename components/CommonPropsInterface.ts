@@ -54,6 +54,8 @@ export interface FormCommonProps<T> extends CommonProps<T> {
 }
 
 export interface InputCommonProps<T> extends CommonProps<T> {
+    defaultChecked?: boolean;
+    defaultValue?: string | number | string[];
     autoComplete?: string;
     autoFocus?: boolean;
     checked?: boolean;
