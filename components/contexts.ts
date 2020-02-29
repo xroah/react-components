@@ -31,5 +31,6 @@ export const PopupContext = createContext({
 export const NavbarContext = createContext(false);
 
 export const DropdownContext = createContext({
-    close: () => {}
+    close: () => {},
+    isDropdown: false
 });
