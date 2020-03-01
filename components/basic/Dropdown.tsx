@@ -244,7 +244,6 @@ export default class Dropdown extends React.Component<DropdownProps, DropdownSta
         const classes = classNames(className, "dropdown-toggle");
         let child = React.Children.only(children) as React.ReactElement<React.HTMLAttributes<HTMLElement>>;
         const _overlay = (
-
             <DropdownContext.Provider value={{close: this.close, isDropdown: true}}>
                 {overlay}
             </DropdownContext.Provider>

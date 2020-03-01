@@ -235,6 +235,7 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
         delete otherProps.onShown;
         delete otherProps.onHide;
         delete otherProps.onHidden;
+        delete otherProps.popupMountNode;
 
         //if controlled do not add these event handlers
         if (!this.isControlled()) {
@@ -297,14 +298,15 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
                 onHide,
                 unmountOnExit,
                 verticalCenter,
-                onClickOutside
+                onClickOutside,
+                popupMountNode
             },
             state: {
                 visible,
                 node
             }
         } = this;
-
+        
         if (popup == undefined) return children;
 
         const props = {
@@ -319,6 +321,7 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
             onHide,
             onHidden,
             onClickOutside,
+            popupMountNode,
             ...popupProps
         };
 

@@ -17,7 +17,7 @@ export type position = "top" | "right" | "bottom" | "left";
 export interface PopupCommonProps extends CommonPropsWithoutTitle<HTMLElement> {
     placement?: position;
     visible?: boolean;
-    mountNode?: HTMLElement | string | false;
+    popupMountNode?: HTMLElement | string;
     offset?: number | number[];
     defaultVisible?: boolean;
     fade?: boolean;
@@ -150,13 +150,11 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
     }
 
     updatePosition = () => {
-        const align = this.alignRef.current;
-        const portalRef = this.portalRef.current;
+        const alignRef = this.alignRef.current;
 
-        if (!align || !portalRef) return;
+        if (!alignRef) return;
 
-        let { left, top, placement } = align.update(portalRef.getParent() as HTMLElement);
-
+        let { left, top, placement } = alignRef.align();
 
         this.setState(
             {
@@ -246,7 +244,7 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
                 unmountOnExit,
                 forceRender,
                 target,
-                mountNode,
+                popupMountNode,
                 verticalCenter,
                 ...otherProps
             },
@@ -291,10 +289,8 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
                 willChange: "transform",
                 transform: `translate3d(${left}px, ${top}px, 0)`,
                 zIndex: 99999
-            }}>
-                <div
-                    ref={this.ref}
-                    {...{ ...mouseEvent, ...otherProps }}>
+            }} ref={this.ref}>
+                <div {...{ ...mouseEvent, ...otherProps }}>
                     <PopupContext.Provider value={context}>
                         {_children}
                     </PopupContext.Provider>
@@ -326,7 +322,7 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
         return (
             <Portal
                 ref={this.portalRef}
-                mountNode={mountNode}
+                mountNode={popupMountNode}
                 visible={visible}
                 forceRender={forceRender}>
                 {

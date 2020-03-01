@@ -41,206 +41,297 @@ export default class Popup extends React.Component<AlignProps> {
         return ret;
     }
 
-    getElementRect(parent: HTMLElement, target: HTMLElement) {
+    getScrollParent(el: HTMLElement) {
+        const body = document.body;
+        let parent: HTMLElement = el;
+
+        while ((parent = parent.parentNode as HTMLElement) && body !== parent) {
+            const w = parent.clientWidth;
+            const h = parent.clientHeight;
+            const sw = parent.scrollWidth;
+            const sh = parent.scrollHeight;
+            const overflow = getComputedStyle(parent).getPropertyValue("overflow");
+
+            if (
+                (w < sw || h < sh) &&
+                overflow !== "visible"
+            ) {
+                return parent;
+            }
+        }
+
+        return body;
+    }
+
+    getPositionedParent(el: HTMLElement) {
+        const body = document.body;
+        let parent = el;
+
+        while ((parent = parent.parentNode as HTMLElement) && parent !== body) {
+            if (getComputedStyle(parent).getPropertyValue("position") !== "static") {
+                return parent;
+            }
+        }
+
+        return body;
+    }
+
+    getScrollOffset(el: HTMLElement) {
+        let left = 0;
+        let top = 0;
+        const body = document.body;
+        const html = document.documentElement;
+
+        if (el === body) {
+            left = body.scrollLeft || html.scrollLeft;
+            top = body.scrollTop || html.scrollTop;
+        } else {
+            left = el.scrollLeft;
+            top = el.scrollTop;
+        }
+
+        return { left, top };
+    }
+
+    //get left and top(positioned element) relative to its scroll parent
+    getRelativeOffset(parent: HTMLElement, el: HTMLElement) {
         const parentRect = parent.getBoundingClientRect();
-        const targetRect = target.getBoundingClientRect();
+        const elRect = el.getBoundingClientRect();
+        let { left, top } = this.getScrollOffset(parent);
+        let rectLeft = 0;
+        let rectTop = 0;
+
+        if (parent === el) {
+            left = top = 0;
+        } else if (parent === document.body) {
+            left += elRect.left;
+            top += elRect.top;
+            rectLeft = left;
+            rectTop = top;
+        } else {
+            //top and left offset relative to its parent
+            rectLeft = elRect.left - parentRect.left;
+            rectTop = elRect.top - parentRect.top;
+            left += rectLeft;
+            top += rectTop;
+        }
 
         return {
-            top: targetRect.top - parentRect.top,
-            left: targetRect.left - parentRect.left,
-            width: targetRect.width,
-            height: targetRect.height
+            left,
+            top,
+            rectLeft,
+            rectTop
         };
     }
 
-    placeTop(parent: HTMLElement, target: HTMLElement, flip: boolean = true) {
-        const child = this.childRef.current as HTMLElement;
-        const [hOffset, vOffset] = this.handleOffset(this.props.offset);
-        const childHeight = child.offsetHeight;
-        let {
-            left,
-            top
-        } = this.getElementRect(parent, target);
-        let placement = "top";
-        
-        left += hOffset;
-        top -= childHeight - vOffset;
+    //the left value and top value relative to top-left of the target
+    getBaseAlignmentPosition(toBeAligned: HTMLElement, target: HTMLElement) {
+        const positioned = this.getPositionedParent(toBeAligned);
+        const scrollParent = this.getScrollParent(target);
+        //if positioned element is in scrollParent or is scrollParent
+        //the element offset is relative to the scrollParent, otherwise relative to body
+        const relativeParent = (scrollParent === positioned || scrollParent.contains(positioned)) ? scrollParent : document.body;
+        const {
+            left: positionedLeft,
+            top: positionedTop
+        } = this.getRelativeOffset(relativeParent, positioned);
+        const {
+            left: targetLeft,
+            top: targetTop
+        } = this.getRelativeOffset(relativeParent, target);
 
-        if (flip) {
-            if (top < 0) {
-                ({ left, top, placement } = this.placeBottom(parent, target, false));
-            }
-        }
-
-        return { left, top, placement };
+        return {
+            left: targetLeft - positionedLeft,
+            top: targetTop - positionedTop,
+            parent: relativeParent
+        };
     }
 
-    placeBottom(parent: HTMLElement, target: HTMLElement, flip: boolean = true) {
-        const child = this.childRef.current as HTMLElement;
-        const [hOffset, vOffset] = this.handleOffset(this.props.offset);
-        const parentHeight = parent.scrollHeight;
-        const childHeight = child.offsetHeight;
-        let {
-            left,
-            top,
-            height: targetHeight
-        } = this.getElementRect(parent, target);
-        let placement = "bottom";
+    //top/bottom/left/right spare space
+    getSpareSpace(parent: HTMLElement, target: HTMLElement, el: HTMLElement) {
+        const {
+            rectTop,
+            rectLeft
+        } = this.getRelativeOffset(parent, target);
+        const elHeight = el.offsetHeight;
+        const elWidth = el.offsetWidth;
 
-        left += hOffset;
-        top += targetHeight + vOffset;
-
-        if (flip) {
-            if (childHeight + top > parentHeight) {
-                ({ left, top, placement } = this.placeTop(parent, target, false));
-            }
-        }
-
-        return { left, top, placement };
+        return {
+            top: rectTop - elHeight,
+            right: rectLeft + elWidth + target.offsetWidth - parent.offsetWidth,
+            bottom: rectTop + elHeight + target.offsetHeight - parent.offsetHeight,
+            left: rectLeft - elWidth
+        };
     }
 
-    placeLeft(parent: HTMLElement, target: HTMLElement, flip: boolean = true) {
-        const child = this.childRef.current as HTMLElement;
-        const [hOffset, vOffset] = this.handleOffset(this.props.offset);
-        const childWidth = child.offsetWidth;
-        let {
-            left,
-            top
-        } = this.getElementRect(parent, target);
-        let placement = "left";
-
-        left -= childWidth - hOffset;
-        top += vOffset;
-
-        if (flip) {
-            if (left < 0) {
-                ({ left, top, placement } = this.placeRight(parent, target, false));
-            }
-        }
-
-        return { left, top, placement };
-    }
-
-    placeRight(parent: HTMLElement, target: HTMLElement, flip: boolean = true) {
-        const child = this.childRef.current as HTMLElement;
-        const [hOffset, vOffset] = this.handleOffset(this.props.offset);
-        const parentWidth = parent.scrollWidth;
-        const childWidth = child.offsetWidth;
-        let {
-            left,
-            top,
-            width: targetWidth
-        } = this.getElementRect(parent, target);
-        let placement = "right";
-
-        left += targetWidth + hOffset;
-        top += vOffset;
-
-        if (flip) {
-            if (left + childWidth > parentWidth) {
-                ({ left, top, placement } = this.placeLeft(parent, target, false));
-            }
-        }
-
-        return { left, top, placement };
-    }
-
-    handlePosition(parent: HTMLElement | null) {
+    handlePosition() {
         const child = this.childRef.current;
         let {
             placement,
-            target,
-            verticalCenter
+            target
         } = this.props as any;
         let left = 0;
         let top = 0;
 
-        if (!child || !target || !parent) return { left, top, placement };
+        if (!child || !target) return { left, top, placement };
 
-        const {
-            width: targetWidth,
-            height: targetHeight
-        } = this.getElementRect(parent, target);
-        const parentWidth = parent.scrollWidth;
-        const parentHeight = parent.scrollHeight;
+        const targetWidth = target.offsetWidth;
+        const targetHeight = target.offsetHeight;
         const childHeight = child.offsetHeight;
         const childWidth = child.offsetWidth;
+        const [hOffset, vOffset] = this.handleOffset(this.props.offset);
+        const {
+            left: baseLeft,
+            top: baseTop,
+            parent
+        } = this.getBaseAlignmentPosition(child, target);
+        const {
+            bottom: bottomSpace,
+            top: topSpace,
+            left: leftSpace,
+            right: rightSpace
+        } = this.getSpareSpace(parent, target, child);
+        const placeBottom = (flip: boolean = true) => {
+            left = baseLeft + hOffset;
+            top = baseTop + vOffset + targetHeight;
+            placement = "bottom";
 
-        switch (placement) {
-            case "top":
-                ({ left, top, placement } = this.placeTop(parent, target, true))
-                break;
-            case "right":
-                ({ left, top, placement } = this.placeRight(parent, target, true))
-                break;
-            case "left":
-                ({ left, top, placement } = this.placeLeft(parent, target, true))
-                break;
-            default:
-                ({ left, top, placement } = this.placeBottom(parent, target, true))
-        }
+            //flip to top
+            if (flip && bottomSpace > 0) {
+                placeTop(false);
+            }
+        };
+        const placeTop = (flip: boolean = true) => {
+            left = baseLeft + hOffset;
+            top = baseTop - childHeight - vOffset;
+            placement = "top";
 
-        left = this.handleAlignment(targetWidth, childWidth, parentWidth, left);
-        
-        if (left < 0) {
-            left = 0;
-        } else if (childWidth + left > parentWidth) {
-            left = parentWidth - childWidth;
-        }
+            //flip to bottom
+            if (flip && topSpace < 0) {
+                placeBottom(false);
+            }
+        };
+        const placeLeft = (flip: boolean = true) => {
+            left = baseLeft - childWidth - hOffset;
+            top = baseTop + vOffset;
+            placement = "left";
 
-        if (top < 0) {
-            top = 0;
-        } else if (childHeight + top > parentHeight) {
-            top = parentHeight - childHeight;
-        }
+            //flip to right
+            if (flip && leftSpace < 0) {
+                placeRight(false);
+            }
+        };
+        const placeRight = (flip: boolean = true) => {
+            left = baseLeft + targetWidth - hOffset;
+            top = baseTop + vOffset;
+            placement = "right";
 
-        if (
-            verticalCenter &&
-            (placement === "left" || placement === "right") &&
-            //have enough space
-            top > 0 &&
-            top + childHeight < parentHeight
-        ) {
-            top += (targetHeight - childHeight) / 2;
-        }
+            //flip to left
+            if (flip && rightSpace > 0) {
+                placeLeft(false);
+            }
+        };
+        const placementFnMap: any = {
+            top: placeTop,
+            bottom: placeBottom,
+            left: placeLeft,
+            right: placeRight
+        };
+
+        placementFnMap[placement]();
+
+        //aligned after, adjust if element is still out of the edge
+        const {
+            leftOffset,
+            topOffset
+        } = this.adjustElement(parent, target, child, placement);
+        left += leftOffset;
+        top += topOffset;
 
         return { left, top, placement };
     }
 
-    handleAlignment(targetWidth: number, childWidth: number, parentWidth: number, left: number) {
+    //if the element top/right/bottom/left is out of the corresponding edge
+    adjustElement(parent: HTMLElement, target: HTMLElement, el: HTMLElement, placement: position) {
         const {
-            props: {
-                alignment,
-                placement = ""
-            },
-        } = this;
-        const posMap: any = {
-            "top": true,
-            "bottom": true
-        };
+            bottom: bottomSpace,
+            top: topSpace,
+            left: leftSpace,
+            right: rightSpace
+        } = this.getSpareSpace(parent, target, el);
+        const {
+            verticalCenter,
+            alignment
+        } = this.props;
+        const isHorizontal = placement === "left" || placement === "right";
+        let leftOffset = 0;
+        let topOffset = 0;
+        const targetWidth = target.offsetWidth;
+        const targetHeight = target.offsetHeight;
+        const elHeight = el.offsetHeight;
+        const elWidth = el.offsetWidth;
 
-        if (
-            (placement in posMap) &&
-            //have enough space
-            left > 0 &&
-            left + childWidth < parentWidth
-        ) {
-            switch (alignment) {
-                case "center":
-                    left += (targetWidth - childWidth) / 2;
-                    break;
-                case "right":
-                    left += targetWidth - childWidth;
-                    break;
-                default:
+        if (isHorizontal) {
+            //vertical center
+            if (
+                verticalCenter &&
+                //have enough space
+                topSpace > 0 &&
+                bottomSpace < 0
+            ) {
+                topOffset += (targetHeight - elHeight) / 2;
+            }
+
+            if (leftSpace < 0 && placement === "left") {
+                leftOffset = Math.abs(leftSpace);
+            } else if (rightSpace > 0 && placement === "right") {
+                leftOffset = -rightSpace;
+            }
+
+            if (topSpace < 0) {
+                topOffset = Math.abs(topSpace);
+            } else if (bottomSpace > 0) {
+                topOffset = -bottomSpace;
+            }
+        } else {
+            //horizontal alignment
+            if (
+                //have enough space
+                leftSpace > 0 &&
+                rightSpace < 0
+            ) {
+                switch (alignment) {
+                    case "center":
+                        leftOffset += (targetWidth - elWidth) / 2;
+                        break;
+                    case "right":
+                        leftOffset += targetWidth - elWidth;
+                        break;
+                    default:
+                }
+            }
+
+            if (topSpace < 0 && placement === "top") {
+                topOffset = Math.abs(topSpace);
+            } else if (bottomSpace > 0 && placement === "bottom") {
+                topOffset = -bottomSpace;
+            }
+
+            if (leftSpace < 0 ) {
+                leftOffset = Math.abs(leftSpace);
+            } else if (rightSpace > 0) {
+                leftOffset = -rightSpace;
             }
         }
 
-        return left;
-    };
+        return {
+            leftOffset,
+            topOffset
+        };
+    }
 
-    update = (parent: HTMLElement | null) => {
-        return this.handlePosition(parent);
+    align = () => {
+        return this.handlePosition();
     }
 
     handleRefs(...refs: React.Ref<any>[]) {
