@@ -70,7 +70,7 @@ export default class Portal extends React.Component<PortalProps, PortalState> {
             return document.querySelector(mountNode);
         }
 
-        if (mountNode.nodeType === 1) return mountNode;
+        if (mountNode.nodeType === 1 && mountNode.parentElement) return mountNode;
 
         return null;
     }
@@ -99,14 +99,10 @@ export default class Portal extends React.Component<PortalProps, PortalState> {
         const {
             visible,
             forceRender,
-            children,
-            mountNode
+            children
         } = this.props;
 
         if (!visible && !forceRender && !this.container) return null;
-
-        //just render in current dom
-        if (!mountNode) return children;
 
         this.mount();
         
