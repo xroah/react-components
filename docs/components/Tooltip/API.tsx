@@ -11,7 +11,7 @@ const TooltipProps = [
         default: "top",
         description: "The tooltip popup position"
     }, {
-        name: "text",
+        name: "title",
         type: "string | ReactNode",
         description: "The text shown in the tooltip"
     }, {

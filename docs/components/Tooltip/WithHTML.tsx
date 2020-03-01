@@ -10,7 +10,7 @@ const text = (
 );
 
 export default () => (
-    <Tooltip text={text}>
+    <Tooltip title={text}>
         <Button variant="secondary">Tooltip with HTML</Button>
     </Tooltip>
 );

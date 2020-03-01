@@ -5,6 +5,7 @@ import {
     Route,
     Redirect
 } from "react-router-dom";
+import { Row, Col } from "reap-ui";
 import Alert from "./components/Alert";
 import DocNav from "./components/DocNav";
 import Badge from "./components/Badge";
@@ -76,7 +77,7 @@ export const ROUTES = [
         component: Form,
         name: "Form"
     },
-    
+
     {
         path: "/components/input",
         component: Input,
@@ -152,9 +153,17 @@ export const ROUTES = [
 export default function AppRoute() {
     return (
         <Router>
-            <div className="row">
-                <DocNav/>
-                <main className="col-sm-9 pb-3">
+            <Row>
+                <Col
+                    span={false}
+                    sm={3}
+                    className="d-none aside-nav d-sm-block">
+                    <DocNav />
+                </Col>
+                <Col
+                    span={false}
+                    sm={9}
+                    className="pb-3">
                     <Switch>
                         {
                             ROUTES.map(item => {
@@ -163,14 +172,14 @@ export default function AppRoute() {
                                         key={item.path}
                                         path={item.path}
                                         exact
-                                        component={item.component}/>
+                                        component={item.component} />
                                 );
                             })
                         }
-                        <Redirect to="/"/>
+                        <Redirect to="/" />
                     </Switch>
-                </main>
-            </div>
+                </Col>
+            </Row>
         </Router>
     );
 }

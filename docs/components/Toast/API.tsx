@@ -14,11 +14,11 @@ const props = [{
     description: "Show close button or not on the top right"
 }, {
     name: "title",
-    type: "string",
+    type: "string | ReactNode",
     description: "Toast title"
 }, {
     name: "extra",
-    type: "string",
+    type: "string | ReactNode",
     description: "An extra message on the top right"
 }, {
     name: "icon",
@@ -46,7 +46,7 @@ const props = [{
     description: "Enable fade animation when showing or hiding"
 }, {
     name: "header",
-    type: "ReactNode",
+    type: "string | ReactNode",
     description: "Customize the header for toasts(set null if you don't want to show the header)"
 }, {
     name: "onClose",

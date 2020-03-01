@@ -9,26 +9,26 @@ export const commonProps = [
         name: "visible",
         type: "boolean",
         description: "Control the visibility(controlled component)"
-    },{
+    }, {
         name: "defaultVisible",
         type: "boolean",
         default: "false",
         description: "The initial visibility"
-    },{
-        name: "flip",
-        type: "boolean",
-        default: "true",
-        description: "If true, the popup will flip to opposite position if space is insufficient"
     }, {
         name: "fade",
         type: "boolean",
         default: "true",
         description: "Enable fade effect of dropdown popup or not"
     }, {
+        name: "forceRender",
+        type: "boolean",
+        default: "false",
+        description: "If true will render once mounted, otherwise will render it when visible is true"
+    }, {
         name: "offset",
         type: "number | number[]",
         default: "[0, 0]",
-        description: "Offset of dropdown popup"
+        description: "Offset of dropdown popup([horizontal, vertical])"
     }, {
         name: "delay",
         type: "number | {show?: number, hide?: number}",

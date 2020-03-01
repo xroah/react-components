@@ -12,6 +12,7 @@ export default () => {
 
     return (
         <Dropdown.Button
+        popupMountNode="#scrollContainer"
             variant="secondary"
             overlay={overlay}>
             Dropdown button

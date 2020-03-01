@@ -55,7 +55,7 @@ const props = [{
     name: "forceRender",
     type: "boolean",
     default: "false",
-    description: "If true will render the modal just mounted, otherwise will render it when visible is true"
+    description: "If true will render the modal once mounted, otherwise will render it when visible is true"
 }, {
     name: "fade",
     type: "boolean",

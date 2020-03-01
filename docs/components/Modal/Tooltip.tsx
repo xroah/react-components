@@ -25,11 +25,11 @@ export default () => {
                 <hr />
                 <h5>Tooltips in a modal</h5>
                 <p>
-                    <Tooltip text="Tooltip">
+                    <Tooltip title="Tooltip">
                         <a href="#">This link</a>
                     </Tooltip>
                     and
-                    <Tooltip text="Tooltip">
+                    <Tooltip title="Tooltip">
                         <a href="#">That link</a>
                     </Tooltip>
                     have tooltips on hover.

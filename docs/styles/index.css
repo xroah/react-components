@@ -1,3 +1,10 @@
+.aside-nav {
+    position: --webkit-sticky;
+    position: sticky;
+    top: 0;
+    max-height: 100vh;
+}
+
 .bd-example {
     position: relative;
     margin: 1rem 0;
