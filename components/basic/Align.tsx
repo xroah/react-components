@@ -153,14 +153,15 @@ export default class Popup extends React.Component<AlignProps> {
             rectTop,
             rectLeft
         } = this.getRelativeOffset(parent, target);
+        const [hOffset, vOffset] = this.handleOffset(this.props.offset);
         const elHeight = el.offsetHeight;
         const elWidth = el.offsetWidth;
 
         return {
-            top: rectTop - elHeight,
-            right: rectLeft + elWidth + target.offsetWidth - parent.offsetWidth,
-            bottom: rectTop + elHeight + target.offsetHeight - parent.offsetHeight,
-            left: rectLeft - elWidth
+            top: rectTop - elHeight - vOffset,
+            right: rectLeft + elWidth + target.offsetWidth - parent.offsetWidth + hOffset,
+            bottom: rectTop + elHeight + target.offsetHeight - parent.offsetHeight + hOffset,
+            left: rectLeft - elWidth - vOffset
         };
     }
 
@@ -168,8 +169,11 @@ export default class Popup extends React.Component<AlignProps> {
         const child = this.childRef.current;
         let {
             placement,
-            target
-        } = this.props as any;
+            target,
+            offset,
+            verticalCenter,
+            alignment
+        } = this.props;
         let left = 0;
         let top = 0;
 
@@ -179,7 +183,7 @@ export default class Popup extends React.Component<AlignProps> {
         const targetHeight = target.offsetHeight;
         const childHeight = child.offsetHeight;
         const childWidth = child.offsetWidth;
-        const [hOffset, vOffset] = this.handleOffset(this.props.offset);
+        const [hOffset, vOffset] = this.handleOffset(offset);
         const {
             left: baseLeft,
             top: baseTop,
@@ -238,90 +242,57 @@ export default class Popup extends React.Component<AlignProps> {
             right: placeRight
         };
 
-        placementFnMap[placement]();
+        placementFnMap[placement as position]();
 
-        //aligned after, adjust if element is still out of the edge
-        const {
-            leftOffset,
-            topOffset
-        } = this.adjustElement(parent, target, child, placement);
-        left += leftOffset;
-        top += topOffset;
+        if (placement === "left" || placement === "right") {
+            //vertical center
+            if (verticalCenter) {
+                top += (targetHeight - childHeight) / 2;
+            }
+        } else {
+            //horizontal alignment
+            switch (alignment) {
+                case "center":
+                    left += (targetWidth - childWidth) / 2;
+                    break;
+                case "right":
+                    left += targetWidth - childWidth;
+                    break;
+                default:
+            }
+        }
 
         return { left, top, placement };
     }
 
+
+
     //if the element top/right/bottom/left is out of the corresponding edge
-    adjustElement(parent: HTMLElement, target: HTMLElement, el: HTMLElement, placement: position) {
+    adjustElement() {
+        const { target } = this.props as any;
+        const child = this.childRef.current as HTMLElement;
+        const { parent } = this.getBaseAlignmentPosition(child, target);
         const {
-            bottom: bottomSpace,
-            top: topSpace,
-            left: leftSpace,
-            right: rightSpace
-        } = this.getSpareSpace(parent, target, el);
-        const {
-            verticalCenter,
-            alignment
-        } = this.props;
-        const isHorizontal = placement === "left" || placement === "right";
+            rectLeft,
+            rectTop
+        } = this.getRelativeOffset(parent, child);
         let leftOffset = 0;
         let topOffset = 0;
-        const targetWidth = target.offsetWidth;
-        const targetHeight = target.offsetHeight;
-        const elHeight = el.offsetHeight;
-        const elWidth = el.offsetWidth;
+        const elHeight = child.offsetHeight;
+        const elWidth = child.offsetWidth;
+        const rightSpace = rectLeft + elWidth - parent.clientWidth;
+        const bottomSpace = rectTop + elHeight - parent.clientHeight;
 
-        if (isHorizontal) {
-            //vertical center
-            if (
-                verticalCenter &&
-                //have enough space
-                topSpace > 0 &&
-                bottomSpace < 0
-            ) {
-                topOffset += (targetHeight - elHeight) / 2;
-            }
+        if (rectLeft < 0) {
+            leftOffset = Math.abs(rectLeft);
+        } else if (rightSpace > 0) {
+            leftOffset = -rightSpace;
+        }
 
-            if (leftSpace < 0 && placement === "left") {
-                leftOffset = Math.abs(leftSpace);
-            } else if (rightSpace > 0 && placement === "right") {
-                leftOffset = -rightSpace;
-            }
-
-            if (topSpace < 0) {
-                topOffset = Math.abs(topSpace);
-            } else if (bottomSpace > 0) {
-                topOffset = -bottomSpace;
-            }
-        } else {
-            //horizontal alignment
-            if (
-                //have enough space
-                leftSpace > 0 &&
-                rightSpace < 0
-            ) {
-                switch (alignment) {
-                    case "center":
-                        leftOffset += (targetWidth - elWidth) / 2;
-                        break;
-                    case "right":
-                        leftOffset += targetWidth - elWidth;
-                        break;
-                    default:
-                }
-            }
-
-            if (topSpace < 0 && placement === "top") {
-                topOffset = Math.abs(topSpace);
-            } else if (bottomSpace > 0 && placement === "bottom") {
-                topOffset = -bottomSpace;
-            }
-
-            if (leftSpace < 0 ) {
-                leftOffset = Math.abs(leftSpace);
-            } else if (rightSpace > 0) {
-                leftOffset = -rightSpace;
-            }
+        if (rectTop < 0) {
+            topOffset = Math.abs(rectTop);
+        } else if (bottomSpace > 0) {
+            topOffset = -bottomSpace;
         }
 
         return {

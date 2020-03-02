@@ -162,7 +162,17 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
                 top,
                 placement
             },
-            this.handleArrowPosition
+            () => {
+                const {
+                    leftOffset,
+                    topOffset
+                } = alignRef.adjustElement();
+
+                this.setState({
+                    left: left + leftOffset,
+                    top: top + topOffset
+                }, this.handleArrowPosition);
+            }
         );
     }
 
