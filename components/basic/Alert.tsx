@@ -19,8 +19,6 @@ export interface AlertProps extends CommonProps<HTMLDivElement> {
     visible?: boolean;
     onClose?: Function;
     onClosed?: Function;
-    onShow?: Function;
-    onShown?: Function;
 }
 
 export default function Alert(props: AlertProps) {
@@ -31,8 +29,6 @@ export default function Alert(props: AlertProps) {
         dismissible,
         visible,
         children,
-        onShow,
-        onShown,
         onClose,
         onClosed,
         ...otherProps
@@ -49,12 +45,6 @@ export default function Alert(props: AlertProps) {
     };
     const handleExited = () => {
         handleFuncProp(onClosed)();
-    };
-    const handleEnter = () => {
-        handleFuncProp(onShow)();
-    };
-    const handleEntered = () => {
-        handleFuncProp(onShown)();
     };
     const handleExit = () => {
         if (!dismissible) {
@@ -84,8 +74,6 @@ export default function Alert(props: AlertProps) {
     const transitionProps = {
         in: !!visible,
         unmountOnExit: true,
-        onEnter: handleEnter,
-        onEntered: handleEntered,
         onExit: handleExit,
         onExited: handleExited
     };
