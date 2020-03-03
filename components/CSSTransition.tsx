@@ -244,6 +244,7 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
 
         delete otherProps.in;
         delete otherProps.timeout;
+        delete otherProps.appear;
         delete otherProps.onEnter;
         delete otherProps.onEntering;
         delete otherProps.onEntered;
