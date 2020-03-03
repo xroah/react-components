@@ -39,6 +39,7 @@ interface PopupState {
     left?: number;
     top?: number;
     display?: "none" | "block";
+    exited?: boolean;
 }
 
 export interface PopupProps extends PopupCommonProps {
@@ -54,7 +55,6 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
 
     private ref = React.createRef<HTMLDivElement>();
     private alignRef = React.createRef<Align>();
-    private portalRef = React.createRef<Portal>();
 
     static propTypes = {
         placement: PropTypes.oneOf(["top", "bottom", "left", "right"]),
@@ -201,7 +201,8 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
         const { onShow } = this.props;
 
         this.setState({
-            display: "block"
+            display: "block",
+            exited: false
         });
 
         handleFuncProp(onShow)(node);
@@ -225,19 +226,11 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
     };
 
     handleExited = (node: HTMLElement) => {
-        const {
-            onHidden,
-            unmountOnExit
-        } = this.props;
-        const portal = this.portalRef.current;
-
-        if (unmountOnExit && portal) {
-            portal.unmount();
-        } else {
-            this.setState({
-                display: "none"
-            });
-        }
+        const { onHidden } = this.props;
+        this.setState({
+            display: "none",
+            exited: true
+        });
 
         handleFuncProp(onHidden)(node);
     };
@@ -263,7 +256,8 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
                 top,
                 arrowPos,
                 placement,
-                display
+                display,
+                exited
             }
         } = this;
         let _children = children as React.ReactElement;
@@ -272,7 +266,11 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
             _children = children();
         } */
 
-        if (!children || !target) return null;
+        if (
+            !children ||
+            !target ||
+            (!visible && unmountOnExit && exited)
+        ) return null;
 
         delete otherProps.onClickOutside;
         delete otherProps.defaultVisible;
@@ -325,13 +323,11 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
             onEntered: this.handleEntered,
             onExit: this.handleExit,
             onExited: this.handleExited,
-            in: !!visible,
-            unmountOnExit: unmountOnExit,
+            in: !!visible
         }
 
         return (
             <Portal
-                ref={this.portalRef}
                 mountNode={popupMountNode}
                 visible={visible}
                 forceRender={forceRender}>
