@@ -1,37 +1,28 @@
-import * as React from "react";
-import {
-    BrowserRouter as Router,
-    Switch,
-    Route,
-    Redirect
-} from "react-router-dom";
-import { Row, Col } from "reap-ui";
-import Alert from "./components/Alert";
-import DocNav from "./components/DocNav";
-import Badge from "./components/Badge";
-import Breadcrumb from "./components/Breadcrumb";
-import Button from "./components/Button";
-import Card from "./components/Card";
-import Carousel from "./components/Carousel";
-import Collapse from "./components/Collapse";
-import Dropdown from "./components/Dropdown";
-import Form from "./components/Form";
-import Jumbotron from "./components/Jumbotron";
-import Input from "./components/Input";
-import ListGroup from "./components/ListGroup";
-import Media from "./components/Media";
-import Modal from "./components/Modal";
-import Nav from "./components/Nav";
-import Navbar from "./components/Navbar";
-import Pagination from "./components/Pagination";
-import Popover from "./components/Popover";
-import Progress from "./components/Progress";
-import Spinner from "./components/Spinner";
-import Tab from "./components/Tabs";
-import Toast from "./components/Toast";
-import Tooltip from "./components/Tooltip";
+import Alert from "./components/Examples/Alert";
+import Badge from "./components/Examples/Badge";
+import Breadcrumb from "./components/Examples/Breadcrumb";
+import Button from "./components/Examples/Button";
+import Card from "./components/Examples/Card";
+import Carousel from "./components/Examples/Carousel";
+import Collapse from "./components/Examples/Collapse";
+import Dropdown from "./components/Examples/Dropdown";
+import Form from "./components/Examples/Form";
+import Jumbotron from "./components/Examples/Jumbotron";
+import Input from "./components/Examples/Input";
+import ListGroup from "./components/Examples/ListGroup";
+import Media from "./components/Examples/Media";
+import Modal from "./components/Examples/Modal";
+import Nav from "./components/Examples/Nav";
+import Navbar from "./components/Examples/Navbar";
+import Pagination from "./components/Examples/Pagination";
+import Popover from "./components/Examples/Popover";
+import Progress from "./components/Examples/Progress";
+import Spinner from "./components/Examples/Spinner";
+import Tab from "./components/Examples/Tabs";
+import Toast from "./components/Examples/Toast";
+import Tooltip from "./components/Examples/Tooltip";
 
-export const ROUTES = [
+export default [
     {
         path: "/components/alert",
         component: Alert,
@@ -72,6 +63,11 @@ export const ROUTES = [
         component: Dropdown,
         name: "Dropdown"
     },
+  /*   {
+        path: "/components/drawer",
+        component: Drawer,
+        name: "Drawer"
+    }, */
     {
         path: "/components/form",
         component: Form,
@@ -149,37 +145,3 @@ export const ROUTES = [
         name: "Tooltip"
     }
 ];
-
-export default function AppRoute() {
-    return (
-        <Router>
-            <Row>
-                <Col
-                    span={false}
-                    sm={3}
-                    className="d-none aside-nav d-sm-block">
-                    <DocNav />
-                </Col>
-                <Col
-                    span={false}
-                    sm={9}
-                    className="pb-3">
-                    <Switch>
-                        {
-                            ROUTES.map(item => {
-                                return (
-                                    <Route
-                                        key={item.path}
-                                        path={item.path}
-                                        exact
-                                        component={item.component} />
-                                );
-                            })
-                        }
-                        <Redirect to="/" />
-                    </Switch>
-                </Col>
-            </Row>
-        </Router>
-    );
-}

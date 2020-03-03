@@ -5,7 +5,7 @@ import { Nav } from "reap-ui";
 
 export default function DocNav() {
     return (
-        <aside>
+        <aside className="aside-nav">
             <Nav variant="pill" vertical>
                 {
                     routes.map(
