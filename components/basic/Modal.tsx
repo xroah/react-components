@@ -5,7 +5,8 @@ import {
     handleFuncProp,
     emulateTransitionEnd,
     variantType,
-    variantArray
+    variantArray,
+    getScrollBarWidth
 } from "../utils";
 import Button from "./Button";
 import Fade from "../Fade";
@@ -112,29 +113,6 @@ export default class Modal extends React.Component<ModalProps, ModalState> {
         zIndex: zIndex++
     };
 
-    getScrollWidth() {
-        const div = document.createElement("div");
-        const SIZE = 200;
-        div.style.cssText = `
-            position: absolute;
-            left: -10000px;
-            overflow: scroll;
-            visibility: hidden;
-            width: ${SIZE}px;
-            height: ${SIZE}px;
-         `;
-        const child = document.createElement("div");
-
-        div.appendChild(child);
-        document.body.appendChild(div);
-
-        const width = 200 - child.offsetWidth;
-
-        document.body.removeChild(div);
-
-        return width;
-    }
-
     handleKeyDown = (evt: React.KeyboardEvent) => {
         const { visible, keyboard } = this.props;
         const key = evt.key.toLowerCase();
@@ -203,7 +181,7 @@ export default class Modal extends React.Component<ModalProps, ModalState> {
     handleEnter = () => {
         const body = document.body;
         const hasScrollbar = document.documentElement.clientWidth < window.innerWidth;
-        const scrollWidth = this.getScrollWidth();
+        const scrollWidth = getScrollBarWidth();
         const pr = parseFloat(getComputedStyle(body).getPropertyValue("padding-right"));
         this.activeElement = document.activeElement;
         this.previousBodyClassName = body.className;
