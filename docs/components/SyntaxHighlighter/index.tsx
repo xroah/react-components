@@ -14,14 +14,18 @@ export default function SyntaxHighlighter(props: { code: any }) {
         textarea.remove();
     }
     return (
-        <div className="position-relative code-container" style={{ marginTop: 10 }}>
-            <Highlighter
-                language="javascript"
-                style={tomorrow}>
-                {code}
-            </Highlighter>
-            <button className="btn-clipboard" onClick={handleClick}>copy</button>
-        </div>
+        <>
+            <div className="position-relative">
+                <button className="btn-clipboard" onClick={handleClick}>copy</button>
+            </div>
+            <div className="code-container" style={{ marginTop: 10 }}>
+                <Highlighter
+                    language="javascript"
+                    style={tomorrow}>
+                    {code}
+                </Highlighter>
+            </div>
+        </>
     );
 
 }

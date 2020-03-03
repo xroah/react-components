@@ -1,6 +1,6 @@
 import * as React from "react";
 import {
-    BrowserRouter as Router,
+    HashRouter as Router,
     Switch,
     Route,
     Redirect
@@ -17,13 +17,13 @@ export default function AppRoute() {
             <Row>
                 <Col
                     span={false}
-                    sm={3}
+                    md={3}
                     className="d-none d-md-block">
                     <DocNav />
                 </Col>
                 <Col
                     span={false}
-                    sm={9}
+                    md={9}
                     className="pb-3">
                     <Switch>
                         {

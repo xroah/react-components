@@ -5,8 +5,9 @@ import "./styles/index.scss";
 import Router from "./router";
 
 const section = document.createElement("section");
-section.classList.add("container");
 
+section.classList.add("container");
+section.id = "root";
 document.body.append(section);
 
 render(

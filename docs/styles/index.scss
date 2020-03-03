@@ -1,3 +1,7 @@
+.container {
+    transition: transform .15s;
+}
+
 .aside-nav {
     position: --webkit-sticky;
     position: sticky;
@@ -47,8 +51,8 @@
 
 .btn-clipboard {
     position: absolute;
-    top: .5rem;
-    right: .5rem;
+    top: 1rem;
+    right: 1rem;
     z-index: 10;
     display: block;
     padding: .25rem .5rem;
@@ -101,7 +105,7 @@
     .open-btn {
         position: absolute;
         right: 0;
-        top: 100px;
+        top: 50px;
         line-height: 24px;
         transform: translate(100%);
         border-top-left-radius: 0;
