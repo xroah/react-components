@@ -1,0 +1,87 @@
+.bs-drawer {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    will-change: transform;
+    z-index: 2000;
+
+    &.hide {
+        width: 0;
+        height: 0;
+    }
+
+    .bs-drawer-body {
+        position: absolute;
+        background-color: #fff;
+        transition: transform .15s;
+        z-index: 2001;
+    }
+}
+
+.bs-drawer-top,
+.bs-drawer-left {
+    .bs-drawer-body {
+        top: 0;
+        left: 0;
+    }
+}
+
+.bs-drawer-right .bs-drawer-body {
+    right: 0;
+    top: 0;
+}
+
+.bs-drawer-bottom .bs-drawer-body {
+    bottom: 0;
+    left: 0;
+}
+
+.bs-drawer-top .bs-drawer-body {
+    transform: translateY(-100%);
+}
+
+.bs-drawer-right .bs-drawer-body {
+    transform: translateX(100%);
+}
+
+.bs-drawer-bottom .bs-drawer-body {
+    transform: translateY(100%);
+}
+
+.bs-drawer-left .bs-drawer-body {
+    transform: translateX(-100%);
+}
+
+.bs-drawer-top,
+.bs-drawer-bottom {
+    .bs-drawer-body {
+        width: 100%;
+    }
+}
+
+.bs-drawer-left,
+.bs-drawer-right {
+    .bs-drawer-body {
+        height: 100%;
+    }
+}
+
+.bs-drawer.show .bs-drawer-body {
+    transform: none;
+}
+
+.drawer-backdrop {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+    z-index: 2000;
+
+    &.show {
+        opacity: .5;
+    }
+}
