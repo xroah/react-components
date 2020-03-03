@@ -1,6 +1,6 @@
 import * as React from "react";
 import { NavLink } from "react-router-dom";
-import { ROUTES } from "../../routes";
+import routes from "../../routes";
 import { Nav } from "reap-ui";
 
 export default function DocNav() {
@@ -8,7 +8,7 @@ export default function DocNav() {
         <aside>
             <Nav variant="pill" vertical>
                 {
-                    ROUTES.map(
+                    routes.map(
                         item => (
                             <Nav.Item key={item.path}>
                                 <NavLink
