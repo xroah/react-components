@@ -149,18 +149,21 @@ export default class Popup extends React.Component<AlignProps> {
 
     //top/bottom/left/right spare space
     getSpareSpace(parent: HTMLElement, target: HTMLElement, el: HTMLElement) {
-        const {
-            rectTop,
-            rectLeft
-        } = this.getRelativeOffset(parent, target);
+        const targetRect = target.getBoundingClientRect();
+        const parentRect = parent.getBoundingClientRect();
+        const body = document.body;
         const [hOffset, vOffset] = this.handleOffset(this.props.offset);
+        const maxWidth = parent.clientWidth;
+        const maxHeight = parent === body ? window.innerHeight : parent.clientHeight;
+        const rectLeft = parent === body ? targetRect.left : targetRect.left - parentRect.left;
+        const rectTop = parent === body ? targetRect.top : targetRect.top - parentRect.top;
         const elHeight = el.offsetHeight;
         const elWidth = el.offsetWidth;
 
         return {
             top: rectTop - elHeight - vOffset,
-            right: rectLeft + elWidth + target.offsetWidth - parent.offsetWidth + hOffset,
-            bottom: rectTop + elHeight + target.offsetHeight - parent.offsetHeight + hOffset,
+            right: rectLeft + elWidth + target.offsetWidth - maxWidth + hOffset,
+            bottom: rectTop + elHeight + target.offsetHeight - maxHeight + hOffset,
             left: rectLeft - elWidth - vOffset
         };
     }
@@ -189,6 +192,7 @@ export default class Popup extends React.Component<AlignProps> {
             top: baseTop,
             parent
         } = this.getBaseAlignmentPosition(child, target);
+        console.log(baseTop)
         const {
             bottom: bottomSpace,
             top: topSpace,
@@ -272,16 +276,17 @@ export default class Popup extends React.Component<AlignProps> {
         const { target } = this.props as any;
         const child = this.childRef.current as HTMLElement;
         const { parent } = this.getBaseAlignmentPosition(child, target);
-        const {
-            rectLeft,
-            rectTop
-        } = this.getRelativeOffset(parent, child);
+        const childRect = child.getBoundingClientRect();
+        const parentRect = parent.getBoundingClientRect();
+        const body = document.body;
+        const rectLeft = parent === body ? childRect.left : childRect.left - parentRect.left;
+        const rectTop = parent === body ? childRect.top : childRect.top - parentRect.top;
         let leftOffset = 0;
         let topOffset = 0;
         const elHeight = child.offsetHeight;
         const elWidth = child.offsetWidth;
         const rightSpace = rectLeft + elWidth - parent.clientWidth;
-        const bottomSpace = rectTop + elHeight - parent.clientHeight;
+        const bottomSpace = rectTop + elHeight - (parent === body ? window.innerHeight : parent.clientHeight);
 
         if (rectLeft < 0) {
             leftOffset = Math.abs(rectLeft);
