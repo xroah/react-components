@@ -1,5 +1,6 @@
 import * as React from "react";
 import { CommonProps } from "../CommonPropsInterface";
+import { getScrollParent } from "../utils";
 
 export type position = "top" | "right" | "bottom" | "left";
 
@@ -39,28 +40,6 @@ export default class Popup extends React.Component<AlignProps> {
         }
 
         return ret;
-    }
-
-    getScrollParent(el: HTMLElement) {
-        const body = document.body;
-        let parent: HTMLElement = el;
-
-        while ((parent = parent.parentNode as HTMLElement) && body !== parent) {
-            const w = parent.clientWidth;
-            const h = parent.clientHeight;
-            const sw = parent.scrollWidth;
-            const sh = parent.scrollHeight;
-            const overflow = getComputedStyle(parent).getPropertyValue("overflow");
-
-            if (
-                (w < sw || h < sh) &&
-                overflow !== "visible"
-            ) {
-                return parent;
-            }
-        }
-
-        return body;
     }
 
     getPositionedParent(el: HTMLElement) {
@@ -127,7 +106,7 @@ export default class Popup extends React.Component<AlignProps> {
     //the left value and top value relative to top-left of the target
     getBaseAlignmentPosition(toBeAligned: HTMLElement, target: HTMLElement) {
         const positioned = this.getPositionedParent(toBeAligned);
-        const scrollParent = this.getScrollParent(target);
+        const scrollParent = getScrollParent(target);
         //if positioned element is in scrollParent or is scrollParent
         //the element offset is relative to the scrollParent, otherwise relative to body
         const relativeParent = (scrollParent === positioned || scrollParent.contains(positioned)) ? scrollParent : document.body;
@@ -192,7 +171,7 @@ export default class Popup extends React.Component<AlignProps> {
             top: baseTop,
             parent
         } = this.getBaseAlignmentPosition(child, target);
-        console.log(baseTop)
+
         const {
             bottom: bottomSpace,
             top: topSpace,
