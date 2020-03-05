@@ -11,9 +11,11 @@ export default () => {
         let afterVisible = !visible;
 
         if (afterVisible) {
-            root.style.transform = `translateX(${WIDTH}px)`;
+            // root.style.transform = `translateX(${WIDTH}px)`;
+            root.style.filter = "blur(1px)";
         } else {
             root.style.transform = "";
+            root.style.filter = "";
         }
 
         updateVisible(afterVisible);
@@ -25,7 +27,7 @@ export default () => {
             visible={visible}
             width={WIDTH}
             onClose={toggle}
-            style={{zIndex: 9999}}
+            style={{ zIndex: 9999 }}
             className="d-md-none drawer-nav">
             <Button
                 variant="light"
