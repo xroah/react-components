@@ -11,14 +11,17 @@ export default () => {
         let afterVisible = !visible;
 
         if (afterVisible) {
-            // root.style.transform = `translateX(${WIDTH}px)`;
             root.style.filter = "blur(1px)";
         } else {
-            root.style.transform = "";
             root.style.filter = "";
         }
 
         updateVisible(afterVisible);
+    };
+    const onItemClick = (evt: React.MouseEvent<HTMLElement>) => {
+        if ((evt.target as HTMLElement).classList.contains("active")) return;
+
+        toggle();
     };
 
     return (
@@ -35,7 +38,7 @@ export default () => {
                 onClick={toggle}>
                 <span className={`menu-icon ${visible ? "opened" : ""}`} />
             </Button>
-            <DocNav />
+            <DocNav onItemClick={onItemClick} />
         </Drawer>
     );
 }

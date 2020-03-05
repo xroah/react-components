@@ -3,7 +3,18 @@ import { NavLink } from "react-router-dom";
 import routes from "../../routes";
 import { Nav } from "reap-ui";
 
-export default function DocNav() {
+interface Props {
+    onItemClick?: (evt: React.MouseEvent<HTMLElement>) => void;
+}
+
+export default (props: Props) => {
+    const {
+        onItemClick
+    } = props;
+    const handleClick = (evt: React.MouseEvent<HTMLElement>) => {
+        onItemClick && onItemClick(evt);
+    };
+
     return (
         <aside className="aside-nav">
             <Nav variant="pill" vertical>
@@ -12,6 +23,7 @@ export default function DocNav() {
                         item => (
                             <Nav.Item key={item.path}>
                                 <NavLink
+                                    onClick={handleClick}
                                     className="nav-link"
                                     to={item.path}>
                                     {item.name}
