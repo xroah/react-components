@@ -1,46 +1,85 @@
 import * as React from "react";
 import {
-    HashRouter as Router,
     Switch,
     Route,
-    Redirect
-} from "react-router-dom";
-import { Row, Col } from "reap-ui";
-import DocNav from "./components/DocNav";
-import DrawerNav from "./components/DrawerNav";
+    Redirect,
+    useLocation
+} from "react-router-dom";;
 import routes from "./routes";
+import Loading from "./components/Loading";
+import Home from "./components/Home";
 
-export default function AppRoute() {
+function _Loading(props: { unmountCallback?: Function }) {
+    React.useEffect(() => () => {
+        props.unmountCallback && props.unmountCallback();
+    });
+
+    return <Loading />;
+}
+
+let prevPath = "";
+let loaded: any = {};
+let currentComponent: any;
+
+export default () => {
+    const location = useLocation();
+    const path = location.pathname;
+    const [needUpdate, update] = React.useState(false);
+    const fallback = (
+        <_Loading
+            unmountCallback={
+                () => {
+                    prevPath = path;
+                    loaded[path] = currentComponent;
+                    //force render the component once loaded(replace the previous component)
+                    update(Math.random() as any);
+                }
+            } />
+    );
+
     return (
-        <Router>
-            <DrawerNav />
-            <Row>
-                <Col
-                    span={false}
-                    md={3}
-                    className="d-none d-md-block">
-                    <DocNav />
-                </Col>
-                <Col
-                    span={false}
-                    md={9}
-                    className="pb-3">
-                    <Switch>
-                        {
-                            routes.map(item => {
-                                return (
-                                    <Route
-                                        key={item.path}
-                                        path={item.path}
-                                        exact
-                                        component={item.component} />
+        <Switch location={location}>
+            <Route path="/" exact component={Home} />
+            {
+                routes.map(item => {
+                    return (
+                        <Route
+                            key={item.path}
+                            path={item.path}
+                            exact
+                            render={() => {
+                                const Component = item.component;
+                                const prev = loaded[prevPath];
+                                const cur = loaded[path];
+                                const suspense = (
+                                    <React.Suspense fallback={fallback}>
+                                        <Component />
+                                    </React.Suspense>
                                 );
-                            })
-                        }
-                        <Redirect to="/" />
-                    </Switch>
-                </Col>
-            </Row>
-        </Router>
+                                currentComponent = suspense;
+
+                                //render the prev component until current has been loaded
+                                if (cur) {
+                                    window.scrollTo(0, 0);
+
+                                    return cur;
+                                } else if (prev) {
+                                    return (
+                                        <>
+                                            {prev}
+                                            {/* load current component when rendering previous */}
+                                            {suspense}
+                                        </>
+                                    );
+                                }
+
+                                return suspense;
+                            }} />
+                    );
+                })
+            }
+
+            <Redirect to="/" />
+        </Switch>
     );
 }

@@ -1,20 +1,30 @@
 import * as React from "react";
-import { NavLink } from "react-router-dom";
+import {
+    NavLink,
+    withRouter,
+    RouteComponentProps
+} from "react-router-dom";
 import routes from "../../routes";
 import { Nav } from "reap-ui";
 
-interface Props {
+interface Props extends RouteComponentProps {
     onItemClick?: (evt: React.MouseEvent<HTMLElement>) => void;
 }
 
-export default (props: Props) => {
+function DocNav(props: Props) {
     const {
-        onItemClick
+        onItemClick,
+        history,
+        location
     } = props;
-    const handleClick = (evt: React.MouseEvent<HTMLElement>) => {
+    const handleClick = (path: string) => (evt: React.MouseEvent<HTMLElement>) => {
         onItemClick && onItemClick(evt);
-    };
+        evt.preventDefault();
 
+        if (location.pathname !== path) {
+            history.push(path);
+        }
+    };
     return (
         <aside className="aside-nav">
             <Nav variant="pill" vertical>
@@ -22,12 +32,13 @@ export default (props: Props) => {
                     routes.map(
                         item => (
                             <Nav.Item key={item.path}>
-                                <NavLink
-                                    onClick={handleClick}
+                                <Nav.Link
+                                    onClick={handleClick(item.path)}
                                     className="nav-link"
-                                    to={item.path}>
+                                    active={location.pathname === item.path}
+                                    href="#">
                                     {item.name}
-                                </NavLink>
+                                </Nav.Link>
                             </Nav.Item>
                         )
                     )
@@ -36,3 +47,5 @@ export default (props: Props) => {
         </aside>
     );
 }
+
+export default withRouter(DocNav);
