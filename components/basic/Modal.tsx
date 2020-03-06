@@ -113,6 +113,10 @@ export default class Modal extends React.Component<ModalProps, ModalState> {
         zIndex: zIndex++
     };
 
+    componentWillUnmount() {
+        this.resetBody();
+    }
+
     handleKeyDown = (evt: React.KeyboardEvent) => {
         const { visible, keyboard } = this.props;
         const key = evt.key.toLowerCase();
@@ -211,19 +215,22 @@ export default class Modal extends React.Component<ModalProps, ModalState> {
         handleFuncProp(this.props.onHide)();
     }
 
-    handleExited = () => {
+    resetBody() {
         const body = document.body;
+        body.style.paddingRight = this.previousBodyPadding;
+        body.className = this.previousBodyClassName;
+        this.activeElement = null;
+        this.previousBodyClassName = this.previousBodyPadding = "";
+    }
+
+    handleExited = () => {
         const ae = this.activeElement as any;
 
         if (ae && ae.focus) {
             ae.focus();
         }
 
-        body.style.paddingRight = this.previousBodyPadding;
-        body.className = this.previousBodyClassName;
-        this.activeElement = null;
-        this.previousBodyClassName = this.previousBodyPadding = "";
-
+        this.resetBody();
         handleFuncProp(this.props.onHidden)();
         this.setState({
             display: ""
