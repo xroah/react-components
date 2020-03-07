@@ -31,15 +31,7 @@ export default function Row(props: RowProps) {
         minWidth,
         ...otherProps
     } = props;
-    const JUSTIFY_PREFIX = "justify-content";
     const COL_PREFiX = "row-cols";
-    const justifyMap: any = {
-        left: `${JUSTIFY_PREFIX}-start`,
-        center: `${JUSTIFY_PREFIX}-center`,
-        right: `${JUSTIFY_PREFIX}-end`,
-        between: `${JUSTIFY_PREFIX}-between`,
-        around: `${JUSTIFY_PREFIX}-around`
-    };
     const handleCols = () => {
         if (!cols) return;
 
@@ -71,7 +63,7 @@ export default function Row(props: RowProps) {
                 form ? "form-row" : "row",
                 noGutters && "no-gutters",
                 alignment && `align-items-${alignment}`,
-                justify && justifyMap[justify],
+                justify && `justify-content-${justify}`,
                 handleCols()
             )
         } {...otherProps} />
@@ -80,10 +72,10 @@ export default function Row(props: RowProps) {
 
 Row.propTypes = {
     noGutters: PropTypes.bool,
-    alignment: PropTypes.oneOf(["top", "center", "bottom"]),
-    justify: PropTypes.oneOf(["left", "center", "right", "between", "around"]),
+    alignment: PropTypes.oneOf(["start", "center", "end"]),
+    justify: PropTypes.oneOf(["start", "center", "end", "between", "around"]),
     form: PropTypes.bool,
-    cols: PropTypes.oneOf([
+    cols: PropTypes.oneOfType([
         PropTypes.number,
         PropTypes.shape({
             default: PropTypes.number,
