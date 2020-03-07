@@ -4,40 +4,36 @@ import { classNames } from "../utils";
 import { CommonProps } from "../CommonPropsInterface";
 
 export interface ContainerProps extends CommonProps<HTMLElement> {
-    tag?: React.ElementType;
     fluid?: boolean;
-    size?: "sm" | "md" | "lg" | "md";
+    minWidth?: "sm" | "md" | "lg" | "md";
 }
 
 export default function Container(props: ContainerProps) {
     const {
         className,
-        tag,
         fluid,
-        size,
+        minWidth,
         ...otherProps
     } = props;
     const PREFIX = "container";
 
-    return React.createElement(
-        tag as React.ElementType,
-        {
-            className: classNames(
+    return (
+        <div className={
+            classNames(
                 className,
                 PREFIX,
-                size && `${PREFIX}-${size}`,
-                fluid && `${PREFIX}-fluid`
-            ),
-            ...otherProps
-        }
+                fluid ? `${PREFIX}-fluid` : minWidth ? `${PREFIX}-${minWidth}` : ""
+            )
+        } {...otherProps} />
     );
 }
 
 Container.propTypes = {
-    tag: PropTypes.elementType,
-    fluid: PropTypes.bool
-};
-
-Container.defaultProps = {
-    tag: "div"
+    fluid: PropTypes.bool,
+    minWidth: PropTypes.oneOf([
+        "sm", 
+        "md",
+        "lg",
+        "md"
+    ])
 };

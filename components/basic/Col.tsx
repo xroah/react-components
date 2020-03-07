@@ -13,14 +13,12 @@ interface SizeObject {
 
 type sizeType = SizeObject | number | boolean | "auto";
 
-export interface ColProps extends CommonProps<HTMLDivElement> {
-    span?: spanType;
-    offset?: number;
-    order?: number;
+export interface ColProps extends CommonProps<HTMLDivElement>, SizeObject {
     sm?: sizeType;
     md?: sizeType;
     lg?: sizeType;
     xl?: sizeType;
+    alignment?: "start" | "center" | "end"
 }
 
 const spanPropType = PropTypes.oneOfType([
@@ -51,7 +49,8 @@ export default class Col extends React.Component<ColProps> {
         sm: sizeProp,
         md: sizeProp,
         lg: sizeProp,
-        xl: sizeProp
+        xl: sizeProp,
+        alignment: PropTypes.oneOf(["start", "center", "end"])
     };
     static defaultProps = {
         span: true
@@ -65,11 +64,11 @@ export default class Col extends React.Component<ColProps> {
         return "";
     }
 
-    handleOffsetOrOrder(type: "order" | "offset", val?: number) {
-        return (val == undefined || val < 0) ? "" : `${type}-${val}`;
+    handleOffsetOrOrder(type: string, val?: number) {
+        return (val == undefined) ? "" : `${type}-${val}`;
     }
 
-    handleSize(defaultVal: SizeObject, val: sizeType, type: "sm" | "md" | "lg" | "xl") {
+    handleSize(val: sizeType, type: "sm" | "md" | "lg" | "xl") {
         const prefix = `col-${type}`;
 
         if (val == undefined || val === false) return "";
@@ -80,14 +79,10 @@ export default class Col extends React.Component<ColProps> {
             return `${prefix}-${val}`;
         }
 
-        const order = val.order == undefined ? defaultVal.order : val.order;
-        const offset = val.offset == undefined ? defaultVal.offset : val.offset;
-        const span = val.span == undefined ? defaultVal.span : val.span;
-
         return [
-            this.handleOffsetOrOrder("offset", offset),
-            this.handleOffsetOrOrder("order", order),
-            this.handleSpan(prefix, span)
+            this.handleOffsetOrOrder(`offset-${type}`, val.offset),
+            this.handleOffsetOrOrder(`order-${type}`, val.order),
+            this.handleSpan(prefix, val.span)
         ];
     }
 
@@ -101,11 +96,13 @@ export default class Col extends React.Component<ColProps> {
             xl,
             order,
             className,
+            alignment,
             ...otherProps
         } = this.props;
         let classes = classNames(
             className,
             this.handleSpan("col", span),
+            alignment && `align-self-${alignment}`,
             this.handleOffsetOrOrder("order", order),
             this.handleOffsetOrOrder("offset", offset)
         );
@@ -117,11 +114,6 @@ export default class Col extends React.Component<ColProps> {
             ["xl", xl]
         ].forEach(([type, val]) => {
             let tmp = this.handleSize(
-                {
-                    order,
-                    offset,
-                    span
-                },
                 val as sizeType,
                 type as any
             );
