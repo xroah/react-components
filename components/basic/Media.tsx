@@ -1,13 +1,13 @@
 import * as React from "react";
 import PropTypes from "prop-types";
 import { classNames } from "../utils";
-import { CommonProps } from "../CommonPropsInterface";
+import { CommonPropsWithoutTitle } from "../CommonPropsInterface";
 
-export interface MediaProps extends CommonProps<HTMLDivElement> {
+export interface MediaProps extends CommonPropsWithoutTitle<HTMLDivElement> {
     img?: string | React.ReactNode;
     imgAlt?: string;
     imgTitle?: string;
-    header?: string | React.ReactNode;
+    title?: string | React.ReactNode;
     imgSize?: number;
     imgBorder?: "rounded" | "circle";
     imgPosition?: "left" | "right";
@@ -17,7 +17,7 @@ export interface MediaProps extends CommonProps<HTMLDivElement> {
 export default function Media(props: MediaProps) {
     const {
         img,
-        header,
+        title,
         className,
         children,
         imgSize,
@@ -65,8 +65,8 @@ export default function Media(props: MediaProps) {
     const body = (
         <div className="media-body">
             {
-                header != undefined && (
-                    <h5 className="mt-0 mb-1">{header}</h5>
+                title != undefined && (
+                    <h5 className="mt-0 mb-1">{title}</h5>
                 )
             }
             {children}
@@ -92,7 +92,7 @@ Media.defaultProps = {
 Media.propTypes = {
     img: PropTypes.oneOfType([PropTypes.bool, PropTypes.node]),
     imgAlt: PropTypes.string,
-    header: PropTypes.oneOfType([PropTypes.bool, PropTypes.node]),
+    title: PropTypes.oneOfType([PropTypes.bool, PropTypes.node]),
     imgSize: PropTypes.number,
     imgBorder: PropTypes.oneOf(["rounded", "circle"]),
     imgPosition: PropTypes.oneOf(["left", "right"]),
