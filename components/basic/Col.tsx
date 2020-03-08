@@ -82,7 +82,7 @@ export default class Col extends React.Component<ColProps> {
         return [
             this.handleOffsetOrOrder(`offset-${type}`, val.offset),
             this.handleOffsetOrOrder(`order-${type}`, val.order),
-            this.handleSpan(prefix, val.span)
+            this.handleSpan(prefix, val.span === undefined ? true : val.span)
         ];
     }
 
