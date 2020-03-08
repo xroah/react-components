@@ -45,11 +45,7 @@ const ColProps = [{
     type: "number",
     description: "Order of the column"
 }, {
-    name: "Offset",
-    type: "number",
-    description: "Offset of the column"
-}, {
-    name: "Offset",
+    name: "offset",
     type: "number",
     description: "Offset of the column"
 }, {

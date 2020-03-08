@@ -5,7 +5,8 @@ html {
 }
 
 body {
-    overflow: scroll;
+    overflow-y: scroll;
+    overflow-x: hidden;
 }
 
 .aside-nav {
@@ -203,4 +204,11 @@ body {
     height: 42px;
     background: url(../assets/back_top.svg) no-repeat center center / 100% 100%;
     opacity: .75;
+    transition: all .15s;
+    z-index: 9999;
+
+    &:hover {
+        background-color: rgba(0, 0, 0, .3);
+        box-shadow: 0 0 5px 0 rgba(0, 0, 0, .2);
+    }
 }
