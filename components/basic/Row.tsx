@@ -17,7 +17,6 @@ export interface RowProps extends CommonProps<HTMLDivElement> {
     justify?: "start" | "center" | "end" | "between" | "around";
     form?: boolean;
     cols?: number | colsType;
-    minWidth?: "sm" | "md" | "lg" | "md";
 }
 
 export default function Row(props: RowProps) {
@@ -28,7 +27,6 @@ export default function Row(props: RowProps) {
         justify,
         form,
         cols,
-        minWidth,
         ...otherProps
     } = props;
     const COL_PREFiX = "row-cols";
@@ -70,6 +68,10 @@ export default function Row(props: RowProps) {
     );
 }
 
+Row.defaultProps = {
+    noGutters: false,
+    form: false
+};
 Row.propTypes = {
     noGutters: PropTypes.bool,
     alignment: PropTypes.oneOf(["start", "center", "end"]),
@@ -84,11 +86,5 @@ Row.propTypes = {
             lg: PropTypes.number,
             xl: PropTypes.number
         })
-    ]),
-    minWidth: PropTypes.oneOf([
-        "sm", 
-        "md",
-        "lg",
-        "md"
     ])
 };
