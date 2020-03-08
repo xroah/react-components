@@ -63,6 +63,11 @@ export default [
         name: "Jumbotron"
     },
     {
+        path: "/components/layout",
+        component: lazy(() => import("./components/Examples/Layout")),
+        name: "Layout"
+    },
+    {
         path: "/components/list-group",
         component: lazy(() => import("./components/Examples/ListGroup")),
         name: "ListGroup"
