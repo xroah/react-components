@@ -5,7 +5,7 @@ import NoAPI from "../../NoAPI";
 
 const NavProps = [{
     name: "variant",
-    type: "tab | pill",
+    type: `"tab" | "pill"`,
     description: "Style as tab or pill"
 }, {
     name: "vertical",
@@ -14,11 +14,11 @@ const NavProps = [{
     description: "Stack your navigation vertically"
 }, {
     name: "minWidth",
-    type: "sm | md | lg | xl",
+    type: `"sm" | "md" | "lg" | "xl"`,
     description: "Stack them vertically on some viewports but not others"
 }, {
     name: "alignment",
-    type: "left | center | right",
+    type: `"left" | "center" | "right"`,
     default: "left",
     description: "Change the horizontal alignment of nav"
 }, {

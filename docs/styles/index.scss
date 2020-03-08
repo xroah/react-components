@@ -1,4 +1,5 @@
-body, html {
+body,
+html {
     width: 100%;
     height: 100%;
 }
@@ -25,6 +26,35 @@ body {
     margin: 1rem 0;
     border: .2rem solid #f8f9fa;
     padding: 1.5rem;
+
+    .code-container {
+        max-height: 360px;
+        overflow: auto;
+
+        &:not(:nth-child(2)) {
+            margin-top: 10px;
+        }
+    }
+
+    .input-group+.input-group,
+    .progress+.progress {
+        margin: 1rem 0;
+    }
+
+    .navbar+.navbar {
+        margin-top: 1rem;
+    }
+
+    .row>div {
+        padding-top: .75rem;
+        padding-bottom: .75rem;
+        background-color: #6df;
+        border: 1px solid #007bff;
+    }
+
+    .row + .row {
+        margin-top: 1rem;
+    }
 }
 
 .bd-callout-info {
@@ -35,28 +65,14 @@ body {
     border-radius: .25rem;
 }
 
-.bd-example .input-group+.input-group,
-.bd-example .progress+.progress {
-    margin: 1rem 0;
-}
-
-.bd-example .navbar+.navbar {
-    margin-top: 1rem;
-}
-
 .doc-heading {
     margin-top: 1rem;
     margin-bottom: .5rem;
 }
 
-.code-container {
-    max-height: 360px;
-    overflow: auto;
-}
-
 .btn-clipboard {
     position: absolute;
-    top: 1rem;
+    top: 1.5rem;
     right: 1rem;
     z-index: 10;
     display: block;
@@ -71,10 +87,6 @@ body {
 .btn-clipboard:hover {
     color: #fff;
     background-color: #027de7;
-}
-
-.api-container {
-    overflow: auto;
 }
 
 .props-table {
@@ -178,7 +190,17 @@ body {
 
 .component-loading-spinner {
     position: fixed;
-    right:10px;
+    right: 10px;
     top: 10px;
     z-index: 9999999;
+}
+
+.back-to-top {
+    position: fixed;
+    bottom: 50px;
+    right: 50px;
+    width: 42px;
+    height: 42px;
+    background: url(../assets/back_top.svg) no-repeat center center / 100% 100%;
+    opacity: .75;
 }

@@ -18,11 +18,11 @@ const InputProps = [{
     description: "A add-on on right side"
 }, {
     name: "sizing",
-    type: "lg | sm",
+    type: `"lg" | "sm"`,
     description: "Size of the input, distinguish from the size attribute of input element"
 }, {
     name: "variant",
-    type: "input | textarea",
+    type: `"input" | "textarea"`,
     default: "input",
     description: "Render as input or textarea"
 }, {
@@ -33,7 +33,7 @@ const InputProps = [{
 }];
 const GroupProps = [{
     name: "size",
-    type: "lg | sm",
+    type: `"lg" | "sm"`,
     description: "Size of input group"
 }];
 

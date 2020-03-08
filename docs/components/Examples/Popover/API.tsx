@@ -7,7 +7,7 @@ const TooltipProps = [
     ...commonProps,
     {
         name: "placement",
-        type: "top | bottom | left | right",
+        type: `"top" | "bottom" | "left" | "right"`,
         default: "top",
         description: "The popover popup position"
     }, {

@@ -17,9 +17,7 @@ const ButtonProps = [{
     description: "Appearance of Button"
 }, {
     name: "type",
-    type: `"button" |
-        "submit" |
-        "reset"`,
+    type: `"button" | "submit" | "reset"`,
     default: "button",
     description: "Button type"
 },

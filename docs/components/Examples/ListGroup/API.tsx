@@ -14,7 +14,7 @@ const ListGroupProps = [{
     description: "Remove some borders and rounded corners to render list group items edge-to-edge in a parent container"
 }, {
     name: "minWidth",
-    type: "sm | md | lg | xl",
+    type: `"sm" | "md" | "lg" | "xl"`,
     description: "Make a list group horizontal starting at that breakpoint’s min-width, it will be ignored if horizontal is false"
 }];
 const ItemProps = [{
@@ -34,7 +34,14 @@ const ItemProps = [{
     description: "Create actionable list group items with hover, disabled, and active states"
 }, {
     name: "variant",
-    type: `primary | secondary | success | danger | warning | info | dark | light`,
+    type: `"primary" |
+     "secondary" | 
+     "success" | 
+     "danger" | 
+     "warning" | 
+     "info" | 
+     "dark" |
+     "light"`,
     description: "Set contextual classes for the item"
 }, {
     name: "href",

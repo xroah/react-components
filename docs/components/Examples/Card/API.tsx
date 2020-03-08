@@ -14,7 +14,7 @@ const color = `"primary" |
 
 const CardProps = [{
     name: "header",
-    type: 'string | ReactNode',
+    type: "string | ReactNode",
     description: "Card header"
 }, {
     name: "footer",
@@ -48,7 +48,7 @@ const CardProps = [{
     description: "Title attribute for the underlying img element"
 }, {
     name: "imgPosition",
-    type: "top | bottom",
+    type:  `"top" | "bottom"`,
     default: "top",
     description: "Position of card image"
 }, {
@@ -58,7 +58,7 @@ const CardProps = [{
     description: "Turn an image into a card background and overlay your card’s text. "
 }, {
     name: "alignment",
-    type: "left | center | right",
+    type: `"left" | "center" | "right"`,
     default: "left",
     description: "Text alignment"
 }, {
@@ -83,7 +83,7 @@ const CardTitleProps = [{
     type: "string"
 }, {
     name: "subtitleColor",
-    type: `Same as Card color prop`,
+    type: "Same as Card color prop",
     description: "Subtitle color"
 }];
 

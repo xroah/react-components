@@ -7,6 +7,7 @@ import Nest from "./Nest";
 import NestSrc from "!!raw-loader!./Nest";
 import Alignment from "./Alignment";
 import AlignmentSrc from "!!raw-loader!./Alignment";
+import API from "./API";
 
 export default () => (
     <>
@@ -24,7 +25,7 @@ export default () => (
             title="Example"
             component={<Nest />}
             source={NestSrc}>
-            Media objects can be infinitely nested, though we suggest you stop at some point. 
+            Media objects can be infinitely nested, though we suggest you stop at some point.
         </DemoExample>
         <DemoExample
             title="Alignment"
@@ -32,5 +33,7 @@ export default () => (
             source={AlignmentSrc}>
             Media in a media object can be aligned  to the top (default), middle, or bottom of your content.
         </DemoExample>
+
+        <API />
     </>
 );

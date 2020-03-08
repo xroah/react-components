@@ -5,7 +5,7 @@ import NoAPI from "../../NoAPI";
 
 const ButtonGroupDoc = [{
     name: "size",
-    type: "'sm' | 'lg'",
+    type: `"sm" | "lg"`,
     description: "Set the size in the group of Buttons"
 }, {
     name: "vertical",

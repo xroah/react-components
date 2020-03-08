@@ -21,7 +21,7 @@ const NavbarProps = [{
     description: "Background of Navbar"
 }, {
     name: "expand",
-    type: "boolean | sm | md | lg | xl",
+    type: `boolean | "sm" | "md" | "lg" | "xl"`,
     default: "false",
     description: "To change when their content collapses behind a button"
 }];

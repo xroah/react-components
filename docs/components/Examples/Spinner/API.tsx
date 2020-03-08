@@ -4,18 +4,18 @@ import DocHeading from "../../DocHeading";
 
 const props = [{
     name: "animation",
-    type: "border | grow",
+    type: `"border" | "grow"`,
     description: "Animation style of spinners"
 }, {
     name: "variant",
-    type: `primary |
-    secondary |
-    success |
-    danger |
-    warning |
-    info |
-    dark |
-    light`,
+    type: `"primary" |
+    "secondary" |
+    "success" |
+    "danger" |
+    "warning" |
+    "info" |
+    "dark" |
+    "light"`,
     description: "The color of the spinner"
 }, {
     name: "size",

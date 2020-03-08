@@ -22,7 +22,7 @@ const FormProps = [{
     description: "Same as props of Col, wrap the children of Form.Item with Col"
 }, {
     name: "labelAlign",
-    type: "left | right",
+    type: `"left" | "right"`,
     default: "left",
     description: "Text alignment of label"
 }];
@@ -46,7 +46,7 @@ const FormItemProps = [{
     description: "Same as props of Col, wrap the label with Col.It will override the labelCol of Form"
 }, {
     name: "labelAlign",
-    type: "left | right",
+    type: `"left" | "right"`,
     default: "left",
     description: "Text alignment of label. It will override the labelAlign of Form"
 }, {

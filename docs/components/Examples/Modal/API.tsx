@@ -68,7 +68,7 @@ const props = [{
     description: "Vertically center the modal"
 }, {
     name: "size",
-    type: "xl | lg | sm",
+    type: `"xl" | "lg" | "sm"`,
     description: "Size of the modal"
 }, {
     name: "autoFocus",
@@ -82,7 +82,7 @@ const props = [{
     description: "Allow scroll the modal body"
 }, {
     name: "backdrop",
-    type: "boolean | 'static'",
+    type: `boolean | "static"`,
     default: "true",
     description: "Includes a modal-backdrop element. Alternatively, specify static for a backdrop which doesn't close the modal on click."
 }, {

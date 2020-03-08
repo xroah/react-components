@@ -10,14 +10,14 @@ import DocHeading from "../../DocHeading";
 */
 const props = [{
     name: "variant",
-    type: `primary |
-        secondary |
-        success |
-        danger |
-        warning |
-        info |
-        dark |
-        light`,
+    type: `"primary" |
+        "secondary" |
+        "success" |
+        "danger" |
+        "warning" |
+        "info" |
+        "dark" |
+        "light"`,
     description: "Background of the progress"
 }, {
     name: "value",

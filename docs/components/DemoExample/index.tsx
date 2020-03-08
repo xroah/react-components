@@ -27,7 +27,7 @@ export default function DemoExample(props: Props) {
                     "bd-example"
                 )
             }>
-                {component}
+                <div>{component}</div>
                 {
                     source &&
                     <SyntaxHighlighter code={source} />

@@ -3,21 +3,9 @@ import PropsTable from "../../PropsTable";
 import DocHeading from "../../DocHeading";
 import NoAPI from "../../NoAPI";
 
-/**
- *  animation?: "slide" | "fade";
-    controls?: boolean;
-    indicators?: boolean;
-    activeIndex?: number;
-    interval?: number;
-    pauseOnHover?: boolean;
-    onSlide?: Function;
-    onSlid?: Function;
-    touch?: boolean;
- */
-
 const CarouselProps = [{
     name: "animation",
-    type: "slide | fade",
+    type: `"slide" | "fade"`,
     default: "slide",
     description: "Slide effect"
 }, {
@@ -59,18 +47,6 @@ const CarouselProps = [{
     type: "Function",
     description: "Callback when the carousel has completed its slide transition"
 },];
-const CardTitleProps = [{
-    name: "color",
-    type: "Same as Card color prop",
-    description: "Title color"
-}, , {
-    name: "subtitle",
-    type: "string",
-}, , {
-    name: "subtitleColor",
-    type: `Same as Card color prop`,
-    description: "Subtitle color"
-}];
 
 export default () => (
     <>

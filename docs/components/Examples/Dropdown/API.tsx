@@ -57,12 +57,12 @@ const DropdownProps = [
     ...commonProps,
     {
         name: "placement",
-        type: "top | bottom | left | right",
+        type: `"top" | "bottom" | "left" | "right"`,
         default: "bottom",
         description: "The dropdown popup position"
     }, {
         name: "alignment",
-        type: "left | center | right",
+        type: `"left" | "center" | "right"`,
         default: "left",
         description: "Horizontal alignment of dropdown popup"
     }, {
@@ -84,7 +84,7 @@ const DropdownButtonProps = [{
     description: "Appearance of Button"
 }, {
     name: "size",
-    type: "'lg' | 'small'",
+    type: `"lg" | "small"`,
     description: "Specifies the large or small button."
 }, {
     name: "disabled",

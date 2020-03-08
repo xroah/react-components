@@ -7,10 +7,11 @@ import { Row, Col } from "reap-ui";
 import DocNav from "./components/DocNav";
 import DrawerNav from "./components/DrawerNav";
 import AppRouter from "./router";
+import BackTop from "./components/BackTop";
 
-export default function AppRoute() {
-
-    return (
+export default () => (
+    <>
+        <BackTop />
         <Router>
             <DrawerNav />
             <Row>
@@ -30,5 +31,5 @@ export default function AppRoute() {
                 </Col>
             </Row>
         </Router>
-    );
-}
+    </>
+);

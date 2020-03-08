@@ -4,11 +4,11 @@ import DocHeading from "../../DocHeading";
 
 const props = [{
     name: "size",
-    type: "sm | lg",
+    type: `"sm" | "lg"`,
     description: "Size of pagination items"
 }, {
     name: "alignment",
-    type: "left | center | right",
+    type: `"left" | "center" | "right"`,
     default: "left",
     description: "Alignment of pagination items"
 }];
