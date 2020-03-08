@@ -4,15 +4,13 @@ import { classNames } from "../utils";
 import { CommonProps } from "../CommonPropsInterface";
 
 export interface ContainerProps extends CommonProps<HTMLElement> {
-    fluid?: boolean;
-    minWidth?: "sm" | "md" | "lg" | "md";
+    variant?: "fluid" | "sm" | "md" | "lg" | "xl";
 }
 
 export default function Container(props: ContainerProps) {
     const {
         className,
-        fluid,
-        minWidth,
+        variant,
         ...otherProps
     } = props;
     const PREFIX = "container";
@@ -22,15 +20,15 @@ export default function Container(props: ContainerProps) {
             classNames(
                 className,
                 PREFIX,
-                fluid ? `${PREFIX}-fluid` : minWidth ? `${PREFIX}-${minWidth}` : ""
+                variant && `${PREFIX}-${variant}`
             )
         } {...otherProps} />
     );
 }
 
 Container.propTypes = {
-    fluid: PropTypes.bool,
-    minWidth: PropTypes.oneOf([
+    variant: PropTypes.oneOf([
+        "fluid",
         "sm", 
         "md",
         "lg",
