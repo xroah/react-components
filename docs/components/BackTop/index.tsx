@@ -14,6 +14,7 @@ export default class BackTop extends React.Component<React.HTMLAttributes<HTMLEl
 
     componentDidMount() {
         window.addEventListener("scroll", this.handleScroll);
+        window.addEventListener("wheel", this.handleWheel);
     }
 
     handleScroll = () => {
@@ -22,12 +23,15 @@ export default class BackTop extends React.Component<React.HTMLAttributes<HTMLEl
             this.timer = null;
         }
 
-        /* if (this.scrollTimer !== null) {
-            cancelAnimationFrame(this.scrollTimer);
-            this.scrollTimer = null;
-        }  */       
         this.toggleVisible();
         this.timer = setTimeout(this.handleScroll, 100);
+    }
+
+    handleWheel = () => {
+        if (this.scrollTimer !== null) {
+            cancelAnimationFrame(this.scrollTimer);
+            this.scrollTimer = null;
+        }     
     }
 
     getScrollTop() {
@@ -46,8 +50,10 @@ export default class BackTop extends React.Component<React.HTMLAttributes<HTMLEl
 
         window.scrollTo(0, scrollTop - (scrollTop / 10));
 
-        if (scrollTop > 0) {
+        if (scrollTop > 5) {
             this.scrollTimer = requestAnimationFrame(this.scrollToTop);
+        } else {
+            window.scrollTo(0, 0);
         }
     };
 
