@@ -17,6 +17,7 @@ export interface AlertProps extends CommonProps<HTMLDivElement> {
     fade?: boolean;
     dismissible?: boolean;
     visible?: boolean;
+    heading?: string | React.ReactNode;
     onClose?: Function;
     onClosed?: Function;
 }
@@ -29,6 +30,7 @@ export default function Alert(props: AlertProps) {
         dismissible,
         visible,
         children,
+        heading,
         onClose,
         onClosed,
         ...otherProps
@@ -67,6 +69,11 @@ export default function Alert(props: AlertProps) {
 
     const child = (
         <div className={classes} {...otherProps}>
+            {
+                heading !== undefined && (
+                    <h4 className="alert-heading">{heading}</h4>
+                )
+            }
             {children}
             {button}
         </div>
@@ -88,6 +95,10 @@ export default function Alert(props: AlertProps) {
 Alert.propTypes = {
     variant: PropTypes.oneOf(variantArray),
     fade: PropTypes.bool,
+    heading: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.node
+    ]),
     dismissible: PropTypes.bool,
     visible: PropTypes.bool,
     onClose: PropTypes.func,
