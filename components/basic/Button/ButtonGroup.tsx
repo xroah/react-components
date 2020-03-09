@@ -1,7 +1,7 @@
 import * as React from "react";
 import PropTypes from "prop-types";
-import { classNames } from "../utils";
-import { CommonProps } from "../CommonPropsInterface";
+import { classNames } from "../../utils";
+import { CommonProps } from "../../CommonPropsInterface";
 
 export interface ButtonGroupProps extends CommonProps<HTMLDivElement> {
     size?: "sm" | "lg";
@@ -24,7 +24,7 @@ export default function ButtonGroup(props: ButtonGroupProps) {
                 classNames(
                     className,
                     vertical ? `${PREFIX}-vertical` : PREFIX,
-                    size && `${PREFIX}-${size}`
+                    size && `${PREFIX}-${size}`,
                 )
             } {...otherProps}>
             {children}
@@ -33,8 +33,7 @@ export default function ButtonGroup(props: ButtonGroupProps) {
 }
 
 ButtonGroup.propTypes = {
-    size: PropTypes.oneOf(["sm", "lg"]),
-    vertical: PropTypes.bool
+    vertical: PropTypes.bool,
 };
 
 ButtonGroup.defaultProps = {

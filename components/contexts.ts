@@ -34,3 +34,7 @@ export const DropdownContext = createContext({
     close: () => {},
     isDropdown: false
 });
+
+export const ToggleButtonGroupContext = createContext({
+    type: ""
+});
