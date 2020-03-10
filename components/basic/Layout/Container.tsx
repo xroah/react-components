@@ -19,8 +19,7 @@ export default function Container(props: ContainerProps) {
         <div className={
             classNames(
                 className,
-                PREFIX,
-                variant && `${PREFIX}-${variant}`
+                variant ? `${PREFIX}-${variant}` : PREFIX
             )
         } {...otherProps} />
     );
