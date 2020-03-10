@@ -6,3 +6,5 @@ type CarouselType = typeof Carousel & { Item: typeof CarouselItem };
 const _Carousel = Carousel as CarouselType;
 
 _Carousel.Item = CarouselItem;
+
+export default _Carousel;

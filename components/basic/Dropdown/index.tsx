@@ -24,3 +24,5 @@ _Dropdown.Divider = createComponentByClass({
     className: "dropdown-divider",
     displayName: "DropdownDivider"
 });
+
+export default _Dropdown;
