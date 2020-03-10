@@ -25,18 +25,15 @@ const CustomControl = React.forwardRef(
         const PREFIX = "custom-control";
         let _type = type === "switch" ? "checkbox" : type;
         let _id = id;
-        let htmlFor = "";
         let _label: React.ReactElement | null = null;
 
         if (!_id) {
-            htmlFor = _id = `bs-custom-control-${uuid++}`;
-        } else {
-            htmlFor = _id;
+            _id = `bs-custom-control-${uuid++}`;
         }
 
         _label = (
             <label
-                htmlFor={htmlFor}
+                htmlFor={_id}
                 className={`${PREFIX}-label`}>
                 {children}
             </label>
