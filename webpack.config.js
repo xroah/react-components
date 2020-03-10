@@ -56,7 +56,8 @@ const config = {
         new HTMLWebpackPlugin({
             title: "reap-ui--Bootstrap components built with React",
             meta: {viewport: "width=device-width, initial-scale=1"},
-            hash: true
+            hash: true,
+            favicon: "./docs/assets/logo.png"
         })
     ]
 };
