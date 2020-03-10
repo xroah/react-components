@@ -1,32 +1,32 @@
 import {
     RefAttributes,
     ForwardRefExoticComponent,
-    FunctionComponent,
-    HTMLAttributes
+    FunctionComponent
 } from "react";
-import ButtonGroup, { ButtonGroupProps } from "./ButtonGroup";
+import ButtonGroup from "./ButtonGroup";
 import Button, { ButtonProps } from "./Button";
-import Toggle, { ToggleButtonProps } from "./ToggleButton";
+import Toggle from "./ToggleButton";
 import { createComponentByClass } from "../../utils";
-import ToggleGroup, { ToggleGroupProps } from "./ToggleGroup";
+import ToggleGroup from "./ToggleGroup";
+import { CommonProps } from "../../CommonPropsInterface";
 
 interface ButtonInterface {
-    Group: FunctionComponent<ButtonGroupProps>;
-    Toolbar: FunctionComponent<HTMLAttributes<HTMLDivElement>>;
-    Toggle: FunctionComponent<ToggleButtonProps>;
-    ToggleGroup: FunctionComponent<ToggleGroupProps>;
+    Group: typeof ButtonGroup;
+    Toolbar: FunctionComponent<CommonProps<HTMLDivElement>>;
+    Toggle: typeof Toggle;
+    ToggleGroup: typeof ToggleGroup;
 }
 
 type ButtonType = ButtonInterface & ForwardRefExoticComponent<ButtonProps & RefAttributes<HTMLButtonElement>>;
 
 const _Button = Button as ButtonType;
 
-_Button.Group = ButtonGroup as FunctionComponent<ButtonGroupProps>;
+_Button.Group = ButtonGroup;
 _Button.Toolbar = createComponentByClass({
     className: "btn-toolbar",
     displayName: "ButtonToolbar"
 });
 _Button.Toggle = Toggle;
-_Button.ToggleGroup = ToggleGroup as FunctionComponent<ToggleGroupProps>;
+_Button.ToggleGroup = ToggleGroup;
 
 export default _Button;
