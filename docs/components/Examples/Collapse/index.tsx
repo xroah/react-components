@@ -12,7 +12,7 @@ export default () => {
         <>
             <DocHeading>Collapse</DocHeading>
             <div>
-                Toggle the visibility of content across your project with a few classes and our JavaScript plugins.
+                Toggle the visibility of content across your project with a few classes and javascript.
             </div>
             <DemoExample
                 title="Basic example"

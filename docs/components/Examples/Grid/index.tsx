@@ -34,30 +34,35 @@ export default () => (
         </div>
         <DemoExample
             title="Equal-width"
+            className="bd-example-row"
             component={<EqualWidth />}
             source={EqualWidthSrc}>
             For example, here are two grid layouts that apply to every device and viewport, from <code>xs</code> to <code>xl</code>. Add any number of unit-less props for each breakpoint you need and every column will be the same width.
         </DemoExample>
         <DemoExample
             title="Setting one column width"
+            className="bd-example-row"
             component={<OneColumnWidth />}
             source={OneColumnWidthSrc}>
             Auto-layout for flexbox grid columns also means you can set the width of one column and have the sibling columns automatically resize around it.  Note that the other columns will resize no matter the width of the center column.
         </DemoExample>
         <DemoExample
             title="Variable width content"
+            className="bd-example-row"
             component={<VariableWidthContent />}
             source={VariableWidthContentSrc}>
             Use <code dangerouslySetInnerHTML={{ __html: `{breakpoint}="auto"` }} /> props to size columns based on the natural width of their content.
         </DemoExample>
         <DemoExample
             title="Mix and match"
+            className="bd-example-row"
             component={<MixAndMatch />}
             source={MixAndMatchSrc}>
             Don’t want your columns to simply stack in some grid tiers? Use a combination of different props for each tier as needed. See the example below for a better idea of how it all works.
         </DemoExample>
         <DemoExample
             title="Row columns"
+            className="bd-example-row"
             component={<RowColumns />}
             source={RowColumnsSrc}>
             <p>
@@ -67,9 +72,11 @@ export default () => (
             Use these row columns prop to quickly create basic grid layouts or to control your card layouts.
         </DemoExample>
         <DemoExample
+            className="bd-example-row"
             component={<RowColumns2 />}
             source={RowColumns2Src} />
         <DemoExample
+            className="bd-example-row"
             component={<RowColumns3 />}
             source={RowColumns3Src} />
         <DocHeading tag="h3">Alignment</DocHeading>
@@ -77,10 +84,12 @@ export default () => (
             Use flexbox alignment utilities to vertically and horizontally align columns.
         </div>
         <DemoExample
+            className="bd-example-row"
             title="Vertical alignment"
             component={<VerticalAlignment />}
             source={VerticalAlignmentSrc} />
         <DemoExample
+            className="bd-example-row"
             component={<VerticalAlignment2 />}
             source={VerticalAlignment2Src} />
         <DocHeading tag="h3">No gutters</DocHeading>
@@ -88,16 +97,19 @@ export default () => (
             The gutters between columns in our predefined grid classes can be removed with <code>noGutters</code> prop. This removes the negative margins from <code>Row</code> and the horizontal padding from all immediate children columns.
         </div>
         <DemoExample
+            className="bd-example-row"
             title="Horizontal alignment"
             component={<HorizontalAlignment />}
             source={HorizontalAlignmentSrc} />
         <DemoExample
+            className="bd-example-row"
             title="Reordering"
             component={<Order />}
             source={OrderSrc}>
             Use <code>order</code> props for controlling the visual order of your content. These classes are responsive, so you can set the order by breakpoint (e.g., <code dangerouslySetInnerHTML={{ __html: '<Col order={1} md={{order: 2}}/>' }} />). Includes support for 1 through 12 across all five grid tiers.
         </DemoExample>
         <DemoExample
+            className="bd-example-row"
             title="Reordering"
             component={<Offset />}
             source={OffsetSrc}>

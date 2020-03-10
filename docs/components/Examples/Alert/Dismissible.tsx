@@ -3,7 +3,6 @@ import { Alert } from "reap-ui";
 
 export default function Dismissible() {
     const [visible, setVisible] = React.useState(true);
-
     const onClose = () => {
         setVisible(false);
     };

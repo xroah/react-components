@@ -21,7 +21,7 @@ import API from "./API";
 
 export default () => (
     <>
-        <DocHeading>About</DocHeading>
+        <DocHeading>Card</DocHeading>
         <div>
             A card is a flexible and extensible content container. It includes options for headers and footers, a wide variety of content, contextual background colors, and powerful display options.
         </div>

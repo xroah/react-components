@@ -5,8 +5,11 @@ html {
 }
 
 body {
-    overflow-y: scroll;
-    overflow-x: hidden;
+    overflow: scroll;
+}
+
+a {
+    outline: none;
 }
 
 .aside-nav {
@@ -31,6 +34,7 @@ body {
     .code-container {
         max-height: 360px;
         overflow: auto;
+        cursor: text;
 
         &:not(:nth-child(2)) {
             margin-top: 10px;
@@ -45,7 +49,9 @@ body {
     .navbar+.navbar {
         margin-top: 1rem;
     }
+}
 
+.bd-example-row {
     .row>div {
         padding-top: .75rem;
         padding-bottom: .75rem;
@@ -53,7 +59,7 @@ body {
         border: 1px solid #007bff;
     }
 
-    .row + .row {
+    .row+.row {
         margin-top: 1rem;
     }
 }
@@ -90,17 +96,21 @@ body {
     background-color: #027de7;
 }
 
-.props-table {
-    min-width: 800px;
-    table-layout: fixed;
-}
+.api-container {
+    overflow: auto;
 
-.props-table th:last-child {
-    width: 50%;
-}
+    .props-table {
+        min-width: 800px;
+        table-layout: fixed;
+    }
 
-.props-table .default-value {
-    color: #e83e8c;
+    .props-table th:last-child {
+        width: 50%;
+    }
+
+    .props-table .default-value {
+        color: #e83e8c;
+    }
 }
 
 .btn-demo .btn,

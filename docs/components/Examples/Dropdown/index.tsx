@@ -54,16 +54,5 @@ export default () => (
             component={<Custom />}
             source={CustomSrc} />
         <API />
-
-        <div id="sss" style={{ height: 300, overflow: "auto", position: "relative" }}>
-            <div style={{ height: 1000, backgroundColor: "skyblue" }}>
-                <div style={{ height: 300 }}></div>
-                <SingleButton />
-
-            </div>
-            <div id="scrollContainer" style={{}}>
-
-            </div>
-        </div>
     </>
 );

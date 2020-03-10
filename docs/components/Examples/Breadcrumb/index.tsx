@@ -1,31 +1,22 @@
 import * as React from "react";
-import Basic from "./Basic";
-import PropsTable from "../../PropsTable";
 import DocHeading from "../../DocHeading";
 import DemoExample from "../../DemoExample";
-import NoAPI from "../../NoAPI";
+import Basic from "./Basic";
 import BasicSrc from "!!raw-loader!./Basic";
-
-const breadcrumbItemDoc = [{
-    name: "active",
-    type: "boolean",
-    default: "false",
-    description: `Active state for the Item and disables the link
-    (Don't set both 'active' and 'href' props)`
-}, {
-    name: "href",
-    type: "string",
-    description: "Adds 'href' to the inner 'a' element"
-}];
+import API from "./API";
 
 export default function Breadcrumb() {
     return (
         <>
-            <DocHeading>Example</DocHeading>
-            <DemoExample component={<Basic />} source={BasicSrc} />
-            <h2 className="doc-heading">API</h2>
-            <NoAPI title="Breadcrumb"/>
-            <PropsTable title="Breadcrumb.Item" data={breadcrumbItemDoc} />
+            <DocHeading>BreadCrumb</DocHeading>
+            <div>
+                Indicate the current page’s location within a navigational hierarchy that automatically adds separators via CSS.
+            </div>
+            <DemoExample
+                title="Example"
+                component={<Basic />}
+                source={BasicSrc} />
+            <API />
         </>
     );
 }

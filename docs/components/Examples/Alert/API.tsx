@@ -26,6 +26,10 @@ const AlertProps = [{
     default: "true",
     description: "Visual state of the Alert."
 }, {
+    name: "heading",
+    type: "string | ReactNode",
+    description: "Additional heading"
+}, {
     name: "dismissible",
     type: "boolean",
     default: "false",
