@@ -7,6 +7,7 @@ import {
 } from "react-router-dom";;
 import routes from "./routes";
 import Loading from "./components/Loading";
+import scrollIntoView from "./scrollIntoView";
 
 function _Loading(props: { unmountCallback?: Function }) {
     React.useEffect(() => () => {
@@ -28,7 +29,6 @@ export default () => {
         <_Loading
             unmountCallback={
                 () => {
-                    prevPath = path;
                     loaded[path] = currentComponent;
                     //force render the component once loaded(replace the previous component)
                     update(Math.random() as any);
@@ -59,11 +59,16 @@ export default () => {
                                     </React.Suspense>
                                 );
                                 currentComponent = suspense;
-
+                                
                                 //render the prev component until current has been loaded
                                 if (cur) {
                                     prevPath = path;
-                                    window.scrollTo(0, 0);
+
+                                    if (location.hash) {
+                                        scrollIntoView(document.querySelector(location.hash));
+                                    } else {
+                                        window.scrollTo(0, 0);
+                                    }
 
                                     return cur;
                                 } else if (prev) {

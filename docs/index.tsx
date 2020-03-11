@@ -6,7 +6,6 @@ import Layout from "./Layout";
 
 const section = document.createElement("section");
 
-section.classList.add("container");
 section.id = "root";
 document.body.append(section);
 
