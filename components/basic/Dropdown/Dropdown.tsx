@@ -231,7 +231,7 @@ export default class Dropdown extends React.Component<DropdownProps, DropdownSta
             right: "dropright"
         };
         const position = positionMap[placement as string];
-        const classes = classNames(className, "dropdown-toggle", position);
+        const classes = classNames(className, position);
         let child = React.Children.only(children) as React.ReactElement<React.HTMLAttributes<HTMLElement>>;
         const _overlay = (
             <DropdownContext.Provider value={{close: this.close, isDropdown: true}}>
@@ -249,6 +249,7 @@ export default class Dropdown extends React.Component<DropdownProps, DropdownSta
                     React.cloneElement<any>(
                         child,
                         {
+                            className: classNames(child.props.className, "dropdown-toggle"),
                             onKeyDown: chainFunction(this.handleKeyDown, onKeyDown),
                             onClick: chainFunction(this.handleClick, onClick)
                         }
