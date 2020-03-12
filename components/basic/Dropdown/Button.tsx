@@ -29,6 +29,7 @@ export default function DropdownButton(props: DropdownButtonProps) {
         onHide,
         onHidden,
         delay,
+        style,
         popupMountNode,
         ...otherProps
     } = props;
@@ -41,6 +42,7 @@ export default function DropdownButton(props: DropdownButtonProps) {
         onShow,
         onShown,
         onHide,
+        style,
         popupMountNode,
         onHidden
     };
@@ -57,7 +59,9 @@ export default function DropdownButton(props: DropdownButtonProps) {
 
     if (split) {
         return (
-            <Button.Group className={className} size={size}>
+            <Button.Group
+                className={className}
+                size={size}>
                 {
                     placement === "left" ?
                         <>{dropdown}{btn}</> :
