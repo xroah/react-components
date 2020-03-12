@@ -24,6 +24,7 @@ export default function Navbar(props: NavbarProps) {
     } = props;
     const EXPAND_PREFIX = "navbar-expand";
     const classes = classNames(
+        className,
         "navbar",
         bg && `bg-${bg}`,
         variant && `navbar-${variant}`,
