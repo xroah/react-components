@@ -3,7 +3,7 @@ import DocHeading from "../../DocHeading";
 import DemoExample from "../../DemoExample";
 import { Navbar } from "reap-ui";
 import SyntaxHighlighter from "../../SyntaxHighlighter";
-import logo from "../../../assets/bootstrap-solid.svg";
+import logo from "../../../assets/logo.svg";
 import Demo from "./Demo";
 import DemoSrc from "!!raw-loader!./Demo";
 import Color from "./Color";

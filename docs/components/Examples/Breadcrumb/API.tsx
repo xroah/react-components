@@ -17,7 +17,6 @@ const ItemProps = [{
 
 export default () => (
     <>
-        <DocHeading>API</DocHeading>
         <NoAPI title="Breadcrumb" />
         <PropsTable title="Breadcrumb.Item" data={ItemProps} />
     </>

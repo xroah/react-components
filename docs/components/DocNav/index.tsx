@@ -27,14 +27,14 @@ function DocNav(props: Props) {
     };
     return (
         <aside className="aside-nav">
-            <Nav variant="pill" vertical>
+            <Nav vertical>
                 {
                     routes.map(
                         item => (
                             <Nav.Item key={item.path}>
                                 <Nav.Link
                                     onClick={handleClick(item.path)}
-                                    className="nav-link"
+                                    className="doc-nav-link"
                                     active={location.pathname === item.path}
                                     href="#">
                                     {item.name}

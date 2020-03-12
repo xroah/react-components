@@ -58,8 +58,7 @@ const ToggleProps = [
 
 export default () => (
     <>
-        <DocHeading>API</DocHeading>
         <PropsTable title="Button" data={ButtonProps} />
-        <PropsTable title="Button.Toggle" data={CommonProps} />
+        <PropsTable title="Button.Toggle" data={ToggleProps} />
     </>
 );

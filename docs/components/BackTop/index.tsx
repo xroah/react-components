@@ -1,5 +1,6 @@
 import * as React from "react";
 import Fade from "../../../components/Fade";
+import { scrollTo } from "../../scrollIntoView";
 
 interface State {
     visible?: boolean;
@@ -7,14 +8,12 @@ interface State {
 
 export default class BackTop extends React.Component<React.HTMLAttributes<HTMLElement>, State> {
     private timer: any = null;
-    private scrollTimer: any = null;
     state = {
         visible: false
     };
 
     componentDidMount() {
         window.addEventListener("scroll", this.handleScroll);
-        window.addEventListener("wheel", this.handleWheel);
     }
 
     handleScroll = () => {
@@ -26,14 +25,7 @@ export default class BackTop extends React.Component<React.HTMLAttributes<HTMLEl
         this.toggleVisible();
         this.timer = setTimeout(this.handleScroll, 100);
     }
-
-    handleWheel = () => {
-        if (this.scrollTimer !== null) {
-            cancelAnimationFrame(this.scrollTimer);
-            this.scrollTimer = null;
-        }     
-    }
-
+    
     getScrollTop() {
         return document.documentElement.scrollTop || document.body.scrollTop;
     }
@@ -45,20 +37,8 @@ export default class BackTop extends React.Component<React.HTMLAttributes<HTMLEl
         });
     };
 
-    scrollToTop = () => {
-        const scrollTop = this.getScrollTop();
-
-        window.scrollTo(0, scrollTop - (scrollTop / 10));
-
-        if (scrollTop > 5) {
-            this.scrollTimer = requestAnimationFrame(this.scrollToTop);
-        } else {
-            window.scrollTo(0, 0);
-        }
-    };
-
     handleClick = (evt: React.MouseEvent) => {
-        this.scrollToTop();
+        scrollTo(0);
         evt.preventDefault();
     }
 

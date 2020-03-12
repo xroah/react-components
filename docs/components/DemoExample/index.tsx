@@ -1,6 +1,5 @@
 import * as React from "react";
 import SyntaxHighlighter from "../SyntaxHighlighter";
-import DocHeading from "../DocHeading";
 import { classNames } from "../../../components/utils";
 
 interface Props extends React.HTMLAttributes<HTMLElement> {
@@ -13,14 +12,14 @@ export default function DemoExample(props: Props) {
         component,
         className,
         source,
-        title,
         children
     } = props;
 
     return (
         <>
-            {title && <DocHeading tag="h3">{title}</DocHeading>}
-            {children}
+            {
+                children && <div>{children}</div>
+            }
             <div className={
                 classNames(
                     className,

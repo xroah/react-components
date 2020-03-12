@@ -1,6 +1,5 @@
 import * as React from "react";
 import PropsTable from "../../PropsTable";
-import DocHeading from "../../DocHeading";
 import NoAPI from "../../NoAPI";
 
 const AlertProps = [{
@@ -46,7 +45,6 @@ const AlertProps = [{
 
 export default () => (
     <>
-        <DocHeading>API</DocHeading>
         <PropsTable title="Alert" data={AlertProps} />
         <NoAPI title="Alert.Link" />
     </>

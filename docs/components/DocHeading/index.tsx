@@ -9,14 +9,19 @@ export default function DocHeading(props: Props) {
     const {
         tag = "h2",
         className,
-        children } = props;
+        ...otherProps
+    } = props;
 
     return React.createElement(
         tag,
         {
-            className: classNames(className, "doc-heading")
-        },
-        children
+            className: classNames(className, "doc-heading"),
+            ...otherProps
+        }
     )
 };
+
+DocHeading.H3 = (props: React.HTMLAttributes<HTMLHeadingElement>) => (
+    <DocHeading tag="h3" {...props}/>
+);
 

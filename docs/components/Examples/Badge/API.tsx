@@ -28,7 +28,6 @@ const BadgeProps = [{
 
 export default () => (
     <>
-        <DocHeading>API</DocHeading>
         <PropsTable title="Badge" data={BadgeProps}/>
     </>
 );
