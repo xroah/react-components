@@ -34,6 +34,7 @@ export default function DropdownButton(props: DropdownButtonProps) {
         ...otherProps
     } = props;
     const dropdownProps = {
+        className,
         placement,
         alignment,
         overlay,
@@ -46,21 +47,28 @@ export default function DropdownButton(props: DropdownButtonProps) {
         popupMountNode,
         onHidden
     };
-    const btn = (
-        <Button {...otherProps}>{children}</Button>
-    );
-    const dropdown = (
-        <Dropdown {...dropdownProps}>
-            <Button
-                className="dropdown-toggle-split"
-                {...otherProps} />
-        </Dropdown>
-    );
 
     if (split) {
+        const btn = (
+            <Button {...otherProps}>{children}</Button>
+        );
+        const {
+             className, 
+             style,
+             ...restProps
+         } = dropdownProps;
+        const dropdown = (
+            <Dropdown {...restProps}>
+                <Button
+                    className="dropdown-toggle-split"
+                    {...otherProps} />
+            </Dropdown>
+        );
+
         return (
             <Button.Group
                 className={className}
+                style={style}
                 size={size}>
                 {
                     placement === "left" ?
@@ -74,7 +82,6 @@ export default function DropdownButton(props: DropdownButtonProps) {
     return (
         <Dropdown {...dropdownProps}>
             <Button
-                className={className}
                 size={size}
                 {...otherProps}>
                 {children}
