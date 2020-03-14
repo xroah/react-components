@@ -1,6 +1,7 @@
 import * as React from "react";
 import PropsTable from "../../PropsTable";
 import NoAPI from "../../NoAPI";
+import LangMsg from "../../Language/LanguageMessage";
 
 const AlertProps = [{
     name: "variant",
@@ -13,34 +14,34 @@ const AlertProps = [{
         "dark" |
         "light"`,
     default: "",
-    description: "Appearance of a Alert"
+    description: <LangMsg id="variantApi"/>
 }, {
     name: "Fade",
     type: "boolean",
     default: "true",
-    description: "Fade when Alert dismiss or appear"
+    description: <LangMsg id="fadeApi"/>
 }, {
     name: "visible",
     type: "boolean",
     default: "true",
-    description: "Visual state of the Alert."
+    description: <LangMsg id="visibleApi"/>
 }, {
     name: "heading",
     type: "string | ReactNode",
-    description: "Additional heading"
+    description: <LangMsg id="headingApi"/>
 }, {
     name: "dismissible",
     type: "boolean",
     default: "false",
-    description: "Add a dismiss button and adds extra padding to the right of the alert"
+    description: <LangMsg id="dismissApi"/>
 }, {
     name: "onClose",
     type: "Function",
-    description: "If dismissible is true the callback is invoked immediately once the dismiss button is clicked, otherwise it will be invoked when visible changes from true to false"
+    description: <LangMsg id="onCloseApi"/>
 }, {
     name: "onClosed",
     type: "Function",
-    description: "The callback is invoked when the alert has been dismissed."
+    description: <LangMsg id="onClosedApi"/>
 }];
 
 export default () => (

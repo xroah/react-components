@@ -6,14 +6,16 @@ import { updateLanguage } from "../../actions";
 export const REAP_UI_LANG = "REAP_UI_LANG";
 
 interface Props {
-    lang: string,
-    updateLang: Function
+    lang: string;
+    className?: string;
+    updateLang: Function;
 }
 
 function LanguageSelector(props: Props) {
     const {
         lang,
-        updateLang
+        updateLang,
+        className
     } = props;
     const handleClick = (lang: string) => () => {
         updateLang(lang);
@@ -32,10 +34,11 @@ function LanguageSelector(props: Props) {
                     <Dropdown.Item
                         tag="button"
                         onClick={handleClick("zh")}>
-                        中文
+                        简体中文
                         </Dropdown.Item>
                 </Dropdown.Menu>
             }
+            className={className}
             variant="info"
             alignment="right"
             style={{ margin: "0 20px" }}

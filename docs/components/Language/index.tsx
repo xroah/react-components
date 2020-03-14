@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 function Language({
     lang,
     children
-}: { lang: string, children: React.ReactNode[] }
+}: { lang: string, children: React.ReactNode }
 ) {
     return (
         <LangContext.Provider value={lang}>

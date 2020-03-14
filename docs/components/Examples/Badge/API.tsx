@@ -1,6 +1,6 @@
 import * as React from "react";
 import PropsTable from "../../PropsTable";
-import DocHeading from "../../DocHeading";
+import LangMsg from "../../Language/LanguageMessage";
 
 const BadgeProps = [{
     name: "variant",
@@ -12,18 +12,16 @@ const BadgeProps = [{
         "info" |
         "dark" |
         "light"`,
-    default: "",
-    description: "Appearance of a Badge"
+    description: <LangMsg id="varApi"/>
 }, {
     name: "href",
     type: "string",
-    default: "",
-    description: "Render as 'a' tag with href if passed"
+    description: <LangMsg id="hrefApi"/>
 }, {
     name: "pill",
     type: "boolean",
     default: "false",
-    description: "Make badges more rounded (with a larger border-radius and additional horizontal padding)"
+    description: <LangMsg id="pillApi"/>
 }];
 
 export default () => (

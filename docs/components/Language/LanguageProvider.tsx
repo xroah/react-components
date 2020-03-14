@@ -5,9 +5,10 @@ import {
 } from "./context";
 
 export default (
-    { language,
+    {
+        language,
         children
-    }: { language: any, children: React.ReactNode[] }
+    }: { language: any, children: React.ReactNode }
 ) => (
         <LangContext.Consumer>
             {

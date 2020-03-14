@@ -2,7 +2,6 @@ import * as React from "react";
 import DocHeading from "../../DocHeading";
 import DemoExample from "../../DemoExample";
 import Main from "../../Main";
-import RightNav from "../../RightNav";
 import Basic from "./Basic";
 import BasicSrc from "!!raw-loader!./Basic";
 import Dismissible from "./Dismissible";
@@ -14,56 +13,53 @@ import LinkSrc from "!!raw-loader!./Link";
 import AdditionalContent from "./AdditionalContent";
 import AdditionalContentSrc from "!!raw-loader!./AdditionalContent";
 import API from "./API";
+import LangProvider from "../../Language/LanguageProvider";
+import LangMsg from "../../Language/LanguageMessage";
+import lang from "./lang";
+import RightNav, {
+    egId,
+    egTitle,
+    lcId,
+    lcTitle,
+    acId,
+    acTitle,
+    dsId,
+    dsTitle,
+    tgId,
+    tgTitle,
+    apiId
+} from "./RightNav";
 
 const { H3 } = DocHeading;
 
 export default () => (
-    <>
+    <LangProvider language={lang}>
         <Main>
             <DocHeading>Alert</DocHeading>
             <div>
-                Provide contextual feedback messages for typical user actions with the handful of available and flexible alert messages.
+                <LangMsg id="compDesc" />
             </div>
-            <H3 id="examples">Examples</H3>
+            <H3 id={egId}>{egTitle}</H3>
             <DemoExample component={<Basic />} source={BasicSrc}>
-                Alerts are available for any length of text, as well as an optional dismiss button. For proper styling, use one of the eight variants (e.g., <code>variant="success"</code>).
+                <LangMsg id="egDesc" />
             </DemoExample>
-            <H3 id="linkColor">Link color</H3>
+            <H3 id={lcId}>{lcTitle}</H3>
             <DemoExample component={<Link />} source={LinkSrc}>
-                Use the <code>Alert.Link</code> to quickly provide matching colored links within any alert.
+                <LangMsg id="lcDesc" />
             </DemoExample>
-            <H3 id="additionalContent">Additional content</H3>
+            <H3 id={acId}>{acTitle}</H3>
             <DemoExample
                 component={<AdditionalContent />}
                 source={AdditionalContentSrc}>
-                Alerts can also contain additional HTML elements like headings, paragraphs and dividers.
+                <LangMsg id="acDesc" />
             </DemoExample>
-            <H3 id="dismissing">Dismissing</H3>
+            <H3 id={dsId}>{dsTitle}</H3>
             <DemoExample component={<Dismissible />} source={DismissibleSrc} />
-            <H3 id="toggle">Toggle</H3>
+            <H3 id={tgId}>{tgTitle}</H3>
             <DemoExample component={<Toggle />} source={ToggleSrc} />
-            <DocHeading id="api">API</DocHeading>
+            <DocHeading id={apiId}>API</DocHeading>
             <API />
         </Main>
-        <RightNav data={[{
-            name: "Examples",
-            href: "#examples",
-            children: [{
-                name: "Link Color",
-                href: "#linkColor"
-            }, {
-                name: "Additional content",
-                href: "#additionalContent"
-            }, {
-                name: "Dismissing",
-                href: "#dismissing"
-            }, {
-                name: "Toggle",
-                href: "#toggle"
-            }]
-        }, {
-            name: "API",
-            href: "#api"
-        }]} />
-    </>
+        <RightNav />
+    </LangProvider>
 );

@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Col } from "reap-ui";
 
-export default (props: { children?: React.ReactNode[] }) => (
+export default (props: { children?: React.ReactNode }) => (
     <Col
         span={false}
         md={9}

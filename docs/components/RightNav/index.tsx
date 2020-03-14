@@ -4,7 +4,7 @@ import { RouteComponentProps, withRouter } from "react-router-dom";
 import scrollIntoView from "../../scrollIntoView";
 
 interface Link {
-    name: string;
+    name: string | React.ReactNode;
     href: string;
     children?: Link[];
 }
@@ -45,7 +45,7 @@ class RightNav extends React.Component<Props> {
 
             if (rectTop >= window.innerHeight / 2) break;
 
-            if (rectTop <= 100) {
+            if (rectTop <= 150) {
                 nextActive = a;
             }
         }

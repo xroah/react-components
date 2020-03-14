@@ -1,18 +1,17 @@
 import * as React from "react";
 import PropsTable from "../../PropsTable";
-import DocHeading from "../../DocHeading";
 import NoAPI from "../../NoAPI";
+import LangMsg from "../../Language/LanguageMessage";
 
 const ItemProps = [{
     name: "active",
     type: "boolean",
     default: "false",
-    description: `Active state for the Item and disables the link
-    (Don't set both 'active' and 'href' props)`
+    description: <LangMsg id="activeApi"/>
 }, {
     name: "href",
     type: "string",
-    description: "Adds 'href' to the inner 'a' element"
+    description: <LangMsg id="hrefApi"/>
 }];
 
 export default () => (
