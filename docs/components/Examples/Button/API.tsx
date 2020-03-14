@@ -1,6 +1,6 @@
 import * as React from "react";
 import PropsTable from "../../PropsTable";
-import DocHeading from "../../DocHeading";
+import LangMsg from "../../Language/LanguageMessage";
 
 const CommonProps = [{
     name: "variant",
@@ -14,37 +14,37 @@ const CommonProps = [{
         "light" |
         "link"`,
     default: "primary",
-    description: "Appearance of Button"
+    description: <LangMsg id="btnVarApi" />
 }, {
     name: "size",
     type: "'lg' | 'small'",
-    description: "Specifies the large or small button."
+    description: <LangMsg id="sizeApi" />
 }, {
     name: "disabled",
     type: "boolean",
     default: "false",
-    description: "Disable the button and apply 'disabled' class."
+    description: <LangMsg id="disabledApi" />
 }];
 const ButtonProps = [
     ...CommonProps, {
         name: "type",
         type: `"button" | "submit" | "reset"`,
         default: "button",
-        description: "Button type"
+        description: <LangMsg id="btnTypeApi" />
     }, {
         name: "block",
         type: "boolean",
         default: "false",
-        description: "Spans the full width of the Button parent."
+        description: <LangMsg id="blockApi" />
     }, {
         name: "active",
         type: "boolean",
         default: "false",
-        description: "Apply 'active' class to button."
+        description: <LangMsg id="activeApi" />
     }, {
         name: "href",
         type: "string",
-        description: "Render the button as 'a' element, styled like button."
+        description: <LangMsg id="hrefApi" />
     }
 ];
 const ToggleProps = [

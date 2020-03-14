@@ -12,7 +12,8 @@ a {
     outline: none;
 }
 
-$navHeight: 100vh;
+$headerHeight: 4rem;
+$navHeight: calc(100vh - #{$headerHeight});
 
 .doc-nav-link {
     padding: .25rem 1.5rem;
@@ -30,9 +31,31 @@ $navHeight: 100vh;
     }
 }
 
-.right-nav {
+.bd-header {
     position: sticky;
     top: 0;
+    min-height: $headerHeight;
+    z-index: 1000;
+
+    .nav-link {
+        padding: .5rem;
+        color: #fff;
+        $activeColor: #61dafb;
+
+        &:hover {
+            color: $activeColor;
+        }
+
+        &.active {
+            font-weight: 600;
+            color: $activeColor;
+        }
+    }
+}
+
+.right-nav {
+    position: sticky;
+    top: $headerHeight;
     height: $navHeight;
     overflow: auto;
     padding-top: 1.5rem;
@@ -66,7 +89,7 @@ $navHeight: 100vh;
 .aside-nav {
     position: --webkit-sticky;
     position: sticky;
-    top: 0;
+    top: $headerHeight;
     height: $navHeight;
     overflow-y: auto;
     overflow-x: visible;
@@ -243,7 +266,9 @@ $navHeight: 100vh;
 
     .aside-nav {
         position: relative;
+        top: 0;
         padding: 10px 0;
+        height: 100vh;
         z-index: 1;
         background-color: #fff;
 
@@ -255,8 +280,8 @@ $navHeight: 100vh;
 
 .component-loading-spinner {
     position: fixed;
-    right: 10px;
-    top: 10px;
+    right: 60px;
+    top: 60px;
     z-index: 9999999;
 }
 

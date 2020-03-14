@@ -29,12 +29,12 @@ window.addEventListener("keydown", e => {
 });
 window.addEventListener("touchmove", cancelScroll)
 
-export function scrollTo(pos: number) {
+export function scrollTo(pos: number, offset = 0) {
     const getScrollTop = () => document.documentElement.scrollTop || document.body.scrollTop;
     const scroll = () => {
         const scrollTop = getScrollTop();
         const NUM = 10;
-        const dis = pos - scrollTop;
+        const dis = pos - scrollTop - offset;
         let speed = dis / NUM;
 
         if (Math.abs(speed) < NUM) speed = speed < 0 ? -NUM : NUM;
@@ -46,7 +46,7 @@ export function scrollTo(pos: number) {
             return;
         }
 
-        window.scrollTo(0, pos);
+        window.scrollTo(0, pos - offset);
     }
 
     scroll();
@@ -55,9 +55,9 @@ export function scrollTo(pos: number) {
 export default function scrollIntoView(el?: HTMLElement) {
     if (!el) return;
 
-    if (behaviorSupported) {
+    /* if (behaviorSupported) {
         return el.scrollIntoView({ behavior: "smooth" });
-    }
+    } */
 
     if (timer) {
         cancelAnimationFrame(timer);
@@ -73,5 +73,5 @@ export default function scrollIntoView(el?: HTMLElement) {
         parent = parent.offsetParent as HTMLElement;
     }
     
-    scrollTo(offsetTop);
+    scrollTo(offsetTop, 100);
 }

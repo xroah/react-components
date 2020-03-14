@@ -11,41 +11,53 @@ import ButtonToolbar from "./ButtonToolbar";
 import ButtonToolbarSrc from "!!raw-loader!./ButtonToolbar";
 import Nesting from "./Nesting";
 import NestingSrc from "!!raw-loader!./Nesting";
+import LangMsg from "../../Language/LanguageMessage";
+
+import {
+    groupId,
+    tbId,
+    tbTitle,
+    groupSizeId,
+    groupSizeTitle,
+    nestingId,
+    nestingTitle,
+    verticalId,
+    verticalTitle
+} from "../Button/RightNav";
 
 const { H3 } = DocHeading;
 
 export default () => (
     <>
-        <DocHeading id="buttonGroup">Button group</DocHeading>
+        <DocHeading id={groupId}>Button group</DocHeading>
         <DemoExample
             component={<Basic />}
             source={BasicSrc}>
-            Wrap a series of <code>Button</code>s with <code>Button.Group</code>
+            <LangMsg id="groupDesc" />
         </DemoExample>
-        <H3 id="buttonToolbar">Button toolbar</H3>
+        <H3 id={tbId}>{tbTitle}</H3>
         <DemoExample
             component={<ButtonToolbar />}
             source={ButtonToolbarSrc}>
-            Combine sets of button groups into button toolbars for more complex components. Use utility classes as needed to space out groups, buttons, and more.
+            <LangMsg id="tbDesc" />
         </DemoExample>
-        <H3 id="buttonGroupSizing">Sizing</H3>
+        <H3 id={groupSizeId}>{groupSizeTitle}</H3>
         <DemoExample
             component={<Sizing />}
             source={SizingSrc}>
-            Instead of applying <code>Button</code> sizing prop to every button in a group, just set <code>size</code> prop for <code>Button.Group</code>.
+            <LangMsg id="groupSizeDesc" />
         </DemoExample>
-        <H3 id="nesting">Nesting</H3>
+        <H3 id={nestingId}>{nestingTitle}</H3>
         <DemoExample
             component={<Nesting />}
             source={NestingSrc} >
-            Place a <code>Button.Group</code> within another <code>Button.Group</code>  when you want dropdown menus mixed with a series of buttons.
+            <LangMsg id="nestingDesc" />
         </DemoExample>
-        <H3 id="vertical">Vertical</H3>
+        <H3 id={verticalId}>{verticalTitle}</H3>
         <DemoExample
             component={<Vertical />}
             source={VerticalSrc} >
-            Make a set of buttons appear vertically stacked rather than horizontally.
-            <strong>Split button dropdowns are not supported here.</strong>
+            <LangMsg id="verticalDesc" />
         </DemoExample>
     </>
 );

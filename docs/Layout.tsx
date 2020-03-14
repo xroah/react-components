@@ -5,14 +5,19 @@ import {
 import { Row, Container } from "reap-ui";
 import AppRouter from "./router";
 import BackTop from "./components/BackTop";
+import Header from "./components/Header";
+import Language from "./components/Language";
 
 export default () => (
-    <Container variant="fluid">
-        <BackTop />
+    <Language>
         <Router>
-            <Row>
-                <AppRouter />
-            </Row>
+            <Header />
+            <Container variant="fluid">
+                <BackTop />
+                <Row>
+                    <AppRouter />
+                </Row>
+            </Container>
         </Router>
-    </Container>
+    </Language>
 );

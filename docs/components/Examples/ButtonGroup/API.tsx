@@ -1,22 +1,22 @@
 import * as React from "react";
 import PropsTable from "../../PropsTable";
-import DocHeading from "../../DocHeading";
+import LangMsg from "../../Language/LanguageMessage";
 import NoAPI from "../../NoAPI";
 
 const ButtonGroupProps = [{
     name: "size",
     type: `"sm" | "lg"`,
-    description: "Set the size in the group of Buttons"
+    description: <LangMsg id="groupSizeApi" />
 }, {
     name: "vertical",
     type: "boolean",
     default: "false",
-    description: "Make a set of buttons appear vertically stacked rather than horizontally. "
+    description: <LangMsg id="verticalApi" />
 }];
 const ToggleGroupProps = [{
     name: "type",
     type: `"checkbox" | "radio"`,
-    description: "Type for underlying input of Button.Toggle"
+    description: <LangMsg id="tgGroupTypeApi" />
 }];
 
 export default () => (
