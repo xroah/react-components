@@ -18,9 +18,9 @@ export const  CardDeck = createComponentByClass({
     className: "card-deck",
     displayName: "CardDeck"
 });
-export const CardColumn = createComponentByClass({
-    className: "card-column",
-    displayName: "CardColumn"
+export const CardColumns = createComponentByClass({
+    className: "card-columns",
+    displayName: "CardColumns"
 });
 export const CardGroup = createComponentByClass({
     className: "card-group",
