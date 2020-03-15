@@ -1,8 +1,9 @@
 import * as React from "react";
 import { Card } from "reap-ui";
+import Main from "../../Main";
 import DocHeading from "../../DocHeading";
-import Basic from "./Basic";
 import DemoExample from "../../DemoExample";
+import Basic from "./Basic";
 import BasicSrc from "!!raw-loader!./Basic";
 import TTL from "./TitlesTextLinks";
 import TTLSrc from "!!raw-loader!./TitlesTextLinks";
@@ -17,70 +18,136 @@ import ImageCap from "./ImageCap";
 import ImageCapSrc from "!!raw-loader!./ImageCap";
 import ImageOverlay from "./ImageOverlay";
 import ImageOverlaySrc from "!!raw-loader!./ImageOverlay";
+import Group from "./Group";
+import GroupSrc from "!!raw-loader!./Group";
+import Deck from "./Deck";
+import DeckSrc from "!!raw-loader!./Deck";
+import Grid from "./Grid";
+import GridSrc from "!!raw-loader!./Grid";
+import Column from "./Column";
+import ColumnSrc from "!!raw-loader!./Column";
 import API from "./API";
+import LangProvider from "../../Language/LanguageProvider";
+import LangMsg from "../../Language/LanguageMessage";
+import lang from "./lang";
+import RightNav, {
+    basicId,
+    basicTitle,
+    ctId,
+    ctTitle,
+    bodyId,
+    bodyTitle,
+    ttlId,
+    ttlTitle,
+    lgId,
+    lgTitle,
+    ksId,
+    ksTitle,
+    hafId,
+    hafTitle,
+    imgId,
+    imgTitle,
+    icId,
+    icTitle,
+    ioId,
+    ioTitle,
+    layoutId,
+    layoutTitle,
+    gridId,
+    gridTitle,
+    groupId,
+    groupTitle,
+    columnId,
+    columnTitle,
+    deckId,
+    deckTitle,
+    cardApiId
+} from "./RightNav";
+
+const { H3 } = DocHeading;
 
 export default () => (
-    <>
-        <DocHeading>Card</DocHeading>
-        <div>
-            A card is a flexible and extensible content container. It includes options for headers and footers, a wide variety of content, contextual background colors, and powerful display options.
-        </div>
-        <DemoExample
-            title="Basic Example"
-            component={<Basic />}
-            source={BasicSrc}>
-            Cards are built with as little markup and styles as possible, but still manage to deliver a ton of control and customization. Built with flexbox, they offer easy alignment and mix well with other Bootstrap components. They have no margin by default, so use <a href="/docs/4.4/utilities/spacing/">spacing utilities</a> as needed.
-        </DemoExample>
-        <DocHeading>Content types</DocHeading>
-        <div>
-            Cards support a wide variety of content, including images, text, list groups, links, and more. Below are examples of what’s supported.
-        </div>
-        <DocHeading tag="h3">Body</DocHeading>
-        <div>
-            Use
-            <code> &lt;Card.Body&gt; </code>
-            to pad content inside a
-            <code> &lt;Card&gt; </code>.
-            Use it whenever you need a padded section within a card.
-        </div>
-        <div className="bd-example">
-            <Card body>
-                This is some text within a card body.
-            </Card>
-            <SyntaxHighlighter code={`<Card>
+    <LangProvider language={lang}>
+        <Main>
+            <DocHeading>Card</DocHeading>
+            <div><LangMsg id="compDesc" /></div>
+            <H3 id={basicId}>{basicTitle}</H3>
+            <DemoExample
+                component={<Basic />}
+                source={BasicSrc}>
+                <LangMsg id="basicDesc" />
+            </DemoExample>
+            <DocHeading id={ctId}>{ctTitle}</DocHeading>
+            <div><LangMsg id="ctDesc" /></div>
+            <H3 id={bodyId}>{bodyTitle}</H3>
+            <div><LangMsg id="bodyDesc" /></div>
+            <div className="bd-example">
+                <Card body>
+                    This is some text within a card body.
+                </Card>
+                <SyntaxHighlighter code={`<Card>
     <Card.Body>This is some text within a card body.</Card.Body>
 </Card>`} />
-            or
-        <SyntaxHighlighter code={`<Card body>This is some text within a card body.</Card>`} />
-        </div>
-        <DemoExample
-            title="Tiles, text, and links"
-            component={<TTL />}
-            source={TTLSrc} />
-        <DemoExample
-            title="List groups"
-            component={<ListGroup />}
-            source={ListGroupSrc}>
-            Create lists of content in a card with a flush list group.
-        </DemoExample>
-        <DemoExample
-            title="Kitchen sink"
-            component={<KitchenSink />}
-            source={KitchenSinkSrc}>
-            Mix and match multiple content types to create the card you need, or throw everything in there. Shown below are image styles, blocks, text styles, and a list group—all wrapped in a fixed-width card.
-        </DemoExample>
-        <DemoExample
-            title="Header and footer"
-            component={<FooterHeader />}
-            source={FooterHeaderSrc} />
-        <DemoExample
-            title="Image cap"
-            component={<ImageCap />}
-            source={ImageCapSrc} />
-        <DemoExample
-            title="Image overlay"
-            component={<ImageOverlay />}
-            source={ImageOverlaySrc} />
-        <API />
-    </>
+                or
+                <SyntaxHighlighter code={`<Card body>This is some text within a card body.</Card>`} />
+            </div>
+            <H3 id={ttlId}>{ttlTitle}</H3>
+            <DemoExample
+                component={<TTL />}
+                source={TTLSrc} />
+            <H3 id={lgId}>{lgTitle}</H3>
+            <DemoExample
+                component={<ListGroup />}
+                source={ListGroupSrc} />
+            <H3 id={ksId}>{ksTitle}</H3>
+            <DemoExample
+                component={<KitchenSink />}
+                source={KitchenSinkSrc}>
+                <LangMsg id="ksDesc" />
+            </DemoExample>
+            <H3 id={hafId}>{hafTitle}</H3>
+            <DemoExample
+                component={<FooterHeader />}
+                source={FooterHeaderSrc} />
+            <DocHeading id={imgId}>{imgTitle}</DocHeading>
+            <H3 id={icId}>{icTitle}</H3>
+            <DemoExample
+                component={<ImageCap />}
+                source={ImageCapSrc} />
+            <H3 id={ioId}>{ioTitle}</H3>
+            <DemoExample
+                component={<ImageOverlay />}
+                source={ImageOverlaySrc}>
+                <LangMsg id="ioDesc" />
+            </DemoExample>
+            <DocHeading id={layoutId}>{layoutTitle}</DocHeading>
+            <H3 id={groupId}>{groupTitle}</H3>
+            <DemoExample
+                component={<Group />}
+                source={GroupSrc}>
+                <LangMsg id="groupDesc" />
+            </DemoExample>
+            <H3 id={deckId}>{deckTitle}</H3>
+            <DemoExample
+                component={<Deck />}
+                source={DeckSrc}>
+                <LangMsg id="deckDesc" />
+            </DemoExample>
+            <H3 id={gridId}>{gridTitle}</H3>
+            <DemoExample
+                component={<Grid />}
+                source={GridSrc}>
+                <LangMsg id="gridDesc" />
+            </DemoExample>
+            <H3 id={columnId}>{columnTitle}</H3>
+            <DemoExample
+                component={<Column />}
+                source={ColumnSrc}>
+                <LangMsg id="columnDesc" />
+            </DemoExample>
+            <DocHeading id={cardApiId}>API</DocHeading>
+            <API />
+        </Main>
+        <RightNav />
+    </LangProvider>
 );

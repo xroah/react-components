@@ -1,7 +1,7 @@
 import * as React from "react";
 import PropsTable from "../../PropsTable";
-import DocHeading from "../../DocHeading";
 import NoAPI from "../../NoAPI";
+import LangMsg from "../../Language/LanguageMessage";
 
 const color = `"primary" |
 "secondary" |
@@ -15,13 +15,13 @@ const color = `"primary" |
 const CardProps = [{
     name: "header",
     type: "string | ReactNode",
-    description: "Card header"
+    description: <LangMsg id="headerApi" />
 }, {
     name: "footer",
     type: "string | ReactNode",
     default: "",
-    description: "Card footer"
-}, {
+    description:  <LangMsg id="footerApi" />
+}, /* {
     name: "headerStyle",
     type: "object",
     description: "Customize header style"
@@ -29,67 +29,66 @@ const CardProps = [{
     name: "footerStyle",
     type: "object",
     description: "Customize footer style"
-}, {
+},  */{
     name: "body",
     type: "boolean",
     default: "false",
-    description: 'Wrap the children with Card.Body. If "isImgOverlay" is true, this prop will be ignored.'
+    description:  <LangMsg id="bodyApi" />
 }, {
     name: "img",
     type: "string | ReactNode",
-    description: "Card image"
+    description:  <LangMsg id="imgApi" />
 }, {
     name: "imgAlt",
     type: "string",
-    description: "Alt attribute for the underlying img element"
+    description:  <LangMsg id="imgAltApi" />
 }, {
     name: "imgTitle",
     type: "string",
-    description: "Title attribute for the underlying img element"
+    description:  <LangMsg id="imgTitleApi" />
 }, {
     name: "imgPosition",
     type:  `"top" | "bottom"`,
     default: "top",
-    description: "Position of card image"
+    description:  <LangMsg id="imgPisApi" />
 }, {
     name: "isImgOverlay",
     type: "boolean",
     default: "false",
-    description: "Turn an image into a card background and overlay your card’s text. "
+    description:  <LangMsg id="overlayApi" />
 }, {
     name: "alignment",
     type: `"left" | "center" | "right"`,
     default: "left",
-    description: "Text alignment"
+    description: <LangMsg id="alignmentApi" />
 }, {
     name: "bg",
     type: color,
-    description: "Background color of card"
+    description:  <LangMsg id="bgApi" />
 }, {
     name: "border",
     type: color,
-    description: "Border color of card"
+    description:  <LangMsg id="borderApi" />
 }, {
     name: "color",
     type: `${color} | "white" | "muted" | "white-50" | "black-50"`,
-    description: "Text color of card"
+    description:  <LangMsg id="colorApi" />
 }];
 const CardTitleProps = [{
     name: "color",
-    type: "Same as Card color prop",
-    description: "Title color"
+    type:  <LangMsg id="sameAs" />,
+    description:  <LangMsg id="titleColorApi" />
 }, , {
     name: "subtitle",
     type: "string"
 }, {
     name: "subtitleColor",
-    type: "Same as Card color prop",
-    description: "Subtitle color"
+    type:  <LangMsg id="sameAs" />,
+    description:  <LangMsg id="subTitleColorApi" />
 }];
 
 export default () => (
     <>
-        <DocHeading>API</DocHeading>
         <PropsTable title="Card" data={CardProps} />
         <PropsTable title="Card.Title" data={CardTitleProps} />
         <NoAPI title="Card.Body" />
