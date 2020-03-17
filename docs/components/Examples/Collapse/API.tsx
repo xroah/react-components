@@ -1,63 +1,62 @@
 import * as React from "react";
 import PropsTable from "../../PropsTable";
-import DocHeading from "../../DocHeading";
+import LangMsg from "../../Language/LanguageMessage";
 
 const CollapseProps = [{
     name: "isOpen",
     type: "boolean",
-    description: "Control opened/closed state"
+    description: <LangMsg id="isOpenApi" />
 }, {
     name: "onShow",
     type: "Function",
-    description: "Callback when the collapse starts showing"
+    description: <LangMsg id="onShowApi" />
 }, {
     name: "onShown",
     type: "Function",
-    description: "Callback when the collapse has been visible"
+    description: <LangMsg id="onShowApi" />
 }, {
     name: "onHide",
     type: "Function",
-    description: "Callback when the collapse starts hiding"
+    description: <LangMsg id="onHideApi" />
 }, {
     name: "onHidden",
     type: "Function",
-    description: "Callback when collapse has been hidden"
+    description: <LangMsg id="onHiddenApi" />
 }];
 const AccordionProps = [{
     name: "activeKey",
     type: "string | number | string[] | number[]",
-    description: "Key of the active panel"
+    description: <LangMsg id="activeKeyApi" />
 }, {
     name: "defaultActiveKey",
     type: "string | number | string[] | number[]",
-    description: "Key of the initial active panel"
+    description: <LangMsg id="defaultActiveKeyApi" />
 }, {
     name: "multiple",
     type: "boolean",
     default: "false",
-    description: "Enable to activate multiple panels or not"
+    description: <LangMsg id="multipleApi" />
 }, {
     name: "onHeaderClick",
     type: "Function(key, e)",
-    description: "Callback when a panel header is clicked"
+    description: <LangMsg id="headerClickApi" />
 }, {
     name: "onPanelChange",
     type: "Function(keys: key[])",
-    description: "Callback when any active panel changes"
+    description: <LangMsg id="panelChangeApi" />
 }];
 const PanelProps = [{
     name: "key",
     type: "string | number",
-    description: "Unique key for identifying the panel"
+    description: <LangMsg id="keyApi" />
 }, {
     name: "header",
     type: "string | ReactNode",
-    description: "Header of the panel"
+    description: <LangMsg id="headerApi" />
 }];
 
 export default () => (
     <>
-        <DocHeading>API</DocHeading>
         <PropsTable title="Collapse" data={CollapseProps} />
         <PropsTable title="Accordion" data={AccordionProps} />
         <PropsTable title="Accordion.Panel" data={PanelProps} />
