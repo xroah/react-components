@@ -1,7 +1,8 @@
 import * as React from "react";
 import PropTypes from "prop-types";
 import Button from "../Button";
-import Dropdown, { DropdownProps } from "./Dropdown";
+import Dropdown from "./Dropdown";
+import { DropdownProps } from "./DropdownInner";
 import { variantType } from "../../utils";
 
 export interface DropdownButtonProps extends DropdownProps {
@@ -53,10 +54,10 @@ export default function DropdownButton(props: DropdownButtonProps) {
             <Button {...otherProps}>{children}</Button>
         );
         const {
-             className, 
-             style,
-             ...restProps
-         } = dropdownProps;
+            className,
+            style,
+            ...restProps
+        } = dropdownProps;
         const dropdown = (
             <Dropdown {...restProps}>
                 <Button
