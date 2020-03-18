@@ -1,6 +1,5 @@
 import * as React from "react";
 import PropsTable from "../../PropsTable";
-import DocHeading from "../../DocHeading";
 import NoAPI from "../../NoAPI";
 
 export const TRIGGER_TYPE = "hover | click | focus | Array<hover | click | focus>";
@@ -134,7 +133,6 @@ const MenuItemProps = [{
 
 export default () => (
     <>
-        <DocHeading>API</DocHeading>
         <PropsTable title="Dropdown" data={DropdownProps} />
         <PropsTable title="Dropdown.Button" data={DropdownButtonProps} />
         <PropsTable title="Dropdown.Menu" data={DropdownMenuProps} />
