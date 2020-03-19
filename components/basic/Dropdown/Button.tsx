@@ -13,11 +13,10 @@ export interface DropdownButtonProps extends DropdownProps {
     href?: string;
     size?: "sm" | "lg";
     split?: boolean;
-    render?: (buttons: React.ReactNode[]) => React.ReactNode[];
+    render?: (buttons: React.ReactElement[]) => React.ReactNode[];
 }
 
 export default function DropdownButton(props: DropdownButtonProps) {
-
     const {
         placement,
         alignment,
@@ -81,12 +80,6 @@ export default function DropdownButton(props: DropdownButtonProps) {
         delete dropdownProps.className;
         delete dropdownProps.style;
 
-        const dropdown = (
-            <Dropdown {...dropdownProps}>
-                {placement === "left" ? _leftBtn : _rightBtn}
-            </Dropdown>
-        );
-
         return (
             <Button.Group
                 size={size}
@@ -134,7 +127,6 @@ export default function DropdownButton(props: DropdownButtonProps) {
             {_btn}
         </Dropdown>
     );
-
 }
 
 DropdownButton.propTypes = {
