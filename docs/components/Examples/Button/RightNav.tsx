@@ -62,6 +62,6 @@ export default () => (
         }]
     }, {
         name: "API",
-        href: "#api"
+        href: `#${btnApiId}`
     }]} />
 );

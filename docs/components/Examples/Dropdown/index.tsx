@@ -8,6 +8,8 @@ import SplitButton from "./SplitButton";
 import SplitButtonSrc from "!!raw-loader!./SplitButton";
 import Sizing from "./Sizing";
 import SizingSrc from "!!raw-loader!./Sizing";
+import Render from "./Render";
+import RenderSrc from "!!raw-loader!./Render";
 import Directions from "./Directions";
 import DirectionSrc from "!!raw-loader!./Directions";
 import Alignment from "./Alignment";
@@ -17,47 +19,71 @@ import CustomSrc from "!!raw-loader!./Custom";
 import API from "./API";
 import LangProvider from "../../Language/LanguageProvider";
 import LangMsg from "../../Language/LanguageMessage";
+import lang from "./lang";
+import RightNav, {
+    singleId,
+    singleTitle,
+    splitId,
+    splitTitle,
+    sizeId,
+    sizeTitle,
+    renderId,
+    renderTitle,
+    dirId,
+    dirTitle,
+    alignmentId,
+    alignmentTitle,
+    customId,
+    customTitle,
+    apiId
+} from "./RightNav";
+
+const { H3 } = DocHeading;
 
 export default () => (
-    <>
+    <LangProvider language={lang}>
         <Main>
             <DocHeading>Overview</DocHeading>
-            <div>
-                Dropdowns are toggleable, contextual overlays for displaying lists of links and more.
-            </div>
+            <div><LangMsg id="compDesc" /></div>
+            <H3 id={singleId}>{singleTitle}</H3>
             <DemoExample
-                title="Single button"
                 component={<SingleButton />}
                 source={SingleButtonSrc} />
+            <H3 id={splitId}>{splitTitle}</H3>
             <DemoExample
-                title="Split button"
                 component={<SplitButton />}
                 source={SplitButtonSrc} />
+            <H3 id={sizeId}>{sizeTitle}</H3>
             <DemoExample
                 className="dropdown-demo"
-                title="Sizing"
                 component={<Sizing />}
                 source={SizingSrc}>
-                Button dropdowns work with buttons of all sizes, including default and split dropdown buttons.
+                <LangMsg id="sizeDesc" />
             </DemoExample>
+            <H3 id={renderId}>{renderTitle}</H3>
+            <DemoExample
+                component={<Render />}
+                source={RenderSrc} />
+            <H3 id={dirId}>{dirTitle}</H3>
             <DemoExample
                 className="dropdown-demo"
-                title="Directions"
                 component={<Directions />}
                 source={DirectionSrc}>
-                Trigger dropdown menus above,bottom,left or right by <code>placement</code> prop.
+                <LangMsg id="dirDesc" />
             </DemoExample>
+            <H3 id={alignmentId}>{alignmentTitle}</H3>
             <DemoExample
-                title="Alignment"
                 component={<Alignment />}
                 source={AlignmentSrc}>
-                By default, a dropdown menu is automatically positioned 100% from the top and along the left side. Change it by <code>alignment</code> prop;
+                <LangMsg id="alignmentDesc" />
             </DemoExample>
+            <H3 id={customId}>{customTitle}</H3>
             <DemoExample
-                title="Customization"
                 component={<Custom />}
                 source={CustomSrc} />
+            <DocHeading id={apiId}>API</DocHeading>
             <API />
         </Main>
-    </>
+        <RightNav />
+    </LangProvider>
 );

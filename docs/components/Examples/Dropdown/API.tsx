@@ -1,54 +1,56 @@
 import * as React from "react";
 import PropsTable from "../../PropsTable";
+import { Link } from "react-router-dom";
 import NoAPI from "../../NoAPI";
+import LangMsg from "../../Language/LanguageMessage";
 
 export const TRIGGER_TYPE = "hover | click | focus | Array<hover | click | focus>";
 export const commonProps = [
     {
         name: "visible",
         type: "boolean",
-        description: "Control the visibility(controlled component)"
+        description: <LangMsg id="visibleApi" />
     }, {
         name: "defaultVisible",
         type: "boolean",
         default: "false",
-        description: "The initial visibility"
+        description: <LangMsg id="defaultVisibleApi" />
     }, {
         name: "fade",
         type: "boolean",
         default: "true",
-        description: "Enable fade effect of dropdown popup or not"
+        description: <LangMsg id="fadeApi" />
     }, {
         name: "forceRender",
         type: "boolean",
         default: "false",
-        description: "If true will render once mounted, otherwise will render it when visible is true"
+        description: <LangMsg id="forceRenderApi" />
     }, {
         name: "offset",
         type: "number | number[]",
         default: "[0, 0]",
-        description: "Offset of dropdown popup([horizontal, vertical])"
+        description: <LangMsg id="offsetApi" />
     }, {
         name: "delay",
         type: "number | {show?: number, hide?: number}",
         default: "0",
-        description: "A millisecond delay to show or hide the popup"
+        description: <LangMsg id="delayApi" />
     }, {
         name: "onShow",
         type: "Function",
-        description: "Callback is invoked when visible changes from false to true"
+        description: <LangMsg id="onShowApi" />
     }, {
         name: "onShown",
         type: "Function",
-        description: "Callback is invoked when popup has been shown"
+        description: <LangMsg id="onShownApi" />
     }, {
         name: "onHide",
         type: "Function",
-        description: "Callback is invoked when visible change from true to false"
+        description: <LangMsg id="onHideApi" />
     }, {
         name: "onHidden",
         type: "Function",
-        description: "Callback is invoked when popup has been hidden"
+        description: <LangMsg id="onHiddenApi" />
     }
 ];
 
@@ -58,16 +60,16 @@ const DropdownProps = [
         name: "placement",
         type: `"top" | "bottom" | "left" | "right"`,
         default: "bottom",
-        description: "The dropdown popup position"
+        description: <LangMsg id="placementApi" />
     }, {
         name: "alignment",
         type: `"left" | "center" | "right"`,
         default: "left",
-        description: "Horizontal alignment of dropdown popup"
+        description: <LangMsg id="alignmentApi" />
     }, {
         name: "overlay",
         type: "ReactElement",
-        description: "The dropdown popup"
+        description: <LangMsg id="overlayApi" />
     }];
 const DropdownButtonProps = [{
     name: "variant",
@@ -80,55 +82,59 @@ const DropdownButtonProps = [{
         "dark" |
         "light"`,
     default: "primary",
-    description: "Appearance of Button"
+    description: <LangMsg id="variantApi" />
 }, {
     name: "size",
     type: `"lg" | "small"`,
-    description: "Specifies the large or small button."
+    description: <LangMsg id="sizeApi" />
 }, {
     name: "disabled",
     type: "boolean",
     default: "false",
-    description: "Disable the button and apply 'disabled' class."
+    description: <LangMsg id="disabledApi" />
 }, {
     name: "outline",
     type: "boolean",
     default: "false",
-    description: "Outlined buttton"
+    description: <LangMsg id="outlineApi" />
 }, {
     name: "href",
     type: "string",
-    description: "Render the button as 'a' element, styled like button."
+    description: <LangMsg id="hrefApi" />
 }, {
     name: "split",
     type: "boolean",
     default: "false",
-    description: "Split button dropdowns with virtually the same markup as single button dropdowns"
+    description: <LangMsg id="splitApi" />
+}, {
+    name: "render",
+    type: "(buttons:ReactNode[]) => ReactNode[]",
+    description: <LangMsg id="renderApi" />
 }];
 const DropdownMenuProps = [{
     name: "header",
     type: "string | ReactNode",
-    description: "Header of the menu"
+    description: <LangMsg id="headerAPi" />
 }];
 const MenuItemProps = [{
     name: "tag",
     type: "string",
     default: "a",
-    description: "A custom element type"
+    description: <LangMsg id="tagApi" />
 }, {
     name: "href",
     type: "string",
-    description: "Href attribute of 'a' tag, if tag equals 'a' will apply otherwise will ignore"
+    description: <LangMsg id="itemHrefApi" />
 }, {
     name: "active",
     type: "boolean",
     default: "false",
-    description: "Activate the component"
+    description: <LangMsg id="activeApi" />
 }, {
     name: "disabled",
     type: "boolean",
     default: "false",
-    description: "Disable the component"
+    description: <LangMsg id="itemDisabledApi" />
 }];
 
 export default () => (
