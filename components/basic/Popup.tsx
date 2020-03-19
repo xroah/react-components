@@ -3,7 +3,8 @@ import { createPortal } from "react-dom";
 import PropTypes from "prop-types";
 import {
     handleFuncProp,
-    throttle
+    throttle,
+    reflow
 } from "../utils";
 import Fade from "../Fade";
 import { PopupContext } from "../contexts";
@@ -214,8 +215,9 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
         handleFuncProp(onShown)(node);
     };
 
-    handleEntering = () => {
+    handleEntering = (node: HTMLElement) => {
         //update position, in case calc incorrectly(invisible) when fade in
+        node && reflow(node);
         this.handleResize();
     }
 
