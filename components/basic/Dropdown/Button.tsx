@@ -13,8 +13,7 @@ export interface DropdownButtonProps extends DropdownProps {
     href?: string;
     size?: "sm" | "lg";
     split?: boolean;
-    btnProps?: ButtonProps;
-    splitBtnProps?: ButtonProps;
+    render?: (buttons: React.ReactNode[]) => React.ReactNode[];
 }
 
 export default function DropdownButton(props: DropdownButtonProps) {
@@ -37,8 +36,7 @@ export default function DropdownButton(props: DropdownButtonProps) {
         outline,
         href,
         popupMountNode,
-        btnProps,
-        splitBtnProps,
+        render,
         className,
         style,
         ...otherProps
@@ -57,32 +55,35 @@ export default function DropdownButton(props: DropdownButtonProps) {
         popupMountNode,
         onHidden
     };
-    const _btnProps = {
+    const btnProps = {
         variant,
         disabled,
         outline,
         href
     };
-    
+
     if (split) {
-        const btn = (
-            <Button {...{
-                ..._btnProps,
-                ...btnProps
-            }}>{children}</Button>
+        let leftBtn = (
+            <Button {...btnProps}>{children}</Button>
         );
+        let rightBtn = (
+            <Button
+                className="dropdown-toggle-split"
+                {...btnProps} />
+        );
+
+        if (placement === "left") {
+            [leftBtn, rightBtn] = [rightBtn, leftBtn];
+        }
+
+        const [_leftBtn, _rightBtn] = render!([leftBtn, rightBtn]);
 
         delete dropdownProps.className;
         delete dropdownProps.style;
 
         const dropdown = (
             <Dropdown {...dropdownProps}>
-                <Button
-                    className="dropdown-toggle-split"
-                    {...{
-                        ..._btnProps,
-                        ...splitBtnProps
-                    }} />
+                {placement === "left" ? _leftBtn : _rightBtn}
             </Dropdown>
         );
 
@@ -93,25 +94,44 @@ export default function DropdownButton(props: DropdownButtonProps) {
                 style={style}
                 {...otherProps}>
                 {
+                    // place dropdown button left
                     placement === "left" ?
-                        <>{dropdown}{btn}</> :
-                        <>{btn}{dropdown}</>
+                        (
+                            <>
+                                <Dropdown {...dropdownProps}>
+                                    {_leftBtn}
+                                </Dropdown>
+                                {_rightBtn}
+                            </>
+                        ) :
+                        (
+                            <>
+                                {_leftBtn}
+                                <Dropdown {...dropdownProps}>
+                                    {_rightBtn}
+                                </Dropdown>
+                            </>
+                        )
                 }
             </Button.Group>
         );
     }
 
+    let btn = (
+        <Button
+            size={size}
+            {...{
+                ...btnProps,
+                ...otherProps,
+            }}>
+            {children}
+        </Button>
+    );
+    const [_btn] = render!([btn]);
+
     return (
         <Dropdown {...dropdownProps}>
-            <Button
-                size={size}
-                {...{
-                    ..._btnProps,
-                    ...otherProps,
-                    ...btnProps,
-                }}>
-                {children}
-            </Button>
+            {_btn}
         </Dropdown>
     );
 
@@ -121,4 +141,7 @@ DropdownButton.propTypes = {
     split: PropTypes.bool,
     btnProps: PropTypes.object,
     splitBtnProps: PropTypes.object
+};
+DropdownButton.defaultProps = {
+    render: (buttons: React.ReactNode[]) => buttons
 };
