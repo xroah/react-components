@@ -13,13 +13,13 @@ export default function Jumbotron(props: JumbotronProps) {
         fluid,
         ...otherProps
     } = props;
-
+    const PREFIX = "jumbotron";
 
     return <div className={
         classNames(
             className,
-            "jumbotron",
-            fluid && "jumbotron-fluid"
+            PREFIX,
+            fluid && `${PREFIX}-fluid`
         )
     } {...otherProps}/>;
 }
