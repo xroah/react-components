@@ -38,9 +38,10 @@ const Input = React.forwardRef(
         ref: React.Ref<HTMLInputElement & HTMLTextAreaElement>
     ) => {
         const PREFIX = "form-control";
+        const noAppendix = prepend == undefined && append == undefined;
         const classes = classNames(
             className,
-            sizing && `${PREFIX}-${sizing}`,
+            sizing && noAppendix && `${PREFIX}-${sizing}`,
             otherProps.readOnly && plaintext ? `${PREFIX}-plaintext` : PREFIX
         );
         const input = variant === "input" ? (
@@ -75,7 +76,7 @@ const Input = React.forwardRef(
             </>
         );
 
-        if (prepend == undefined && append == undefined) {
+        if (noAppendix) {
             return input;
         }
 
@@ -86,7 +87,7 @@ const Input = React.forwardRef(
                     value => (
                         value ?
                             inputWithAddons :
-                            <InputGroup>{inputWithAddons}</InputGroup>
+                            <InputGroup size={sizing}>{inputWithAddons}</InputGroup>
                     )
                 }
             </InputGroupContext.Consumer>
