@@ -1,17 +1,16 @@
 import * as React from "react";
 import PropsTable from "../../PropsTable";
-import DocHeading from "../../DocHeading";
+import LangMsg from "../../Language/LanguageMessage";
 
 const props = [{
     name: "fluid",
     type: "boolean",
     default: "false",
-    description: "To make the jumbotron full width, and without rounded corners"
+    description: <LangMsg id="fluidApi" />
 }];
 
 export default () => (
     <>
-        <DocHeading>API</DocHeading>
-        <PropsTable title="Jumbotron" data={props}/>
+        <PropsTable title="Jumbotron" data={props} />
     </>
 );
