@@ -4,15 +4,14 @@ import { PaginationProps } from "../../basic/Pagination/Pagination";
 import { handleFuncProp } from "../../utils";
 
 const { Item } = Pagination;
-const VISIBLE_ITEMS = 7;
 
 export interface AutoPaginationProps extends PaginationProps {
     current?: number;
     defaultCurrent?: number;
     total?: number;
     pageSize?: number;
-    nextText?: string;
-    prevText?: string;
+    nextText?: string | React.ReactNode;
+    prevText?: string | React.ReactNode;
     lite?: boolean;
     onPageChange?: (page: number) => void;
 }
@@ -63,7 +62,7 @@ export default class AutoPagination extends React.Component<AutoPaginationProps,
             const pageSize = nextProps.pageSize!;
             const current = newState.current;
             const total = AutoPagination.calcPage(nextProps.total!, pageSize);
-            nextState.pageSize = pageSize;
+            newState.pageSize = pageSize;
             newState.current = current > total ? total : current;
         }
 
@@ -133,11 +132,11 @@ export default class AutoPagination extends React.Component<AutoPaginationProps,
         } = this;
         const totalPages = AutoPagination.calcPage(total!, pageSize);
         const ellipsis = <Item disabled>...</Item>;
-        const leftEllipsis = React.cloneElement(ellipsis, {key: "leftEllipsis"});
-        const rightEllipsis = React.cloneElement(ellipsis, {key: "rightEllipsis"});
+        const leftEllipsis = React.cloneElement(ellipsis, { key: "leftEllipsis" });
+        const rightEllipsis = React.cloneElement(ellipsis, { key: "rightEllipsis" });
         let items: React.ReactNode[] = [];
 
-        if (totalPages < 10) {
+        if (totalPages <= 10) {
             items = Array(totalPages).fill(0).map((item, i) => this.generateItem(i + 1));
         } else {
             //left ellipsis
@@ -171,6 +170,16 @@ export default class AutoPagination extends React.Component<AutoPaginationProps,
         return items;
     }
 
+    renderLite() {
+        const {
+            current,
+            pageSize
+        } = this.state
+        const totalPages = AutoPagination.calcPage(this.props.total!, pageSize);
+
+        return <Item disabled>{current} / {totalPages}</Item>
+    }
+
     render() {
         const {
             prevText,
@@ -188,7 +197,7 @@ export default class AutoPagination extends React.Component<AutoPaginationProps,
         return (
             <Pagination {...otherProps}>
                 <Item onClick={this.toPrev} disabled={!this.hasPrev()}>{prevText}</Item>
-                {this.renderPageItems()}
+                {lite? this.renderLite() : this.renderPageItems()}
                 <Item onClick={this.toNext} disabled={!this.hasNext()}>{nextText}</Item>
             </Pagination>
         );
