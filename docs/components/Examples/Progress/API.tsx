@@ -1,13 +1,7 @@
 import * as React from "react";
 import PropsTable from "../../PropsTable";
-import DocHeading from "../../DocHeading";
-/* 
+import LangMsg from "../../Language/LanguageMessage";
 
-    value?: number;
-    striped?: boolean;
-    animated?: boolean;
-    showLabel?: boolean;
-*/
 const props = [{
     name: "variant",
     type: `"primary" |
@@ -18,32 +12,31 @@ const props = [{
         "info" |
         "dark" |
         "light"`,
-    description: "Background of the progress"
+    description: <LangMsg id="variantApi" />
 }, {
     name: "value",
     type: "number",
     default: "0",
-    description: "Current value of the progress"
+    description: <LangMsg id="valueApi" />
 }, {
     name: "showLabel",
     type: "boolean",
     default: "false",
-    description: "Add label within progress(current percentage)"
+    description: <LangMsg id="showLabelApi" />
 }, {
     name: "stripped",
     type: "boolean",
     default: "false",
-    description: "Apply a stripe via CSS gradient over the progress bar’s background color"
+    description: <LangMsg id="stripedApi" />
 }, {
     name: "animated",
     type: "boolean",
     default: "false",
-    description: "To animate the stripes right to left via CSS3 animations"
+    description: <LangMsg id="animatedApi" />
 }];
 
 export default () => (
     <>
-        <DocHeading>API</DocHeading>
         <PropsTable title="Progress" data={props}/>
     </>
 );
