@@ -18,7 +18,7 @@ export default function PaginationItem(props: ItemProps) {
         ...otherProps
     } = props;
     const handleClick = (evt: React.MouseEvent<HTMLElement, MouseEvent>) => {
-        onClick && onClick(evt);
+        onClick && !disabled && onClick(evt);
         evt.preventDefault();
     };
 
