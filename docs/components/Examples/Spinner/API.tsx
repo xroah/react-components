@@ -1,11 +1,11 @@
 import * as React from "react";
 import PropsTable from "../../PropsTable";
-import DocHeading from "../../DocHeading";
+import LangMsg from "../../Language/LanguageMessage";
 
 const props = [{
     name: "animation",
     type: `"border" | "grow"`,
-    description: "Animation style of spinners"
+    description: <LangMsg id="animApi" />
 }, {
     name: "variant",
     type: `"primary" |
@@ -16,20 +16,17 @@ const props = [{
     "info" |
     "dark" |
     "light"`,
-    description: "The color of the spinner"
+    description: <LangMsg id="variantApi" />
 }, {
     name: "size",
     type: `"sm" | number`,
-    description: "Size of spinners"
+    description: <LangMsg id="sizeApi" />
 }, {
     name: "borderWidth",
     type: "number",
-    description: "Border width for border spinners"
+    description: <LangMsg id="borderWidthApi" />
 }];
 
 export default () => (
-    <>
-        <DocHeading>API</DocHeading>
-        <PropsTable title="Spinner" data={props}/>
-    </>
+    <PropsTable title="Spinner" data={props}/>
 );
