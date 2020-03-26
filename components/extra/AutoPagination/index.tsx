@@ -132,6 +132,8 @@ export default class AutoPagination extends React.Component<AutoPaginationProps,
         } = this;
         const totalPages = AutoPagination.calcPage(total!, pageSize);
         const ellipsis = <Item disabled>...</Item>;
+        const first = this.generateItem(1);
+        const last = this.generateItem(totalPages);
         const leftEllipsis = React.cloneElement(ellipsis, { key: "leftEllipsis" });
         const rightEllipsis = React.cloneElement(ellipsis, { key: "rightEllipsis" });
         let items: React.ReactNode[] = [];
@@ -142,7 +144,7 @@ export default class AutoPagination extends React.Component<AutoPaginationProps,
             //left ellipsis
             if (current >= totalPages - 4) {
                 items = [
-                    this.generateItem(1),
+                    first,
                     leftEllipsis,
                     ...Array(6).fill(0).map((item, i) => this.generateItem(i + totalPages - 5))
                 ];
@@ -150,19 +152,15 @@ export default class AutoPagination extends React.Component<AutoPaginationProps,
                 items = [
                     ...Array(6).fill(0).map((item, i) => this.generateItem(i + 1)),
                     rightEllipsis,
-                    this.generateItem(totalPages)
+                    last
                 ];
             } else { // both ellipsis
                 items = [
-                    this.generateItem(1),
+                    first,
                     leftEllipsis,
-                    this.generateItem(current - 2),
-                    this.generateItem(current - 1),
-                    this.generateItem(current),
-                    this.generateItem(current + 1),
-                    this.generateItem(current + 2),
+                    Array(5).fill(0).map((item, i) => this.generateItem(current - 2 + i)),
                     rightEllipsis,
-                    this.generateItem(totalPages)
+                    last
                 ];
             }
         }
@@ -177,7 +175,7 @@ export default class AutoPagination extends React.Component<AutoPaginationProps,
         } = this.state
         const totalPages = AutoPagination.calcPage(this.props.total!, pageSize);
 
-        return <Item disabled>{current} / {totalPages}</Item>
+        return <Item disabled>{current}/{totalPages}</Item>
     }
 
     render() {
@@ -196,9 +194,17 @@ export default class AutoPagination extends React.Component<AutoPaginationProps,
 
         return (
             <Pagination {...otherProps}>
-                <Item onClick={this.toPrev} disabled={!this.hasPrev()}>{prevText}</Item>
-                {lite? this.renderLite() : this.renderPageItems()}
-                <Item onClick={this.toNext} disabled={!this.hasNext()}>{nextText}</Item>
+                <Item
+                    onClick={this.toPrev}
+                    disabled={!this.hasPrev()}>
+                    {prevText}
+                </Item>
+                {lite ? this.renderLite() : this.renderPageItems()}
+                <Item
+                    onClick={this.toNext}
+                    disabled={!this.hasNext()}>
+                    {nextText}
+                </Item>
             </Pagination>
         );
     }
