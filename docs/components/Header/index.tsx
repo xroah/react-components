@@ -24,7 +24,7 @@ export default () => {
         evt.preventDefault();
     };
     const [isOpen, toggle] = React.useState(false);
-    const handleClick = () => toggle(!isOpen)
+    const handleClick = () => toggle(!isOpen);
     const LOGO_SIZE = 32;
 
     return (
@@ -59,7 +59,7 @@ export default () => {
                 <Nav
                     vertical
                     className="pr-3 align-items-end">
-                    <Links />
+                    <Links onClick={handleClick} />
                 </Nav>
             </Collapse>
         </div>
