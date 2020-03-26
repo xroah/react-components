@@ -9,14 +9,7 @@ export default {
     plainTitle: "Readonly plain text",
     plainDesc: <>If you want to have <code>readonly</code> elements in your form styled as plain text, use the <code>plainText</code> prop to remove the default form field styling and preserve the correct margin and padding.</>,
     sizingTitle: "Sizing",
-    sizingDesc: (
-        <>
-            <p>
-                Add the relative form sizing prop to <code>Input.Group</code>(if pass the <code>prepend</code> or <code>append</code> , the input will wrapped by <code>Input.Group</code>) itself and contents within will automatically resize—no need for repeating the size prop on each element.
-            </p>
-            <strong>Sizing on the individual input group elements isn’t supported.</strong>
-        </>
-    ),
+    sizingDesc: <>Add the relative form sizing prop to <code>Input.Group</code>(if pass the <code>prepend</code> or <code>append</code> , the input will wrapped by <code>Input.Group</code>) itself and contents within will automatically resize—no need for repeating the size prop on each element.</>,
     multiInputTitle: "Multiple input",
     multiInputDesc: "Multiple add-ons are supported and can be mixed with checkbox and radio input versions.",
     multiAddonTitle: "Multiple addons",

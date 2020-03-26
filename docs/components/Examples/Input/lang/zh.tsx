@@ -9,14 +9,7 @@ export default {
     plainTitle: "制度文本",
     plainDesc: <>如果你想<code>readonly</code>元素样式和文本一样，使用<code>plainText</code>属性移除默认的表单样式，但保留合适的内外边距。</>,
     sizingTitle: "Sizing",
-    sizingDesc: (
-        <>
-            <p>
-                给<code>Input.Group</code>添加<code>size</code>属性（如果传入了<code>prepend</code>或者<code>append</code>，input将会被<code>INput.Group</code>包裹），内容将自动重置大小，而不需要重复的在每个元素上设置。
-            </p>
-            <strong>Sizing on the individual input group elements isn’t supported.</strong>
-        </>
-    ),
+    sizingDesc: <>给<code>Input.Group</code>添加<code>size</code>属性（如果传入了<code>prepend</code>或者<code>append</code>，input将会被<code>INput.Group</code>包裹），内容将自动重置大小，而不需要重复的在每个元素上设置。</>,
     multiInputTitle: "多个input",
     multiAddonTitle: "多个附件",
     btnTitle: "按钮附件",

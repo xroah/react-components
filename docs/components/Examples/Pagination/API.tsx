@@ -1,30 +1,29 @@
 import * as React from "react";
 import PropsTable from "../../PropsTable";
-import DocHeading from "../../DocHeading";
+import LangMsg from "../../Language/LanguageMessage";
 
 const props = [{
     name: "size",
     type: `"sm" | "lg"`,
-    description: "Size of pagination items"
+    description: <LangMsg id="sizeApi" />
 }, {
     name: "alignment",
     type: `"left" | "center" | "right"`,
     default: "left",
-    description: "Alignment of pagination items"
+    description: <LangMsg id="alignmentApi" />
 }];
 const itemProps = [{
     name: "active",
     type: "boolean",
-    description: "Activate the item"
+    description: <LangMsg id="activeApi" />
 },{
     name: "disabled",
     type: "boolean",
-    description: "Disable the item"
+    description: <LangMsg id="disabledApi" />
 }];
 
 export default () => (
     <>
-        <DocHeading>API</DocHeading>
         <PropsTable title="Pagination" data={props}/>
         <PropsTable title="Pagination.Item" data={itemProps}/>
     </>
