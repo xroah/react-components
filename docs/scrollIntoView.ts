@@ -52,7 +52,15 @@ export function scrollTo(pos: number, offset = 0) {
     scroll();
 }
 
-export default function scrollIntoView(el?: HTMLElement) {
+export default function scrollIntoView(el?: HTMLElement | string) {
+    if (typeof el === "string") {
+        try {
+            el = document.querySelector(el) as HTMLElement;
+        } catch (error) {
+            return;
+        }
+    }
+    
     if (!el) return;
 
     /* if (behaviorSupported) {

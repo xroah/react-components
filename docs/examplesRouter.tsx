@@ -20,6 +20,7 @@ function _Loading(props: { unmountCallback?: Function }) {
 let prevPath = "";
 let loaded: any = {};
 let currentComponent: any;
+let isFirst = true; //第一次进入页面
 
 export default () => {
     const location = useLocation();
@@ -59,15 +60,19 @@ export default () => {
                                     </React.Suspense>
                                 );
                                 currentComponent = suspense;
-                                
+
                                 //render the prev component until current has been loaded
                                 if (cur) {
                                     prevPath = path;
 
-                                    if (location.hash) {
-                                        scrollIntoView(document.querySelector(location.hash));
+                                    if (isFirst) {
+                                        isFirst = false;
                                     } else {
-                                        window.scrollTo(0, 0);
+                                        if (location.hash) {
+                                            scrollIntoView(location.hash);
+                                        } else {
+                                            window.scrollTo(0, 0);
+                                        }
                                     }
 
                                     return cur;

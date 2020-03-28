@@ -37,7 +37,13 @@ class RightNav extends React.Component<Props> {
         let nextActive: HTMLAnchorElement | null = null;
 
         for (let a of as) {
-            const el = document.querySelector(a.hash);
+            let el;
+
+            try {
+                el = document.querySelector(a.hash);
+            } catch (error) {
+                
+            }
 
             if (!el) continue;
 
@@ -75,7 +81,7 @@ class RightNav extends React.Component<Props> {
             //trigger render and scrollIntoView in render method
             history.push(`${location.pathname}${hash}`);
         } else {
-            hash && scrollIntoView(document.querySelector(hash));
+            hash && scrollIntoView(hash);
         }
 
         evt.preventDefault();
