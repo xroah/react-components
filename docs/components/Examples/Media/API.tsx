@@ -1,45 +1,42 @@
 import * as React from "react";
 import PropsTable from "../../PropsTable";
-import DocHeading from "../../DocHeading";
+import LangMsg from "../../Language/LanguageMessage";
 
 const props = [{
     name: "title",
     type: "string | ReactNode",
-    description: "Header of media"
+    description: <LangMsg id="titleApi" />
 }, {
     name: "img",
     type: "string | ReactNode",
-    description: "Image of media"
+    description: <LangMsg id="imgApi" />
 }, {
     name: "imgAlt",
     type: "string",
-    description: "Alt attribute for the underlying img element"
+    description: <LangMsg id="imgAltApi" />
 }, {
     name: "imgTitle",
     type: "string",
-    description: "Title attribute for the underlying img element"
+    description: <LangMsg id="imgTitleApi" />
 }, {
     name: "imgSize",
     type: "number",
     default: "64",
-    description: "Size of the image"
+    description: <LangMsg id="imgSizeApi" />
 }, {
     name: "imgBorder",
     type: `"rounded" | "circle"`,
-    description: "Rounded or circle border radius of the image"
+    description: <LangMsg id="imgBorderApi" />
 }, {
     name: "imgPosition",
     type: `"left" | "right"`,
-    description: "Place the image on the left or right"
+    description: <LangMsg id="imgPosApi" />
 }, {
     name: "alignment",
     type: `"top" | "middle" | "bottom"`,
-    description: "Vertical alignment of the image"
+    description: <LangMsg id="alignmentApi" />
 }];
 
 export default () => (
-    <>
-        <DocHeading>API</DocHeading>
-        <PropsTable title="Media" data={props} />
-    </>
+    <PropsTable title="Media" data={props} />
 );
