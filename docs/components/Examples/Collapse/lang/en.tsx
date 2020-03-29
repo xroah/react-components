@@ -1,7 +1,7 @@
 export default {
     compDesc: "Toggle the visibility of content across your project with javascript",
     egTitle:　"Basic example",
-    accordionTittle: "Accordion",
+    accordionTitle: "Accordion",
     isOpenApi: "Control opened/closed state",
     onShowApi: "Callback when the collapse starts showing",
     onShownApi: "Callback when the collapse has been visible",

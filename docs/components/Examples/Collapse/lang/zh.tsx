@@ -1,7 +1,7 @@
 export default {
     compDesc: "通过js切换内容的显示和隐藏。",
     egTitle:　"示例",
-    accordionTittle: "手风琴效果",
+    accordionTitle: "手风琴效果",
     isOpenApi: "控制打开/关闭状态",
     onShowApi: "开始显示时候的回调",
     onShownApi: "当完全显示出来时候的回调",

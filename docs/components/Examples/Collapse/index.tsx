@@ -40,7 +40,7 @@ export default () => {
                 href: `#${egId}`
             }, {
                 name: accordionTitle,
-                href: `#${accordionTitle}`
+                href: `#${accordionId}`
             }, {
                 name: "API",
                 href: `#${apiId}`
