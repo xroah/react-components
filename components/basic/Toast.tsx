@@ -48,7 +48,7 @@ export default class Toast extends React.Component<ToastProps> {
     };
 
     componentDidMount() {
-        if (this.props.visible) this.componentDidUpdate();
+        if (this.props.visible) this.componentDidUpdate({});
     }
 
     componentWillUnmount() {
@@ -62,16 +62,15 @@ export default class Toast extends React.Component<ToastProps> {
         }
     }
 
-    componentDidUpdate() {
+    componentDidUpdate(prevProps: ToastProps) {
         const {
             autoHide,
             delay,
             visible
         } = this.props;
 
-        this.clearTimer();
-
-        if (visible && autoHide) {
+        if (visible && visible !== prevProps.visible && autoHide) {
+            this.clearTimer();
             this.timer = setTimeout(this.handleClose, delay as number);
         }
     }
