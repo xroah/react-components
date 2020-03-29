@@ -1,62 +1,75 @@
 import * as React from "react";
-import DocHeading from "../../DocHeading";
+import LangMsg from "../../Language/LanguageMessage";
 import PropsTable from "../../PropsTable";
 
 const props = [{
     name: "visible",
     type: "boolean",
     default: "false",
-    description: "Visibility of toasts"
+    description: <LangMsg id="visibleApi" />
 }, {
     name: "closable",
     type: "boolean",
     default: "true",
-    description: "Show close button or not on the top right"
+    description: <LangMsg id="closableApi" />
 }, {
     name: "title",
     type: "string | ReactNode",
-    description: "Toast title"
+    description: <LangMsg id="titleApi" />
 }, {
     name: "extra",
     type: "string | ReactNode",
-    description: "An extra message on the top right"
+    description: <LangMsg id="extraApi" />
 }, {
     name: "icon",
     type: "string | ReactNode",
-    description: "An image on the top left"
+    description: <LangMsg id="iconApi" />
 }, {
     name: "iconSize",
     type: "number",
     default: "20",
-    description: "Icon size"
+    description: <LangMsg id="iconSizeApi" />
 }, {
     name: "autoHide",
     type: "boolean",
     default: "false",
-    description: "Hide the toast automatically after a delay once show"
+    description: <LangMsg id="autoHideApi" />
 }, {
     name: "delay",
     type: "number",
     default: "3000",
-    description: "A millisecond number for autoHide"
+    description: <LangMsg id="delayApi" />
 }, {
     name: "fade",
     type: "boolean",
     default: "true",
-    description: "Enable fade animation when showing or hiding"
+    description: <LangMsg id="fadeApi" />
 }, {
     name: "header",
     type: "string | ReactNode",
-    description: "Customize the header for toasts(set null if you don't want to show the header)"
+    description: <LangMsg id="headerApi" />
 }, {
     name: "onClose",
     type: "Function",
-    description: "Callback when the close button is clicked"
+    description: <LangMsg id="onCloseApi" />
+}, {
+    name: "onShow",
+    type: "Function",
+    description: <LangMsg id="onShowApi" />
+}, {
+    name: "onShown",
+    type: "Function",
+    description: <LangMsg id="onShownApi" />
+}, {
+    name: "onHide",
+    type: "Function",
+    description: <LangMsg id="onHideApi" />
+}, {
+    name: "onHidden",
+    type: "Function",
+    description: <LangMsg id="onHiddenApi" />
 }];
 
 export default () => (
-    <>
-        <DocHeading>API</DocHeading>
-        <PropsTable title="Toast" data={props} />
-    </>
+    <PropsTable title="Toast" data={props} />
 );

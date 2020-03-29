@@ -8,32 +8,49 @@ import DismissingSrc from "!!raw-loader!./Dismissing";
 import AutoHide from "./AutoHide";
 import AutoHideSrc from "!!raw-loader!./AutoHide";
 import API from "./API";
+import Main from "../../Main";
+import LangProvider from "../../Language/LanguageProvider";
+import LangMsg from "../../Language/LanguageMessage";
+import RightNav from "../../RightNav";
+import lang from "./lang";
+
+const egId = "toastExample";
+const egTitle = <LangMsg id="egTitle" />;
+const dismissingId = "toastDismissing";
+const dismissingTitle = <LangMsg id="dismissingTitle" />;
+const autoHideId = "autoHideToast";
+const autoHideTitle = <LangMsg id="autoHideTitle" />;
+const apiId = "toastApi";
 
 export default () => (
-    <>
-        <DocHeading>Toast</DocHeading>
-        <div>
-            Toasts are lightweight notifications designed to mimic the push notifications that have been popularized by mobile and desktop operating systems. They’re built with flexbox, so they’re easy to align and position.
-        </div>
-        <DemoExample
-            title="Basic example"
-            component={<Basic />}
-            source={BasicSrc}>
-            <p>
-                To encourage extensible and predictable toasts, we recommend a header and body. Toast headers use <code>display: flex</code>, allowing easy alignment of content.
-            </p>
-            <p>
-                Toasts are as flexible as you need and have very little required markup. At a minimum, we require a single element to contain your “toasted” content and strongly encourage a dismiss button.
-            </p>
-        </DemoExample>
-        <DemoExample
-            title="Dismissing"
-            component={<Dismissing />}
-            source={DismissingSrc} />
-        {/* <DemoExample
-            title="Auto hide"
+    <LangProvider language={lang}>
+        <Main>
+            <DocHeading>Toast</DocHeading>
+            <div><LangMsg id="compDesc" /></div>
+            <DocHeading.H3 id={egId}>{egTitle}</DocHeading.H3>
+            <DemoExample
+                component={<Basic />}
+                source={BasicSrc} />
+            <DocHeading.H3 id={dismissingId}>{dismissingTitle}</DocHeading.H3>
+            <DemoExample
+                component={<Dismissing />}
+                source={DismissingSrc} />
+            <DocHeading.H3 id={autoHideId}>{autoHideTitle}</DocHeading.H3>
+            <DemoExample
             component={<AutoHide />}
-            source={AutoHideSrc}/> */}
-        <API />
-    </>
+            source={AutoHideSrc}/>
+            <DocHeading id={apiId}>API</DocHeading>
+            <API />
+        </Main>
+        <RightNav data={[{
+            name: egTitle,
+            href: `#${egId}`
+        }, {
+            name: dismissingTitle,
+            href: `#${dismissingId}`
+        }, {
+            name: "API",
+            href: `#${apiId}`
+        }]} />
+    </LangProvider>
 );

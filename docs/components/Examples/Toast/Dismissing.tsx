@@ -14,6 +14,7 @@ export default () => {
                 icon={icon}
                 extra="just now"
                 onClose={toggle}
+                autoHide={false}
                 visible={visible}
                 closable>
                 Hello, world! This is a toast message.

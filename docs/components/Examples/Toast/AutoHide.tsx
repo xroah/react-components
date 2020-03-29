@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Toast, Button } from "reap-ui";
-import icon from "../../assets/toast.svg";
+import icon from "../../../assets/toast.svg";
 
 export default () => {
     const [visible, updateVisible] = React.useState(false);
@@ -16,7 +16,7 @@ export default () => {
                 extra="just now"
                 onClose={hide}
                 visible={visible}
-                closable>
+                closable={false}>
                 Hello, world! This is a toast message.
             </Toast>
         </>
