@@ -17,6 +17,10 @@ export interface ToastProps extends CommonPropsWithoutTitle<HTMLDivElement> {
     fade?: boolean;
     visible?: boolean;
     onClose?: Function;
+    onShow?: Function;
+    onShown?: Function;
+    onHide?: Function;
+    onHidden?: Function;
 }
 
 const stringOrNode = PropTypes.oneOfType([PropTypes.string, PropTypes.node]);
@@ -36,7 +40,11 @@ export default class Toast extends React.Component<ToastProps> {
         delay: PropTypes.number,
         fade: PropTypes.bool,
         visible: PropTypes.bool,
-        onClose: PropTypes.func
+        onClose: PropTypes.func,
+        onShow: PropTypes.func,
+        onShown: PropTypes.func,
+        onHide: PropTypes.func,
+        onHidden: PropTypes.func
     };
     static defaultProps = {
         delay: 3000,
@@ -70,15 +78,30 @@ export default class Toast extends React.Component<ToastProps> {
         } = this.props;
 
         if (visible && visible !== prevProps.visible && autoHide) {
-            this.clearTimer();
             this.timer = setTimeout(this.handleClose, delay as number);
         }
     }
 
     handleClose = () => {
-        this.clearTimer();
-        handleFuncProp(this.props.onClose)();
+        const {
+            onClose,
+            visible
+        } = this.props;
+
+        this.clearTimer()
+
+        if (!visible) {
+            return;
+        }
+
+        handleFuncProp(onClose)();
     };
+
+    handleCallback = (prop: "onShow" | "onShown" | "onHide" | "onHidden") => {
+        return () => {
+            handleFuncProp((this.props as any)[prop])();
+        }
+    }
 
     renderHeader() {
         let {
@@ -159,6 +182,10 @@ export default class Toast extends React.Component<ToastProps> {
         delete otherProps.delay;
         delete otherProps.onClose;
         delete otherProps.title;
+        delete otherProps.onShow;
+        delete otherProps.onShown;
+        delete otherProps.onHide;
+        delete otherProps.onHidden;
 
         const toast = (
             <div className={
@@ -175,7 +202,11 @@ export default class Toast extends React.Component<ToastProps> {
         );
         const transitionProps = {
             in: !!visible,
-            unmountOnExit: true
+            unmountOnExit: true,
+            onEnter: this.handleCallback("onShow"),
+            onEntered: this.handleCallback("onShown"),
+            onExit: this.handleCallback("onHide"),
+            onExited: this.handleCallback("onHidden")
         };
 
         return (
