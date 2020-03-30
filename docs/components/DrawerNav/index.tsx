@@ -1,6 +1,6 @@
 import * as React from "react";
 import DocNav from "../DocNav";
-import Drawer from "../../../components/extra/Drawer";
+import Drawer from "../../../components/Drawer";
 import { Button } from "reap-ui";
 
 export default () => {

@@ -80,7 +80,8 @@ module.exports = env => {
             port: 8008,
             open: true,
             inline: true,
-            historyApiFallback: true
+            historyApiFallback: true,
+            host: "10.1.18.186"
         };
         config.mode = env;
         config.devtool = "eval-source-map";
