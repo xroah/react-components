@@ -16,6 +16,7 @@ interface Props extends React.HTMLAttributes<HTMLElement>, RouteComponentProps {
 class RightNav extends React.Component<Props> {
 
     private timer: any = null;
+    private isClick = false;
 
     componentDidMount() {
         window.addEventListener("scroll", this._handleScroll);
@@ -30,7 +31,8 @@ class RightNav extends React.Component<Props> {
 
         if (
             !rightNav ||
-            getComputedStyle(rightNav).getPropertyValue("display") === "none"
+            getComputedStyle(rightNav).getPropertyValue("display") === "none" ||
+            this.isClick
         ) return;
         const as = Array.from(document.querySelectorAll(".right-nav .right-nav-link")) as Array<HTMLAnchorElement>;
         const active = document.querySelector(".right-nav .active");
@@ -42,7 +44,7 @@ class RightNav extends React.Component<Props> {
             try {
                 el = document.querySelector(a.hash);
             } catch (error) {
-                
+
             }
 
             if (!el) continue;
@@ -67,7 +69,6 @@ class RightNav extends React.Component<Props> {
             clearTimeout(this.timer);
             this.timer = null;
         }
-        //may be activated by scrolling
 
         this.timer = setTimeout(this.handleScroll, 50);
     }
@@ -76,14 +77,19 @@ class RightNav extends React.Component<Props> {
         const a = evt.target as HTMLAnchorElement;
         const hash = a.hash;
         const { location, history } = this.props;
+        const active = document.querySelector(".right-nav .active");
+        this.isClick = true;
 
-        if (location.hash !== hash) {
-            //trigger render and scrollIntoView in render method
-            history.push(`${location.pathname}${hash}`);
-        } else {
-            hash && scrollIntoView(hash);
+        if (active && active !== a) {
+            active.classList.remove("active");
         }
 
+        if (location.hash !== hash) {
+            history.push(`${location.pathname}${hash}`);
+        }
+
+        a.classList.add("active");
+        hash && scrollIntoView(hash, () => this.isClick = false);
         evt.preventDefault();
     };
 

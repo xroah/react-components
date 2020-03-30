@@ -1,4 +1,4 @@
-let behaviorSupported = false;
+/* let behaviorSupported = false;
 
 const obj: any = {};
 
@@ -10,14 +10,28 @@ Object.defineProperty(obj, "behavior", {
 
 const el = document.createElement("div");
 
-el.scrollIntoView(obj);
+el.scrollIntoView(obj); */
+
+interface Callback {
+    (): void;
+}
 
 let timer: any = null;
+let callback: Callback | null = null;
 
 function cancelScroll() {
     if (timer !== null) {
         cancelAnimationFrame(timer);
         timer = null;
+    }
+
+    invokeCallback();
+}
+
+function invokeCallback() {
+    if (callback !== null) {
+        callback();
+        callback = null;
     }
 }
 
@@ -30,38 +44,41 @@ window.addEventListener("keydown", e => {
 window.addEventListener("touchmove", cancelScroll)
 
 export function scrollTo(pos: number, offset = 0) {
-    const getScrollTop = () => document.documentElement.scrollTop || document.body.scrollTop;
     const scroll = () => {
-        const scrollTop = getScrollTop();
-        const NUM = 10;
+        const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+        const THRESHOLD = 10;
         const dis = pos - scrollTop - offset;
-        let speed = dis / NUM;
+        let speed = dis / THRESHOLD;
 
-        if (Math.abs(speed) < NUM) speed = speed < 0 ? -NUM : NUM;
+        if (Math.abs(speed) < THRESHOLD) speed = speed < 0 ? -THRESHOLD : THRESHOLD;
 
-        if (Math.abs(dis) > NUM) {
+        if (Math.abs(dis) > THRESHOLD) {
             window.scrollTo(0, scrollTop + speed);
             timer = requestAnimationFrame(scroll);
 
             return;
         }
 
+        //complete
         window.scrollTo(0, pos - offset);
+        invokeCallback();
     }
 
     scroll();
 }
 
-export default function scrollIntoView(el?: HTMLElement | string) {
+export default function scrollIntoView(el: HTMLElement | string, complete: Callback = null) {
+    callback = complete;
+
     if (typeof el === "string") {
         try {
             el = document.querySelector(el) as HTMLElement;
         } catch (error) {
-            return;
+            return invokeCallback();
         }
     }
     
-    if (!el) return;
+    if (!el) return invokeCallback();
 
     /* if (behaviorSupported) {
         return el.scrollIntoView({ behavior: "smooth" });

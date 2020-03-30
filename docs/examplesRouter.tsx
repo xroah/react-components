@@ -20,7 +20,6 @@ function _Loading(props: { unmountCallback?: Function }) {
 let prevPath = "";
 let loaded: any = {};
 let currentComponent: any;
-let isFirst = true; //第一次进入页面
 
 export default () => {
     const location = useLocation();
@@ -65,14 +64,8 @@ export default () => {
                                 if (cur) {
                                     prevPath = path;
 
-                                    if (isFirst) {
-                                        isFirst = false;
-                                    } else {
-                                        if (location.hash) {
-                                            scrollIntoView(location.hash);
-                                        } else {
-                                            window.scrollTo(0, 0);
-                                        }
+                                    if (!location.hash) {
+                                        window.scrollTo(0, 0);
                                     }
 
                                     return cur;
