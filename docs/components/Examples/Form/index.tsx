@@ -18,73 +18,97 @@ import IndeterminateSrc from "!!raw-loader!./Indeterminate";
 import { Checkbox, Radio, Switch } from "reap-ui";
 import API from "./API";
 import SyntaxHighlighter from "../../SyntaxHighlighter";
+import Main from "../../Main";
+import LangProvider from "../../Language/LanguageProvider";
+import LangMsg from "../../Language/LanguageMessage";
+import lang from "./lang";
+import RightNav, {
+    basicId,
+    basicTitle,
+    gridId,
+    gridTitle,
+    rowId,
+    rowTitle,
+    horizontalId,
+    horizontalTitle,
+    inlineId,
+    inlineTitle,
+    checkboxId,
+    checkboxTitle,
+    radioId,
+    radioTitle,
+    switchId,
+    switchTitle,
+    apiId
+} from "./RightNav";
+
+const { H3 } = DocHeading;
 
 export default () => (
-    <>
-        <DocHeading>Form</DocHeading>
-        <div>
-            Examples and usage guidelines for form control styles, layout options, and custom components for creating a wide variety of forms.
-        </div>
-        <div>
-            Here’s a quick example to demonstrate Bootstrap’s form styles. Keep reading for documentation on required classes, form layout, and more.
-        </div>
-        <DemoExample
-            component={<Basic />}
-            source={BasicSrc} />
-        <DemoExample
-            title="Form grid"
-            component={<Grid />}
-            source={GridSrc}>
-            More complex forms can be built using our grid components.
-        </DemoExample>
-        <DemoExample
-            title="Form row"
-            component={<Row />}
-            source={RowSrc}>
-            You may also set 'form' true for Row, a variation of our standard grid row that overrides the default column gutters for tighter and more compact layouts.
-        </DemoExample>
-        <DemoExample
-            component={<ComplexGrid />}
-            source={ComplexGridSrc}>
-            More complex layouts can also be created with the grid system.
-        </DemoExample>
-        <DemoExample
-            title="Horizontal form"
-            component={<Horizontal />}
-            source={HorizontalSrc}>
-            Create horizontal forms with the grid by adding the <code>horizontal</code>,
-        <code>labelCol</code> and <code>wrapperCol</code> to <code>Form</code> or <code>Form.Item</code>.
-        </DemoExample>
-        <DemoExample
-            title="Inline form"
-            component={<Inline />}
-            source={InlineSrc}>
-            Use the <code>inline</code> prop to display a series of labels, form controls, and buttons on a single horizontal row.
-        </DemoExample>
-        <DocHeading tag="h3">Checkboxes</DocHeading>
-        <div className="bd-example">
-            <Checkbox>Check this custom checkbox</Checkbox>
-            <Checkbox disabled>Disabled checkbox</Checkbox>
-            <SyntaxHighlighter code={"<Checkbox>Check this custom checkbox</Checkbox>\n<Checkbox disabled>Disabled checkbox</Checkbox>"} />
-        </div>
-        <DemoExample
-            component={<Indeterminate />}
-            source={IndeterminateSrc}>
-            Custom checkboxes can also utilize the <code>:indeterminate</code> pseudo class when manually set via JavaScript (there is no available HTML attribute for specifying it).
-        </DemoExample>
-        <DocHeading tag="h3">Radios</DocHeading>
-        <div className="bd-example">
-            <Radio name="radio">Toggle this custom radio</Radio>
-            <Radio name="radio">Or toggle this other custom radio</Radio>
-            <Radio name="radio" disabled>Disabled radio</Radio>
-            <SyntaxHighlighter code={`<Radio name="radio">Toggle this custom radio</Radio>\n<Radio name="radio">Or toggle this other custom radio</Radio>\n<Radio name="radio" disabled>Disabled radio</Radio>`} />
-        </div>
-        <DocHeading tag="h3">Switches</DocHeading>
-        <div className="bd-example">
-            <Switch defaultChecked>Toggle this switch element</Switch>
-            <Switch disabled>Disabled switch</Switch>
-            <SyntaxHighlighter code={"<Switch defaultChecked>Toggle this switch element</Switch>\n<Switch disabled>Disabled switch</Switch>"} />
-        </div>
-        <API />
-    </>
+    <LangProvider language={lang}>
+        <Main>
+            <DocHeading>Form</DocHeading>
+            <div><LangMsg id="compDesc" /></div>
+            <H3 id={basicId}>{basicTitle}</H3>
+            <DemoExample
+                component={<Basic />}
+                source={BasicSrc} />
+            <H3 id={gridId}>{gridTitle}</H3>
+            <DemoExample
+                component={<Grid />}
+                source={GridSrc}>
+                <LangMsg id="gridDesc" />
+            </DemoExample>
+            <H3 id={rowId}>{rowTitle}</H3>
+            <DemoExample
+                component={<Row />}
+                source={RowSrc}>
+                <LangMsg id="rowDesc" />
+            </DemoExample>
+            <DemoExample
+                component={<ComplexGrid />}
+                source={ComplexGridSrc}>
+                <LangMsg id="complexDesc" />
+            </DemoExample>
+            <H3 id={horizontalId}>{horizontalTitle}</H3>
+            <DemoExample
+                component={<Horizontal />}
+                source={HorizontalSrc}>
+                <LangMsg id="horizontalDesc" />
+            </DemoExample>
+            <H3 id={inlineId}>{inlineTitle}</H3>
+            <DemoExample
+                component={<Inline />}
+                source={InlineSrc}>
+                <LangMsg id="inlineDesc" />
+            </DemoExample>
+            <H3 id={checkboxId}>{checkboxTitle}</H3>
+            <div className="bd-example">
+                <Checkbox>Check this custom checkbox</Checkbox>
+                <Checkbox disabled>Disabled checkbox</Checkbox>
+                <SyntaxHighlighter code={"<Checkbox>Check this custom checkbox</Checkbox>\n<Checkbox disabled>Disabled checkbox</Checkbox>"} />
+            </div>
+            <DemoExample
+                component={<Indeterminate />}
+                source={IndeterminateSrc}>
+                <LangMsg id="indeterminateDesc" />
+            </DemoExample>
+            <H3 id={radioId}>{radioTitle}</H3>
+            <div className="bd-example">
+                <Radio name="radio">Toggle this custom radio</Radio>
+                <Radio name="radio">Or toggle this other custom radio</Radio>
+                <Radio name="radio" disabled>Disabled radio</Radio>
+                <SyntaxHighlighter code={`<Radio name="radio">Toggle this custom radio</Radio>\n<Radio name="radio">Or toggle this other custom radio</Radio>\n<Radio name="radio" disabled>Disabled radio</Radio>`} />
+            </div>
+            <H3 id={switchId}>{switchTitle}</H3>
+            <div className="bd-example">
+                <Switch defaultChecked>Toggle this switch element</Switch>
+                <Switch disabled>Disabled switch</Switch>
+                <SyntaxHighlighter code={"<Switch defaultChecked>Toggle this switch element</Switch>\n<Switch disabled>Disabled switch</Switch>"} />
+            </div>
+            <H3 id={apiId}>API</H3>
+            <API />
+        </Main>
+        <RightNav />
+    </LangProvider>
 );

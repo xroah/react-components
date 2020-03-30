@@ -1,111 +1,107 @@
 import * as React from "react";
 import PropsTable from "../../PropsTable";
-import DocHeading from "../../DocHeading";
+import LangMsg from "../../Language/LanguageMessage";
 
 const FormProps = [{
     name: "Inline",
     type: "boolean",
     default: "false",
-    description: "Display the series of labels, form controls, and buttons on a single horizontal row"
+    description: <LangMsg id="inlineApi" />
 },{
     name: "labelCol",
     type: "object",
-    description: "Same as props of Col, wrap the label with Col"
+    description: <LangMsg id="labelColApi" />
+}, {
+    name: "wrapperCol",
+    type: "object",
+    description: <LangMsg id="wrapperColApi" />
 }, {
     name: "horizontal",
     type: "boolean",
     default: "false",
-    description: "Create horizontal forms"
-}, {
-    name: "wrapperCol",
-    type: "object",
-    description: "Same as props of Col, wrap the children of Form.Item with Col"
+    description: <LangMsg id="horizontalApi" />
 }, {
     name: "labelAlign",
     type: `"left" | "right"`,
     default: "left",
-    description: "Text alignment of label"
+    description: <LangMsg id="labelAlignApi" />
 }];
 const FormItemProps = [{
     name: "horizontal",
     type: "boolean",
     default: "false",
-    description: "Create horizontal form item"
+    description: <LangMsg id="itemHApi" />
 }, {
     name: "labelText",
     type: "string | ReactNode",
-    description: "Label text"
+    description: <LangMsg id="itemLabelTextApi" />
 }, {
     name: "label",
     type: "boolean",
     default: "true",
-    description: "Wrap the label text with label element or not"
+    description: <LangMsg id="itemLabelApi" />
 }, {
     name: "labelCol",
     type: "object",
-    description: "Same as props of Col, wrap the label with Col.It will override the labelCol of Form"
+    description: <LangMsg id="itemLabelColApi" />
+}, {
+    name: "wrapperCol",
+    type: "object",
+    description: <LangMsg id="itemWrapperColApi" />
 }, {
     name: "labelAlign",
     type: `"left" | "right"`,
     default: "left",
-    description: "Text alignment of label. It will override the labelAlign of Form"
-}, {
-    name: "wrapperCol",
-    type: "object",
-    description: "Same as props of Col, wrap the children with Col. It will override the wrapperCol of Form."
+    description: <LangMsg id="itemLabelAlignApi" />
 },{
     name: "htmlFor",
     type: "string",
-    description: "Set 'htmlFor' for underlying label element"
+    description: <LangMsg id="htmlForApi" />
 }, {
     name: "help",
     type: "string | ReactNode",
-    description: "Help text."
+    description: <LangMsg id="helpApi" />
 }, {
     name: "control",
     type: "boolean",
-    description: "Add 'form-control' to the className of children"
+    description: <LangMsg id="controlApi" />
 }];
 const CustomProps = [{
     name: "autoFocus",
     type: "boolean",
     default: "false",
-    description: "Auto focus once the component mounted"
+    description: <LangMsg id="autoFocusApi" />
 }, {
     name: "checked",
     type: "boolean",
     default: "false",
-    description: "The component checked or not"
+    description: <LangMsg id="checkedApi" />
 }, {
     name: "defaultChecked",
     type: "boolean",
     default: "false",
-    description: "Initial checked of the component"
+    description: <LangMsg id="defaultCheckedApi" />
 }, {
     name: "disabled",
     type: "boolean",
     default: "false",
-    description: "Disable the component"
+    description: <LangMsg id="disabledApi" />
 }, {
     name: "onChange",
     type: "Function",
-    description: "Fires when checked state changed."
+    description: <LangMsg id="onChangeApi" />
 }, {
     name: "inline",
     type: "boolean",
     default: "false",
-    description: "Inline mode."
+    description: <LangMsg id="customInlineApi" />
 }];
 
 export default () => (
     <>
-        <DocHeading>API</DocHeading>
         <PropsTable title="Form" data={FormProps}/>
         <PropsTable title="Form.Item" data={FormItemProps}/>
         <PropsTable title="Checkbox, Radio and Switch" data={CustomProps}/>
-        <div>
-            <strong>Note:</strong>
-            The <code>className</code> and <code>style</code> props will pass to the root element of Checkbox, Radio or Switch, other props will pass to the input element.
-        </div>
+        <div><LangMsg id="noteDesc" /></div>
     </>
 );
