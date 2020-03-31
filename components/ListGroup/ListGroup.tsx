@@ -29,7 +29,7 @@ export default function ListGroup(props: ListGroupProps) {
                 classNames(
                     PREFIX,
                     flush && `${PREFIX}-flush`,
-                    horizontal && minWidth ? `${H_PREFIX}-${minWidth}` : horizontal ? H_PREFIX : ""
+                    horizontal ? (minWidth ? `${H_PREFIX}-${minWidth}` : H_PREFIX ) : ""
                 )
             } {...otherProps} />
         </ListGroupContext.Provider>
