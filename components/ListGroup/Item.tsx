@@ -24,9 +24,10 @@ export default function ListGroupItem(props: ListGroupItemProps) {
         variant,
         href,
         className,
+        onClick,
         ...otherProps
     } = props;
-    const PREFIX = `list-group-item`;
+    const PREFIX = "list-group-item";
     let tag = href ? "a" : action ? "button" : "div";
 
     return (
@@ -47,6 +48,9 @@ export default function ListGroupItem(props: ListGroupItemProps) {
                                 active && "active",
                                 equalWidth && "flex-fill"
                             ),
+                            onClick(e: React.MouseEvent<HTMLElement, MouseEvent>) {
+                                onClick && !disabled && onClick(e);
+                            },
                             ...otherProps
                         }
                     )
