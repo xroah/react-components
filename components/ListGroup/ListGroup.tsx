@@ -24,7 +24,7 @@ export default function ListGroup(props: ListGroupProps) {
     let H_PREFIX = `${PREFIX}-horizontal`;
 
     return (
-        <ListGroupContext.Provider value={!!equalWidth}>
+        <ListGroupContext.Provider value={!!equalWidth && !!horizontal}>
             <div className={
                 classNames(
                     PREFIX,
