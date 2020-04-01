@@ -1,52 +1,51 @@
 import * as React from "react";
 import PropsTable from "../../PropsTable";
-import DocHeading from "../../DocHeading";
+import LangMsg from "../../Language/LanguageMessage";
 
 const TabProps = [{
     name: "activeKey",
     type: "string",
-    description: "The key of the active tab(controlled component)"
+    description: <LangMsg id="activeKeyApi" />
 }, {
     name: "defaultActiveKey",
     type: "string",
-    description: "Initial key of the active tab(if both defaultActiveKey and activeKey are not passed, the first will be activated)"
+    description: <LangMsg id="defaultActiveKeyApi" />
 }, {
     name: "pill",
     type: "boolean",
     default: "false",
-    description: "Style as pills"
+    description: <LangMsg id="pillsApi" />
 }, {
     name: "fade",
     type: "boolean",
     default: "true",
-    description: "Enable fade animation when tab switches"
+    description: <LangMsg id="fadeApi" />
 }, {
     name: "onTabChange",
     type: "Function(prevKey, currentKey)",
-    description: "Callback when tabs change"
+    description: <LangMsg id="onTabChangeApi" />
 }, {
     name: "onTabClick",
     type: "Function(key, e)",
-    description: "Callback when a tab is clicked(tab prop of TabPane must not be empty)"
+    description: <LangMsg id="onTabClickApi" />
 }];
 const TabPaneProps = [{
     name: "tab",
     type: "string | ReactNode",
-    description: "Title of the TabPane"
+    description: <LangMsg id="tabApi" />
 }, {
     name: "disabled",
     type: "boolean",
     default: "false",
-    description: "Disable the TabPane"
+    description: <LangMsg id="disabledApi" />
 }, {
     name: "key",
     type: "string | number",
-    description: "A unique key for identifying the TabPane"
+    description: <LangMsg id="keyApi" />
 }]
 
 export default () => (
     <>
-        <DocHeading>API</DocHeading>
         <PropsTable title="Tabs" data={TabProps}/>
         <PropsTable title="Tabs.TabPane" data={TabPaneProps}/>
     </>

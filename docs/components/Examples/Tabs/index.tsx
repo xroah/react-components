@@ -10,29 +10,63 @@ import WithoutAnimationSrc from "!!raw-loader!./WithoutAnimation";
 import Custom from "./Custom";
 import CustomSrc from "!!raw-loader!./Custom";
 import API from "./API";
+import Main from "../../Main";
+import RightNav from "../../RightNav";
+import LangProvider from "../../Language/LanguageProvider";
+import LangMsg from "../../Language/LanguageMessage";
+import lang from "./lang";
+
+const { H3 } = DocHeading;
+
+const basicId = "tabBasicExample";
+const basicTitle = <LangMsg id="basicTitle" />;
+const pillsId = "pillsTab";
+const pillsTitle = <LangMsg id="pillsTitle" />;
+const noAnimId = "tabWithoutAnimation";
+const noAnimTitle = <LangMsg id="noAnimTitle" />;
+const customId = "tabCustomization";
+const customTitle = <LangMsg id="customTitle" />;
+const apiId = "tabApi";
 
 export default () => (
-    <>
-        <DocHeading>Tabs</DocHeading>
-        <div>
-            Note that dynamic tabbed interfaces should not contain dropdown menus, as this causes both usability and accessibility issues. From a usability perspective, the fact that the currently displayed tab’s trigger element is not immediately visible (as it’s inside the closed dropdown menu) can cause confusion. From an accessibility point of view, there is currently no sensible way to map this sort of construct to a standard WAI ARIA pattern, meaning that it cannot be easily made understandable to users of assistive technologies.
-        </div>
-        <DemoExample
-            title="Basic example"
-            component={<Basic />}
-            source={BasicSrc} />
-        <DemoExample
-            title="Pills"
-            component={<Pills />}
-            source={PillsSrc} />
-        <DemoExample
-            title="Without animation"
-            component={<WithoutAnimation />}
-            source={WithoutAnimationSrc} />
-        <DemoExample
-            title="Customization"
-            component={<Custom />}
-            source={CustomSrc} />
-        <API />
-    </>
+    <LangProvider language={lang}>
+        <Main>
+            <DocHeading>Tabs</DocHeading>
+            <div><LangMsg id="compDesc" /></div>
+            <H3 id={basicId}>{basicTitle}</H3>
+            <DemoExample
+                component={<Basic />}
+                source={BasicSrc} />
+            <H3 id={pillsId}>{pillsTitle}</H3>
+            <DemoExample
+                component={<Pills />}
+                source={PillsSrc} />
+            <H3 id={noAnimId}>{noAnimTitle}</H3>
+            <DemoExample
+                component={<WithoutAnimation />}
+                source={WithoutAnimationSrc} />
+            <H3 id={customId}>{customTitle}</H3>
+            <DemoExample
+                component={<Custom />}
+                source={CustomSrc} />
+            <DocHeading id={apiId}>API</DocHeading>
+            <API />
+        </Main>
+        <RightNav data={[{
+            name: basicTitle,
+            href: `#${basicId}`
+        }, {
+            name: pillsTitle,
+            href: `#${pillsId}`
+        }, {
+            name: noAnimTitle,
+            href: `#${noAnimId}`
+        }, {
+            name: customTitle,
+            href: `#${customId}`
+        }, {
+            name: "API",
+            href: `#${apiId}`
+        }]} />
+    </LangProvider>
 );
