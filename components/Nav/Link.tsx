@@ -14,8 +14,12 @@ export default function NavLink(props: NavLinkProps) {
         active,
         disabled,
         className,
+        onClick,
         ...otherProps
     } = props;
+    const handleClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+        onClick && !disabled && onClick(e);
+    };
 
     return (
         <a className={
@@ -25,7 +29,9 @@ export default function NavLink(props: NavLinkProps) {
                 active && "active",
                 disabled && "disabled"
             )
-        } {...otherProps} />
+        } 
+        onClick={handleClick}
+        {...otherProps} />
     );
 }
 

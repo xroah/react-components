@@ -6,6 +6,7 @@ import {
     variantArray
 } from "../utils";
 import { CommonProps } from "../CommonPropsInterface";
+import { ListGroupContext } from "../contexts";
 
 export interface ListGroupItemProps extends CommonProps<HTMLElement> {
     action?: boolean;
@@ -13,7 +14,6 @@ export interface ListGroupItemProps extends CommonProps<HTMLElement> {
     variant?: variantType;
     disabled?: boolean;
     href?: string;
-    equalWidth?: boolean;
 }
 
 export default function ListGroupItem(props: ListGroupItemProps) {
@@ -24,28 +24,39 @@ export default function ListGroupItem(props: ListGroupItemProps) {
         variant,
         href,
         className,
-        equalWidth,
+        onClick,
         ...otherProps
     } = props;
-    const PREFIX = `list-group-item`;
+    const PREFIX = "list-group-item";
     let tag = href ? "a" : action ? "button" : "div";
 
-    return React.createElement(
-        tag,
-        {
-            href: tag === "a" ? href : undefined,
-            disabled: tag === "button" ? disabled : undefined,
-            className: classNames(
-                className,
-                PREFIX,
-                variant && `${PREFIX}-${variant}`,
-                action && `${PREFIX}-action`,
-                disabled && "disabled",
-                active && "active",
-                equalWidth && "flex-fill"
-            ),
-            ...otherProps
-        }
+    return (
+        <ListGroupContext.Consumer>
+            {
+                equalWidth => (
+                    React.createElement(
+                        tag,
+                        {
+                            href: tag === "a" ? href : undefined,
+                            disabled: tag === "button" ? disabled : undefined,
+                            className: classNames(
+                                className,
+                                PREFIX,
+                                variant && `${PREFIX}-${variant}`,
+                                action && `${PREFIX}-action`,
+                                disabled && "disabled",
+                                active && "active",
+                                equalWidth && "flex-fill"
+                            ),
+                            onClick(e: React.MouseEvent<HTMLElement, MouseEvent>) {
+                                onClick && !disabled && onClick(e);
+                            },
+                            ...otherProps
+                        }
+                    )
+                )
+            }
+        </ListGroupContext.Consumer>
     );
 
 }
@@ -55,12 +66,10 @@ ListGroupItem.propTypes = {
     href: PropTypes.string,
     action: PropTypes.bool,
     active: PropTypes.bool,
-    disabled: PropTypes.bool,
-    equalWidth: PropTypes.bool
+    disabled: PropTypes.bool
 };
 ListGroupItem.defaultProps = {
     action: false,
     active: false,
-    disabled: false,
-    equalWidth: false
+    disabled: false
 };

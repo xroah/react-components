@@ -1,9 +1,6 @@
 import * as React from "react";
 import PropTypes from "prop-types";
-import {
-    classNames,
-    handleFuncProp
-} from "../utils";
+import { classNames } from "../utils";
 import { DropdownContext } from "../contexts";
 import { CommonProps } from "../CommonPropsInterface";
 
@@ -24,16 +21,6 @@ export default function DropdownMenuItem(props: ItemProps) {
         ...otherProps
     } = props;
     const context = React.useContext(DropdownContext);
-    const handleClick = (evt: React.MouseEvent) => {
-        const target = evt.target as HTMLElement;
-
-        if (!/input|textarea/i.test(target.tagName) && !disabled) {
-            context.close();
-        }
-        
-        handleFuncProp(onClick)(evt);
-    };
-
     if (tag !== "a") {
         delete otherProps.href;
     }
@@ -47,7 +34,15 @@ export default function DropdownMenuItem(props: ItemProps) {
                 active && "active",
                 disabled && "disabled"
             ),
-            onClick: handleClick,
+            onClick(evt: React.MouseEvent<HTMLElement, MouseEvent>) {
+                const target = evt.target as HTMLElement;
+
+                if (!/input|textarea/i.test(target.tagName) && !disabled) {
+                    context.close();
+                }
+
+                onClick && !disabled && onClick(evt);
+            },
             ...otherProps
         }
     );
