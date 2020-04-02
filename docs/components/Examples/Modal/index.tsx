@@ -18,60 +18,85 @@ import WithoutFadeSrc from "!!raw-loader!./WithoutFade";
 import Size from "./Size";
 import SizeSrc from "!!raw-loader!./Size";
 import API from "./API";
+import Main from "../../Main";
+import LangProvider from "../../Language/LanguageProvider";
+import LangMsg from "../../Language/LanguageMessage";
+import lang from "./lang";
+import RightNav, {
+    basicId,
+    basicTitle,
+    staticId,
+    staticTitle,
+    scrollingId,
+    scrollingTitle,
+    verticalId,
+    verticalTitle,
+    tapId,
+    tapTitle,
+    noAnimId,
+    noAnimTitle,
+    sizeId,
+    sizeTitle,
+    apiId
+} from "./RightNav";
+
+const { H3 } = DocHeading;
 
 export default () => (
-    <>
-        <DocHeading>Dialog</DocHeading>
-        <div>
-            Add dialogs to your site for lightboxes, user notifications, or completely custom content.
-        </div>
-        <DemoExample
-            title="Live demo"
-            component={<Basic />}
-            source={BasicSrc}>
-            Toggle a working modal demo by clicking the button below. It will slide down and fade in from the top of the page.
-        </DemoExample>
-        <DemoExample
-            title="Static backdrop"
-            component={<Static />}
-            source={StaticSrc}>
-            When backdrop is set to static, the modal will not close when clicking outside it. Click the button below to try it.
-        </DemoExample>
-        <DemoExample
-            title="Scrolling long content"
-            component={<LongContent />}
-            source={LongContentSrc}>
-            When modals become too long for the user’s viewport or device, they scroll independent of the page itself. Try the demo below to see what we mean.
-        </DemoExample>
-        <DemoExample
-            component={<Scrollable />}
-            source={ScrollableSrc}>
-            You can also create a scrollable modal that allows scroll the modal body by setting <code>scrollable</code> prop.
-        </DemoExample>
-        <DemoExample
-            title="Vertically centered"
-            component={<Centered />}
-            source={CenteredSrc}>
-            Set <code>centered</code> prop to vertically center the modal.
-        </DemoExample>
-        <DemoExample
-            title="Tooltips and popovers"
-            component={<Tooltip />}
-            source={TooltipSrc}>
-            <code>Tooltip</code> and <code>Popover</code> can be placed within modals as needed. When modals are closed, any tooltips and popovers within are also automatically dismissed.
-        </DemoExample>
-        <DemoExample
-            title="Without animation"
-            component={<WithoutFade />}
-            source={WithoutFadeSrc}>
-            For modals that simply appear rather than fade in to view, set <code>fade</code> to false
-        </DemoExample>
-        <DemoExample
-            title="Optional sizes"
-            component={<Size />}
-            source={SizeSrc}>
-            Modals have three optional sizes, available via <code>size</code> prop(xl | lg | sm).
-        </DemoExample>
-        <API />
-    </>
+    <LangProvider language={lang}>
+        <Main>
+            <DocHeading>Dialog</DocHeading>
+            <div><LangMsg id="compDesc" /></div>
+            <H3 id={basicId}>{basicTitle}</H3>
+            <DemoExample
+                component={<Basic />}
+                source={BasicSrc}>
+                <LangMsg id="basicDesc" />
+            </DemoExample>
+            <H3 id={staticId}>{staticTitle}</H3>
+            <DemoExample
+                component={<Static />}
+                source={StaticSrc}>
+                <LangMsg id="staticDesc" />
+            </DemoExample>
+            <H3 id={scrollingId}>{scrollingTitle}</H3>
+            <DemoExample
+                component={<LongContent />}
+                source={LongContentSrc}>
+                <LangMsg id="scrollingDesc" />
+            </DemoExample>
+            <DemoExample
+                component={<Scrollable />}
+                source={ScrollableSrc}>
+                <LangMsg id="scrollingDesc2" />
+            </DemoExample>
+            <H3 id={verticalId}>{verticalTitle}</H3>
+            <DemoExample
+                component={<Centered />}
+                source={CenteredSrc}>
+                <LangMsg id="verticalDesc" />
+            </DemoExample>
+            <H3 id={tapId}>{tapTitle}</H3>
+            <DemoExample
+                component={<Tooltip />}
+                source={TooltipSrc}>
+                <LangMsg id="tapDesc" />
+            </DemoExample>
+            <H3 id={noAnimId}>{noAnimTitle}</H3>
+            <DemoExample
+                component={<WithoutFade />}
+                source={WithoutFadeSrc}>
+                <LangMsg id="noAnimDesc" />
+            </DemoExample>
+            <H3 id={sizeId}>{sizeTitle}</H3>
+            <DemoExample
+                component={<Size />}
+                source={SizeSrc}>
+                <LangMsg id="sizeDesc" />
+            </DemoExample>
+            <DocHeading id={apiId}>API</DocHeading>
+            <API />
+        </Main>
+        <RightNav />
+    </LangProvider>
 );

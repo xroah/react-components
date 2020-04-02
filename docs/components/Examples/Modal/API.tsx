@@ -1,127 +1,124 @@
 import * as React from "react";
 import PropsTable from "../../PropsTable";
-import DocHeading from "../../DocHeading";
+import LangMsg from "../../Language/LanguageMessage";
 
 const props = [{
     name: "visible",
     type: "boolean",
     default: "false",
-    description: "Visibility of the modal"
+    description: <LangMsg id="visibleApi" />
 }, {
     name: "title",
     type: "string | ReactNode",
-    description: "Title text of the modal"
+    description:<LangMsg id="titleApi" />
 }, {
     name: "closable",
     type: "boolean",
     default: "true",
-    description: "Show close button on the header"
+    description:<LangMsg id="closableApi" />
 }, {
     name: "showOk",
     type: "boolean",
     default: "true",
-    description: "Show ok button on the footer"
+    description: <LangMsg id="showOkApi" />
 }, {
     name: "showCancel",
     type: "boolean",
     default: "true",
-    description: "Show cancel button on the footer"
+    description: <LangMsg id="showCancelApi" />
 }, {
     name: "okText",
     type: "string | ReactNode",
     default: "确定",
-    description: "Text of ok button"
+    description:<LangMsg id="okTextApi" />
 }, {
     name: "cancelText",
     type: "string | ReactNode",
     default: "取消",
-    description: "Text of cancel button"
+    description: <LangMsg id="cancelTextApi" />
 }, {
     name: "okType",
     type: "same as variant of button",
     default: "primary",
-    description: "Variant of ok button"
+    description: <LangMsg id="okTypeApi" />
 }, {
     name: "cancelType",
     type: "same as variant of button",
     default: "light",
-    description: "Variant of cancel button"
+    description: <LangMsg id="cancelType" />
 }, {
     name: "keyboard",
     type: "boolean",
     default: "true",
-    description: "Enable close the modal by pressing esc key"
+    description: <LangMsg id="keyboardApi" />
 }, {
     name: "forceRender",
     type: "boolean",
     default: "false",
-    description: "If true will render the modal once mounted, otherwise will render it when visible is true"
+    description:<LangMsg id="forceRenderApi" />
 }, {
     name: "fade",
     type: "boolean",
     default: "true",
-    description: "Enable fade animation when the modal is opening or closing"
+    description: <LangMsg id="fadeApi" />
 }, {
     name: "centered",
     type: "boolean",
     default: "false",
-    description: "Vertically center the modal"
+    description: <LangMsg id="centeredApi" />
 }, {
     name: "size",
     type: `"xl" | "lg" | "sm"`,
-    description: "Size of the modal"
+    description: <LangMsg id="sizeAPi" />
 }, {
     name: "autoFocus",
     type: "boolean",
     default: "true",
-    description: "Puts the focus on the modal when shown."
+    description: <LangMsg id="autoFocusApi" />
 }, {
     name: "scrollable",
     type: "boolean",
     default: "false",
-    description: "Allow scroll the modal body"
+    description: <LangMsg id="scrollableApi" />
 }, {
     name: "backdrop",
     type: `boolean | "static"`,
     default: "true",
-    description: "Includes a modal-backdrop element. Alternatively, specify static for a backdrop which doesn't close the modal on click."
+    description: <LangMsg id="backdropApi" />
 }, {
     name: "header",
     type: "string | ReactNode",
-    description: "Customize the header, if null will not render the header"
+    description: <LangMsg id="headerApi" />
 }, {
     name: "footer",
     type: "string | ReactNode",
-    description: "Customize the footer, if null will not render the footer"
+    description: <LangMsg id="footerApi" />
 }, {
     name: "onOk",
     type: "Function(e)",
-    description: "Callback is invoked when ok button is clicked"
+    description: <LangMsg id="onOkApi" />
 }, {
     name: "onCancel",
     type: "Function(e)",
-    description: "Callback is invoked when cancel button or close button is clicked"
+    description: <LangMsg id="onCancelApi" />
 }, {
     name: "onShow",
-    type: "Function()",
-    description: "Callback is invoked when visible changes from false to true"
+    type: "Function",
+    description: <LangMsg id="onShowApi" />
 }, {
     name: "onShown",
-    type: "Function()",
-    description: "Callback is invoked when the modal has been shown"
+    type: "Function",
+    description: <LangMsg id="onShownApi" />
 }, {
     name: "onHide",
-    type: "Function()",
-    description: "Callback is invoked when visible changes from true to false"
+    type: "Function",
+    description: <LangMsg id="onHideApi" />
 }, {
     name: "onHidden",
-    type: "Function()",
-    description: "Callback is invoked when the modal has been hidden"
+    type: "Function",
+    description: <LangMsg id="onHiddenApi" />
 }];
 
 export default () => (
-    <>
-        <DocHeading>API</DocHeading>
-        <PropsTable title="Modal" data={props} />
-    </>
+    <PropsTable title="Modal" data={props} />
 );
