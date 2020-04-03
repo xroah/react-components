@@ -1,6 +1,6 @@
 import * as React from "react";
 import PropsTable from "../../PropsTable";
-import DocHeading from "../../DocHeading";
+import LangMsg from "../../Language/LanguageMessage";
 import { commonProps, TRIGGER_TYPE } from "../Dropdown/API";
 
 const TooltipProps = [
@@ -9,26 +9,23 @@ const TooltipProps = [
         name: "placement",
         type: `"top" | "bottom" | "left" | "right"`,
         default: "top",
-        description: "The popover popup position"
+        description: <LangMsg id="placementApi"/>
     }, {
         name: "header",
         type: "string | ReactNode",
-        description: "Header of the popover"
+        description: <LangMsg id="headerApi"/>
     }, {
         name: "content",
         type: "string | ReactNode",
-        description: "Content of the popover"
+        description: <LangMsg id="contentApi"/>
     }, {
         name: "trigger",
         type: TRIGGER_TYPE,
         default: "click",
-        description: "How popover is triggered"
+        description: <LangMsg id="triggerApi"/>
     }
 ];
 
 export default () => (
-    <>
-        <DocHeading>API</DocHeading>
-        <PropsTable title="Popover" data={TooltipProps} />
-    </>
+    <PropsTable title="Popover" data={TooltipProps} />
 );

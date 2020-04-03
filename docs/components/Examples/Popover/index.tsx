@@ -6,17 +6,43 @@ import DemoSrc from "!!raw-loader!./Demo"
 import FourDirections from "./FourDirections";
 import FourDirectionsSrc from "!!raw-loader!./FourDirections"
 import API from "./API";
+import Main from "../../Main";
+import RightNav from "../../RightNav";
+import LangProvider from "../../Language/LanguageProvider";
+import LangMsg from "../../Language/LanguageMessage";
+import lang from "./lang";
+
+const egId = "popoverExample";
+const egTitle = <LangMsg id="egTitle" />;
+const fourDirId = "popoverFourDirections";
+const fourDirTitle = <LangMsg id="fourDirTitle" />;
+const apiId = "popoverApi";
 
 export default () => (
-    <>
-        <DocHeading>Example</DocHeading>
-        <DemoExample component={<Demo />} source={DemoSrc} />
-        <DemoExample
-            title="Four directions"
-            component={<FourDirections />}
-            source={FourDirectionsSrc}>
-            Four options are available: top, right, bottom, and left aligned.
-        </DemoExample>
-        <API />
-    </>
+    <LangProvider language={lang}>
+        <Main>
+            <DocHeading>Popover</DocHeading>
+            <div><LangMsg id="compDesc" /></div>
+            <DocHeading.H3 id={egId}>{egTitle}</DocHeading.H3>
+            <DemoExample component={<Demo />} source={DemoSrc} />
+            <DocHeading.H3 id={fourDirId}>{fourDirTitle}</DocHeading.H3>
+            <DemoExample
+                component={<FourDirections />}
+                source={FourDirectionsSrc}>
+                <LangMsg id="fourDirDesc" />
+            </DemoExample>
+            <DocHeading id={apiId}>API</DocHeading>
+            <API />
+        </Main>
+        <RightNav data={[{
+            name: egTitle,
+            href: `#${egId}`
+        }, {
+            name: fourDirTitle,
+            href: `#${fourDirId}`
+        }, {
+            name: "API",
+            href: `#${apiId}`
+        }]} />
+    </LangProvider>
 );

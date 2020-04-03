@@ -1,5 +1,17 @@
 import * as React from "react";
 
+export const commonLang = {
+    visibleApi: "Control the visibility(controlled component)",
+    defaultVisibleApi: "The initial visibility",
+    fadeApi: "Enable fade effect of dropdown popup or not",
+    forceRenderApi: <>If <code>true</code> will render once mounted, otherwise will render it when <code>visible</code> is <code>true</code></>,
+    offsetApi: "Offset of dropdown popup([horizontal, vertical])",
+    delayApi: "A millisecond delay to show or hide the popup",
+    onShowApi: <>Callback is invoked when <code>visible</code> changes from <code>false</code> to <code>true</code></>, 
+    onShownApi: "Callback is invoked when popup has shown",
+    onHideApi: <>Callback is invoked when <code>visible</code> changes from <code>true</code> to <code>false</code></>,
+};
+
 export default {
     compDesc:　"Dropdowns are toggleable, contextual overlays for displaying lists of links and more.",
     singleTitle: "Single button",
@@ -12,15 +24,7 @@ export default {
     alignmentTitle: "Alignment",
     alignmentDesc: <>By default, a dropdown menu is automatically positioned 100% from the top and along the left side. Change it by <code>alignment</code> prop.</>,
     customTitle: "Customization",
-    visibleApi: "Control the visibility(controlled component)",
-    defaultVisibleApi: "The initial visibility",
-    fadeApi: "Enable fade effect of dropdown popup or not",
-    forceRenderApi: <>If <code>true</code> will render once mounted, otherwise will render it when <code>visible</code> is <code>true</code></>,
-    offsetApi: "Offset of dropdown popup([horizontal, vertical])",
-    delayApi: "A millisecond delay to show or hide the popup",
-    onShowApi: <>Callback is invoked when <code>visible</code> changes from <code>false</code> to <code>true</code></>, 
-    onShownApi: "Callback is invoked when popup has shown",
-    onHideApi: <>Callback is invoked when <code>visible</code> changes from <code>true</code> to <code>false</code>></>,
+    ...commonLang,
     onHiddenApi: "Callback is invoked when popup has hidden",
     placementApi: "The dropdown popup position",
     alignmentApi: "Horizontal alignment of dropdown popup",
