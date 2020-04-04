@@ -26,6 +26,41 @@ class RightNav extends React.Component<Props> {
         window.removeEventListener("scroll", this._handleScroll);
     }
 
+    removeActive() {
+        const actives = document.querySelectorAll(".right-nav .active");
+
+        Array.from(actives).forEach(el => el.classList.remove("active"));
+    }
+
+    activateElement(target: HTMLElement) {
+        if (!target) return;
+
+        const nav = this.closest(target, ".level-2");
+
+        target.classList.add("active");
+
+        if (nav) {
+            const a = nav.previousElementSibling;
+
+            a && a.classList.add("active");
+        }
+    }
+
+    closest(target: HTMLElement, selector: string) {
+        const body = document.body;
+        let ret: HTMLElement = target.parentNode as HTMLElement;
+
+        while (ret && ret !== body) {
+            if (ret.matches(selector)) {
+                break;
+            }
+
+            ret = ret.parentNode as HTMLElement;
+        }
+
+        return ret === body ? null : ret;
+    }
+
     handleScroll = () => {
         const rightNav = document.querySelector(".right-nav");
 
@@ -35,11 +70,11 @@ class RightNav extends React.Component<Props> {
             this.isClick
         ) return;
         const as = Array.from(document.querySelectorAll(".right-nav .right-nav-link")) as Array<HTMLAnchorElement>;
-        const active = document.querySelector(".right-nav .active");
+        
         let nextActive: HTMLAnchorElement | null = null;
 
         for (let a of as) {
-            let el;
+            let el: HTMLElement;
 
             try {
                 el = document.querySelector(a.hash);
@@ -58,10 +93,8 @@ class RightNav extends React.Component<Props> {
             }
         }
 
-        if (nextActive !== active) {
-            active && active.classList.remove("active");
-            nextActive && nextActive.classList.add("active");
-        }
+        this.removeActive();
+        this.activateElement(nextActive);
     };
 
     _handleScroll = () => {
@@ -77,23 +110,19 @@ class RightNav extends React.Component<Props> {
         const a = evt.target as HTMLAnchorElement;
         const hash = a.hash;
         const { location, history } = this.props;
-        const active = document.querySelector(".right-nav .active");
         this.isClick = true;
-
-        if (active && active !== a) {
-            active.classList.remove("active");
-        }
 
         if (location.hash !== hash) {
             history.push(`${location.pathname}${hash}`);
         }
 
-        a.classList.add("active");
+        this.removeActive();
+        this.activateElement(a);
         hash && scrollIntoView(hash, () => this.isClick = false);
         evt.preventDefault();
     };
 
-    handleLink(link: Link[]) {
+    handleLink(link: Link[], level = 1) {
         const nav = link.map(l => (
             <Nav.Item key={l.href}>
                 <Nav.Link
@@ -102,11 +131,11 @@ class RightNav extends React.Component<Props> {
                     onClick={this.handleClick}>
                     {l.name}
                 </Nav.Link>
-                {l.children && this.handleLink(l.children)}
+                {l.children && this.handleLink(l.children, level + 1)}
             </Nav.Item>
         ));
         return (
-            <Nav vertical>
+            <Nav className={`level-${level}`} vertical>
                 {nav}
             </Nav>
         );
