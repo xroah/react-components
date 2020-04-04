@@ -22,67 +22,99 @@ import TabDropdownSrc from "!!raw-loader!./TabDropdown";
 import PillDropdown from "./PillDropdown";
 import PillDropdownSrc from "!!raw-loader!./PillDropdown";
 import API from "./API";
+import Main from "../../Main";
+import LangProvider from "../../Language/LanguageProvider";
+import LangMsg from "../../Language/LanguageMessage";
+import lang from "./lang";
+import RightNav, {
+    baseId,
+    baseTitle,
+    styleId,
+    styleTitle,
+    haId,
+    haTitle,
+    verticalId,
+    verticalTitle,
+    tabsId,
+    tabsTitle,
+    pillsId,
+    pillsTitle,
+    fillId,
+    fillTitle,
+    dropdownId,
+    dropdownTitle,
+    tdId,
+    tdTitle,
+    pdId,
+    pdTitle,
+    apiId
+} from "./RightNav";
+
+const { H3 } = DocHeading;
 
 export default () => (
-    <>
-        <DemoExample
-            title="Base nav"
-            component={<Basic />}
-            source={BasicSrc}>
-            Navigation available in Bootstrap share general markup and styles, from the base <code>Nav</code> to the active and disabled states.
-            The base <code>Nav</code> component is built with flexbox and provide a strong foundation for building all types of navigation components.
-            <div className="bd-callout-info">
-                The base <code>Nav</code> component does not include any active state. The following examples include the active prop, mainly to demonstrate that this particular prop does not trigger any special styling.
-            </div>
-        </DemoExample>
-        <DemoExample
-            title="Horizontal alignment"
-            component={<Center />}
-            source={CenterSrc}>
-            Change the horizontal alignment of your nav with <code>alignment</code> prop. By default, navs are left-aligned, but you can easily change them to center or right aligned.
-        </DemoExample>
-        <DemoExample
-            component={<Right />}
-            source={RightSrc} />
-        <DemoExample
-            title="Vertical"
-            component={<Vertical />}
-            source={VerticalSrc}>
-            Stack your navigation by changing the flex item direction with the <code>vertical</code> prop. Need to stack them on some viewports but not others? Use the responsive minWidth prop (e.g., sm).
-        </DemoExample>
-        <DemoExample
-            title="Tabs"
-            component={<Tabs />}
-            source={TabsSrc}>
-            Takes the basic nav from above and set <code>variant="tab"</code> to generate a tabbed interface(you should use <code>Nav.Item</code> to clear border-bottom when the tab is active). Use them to create tabbable regions with our <code>Tabs</code> component.
-        </DemoExample>
-        <DemoExample
-            title="Pills"
-            component={<Pill />}
-            source={PillSrc}>
-            Use <code>variant="pill"</code> instead.
-        </DemoExample>
-        <DocHeading tag="h3">Fill and justify</DocHeading>
-        <DemoExample
-            component={<Fill />}
-            source={FillSrc}>
-            Force your contents to extend the full available width. To proportionately fill all available space with your <code>Nav.Item</code>, use <code>fill</code> prop. Notice that all horizontal space is occupied, but not every nav item has the same width.
-        </DemoExample>
-        <DemoExample
-            component={<Justify />}
-            source={JustifySrc}>
-            For equal-width elements, use <code>equalWidth</code> prop. All horizontal space will be occupied, but unlike the fill above, every nav item will be the same width.
-        </DemoExample>
-        <DocHeading>Using dropdowns</DocHeading>
-        <div>You should use with <code>Nav.Item</code> for some extra styles.</div>
-        <DemoExample
-            title="Tabs with dropdowns"
-            component={<TabDropdown />}
-            source={TabDropdownSrc} />
-        <DemoExample
-            title="Pills with dropdowns"
-            component={<PillDropdown />}
-            source={PillDropdownSrc} />
-        <API />
-    </>
+    <LangProvider language={lang}>
+        <Main>
+            <DocHeading>Nav</DocHeading>
+            <LangMsg id="compDesc" />
+            <H3 id={baseId}>{baseTitle}</H3>
+            <DemoExample
+                component={<Basic />}
+                source={BasicSrc}>
+                <LangMsg id="baseDesc" />
+            </DemoExample>
+            <DocHeading id={styleId}>{styleTitle}</DocHeading>
+            <H3 id={haId}>{haTitle}</H3>
+            <DemoExample
+                component={<Center />}
+                source={CenterSrc}>
+                <LangMsg id="haDesc" />
+            </DemoExample>
+            <DemoExample
+                component={<Right />}
+                source={RightSrc} />
+            <H3 id={verticalId}>{verticalTitle}</H3>
+            <DemoExample
+                component={<Vertical />}
+                source={VerticalSrc}>
+                <LangMsg id="verticalDesc" />
+            </DemoExample>
+            <H3 id={tabsId}>{tabsTitle}</H3>
+            <DemoExample
+                component={<Tabs />}
+                source={TabsSrc}>
+                <LangMsg id="tabsDesc" />
+            </DemoExample>
+            <H3 id={pillsId}>{pillsTitle}</H3>
+            <DemoExample
+                component={<Pill />}
+                source={PillSrc}>
+                <LangMsg id="pillsDesc" />
+            </DemoExample>
+            <H3 id={fillId}>{fillTitle}</H3>
+            <DemoExample
+                component={<Fill />}
+                source={FillSrc}>
+                <LangMsg id="" />
+            </DemoExample>
+            <DemoExample
+                component={<Justify />}
+                source={JustifySrc}>
+                <LangMsg id="justifyDesc" />
+            </DemoExample>
+            <DocHeading id={dropdownId}>{dropdownTitle}</DocHeading>
+            <LangMsg id="dropdownDesc" />
+            <H3 id={tdId}>{tdTitle}</H3>
+            <DemoExample
+                component={<TabDropdown />}
+                source={TabDropdownSrc} />
+            <H3 id={pdId}>{pdTitle}</H3>
+            <DemoExample
+                component={<PillDropdown />}
+                source={PillDropdownSrc} />
+            <DocHeading id={apiId}>API</DocHeading>
+            <API />
+        </Main>
+        <RightNav />
+    </LangProvider>
 );

@@ -4,7 +4,7 @@ import { Nav } from "reap-ui";
 const { Item, Link } = Nav;
 
 export default () => (
-    <Nav variant="pill" fill equalWidth>
+    <Nav variant="pill" equalWidth>
         <Item>
             <Link active href="#">Active</Link>
         </Item>
