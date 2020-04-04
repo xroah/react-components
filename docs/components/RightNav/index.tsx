@@ -17,12 +17,17 @@ class RightNav extends React.Component<Props> {
 
     private timer: any = null;
     private isClick = false;
+    private cancel: Function | null = null;
 
     componentDidMount() {
         window.addEventListener("scroll", this._handleScroll);
     }
 
     componentWillUnmount() {
+        if (this.cancel) {
+            this.cancel();
+        }
+
         window.removeEventListener("scroll", this._handleScroll);
     }
 
@@ -118,7 +123,7 @@ class RightNav extends React.Component<Props> {
 
         this.removeActive();
         this.activateElement(a);
-        hash && scrollIntoView(hash, () => this.isClick = false);
+        this.cancel = scrollIntoView(hash, () => this.isClick = false) || null;
         evt.preventDefault();
     };
 

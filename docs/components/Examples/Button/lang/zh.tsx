@@ -2,7 +2,7 @@ import * as React from "react";
 
 export default {
     compDesc: "在表单、对话框等当中使用，支持多种尺寸、状态等。",
-    egTitle: "Examples",
+    egTitle: "示例",
     egDesc: <><code>Button</code>包含多种预定义的样式。</>,
     obTitle: "轮廓按钮",
     obDesc: <>设置 <code>outline</code>属性来移除所有按钮的背景颜色。</>,
@@ -13,7 +13,7 @@ export default {
     acDesc: <>设置<code>active</code>属性，使按钮变成激活状态（更暗的背景色、边框和内阴影）。</>,
     dsTitle: "禁用状态",
     dsDesc: <>设置<code>disabled</code>属性禁用按钮。</>,
-    carTitle: "Checkbox和radio按钮",
+    carTitle: "复选和单选按钮",
     carDesc: (
         <>
             <p>
@@ -22,7 +22,7 @@ export default {
             <code>checked</code>的状态通过点击来更新，需要手动设置<code>active</code>属性。
         </>
     ),
-    btnVarApi: "Button的外观样式",
+    btnVarApi: "按钮的外观样式",
     sizeApi: "设置按钮的尺寸",
     disabledApi: "禁用按钮",
     btnTypeApi: "按钮的类型",
@@ -32,7 +32,7 @@ export default {
     tgTypeApi: <>按钮内<code>input</code>元素的<code>type</code>属性值得. 该属性值会覆盖<code>Button.ToggleGroup</code>的<code>type</code>属性值</>,
     //button group
     groupDesc: <>将一系列的<code>Button</code>放置在<code>Button.Group</code>中</>,
-    tbTitle: "Button工具栏",
+    tbTitle: "按钮工具栏",
     tbDesc: <>将<code>Button</code>放在<code>Button.Toolbar</code>中创建更复杂的组件</>,
     groupSizeTitle: "按钮组尺寸",
     groupSizeDesc: <>设置<code>Button.Group</code>的尺寸来改变子按钮的尺寸。</>,

@@ -99,4 +99,6 @@ export default function scrollIntoView(el: HTMLElement | string, complete: Callb
     }
     
     scrollTo(offsetTop, 100);
+    
+    return cancelScroll;
 }
