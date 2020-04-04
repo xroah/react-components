@@ -46,8 +46,9 @@ export default function Nav(props: NavProps) {
                             value || navbar ? "navbar-nav" : "nav",
                             variant && variantMap[variant],
                             alignment && alignmentMap[alignment],
-                            vertical && minWidth ? `flex-${minWidth}-column` : vertical ? "flex-column" : "",
-                            fill && equalWidth ? "nav-justified" : fill ? "nav-fill" : ""
+                            vertical ? (minWidth ? `flex-${minWidth}-column` : "flex-column") : "",
+                            fill && "nav-fill",
+                            equalWidth && "nav-justified"
                         ),
                         ...otherProps
                     }
