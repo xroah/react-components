@@ -23,7 +23,11 @@ export default () => (
             </Col>
             <Examples />
         </Route>
-        <Route path="/" exact component={Home} />
+        <Route path="/" exact render={() => {
+            document.title = "reap-ui--Bootstrap components built with React";
+
+            return <Home/>;
+        }} />
         <Redirect to="/" />
     </Switch>
 );

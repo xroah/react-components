@@ -7,7 +7,6 @@ import {
 } from "react-router-dom";;
 import routes from "./routes";
 import Loading from "./components/Loading";
-import scrollIntoView from "./scrollIntoView";
 
 function _Loading(props: { unmountCallback?: Function }) {
     React.useEffect(() => () => {
@@ -60,7 +59,10 @@ export default () => {
                                 );
                                 currentComponent = suspense;
 
-                                //render the prev component until current has been loaded
+                                if (cur || prev) {
+                                    document.title = `${item.name}--reap-ui`
+                                }
+                                
                                 if (cur) {
                                     prevPath = path;
 
@@ -70,10 +72,11 @@ export default () => {
 
                                     return cur;
                                 } else if (prev) {
+                                    //render the prev component until current has been loaded
                                     return (
                                         <>
                                             {prev}
-                                            {/* load current component when rendering previous */}
+                                            {/* load current component while rendering previous */}
                                             {suspense}
                                         </>
                                     );
