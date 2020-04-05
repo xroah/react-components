@@ -20,7 +20,10 @@ class RightNav extends React.Component<Props> {
     private cancel: Function | null = null;
 
     componentDidMount() {
+        const { hash } = this.props.location;
+
         window.addEventListener("scroll", this._handleScroll);
+        scrollIntoView(hash);
     }
 
     componentWillUnmount() {
@@ -75,7 +78,7 @@ class RightNav extends React.Component<Props> {
             this.isClick
         ) return;
         const as = Array.from(document.querySelectorAll(".right-nav .right-nav-link")) as Array<HTMLAnchorElement>;
-        
+
         let nextActive: HTMLAnchorElement | null = null;
 
         for (let a of as) {
@@ -91,9 +94,9 @@ class RightNav extends React.Component<Props> {
 
             const rectTop = el.getBoundingClientRect().top;
 
-            if (rectTop >= window.innerHeight / 2) break;
-
-            if (rectTop <= 150) {
+            if (rectTop >= window.innerHeight / 2) {
+                break;
+            } else if (rectTop <= 150) {
                 nextActive = a;
             }
         }
