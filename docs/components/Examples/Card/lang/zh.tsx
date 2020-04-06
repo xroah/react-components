@@ -12,7 +12,7 @@ export default {
     lgTitle: "列表组",
     ttlTitle: "标题、文本和链接",
     ttlDesc: "在卡片内使用列表组。",
-    ksTitle: "无所不包",
+    ksTitle: "多种内容",
     ksDesc: "可以根据需要同时使用多种内容。",
     hafTitle: "头部和底部",
     imgTitle: "图像",

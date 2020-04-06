@@ -5,9 +5,9 @@ export default {
     basicTitle: "基础示例",
     aodTitle: "激活或者禁用",
     aodDesc: <>设置<code>active/disabled</code>属性来激活/禁用选项。</>,
-    actionTitle: "Action",
+    actionTitle: "动作",
     actionDesc: <>列表项可以渲染成<code>button</code>或者<code>a</code>元素（取决于是否设置了<code>href</code>属性）。</>,
-    flushTitle: "Flush",
+    flushTitle: "冲刷",
     flushDesc: <>设置<code>flush</code>属性来移除一些边框和圆角，使列表组的选项紧挨父容器的边框（如： 卡片）。</>,
     horizontalTitle: "水平列表组",
     horizontalDesc: (

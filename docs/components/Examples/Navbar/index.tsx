@@ -144,7 +144,7 @@ export default () => (
             <DemoExample
                 component={<ExternalContent />}
                 source={ExternalContentSrc}>
-                <LangMsg id="externalTitle" />
+                <LangMsg id="externalDesc" />
             </DemoExample>
             <DocHeading id={apiId}>API</DocHeading>
             <API />
