@@ -64,11 +64,9 @@ const Button = React.forwardRef(
 
         if (otherProps.href) {
             tag = "a";
-            delete props.disabled;
-            delete props.type;
-        } else {
-            delete props.href;
-        }
+            delete buttonProps.disabled;
+            delete buttonProps.type;
+        } 
 
         return React.createElement(
             tag,
