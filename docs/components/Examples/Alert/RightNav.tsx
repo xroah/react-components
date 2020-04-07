@@ -17,20 +17,19 @@ export const tgTitle = <LangMsg id="tgTitle" />;
 export default () => (
     <RightNav data={[{
         name: egTitle,
-        href: `#${egId}`,
-        children: [{
-            name: lcTitle,
-            href: `#${lcId}`
-        }, {
-            name: acTitle,
-            href: `#${acId}`
-        }, {
-            name: dsTitle,
-            href: `#${dsId}`
-        }, {
-            name: tgTitle,
-            href: `#${tgId}`
-        }]
+        href: `#${egId}`
+    }, {
+        name: lcTitle,
+        href: `#${lcId}`
+    }, {
+        name: acTitle,
+        href: `#${acId}`
+    }, {
+        name: dsTitle,
+        href: `#${dsId}`
+    }, {
+        name: tgTitle,
+        href: `#${tgId}`
     }, {
         name: "API",
         href: `#${apiId}`
