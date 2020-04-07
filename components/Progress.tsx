@@ -13,7 +13,7 @@ export interface ProgressProps extends CommonProps<HTMLElement> {
     striped?: boolean;
     animated?: boolean;
     showLabel?: boolean;
-    __isChild__?: boolean;
+    __isChild__?: boolean;//internal only, for multiple bars
 }
 
 export default function Progress(props: ProgressProps) {
@@ -30,9 +30,8 @@ export default function Progress(props: ProgressProps) {
         ...otherProps
     } = props;
     const count = React.Children.count(children);
-    const classes = classNames(__isChild__ ? "" : className, "progress");
     const PREFIX = "progress-bar";
-    const v = value as number;
+    const v = value!;
     const width = `${v > 100 ? 100 : v < 0 ? 0 : v}%`;
     const bar = (
         <div style={{ width }}
@@ -40,16 +39,17 @@ export default function Progress(props: ProgressProps) {
                 classNames(
                     PREFIX,
                     __isChild__ ? className : "",
-                    striped && `${PREFIX}-striped`,
                     striped && animated && `${PREFIX}-animated`,
+                    striped && `${PREFIX}-striped`,
                     variant && `bg-${variant}`
                 )
             }>
             {!!showLabel && <span className="label">{width}</span>}
         </div>
     );
-    const wrapper = <div className={classes} />;
+    const wrapper = <div className={classNames(className, "progress")} />;
 
+    //multiple progress bars
     if (count) {
         const _children = React.Children.map(children, c => {
             if (React.isValidElement(c) && c.type === Progress) {
