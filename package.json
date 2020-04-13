@@ -1,20 +1,21 @@
 {
-    "name": "react-bs",
+    "name": "reap-ui",
     "version": "1.0.0",
     "description": "Bootstrap components built with react",
     "main": "lib/index.js",
     "scripts": {
-        "test": "cross-env NODE_ENV=test karma start",
-        "build:es": "tsc -d --declarationDir ./types",
-        "build:lib": "cross-env NODE_ENV=lib babel components --out-dir lib --extensions .ts,.tsx",
+        "test": "jest",
+        "coverage": "jest --coverage",
+        "build:es": "tsc -d --declarationDir ./types --outDir ./es",
+        "build:lib": "cross-env BABEL_ENV=lib babel components --out-dir lib --extensions .ts,.tsx",
         "build:dev": "rollup -c",
         "build:prod": "cross-env NODE_ENV=production rollup -c",
         "build:doc": "webpack",
-        "start": "webpack-dev-server --env development --watch"
+        "start": "webpack-dev-server --env development"
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/xroah/react-bs.git"
+        "url": "git+https://github.com/xroah/reap-ui.git"
     },
     "keywords": [
         "reap",
@@ -27,9 +28,9 @@
     "author": "xroah",
     "license": "MIT",
     "bugs": {
-        "url": "https://github.com/xroah/react-bs/issues"
+        "url": "https://github.com/xroah/reap-ui/issues"
     },
-    "homepage": "https://github.com/xroah/react-bs#readme",
+    "homepage": "https://github.com/xroah/reap-ui#readme",
     "devDependencies": {
         "@babel/cli": "^7.8.4",
         "@babel/core": "^7.8.7",
@@ -38,23 +39,23 @@
         "@babel/preset-env": "^7.8.7",
         "@babel/preset-react": "^7.7.4",
         "@babel/preset-typescript": "^7.7.4",
-        "@types/chai": "^4.2.10",
+        "@rollup/plugin-commonjs": "^11.1.0",
+        "@rollup/plugin-node-resolve": "^7.1.3",
+        "@rollup/plugin-typescript": "^4.1.1",
         "@types/enzyme": "^3.10.5",
         "@types/enzyme-adapter-react-16": "^1.0.6",
-        "@types/mocha": "^5.2.7",
+        "@types/jest": "^25.2.1",
         "@types/prop-types": "^15.7.3",
         "@types/react": "^16.9.23",
         "@types/react-dom": "^16.9.5",
+        "@types/react-redux": "^7.1.7",
         "@types/react-router-dom": "^5.1.3",
         "@types/react-syntax-highlighter": "^11.0.2",
         "@types/sinon": "^7.5.2",
-        "@types/webpack-env": "^1.15.1",
         "@typescript-eslint/eslint-plugin": "^2.23.0",
         "@typescript-eslint/parser": "^2.23.0",
         "babel-loader": "^8.0.6",
-        "babel-plugin-istanbul": "^5.2.0",
         "bootstrap": "^4.4.1",
-        "chai": "^4.2.0",
         "clean-webpack-plugin": "^3.0.0",
         "cross-env": "^6.0.3",
         "css-loader": "^3.4.2",
@@ -63,15 +64,8 @@
         "eslint": "^6.7.1",
         "eslint-plugin-react": "^7.19.0",
         "html-webpack-plugin": "^3.2.0",
-        "karma": "^4.4.1",
-        "karma-chrome-launcher": "^3.1.0",
-        "karma-cli": "^2.0.0",
-        "karma-coverage": "^2.0.1",
-        "karma-mocha": "^1.3.0",
-        "karma-mocha-reporter": "^2.2.5",
-        "karma-webpack": "^4.0.2",
+        "jest": "^25.3.0",
         "mini-css-extract-plugin": "^0.8.2",
-        "mocha": "^6.2.2",
         "node-sass": "^4.13.1",
         "optimize-css-assets-webpack-plugin": "^5.0.3",
         "raw-loader": "^3.1.0",
@@ -83,9 +77,6 @@
         "redux": "^4.0.5",
         "rollup": "^1.32.1",
         "rollup-plugin-babel": "^4.4.0",
-        "rollup-plugin-commonjs": "^10.1.0",
-        "rollup-plugin-node-resolve": "^5.2.0",
-        "rollup-plugin-typescript": "^1.0.1",
         "rollup-plugin-uglify": "^6.0.4",
         "sass-loader": "^8.0.2",
         "sinon": "^7.5.0",
@@ -100,8 +91,13 @@
     },
     "dependencies": {
         "@babel/runtime": "^7.8.7",
-        "@types/react-redux": "^7.1.7",
         "prop-types": "^15.7.2",
         "warning": "^4.0.3"
+    },
+    "jest": {
+        "setupFilesAfterEnv": [
+            "<rootDir>/tests/setupTests.ts"
+        ],
+        "testMatch": ["<rootDir>/tests/**/*.spec.[jt]s?(x)"]
     }
 }

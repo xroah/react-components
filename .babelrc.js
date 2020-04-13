@@ -3,7 +3,8 @@ module.exports = api => ({
         [
             "@babel/preset-env",
             {
-                modules: api.env() === "lib" ? "cjs" : false
+                //Rollup requires that your Babel configuration keeps ES6 module syntax intact.
+                modules: api.env() in {lib: "", test: ""} ? "cjs" : false
             }
         ],
         "@babel/preset-react",
@@ -12,12 +13,5 @@ module.exports = api => ({
     plugins: [
         "@babel/plugin-proposal-class-properties",
         "@babel/plugin-transform-runtime"
-    ],
-    env: {
-        test: {
-            plugins: [
-                "istanbul"
-            ]
-        }
-    }
+    ]
 });

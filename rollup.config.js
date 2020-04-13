@@ -1,7 +1,7 @@
 import babel from "rollup-plugin-babel";
-import tsPlugin from "rollup-plugin-typescript";
-import resolve from "rollup-plugin-node-resolve";
-import cjs from "rollup-plugin-commonjs";
+import tsPlugin from "@rollup/plugin-typescript";
+import resolve from "@rollup/plugin-node-resolve";
+import cjs from "@rollup/plugin-commonjs";
 import { uglify } from "rollup-plugin-uglify";
 
 const config = {
