@@ -1,7 +1,7 @@
 import * as React from "react";
-import {classNames, variantType, variantArray} from "./utils";
+import {classNames, variantType, variantArray} from "../utils";
 import PropTypes from "prop-types";
-import { AnchorCommonProps } from "./CommonPropsInterface";
+import { AnchorCommonProps } from "../Common/CommonPropsInterface";
 
 export interface BadgeProps extends AnchorCommonProps<HTMLSpanElement & HTMLAnchorElement> {
     variant?: variantType;

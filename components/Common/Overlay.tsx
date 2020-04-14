@@ -1,5 +1,5 @@
 import * as React from "react";
-import { chainFunction } from "./utils";
+import { chainFunction } from "../utils";
 import Popup, { PopupCommonProps, PopupProps } from "./Popup";
 import PropTypes from "prop-types";
 import { findDOMNode } from "react-dom";

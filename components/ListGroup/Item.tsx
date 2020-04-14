@@ -5,8 +5,8 @@ import {
     variantType,
     variantArray
 } from "../utils";
-import { CommonProps } from "../CommonPropsInterface";
-import { ListGroupContext } from "../contexts";
+import { CommonProps } from "../Common/CommonPropsInterface";
+import { ListGroupContext } from "../Common/contexts";
 
 export interface ListGroupItemProps extends CommonProps<HTMLElement> {
     action?: boolean;

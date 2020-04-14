@@ -1,8 +1,8 @@
 import * as React from "react";
 import PropTypes from "prop-types";
 import { classNames, handleFuncProp, chainFunction } from "../utils";
-import { AccordionContext } from "../contexts"
-import { CommonProps } from "../CommonPropsInterface";
+import { AccordionContext } from "../Common/contexts"
+import { CommonProps } from "../Common/CommonPropsInterface";
 
 type keyType = number | string | number[] | string[];
 

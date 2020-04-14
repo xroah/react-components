@@ -1,6 +1,6 @@
 import * as React from "react";
 import Nav from "../Nav";
-import { TabContext } from "../contexts";
+import { TabContext } from "../Common/contexts";
 
 interface TabTitleProps {
     itemKey?: string;

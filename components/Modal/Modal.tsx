@@ -8,10 +8,10 @@ import {
     getScrollBarWidth
 } from "../utils";
 import Button from "../Button";
-import Fade from "../Fade";
-import NoTransition from "../NoTransition";
-import { ModalContext } from "../contexts";
-import Portal from "../Portal";
+import Fade from "../Common/Fade";
+import NoTransition from "../Common/NoTransition";
+import { ModalContext } from "../Common/contexts";
+import Portal from "../Common/Portal";
 import {
     ModalProps,
     ModalState

@@ -1,7 +1,7 @@
 import * as React from "react";
 import PropTypes from "prop-types";
 import { variantType, classNames, variantArray } from "../utils";
-import { CommonProps } from "../CommonPropsInterface";
+import { CommonProps } from "../Common/CommonPropsInterface";
 
 export type colorType = variantType | "white" | "muted" | "white-50" | "black-50";
 

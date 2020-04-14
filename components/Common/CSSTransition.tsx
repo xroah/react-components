@@ -1,6 +1,6 @@
 import * as React from "react";
 import { findDOMNode } from "react-dom";
-import { handleFuncProp } from './utils';
+import { handleFuncProp } from '../utils';
 
 const ENTER = "enter";
 const ENTERING = "entering";

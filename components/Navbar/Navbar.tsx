@@ -5,8 +5,8 @@ import {
     variantArray,
     variantType
 } from "../utils";
-import { NavbarContext } from "../contexts";
-import { CommonProps  } from "../CommonPropsInterface";
+import { NavbarContext } from "../Common/contexts";
+import { CommonProps  } from "../Common/CommonPropsInterface";
 
 export interface NavbarProps extends CommonProps<HTMLElement> {
     variant?: "light" | "dark";

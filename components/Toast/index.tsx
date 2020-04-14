@@ -1,9 +1,9 @@
 import * as React from "react";
 import PropTypes from "prop-types";
-import Fade from "./Fade";
-import { classNames, handleFuncProp } from "./utils";
-import NoTransition from "./NoTransition";
-import { CommonPropsWithoutTitle } from "./CommonPropsInterface";
+import Fade from "../Common/Fade";
+import { classNames, handleFuncProp } from "../utils";
+import NoTransition from "../Common/NoTransition";
+import { CommonPropsWithoutTitle } from "../Common/CommonPropsInterface";
 
 export interface ToastProps extends CommonPropsWithoutTitle<HTMLDivElement> {
     title?: string | React.ReactNode;

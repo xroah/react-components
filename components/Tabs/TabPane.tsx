@@ -1,10 +1,10 @@
 import * as React from "react";
 import PropTypes from "prop-types";
 import { classNames, handleFuncProp } from "../utils";
-import Fade from "../Fade";
-import { TabContext } from "../contexts";
-import NoTransition from "../NoTransition";
-import { CommonProps } from "../CommonPropsInterface";
+import Fade from "../Common/Fade";
+import { TabContext } from "../Common/contexts";
+import NoTransition from "../Common/NoTransition";
+import { CommonProps } from "../Common/CommonPropsInterface";
 
 export interface TabPaneProps extends CommonProps<HTMLDivElement> {
     tab?: string | React.ReactNode;

@@ -4,8 +4,8 @@ import {
     classNames,
     variantArray,
     variantType
-} from "./utils";
-import { CommonProps } from "./CommonPropsInterface";
+} from "../utils";
+import { CommonProps } from "../Common/CommonPropsInterface";
 
 export interface SpinnerProps extends CommonProps<HTMLDivElement> {
     variant?: variantType;

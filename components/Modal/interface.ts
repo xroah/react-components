@@ -1,6 +1,6 @@
 import { LoadingCommonOptions } from "./Loading";
 import { ReactNode } from "react";
-import { CommonPropsWithoutTitle } from "../CommonPropsInterface";
+import { CommonPropsWithoutTitle } from "../Common/CommonPropsInterface";
 import { variantType } from "../utils";
 
 interface ModalCommonOptions extends CommonPropsWithoutTitle<HTMLDivElement> {

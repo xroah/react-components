@@ -5,7 +5,7 @@ import {
     variantType,
     variantArray
 } from "../utils";
-import { ButtonCommonProps } from "../CommonPropsInterface";
+import { ButtonCommonProps } from "../Common/CommonPropsInterface";
 
 export interface CommonProps {
     variant?: variantType | "link";

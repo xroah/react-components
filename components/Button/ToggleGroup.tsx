@@ -1,7 +1,7 @@
 import * as React from "react";
 import ButtonGroup from "./ButtonGroup";
-import { CommonProps } from "../CommonPropsInterface";
-import { ToggleButtonGroupContext } from "../contexts";
+import { CommonProps } from "../Common/CommonPropsInterface";
+import { ToggleButtonGroupContext } from "../Common/contexts";
 import { classNames } from "../utils";
 import PropTypes from "prop-types";
 

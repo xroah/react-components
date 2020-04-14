@@ -3,8 +3,8 @@ import PropTypes from "prop-types";
 import TabPane from "./TabPane";
 import Nav from "../Nav";
 import { handleFuncProp } from "../utils";
-import { TabContext } from "../contexts";
-import { CommonProps } from "../CommonPropsInterface";
+import { TabContext } from "../Common/contexts";
+import { CommonProps } from "../Common/CommonPropsInterface";
 import TabTitle from "./TabTitle";
 
 export interface TabsProps extends CommonProps<HTMLDivElement> {

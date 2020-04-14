@@ -1,8 +1,8 @@
 import * as React from "react";
 import PropTypes from "prop-types";
-import Overlay, { CommonProps } from './Overlay';
-import { PopupContext } from "./contexts";
-import { classNames } from "./utils";
+import Overlay, { CommonProps } from '../Common/Overlay';
+import { PopupContext } from "../Common/contexts";
+import { classNames } from "../utils";
 
 export interface TooltipProps extends CommonProps {
     title: string | React.ReactNode;

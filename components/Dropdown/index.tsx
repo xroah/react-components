@@ -4,7 +4,7 @@ import Menu from "./Menu";
 import Item from "./MenuItem";
 import Button from "./Button";
 import Dropdown from "./Dropdown";
-import { CommonProps } from "../CommonPropsInterface";
+import { CommonProps } from "../Common/CommonPropsInterface";
 
 interface DropdownComponent {
     Menu: typeof Menu;

@@ -1,16 +1,16 @@
 import * as React from "react";
 import PropTypes from "prop-types";
-import Fade from "./Fade";
-import NoTransition from "./NoTransition";
-import Button from "./Button";
+import Fade from "../Common/Fade";
+import NoTransition from "../Common/NoTransition";
+import Button from "../Button";
 import {
     classNames,
     variantType,
     variantArray,
     handleFuncProp,
     createComponentByClass
-} from "./utils";
-import { CommonProps } from "./CommonPropsInterface";
+} from "../utils";
+import { CommonProps } from "../Common/CommonPropsInterface";
 
 export interface AlertProps extends CommonProps<HTMLDivElement> {
     variant?: variantType;

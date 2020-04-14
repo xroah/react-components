@@ -4,7 +4,7 @@ import Brand from "./Brand";
 import Collapse from "./Collapse";
 import Toggle from "./Toggle";
 import Navbar from "./Navbar";
-import { CommonProps } from "../CommonPropsInterface";
+import { CommonProps } from "../Common/CommonPropsInterface";
 
 interface NavbarComponent {
     Brand: typeof Brand;

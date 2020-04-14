@@ -1,8 +1,8 @@
 import * as React from "react";
 import PropTypes from "prop-types";
 import { classNames } from "../utils";
-import { NavbarContext } from "../contexts";
-import { CommonProps } from "../CommonPropsInterface";
+import { NavbarContext } from "../Common/contexts";
+import { CommonProps } from "../Common/CommonPropsInterface";
 
 export interface NavProps extends CommonProps<HTMLElement> {
     alignment?: "left" | "center" | "right";

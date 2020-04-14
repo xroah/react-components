@@ -4,9 +4,9 @@ import {
     classNames,
     chainFunction
 } from "../utils";
-import Overlay, { CommonProps, handleDelay } from "../Overlay";
+import Overlay, { CommonProps, handleDelay } from "../Common/Overlay";
 import { findDOMNode } from "react-dom";
-import { DropdownContext } from "../contexts";
+import { DropdownContext } from "../Common/contexts";
 
 export interface DropdownProps extends CommonProps {
     alignment?: "left" | "center" | "right";

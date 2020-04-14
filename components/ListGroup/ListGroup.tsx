@@ -1,8 +1,8 @@
 import * as React from "react";
 import PropTypes from "prop-types";
 import { classNames } from "../utils";
-import { CommonProps } from "../CommonPropsInterface";
-import { ListGroupContext } from "../contexts";
+import { CommonProps } from "../Common/CommonPropsInterface";
+import { ListGroupContext } from "../Common/contexts";
 
 export interface ListGroupProps extends CommonProps<HTMLDivElement> {
     flush?: boolean;

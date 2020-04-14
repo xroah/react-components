@@ -1,7 +1,7 @@
 import * as React from "react";
 import PropTypes from "prop-types";
-import { classNames } from "./utils";
-import { InputCommonProps } from "./CommonPropsInterface";
+import { classNames } from "../utils";
+import { InputCommonProps } from "../Common/CommonPropsInterface";
 
 let uuid = 0;
 
@@ -59,27 +59,8 @@ const CustomControl = React.forwardRef(
         );
     });
 
-function factory(type: string) {
-    return function (props: CustomControlProps, ref: React.Ref<any>) {
-        return (
-            <CustomControl
-                type={type}
-                ref={ref}
-                {...props} />
-        );
-    }
-}
-
-
-export const Checkbox = React.forwardRef(factory("checkbox"));
-export const Radio = React.forwardRef(factory("radio"));
-export const Switch = React.forwardRef(factory("switch"));
-
-Checkbox.displayName = "Checkbox";
-Radio.displayName = "Radio";
-Switch.displayName = "Switch";
-
-
 CustomControl.propTypes = {
     inline: PropTypes.bool
 };
+
+export default CustomControl;

@@ -5,8 +5,8 @@ import {
     classNames,
     reflow
 } from "../utils";
-import CSSTransition from "../CSSTransition";
-import { CommonProps } from "../CommonPropsInterface";
+import CSSTransition from "../Common/CSSTransition";
+import { CommonProps } from "../Common/CommonPropsInterface";
 
 export interface CollapseProps extends CommonProps<HTMLDivElement> {
     isOpen?: boolean;

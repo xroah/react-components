@@ -1,6 +1,6 @@
 import * as React from "react";
 import { CommonProps } from "./CommonPropsInterface";
-import { getScrollParent } from "./utils";
+import { getScrollParent } from "../utils";
 
 export type position = "top" | "right" | "bottom" | "left";
 

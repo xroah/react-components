@@ -1,9 +1,9 @@
 import * as React from "react";
 import PropTypes from "prop-types";
 import { classNames } from "../utils";
-import { InputGroupContext } from "../contexts";
+import { InputGroupContext } from "../Common/contexts";
 import InputGroup from "./InputGroup";
-import { InputCommonProps } from "../CommonPropsInterface";
+import { InputCommonProps } from "../Common/CommonPropsInterface";
 import Text from "./Text";
 
 export interface InputProps extends InputCommonProps<HTMLInputElement & HTMLTextAreaElement> {

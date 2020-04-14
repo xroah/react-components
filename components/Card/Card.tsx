@@ -6,7 +6,7 @@ import {
     variantArray
 } from "../utils";
 import  { colorType, color } from "./CardTitle";
-import { CommonProps } from "../CommonPropsInterface";
+import { CommonProps } from "../Common/CommonPropsInterface";
 import { CardBody } from "./Others";
 
 export interface CardProps extends CommonProps<HTMLDivElement> {

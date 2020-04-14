@@ -1,9 +1,9 @@
 import * as React from "react";
 import PropTypes from "prop-types";
-import Overlay, { CommonProps } from "./Overlay";
-import { handleArrowStyle } from "./Tooltip";
-import { PopupContext } from "./contexts";
-import { classNames } from "./utils";
+import Overlay, { CommonProps } from "../Common/Overlay";
+import { handleArrowStyle } from "../Tooltip";
+import { PopupContext } from "../Common/contexts";
+import { classNames } from "../utils";
 
 export interface PopoverProps extends CommonProps {
     header?: string | React.ReactNode;

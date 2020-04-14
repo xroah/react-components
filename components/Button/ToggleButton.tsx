@@ -5,8 +5,8 @@ import {
     commonPropTypes,
     handleProps
 } from "./Button";
-import { InputCommonProps } from "../CommonPropsInterface";
-import { ToggleButtonGroupContext } from "../contexts";
+import { InputCommonProps } from "../Common/CommonPropsInterface";
+import { ToggleButtonGroupContext } from "../Common/contexts";
 import { classNames, chainFunction } from "../utils";
 
 export interface ToggleButtonProps extends InputCommonProps<HTMLInputElement>, CommonProps {

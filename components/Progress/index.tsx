@@ -4,8 +4,8 @@ import {
     classNames,
     variantType,
     variantArray
-} from "./utils";
-import { CommonProps } from "./CommonPropsInterface";
+} from "../utils";
+import { CommonProps } from "../Common/CommonPropsInterface";
 
 export interface ProgressProps extends CommonProps<HTMLElement> {
     variant?: variantType;

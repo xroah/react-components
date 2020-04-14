@@ -4,7 +4,7 @@ import {
     handleFuncProp,
     throttle,
     reflow
-} from "./utils";
+} from "../utils";
 import Fade from "./Fade";
 import { PopupContext } from "./contexts";
 import Align from "./Align";

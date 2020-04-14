@@ -6,7 +6,7 @@ import {
     reflow,
     classNames
 } from "../utils";
-import { CommonProps } from "../CommonPropsInterface";
+import { CommonProps } from "../Common/CommonPropsInterface";
 
 export interface CarouselProps extends CommonProps<HTMLDivElement> {
     animation?: "slide" | "fade";

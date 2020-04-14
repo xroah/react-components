@@ -1,6 +1,6 @@
 import * as React from "react";
 import { classNames } from "../utils";
-import { ButtonCommonProps } from "../CommonPropsInterface";
+import { ButtonCommonProps } from "../Common/CommonPropsInterface";
 
 export default function NavbarToggle(props: ButtonCommonProps<HTMLButtonElement>) {
     const {

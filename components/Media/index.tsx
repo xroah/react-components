@@ -1,7 +1,7 @@
 import * as React from "react";
 import PropTypes from "prop-types";
-import { classNames } from "./utils";
-import { CommonPropsWithoutTitle } from "./CommonPropsInterface";
+import { classNames } from "../utils";
+import { CommonPropsWithoutTitle } from "../Common/CommonPropsInterface";
 
 export interface MediaProps extends CommonPropsWithoutTitle<HTMLDivElement> {
     img?: string | React.ReactNode;

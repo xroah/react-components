@@ -1,5 +1,5 @@
 import * as React from "react";
-import { handleFuncProp, classNames } from "./utils";
+import { handleFuncProp, classNames } from "../utils";
 import { findDOMNode } from "react-dom";
 import { CSSTransitionProps } from "./CSSTransition";
 

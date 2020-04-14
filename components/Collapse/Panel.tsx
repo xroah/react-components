@@ -5,8 +5,8 @@ import {
     handleFuncProp,
     classNames
 } from "../utils";
-import { AccordionContext } from "../contexts";
-import { CommonProps } from "../CommonPropsInterface";
+import { AccordionContext } from "../Common/contexts";
+import { CommonProps } from "../Common/CommonPropsInterface";
 
 export interface PanelProps extends CommonProps<HTMLDivElement> {
     header: React.ReactNode;

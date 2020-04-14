@@ -1,5 +1,5 @@
 import * as React from "react";
-import { CommonProps } from "../CommonPropsInterface";
+import { CommonProps } from "../Common/CommonPropsInterface";
 
 function Breadcrumb(props: CommonProps<HTMLElement>) {
     const { className, children, ...otherProps } = props;

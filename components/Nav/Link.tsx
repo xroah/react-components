@@ -1,7 +1,7 @@
 import * as React from "react";
 import PropTypes from "prop-types";
 import { classNames } from "../utils";
-import { AnchorCommonProps } from "../CommonPropsInterface";
+import { AnchorCommonProps } from "../Common/CommonPropsInterface";
 
 export interface NavLinkProps extends AnchorCommonProps<HTMLAnchorElement> {
     active?: boolean;

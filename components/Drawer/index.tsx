@@ -1,15 +1,15 @@
 import * as React from "react";
 import PropTypes from "prop-types";
-import Portal from "../Portal";
-import CSSTransition from "../CSSTransition";
-import { CommonProps } from "../CommonPropsInterface";
+import Portal from "../Common/Portal";
+import CSSTransition from "../Common/CSSTransition";
+import { CommonProps } from "../Common/CommonPropsInterface";
 import {
     classNames,
     handleFuncProp,
     getScrollBarWidth,
     getScrollParent
 } from "../utils";
-import Fade from "../Fade";
+import Fade from "../Common/Fade";
 import "./style/index.scss"
 
 type placement = "left" | "top" | "right" | "bottom";

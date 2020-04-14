@@ -1,8 +1,8 @@
 import * as React from "react";
 import PropTypes from "prop-types";
 import { classNames } from "../utils";
-import { CommonProps } from "../CommonPropsInterface";
-import { DropdownContext } from "../contexts";
+import { CommonProps } from "../Common/CommonPropsInterface";
+import { DropdownContext } from "../Common/contexts";
 
 export interface MenuProps extends CommonProps<HTMLDivElement> {
     header?: string | React.ReactNode;

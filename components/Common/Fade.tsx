@@ -1,6 +1,6 @@
 import * as React from "react";
 import CSSTransition, { CSSTransitionProps } from "./CSSTransition";
-import { classNames } from "./utils";
+import { classNames } from "../utils";
 
 export default function Fade(props: CSSTransitionProps) {
     let {

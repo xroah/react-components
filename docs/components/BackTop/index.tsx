@@ -1,5 +1,5 @@
 import * as React from "react";
-import Fade from "../../../components/Fade";
+import Fade from "../../../components/Common/Fade";
 import { scrollTo } from "../../scrollIntoView";
 
 interface State {
