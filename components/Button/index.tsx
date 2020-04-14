@@ -17,7 +17,7 @@ interface ButtonInterface {
     ToggleGroup: typeof ToggleGroup;
 }
 
-type ButtonType = ButtonInterface & ForwardRefExoticComponent<ButtonProps & RefAttributes<HTMLButtonElement>>;
+type ButtonType = ButtonInterface & ForwardRefExoticComponent<ButtonProps & RefAttributes<HTMLButtonElement | HTMLAnchorElement>>;
 
 const _Button = Button as ButtonType;
 

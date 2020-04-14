@@ -14,7 +14,7 @@ export interface CommonProps {
     disabled?: boolean;
 }
 
-export interface ButtonProps extends ButtonCommonProps<HTMLButtonElement>, CommonProps {
+export interface ButtonProps extends ButtonCommonProps<HTMLButtonElement | HTMLAnchorElement>, CommonProps {
     active?: boolean;
     href?: string;
     block?: boolean;
@@ -52,7 +52,7 @@ const Button = React.forwardRef(
             type,
             ...otherProps
         }: ButtonProps,
-        ref: React.Ref<HTMLButtonElement>
+        ref: React.Ref<HTMLButtonElement | HTMLAnchorElement>
     ) => {
         const props = handleProps(otherProps);
         let tag = "button";
