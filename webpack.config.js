@@ -78,9 +78,10 @@ module.exports = env => {
             contentBase: "./docs-dist",
             hot: true,
             port: 8008,
-            open: true,
+            open: "http://localhost:8008",
             inline: true,
-            historyApiFallback: true
+            historyApiFallback: true,
+            host: "0.0.0.0"
         };
         config.mode = env;
         config.devtool = "eval-source-map";
