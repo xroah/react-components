@@ -6,7 +6,7 @@
     "scripts": {
         "test": "jest",
         "coverage": "jest --coverage",
-        "build:es": "tsc -d --declarationDir ./types --outDir ./es",
+        "build:es": "tsc --outDir ./es",
         "build:lib": "cross-env BABEL_ENV=lib babel components --out-dir lib --extensions .ts,.tsx",
         "build:dev": "rollup -c",
         "build:prod": "cross-env NODE_ENV=production rollup -c",
