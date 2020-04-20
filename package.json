@@ -94,6 +94,11 @@
         "prop-types": "^15.7.2",
         "warning": "^4.0.3"
     },
+    "files": [
+        "dist",
+        "lib",
+        "es"
+    ],
     "jest": {
         "setupFilesAfterEnv": [
             "<rootDir>/tests/setupTests.ts"
