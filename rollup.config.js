@@ -1,4 +1,4 @@
-import babel from "rollup-plugin-babel";
+import babel from "@rollup/plugin-babel";
 import tsPlugin from "@rollup/plugin-typescript";
 import resolve from "@rollup/plugin-node-resolve";
 import cjs from "@rollup/plugin-commonjs";
@@ -19,16 +19,16 @@ const config = {
         cjs(),
         tsPlugin(),
         babel({
-            exclude: "/node_modules/",
-            extensions: ['.js', '.jsx', '.ts', '.tsx'],
-            runtimeHelpers: true
+            exclude: /node_modules/,
+            extensions: [".ts", ".tsx", ".js", ".jsx"],
+            babelHelpers: "runtime"
         })
     ],
     external: ["react", "react-dom"]
 };
 
 export default () => {
-    const FILE_PREFIX = './dist/reap-ui';
+    const FILE_PREFIX = "./dist/reap-ui";
     let file;
     let sourcemap = false;
     let output = config.output;

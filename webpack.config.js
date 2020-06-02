@@ -78,7 +78,8 @@ module.exports = env => {
             contentBase: "./docs-dist",
             hot: true,
             port: 8008,
-            open: "http://localhost:8008",
+            open: true,
+            openPage: "http://localhost:8008",
             inline: true,
             historyApiFallback: true,
             host: "0.0.0.0"
