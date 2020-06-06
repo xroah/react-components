@@ -99,12 +99,12 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
     }
 
     //in case findDOMNode returns null
-    static getDerivedStateFromProps(nextProps: CSSTransitionProps, prevState: State) {
-        if (nextProps.in && prevState.status === UNMOUNTED) {
+    static getDerivedStateFromProps(nextProps: CSSTransitionProps, nextState: State) {
+        if (nextProps.in && nextState.status === UNMOUNTED) {
             return { status: EXITED };
         }
 
-        return prevState;
+        return nextState;
     }
 
     clearTimer() {

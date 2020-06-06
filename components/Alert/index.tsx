@@ -22,6 +22,8 @@ export interface AlertProps extends CommonProps<HTMLDivElement> {
     onClosed?: Function;
 }
 
+const PREFIX = "alert";
+
 export default function Alert(props: AlertProps) {
     const {
         className,
@@ -38,9 +40,9 @@ export default function Alert(props: AlertProps) {
     let button: React.ReactNode = null;
     const classes = classNames(
         className,
-        "alert",
-        variant && `alert-${variant}`,
-        dismissible && "alert-dismissible"
+        PREFIX,
+        variant && `${PREFIX}-${variant}`,
+        dismissible && `${PREFIX}-dismissible`
     );
     const handleClick = () => {
         handleFuncProp(onClose)();
@@ -60,7 +62,6 @@ export default function Alert(props: AlertProps) {
                 variant="link"
                 type="button"
                 className="close"
-                aria-label="Close"
                 onClick={handleClick}>
                 <span aria-hidden="true">&times;</span>
             </Button>
@@ -71,7 +72,7 @@ export default function Alert(props: AlertProps) {
         <div className={classes} {...otherProps}>
             {
                 heading !== undefined && (
-                    <h4 className="alert-heading">{heading}</h4>
+                    <h4 className={`${PREFIX}-heading`}>{heading}</h4>
                 )
             }
             {children}
@@ -113,5 +114,5 @@ Alert.defaultProps = {
 Alert.Link = createComponentByClass({
     tag: "a",
     displayName: "AlertLink",
-    className: "alert-link"
+    className: `${PREFIX}-alert`
 });

@@ -30,17 +30,18 @@ export function handleProps(props: any) {
         outline,
         ...otherProps
     } = props;
+    const PREFIX = "btn";
 
     return {
         ...otherProps,
         className: classNames(
             className,
-            "btn",
+            PREFIX,
             otherProps.disabled && "disabled",
             active && "active",
-            size && `btn-${size}`,
-            block && `btn-block`,
-            outline ? `btn-outline-${variant}` : `btn-${variant}`
+            size && `${PREFIX}-${size}`,
+            block && `${PREFIX}-block`,
+            outline ? `${PREFIX}-outline-${variant}` : `${PREFIX}-${variant}`
         )
     };
 }
@@ -64,6 +65,7 @@ const Button = React.forwardRef(
 
         if (otherProps.href) {
             tag = "a";
+            
             delete buttonProps.disabled;
             delete buttonProps.type;
         } 
