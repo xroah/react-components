@@ -1,16 +1,17 @@
 {
     "name": "reap-ui",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "Bootstrap components built with react",
     "main": "lib/index.js",
     "scripts": {
         "test": "jest",
         "coverage": "jest --coverage",
-        "build:es": "tsc -d --outDir ./es",
-        "build:lib": "cross-env BABEL_ENV=lib babel components --out-dir lib --extensions .ts,.tsx",
-        "build:dev": "rollup -c",
-        "build:prod": "cross-env NODE_ENV=production rollup -c",
+        "lib": "tsc -m Commonjs -d --outDir ./lib",
+        "es": "tsc -m ES6 -d --outDir ./es",
+        "dev": "rollup -c",
+        "prod": "cross-env NODE_ENV=production rollup -c",
         "build:doc": "webpack",
+        "build": "node ./rmdir && npm run lib && npm run es && npm run dev && npm run prod",
         "start": "webpack-dev-server --env development"
     },
     "repository": {
@@ -32,7 +33,6 @@
     },
     "homepage": "https://github.com/xroah/reap-ui#readme",
     "devDependencies": {
-        "@babel/cli": "^7.10.1",
         "@babel/core": "^7.10.2",
         "@babel/plugin-proposal-class-properties": "^7.10.1",
         "@babel/plugin-transform-runtime": "^7.10.1",
