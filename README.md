@@ -1,2 +1,5 @@
-# react-bs
-react版Bootstrap4组件
+# reap-ui
+Bootstrap components built with React.
+
+# Docs
+See [Documentation](https://reap-ui.github.io).
