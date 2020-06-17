@@ -1,5 +1,9 @@
 import * as React from "react";
-import {classNames, variantType, variantArray} from "../utils";
+import {
+    classNames,
+    variantType,
+    variantArray
+} from "../utils";
 import PropTypes from "prop-types";
 import { AnchorCommonProps } from "../Common/CommonPropsInterface";
 
@@ -17,11 +21,12 @@ export default function Badge(props: BadgeProps) {
         children,
         ...otherProps
     } = props;
+    const PREFIX = "badge";
     const classes = classNames(
         className,
-        "badge",
-        variant && `badge-${variant}`,
-        pill && "badge-pill"
+        PREFIX,
+        variant && `${PREFIX}-${variant}`,
+        pill && `${PREFIX}-pill`
     );
     let tag = "span";
 
