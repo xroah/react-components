@@ -193,10 +193,10 @@ export default class Modal extends React.Component<ModalProps, ModalState> {
         }
 
         this.resetBody();
-        handleFuncProp(this.props.onHidden)();
         this.setState({
             display: ""
         });
+        handleFuncProp(this.props.onHidden)();
     }
 
     getHeader() {
