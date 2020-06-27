@@ -9,7 +9,7 @@ export function getTransitionDuration(el: HTMLElement) {
 //in case that transitionend event does not fire
 export default (el: HTMLElement, handler: Function) => {
     let called = false;
-    let timer: NodeJS.Timeout;
+    let timer: any;
     const DELAY = 10;
     const duration = getTransitionDuration(el) * 1000;
     const cancel = () => {
@@ -18,13 +18,17 @@ export default (el: HTMLElement, handler: Function) => {
         el.removeEventListener("transitionend", _handler);
         clearTimeout(timer);
     };
-    const _handler = () => {
-        cancel();
+    const _handler = (evt: TransitionEvent) => {
 
-        if (called) return;
+        if (
+            called ||
+            // if children set transition, the event will be triggered
+            (evt && evt.target !== el)
+        ) return;
 
         called = true;
 
+        cancel();
         handler();
     };
 
