@@ -6,6 +6,7 @@ import {
     variantArray
 } from "../utils";
 import { ButtonCommonProps } from "../Common/CommonPropsInterface";
+import omitProps from "../utils/omitProps";
 
 export interface CommonProps {
     variant?: variantType | "link";
@@ -57,12 +58,11 @@ const Button = React.forwardRef(
         }: ButtonProps,
         ref: React.Ref<HTMLButtonElement | HTMLAnchorElement>
     ) => {
-        const props = handleProps(otherProps);
         let tag = "button";
         let buttonProps = {
             ref,
             type,
-            ...props
+            ...handleProps(otherProps)
         };
 
         if (otherProps.href) {
@@ -70,8 +70,10 @@ const Button = React.forwardRef(
             
             buttonProps.target = target;
 
-            delete buttonProps.disabled;
-            delete buttonProps.type;
+            omitProps(
+                buttonProps,
+                ["disabled", "type"]
+            );
         }
 
         return React.createElement(
@@ -82,12 +84,14 @@ const Button = React.forwardRef(
     }
 );
 
+export const groupType = PropTypes.oneOf(["checkbox", "radio"]);
+
 export const commonPropTypes = {
-    variant: PropTypes.oneOf([...variantArray, "link"] as any),
+    variant: PropTypes.oneOf([...variantArray, "link"]) as any,
     outline: PropTypes.bool,
     size: PropTypes.string,
     disabled: PropTypes.bool
-} as any;
+};
 
 Button.propTypes = {
     ...commonPropTypes,

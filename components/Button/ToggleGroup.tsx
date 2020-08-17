@@ -3,7 +3,7 @@ import ButtonGroup from "./ButtonGroup";
 import { CommonProps } from "../Common/CommonPropsInterface";
 import { ToggleButtonGroupContext } from "../Common/contexts";
 import { classNames } from "../utils";
-import PropTypes from "prop-types";
+import { groupType } from "./Button";
 
 export interface ToggleGroupProps extends CommonProps<HTMLDivElement> {
     type?: "checkbox" | "radio";
@@ -32,5 +32,5 @@ export default function ToggleGroup(props: ToggleGroupProps) {
 }
 
 ToggleGroup.propTypes = {
-    type: PropTypes.oneOf(["checkbox", "radio"])
+    type: groupType
 }

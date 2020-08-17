@@ -11,6 +11,7 @@ import Align from "./Align";
 import NoTransition from "./NoTransition";
 import Portal from "./Portal";
 import { CommonPropsWithoutTitle } from "./CommonPropsInterface";
+import omitProps from "../utils/omitProps";
 
 export type position = "top" | "right" | "bottom" | "left";
 
@@ -273,12 +274,17 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
             (!visible && unmountOnExit && exited)
         ) return null;
 
-        delete otherProps.onClickOutside;
-        delete otherProps.defaultVisible;
-        delete otherProps.onShow;
-        delete otherProps.onShown;
-        delete otherProps.onHide;
-        delete otherProps.onHidden;
+        omitProps(
+            otherProps,
+            [
+                "onClickOutside",
+                "defaultVisible",
+                "onShow",
+                "onShown",
+                "onHide",
+                "onHidden"
+            ]
+        );
 
         const mouseEvent = {
             onMouseEnter: this.handleMouseEvent,

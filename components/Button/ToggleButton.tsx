@@ -1,9 +1,9 @@
 import * as React from "react";
-import PropTypes from "prop-types";
 import {
     CommonProps,
     commonPropTypes,
-    handleProps
+    handleProps,
+    groupType
 } from "./Button";
 import { InputCommonProps } from "../Common/CommonPropsInterface";
 import { ToggleButtonGroupContext } from "../Common/contexts";
@@ -70,7 +70,7 @@ const ToggleButton = React.forwardRef(
 
 ToggleButton.propTypes = {
     ...commonPropTypes,
-    type: PropTypes.oneOf(["checkbox", "radio"])
+    type: groupType as any
 };
 ToggleButton.defaultProps = {
     variant: "primary"

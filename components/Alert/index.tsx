@@ -51,6 +51,7 @@ export default function Alert(props: AlertProps) {
         handleFuncProp(onClosed)();
     };
     const handleExit = () => {
+        //toggle visible, invoke onClose callback
         if (!dismissible) {
             handleClick();
         }

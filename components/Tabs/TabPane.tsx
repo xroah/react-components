@@ -5,6 +5,7 @@ import Fade from "../Common/Fade";
 import { TabContext } from "../Common/contexts";
 import NoTransition from "../Common/NoTransition";
 import { CommonProps } from "../Common/CommonPropsInterface";
+import omitProps from "../utils/omitProps";
 
 export interface TabPaneProps extends CommonProps<HTMLDivElement> {
     tab?: string | React.ReactNode;
@@ -23,9 +24,11 @@ export default function TabPane(props: TabPaneProps) {
     const handleExited = () => {
         handleFuncProp(onHidden)();
     };
-
-    delete otherProps.tab;
-    delete otherProps.disabled;
+    
+    omitProps(
+        otherProps,
+        ["tab", "disabled"]
+    );
 
     return (
         <TabContext.Consumer>

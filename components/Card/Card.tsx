@@ -5,7 +5,7 @@ import {
     variantType,
     variantArray
 } from "../utils";
-import  { colorType, color } from "./CardTitle";
+import { colorType, color } from "./CardTitle";
 import { CommonProps } from "../Common/CommonPropsInterface";
 import { CardBody } from "./Others";
 
@@ -95,15 +95,17 @@ export default function Card(props: CardProps) {
                 )
             }
             {topImg}
-            {isImgOverlay && !!img ? (
-                <div className="card-img-overlay">
-                    {children}
-                </div>
-            ) : body ? (
-                <CardBody>
-                    {children}
-                </CardBody>
-            ) : children}
+            {
+                isImgOverlay && !!img ? (
+                    <div className="card-img-overlay">
+                        {children}
+                    </div>
+                ) : body ? (
+                    <CardBody>
+                        {children}
+                    </CardBody>
+                ) : children
+            }
             {bottomImg}
             {
                 footer != undefined && (

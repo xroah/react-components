@@ -6,6 +6,7 @@ import { handleFuncProp } from "../utils";
 import { TabContext } from "../Common/contexts";
 import { CommonProps } from "../Common/CommonPropsInterface";
 import TabTitle from "./TabTitle";
+import omitProps from "../utils/omitProps";
 
 export interface TabsProps extends CommonProps<HTMLDivElement> {
     defaultActiveKey?: string | number;
@@ -196,11 +197,10 @@ export default class Tabs extends React.Component<TabsProps, TabsState> {
             fade
         };
 
-        delete otherProps.defaultActiveKey;
-        delete otherProps.activeKey;
-        delete otherProps.pill;
-        delete otherProps.onTabChange;
-        delete otherProps.onTabClick;
+        omitProps(
+            otherProps,
+            ["defaultActiveKey", "activeKey", "pill", "onTabChange", "onTabClick"]
+        );
 
         return (
             <TabContext.Provider value={value}>

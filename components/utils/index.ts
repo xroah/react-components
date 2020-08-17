@@ -20,7 +20,7 @@ export const variantArray = [
 export { default as chainFunction } from "./chainFunction";
 export { default as classNames } from "./classNames";
 export { default as createComponentByClass } from "./createComponentByClass";
-export { default as delObjProps } from "./delObjProps";
+export { default as delObjProps } from "./omitProps";
 export { default as emulateTransitionEnd } from "./emulateTransitionEnd";
 export { default as getScrollParent } from "./getScrollParent";
 export { default as getScrollBarWidth } from "./getScrollBarWidth";

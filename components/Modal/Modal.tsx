@@ -16,6 +16,7 @@ import {
     ModalProps,
     ModalState
 } from "./interface";
+import omitProps from "../utils/omitProps";
 
 const stringOrNode = PropTypes.oneOfType([PropTypes.string, PropTypes.node]);
 let zIndex = 2000;
@@ -293,24 +294,29 @@ export default class Modal extends React.Component<ModalProps, ModalState> {
             }
         } = this;
 
-        delete otherProps.onOk;
-        delete otherProps.onCancel;
-        delete otherProps.onShow;
-        delete otherProps.onShown;
-        delete otherProps.onHidden;
-        delete otherProps.onHide;
-        delete otherProps.autoFocus;
-        delete otherProps.keyboard;
-        delete otherProps.header;
-        delete otherProps.title;
-        delete otherProps.closable;
-        delete otherProps.footer;
-        delete otherProps.showCancel;
-        delete otherProps.showOk;
-        delete otherProps.okText;
-        delete otherProps.okType;
-        delete otherProps.cancelType;
-        delete otherProps.cancelText;
+        omitProps(
+            otherProps,
+            [
+                "onOk",
+                "onCancel",
+                "onShow",
+                "onShown",
+                "onHide",
+                "onHidden",
+                "autoFocus",
+                "keyboard",
+                "header",
+                "title",
+                "closable",
+                "footer",
+                "showCancel",
+                "showOk",
+                "okText",
+                "okType",
+                "cancelText",
+                "cancelType"
+            ]
+        );
 
         const classes = classNames(
             stateClass,

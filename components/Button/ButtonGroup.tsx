@@ -26,7 +26,8 @@ export default function ButtonGroup(props: ButtonGroupProps) {
                     vertical ? `${PREFIX}-vertical` : PREFIX,
                     size && `${PREFIX}-${size}`,
                 )
-            } {...otherProps}>
+            }
+            {...otherProps}>
             {children}
         </div>
     );
@@ -34,6 +35,7 @@ export default function ButtonGroup(props: ButtonGroupProps) {
 
 ButtonGroup.propTypes = {
     vertical: PropTypes.bool,
+    size: PropTypes.oneOf(["sm", "lg"])
 };
 
 ButtonGroup.defaultProps = {

@@ -21,7 +21,8 @@ export default function CarouselItem(props: ItemProps) {
                 className,
                 "carousel-item"
             )
-        } {...otherProps}>
+        }
+            {...otherProps}>
             {children}
             {
                 caption != undefined && (

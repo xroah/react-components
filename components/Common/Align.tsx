@@ -1,6 +1,7 @@
 import * as React from "react";
 import { CommonProps } from "./CommonPropsInterface";
 import { getScrollParent } from "../utils";
+import omitProps from "../utils/omitProps";
 
 export type position = "top" | "right" | "bottom" | "left";
 
@@ -248,8 +249,6 @@ export default class Popup extends React.Component<AlignProps> {
         return { left, top, placement };
     }
 
-
-
     //if the element top/right/bottom/left is out of the corresponding edge
     adjustElement() {
         const { target } = this.props as any;
@@ -305,11 +304,10 @@ export default class Popup extends React.Component<AlignProps> {
             ...otherProps
         } = this.props;
 
-        delete otherProps.verticalCenter;
-        delete otherProps.offset;
-        delete otherProps.target;
-        delete otherProps.placement;
-        delete otherProps.alignment;
+        omitProps(
+            otherProps,
+            ["verticalCenter", "offset", "target", "placement", "alignment"]
+        );
 
         if (!children) return null;
 

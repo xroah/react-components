@@ -2,6 +2,7 @@ import * as React from "react";
 import { handleFuncProp, classNames } from "../utils";
 import { findDOMNode } from "react-dom";
 import { CSSTransitionProps } from "./CSSTransition";
+import omitProps from "../utils/omitProps";
 
 //compatible with CSSTransition(some components animation is configurable)
 export interface NoTransitionProps extends CSSTransitionProps {
@@ -65,10 +66,10 @@ export default class NoTransition extends React.Component<NoTransitionProps> {
             return children(undefined as any);
         }
 
-        delete otherProps.onEnter;
-        delete otherProps.onEntered;
-        delete otherProps.onExit;
-        delete otherProps.onExited;
+        omitProps(
+            otherProps,
+            ["onEnter", "onEntered", "onExit", "onExited"]
+        );
 
         const child = React.Children.only(children) as React.ReactElement;
 

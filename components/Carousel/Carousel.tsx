@@ -7,6 +7,7 @@ import {
     classNames
 } from "../utils";
 import { CommonProps } from "../Common/CommonPropsInterface";
+import omitProps from "../utils/omitProps";
 
 export interface CarouselProps extends CommonProps<HTMLDivElement> {
     animation?: "slide" | "fade";
@@ -277,11 +278,13 @@ export default class Carousel extends React.Component<CarouselProps, CarouselSta
                 {
                     React.Children.map(
                         children,
-                        (c, i) => <li
-                            key={i}
-                            data-index={i}
-                            onClick={this.handleClickIndicator}
-                            className={classNames(curIndex === i && "active")} />
+                        (c, i) => (
+                            <li
+                                key={i}
+                                data-index={i}
+                                onClick={this.handleClickIndicator}
+                                className={classNames(curIndex === i && "active")} />
+                        )
                     )
                 }
             </ol>
@@ -300,11 +303,10 @@ export default class Carousel extends React.Component<CarouselProps, CarouselSta
             ...otherProps
         } = this.props;
 
-        delete otherProps.activeIndex;
-        delete otherProps.onSlide;
-        delete otherProps.onSlid;
-        delete otherProps.defaultActiveIndex;
-        delete otherProps.interval;
+        omitProps(
+            otherProps,
+            ["activeIndex", "onSlide", "onSlid", "defaultActiveIndex", "interval"]
+        );
 
         if (pauseOnHover) {
             otherProps.onMouseOver = this.stop;

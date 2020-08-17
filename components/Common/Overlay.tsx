@@ -4,6 +4,7 @@ import Popup, { PopupCommonProps, PopupProps } from "./Popup";
 import PropTypes from "prop-types";
 import { findDOMNode } from "react-dom";
 import { ModalContext } from "./contexts";
+import omitProps from "../utils/omitProps";
 
 export type action = "hover" | "click" | "contextmenu" | "focus";
 
@@ -218,24 +219,29 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
         } = this.props;
         let eventHandlers: any = {};
 
-        delete otherProps.popup;
-        delete otherProps.popupProps;
-        delete otherProps.placement;
-        delete otherProps.alignment;
-        delete otherProps.offset;
-        delete otherProps.onClickOutside;
-        delete otherProps.fade;
-        delete otherProps.unmountOnExit;
-        delete otherProps.verticalCenter;
-        delete otherProps.trigger;
-        delete otherProps.visible;
-        delete otherProps.defaultVisible;
-        delete otherProps.delay;
-        delete otherProps.onShow;
-        delete otherProps.onShown;
-        delete otherProps.onHide;
-        delete otherProps.onHidden;
-        delete otherProps.popupMountNode;
+        omitProps(
+            otherProps,
+            [
+                "popup",
+                "popupProps",
+                "placement",
+                "alignment",
+                "offset",
+                "onClickOutside",
+                "fade",
+                "unmountOnExit",
+                "verticalCenter",
+                "trigger",
+                "visible",
+                "defaultVisible",
+                "delay",
+                "onShow",
+                "onShown",
+                "onHide",
+                "onHidden",
+                "popupMountNode"
+            ]
+        );
 
         //if controlled do not add these event handlers
         if (!this.isControlled()) {

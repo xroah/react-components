@@ -1,6 +1,7 @@
 import * as React from "react";
 import { findDOMNode } from "react-dom";
 import { handleFuncProp } from '../utils';
+import omitProps from "../utils/omitProps";
 
 const ENTER = "enter";
 const ENTERING = "entering";
@@ -79,7 +80,7 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
             state: { status },
             next
         } = this;
-        
+
         if (_in !== prevProps.in) {
             status = _in ? ENTER : EXIT;
 
@@ -242,15 +243,20 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
             ...otherProps
         } = this.props;
 
-        delete otherProps.in;
-        delete otherProps.timeout;
-        delete otherProps.appear;
-        delete otherProps.onEnter;
-        delete otherProps.onEntering;
-        delete otherProps.onEntered;
-        delete otherProps.onExit;
-        delete otherProps.onExiting;
-        delete otherProps.onExited;
+        omitProps(
+            otherProps,
+            [
+                "in",
+                "timeout",
+                "appear",
+                "onEnter",
+                "onEntering",
+                "onEntered",
+                "onExit",
+                "onExiting",
+                "onExited"
+            ]
+        );
 
         if (typeof children === "function") {
             return children(status);

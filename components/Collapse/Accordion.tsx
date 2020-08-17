@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { classNames, handleFuncProp, chainFunction } from "../utils";
 import { AccordionContext } from "../Common/contexts"
 import { CommonProps } from "../Common/CommonPropsInterface";
+import omitProps from "../utils/omitProps";
 
 type keyType = number | string | number[] | string[];
 
@@ -177,11 +178,11 @@ export default class Accordion extends React.Component<AccordionProps, Accordion
                 activeKey
             }
         } = this;
-        delete otherProps.multiple;
-        delete otherProps.activeKey;
-        delete otherProps.defaultActiveKey;
-        delete otherProps.onHeaderClick;
-        delete otherProps.onPanelChange;
+
+        omitProps(
+            otherProps,
+            ["multiple", "activeKey", "defaultActiveKey", "onHeaderClick", "onPanelChange"]
+        );
 
         return (
             <AccordionContext.Provider value={activeKey}>
