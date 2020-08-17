@@ -4,10 +4,6 @@ html {
     height: 100%;
 }
 
-body {
-    overflow-y: scroll;
-}
-
 a {
     outline: none;
 }
@@ -294,7 +290,7 @@ $navHeight: calc(100vh - #{$headerHeight});
     background: url(../assets/back_top.svg) no-repeat center center / 100% 100%;
     opacity: .75;
     transition: all .15s;
-    z-index: 9999;
+    z-index: 999;
 
     &:hover {
         background-color: rgba(0, 0, 0, .3);

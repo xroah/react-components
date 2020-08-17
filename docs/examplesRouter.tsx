@@ -8,9 +8,9 @@ import {
 import routes from "./routes";
 import Loading from "./components/Loading";
 
-function _Loading(props: { unmountCallback?: Function }) {
+function _Loading(props: { mountCallback?: Function }) {
     React.useEffect(() => () => {
-        props.unmountCallback && props.unmountCallback();
+        props.mountCallback && props.mountCallback();
     });
 
     return <Loading />;
@@ -23,10 +23,10 @@ let currentComponent: any;
 export default () => {
     const location = useLocation();
     const path = location.pathname;
-    const [needUpdate, update] = React.useState();
+    const [, update] = React.useState();
     const fallback = (
         <_Loading
-            unmountCallback={
+        mountCallback={
                 () => {
                     loaded[path] = currentComponent;
                     //force render the component once loaded(replace the previous component)

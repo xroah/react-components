@@ -51,8 +51,8 @@ function PropsTable(props: Props) {
                     <tbody>
                         {
                             data.map(
-                                item => (
-                                    <tr key={item.name}>
+                                (item, i) => (
+                                    <tr key={typeof item.name === "string" ? item.name : item.name.toString()}>
                                         <td>{item.name}</td>
                                         <td>{item.type}</td>
                                         <td className="default-value">{item.default || "-"}</td>

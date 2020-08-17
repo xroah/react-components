@@ -1,7 +1,5 @@
 import * as React from "react";
-import {
-    HashRouter as Router,
-} from "react-router-dom";
+import { HashRouter } from "react-router-dom";
 import { Row, Container } from "reap-ui";
 import AppRouter from "./router";
 import BackTop from "./components/BackTop";
@@ -10,7 +8,7 @@ import Language from "./components/Language";
 
 export default () => (
     <Language>
-        <Router>
+        <HashRouter>
             <Header />
             <Container variant="fluid">
                 <BackTop />
@@ -18,6 +16,6 @@ export default () => (
                     <AppRouter />
                 </Row>
             </Container>
-        </Router>
+        </HashRouter>
     </Language>
 );

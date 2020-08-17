@@ -1,6 +1,5 @@
 import * as React from "react";
 import {
-    NavLink,
     withRouter,
     RouteComponentProps
 } from "react-router-dom";
