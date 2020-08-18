@@ -12,9 +12,7 @@ export default () => (
             <Header />
             <Container variant="fluid">
                 <BackTop />
-                <Row>
-                    <AppRouter />
-                </Row>
+                <AppRouter />
             </Container>
         </HashRouter>
     </Language>
