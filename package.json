@@ -1,6 +1,6 @@
 {
     "name": "reap-ui",
-    "version": "1.0.1",
+    "version": "1.1.0",
     "description": "Bootstrap components built with react",
     "main": "lib/index.js",
     "scripts": {
