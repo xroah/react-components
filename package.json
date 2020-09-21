@@ -12,7 +12,8 @@
         "prod": "cross-env NODE_ENV=production rollup -c",
         "build:doc": "webpack",
         "build": "node ./rmdir && npm run lib && npm run es && npm run dev && npm run prod",
-        "start": "webpack-dev-server --env development"
+        "start": "webpack-dev-server --env development",
+        "lint": "eslint components/**/*.ts*"
     },
     "repository": {
         "type": "git",

@@ -24,5 +24,12 @@ module.exports = {
         "@typescript-eslint"
     ],
     "rules": {
+        "semi": ["error", "never"],
+        "brace-style": ["error", "stroustrup"],
+        "quotes": ["error", "double"],
+        "no-unused-vars": ["off"],
+        "no-console": ["error"],
+        "curly": ["error"],
+        "eqeqeq": ["error"]
     }
-};
+}

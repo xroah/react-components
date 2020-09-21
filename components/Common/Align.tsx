@@ -29,6 +29,7 @@ export default class Popup extends React.Component<AlignProps> {
                     break
                 case 1:
                     ret = Array(2).fill(offset[0])
+                    break
                 default:
                     ret = offset.slice(0, 2)
             }

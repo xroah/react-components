@@ -1,10 +1,10 @@
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const HTMLWebpackPlugin = require("html-webpack-plugin");
-const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
-const TerserPlugin = require("terser-webpack-plugin");
-const path = require("path");
-const { CleanWebpackPlugin } = require("clean-webpack-plugin");
-const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin")
+const HTMLWebpackPlugin = require("html-webpack-plugin")
+const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin")
+const TerserPlugin = require("terser-webpack-plugin")
+const path = require("path")
+const { CleanWebpackPlugin } = require("clean-webpack-plugin")
+const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer")
 
 const optimization = {
     minimizer: [
@@ -18,7 +18,7 @@ const optimization = {
         }),
         new OptimizeCSSAssetsPlugin()
     ]
-};
+}
 
 const config = {
     mode: "production",
@@ -60,10 +60,10 @@ const config = {
             favicon: "./docs/assets/logo.png"
         })
     ]
-};
+}
 
 module.exports = env => {
-    const isDev = env === "development";
+    const isDev = env === "development"
     const cssLoader = {
         test: /\.s?css$/,
         use: [
@@ -71,7 +71,7 @@ module.exports = env => {
             "css-loader",
             "sass-loader"
         ]
-    };
+    }
 
     if (isDev) {
         config.devServer = {
@@ -83,9 +83,9 @@ module.exports = env => {
             inline: true,
             historyApiFallback: true,
             host: "0.0.0.0"
-        };
-        config.mode = env;
-        config.devtool = "eval-source-map";
+        }
+        config.mode = env
+        config.devtool = "eval-source-map"
     } else {
         config.plugins.push(
             new MiniCssExtractPlugin({
@@ -93,7 +93,7 @@ module.exports = env => {
             }),
             new CleanWebpackPlugin(),
             new BundleAnalyzerPlugin()
-        );
+        )
         config.optimization = {
             ...optimization,
             splitChunks: {
@@ -111,9 +111,9 @@ module.exports = env => {
                     }
                 }
             }
-        };
+        }
     }
-    config.module.rules.push(cssLoader);
+    config.module.rules.push(cssLoader)
 
-    return config;
-};
+    return config
+}
