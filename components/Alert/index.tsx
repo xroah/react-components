@@ -1,28 +1,28 @@
-import * as React from "react";
-import PropTypes from "prop-types";
-import Fade from "../Common/Fade";
-import NoTransition from "../Common/NoTransition";
-import Button from "../Button";
+import * as React from "react"
+import PropTypes from "prop-types"
+import Fade from "../Common/Fade"
+import NoTransition from "../Common/NoTransition"
+import Button from "../Button"
 import {
     classNames,
     variantType,
     variantArray,
     handleFuncProp,
     createComponentByClass
-} from "../utils";
-import { CommonProps } from "../Common/CommonPropsInterface";
+} from "../utils"
+import { CommonProps } from "../Common/CommonPropsInterface"
 
 export interface AlertProps extends CommonProps<HTMLDivElement> {
-    variant?: variantType;
-    fade?: boolean;
-    dismissible?: boolean;
-    visible?: boolean;
-    heading?: string | React.ReactNode;
-    onClose?: Function;
-    onClosed?: Function;
+    variant?: variantType
+    fade?: boolean
+    dismissible?: boolean
+    visible?: boolean
+    heading?: string | React.ReactNode
+    onClose?: Function
+    onClosed?: Function
 }
 
-const PREFIX = "alert";
+const PREFIX = "alert"
 
 export default function Alert(props: AlertProps) {
     const {
@@ -36,26 +36,26 @@ export default function Alert(props: AlertProps) {
         onClose,
         onClosed,
         ...otherProps
-    } = props;
-    let button: React.ReactNode = null;
+    } = props
+    let button: React.ReactNode = null
     const classes = classNames(
         className,
         PREFIX,
         variant && `${PREFIX}-${variant}`,
         dismissible && `${PREFIX}-dismissible`
-    );
+    )
     const handleClick = () => {
-        handleFuncProp(onClose)();
-    };
+        handleFuncProp(onClose)()
+    }
     const handleExited = () => {
-        handleFuncProp(onClosed)();
-    };
+        handleFuncProp(onClosed)()
+    }
     const handleExit = () => {
         //toggle visible, invoke onClose callback
         if (!dismissible) {
-            handleClick();
+            handleClick()
         }
-    };
+    }
 
     if (dismissible) {
         button = (
@@ -64,9 +64,9 @@ export default function Alert(props: AlertProps) {
                 type="button"
                 className="close"
                 onClick={handleClick}>
-                <span aria-hidden="true">&times;</span>
+                <span aria-hidden="true">&times</span>
             </Button>
-        );
+        )
     }
 
     const child = (
@@ -79,19 +79,19 @@ export default function Alert(props: AlertProps) {
             {children}
             {button}
         </div>
-    );
+    )
     const transitionProps = {
         in: !!visible,
         unmountOnExit: true,
         onExit: handleExit,
         onExited: handleExited
-    };
+    }
 
     return (
         fade ?
             <Fade {...transitionProps}>{child}</Fade> :
             <NoTransition {...transitionProps}>{child}</NoTransition>
-    );
+    )
 }
 
 Alert.propTypes = {
@@ -105,15 +105,15 @@ Alert.propTypes = {
     visible: PropTypes.bool,
     onClose: PropTypes.func,
     onClosed: PropTypes.func
-};
+}
 Alert.defaultProps = {
     dismissible: false,
     fade: true,
     visible: true
-};
+}
 
 Alert.Link = createComponentByClass({
     tag: "a",
     displayName: "AlertLink",
     className: `${PREFIX}-alert`
-});
+})

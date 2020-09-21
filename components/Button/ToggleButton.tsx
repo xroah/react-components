@@ -1,13 +1,13 @@
-import * as React from "react";
+import * as React from "react"
 import {
     CommonProps,
     commonPropTypes,
     handleProps,
     groupType
-} from "./Button";
-import { InputCommonProps } from "../Common/CommonPropsInterface";
-import { ToggleButtonGroupContext } from "../Common/contexts";
-import { classNames, chainFunction } from "../utils";
+} from "./Button"
+import { InputCommonProps } from "../Common/CommonPropsInterface"
+import { ToggleButtonGroupContext } from "../Common/contexts"
+import { classNames, chainFunction } from "../utils"
 
 export interface ToggleButtonProps extends InputCommonProps<HTMLInputElement>, CommonProps {
     type?: "checkbox" | "radio"
@@ -30,14 +30,14 @@ const ToggleButton = React.forwardRef(
         const {
             className,
             ...props
-        } = handleProps(otherProps);
-        const [focused, updateFocus] = React.useState(false);
-        const handleBlur = () => updateFocus(false);
-        const handleFocus = () => updateFocus(true);
+        } = handleProps(otherProps)
+        const [focused, updateFocus] = React.useState(false)
+        const handleBlur = () => updateFocus(false)
+        const handleFocus = () => updateFocus(true)
 
         if (props.disabled) {
-            style.pointerEvents = "none";
-            style.cursor = "default";
+            style.pointerEvents = "none"
+            style.cursor = "default"
         }
 
         return (
@@ -64,16 +64,16 @@ const ToggleButton = React.forwardRef(
                     )
                 }
             </ToggleButtonGroupContext.Consumer>
-        );
+        )
     }
-);
+)
 
 ToggleButton.propTypes = {
     ...commonPropTypes,
     type: groupType as any
-};
+}
 ToggleButton.defaultProps = {
     variant: "primary"
-};
+}
 
-export default ToggleButton; 
+export default ToggleButton 

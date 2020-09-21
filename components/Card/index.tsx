@@ -1,5 +1,5 @@
-import Card from "./Card";
-import CardTitle from "./CardTitle";
+import Card from "./Card"
+import CardTitle from "./CardTitle"
 import {
     CardBody,
     CardColumns,
@@ -7,28 +7,28 @@ import {
     CardDeck,
     CardLink,
     CardText
-} from "./Others";
+} from "./Others"
 
 interface CardComponent {
-    Body: typeof CardBody;
-    Text: typeof CardText;
-    Link: typeof CardLink;
-    Group: typeof CardGroup;
-    Deck: typeof CardDeck;
-    Columns: typeof CardColumns;
-    Title: typeof CardTitle;
+    Body: typeof CardBody
+    Text: typeof CardText
+    Link: typeof CardLink
+    Group: typeof CardGroup
+    Deck: typeof CardDeck
+    Columns: typeof CardColumns
+    Title: typeof CardTitle
 }
 
-type CardType = typeof Card & CardComponent;
+type CardType = typeof Card & CardComponent
 
-const _Card = Card as CardType;
+const _Card = Card as CardType
 
-_Card.Body = CardBody;
-_Card.Columns = CardColumns;
-_Card.Group = CardGroup;
-_Card.Deck = CardDeck;
-_Card.Link = CardLink;
-_Card.Text = CardText;
-_Card.Title = CardTitle;
+_Card.Body = CardBody
+_Card.Columns = CardColumns
+_Card.Group = CardGroup
+_Card.Deck = CardDeck
+_Card.Link = CardLink
+_Card.Text = CardText
+_Card.Title = CardTitle
 
-export default _Card;
+export default _Card

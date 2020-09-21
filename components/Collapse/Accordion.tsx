@@ -1,22 +1,22 @@
-import * as React from "react";
-import PropTypes from "prop-types";
-import { classNames, handleFuncProp, chainFunction } from "../utils";
+import * as React from "react"
+import PropTypes from "prop-types"
+import { classNames, handleFuncProp, chainFunction } from "../utils"
 import { AccordionContext } from "../Common/contexts"
-import { CommonProps } from "../Common/CommonPropsInterface";
-import omitProps from "../utils/omitProps";
+import { CommonProps } from "../Common/CommonPropsInterface"
+import omitProps from "../utils/omitProps"
 
-type keyType = number | string | number[] | string[];
+type keyType = number | string | number[] | string[]
 
 export interface AccordionProps extends CommonProps<HTMLDivElement> {
-    multiple?: boolean;
-    activeKey?: keyType;
-    defaultActiveKey?: keyType;
-    onHeaderClick?: (key?: string, evt?: React.MouseEvent) => void; 
-    onPanelChange?: (keys?: string[]) => void;
+    multiple?: boolean
+    activeKey?: keyType
+    defaultActiveKey?: keyType
+    onHeaderClick?: (key?: string, evt?: React.MouseEvent) => void 
+    onPanelChange?: (keys?: string[]) => void
 }
 
 interface AccordionStates {
-    activeKey: Set<string>;
+    activeKey: Set<string>
 }
 
 const _keyType = PropTypes.oneOfType([
@@ -24,7 +24,7 @@ const _keyType = PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.arrayOf(PropTypes.number),
     PropTypes.arrayOf(PropTypes.string)
-]);
+])
 
 export default class Accordion extends React.Component<AccordionProps, AccordionStates> {
     
@@ -32,21 +32,21 @@ export default class Accordion extends React.Component<AccordionProps, Accordion
         multiple: PropTypes.bool,
         activeKey: _keyType,
         defaultActiveKey: _keyType
-    };
+    }
 
     constructor(props: AccordionProps) {
-        super(props);
+        super(props)
 
         const {
             activeKey,
             defaultActiveKey,
             multiple
-        } = props;
-        let keys = activeKey || defaultActiveKey;
+        } = props
+        let keys = activeKey || defaultActiveKey
 
         this.state = {
             activeKey: Accordion.handleKeyProp(keys, multiple)
-        };
+        }
     }
 
     static getDerivedStateFromProps(props: AccordionProps, state: AccordionStates) {
@@ -55,64 +55,64 @@ export default class Accordion extends React.Component<AccordionProps, Accordion
                 activeIndex: Accordion.handleProps(props)
             }
         }
-        return state;
+        return state
     }
 
     componentDidUpdate(prevProps: AccordionProps, prevState: AccordionStates) {
-        const prevKey = prevState.activeKey;
-        const curKey = this.state.activeKey;
+        const prevKey = prevState.activeKey
+        const curKey = this.state.activeKey
         
         if (this.isKeyChanged(prevKey, curKey)) {
-            handleFuncProp(this.props.onPanelChange)(Array.from(curKey));
+            handleFuncProp(this.props.onPanelChange)(Array.from(curKey))
         }
     }
 
     isKeyChanged(prevKeys: Set<any>, curKey: Set<any>) {
-        const prevKeyArray = Array.from(prevKeys);
-        const curKeyArray = Array.from(curKey);
+        const prevKeyArray = Array.from(prevKeys)
+        const curKeyArray = Array.from(curKey)
         
         if (prevKeyArray.length !== curKeyArray.length){
-            return true;
+            return true
         }
 
         for (let key of prevKeyArray) {
             if (!curKey.has(key)) {
-                return true;
+                return true
             }
         }
 
-        return false;
+        return false
     }
 
     static handleKeyProp(keys?: keyType, multiple?: boolean) {
-        let set = new Set<string>();
+        let set = new Set<string>()
 
         if (Array.isArray(keys)) {
-            let activeKey: string[] = [];
+            let activeKey: string[] = []
             keys.forEach((item: any) => {
                 if (item != undefined) {
-                    activeKey.push(item.toString());
+                    activeKey.push(item.toString())
                 }
-            });
+            })
             if (multiple) {
                 set = new Set<string>(activeKey)
             } else {
-                set.add(activeKey[0].toString());
+                set.add(activeKey[0].toString())
             }
         } else if (keys != undefined) {
-            set.add(keys.toString());
+            set.add(keys.toString())
         }
 
-        return set;
+        return set
     }
 
     static handleProps(props: AccordionProps) {
         const {
             activeKey,
             multiple
-        } = props;
+        } = props
 
-        return this.handleKeyProp(activeKey, multiple);
+        return this.handleKeyProp(activeKey, multiple)
     }
 
     handleClick = (key: string) => {
@@ -123,35 +123,35 @@ export default class Accordion extends React.Component<AccordionProps, Accordion
             state: {
                 activeKey
             }
-        } = this;
+        } = this
         //reference type, copy for handling onPanelChange
-        let _activeKey = new Set([...activeKey]);
+        let _activeKey = new Set([...activeKey])
 
         if (_activeKey.has(key)) {
-            _activeKey.delete(key);
+            _activeKey.delete(key)
         } else {
             if (multiple) {
-                _activeKey.add(key);
+                _activeKey.add(key)
             } else {
-                _activeKey = new Set<string>([key]);
+                _activeKey = new Set<string>([key])
             }
         }
 
         this.setState({
             activeKey: _activeKey
-        });
-    };
+        })
+    }
 
     renderChildren(children: React.ReactNode) {
-        const { onHeaderClick } = this.props;
+        const { onHeaderClick } = this.props
 
         //React.Children.toArray will add ".$" prefix to the key value
         return React.Children.map(
             children,
             (c, i) => {
                 if (React.isValidElement(c)) {
-                    const controlled = "activeKey" in this.props;
-                    const onClick = chainFunction(controlled ? null : this.handleClick, onHeaderClick);
+                    const controlled = "activeKey" in this.props
+                    const onClick = chainFunction(controlled ? null : this.handleClick, onHeaderClick)
 
                     return React.cloneElement<any>(
                         c,
@@ -159,12 +159,12 @@ export default class Accordion extends React.Component<AccordionProps, Accordion
                             panelKey: c.key == undefined ? i.toString() : c.key,
                             onHeaderClick: onClick
                         }
-                    );
+                    )
                 }
 
-                return c;
+                return c
             }
-        );
+        )
     }
 
     render() {
@@ -177,12 +177,12 @@ export default class Accordion extends React.Component<AccordionProps, Accordion
             state: {
                 activeKey
             }
-        } = this;
+        } = this
 
         omitProps(
             otherProps,
             ["multiple", "activeKey", "defaultActiveKey", "onHeaderClick", "onPanelChange"]
-        );
+        )
 
         return (
             <AccordionContext.Provider value={activeKey}>
@@ -192,7 +192,7 @@ export default class Accordion extends React.Component<AccordionProps, Accordion
                     {this.renderChildren(children)}
                 </div>
             </AccordionContext.Provider>
-        );
+        )
     }
 
 }

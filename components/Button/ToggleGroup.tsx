@@ -1,12 +1,12 @@
-import * as React from "react";
-import ButtonGroup from "./ButtonGroup";
-import { CommonProps } from "../Common/CommonPropsInterface";
-import { ToggleButtonGroupContext } from "../Common/contexts";
-import { classNames } from "../utils";
-import { groupType } from "./Button";
+import * as React from "react"
+import ButtonGroup from "./ButtonGroup"
+import { CommonProps } from "../Common/CommonPropsInterface"
+import { ToggleButtonGroupContext } from "../Common/contexts"
+import { classNames } from "../utils"
+import { groupType } from "./Button"
 
 export interface ToggleGroupProps extends CommonProps<HTMLDivElement> {
-    type?: "checkbox" | "radio";
+    type?: "checkbox" | "radio"
 }
 
 export default function ToggleGroup(props: ToggleGroupProps) {
@@ -15,7 +15,7 @@ export default function ToggleGroup(props: ToggleGroupProps) {
         children,
         className,
         ...otherProps
-    } = props;
+    } = props
 
     return (
         <ToggleButtonGroupContext.Provider value={{ type: type as string }}>
@@ -28,7 +28,7 @@ export default function ToggleGroup(props: ToggleGroupProps) {
                 {children}
             </ButtonGroup>
         </ToggleButtonGroupContext.Provider>
-    );
+    )
 }
 
 ToggleGroup.propTypes = {

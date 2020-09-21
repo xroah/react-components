@@ -1,8 +1,8 @@
-import * as React from "react";
-import { CommonProps } from "../Common/CommonPropsInterface";
+import * as React from "react"
+import { CommonProps } from "../Common/CommonPropsInterface"
 
 function Breadcrumb(props: CommonProps<HTMLElement>) {
-    const { className, children, ...otherProps } = props;
+    const { className, children, ...otherProps } = props
 
     return (
         <nav className={className} {...otherProps}>
@@ -10,7 +10,7 @@ function Breadcrumb(props: CommonProps<HTMLElement>) {
                 {children}
             </ol>
         </nav>
-    );
+    )
 }
 
-export default Breadcrumb;
+export default Breadcrumb

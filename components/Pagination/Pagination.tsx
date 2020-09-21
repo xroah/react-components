@@ -1,11 +1,11 @@
-import * as React from "react";
-import PropTypes from "prop-types";
-import { classNames } from "../utils";
-import { CommonProps } from "../Common/CommonPropsInterface";
+import * as React from "react"
+import PropTypes from "prop-types"
+import { classNames } from "../utils"
+import { CommonProps } from "../Common/CommonPropsInterface"
 
 export interface PaginationProps extends CommonProps<HTMLUListElement> {
-    size?: "lg" | "sm";
-    alignment?:"left" | "center" | "right";
+    size?: "lg" | "sm"
+    alignment?:"left" | "center" | "right"
 }
 
 export default function Pagination(props: PaginationProps) {
@@ -14,12 +14,12 @@ export default function Pagination(props: PaginationProps) {
         size,
         alignment,
         ...otherProps
-    } = props;
-    const PREFIX = "pagination";
+    } = props
+    const PREFIX = "pagination"
     const alignmentMap: any = {
         center: "justify-content-center",
         right: "justify-content-end"
-    };
+    }
 
     return (
         <ul className={
@@ -29,10 +29,10 @@ export default function Pagination(props: PaginationProps) {
                 alignment && alignmentMap[alignment]
             )
         } {...otherProps} />
-    );
+    )
 }
 
 Pagination.propTypes = {
     size: PropTypes.oneOf(["lg", "sm"]),
     alignment: PropTypes.oneOf(["left", "center", "right"])
-};
+}

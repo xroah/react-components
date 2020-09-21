@@ -1,10 +1,10 @@
-import * as React from "react";
-import PropTypes from "prop-types";
-import { classNames } from "../utils";
-import { CommonProps } from "../Common/CommonPropsInterface";
+import * as React from "react"
+import PropTypes from "prop-types"
+import { classNames } from "../utils"
+import { CommonProps } from "../Common/CommonPropsInterface"
 
 export interface JumbotronProps extends CommonProps<HTMLDivElement> {
-    fluid?: boolean;
+    fluid?: boolean
 }
 
 export default function Jumbotron(props: JumbotronProps) {
@@ -12,8 +12,8 @@ export default function Jumbotron(props: JumbotronProps) {
         className,
         fluid,
         ...otherProps
-    } = props;
-    const PREFIX = "jumbotron";
+    } = props
+    const PREFIX = "jumbotron"
 
     return <div className={
         classNames(
@@ -21,12 +21,12 @@ export default function Jumbotron(props: JumbotronProps) {
             PREFIX,
             fluid && `${PREFIX}-fluid`
         )
-    } {...otherProps}/>;
+    } {...otherProps}/>
 }
 
 Jumbotron.propTypes = {
     fluid: PropTypes.bool
-};
+}
 Jumbotron.defaultProps = {
     fluid: false
-};
+}

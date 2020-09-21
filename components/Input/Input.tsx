@@ -1,25 +1,25 @@
-import * as React from "react";
-import PropTypes from "prop-types";
-import { classNames } from "../utils";
-import { InputGroupContext } from "../Common/contexts";
-import InputGroup from "./InputGroup";
-import { InputCommonProps } from "../Common/CommonPropsInterface";
-import Text from "./Text";
+import * as React from "react"
+import PropTypes from "prop-types"
+import { classNames } from "../utils"
+import { InputGroupContext } from "../Common/contexts"
+import InputGroup from "./InputGroup"
+import { InputCommonProps } from "../Common/CommonPropsInterface"
+import Text from "./Text"
 
 export interface InputProps extends InputCommonProps<HTMLInputElement & HTMLTextAreaElement> {
-    prepend?: React.ReactNode;
-    append?: React.ReactNode;
-    sizing?: "lg" | "sm";
+    prepend?: React.ReactNode
+    append?: React.ReactNode
+    sizing?: "lg" | "sm"
     variant?: "input" | "textarea"
-    plaintext?: boolean;
+    plaintext?: boolean
 }
 
 function handleAddon(addon: any) {
     if (!React.isValidElement(addon)) {
-        return <Text>{addon}</Text>;
+        return <Text>{addon}</Text>
     }
 
-    return addon;
+    return addon
 }
 
 const Input = React.forwardRef(
@@ -37,13 +37,13 @@ const Input = React.forwardRef(
         }: InputProps,
         ref: React.Ref<HTMLInputElement & HTMLTextAreaElement>
     ) => {
-        const PREFIX = "form-control";
-        const noAppendix = prepend == undefined && append == undefined;
+        const PREFIX = "form-control"
+        const noAppendix = prepend == undefined && append == undefined
         const classes = classNames(
             className,
             sizing && noAppendix && `${PREFIX}-${sizing}`,
             otherProps.readOnly && plaintext ? `${PREFIX}-plaintext` : PREFIX
-        );
+        )
         const input = variant === "input" ? (
             <input
                 ref={ref}
@@ -55,7 +55,7 @@ const Input = React.forwardRef(
                     ref={ref}
                     className={classes}
                     {...otherProps} />
-            );
+            )
         const inputWithAddons = (
             <>
                 {
@@ -74,10 +74,10 @@ const Input = React.forwardRef(
                     )
                 }
             </>
-        );
+        )
 
         if (noAppendix) {
-            return input;
+            return input
         }
 
         return (
@@ -91,16 +91,16 @@ const Input = React.forwardRef(
                     )
                 }
             </InputGroupContext.Consumer>
-        );
+        )
 
     }
-);
+)
 
 Input.defaultProps = {
     type: "text",
     variant: "input",
     plaintext: false
-};
+}
 Input.propTypes = {
     prepend: PropTypes.oneOfType([
         PropTypes.string,
@@ -113,7 +113,7 @@ Input.propTypes = {
     sizing: PropTypes.oneOf(["sm", "lg"]),
     plaintext: PropTypes.bool,
     variant: PropTypes.oneOf(["input", "textarea"])
-};
-Input.displayName = "Input";
+}
+Input.displayName = "Input"
 
-export default Input;
+export default Input

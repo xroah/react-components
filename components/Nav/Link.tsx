@@ -1,12 +1,12 @@
-import * as React from "react";
-import PropTypes from "prop-types";
-import { classNames } from "../utils";
-import { AnchorCommonProps } from "../Common/CommonPropsInterface";
+import * as React from "react"
+import PropTypes from "prop-types"
+import { classNames } from "../utils"
+import { AnchorCommonProps } from "../Common/CommonPropsInterface"
 
 export interface NavLinkProps extends AnchorCommonProps<HTMLAnchorElement> {
-    active?: boolean;
-    disabled?: boolean;
-    href?: string;
+    active?: boolean
+    disabled?: boolean
+    href?: string
 }
 
 export default function NavLink(props: NavLinkProps) {
@@ -16,10 +16,10 @@ export default function NavLink(props: NavLinkProps) {
         className,
         onClick,
         ...otherProps
-    } = props;
+    } = props
     const handleClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
-        onClick && !disabled && onClick(e);
-    };
+        onClick && !disabled && onClick(e)
+    }
 
     return (
         <a className={
@@ -32,16 +32,16 @@ export default function NavLink(props: NavLinkProps) {
         } 
         onClick={handleClick}
         {...otherProps} />
-    );
+    )
 }
 
 NavLink.propTypes = {
     active: PropTypes.bool,
     disabled: PropTypes.bool,
     href: PropTypes.string
-};
+}
 NavLink.defaultProps = {
     active: false,
     disabled: false,
     href: "#"
-};
+}

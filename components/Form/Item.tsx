@@ -1,28 +1,28 @@
-import * as React from "react";
-import PropTypes from "prop-types";
-import Col, { ColProps } from "../Layout/Col";
-import { classNames } from "../utils";
-import { FormContext } from "../Common/contexts";
-import { CommonProps } from "../Common/CommonPropsInterface";
+import * as React from "react"
+import PropTypes from "prop-types"
+import Col, { ColProps } from "../Layout/Col"
+import { classNames } from "../utils"
+import { FormContext } from "../Common/contexts"
+import { CommonProps } from "../Common/CommonPropsInterface"
 
 export interface FormItemProps extends CommonProps<HTMLElement> {
-    horizontal?: boolean;
-    wrapperCol?: ColProps;
-    label?: boolean;
-    labelText?: string | React.ReactNode;
-    labelCol?: ColProps;
-    labelAlign?: "left" | "right";
-    htmlFor?: string;
-    help?: string;
-    control?: boolean;
+    horizontal?: boolean
+    wrapperCol?: ColProps
+    label?: boolean
+    labelText?: string | React.ReactNode
+    labelCol?: ColProps
+    labelAlign?: "left" | "right"
+    htmlFor?: string
+    help?: string
+    control?: boolean
 }
 
 interface LabelProps extends React.HTMLAttributes<HTMLLabelElement> {
-    horizontal?: boolean;
-    label?: boolean;
-    labelCol?: ColProps;
-    labelAlign?: "left" | "right";
-    htmlFor?: string;
+    horizontal?: boolean
+    label?: boolean
+    labelCol?: ColProps
+    labelAlign?: "left" | "right"
+    htmlFor?: string
 }
 
 function Label(props: LabelProps) {
@@ -32,7 +32,7 @@ function Label(props: LabelProps) {
         label,
         labelAlign,
         horizontal
-    } = props;
+    } = props
 
     return (
         <FormContext.Consumer>
@@ -42,11 +42,11 @@ function Label(props: LabelProps) {
                     labelAlign: contextLabelAlign,
                     horizontal: contextHorizontal
                 }: any) => {
-                    const _labelCol = labelCol || contextLabelCol || { span: false };
-                    const _labelAlign = labelAlign || contextLabelAlign;
-                    const h = horizontal || contextHorizontal || false;
-                    const colCls = _labelAlign === "right" ? "text-right" : undefined;
-                    const labelCls = h ? "col-form-label" : undefined;
+                    const _labelCol = labelCol || contextLabelCol || { span: false }
+                    const _labelAlign = labelAlign || contextLabelAlign
+                    const h = horizontal || contextHorizontal || false
+                    const colCls = _labelAlign === "right" ? "text-right" : undefined
+                    const labelCls = h ? "col-form-label" : undefined
 
                     return (
                         <Col
@@ -58,16 +58,16 @@ function Label(props: LabelProps) {
                                     children
                             }
                         </Col>
-                    );
+                    )
                 }
             }
         </FormContext.Consumer>
-    );
+    )
 }
 
 interface WrapperProps extends React.HTMLAttributes<HTMLElement> {
-    wrapperCol?: ColProps;
-    help?: string | React.ReactNode;
+    wrapperCol?: ColProps
+    help?: string | React.ReactNode
 }
 
 function Wrapper(props: WrapperProps) {
@@ -75,13 +75,13 @@ function Wrapper(props: WrapperProps) {
         children,
         wrapperCol,
         help
-    } = props;
+    } = props
 
     return (
         <FormContext.Consumer>
             {
                 ({ wrapperCol: contextWrapperCol }: any) => {
-                    const _wrapperCol = wrapperCol || contextWrapperCol || { span: false };
+                    const _wrapperCol = wrapperCol || contextWrapperCol || { span: false }
 
                     return (
                         <Col {..._wrapperCol}>
@@ -96,7 +96,7 @@ function Wrapper(props: WrapperProps) {
                 }
             }
         </FormContext.Consumer>
-    );
+    )
 }
 
 export default function FormItem(props: FormItemProps) {
@@ -113,28 +113,28 @@ export default function FormItem(props: FormItemProps) {
         control,
         labelAlign,
         ...otherProps
-    } = props;
-    let _for: string = htmlFor || "";
-    let _label: React.ReactElement | null = null;
-    let _children = children;
-    const context = React.useContext(FormContext);
-    const h = horizontal || context.horizontal || false;
+    } = props
+    let _for: string = htmlFor || ""
+    let _label: React.ReactElement | null = null
+    let _children = children
+    const context = React.useContext(FormContext)
+    const h = horizontal || context.horizontal || false
 
     if (React.isValidElement(children)) {
         let {
             id,
             className,
             ...otherChildrenProps
-        } = children.props as any;
-        const PREFIX = "form-control";
+        } = children.props as any
+        const PREFIX = "form-control"
 
         if (id) {
             if (!_for) {
-                _for = id;
+                _for = id
             }
         } else {
             if (_for) {
-                id = _for;
+                id = _for
             }
         }
 
@@ -148,7 +148,7 @@ export default function FormItem(props: FormItemProps) {
                 ),
                 ...otherChildrenProps
             }
-        );;
+        )
     }
 
     if (labelText) {
@@ -158,8 +158,8 @@ export default function FormItem(props: FormItemProps) {
             labelCol,
             labelAlign,
             label
-        };
-        _label = <Label {...props}>{labelText}</Label>;
+        }
+        _label = <Label {...props}>{labelText}</Label>
     }
 
     return (
@@ -195,8 +195,8 @@ FormItem.propTypes = {
         PropTypes.string,
         PropTypes.node
     ])
-};
+}
 FormItem.defaultProps = {
     control: false,
     label: true
-};
+}

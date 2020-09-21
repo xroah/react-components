@@ -1,7 +1,7 @@
 export default (prop?: Function) => {
     if (typeof prop !== "function") {
-        return () => { };
+        return () => { }
     }
 
-    return prop;
+    return prop
 }

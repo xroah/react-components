@@ -1,11 +1,11 @@
-import * as React from "react";
-import PropTypes from "prop-types";
-import { classNames } from "../utils";
-import { CommonProps } from "../Common/CommonPropsInterface";
+import * as React from "react"
+import PropTypes from "prop-types"
+import { classNames } from "../utils"
+import { CommonProps } from "../Common/CommonPropsInterface"
 
 export interface ItemProps extends CommonProps<HTMLElement> {
-    active?: boolean;
-    disabled?: boolean;
+    active?: boolean
+    disabled?: boolean
 }
 
 export default function PaginationItem(props: ItemProps) {
@@ -16,11 +16,11 @@ export default function PaginationItem(props: ItemProps) {
         disabled,
         onClick,
         ...otherProps
-    } = props;
+    } = props
     const handleClick = (evt: React.MouseEvent<HTMLElement, MouseEvent>) => {
-        onClick && !disabled && onClick(evt);
-        evt.preventDefault();
-    };
+        onClick && !disabled && onClick(evt)
+        evt.preventDefault()
+    }
 
     return (
         <li className={
@@ -37,14 +37,14 @@ export default function PaginationItem(props: ItemProps) {
             tabIndex={disabled ? -1 : undefined}
             onClick={handleClick}>{children}</a>
         </li>
-    );
+    )
 }
 
 PaginationItem.propTypes = {
     active: PropTypes.bool,
     disabled: PropTypes.bool
-};
+}
 PaginationItem.defaultProps = {
     active: false,
     disabled: false
-};
+}

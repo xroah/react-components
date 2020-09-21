@@ -1,14 +1,14 @@
-import * as React from "react";
-import PropTypes from "prop-types";
-import { variantType, classNames, variantArray } from "../utils";
-import { CommonProps } from "../Common/CommonPropsInterface";
+import * as React from "react"
+import PropTypes from "prop-types"
+import { variantType, classNames, variantArray } from "../utils"
+import { CommonProps } from "../Common/CommonPropsInterface"
 
-export type colorType = variantType | "white" | "muted" | "white-50" | "black-50";
+export type colorType = variantType | "white" | "muted" | "white-50" | "black-50"
 
 export interface CardTitleProps extends CommonProps<HTMLDivElement> {
-    subtitle?: string;
-    subTitleColor?: colorType;
-    color?: colorType;
+    subtitle?: string
+    subTitleColor?: colorType
+    color?: colorType
 }
 
 export default function CardTitle(props: CardTitleProps) {
@@ -19,7 +19,7 @@ export default function CardTitle(props: CardTitleProps) {
         subTitleColor,
         color,
         ...otherProps
-    } = props;
+    } = props
 
     return (
         <div className={classNames(
@@ -40,16 +40,16 @@ export default function CardTitle(props: CardTitleProps) {
                 )
             }
         </div>
-    );
+    )
 }
 
-export const color = [...variantArray, "white", "muted", "white-50", "black-50"];
+export const color = [...variantArray, "white", "muted", "white-50", "black-50"]
 
 CardTitle.propTypes = {
     color: PropTypes.oneOf(color),
     subtitle: PropTypes.string,
     subTitleColor: PropTypes.oneOf(color)
-};
+}
 CardTitle.defaultProps = {
     subTitleColor: "muted"
-};
+}

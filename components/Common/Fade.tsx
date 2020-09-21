@@ -1,6 +1,6 @@
-import * as React from "react";
-import CSSTransition, { CSSTransitionProps } from "./CSSTransition";
-import { classNames } from "../utils";
+import * as React from "react"
+import CSSTransition, { CSSTransitionProps } from "./CSSTransition"
+import { classNames } from "../utils"
 
 export default function Fade(props: CSSTransitionProps) {
     let {
@@ -16,7 +16,7 @@ export default function Fade(props: CSSTransitionProps) {
         onExiting,
         onExited,
         ...otherProps
-    } = props;
+    } = props
     const transitionProps = {
         timeout,
         in: _in,
@@ -28,22 +28,22 @@ export default function Fade(props: CSSTransitionProps) {
         onExit,
         onExiting,
         onExited
-    };
+    }
 
     return (
         <CSSTransition {...transitionProps}>
             {
                 state => {
-                    const child = React.Children.only(children) as React.ReactElement;
+                    const child = React.Children.only(children) as React.ReactElement
                     let classes = classNames(
                         child.props.className,
                         "fade"
-                    );
-                    let enterSet = new Set(["enter", "entering", "entered"]);
+                    )
+                    let enterSet = new Set(["enter", "entering", "entered"])
 
                     if (enterSet.has(state)) {
                         if (state !== "enter") {
-                            classes = classNames(classes, "show");
+                            classes = classNames(classes, "show")
                         }
                     }
 
@@ -53,13 +53,13 @@ export default function Fade(props: CSSTransitionProps) {
                             className: classes,
                             ...otherProps
                         }
-                    );
+                    )
                 }
             }
         </CSSTransition>
-    );
+    )
 }
 
 Fade.defaultProps = {
     timeout: 150
-};
+}

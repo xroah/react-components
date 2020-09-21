@@ -1,40 +1,40 @@
-import * as React from "react";
-import PropTypes from "prop-types";
-import Overlay, { CommonProps } from '../Common/Overlay';
-import { PopupContext } from "../Common/contexts";
-import { classNames } from "../utils";
+import * as React from "react"
+import PropTypes from "prop-types"
+import Overlay, { CommonProps } from '../Common/Overlay'
+import { PopupContext } from "../Common/contexts"
+import { classNames } from "../utils"
 
 export interface TooltipProps extends CommonProps {
-    title: string | React.ReactNode;
+    title: string | React.ReactNode
 }
 
 export function getTransform(placement: any) {
-    const y = { transform: "translateY(-50%)" };
-    const x = { transform: "translateX(-50%)" };
+    const y = { transform: "translateY(-50%)" }
+    const x = { transform: "translateX(-50%)" }
     const posMap: any = {
         top: x,
         bottom: x,
         left: y,
         right: y
-    };
+    }
 
-    return posMap[placement];
+    return posMap[placement]
 }
 
 export function handleArrowStyle(left: number, top: number, placement: any) {
-    const isVertical = placement === "left" || placement === "right";
-    const style: React.CSSProperties = {};
+    const isVertical = placement === "left" || placement === "right"
+    const style: React.CSSProperties = {}
 
     if (isVertical) {
-        style.top = `${top}px`;
+        style.top = `${top}px`
     } else {
-        style.left = `${left}px`;
+        style.left = `${left}px`
     }
 
     return {
         ...style,
         ...getTransform(placement)
-    };
+    }
 }
 
 export default function Tooltip(props: TooltipProps) {
@@ -44,9 +44,9 @@ export default function Tooltip(props: TooltipProps) {
         placement,
         style = {},
         ...otherProps
-    } = props;
-    style.position = "relative";
-    style.willChange = "transform";
+    } = props
+    style.position = "relative"
+    style.willChange = "transform"
 
     const popup = title ? (
         <PopupContext.Consumer>
@@ -68,7 +68,7 @@ export default function Tooltip(props: TooltipProps) {
                 )
             }
         </PopupContext.Consumer>
-    ) : null;
+    ) : null
 
     return (
         <Overlay
@@ -80,16 +80,16 @@ export default function Tooltip(props: TooltipProps) {
             {...otherProps}>
             {children}
         </Overlay>
-    );
+    )
 }
 
 Tooltip.defaultProps = {
     trigger: "hover",
     placement: "top"
-};
+}
 Tooltip.propTypes = {
     title: PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.node
     ]).isRequired
-};
+}

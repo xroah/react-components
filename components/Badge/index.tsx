@@ -1,15 +1,15 @@
-import * as React from "react";
+import * as React from "react"
 import {
     classNames,
     variantType,
     variantArray
-} from "../utils";
-import PropTypes from "prop-types";
-import { AnchorCommonProps } from "../Common/CommonPropsInterface";
+} from "../utils"
+import PropTypes from "prop-types"
+import { AnchorCommonProps } from "../Common/CommonPropsInterface"
 
 export interface BadgeProps extends AnchorCommonProps<HTMLSpanElement & HTMLAnchorElement> {
-    variant?: variantType;
-    pill?: boolean;
+    variant?: variantType
+    pill?: boolean
 }
 
 export default function Badge(props: BadgeProps) {
@@ -20,18 +20,18 @@ export default function Badge(props: BadgeProps) {
         href,
         children,
         ...otherProps
-    } = props;
-    const PREFIX = "badge";
+    } = props
+    const PREFIX = "badge"
     const classes = classNames(
         className,
         PREFIX,
         variant && `${PREFIX}-${variant}`,
         pill && `${PREFIX}-pill`
-    );
-    let tag = "span";
+    )
+    let tag = "span"
 
     if (href) {
-        tag = "a";
+        tag = "a"
     }
 
     return React.createElement(
@@ -42,14 +42,14 @@ export default function Badge(props: BadgeProps) {
             ...otherProps
         },
         children
-    );
+    )
 }
 
 Badge.propTypes = {
     variant: PropTypes.oneOf(variantArray),
     pill: PropTypes.bool,
     href: PropTypes.string
-};
+}
 Badge.defaultProps = {
     pill: false
-};
+}

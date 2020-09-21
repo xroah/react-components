@@ -1,6 +1,6 @@
-import * as React from "react";
-import { classNames } from "../utils";
-import { ButtonCommonProps } from "../Common/CommonPropsInterface";
+import * as React from "react"
+import { classNames } from "../utils"
+import { ButtonCommonProps } from "../Common/CommonPropsInterface"
 
 export default function NavbarToggle(props: ButtonCommonProps<HTMLButtonElement>) {
     const {
@@ -8,7 +8,7 @@ export default function NavbarToggle(props: ButtonCommonProps<HTMLButtonElement>
         type = "button",
         children,
         ...otherProps
-    } = props;
+    } = props
 
     return (
         <button
@@ -22,5 +22,5 @@ export default function NavbarToggle(props: ButtonCommonProps<HTMLButtonElement>
             <span className="navbar-toggler-icon" />
             {children}
         </button>
-    );
+    )
 }

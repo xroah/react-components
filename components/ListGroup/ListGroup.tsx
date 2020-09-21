@@ -1,14 +1,14 @@
-import * as React from "react";
-import PropTypes from "prop-types";
-import { classNames } from "../utils";
-import { CommonProps } from "../Common/CommonPropsInterface";
-import { ListGroupContext } from "../Common/contexts";
+import * as React from "react"
+import PropTypes from "prop-types"
+import { classNames } from "../utils"
+import { CommonProps } from "../Common/CommonPropsInterface"
+import { ListGroupContext } from "../Common/contexts"
 
 export interface ListGroupProps extends CommonProps<HTMLDivElement> {
-    flush?: boolean;
-    minWidth?: "sm" | "md" | "lg" | "xl";
-    horizontal?: boolean;
-    equalWidth?: boolean;
+    flush?: boolean
+    minWidth?: "sm" | "md" | "lg" | "xl"
+    horizontal?: boolean
+    equalWidth?: boolean
 }
 
 export default function ListGroup(props: ListGroupProps) {
@@ -19,9 +19,9 @@ export default function ListGroup(props: ListGroupProps) {
         className,
         equalWidth,
         ...otherProps
-    } = props;
-    const PREFIX = "list-group";
-    let H_PREFIX = `${PREFIX}-horizontal`;
+    } = props
+    const PREFIX = "list-group"
+    let H_PREFIX = `${PREFIX}-horizontal`
 
     return (
         <ListGroupContext.Provider value={!!equalWidth && !!horizontal}>
@@ -33,7 +33,7 @@ export default function ListGroup(props: ListGroupProps) {
                 )
             } {...otherProps} />
         </ListGroupContext.Provider>
-    );
+    )
 }
 
 ListGroup.propTypes = {
@@ -41,9 +41,9 @@ ListGroup.propTypes = {
     minWidth: PropTypes.oneOf(["sm", "md", "lg", "xl"]),
     horizontal: PropTypes.bool,
     equalWidth: PropTypes.bool
-};
+}
 ListGroup.defaultProps = {
     horizontal: false,
     flush: false,
     equalWidth: false
-};
+}

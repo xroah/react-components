@@ -1,1 +1,1 @@
-export default (el: HTMLElement) => el.offsetHeight;
+export default (el: HTMLElement) => el.offsetHeight

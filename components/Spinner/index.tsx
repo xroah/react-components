@@ -1,17 +1,17 @@
-import * as React from "react";
-import PropTypes from "prop-types";
+import * as React from "react"
+import PropTypes from "prop-types"
 import {
     classNames,
     variantArray,
     variantType
-} from "../utils";
-import { CommonProps } from "../Common/CommonPropsInterface";
+} from "../utils"
+import { CommonProps } from "../Common/CommonPropsInterface"
 
 export interface SpinnerProps extends CommonProps<HTMLDivElement> {
-    variant?: variantType;
-    animation: "border" | "grow";
-    size?: "sm" | number;
-    borderWidth?: number;
+    variant?: variantType
+    animation: "border" | "grow"
+    size?: "sm" | number
+    borderWidth?: number
 }
 
 export default function Spinner(props: SpinnerProps) {
@@ -24,15 +24,15 @@ export default function Spinner(props: SpinnerProps) {
         style = {},
         borderWidth,
         ...otherProps
-    } = props;
-    const _className = `spinner-${animation}`;
+    } = props
+    const _className = `spinner-${animation}`
 
     if (typeof size === "number") {
-        style.width = style.height = size;
+        style.width = style.height = size
     }
 
     if (animation === "border" && borderWidth != undefined) {
-        style.borderWidth = borderWidth;
+        style.borderWidth = borderWidth
     }
 
     return (
@@ -49,7 +49,7 @@ export default function Spinner(props: SpinnerProps) {
             {...otherProps}>
             {children}
         </span>
-    );
+    )
 }
 
 Spinner.propTypes = {
@@ -59,4 +59,4 @@ Spinner.propTypes = {
     ]),
     animation: PropTypes.oneOf(["border", "grow"]).isRequired,
     variant: PropTypes.oneOf(variantArray)
-};
+}

@@ -1,29 +1,29 @@
-import * as React from "react";
-import PropTypes from "prop-types";
-import TabPane from "./TabPane";
-import Nav from "../Nav";
-import { handleFuncProp } from "../utils";
-import { TabContext } from "../Common/contexts";
-import { CommonProps } from "../Common/CommonPropsInterface";
-import TabTitle from "./TabTitle";
-import omitProps from "../utils/omitProps";
+import * as React from "react"
+import PropTypes from "prop-types"
+import TabPane from "./TabPane"
+import Nav from "../Nav"
+import { handleFuncProp } from "../utils"
+import { TabContext } from "../Common/contexts"
+import { CommonProps } from "../Common/CommonPropsInterface"
+import TabTitle from "./TabTitle"
+import omitProps from "../utils/omitProps"
 
 export interface TabsProps extends CommonProps<HTMLDivElement> {
-    defaultActiveKey?: string | number;
-    activeKey?: string | number;
-    pill?: boolean;
-    fade?: boolean;
-    onTabChange?: (prevKey?: string, currentKey?: string) => void;
-    onTabClick?: (key?: string, evt?: React.MouseEvent) => void;
+    defaultActiveKey?: string | number
+    activeKey?: string | number
+    pill?: boolean
+    fade?: boolean
+    onTabChange?: (prevKey?: string, currentKey?: string) => void
+    onTabClick?: (key?: string, evt?: React.MouseEvent) => void
 }
 
 interface TabsState {
-    activeKey?: string | number;
-    previousKey?: string | number;
+    activeKey?: string | number
+    previousKey?: string | number
 }
 
 function isKeyEmpty(key: any) {
-    return key == undefined || !String(key).trim();
+    return key == undefined || !String(key).trim()
 }
 
 export default class Tabs extends React.Component<TabsProps, TabsState> {
@@ -42,21 +42,21 @@ export default class Tabs extends React.Component<TabsProps, TabsState> {
         tabProps: PropTypes.object,
         onTabChange: PropTypes.func,
         onTabClick: PropTypes.func
-    };
+    }
     static defaultProps = {
         fade: true,
         pill: false
-    };
+    }
 
     constructor(props: TabsProps) {
-        super(props);
+        super(props)
 
         const {
             defaultActiveKey,
             activeKey,
             children
-        } = props;
-        let _activeKey: any = activeKey || defaultActiveKey;
+        } = props
+        let _activeKey: any = activeKey || defaultActiveKey
 
         if (isKeyEmpty(_activeKey) && !("activeKey" in props)) {
             React.Children.forEach(children, (c, i) => {
@@ -65,14 +65,14 @@ export default class Tabs extends React.Component<TabsProps, TabsState> {
                     c.type === TabPane &&
                     isKeyEmpty(_activeKey)
                 ) {
-                    _activeKey = c.key || i.toString();
+                    _activeKey = c.key || i.toString()
                 }
-            });
+            })
         }
 
         this.state = {
             activeKey: _activeKey
-        };
+        }
     }
 
     static getDerivedStateFromProps(props: TabsProps, state: TabsState) {
@@ -80,42 +80,42 @@ export default class Tabs extends React.Component<TabsProps, TabsState> {
             return {
                 activeKey: props.activeKey,
                 previousKey: props.activeKey === state.activeKey ? "" : state.activeKey
-            };
+            }
         }
 
-        return state;
+        return state
     }
 
     componentDidUpdate(prevProps: TabsProps, prevState: TabsState) {
         const {
             state: { activeKey },
             props: { onTabChange }
-        } = this;
+        } = this
 
         if (prevState.activeKey !== activeKey) {
-            handleFuncProp(onTabChange)(prevState.activeKey, activeKey);
+            handleFuncProp(onTabChange)(prevState.activeKey, activeKey)
         }
     }
 
     handleTabHidden = () => {
         this.setState({
             previousKey: ""
-        });
-    };
+        })
+    }
 
     handleClickTab = (key?: string, evt?: React.MouseEvent) => {
         const {
             props: { onTabClick },
             state: { activeKey },
-        } = this;
+        } = this
 
-        handleFuncProp(onTabClick)(key, evt);
+        handleFuncProp(onTabClick)(key, evt)
 
         if (key !== activeKey) {
             this.setState({
                 activeKey: key,
                 previousKey: activeKey
-            });
+            })
         }
     }
 
@@ -123,9 +123,9 @@ export default class Tabs extends React.Component<TabsProps, TabsState> {
         const {
             children,
             pill
-        } = this.props;
-        const content: any[] = [];
-        const tabs: React.ReactElement[] = [];
+        } = this.props
+        const content: any[] = []
+        const tabs: React.ReactElement[] = []
         React.Children.forEach(children, (c, i) => {
             //no tab if child is not a TabPane
             if (React.isValidElement(c)) {
@@ -133,10 +133,10 @@ export default class Tabs extends React.Component<TabsProps, TabsState> {
                     tab,
                     children,
                     disabled
-                } = c.props as any;
+                } = c.props as any
 
                 if (c.type === TabPane) {
-                    const key = c.key == undefined ? i.toString() : c.key;
+                    const key = c.key == undefined ? i.toString() : c.key
 
                     if (children) {
                         content.push(
@@ -151,7 +151,7 @@ export default class Tabs extends React.Component<TabsProps, TabsState> {
                         )
                     }
 
-                    if (!tab) return;
+                    if (!tab) return
 
                     tab = (
                         <Nav.Item key={key}>
@@ -162,24 +162,24 @@ export default class Tabs extends React.Component<TabsProps, TabsState> {
                                 {tab}
                             </TabTitle>
                         </Nav.Item>
-                    );
+                    )
 
-                    return tabs.push(tab);
+                    return tabs.push(tab)
                 }
 
                 //just add the content if child is not a TabPane
-                content.push(c);
+                content.push(c)
             }
 
-            content.push(c);
-        });
+            content.push(c)
+        })
         const _tabs = tabs.length ? (
             <Nav variant={pill ? "pill" : "tab"}>
                 {tabs}
             </Nav>
-        ) : null;
+        ) : null
 
-        return [_tabs, content];
+        return [_tabs, content]
     }
 
     render() {
@@ -190,17 +190,17 @@ export default class Tabs extends React.Component<TabsProps, TabsState> {
                 ...otherProps
             },
             state
-        } = this;
-        const [tabs, content] = this.renderTabs();
+        } = this
+        const [tabs, content] = this.renderTabs()
         const value: any = {
             ...state,
             fade
-        };
+        }
 
         omitProps(
             otherProps,
             ["defaultActiveKey", "activeKey", "pill", "onTabChange", "onTabClick"]
-        );
+        )
 
         return (
             <TabContext.Provider value={value}>
@@ -211,7 +211,7 @@ export default class Tabs extends React.Component<TabsProps, TabsState> {
                     </div>
                 </div>
             </TabContext.Provider>
-        );
+        )
     }
 
 }

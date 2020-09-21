@@ -1,12 +1,12 @@
-import * as React from "react";
-import { handleFuncProp, classNames } from "../utils";
-import { findDOMNode } from "react-dom";
-import { CSSTransitionProps } from "./CSSTransition";
-import omitProps from "../utils/omitProps";
+import * as React from "react"
+import { handleFuncProp, classNames } from "../utils"
+import { findDOMNode } from "react-dom"
+import { CSSTransitionProps } from "./CSSTransition"
+import omitProps from "../utils/omitProps"
 
 //compatible with CSSTransition(some components animation is configurable)
 export interface NoTransitionProps extends CSSTransitionProps {
-    showClass?: string;
+    showClass?: string
 }
 
 export default class NoTransition extends React.Component<NoTransitionProps> {
@@ -16,13 +16,13 @@ export default class NoTransition extends React.Component<NoTransitionProps> {
             onEntered,
             appear,
             in: _in
-        } = this.props;
+        } = this.props
 
         if (_in) {
             if (appear) {
-                this.componentDidUpdate({ in: false } as any);
+                this.componentDidUpdate({ in: false } as any)
             } else {
-                handleFuncProp(onEntered);
+                handleFuncProp(onEntered)
             }
         }
     }
@@ -36,18 +36,18 @@ export default class NoTransition extends React.Component<NoTransitionProps> {
             onExit,
             onExiting,
             onExited
-        } = this.props;
-        const node = findDOMNode(this);
-        if (prevProps.in === _in) return;
+        } = this.props
+        const node = findDOMNode(this)
+        if (prevProps.in === _in) return
 
         if (_in) {
-            handleFuncProp(onEnter)(node);
-            handleFuncProp(onEntering)(node);
-            handleFuncProp(onEntered)(node);
+            handleFuncProp(onEnter)(node)
+            handleFuncProp(onEntering)(node)
+            handleFuncProp(onEntered)(node)
         } else {
-            handleFuncProp(onExit)(node);
-            handleFuncProp(onExiting)(node);
-            handleFuncProp(onExited)(node);
+            handleFuncProp(onExit)(node)
+            handleFuncProp(onExiting)(node)
+            handleFuncProp(onExited)(node)
         }
     }
 
@@ -58,24 +58,24 @@ export default class NoTransition extends React.Component<NoTransitionProps> {
             unmountOnExit,
             showClass,
             ...otherProps
-        } = this.props;
+        } = this.props
 
-        if (!_in && unmountOnExit) return null;
+        if (!_in && unmountOnExit) return null
 
         if (typeof children === "function") {
-            return children(undefined as any);
+            return children(undefined as any)
         }
 
         omitProps(
             otherProps,
             ["onEnter", "onEntered", "onExit", "onExited"]
-        );
+        )
 
-        const child = React.Children.only(children) as React.ReactElement;
+        const child = React.Children.only(children) as React.ReactElement
 
         return React.cloneElement(child, {
             className: classNames((child.props as any).className, showClass)
-        });
+        })
     }
 
 }

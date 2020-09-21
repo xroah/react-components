@@ -1,10 +1,10 @@
-import * as React from "react";
-import PropTypes from "prop-types";
-import {classNames} from "../utils";
-import { AnchorCommonProps } from "../Common/CommonPropsInterface";
+import * as React from "react"
+import PropTypes from "prop-types"
+import {classNames} from "../utils"
+import { AnchorCommonProps } from "../Common/CommonPropsInterface"
 
 export interface BreadcrumbItemProps extends AnchorCommonProps<HTMLLIElement> {
-    active?: boolean;
+    active?: boolean
 }
 
 function BreadcrumbItem(props: BreadcrumbItemProps) {
@@ -13,7 +13,7 @@ function BreadcrumbItem(props: BreadcrumbItemProps) {
         children,
         href,
         active
-    } = props;
+    } = props
 
     return (
         <li
@@ -24,15 +24,15 @@ function BreadcrumbItem(props: BreadcrumbItemProps) {
             )}>
             <a href={href}>{children}</a>
         </li>
-    );
+    )
 }
 
 BreadcrumbItem.propTypes = {
     active: PropTypes.bool,
     href: PropTypes.string
-};
+}
 BreadcrumbItem.defaultProps = {
     active: false
-};
+}
 
-export default BreadcrumbItem;
+export default BreadcrumbItem

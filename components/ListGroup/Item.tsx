@@ -1,19 +1,19 @@
-import * as React from "react";
-import PropTypes from "prop-types";
+import * as React from "react"
+import PropTypes from "prop-types"
 import {
     classNames,
     variantType,
     variantArray
-} from "../utils";
-import { CommonProps } from "../Common/CommonPropsInterface";
-import { ListGroupContext } from "../Common/contexts";
+} from "../utils"
+import { CommonProps } from "../Common/CommonPropsInterface"
+import { ListGroupContext } from "../Common/contexts"
 
 export interface ListGroupItemProps extends CommonProps<HTMLElement> {
-    action?: boolean;
-    active?: boolean;
-    variant?: variantType;
-    disabled?: boolean;
-    href?: string;
+    action?: boolean
+    active?: boolean
+    variant?: variantType
+    disabled?: boolean
+    href?: string
 }
 
 export default function ListGroupItem(props: ListGroupItemProps) {
@@ -26,9 +26,9 @@ export default function ListGroupItem(props: ListGroupItemProps) {
         className,
         onClick,
         ...otherProps
-    } = props;
-    const PREFIX = "list-group-item";
-    let tag = href ? "a" : action ? "button" : "div";
+    } = props
+    const PREFIX = "list-group-item"
+    let tag = href ? "a" : action ? "button" : "div"
 
     return (
         <ListGroupContext.Consumer>
@@ -49,7 +49,7 @@ export default function ListGroupItem(props: ListGroupItemProps) {
                                 equalWidth && "flex-fill"
                             ),
                             onClick(e: React.MouseEvent<HTMLElement, MouseEvent>) {
-                                onClick && !disabled && onClick(e);
+                                onClick && !disabled && onClick(e)
                             },
                             ...otherProps
                         }
@@ -57,7 +57,7 @@ export default function ListGroupItem(props: ListGroupItemProps) {
                 )
             }
         </ListGroupContext.Consumer>
-    );
+    )
 
 }
 
@@ -67,9 +67,9 @@ ListGroupItem.propTypes = {
     action: PropTypes.bool,
     active: PropTypes.bool,
     disabled: PropTypes.bool
-};
+}
 ListGroupItem.defaultProps = {
     action: false,
     active: false,
     disabled: false
-};
+}

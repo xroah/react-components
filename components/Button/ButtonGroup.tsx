@@ -1,11 +1,11 @@
-import * as React from "react";
-import PropTypes from "prop-types";
-import { classNames } from "../utils";
-import { CommonProps } from "../Common/CommonPropsInterface";
+import * as React from "react"
+import PropTypes from "prop-types"
+import { classNames } from "../utils"
+import { CommonProps } from "../Common/CommonPropsInterface"
 
 export interface ButtonGroupProps extends CommonProps<HTMLDivElement> {
-    size?: "sm" | "lg";
-    vertical?: boolean;
+    size?: "sm" | "lg"
+    vertical?: boolean
 }
 
 export default function ButtonGroup(props: ButtonGroupProps) {
@@ -15,8 +15,8 @@ export default function ButtonGroup(props: ButtonGroupProps) {
         vertical,
         children,
         ...otherProps
-    } = props;
-    const PREFIX = "btn-group";
+    } = props
+    const PREFIX = "btn-group"
 
     return (
         <div
@@ -30,14 +30,14 @@ export default function ButtonGroup(props: ButtonGroupProps) {
             {...otherProps}>
             {children}
         </div>
-    );
+    )
 }
 
 ButtonGroup.propTypes = {
     vertical: PropTypes.bool,
     size: PropTypes.oneOf(["sm", "lg"])
-};
+}
 
 ButtonGroup.defaultProps = {
     vertical: false
-};
+}

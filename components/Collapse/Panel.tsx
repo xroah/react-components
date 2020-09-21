@@ -1,17 +1,17 @@
-import * as React from "react";
-import PropTypes from "prop-types";
-import Collapse from "./Collapse";
+import * as React from "react"
+import PropTypes from "prop-types"
+import Collapse from "./Collapse"
 import {
     handleFuncProp,
     classNames
-} from "../utils";
-import { AccordionContext } from "../Common/contexts";
-import { CommonProps } from "../Common/CommonPropsInterface";
+} from "../utils"
+import { AccordionContext } from "../Common/contexts"
+import { CommonProps } from "../Common/CommonPropsInterface"
 
 export interface PanelProps extends CommonProps<HTMLDivElement> {
-    header: React.ReactNode;
-    panelKey?: string | number; 
-    onHeaderClick?: (key?: string, evt?: React.MouseEvent) => void; 
+    header: React.ReactNode
+    panelKey?: string | number 
+    onHeaderClick?: (key?: string, evt?: React.MouseEvent) => void 
 }
 
 export default function AccordionPanel(props: PanelProps) {
@@ -22,13 +22,13 @@ export default function AccordionPanel(props: PanelProps) {
         panelKey,
         onHeaderClick,
         ...otherProps
-    } = props;
+    } = props
     const handleHeaderClick = (evt: React.MouseEvent) => {
-        handleFuncProp(onHeaderClick)(panelKey, evt);
-    };
-    const style: React.CSSProperties = {};
+        handleFuncProp(onHeaderClick)(panelKey, evt)
+    }
+    const style: React.CSSProperties = {}
 
-    if (onHeaderClick) style.cursor = "pointer";
+    if (onHeaderClick) style.cursor = "pointer"
 
     return (
         <AccordionContext.Consumer>
@@ -48,10 +48,10 @@ export default function AccordionPanel(props: PanelProps) {
                 )
             }
         </AccordionContext.Consumer>
-    );
+    )
 }
 
 AccordionPanel.propTypes = {
     header: PropTypes.node.isRequired,
     headerClickable: PropTypes.bool
-};
+}

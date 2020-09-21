@@ -1,10 +1,10 @@
-import * as React from "react";
-import PropTypes from "prop-types";
-import { classNames } from "../utils";
-import { CommonProps } from "../Common/CommonPropsInterface";
+import * as React from "react"
+import PropTypes from "prop-types"
+import { classNames } from "../utils"
+import { CommonProps } from "../Common/CommonPropsInterface"
 
 export interface ContainerProps extends CommonProps<HTMLElement> {
-    variant?: "fluid" | "sm" | "md" | "lg" | "xl";
+    variant?: "fluid" | "sm" | "md" | "lg" | "xl"
 }
 
 export default function Container(props: ContainerProps) {
@@ -12,8 +12,8 @@ export default function Container(props: ContainerProps) {
         className,
         variant,
         ...otherProps
-    } = props;
-    const PREFIX = "container";
+    } = props
+    const PREFIX = "container"
 
     return (
         <div className={
@@ -22,7 +22,7 @@ export default function Container(props: ContainerProps) {
                 variant ? `${PREFIX}-${variant}` : PREFIX
             )
         } {...otherProps} />
-    );
+    )
 }
 
 Container.propTypes = {
@@ -33,4 +33,4 @@ Container.propTypes = {
         "lg",
         "md"
     ])
-};
+}

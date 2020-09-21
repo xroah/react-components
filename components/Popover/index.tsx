@@ -1,13 +1,13 @@
-import * as React from "react";
-import PropTypes from "prop-types";
-import Overlay, { CommonProps } from "../Common/Overlay";
-import { handleArrowStyle } from "../Tooltip";
-import { PopupContext } from "../Common/contexts";
-import { classNames } from "../utils";
+import * as React from "react"
+import PropTypes from "prop-types"
+import Overlay, { CommonProps } from "../Common/Overlay"
+import { handleArrowStyle } from "../Tooltip"
+import { PopupContext } from "../Common/contexts"
+import { classNames } from "../utils"
 
 export interface PopoverProps extends CommonProps {
-    header?: string | React.ReactNode;
-    content: React.ReactNode;
+    header?: string | React.ReactNode
+    content: React.ReactNode
 }
 
 export default function Popover(props: PopoverProps) {
@@ -18,8 +18,8 @@ export default function Popover(props: PopoverProps) {
         content,
         style = {},
         ...otherProps
-    } = props;
-    style.position = "relative";
+    } = props
+    style.position = "relative"
 
     const popup = (
         <PopupContext.Consumer>
@@ -48,7 +48,7 @@ export default function Popover(props: PopoverProps) {
                 )
             }
         </PopupContext.Consumer>
-    );
+    )
     return (
         <Overlay
             unmountOnExit
@@ -59,7 +59,7 @@ export default function Popover(props: PopoverProps) {
             {...otherProps}>
             {children}
         </Overlay>
-    );
+    )
 
 }
 
@@ -72,8 +72,8 @@ Popover.propTypes = {
         PropTypes.string,
         PropTypes.node
     ]).isRequired
-};
+}
 Popover.defaultProps = {
     trigger: "click",
     placement: "right"
-};
+}

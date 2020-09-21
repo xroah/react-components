@@ -1,33 +1,33 @@
-import * as React from "react";
-import PropTypes from "prop-types";
-import Fade from "../Common/Fade";
-import { classNames, handleFuncProp } from "../utils";
-import NoTransition from "../Common/NoTransition";
-import { CommonPropsWithoutTitle } from "../Common/CommonPropsInterface";
+import * as React from "react"
+import PropTypes from "prop-types"
+import Fade from "../Common/Fade"
+import { classNames, handleFuncProp } from "../utils"
+import NoTransition from "../Common/NoTransition"
+import { CommonPropsWithoutTitle } from "../Common/CommonPropsInterface"
 
 export interface ToastProps extends CommonPropsWithoutTitle<HTMLDivElement> {
-    title?: string | React.ReactNode;
-    iconSize?: number;
-    icon?: React.ReactNode;
-    extra?: string | React.ReactNode;
-    autoHide?: boolean;
-    closable?: boolean;
-    header?: string | React.ReactNode;
-    delay?: number;
-    fade?: boolean;
-    visible?: boolean;
-    onClose?: Function;
-    onShow?: Function;
-    onShown?: Function;
-    onHide?: Function;
-    onHidden?: Function;
+    title?: string | React.ReactNode
+    iconSize?: number
+    icon?: React.ReactNode
+    extra?: string | React.ReactNode
+    autoHide?: boolean
+    closable?: boolean
+    header?: string | React.ReactNode
+    delay?: number
+    fade?: boolean
+    visible?: boolean
+    onClose?: Function
+    onShow?: Function
+    onShown?: Function
+    onHide?: Function
+    onHidden?: Function
 }
 
-const stringOrNode = PropTypes.oneOfType([PropTypes.string, PropTypes.node]);
+const stringOrNode = PropTypes.oneOfType([PropTypes.string, PropTypes.node])
 
 export default class Toast extends React.Component<ToastProps> {
 
-    private timer: NodeJS.Timeout | null = null;
+    private timer: NodeJS.Timeout | null = null
 
     static propTypes = {
         title: stringOrNode,
@@ -45,7 +45,7 @@ export default class Toast extends React.Component<ToastProps> {
         onShown: PropTypes.func,
         onHide: PropTypes.func,
         onHidden: PropTypes.func
-    };
+    }
     static defaultProps = {
         delay: 3000,
         fade: true,
@@ -53,20 +53,20 @@ export default class Toast extends React.Component<ToastProps> {
         iconSize: 20,
         closable: true,
         autoHide: true
-    };
+    }
 
     componentDidMount() {
-        if (this.props.visible) this.componentDidUpdate({});
+        if (this.props.visible) this.componentDidUpdate({})
     }
 
     componentWillUnmount() {
-        this.clearTimer();
+        this.clearTimer()
     }
 
     clearTimer() {
         if (this.timer) {
-            clearTimeout(this.timer);
-            this.timer = null;
+            clearTimeout(this.timer)
+            this.timer = null
         }
     }
 
@@ -75,10 +75,10 @@ export default class Toast extends React.Component<ToastProps> {
             autoHide,
             delay,
             visible
-        } = this.props;
+        } = this.props
 
         if (visible && visible !== prevProps.visible && autoHide) {
-            this.timer = setTimeout(this.handleClose, delay as number);
+            this.timer = setTimeout(this.handleClose, delay as number)
         }
     }
 
@@ -86,20 +86,20 @@ export default class Toast extends React.Component<ToastProps> {
         const {
             onClose,
             visible
-        } = this.props;
+        } = this.props
 
         this.clearTimer()
 
         if (!visible) {
-            return;
+            return
         }
 
-        handleFuncProp(onClose)();
-    };
+        handleFuncProp(onClose)()
+    }
 
     handleCallback = (prop: "onShow" | "onShown" | "onHide" | "onHidden") => {
         return () => {
-            handleFuncProp((this.props as any)[prop])();
+            handleFuncProp((this.props as any)[prop])()
         }
     }
 
@@ -111,11 +111,11 @@ export default class Toast extends React.Component<ToastProps> {
             extra,
             closable,
             iconSize
-        } = this.props;
-        let img = icon;
+        } = this.props
+        let img = icon
 
         if (header === null) {
-            return null;
+            return null
         }
 
         if (header === undefined) {
@@ -126,7 +126,7 @@ export default class Toast extends React.Component<ToastProps> {
                         src={img}
                         width={iconSize}
                         height={iconSize} />
-                );
+                )
             }
 
             header = (
@@ -149,19 +149,19 @@ export default class Toast extends React.Component<ToastProps> {
                                 className="ml-2 mb-1 close"
                                 aria-label="Close"
                                 onClick={this.handleClose}>
-                                <span aria-hidden="true">&times;</span>
+                                <span aria-hidden="true">&times</span>
                             </button>
                         )
                     }
                 </>
-            );
+            )
         }
 
         return (
             <div className="toast-header">
                 {header}
             </div>
-        );
+        )
     }
 
     render() {
@@ -171,21 +171,21 @@ export default class Toast extends React.Component<ToastProps> {
             visible,
             fade,
             ...otherProps
-        } = this.props;
+        } = this.props
 
-        delete otherProps.icon;
-        delete otherProps.iconSize;
-        delete otherProps.extra;
-        delete otherProps.autoHide;
-        delete otherProps.closable;
-        delete otherProps.header;
-        delete otherProps.delay;
-        delete otherProps.onClose;
-        delete otherProps.title;
-        delete otherProps.onShow;
-        delete otherProps.onShown;
-        delete otherProps.onHide;
-        delete otherProps.onHidden;
+        delete otherProps.icon
+        delete otherProps.iconSize
+        delete otherProps.extra
+        delete otherProps.autoHide
+        delete otherProps.closable
+        delete otherProps.header
+        delete otherProps.delay
+        delete otherProps.onClose
+        delete otherProps.title
+        delete otherProps.onShow
+        delete otherProps.onShown
+        delete otherProps.onHide
+        delete otherProps.onHidden
 
         const toast = (
             <div className={
@@ -199,7 +199,7 @@ export default class Toast extends React.Component<ToastProps> {
                     {children}
                 </div>
             </div>
-        );
+        )
         const transitionProps = {
             in: !!visible,
             unmountOnExit: true,
@@ -207,13 +207,13 @@ export default class Toast extends React.Component<ToastProps> {
             onEntered: this.handleCallback("onShown"),
             onExit: this.handleCallback("onHide"),
             onExited: this.handleCallback("onHidden")
-        };
+        }
 
         return (
             fade ?
                 <Fade {...transitionProps}>{toast}</Fade> :
                 <NoTransition showClass="show" {...transitionProps}>{toast}</NoTransition>
-        );
+        )
     }
 
 }

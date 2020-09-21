@@ -1,16 +1,16 @@
-import * as React from "react";
-import { classNames } from "../utils";
-import Spinner, { SpinnerProps } from "../Spinner";
+import * as React from "react"
+import { classNames } from "../utils"
+import Spinner, { SpinnerProps } from "../Spinner"
 
 export interface LoadingCommonOptions extends SpinnerProps {
-    type?: "spinner" | null;
-    node?: React.ReactNode;
-    visible?: boolean;
-    backdrop?: boolean;
+    type?: "spinner" | null
+    node?: React.ReactNode
+    visible?: boolean
+    backdrop?: boolean
 }
 
 export interface LoadingProps extends LoadingCommonOptions {
-    visible?: boolean;
+    visible?: boolean
 }
 
 export default function Loading(props: LoadingProps) {
@@ -26,7 +26,7 @@ export default function Loading(props: LoadingProps) {
         size,
         node,
         ...otherProps
-    } = props;
+    } = props
     const animEl = type !== null ?
         (
             <Spinner
@@ -34,7 +34,7 @@ export default function Loading(props: LoadingProps) {
                 variant={variant}
                 animation={animation as any}
                 size={size} />
-        ) : node;
+        ) : node
 
     return visible ? (
         <>
@@ -58,7 +58,7 @@ export default function Loading(props: LoadingProps) {
                 </div>
             </div>
         </>
-    ) : null;
+    ) : null
 }
 
 Loading.defaultProps = {
@@ -66,4 +66,4 @@ Loading.defaultProps = {
     animation: "border",
     backdrop: true,
     variant: "light"
-};
+}

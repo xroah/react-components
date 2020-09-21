@@ -1,29 +1,29 @@
-import * as React from "react";
-import PropTypes from "prop-types";
+import * as React from "react"
+import PropTypes from "prop-types"
 import {
     classNames,
     variantType,
     variantArray
-} from "../utils";
-import { colorType, color } from "./CardTitle";
-import { CommonProps } from "../Common/CommonPropsInterface";
-import { CardBody } from "./Others";
+} from "../utils"
+import { colorType, color } from "./CardTitle"
+import { CommonProps } from "../Common/CommonPropsInterface"
+import { CardBody } from "./Others"
 
 export interface CardProps extends CommonProps<HTMLDivElement> {
-    header?: React.ReactNode;
-    footer?: React.ReactNode;
-    headerStyle?: React.CSSProperties;
-    footerStyle?: React.CSSProperties;
-    body?: boolean;
-    img?: React.ReactElement | string;
-    imgAlt?: string;
-    imgTitle?: string;
-    imgPosition?: "top" | "bottom";
-    isImgOverlay?: boolean;
-    alignment?: "left" | "center" | "right";
-    bg?: variantType;
-    border?: variantType;
-    color?: colorType;
+    header?: React.ReactNode
+    footer?: React.ReactNode
+    headerStyle?: React.CSSProperties
+    footerStyle?: React.CSSProperties
+    body?: boolean
+    img?: React.ReactElement | string
+    imgAlt?: string
+    imgTitle?: string
+    imgPosition?: "top" | "bottom"
+    isImgOverlay?: boolean
+    alignment?: "left" | "center" | "right"
+    bg?: variantType
+    border?: variantType
+    color?: colorType
 }
 
 export default function Card(props: CardProps) {
@@ -45,14 +45,14 @@ export default function Card(props: CardProps) {
         body,
         footerStyle,
         ...otherProps
-    } = props;
+    } = props
 
-    let topImg;
-    let bottomImg;
+    let topImg
+    let bottomImg
 
     if (img) {
-        let _img: React.ReactElement;
-        let cls = `card-img-${imgPosition}`;
+        let _img: React.ReactElement
+        let cls = `card-img-${imgPosition}`
 
         if (React.isValidElement(img)) {
             _img = React.cloneElement<any>(
@@ -60,7 +60,7 @@ export default function Card(props: CardProps) {
                 {
                     className: classNames((img.props as any).className, cls)
                 }
-            );
+            )
         } else {
             _img = (
                 <img
@@ -68,13 +68,13 @@ export default function Card(props: CardProps) {
                     src={img as string}
                     alt={imgAlt}
                     title={imgTitle} />
-            );
+            )
         }
 
         if (imgPosition === "top") {
-            topImg = _img;
+            topImg = _img
         } else {
-            bottomImg = _img;
+            bottomImg = _img
         }
     }
 
@@ -113,7 +113,7 @@ export default function Card(props: CardProps) {
                 )
             }
         </div>
-    );
+    )
 }
 
 Card.propTypes = {
@@ -130,10 +130,10 @@ Card.propTypes = {
     bg: PropTypes.oneOf(variantArray),
     border: PropTypes.oneOf(variantArray),
     color: PropTypes.oneOf(color),
-};
+}
 
 Card.defaultProps = {
     imgPosition: "top",
     isImgOverlay: false,
     body: false
-};
+}

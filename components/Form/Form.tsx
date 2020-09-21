@@ -1,16 +1,16 @@
-import * as React from "react";
-import PropTypes from "prop-types";
-import { classNames } from "../utils";
-import { ColProps } from "../Layout/Col";
-import { FormContext } from "../Common/contexts";
-import { FormCommonProps } from "../Common/CommonPropsInterface";
+import * as React from "react"
+import PropTypes from "prop-types"
+import { classNames } from "../utils"
+import { ColProps } from "../Layout/Col"
+import { FormContext } from "../Common/contexts"
+import { FormCommonProps } from "../Common/CommonPropsInterface"
 
 export interface FormProps extends FormCommonProps<HTMLFormElement> {
-    inline?: boolean;
-    labelCol?: ColProps;
-    wrapperCol?: ColProps;
-    horizontal?: boolean;
-    labelAlign?: "left" | "right";
+    inline?: boolean
+    labelCol?: ColProps
+    wrapperCol?: ColProps
+    horizontal?: boolean
+    labelAlign?: "left" | "right"
 }
 
 export default function Form(props: FormProps) {
@@ -22,7 +22,7 @@ export default function Form(props: FormProps) {
         wrapperCol,
         horizontal,
         ...otherProps
-    } = props;
+    } = props
 
     return (
         <FormContext.Provider value={{ 
@@ -36,7 +36,7 @@ export default function Form(props: FormProps) {
                     classNames(className, inline && "form-inline")
                 } {...otherProps} />
         </FormContext.Provider>
-    );
+    )
 }
 
 Form.propTypes = {
@@ -45,8 +45,8 @@ Form.propTypes = {
     wrapperCol: PropTypes.object,
     horizontal: PropTypes.bool,
     labelAlign: PropTypes.oneOf(["left", "right"])
-};
+}
 Form.defaultProps = {
     inline: false,
     horizontal: false
-};
+}

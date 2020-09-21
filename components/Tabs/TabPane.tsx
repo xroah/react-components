@@ -1,17 +1,17 @@
-import * as React from "react";
-import PropTypes from "prop-types";
-import { classNames, handleFuncProp } from "../utils";
-import Fade from "../Common/Fade";
-import { TabContext } from "../Common/contexts";
-import NoTransition from "../Common/NoTransition";
-import { CommonProps } from "../Common/CommonPropsInterface";
-import omitProps from "../utils/omitProps";
+import * as React from "react"
+import PropTypes from "prop-types"
+import { classNames, handleFuncProp } from "../utils"
+import Fade from "../Common/Fade"
+import { TabContext } from "../Common/contexts"
+import NoTransition from "../Common/NoTransition"
+import { CommonProps } from "../Common/CommonPropsInterface"
+import omitProps from "../utils/omitProps"
 
 export interface TabPaneProps extends CommonProps<HTMLDivElement> {
-    tab?: string | React.ReactNode;
-    disabled?: boolean;
-    panelKey?: string;
-    onHidden?: () => void;
+    tab?: string | React.ReactNode
+    disabled?: boolean
+    panelKey?: string
+    onHidden?: () => void
 }
 
 export default function TabPane(props: TabPaneProps) {
@@ -20,15 +20,15 @@ export default function TabPane(props: TabPaneProps) {
         panelKey,
         onHidden,
         ...otherProps
-    } = props;
+    } = props
     const handleExited = () => {
-        handleFuncProp(onHidden)();
-    };
+        handleFuncProp(onHidden)()
+    }
     
     omitProps(
         otherProps,
         ["tab", "disabled"]
-    );
+    )
 
     return (
         <TabContext.Consumer>
@@ -38,11 +38,11 @@ export default function TabPane(props: TabPaneProps) {
                     previousKey: p,
                     fade
                 }) => {
-                    const _in = a === panelKey && !p;
+                    const _in = a === panelKey && !p
                     const transitionProps = {
                         in: _in,
                         onExited: handleExited
-                    };
+                    }
                     const pane = (
                         <div className={
                             classNames(
@@ -51,20 +51,20 @@ export default function TabPane(props: TabPaneProps) {
                                 (_in || p === panelKey) && "active"
                             )
                         } {...otherProps} />
-                    );
+                    )
 
                     return (
                         fade ?
                             <Fade {...transitionProps}>{pane}</Fade> :
                             <NoTransition {...transitionProps}>{pane}</NoTransition>
-                    );
+                    )
                 }
             }
         </TabContext.Consumer>
-    );
+    )
 }
 
 TabPane.propTypes = {
     tab: PropTypes.node,
     disabled: PropTypes.bool
-};
+}

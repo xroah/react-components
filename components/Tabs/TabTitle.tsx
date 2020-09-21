@@ -1,12 +1,12 @@
-import * as React from "react";
-import Nav from "../Nav";
-import { TabContext } from "../Common/contexts";
+import * as React from "react"
+import Nav from "../Nav"
+import { TabContext } from "../Common/contexts"
 
 interface TabTitleProps {
-    itemKey?: string;
-    onClick: (key?: string, evt?: React.MouseEvent) => void;
-    children: React.ReactChild;
-    disabled?: boolean;
+    itemKey?: string
+    onClick: (key?: string, evt?: React.MouseEvent) => void
+    children: React.ReactChild
+    disabled?: boolean
 }
 
 export default function TabTitle(props: TabTitleProps) {
@@ -16,12 +16,12 @@ export default function TabTitle(props: TabTitleProps) {
         disabled,
         children,
         ...otherProps
-    } = props;
+    } = props
 
     const handleClick = (evt: React.MouseEvent) => {
-        !disabled && onClick(itemKey, evt);
-        evt.preventDefault();
-    };
+        !disabled && onClick(itemKey, evt)
+        evt.preventDefault()
+    }
 
     return (
         <TabContext.Consumer>
@@ -38,5 +38,5 @@ export default function TabTitle(props: TabTitleProps) {
                 )
             }
         </TabContext.Consumer>
-    );
+    )
 }

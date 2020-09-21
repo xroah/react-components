@@ -1,25 +1,25 @@
-import * as React from "react";
-import PropTypes from "prop-types";
+import * as React from "react"
+import PropTypes from "prop-types"
 import {
     classNames,
     handleFuncProp,
     emulateTransitionEnd,
     variantArray,
     getScrollBarWidth
-} from "../utils";
-import Button from "../Button";
-import Fade from "../Common/Fade";
-import NoTransition from "../Common/NoTransition";
-import { ModalContext } from "../Common/contexts";
-import Portal from "../Common/Portal";
+} from "../utils"
+import Button from "../Button"
+import Fade from "../Common/Fade"
+import NoTransition from "../Common/NoTransition"
+import { ModalContext } from "../Common/contexts"
+import Portal from "../Common/Portal"
 import {
     ModalProps,
     ModalState
-} from "./interface";
-import omitProps from "../utils/omitProps";
+} from "./interface"
+import omitProps from "../utils/omitProps"
 
-const stringOrNode = PropTypes.oneOfType([PropTypes.string, PropTypes.node]);
-let zIndex = 2000;
+const stringOrNode = PropTypes.oneOfType([PropTypes.string, PropTypes.node])
+let zIndex = 2000
 
 export default class Modal extends React.Component<ModalProps, ModalState> {
 
@@ -37,7 +37,7 @@ export default class Modal extends React.Component<ModalProps, ModalState> {
         cancelText: "取消",
         okType: "primary",
         cancelType: "light"
-    };
+    }
     static propTypes = {
         visible: PropTypes.bool,
         title: PropTypes.oneOfType([PropTypes.node, PropTypes.string]),
@@ -65,28 +65,28 @@ export default class Modal extends React.Component<ModalProps, ModalState> {
         onShown: PropTypes.func,
         onHide: PropTypes.func,
         onHidden: PropTypes.func
-    };
+    }
 
-    private dialogRef = React.createRef<HTMLDivElement>();
-    private activeElement: Element | null = null;
-    private modalRef = React.createRef<HTMLDivElement>();
-    private previousBodyPadding: string = "";
-    private previousBodyClassName: string = "";
+    private dialogRef = React.createRef<HTMLDivElement>()
+    private activeElement: Element | null = null
+    private modalRef = React.createRef<HTMLDivElement>()
+    private previousBodyPadding: string = ""
+    private previousBodyClassName: string = ""
     state: ModalState = {
         zIndex: zIndex++
-    };
+    }
 
     componentWillUnmount() {
-        this.resetBody();
+        this.resetBody()
     }
 
     handleKeyDown = (evt: React.KeyboardEvent) => {
-        const { visible, keyboard } = this.props;
-        const key = evt.key.toLowerCase();
-        const keySet = new Set(["esc", "escape"]);
+        const { visible, keyboard } = this.props
+        const key = evt.key.toLowerCase()
+        const keySet = new Set(["esc", "escape"])
 
         if (visible && keyboard && keySet.has(key)) {
-            this.handleCancel(evt);
+            this.handleCancel(evt)
         }
     }
 
@@ -98,8 +98,8 @@ export default class Modal extends React.Component<ModalProps, ModalState> {
             dialogRef: { current },
             modalRef: { current: modalEl },
             handleCancel
-        } = this;
-        const target = evt.target;
+        } = this
+        const target = evt.target
 
         if (
             !backdrop ||
@@ -109,95 +109,95 @@ export default class Modal extends React.Component<ModalProps, ModalState> {
             current === target ||
             //click inside of the dialog
             current.contains(target as Node)
-        ) return;
+        ) return
 
         if (backdrop !== "static") {
-            handleCancel(evt);
+            handleCancel(evt)
         } else {
             this.setState({
                 className: "modal-static"
-            });
+            })
             emulateTransitionEnd(modalEl, () => {
                 this.setState({
                     className: ""
-                });
-            });
-            this.focus();
+                })
+            })
+            this.focus()
         }
     }
 
     handleOk = (evt: React.MouseEvent) => {
-        handleFuncProp(this.props.onOk)(evt);
+        handleFuncProp(this.props.onOk)(evt)
     }
 
     handleCancel = (evt: React.MouseEvent | React.KeyboardEvent) => {
-        handleFuncProp(this.props.onCancel)(evt);
+        handleFuncProp(this.props.onCancel)(evt)
     }
 
     focus() {
         const {
             props: { autoFocus },
             modalRef: { current }
-        } = this;
+        } = this
 
         if (autoFocus && current) {
-            current.focus();
+            current.focus()
         }
     }
 
     handleEnter = () => {
-        const body = document.body;
-        const hasScrollbar = document.documentElement.clientWidth < window.innerWidth;
-        const scrollWidth = getScrollBarWidth();
-        const pr = parseFloat(getComputedStyle(body).getPropertyValue("padding-right"));
-        this.activeElement = document.activeElement;
-        this.previousBodyClassName = body.className;
-        this.previousBodyPadding = body.style.paddingRight || "";
+        const body = document.body
+        const hasScrollbar = document.documentElement.clientWidth < window.innerWidth
+        const scrollWidth = getScrollBarWidth()
+        const pr = parseFloat(getComputedStyle(body).getPropertyValue("padding-right"))
+        this.activeElement = document.activeElement
+        this.previousBodyClassName = body.className
+        this.previousBodyPadding = body.style.paddingRight || ""
 
-        body.classList.add("modal-open");
+        body.classList.add("modal-open")
 
         //may has style="overflow: scroll" or something else
-        const afterHasScrollbar = body.clientWidth < window.innerWidth;
+        const afterHasScrollbar = body.clientWidth < window.innerWidth
 
         if (hasScrollbar && !afterHasScrollbar) {
-            body.style.paddingRight = `${pr + scrollWidth}px`;
+            body.style.paddingRight = `${pr + scrollWidth}px`
         }
 
-        handleFuncProp(this.props.onShow)();
+        handleFuncProp(this.props.onShow)()
         this.setState({
             display: "block"
-        });
+        })
     }
 
     handleEntered = () => {
-        this.focus();
-        handleFuncProp(this.props.onShown)();
+        this.focus()
+        handleFuncProp(this.props.onShown)()
     }
 
     handleExit = () => {
-        handleFuncProp(this.props.onHide)();
+        handleFuncProp(this.props.onHide)()
     }
 
     resetBody() {
-        const body = document.body;
-        body.style.paddingRight = this.previousBodyPadding;
-        body.className = this.previousBodyClassName;
-        this.activeElement = null;
-        this.previousBodyClassName = this.previousBodyPadding = "";
+        const body = document.body
+        body.style.paddingRight = this.previousBodyPadding
+        body.className = this.previousBodyClassName
+        this.activeElement = null
+        this.previousBodyClassName = this.previousBodyPadding = ""
     }
 
     handleExited = () => {
-        const ae = this.activeElement as any;
+        const ae = this.activeElement as any
 
         if (ae && ae.focus) {
-            ae.focus();
+            ae.focus()
         }
 
-        this.resetBody();
+        this.resetBody()
         this.setState({
             display: ""
-        });
-        handleFuncProp(this.props.onHidden)();
+        })
+        handleFuncProp(this.props.onHidden)()
     }
 
     getHeader() {
@@ -205,9 +205,9 @@ export default class Modal extends React.Component<ModalProps, ModalState> {
             header,
             title,
             closable,
-        } = this.props;
+        } = this.props
 
-        if (header === null) return null;
+        if (header === null) return null
 
         const defaultHeader = (
             <>
@@ -219,18 +219,18 @@ export default class Modal extends React.Component<ModalProps, ModalState> {
                             className="close"
                             onClick={this.handleCancel}
                             aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
+                            <span aria-hidden="true">&times</span>
                         </button>
                     )
                 }
             </>
-        );
+        )
 
         return (
             <div className="modal-header">
                 {header === undefined ? defaultHeader : header}
             </div>
-        );
+        )
     }
 
     getFooter() {
@@ -242,9 +242,9 @@ export default class Modal extends React.Component<ModalProps, ModalState> {
             okText,
             okType,
             cancelType
-        } = this.props;
+        } = this.props
 
-        if (footer === null) return null;
+        if (footer === null) return null
 
         const defaultFooter = (
             <>
@@ -263,13 +263,13 @@ export default class Modal extends React.Component<ModalProps, ModalState> {
                     )
                 }
             </>
-        );
+        )
 
         return (
             <div className="modal-footer">
                 {footer === undefined ? defaultFooter : footer}
             </div>
-        );
+        )
     }
 
     render() {
@@ -292,7 +292,7 @@ export default class Modal extends React.Component<ModalProps, ModalState> {
                 display,
                 zIndex
             }
-        } = this;
+        } = this
 
         omitProps(
             otherProps,
@@ -316,22 +316,22 @@ export default class Modal extends React.Component<ModalProps, ModalState> {
                 "cancelText",
                 "cancelType"
             ]
-        );
+        )
 
         const classes = classNames(
             stateClass,
             "modal"
-        );
-        const PREFIX = "modal-dialog";
+        )
+        const PREFIX = "modal-dialog"
         const dialogClasses = classNames(
             PREFIX,
             className,
             size && `modal-${size}`,
             centered && `${PREFIX}-centered`,
             scrollable && `${PREFIX}-scrollable`
-        );
-        const _header = this.getHeader();
-        const _footer = this.getFooter();
+        )
+        const _header = this.getHeader()
+        const _footer = this.getFooter()
         const modal = (
             <div
                 style={{ display }}
@@ -353,8 +353,8 @@ export default class Modal extends React.Component<ModalProps, ModalState> {
                     </div>
                 </div>
             </div>
-        );
-        const backdropEl = <div className="modal-backdrop" />;
+        )
+        const backdropEl = <div className="modal-backdrop" />
         const transitionProps = {
             in: !!visible,
             appear: true,
@@ -362,11 +362,11 @@ export default class Modal extends React.Component<ModalProps, ModalState> {
             onEntered: this.handleEntered,
             onExit: this.handleExit,
             onExited: this.handleExited,
-        };
+        }
         const backdropProps = {
             in: !!visible,
             unmountOnExit: true
-        };
+        }
 
         return (
             <Portal
@@ -390,7 +390,7 @@ export default class Modal extends React.Component<ModalProps, ModalState> {
                     </ModalContext.Provider>
                 </div>
             </Portal>
-        );
+        )
     }
 
 }

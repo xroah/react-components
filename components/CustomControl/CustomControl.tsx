@@ -1,12 +1,12 @@
-import * as React from "react";
-import PropTypes from "prop-types";
-import { classNames } from "../utils";
-import { InputCommonProps } from "../Common/CommonPropsInterface";
+import * as React from "react"
+import PropTypes from "prop-types"
+import { classNames } from "../utils"
+import { InputCommonProps } from "../Common/CommonPropsInterface"
 
-let uuid = 0;
+let uuid = 0
 
 export interface CustomControlProps extends InputCommonProps<HTMLInputElement> {
-    inline?: boolean;
+    inline?: boolean
 }
 
 const CustomControl = React.forwardRef(
@@ -22,13 +22,13 @@ const CustomControl = React.forwardRef(
         }: CustomControlProps,
         ref: React.Ref<HTMLInputElement>
     ) => {
-        const PREFIX = "custom-control";
-        let _type = type === "switch" ? "checkbox" : type;
-        let _id = id;
-        let _label: React.ReactElement | null = null;
+        const PREFIX = "custom-control"
+        let _type = type === "switch" ? "checkbox" : type
+        let _id = id
+        let _label: React.ReactElement | null = null
 
         if (!_id) {
-            _id = `bs-custom-control-${uuid++}`;
+            _id = `bs-custom-control-${uuid++}`
         }
 
         _label = (
@@ -37,7 +37,7 @@ const CustomControl = React.forwardRef(
                 className={`${PREFIX}-label`}>
                 {children}
             </label>
-        );
+        )
 
         return (
             <div className={
@@ -56,11 +56,11 @@ const CustomControl = React.forwardRef(
                     {...otherProps} />
                 {_label}
             </div>
-        );
-    });
+        )
+    })
 
 CustomControl.propTypes = {
     inline: PropTypes.bool
-};
+}
 
-export default CustomControl;
+export default CustomControl

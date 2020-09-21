@@ -1,25 +1,25 @@
-import * as React from "react";
-import PropTypes from "prop-types";
+import * as React from "react"
+import PropTypes from "prop-types"
 import {
     classNames,
     variantType,
     variantArray
-} from "../utils";
-import { ButtonCommonProps } from "../Common/CommonPropsInterface";
-import omitProps from "../utils/omitProps";
+} from "../utils"
+import { ButtonCommonProps } from "../Common/CommonPropsInterface"
+import omitProps from "../utils/omitProps"
 
 export interface CommonProps {
-    variant?: variantType | "link";
-    outline?: boolean;
-    size?: string;
-    disabled?: boolean;
+    variant?: variantType | "link"
+    outline?: boolean
+    size?: string
+    disabled?: boolean
 }
 
 export interface ButtonProps extends ButtonCommonProps<HTMLButtonElement | HTMLAnchorElement>, CommonProps {
-    active?: boolean;
-    href?: string;
-    block?: boolean;
-    target?: string;
+    active?: boolean
+    href?: string
+    block?: boolean
+    target?: string
 }
 
 export function handleProps(props: any) {
@@ -31,8 +31,8 @@ export function handleProps(props: any) {
         variant,
         outline,
         ...otherProps
-    } = props;
-    const PREFIX = "btn";
+    } = props
+    const PREFIX = "btn"
 
     return {
         ...otherProps,
@@ -45,7 +45,7 @@ export function handleProps(props: any) {
             block && `${PREFIX}-block`,
             outline ? `${PREFIX}-outline-${variant}` : `${PREFIX}-${variant}`
         )
-    };
+    }
 }
 
 const Button = React.forwardRef(
@@ -58,40 +58,40 @@ const Button = React.forwardRef(
         }: ButtonProps,
         ref: React.Ref<HTMLButtonElement | HTMLAnchorElement>
     ) => {
-        let tag = "button";
+        let tag = "button"
         let buttonProps = {
             ref,
             type,
             ...handleProps(otherProps)
-        };
+        }
 
         if (otherProps.href) {
-            tag = "a";
+            tag = "a"
             
-            buttonProps.target = target;
+            buttonProps.target = target
 
             omitProps(
                 buttonProps,
                 ["disabled", "type"]
-            );
+            )
         }
 
         return React.createElement(
             tag,
             buttonProps,
             children
-        );
+        )
     }
-);
+)
 
-export const groupType = PropTypes.oneOf(["checkbox", "radio"]);
+export const groupType = PropTypes.oneOf(["checkbox", "radio"])
 
 export const commonPropTypes = {
     variant: PropTypes.oneOf([...variantArray, "link"]) as any,
     outline: PropTypes.bool,
     size: PropTypes.string,
     disabled: PropTypes.bool
-};
+}
 
 Button.propTypes = {
     ...commonPropTypes,
@@ -99,11 +99,11 @@ Button.propTypes = {
     type: PropTypes.oneOf(["button", "submit", "reset"]),
     active: PropTypes.bool,
     block: PropTypes.bool
-};
+}
 Button.defaultProps = {
     variant: "primary",
     type: "button"
-};
-Button.displayName = "Button";
+}
+Button.displayName = "Button"
 
-export default Button;
+export default Button

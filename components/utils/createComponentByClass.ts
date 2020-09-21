@@ -1,17 +1,17 @@
-import React from "react";
-import classNames from "./classNames";
+import React from "react"
+import classNames from "./classNames"
 
 interface CreateProps {
-    className?: string;
-    tag?: string;
-    displayName?: string;
+    className?: string
+    tag?: string
+    displayName?: string
 }
 
 export default (options: CreateProps) => {
-    const { className, tag = "div", displayName } = options;
+    const { className, tag = "div", displayName } = options
 
     let Comp: any = (props: React.AllHTMLAttributes<HTMLElement>) => {
-        const { className: _className, ...otherProps } = props;
+        const { className: _className, ...otherProps } = props
 
         return React.createElement(
             tag,
@@ -19,12 +19,12 @@ export default (options: CreateProps) => {
                 className: classNames(className, _className),
                 ...otherProps
             }
-        );
-    };
-
-    if (displayName) {
-        Comp.displayName = displayName;
+        )
     }
 
-    return Comp;
+    if (displayName) {
+        Comp.displayName = displayName
+    }
+
+    return Comp
 }

@@ -5,7 +5,7 @@ export type variantType = "primary"
     | "warning"
     | "info"
     | "dark"
-    | "light";
+    | "light"
 export const variantArray = [
     "primary",
     "secondary",
@@ -15,15 +15,15 @@ export const variantArray = [
     "info",
     "light",
     "dark"
-];
+]
 
-export { default as chainFunction } from "./chainFunction";
-export { default as classNames } from "./classNames";
-export { default as createComponentByClass } from "./createComponentByClass";
-export { default as delObjProps } from "./omitProps";
-export { default as emulateTransitionEnd } from "./emulateTransitionEnd";
-export { default as getScrollParent } from "./getScrollParent";
-export { default as getScrollBarWidth } from "./getScrollBarWidth";
-export { default as handleFuncProp } from "./handleFuncProp";
-export { default as reflow } from "./reflow";
-export { default as throttle } from "./throttle";
+export { default as chainFunction } from "./chainFunction"
+export { default as classNames } from "./classNames"
+export { default as createComponentByClass } from "./createComponentByClass"
+export { default as delObjProps } from "./omitProps"
+export { default as emulateTransitionEnd } from "./emulateTransitionEnd"
+export { default as getScrollParent } from "./getScrollParent"
+export { default as getScrollBarWidth } from "./getScrollBarWidth"
+export { default as handleFuncProp } from "./handleFuncProp"
+export { default as reflow } from "./reflow"
+export { default as throttle } from "./throttle"

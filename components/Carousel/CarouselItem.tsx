@@ -1,10 +1,10 @@
-import * as React from "react";
-import PropTypes from "prop-types";
-import { classNames } from "../utils";
-import { CommonProps } from "../Common/CommonPropsInterface";
+import * as React from "react"
+import PropTypes from "prop-types"
+import { classNames } from "../utils"
+import { CommonProps } from "../Common/CommonPropsInterface"
 
 export interface ItemProps extends CommonProps<HTMLDivElement> {
-    caption?: React.ReactNode;
+    caption?: React.ReactNode
 }
 
 export default function CarouselItem(props: ItemProps) {
@@ -13,7 +13,7 @@ export default function CarouselItem(props: ItemProps) {
         className,
         children,
         ...otherProps
-    } = props;
+    } = props
 
     return (
         <div className={
@@ -32,9 +32,9 @@ export default function CarouselItem(props: ItemProps) {
                 )
             }
         </div>
-    );
+    )
 }
 
 CarouselItem.propTypes = {
     caption: PropTypes.node
-};
+}

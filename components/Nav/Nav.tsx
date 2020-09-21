@@ -1,17 +1,17 @@
-import * as React from "react";
-import PropTypes from "prop-types";
-import { classNames } from "../utils";
-import { NavbarContext } from "../Common/contexts";
-import { CommonProps } from "../Common/CommonPropsInterface";
+import * as React from "react"
+import PropTypes from "prop-types"
+import { classNames } from "../utils"
+import { NavbarContext } from "../Common/contexts"
+import { CommonProps } from "../Common/CommonPropsInterface"
 
 export interface NavProps extends CommonProps<HTMLElement> {
-    alignment?: "left" | "center" | "right";
-    minWidth?: "sm" | "md" | "lg" | "xl";
-    vertical?: boolean;
-    variant?: "tab" | "pill";
-    fill?: boolean;
-    navbar?: boolean;
-    equalWidth?: boolean;
+    alignment?: "left" | "center" | "right"
+    minWidth?: "sm" | "md" | "lg" | "xl"
+    vertical?: boolean
+    variant?: "tab" | "pill"
+    fill?: boolean
+    navbar?: boolean
+    equalWidth?: boolean
 }
 
 export default function Nav(props: NavProps) {
@@ -25,15 +25,15 @@ export default function Nav(props: NavProps) {
         minWidth,
         equalWidth,
         ...otherProps
-    } = props;
+    } = props
     const alignmentMap: any = {
         center: "justify-content-center",
         right: "justify-content-end"
-    };
+    }
     const variantMap: any = {
         tab: "nav-tabs",
         pill: "nav-pills"
-    };
+    }
 
     return (
         <NavbarContext.Consumer>
@@ -55,7 +55,7 @@ export default function Nav(props: NavProps) {
                 )
             }
         </NavbarContext.Consumer>
-    );
+    )
 }
 
 Nav.propTypes = {
@@ -65,10 +65,10 @@ Nav.propTypes = {
     navbar: PropTypes.bool,
     equalWidth: PropTypes.bool,
     variant: PropTypes.oneOf(["tab", "pill"])
-};
+}
 Nav.defaultProps = {
     vertical: false,
     fill: false,
     navbar: false,
     equalWidth: false
-};
+}
