@@ -1,9 +1,9 @@
 import * as React from "react"
-import CSSTransition, { CSSTransitionProps } from "./CSSTransition"
-import { classNames } from "../utils"
+import CSSTransition, {CSSTransitionProps} from "./CSSTransition"
+import {classNames} from "../utils"
 
 export default function Fade(props: CSSTransitionProps) {
-    let {
+    const {
         children,
         timeout,
         in: _in,
@@ -39,7 +39,7 @@ export default function Fade(props: CSSTransitionProps) {
                         child.props.className,
                         "fade"
                     )
-                    let enterSet = new Set(["enter", "entering", "entered"])
+                    const enterSet = new Set(["enter", "entering", "entered"])
 
                     if (enterSet.has(state)) {
                         if (state !== "enter") {

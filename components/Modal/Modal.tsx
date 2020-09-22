@@ -10,7 +10,7 @@ import {
 import Button from "../Button"
 import Fade from "../Common/Fade"
 import NoTransition from "../Common/NoTransition"
-import { ModalContext } from "../Common/contexts"
+import {ModalContext} from "../Common/contexts"
 import Portal from "../Common/Portal"
 import {
     ModalProps,
@@ -81,7 +81,9 @@ export default class Modal extends React.Component<ModalProps, ModalState> {
     }
 
     handleKeyDown = (evt: React.KeyboardEvent) => {
-        const { visible, keyboard } = this.props
+        const {
+            visible, keyboard
+        } = this.props
         const key = evt.key.toLowerCase()
         const keySet = new Set(["esc", "escape"])
 
@@ -95,8 +97,12 @@ export default class Modal extends React.Component<ModalProps, ModalState> {
             props: {
                 backdrop
             },
-            dialogRef: { current },
-            modalRef: { current: modalEl },
+            dialogRef: {
+                current
+            },
+            modalRef: {
+                current: modalEl
+            },
             handleCancel
         } = this
         const target = evt.target
@@ -109,11 +115,14 @@ export default class Modal extends React.Component<ModalProps, ModalState> {
             current === target ||
             //click inside of the dialog
             current.contains(target as Node)
-        ) return
+        ) {
+            return
+        }
 
         if (backdrop !== "static") {
             handleCancel(evt)
-        } else {
+        }
+        else {
             this.setState({
                 className: "modal-static"
             })
@@ -136,8 +145,12 @@ export default class Modal extends React.Component<ModalProps, ModalState> {
 
     focus() {
         const {
-            props: { autoFocus },
-            modalRef: { current }
+            props: {
+                autoFocus
+            },
+            modalRef: {
+                current
+            }
         } = this
 
         if (autoFocus && current) {
@@ -207,24 +220,26 @@ export default class Modal extends React.Component<ModalProps, ModalState> {
             closable,
         } = this.props
 
-        if (header === null) return null
+        if (header === null) {
+            return null
+        }
 
-        const defaultHeader = (
+        const defaultHeader =
             <>
                 <h5 className="modal-title">{title}</h5>
                 {
-                    closable && (
-                        <button
-                            type="button"
-                            className="close"
-                            onClick={this.handleCancel}
-                            aria-label="Close">
-                            <span aria-hidden="true">&times</span>
-                        </button>
-                    )
+                    closable &&
+                    <button
+                        type="button"
+                        className="close"
+                        onClick={this.handleCancel}
+                        aria-label="Close">
+                        <span aria-hidden="true">&times</span>
+                    </button>
+
                 }
             </>
-        )
+
 
         return (
             <div className="modal-header">
@@ -244,26 +259,28 @@ export default class Modal extends React.Component<ModalProps, ModalState> {
             cancelType
         } = this.props
 
-        if (footer === null) return null
+        if (footer === null) {
+            return null
+        }
 
-        const defaultFooter = (
+        const defaultFooter =
             <>
                 {
-                    showCancel && (
-                        <Button variant={cancelType} onClick={this.handleCancel}>
-                            {cancelText}
-                        </Button>
-                    )
+                    showCancel &&
+                    <Button variant={cancelType} onClick={this.handleCancel}>
+                        {cancelText}
+                    </Button>
+
                 }
                 {
-                    showOk && (
-                        <Button variant={okType} onClick={this.handleOk}>
-                            {okText}
-                        </Button>
-                    )
+                    showOk &&
+                    <Button variant={okType} onClick={this.handleOk}>
+                        {okText}
+                    </Button>
+
                 }
             </>
-        )
+
 
         return (
             <div className="modal-footer">
@@ -290,7 +307,7 @@ export default class Modal extends React.Component<ModalProps, ModalState> {
             state: {
                 className: stateClass,
                 display,
-                zIndex
+                zIndex: z
             }
         } = this
 
@@ -332,9 +349,11 @@ export default class Modal extends React.Component<ModalProps, ModalState> {
         )
         const _header = this.getHeader()
         const _footer = this.getFooter()
-        const modal = (
+        const modal =
             <div
-                style={{ display }}
+                style={{
+                    display
+                }}
                 className={classes}
                 onClick={this.handleClickBackdrop}
                 onKeyDown={this.handleKeyDown}
@@ -353,7 +372,7 @@ export default class Modal extends React.Component<ModalProps, ModalState> {
                     </div>
                 </div>
             </div>
-        )
+
         const backdropEl = <div className="modal-backdrop" />
         const transitionProps = {
             in: !!visible,
@@ -373,8 +392,13 @@ export default class Modal extends React.Component<ModalProps, ModalState> {
                 mountNode={mountNode}
                 forceRender={forceRender}
                 visible={visible}>
-                <div style={{zIndex}}>
-                    <ModalContext.Provider value={{ isModal: true, visible: !!visible }}>
+                <div style={{
+                    zIndex: z
+                }}>
+                    <ModalContext.Provider value={{
+                        isModal: true,
+                        visible: !!visible
+                    }}>
                         {
                             fade ?
                                 <Fade {...transitionProps}>{modal}</Fade> :

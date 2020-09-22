@@ -1,6 +1,6 @@
 import * as React from "react"
-import { findDOMNode } from "react-dom"
-import { handleFuncProp } from "../utils"
+import {findDOMNode} from "react-dom"
+import {handleFuncProp} from "../utils"
 import omitProps from "../utils/omitProps"
 
 const ENTER = "enter"
@@ -49,7 +49,8 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
 
         if (_in) {
             status = appear ? EXITED : ENTERED
-        } else {
+        }
+        else {
             status = unmountOnExit ? UNMOUNTED : EXITED
         }
 
@@ -67,8 +68,11 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
 
         if (_in) {
             if (appear) {
-                this.componentDidUpdate({ in: false } as CSSTransitionProps)
-            } else {
+                this.componentDidUpdate({
+                    in: false 
+                } as CSSTransitionProps)
+            }
+            else {
                 handleFuncProp(onEntered)(findDOMNode(this))
             }
         }
@@ -76,8 +80,12 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
 
     componentDidUpdate(prevProps: CSSTransitionProps) {
         let {
-            props: { in: _in },
-            state: { status },
+            props: {
+                in: _in 
+            },
+            state: {
+                status 
+            },
             next
         } = this
 
@@ -87,10 +95,9 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
             this.clearTimer()
             this.clearNext()
             this.updateStatus(status as stateType)
-        } else {
-            if (next) {
-                this.nextTick(next)
-            }
+        }
+        else if (next) {
+            this.nextTick(next)
         }
     }
 
@@ -102,7 +109,9 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
     //in case findDOMNode returns null
     static getDerivedStateFromProps(nextProps: CSSTransitionProps, nextState: State) {
         if (nextProps.in && nextState.status === UNMOUNTED) {
-            return { status: EXITED }
+            return {
+                status: EXITED 
+            }
         }
 
         return nextState
@@ -140,7 +149,9 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
         const _callback = () => {
             //node may removed(unmounted) 
             //Can't perform a React state update on an unmounted component
-            if (node && !node.parentNode) return
+            if (node && !node.parentNode) {
+                return
+            }
 
             callback()
         }
@@ -215,7 +226,9 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
     }
 
     updateStatus(status: stateType) {
-        const { onEnter, onExit } = this.props
+        const {
+            onEnter, onExit 
+        } = this.props
         const node = findDOMNode(this) as HTMLElement
 
         this.setState({
@@ -225,14 +238,17 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
         if (status === ENTER) {
             this.next = () => this.handleEnter(node)
             handleFuncProp(onEnter)(node)
-        } else if (status === EXIT) {
+        }
+        else if (status === EXIT) {
             this.next = () => this.handleExit(node)
             handleFuncProp(onExit)(node)
         }
     }
 
     render() {
-        const { status } = this.state
+        const {
+            status 
+        } = this.state
 
         if (status === UNMOUNTED) {
             return null

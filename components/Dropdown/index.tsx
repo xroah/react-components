@@ -1,10 +1,10 @@
-import { FunctionComponent } from "react"
-import { createComponentByClass } from "../utils"
+import {FunctionComponent} from "react"
+import {createComponentByClass} from "../utils"
 import Menu from "./Menu"
 import Item from "./MenuItem"
 import Button from "./Button"
 import Dropdown from "./Dropdown"
-import { CommonProps } from "../Common/CommonPropsInterface"
+import {CommonProps} from "../Common/CommonPropsInterface"
 
 interface DropdownComponent {
     Menu: typeof Menu
@@ -15,7 +15,7 @@ interface DropdownComponent {
 
 type DropdownType = typeof Dropdown & DropdownComponent
 
-const _Dropdown  = Dropdown as DropdownType
+const _Dropdown = Dropdown as DropdownType
 
 _Dropdown.Menu = Menu
 _Dropdown.Item = Item

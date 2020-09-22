@@ -1,7 +1,7 @@
 import * as React from "react"
 import PropTypes from "prop-types"
-import { classNames } from "../utils"
-import { CommonProps } from "../Common/CommonPropsInterface"
+import {classNames} from "../utils"
+import {CommonProps} from "../Common/CommonPropsInterface"
 
 type colsType = {
     default: number,
@@ -29,12 +29,14 @@ export default function Row(props: RowProps) {
         cols,
         ...otherProps
     } = props
-    const COL_PREFiX = "row-cols"
+    const COL_PREFIX = "row-cols"
     const handleCols = () => {
-        if (!cols) return
+        if (!cols) {
+            return
+        }
 
         if (typeof cols === "number") {
-            return `${COL_PREFiX}-${cols}`
+            return `${COL_PREFIX}-${cols}`
         }
 
         const {
@@ -46,11 +48,11 @@ export default function Row(props: RowProps) {
         } = cols
 
         return classNames(
-            d && `${COL_PREFiX}-${d}`,
-            sm && `${COL_PREFiX}-sm-${sm}`,
-            md && `${COL_PREFiX}-md-${md}`,
-            lg && `${COL_PREFiX}-lg-${lg}`,
-            xl && `${COL_PREFiX}-xl-${xl}`
+            d && `${COL_PREFIX}-${d}`,
+            sm && `${COL_PREFIX}-sm-${sm}`,
+            md && `${COL_PREFIX}-md-${md}`,
+            lg && `${COL_PREFIX}-lg-${lg}`,
+            xl && `${COL_PREFIX}-xl-${xl}`
         )
     }
 

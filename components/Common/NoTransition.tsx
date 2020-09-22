@@ -1,7 +1,7 @@
 import * as React from "react"
-import { handleFuncProp, classNames } from "../utils"
-import { findDOMNode } from "react-dom"
-import { CSSTransitionProps } from "./CSSTransition"
+import {handleFuncProp, classNames} from "../utils"
+import {findDOMNode} from "react-dom"
+import {CSSTransitionProps} from "./CSSTransition"
 import omitProps from "../utils/omitProps"
 
 //compatible with CSSTransition(some components animation is configurable)
@@ -20,8 +20,11 @@ export default class NoTransition extends React.Component<NoTransitionProps> {
 
         if (_in) {
             if (appear) {
-                this.componentDidUpdate({ in: false } as any)
-            } else {
+                this.componentDidUpdate({
+                    in: false 
+                } as any)
+            }
+            else {
                 handleFuncProp(onEntered)
             }
         }
@@ -38,13 +41,16 @@ export default class NoTransition extends React.Component<NoTransitionProps> {
             onExited
         } = this.props
         const node = findDOMNode(this)
-        if (prevProps.in === _in) return
+        if (prevProps.in === _in) {
+            return
+        }
 
         if (_in) {
             handleFuncProp(onEnter)(node)
             handleFuncProp(onEntering)(node)
             handleFuncProp(onEntered)(node)
-        } else {
+        }
+        else {
             handleFuncProp(onExit)(node)
             handleFuncProp(onExiting)(node)
             handleFuncProp(onExited)(node)
@@ -60,7 +66,9 @@ export default class NoTransition extends React.Component<NoTransitionProps> {
             ...otherProps
         } = this.props
 
-        if (!_in && unmountOnExit) return null
+        if (!_in && unmountOnExit) {
+            return null
+        }
 
         if (typeof children === "function") {
             return children(undefined as any)

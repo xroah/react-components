@@ -1,6 +1,6 @@
 import * as React from "react"
-import { render, unmountComponentAtNode } from "react-dom"
-import { DialogOption } from "./interface"
+import {render, unmountComponentAtNode} from "react-dom"
+import {DialogOption} from "./interface"
 
 export const modals: Dialog[] = []
 
@@ -13,8 +13,12 @@ export default class Dialog {
     public options: DialogOption
     public closed: boolean = false
 
-    constructor(options: DialogOption  = {}) {
-        if (!options || typeof options !== "object") options = {}
+    constructor(options: DialogOption = {
+    }) {
+        if (!options || typeof options !== "object") {
+            options = {
+            }
+        }
 
         this.options = options
         this.container.style.zIndex = `${zIndex++}`
@@ -29,7 +33,9 @@ export default class Dialog {
 
     close = () => {
         //already closed
-        if (this.closed) return
+        if (this.closed) {
+            return
+        }
 
         this.closed = true
 
@@ -37,7 +43,7 @@ export default class Dialog {
     }
 
     destroy = () => {
-        let ret = unmountComponentAtNode(this.container)
+        const ret = unmountComponentAtNode(this.container)
 
         if (ret && this.container.parentNode) {
             this.container.parentNode.removeChild(this.container)

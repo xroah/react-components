@@ -1,5 +1,5 @@
 import * as React from "react"
-import { createPortal } from "react-dom"
+import {createPortal} from "react-dom"
 import PropTypes from "prop-types"
 
 interface PortalProps {
@@ -62,21 +62,29 @@ export default class Portal extends React.Component<PortalProps, PortalState> {
     }
 
     getParent() {
-        const { mountNode } = this.props
+        const {
+            mountNode 
+        } = this.props
 
-        if (!mountNode) return document.body
+        if (!mountNode) {
+            return document.body
+        }
 
         if (typeof mountNode === "string") {
             return document.querySelector(mountNode)
         }
 
-        if (mountNode.nodeType === 1 && mountNode.parentElement) return mountNode
+        if (mountNode.nodeType === 1 && mountNode.parentElement) {
+            return mountNode
+        }
 
         return null
     }
 
     mount() {
-        if (this.container) return
+        if (this.container) {
+            return
+        }
 
         const parent = this.getParent()
         this.container = document.createElement("div")
@@ -102,7 +110,9 @@ export default class Portal extends React.Component<PortalProps, PortalState> {
             children
         } = this.props
 
-        if (!visible && !forceRender && !this.container) return null
+        if (!visible && !forceRender && !this.container) {
+            return null
+        }
 
         this.mount()
         

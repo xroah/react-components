@@ -4,9 +4,9 @@ import {
     classNames,
     chainFunction
 } from "../utils"
-import Overlay, { CommonProps, handleDelay } from "../Common/Overlay"
-import { findDOMNode } from "react-dom"
-import { DropdownContext } from "../Common/contexts"
+import Overlay, {CommonProps, handleDelay} from "../Common/Overlay"
+import {findDOMNode} from "react-dom"
+import {DropdownContext} from "../Common/contexts"
 
 export interface DropdownProps extends CommonProps {
     alignment?: "left" | "center" | "right"
@@ -70,7 +70,9 @@ export default class Dropdown extends React.Component<DropdownProps, DropdownSta
     }
 
     handleUpdated() {
-        const { visible } = this.state
+        const {
+            visible 
+        } = this.state
         const node = findDOMNode(this)
         let parent: HTMLElement | null
 
@@ -89,7 +91,9 @@ export default class Dropdown extends React.Component<DropdownProps, DropdownSta
         if (
             this.isControlled() ||
             this.state.visible === visible
-        ) return
+        ) {
+            return
+        }
 
         if (this.delayTimer !== null) {
             clearTimeout(this.delayTimer)
@@ -100,7 +104,9 @@ export default class Dropdown extends React.Component<DropdownProps, DropdownSta
             show = 0,
             hide = 0
         } = handleDelay(this.props.delay)
-        const callback = () => this.setState({ visible })
+        const callback = () => this.setState({
+            visible 
+        })
         this.delayTimer = setTimeout(
             callback,
             visible ? show : hide
@@ -116,13 +122,15 @@ export default class Dropdown extends React.Component<DropdownProps, DropdownSta
     }
 
     escClose(key: string) {
-        if (!this.state.visible) return
+        if (!this.state.visible) {
+            return
+        }
 
         if (key === "escape" || key === "esc") {
             const node = findDOMNode(this) as HTMLElement
 
             if (node) {
-                (node as HTMLElement).focus()
+                node.focus()
             }
             this.close()
         }
@@ -137,18 +145,22 @@ export default class Dropdown extends React.Component<DropdownProps, DropdownSta
     handleKeyDown = (evt: React.KeyboardEvent) => {
         const key = evt.key.toLowerCase()
         const target = evt.target as HTMLButtonElement
-        const { visible, popupId } = this.state
+        const {
+            visible, popupId 
+        } = this.state
         const tag = target.tagName.toLowerCase()
         const isInput = /input|textarea/.test(tag)
 
         if (
             this.isControlled() ||
             !keySet.has(key) ||
-            (!visible && key === "tab") ||
-            (isInput && (key === "arrowup" || key === "arrowdown")) ||
+            !visible && key === "tab" ||
+            isInput && (key === "arrowup" || key === "arrowdown") ||
             target.disabled ||
             target.classList.contains("disabled")
-        ) return
+        ) {
+            return
+        }
 
         evt.preventDefault()
         evt.stopPropagation()
@@ -173,7 +185,9 @@ export default class Dropdown extends React.Component<DropdownProps, DropdownSta
     handlePopupKeydown = (evt: React.KeyboardEvent) => {
         const key = evt.key.toLowerCase()
 
-        if (!keySet.has(key)) return
+        if (!keySet.has(key)) {
+            return
+        }
 
         evt.preventDefault()
         evt.stopPropagation()
@@ -193,7 +207,8 @@ export default class Dropdown extends React.Component<DropdownProps, DropdownSta
 
         if (key === "arrowup" && index > 0) {
             index--
-        } else if (
+        }
+        else if (
             (key === "arrowdown" || key === "tab") &&
             index < len - 1
         ) {
@@ -218,7 +233,9 @@ export default class Dropdown extends React.Component<DropdownProps, DropdownSta
             popupId
         } = this.state
 
-        if (!overlay) return children
+        if (!overlay) {
+            return children
+        }
 
         const positionMap: any = {
             left: "dropleft",
@@ -227,11 +244,12 @@ export default class Dropdown extends React.Component<DropdownProps, DropdownSta
         }
         const position = positionMap[placement as string]
         let child = React.Children.only(children) as React.ReactElement<React.HTMLAttributes<HTMLElement>>
-        const _overlay = (
-            <DropdownContext.Provider value={{ close: this.close, isDropdown: true }}>
+        const _overlay = 
+            <DropdownContext.Provider value={{ close: this.close,
+                isDropdown: true }}>
                 {overlay}
             </DropdownContext.Provider>
-        )
+        
 
         const {
             onClick,

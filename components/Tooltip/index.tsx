@@ -1,16 +1,20 @@
 import * as React from "react"
 import PropTypes from "prop-types"
-import Overlay, { CommonProps } from "../Common/Overlay"
-import { PopupContext } from "../Common/contexts"
-import { classNames } from "../utils"
+import Overlay, {CommonProps} from "../Common/Overlay"
+import {PopupContext} from "../Common/contexts"
+import {classNames} from "../utils"
 
 export interface TooltipProps extends CommonProps {
     title: string | React.ReactNode
 }
 
 export function getTransform(placement: any) {
-    const y = { transform: "translateY(-50%)" }
-    const x = { transform: "translateX(-50%)" }
+    const y = {
+        transform: "translateY(-50%)"
+    }
+    const x = {
+        transform: "translateX(-50%)"
+    }
     const posMap: any = {
         top: x,
         bottom: x,
@@ -23,11 +27,13 @@ export function getTransform(placement: any) {
 
 export function handleArrowStyle(left: number, top: number, placement: any) {
     const isVertical = placement === "left" || placement === "right"
-    const style: React.CSSProperties = {}
+    const style: React.CSSProperties = {
+    }
 
     if (isVertical) {
         style.top = `${top}px`
-    } else {
+    }
+    else {
         style.left = `${left}px`
     }
 
@@ -42,16 +48,19 @@ export default function Tooltip(props: TooltipProps) {
         title,
         children,
         placement,
-        style = {},
+        style = {
+        },
         ...otherProps
     } = props
     style.position = "relative"
     style.willChange = "transform"
 
-    const popup = title ? (
+    const popup = title ?
         <PopupContext.Consumer>
             {
-                ({ arrowLeft, arrowTop, placement: p }) => (
+                ({
+                    arrowLeft, arrowTop, placement: p
+                }) =>
                     <div className={
                         classNames(
                             "tooltip",//.tooltip{opacity: 0}
@@ -65,10 +74,10 @@ export default function Tooltip(props: TooltipProps) {
                             {title}
                         </div>
                     </div>
-                )
+
             }
         </PopupContext.Consumer>
-    ) : null
+        : null
 
     return (
         <Overlay

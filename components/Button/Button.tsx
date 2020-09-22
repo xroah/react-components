@@ -5,7 +5,7 @@ import {
     variantType,
     variantArray
 } from "../utils"
-import { ButtonCommonProps } from "../Common/CommonPropsInterface"
+import {ButtonCommonProps} from "../Common/CommonPropsInterface"
 import omitProps from "../utils/omitProps"
 
 export interface CommonProps {
@@ -59,7 +59,7 @@ const Button = React.forwardRef(
         ref: React.Ref<HTMLButtonElement | HTMLAnchorElement>
     ) => {
         let tag = "button"
-        let buttonProps = {
+        const buttonProps = {
             ref,
             type,
             ...handleProps(otherProps)

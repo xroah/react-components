@@ -1,10 +1,9 @@
 import * as React from "react"
 import PropTypes from "prop-types"
 import Button from "../Button"
-import { ButtonProps } from "../Button/Button"
 import Dropdown from "./Dropdown"
-import { DropdownProps } from "./DropdownInner"
-import { variantType } from "../utils"
+import {DropdownProps} from "./DropdownInner"
+import {variantType} from "../utils"
 
 export interface DropdownButtonProps extends DropdownProps {
     variant?: variantType
@@ -62,14 +61,14 @@ export default function DropdownButton(props: DropdownButtonProps) {
     }
 
     if (split) {
-        let leftBtn = (
+        let leftBtn = 
             <Button {...btnProps}>{children}</Button>
-        )
-        let rightBtn = (
+        
+        let rightBtn = 
             <Button
                 className="dropdown-toggle-split"
                 {...btnProps} />
-        )
+        
 
         if (placement === "left") {
             [leftBtn, rightBtn] = [rightBtn, leftBtn]
@@ -89,28 +88,28 @@ export default function DropdownButton(props: DropdownButtonProps) {
                 {
                     // place dropdown button left
                     placement === "left" ?
-                        (
-                            <>
-                                <Dropdown {...dropdownProps}>
-                                    {_leftBtn}
-                                </Dropdown>
-                                {_rightBtn}
-                            </>
-                        ) :
-                        (
-                            <>
+                        
+                        <>
+                            <Dropdown {...dropdownProps}>
                                 {_leftBtn}
-                                <Dropdown {...dropdownProps}>
-                                    {_rightBtn}
-                                </Dropdown>
-                            </>
-                        )
+                            </Dropdown>
+                            {_rightBtn}
+                        </>
+                        :
+                        
+                        <>
+                            {_leftBtn}
+                            <Dropdown {...dropdownProps}>
+                                {_rightBtn}
+                            </Dropdown>
+                        </>
+                        
                 }
             </Button.Group>
         )
     }
 
-    let btn = (
+    const btn = 
         <Button
             size={size}
             {...{
@@ -119,7 +118,7 @@ export default function DropdownButton(props: DropdownButtonProps) {
             }}>
             {children}
         </Button>
-    )
+    
     const [_btn] = render!([btn])
 
     return (

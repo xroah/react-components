@@ -1,8 +1,8 @@
 import * as React from "react"
-import CustomControl, { CustomControlProps } from "./CustomControl"
+import CustomControl, {CustomControlProps} from "./CustomControl"
 
 function factory(type: string) {
-    return function (props: CustomControlProps, ref: React.Ref<any>) {
+    return (props: CustomControlProps, ref: React.Ref<any>) => {
         return (
             <CustomControl
                 type={type}

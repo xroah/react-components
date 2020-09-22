@@ -1,8 +1,10 @@
 import * as React from "react"
 import PropTypes from "prop-types"
-import { classNames, handleFuncProp, chainFunction } from "../utils"
-import { AccordionContext } from "../Common/contexts"
-import { CommonProps } from "../Common/CommonPropsInterface"
+import {
+    classNames, handleFuncProp, chainFunction, isUndef 
+} from "../utils"
+import {AccordionContext} from "../Common/contexts"
+import {CommonProps} from "../Common/CommonPropsInterface"
 import omitProps from "../utils/omitProps"
 
 type keyType = number | string | number[] | string[]
@@ -42,7 +44,7 @@ export default class Accordion extends React.Component<AccordionProps, Accordion
             defaultActiveKey,
             multiple
         } = props
-        let keys = activeKey || defaultActiveKey
+        const keys = activeKey || defaultActiveKey
 
         this.state = {
             activeKey: Accordion.handleKeyProp(keys, multiple)
@@ -75,7 +77,7 @@ export default class Accordion extends React.Component<AccordionProps, Accordion
             return true
         }
 
-        for (let key of prevKeyArray) {
+        for (const key of prevKeyArray) {
             if (!curKey.has(key)) {
                 return true
             }
@@ -88,19 +90,21 @@ export default class Accordion extends React.Component<AccordionProps, Accordion
         let set = new Set<string>()
 
         if (Array.isArray(keys)) {
-            let activeKey: string[] = []
+            const activeKey: string[] = []
             keys.forEach((item: any) => {
-                if (item != undefined) {
+                if (!isUndef(item)) {
                     activeKey.push(item.toString())
                 }
             })
             if (multiple) {
                 set = new Set<string>(activeKey)
-            } else {
+            }
+            else {
                 set.add(activeKey[0].toString())
             }
-        } else if (keys != undefined) {
-            set.add(keys.toString())
+        }
+        else if (!isUndef(keys)) {
+            set.add(keys!.toString())
         }
 
         return set
@@ -129,12 +133,12 @@ export default class Accordion extends React.Component<AccordionProps, Accordion
 
         if (_activeKey.has(key)) {
             _activeKey.delete(key)
-        } else {
-            if (multiple) {
-                _activeKey.add(key)
-            } else {
-                _activeKey = new Set<string>([key])
-            }
+        }
+        else if (multiple) {
+            _activeKey.add(key)
+        }
+        else {
+            _activeKey = new Set<string>([key])
         }
 
         this.setState({
@@ -143,7 +147,9 @@ export default class Accordion extends React.Component<AccordionProps, Accordion
     }
 
     renderChildren(children: React.ReactNode) {
-        const { onHeaderClick } = this.props
+        const {
+            onHeaderClick 
+        } = this.props
 
         //React.Children.toArray will add ".$" prefix to the key value
         return React.Children.map(
@@ -156,7 +162,7 @@ export default class Accordion extends React.Component<AccordionProps, Accordion
                     return React.cloneElement<any>(
                         c,
                         {
-                            panelKey: c.key == undefined ? i.toString() : c.key,
+                            panelKey: isUndef(c.key) ? i.toString() : c.key,
                             onHeaderClick: onClick
                         }
                     )

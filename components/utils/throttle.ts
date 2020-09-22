@@ -1,9 +1,9 @@
 export default (fn: Function, timeout: number = 100) => {
     let timer: NodeJS.Timeout | null = null
     let previous = 0
-    let _fn = function throttled() {
-        let now = Date.now()
-        let remaining = timeout - (now - previous)
+    const throttled = function throttled() {
+        const now = Date.now()
+        const remaining = timeout - (now - previous)
         const args = Array.from(arguments)
 
         if (remaining <= 0) {
@@ -14,7 +14,8 @@ export default (fn: Function, timeout: number = 100) => {
 
             previous = now
             fn.apply(null, args)
-        } else if (!timer) {
+        }
+        else if (!timer) {
             timer = setTimeout(() => {
                 timer = null
                 fn.apply(null, args)
@@ -22,5 +23,5 @@ export default (fn: Function, timeout: number = 100) => {
         }
     }
 
-    return _fn
+    return throttled
 }

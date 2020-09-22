@@ -5,8 +5,8 @@ import {
     handleFuncProp,
     classNames
 } from "../utils"
-import { AccordionContext } from "../Common/contexts"
-import { CommonProps } from "../Common/CommonPropsInterface"
+import {AccordionContext} from "../Common/contexts"
+import {CommonProps} from "../Common/CommonPropsInterface"
 
 export interface PanelProps extends CommonProps<HTMLDivElement> {
     header: React.ReactNode
@@ -26,14 +26,17 @@ export default function AccordionPanel(props: PanelProps) {
     const handleHeaderClick = (evt: React.MouseEvent) => {
         handleFuncProp(onHeaderClick)(panelKey, evt)
     }
-    const style: React.CSSProperties = {}
+    const style: React.CSSProperties = {
+    }
 
-    if (onHeaderClick) style.cursor = "pointer"
+    if (onHeaderClick) {
+        style.cursor = "pointer"
+    }
 
     return (
         <AccordionContext.Consumer>
             {
-                context => (
+                context => 
                     <div className={classNames(className, "card")} {...otherProps}>
                         <div
                             style={style}
@@ -45,7 +48,7 @@ export default function AccordionPanel(props: PanelProps) {
                             </div>
                         </Collapse>
                     </div>
-                )
+                
             }
         </AccordionContext.Consumer>
     )

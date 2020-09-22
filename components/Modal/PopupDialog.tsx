@@ -17,10 +17,14 @@ export default class PopupDialog extends Dialog {
     private inputRef = React.createRef<any>()
     options: PopupDialogOption
 
-    constructor(type: popupDialogType, options: PopupDialogOption = {}) {
+    constructor(type: popupDialogType, options: PopupDialogOption = {
+    }) {
         super(options)
 
-        if (!options || typeof options !== "object") options = {}
+        if (!options || typeof options !== "object") {
+            options = {
+            }
+        }
         
         this.type = type
         this.options = options
@@ -62,14 +66,14 @@ export default class PopupDialog extends Dialog {
                 header={others.title ? undefined : null}>{/* //if no title, remove the header */}
                 <div className="bs-dialog-message">{message}</div>
                 {
-                    this.type === "prompt" && (
+                    this.type === "prompt" && 
                         <Input
                             ref={inputRef}
                             className="bs-dialog-input"
                             onKeyDown={this.handleKeydown}
                             placeholder={placeholder}
                             defaultValue={defaultValue} />
-                    )
+                    
                 }
             </Modal>
         )
@@ -84,15 +88,25 @@ export default class PopupDialog extends Dialog {
     }
 
     focus = () => {
-        const { inputRef: { current: input } } = this
+        const {
+            inputRef: {
+                current: input 
+            } 
+        } = this
 
         input && input.focus()
     }
 
     getValue() {
-        const { inputRef: { current: input } } = this
+        const {
+            inputRef: {
+                current: input 
+            } 
+        } = this
 
-        if (input) return input.value
+        if (input) {
+            return input.value
+        }
     }
 
     onOk = () => {
@@ -101,9 +115,11 @@ export default class PopupDialog extends Dialog {
             options
         } = this
         const onOk = handleFuncProp(options.onOk)
-        let ret: any = onOk(this.getValue())
+        const ret: any = onOk(this.getValue())
 
-        if (type === "alert" || ret === false) return
+        if (type === "alert" || ret === false) {
+            return
+        }
 
         if (ret && typeof ret.then === "function") {
             return ret.then(this.close)
@@ -116,7 +132,9 @@ export default class PopupDialog extends Dialog {
         const onCancel = handleFuncProp(this.options.onCancel)
         const ret: any = onCancel()
 
-        if (ret === false) return
+        if (ret === false) {
+            return
+        }
 
         if (ret && typeof ret.then === "function") {
             return ret.then(this.close)

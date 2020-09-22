@@ -1,8 +1,8 @@
 import * as React from "react"
 import PropTypes from "prop-types"
-import { classNames } from "../utils"
-import { NavbarContext } from "../Common/contexts"
-import { CommonProps } from "../Common/CommonPropsInterface"
+import {classNames} from "../utils"
+import {NavbarContext} from "../Common/contexts"
+import {CommonProps} from "../Common/CommonPropsInterface"
 
 export interface NavProps extends CommonProps<HTMLElement> {
     alignment?: "left" | "center" | "right"
@@ -46,7 +46,7 @@ export default function Nav(props: NavProps) {
                             value || navbar ? "navbar-nav" : "nav",
                             variant && variantMap[variant],
                             alignment && alignmentMap[alignment],
-                            vertical ? (minWidth ? `flex-${minWidth}-column` : "flex-column") : "",
+                            vertical ? minWidth ? `flex-${minWidth}-column` : "flex-column" : "",
                             fill && "nav-fill",
                             equalWidth && "nav-justified"
                         ),

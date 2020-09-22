@@ -1,7 +1,7 @@
 import * as React from "react"
 import PropTypes from "prop-types"
-import { classNames } from "../utils"
-import { InputCommonProps } from "../Common/CommonPropsInterface"
+import {classNames} from "../utils"
+import {InputCommonProps} from "../Common/CommonPropsInterface"
 
 let uuid = 0
 
@@ -23,7 +23,7 @@ const CustomControl = React.forwardRef(
         ref: React.Ref<HTMLInputElement>
     ) => {
         const PREFIX = "custom-control"
-        let _type = type === "switch" ? "checkbox" : type
+        const _type = type === "switch" ? "checkbox" : type
         let _id = id
         let _label: React.ReactElement | null = null
 
@@ -31,13 +31,13 @@ const CustomControl = React.forwardRef(
             _id = `bs-custom-control-${uuid++}`
         }
 
-        _label = (
+        _label = 
             <label
                 htmlFor={_id}
                 className={`${PREFIX}-label`}>
                 {children}
             </label>
-        )
+        
 
         return (
             <div className={

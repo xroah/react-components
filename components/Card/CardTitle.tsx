@@ -1,7 +1,9 @@
 import * as React from "react"
 import PropTypes from "prop-types"
-import { variantType, classNames, variantArray } from "../utils"
-import { CommonProps } from "../Common/CommonPropsInterface"
+import {
+    variantType, classNames, variantArray, isUndef 
+} from "../utils"
+import {CommonProps} from "../Common/CommonPropsInterface"
 
 export type colorType = variantType | "white" | "muted" | "white-50" | "black-50"
 
@@ -33,11 +35,11 @@ export default function CardTitle(props: CardTitleProps) {
                 )
             }>{children}</h5>
             {
-                subtitle != undefined && (
+                !isUndef(subtitle) && 
                     <h6 className={`card-subtitle mb-2 text-${subTitleColor}`}>
                         {subtitle}
                     </h6>
-                )
+                
             }
         </div>
     )

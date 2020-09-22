@@ -1,6 +1,6 @@
 import * as React from "react"
-import { classNames } from "../utils"
-import Collapse, { CollapseProps } from "../Collapse/Collapse"
+import {classNames} from "../utils"
+import Collapse, {CollapseProps} from "../Collapse/Collapse"
 
 export default function NavbarCollapse(props: CollapseProps) {
     const {

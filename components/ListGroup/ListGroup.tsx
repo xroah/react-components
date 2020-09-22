@@ -1,8 +1,8 @@
 import * as React from "react"
 import PropTypes from "prop-types"
-import { classNames } from "../utils"
-import { CommonProps } from "../Common/CommonPropsInterface"
-import { ListGroupContext } from "../Common/contexts"
+import {classNames} from "../utils"
+import {CommonProps} from "../Common/CommonPropsInterface"
+import {ListGroupContext} from "../Common/contexts"
 
 export interface ListGroupProps extends CommonProps<HTMLDivElement> {
     flush?: boolean
@@ -21,7 +21,7 @@ export default function ListGroup(props: ListGroupProps) {
         ...otherProps
     } = props
     const PREFIX = "list-group"
-    let H_PREFIX = `${PREFIX}-horizontal`
+    const H_PREFIX = `${PREFIX}-horizontal`
 
     return (
         <ListGroupContext.Provider value={!!equalWidth && !!horizontal}>
@@ -29,7 +29,8 @@ export default function ListGroup(props: ListGroupProps) {
                 classNames(
                     PREFIX,
                     flush && `${PREFIX}-flush`,
-                    horizontal ? (minWidth ? `${H_PREFIX}-${minWidth}` : H_PREFIX ) : ""
+                    horizontal ? minWidth ? `${H_PREFIX}-${minWidth}` : H_PREFIX : "",
+                    className
                 )
             } {...otherProps} />
         </ListGroupContext.Provider>

@@ -6,7 +6,7 @@ import {
     reflow,
     classNames
 } from "../utils"
-import { CommonProps } from "../Common/CommonPropsInterface"
+import {CommonProps} from "../Common/CommonPropsInterface"
 import omitProps from "../utils/omitProps"
 
 export interface CarouselProps extends CommonProps<HTMLDivElement> {
@@ -94,7 +94,7 @@ export default class Carousel extends React.Component<CarouselProps, CarouselSta
     update(isUpdate = true) {
         const PREFIX = "carousel-item"
         const children = this.getChildren()
-        let {
+        const {
             state: {
                 curIndex,
                 prevIndex
@@ -104,16 +104,18 @@ export default class Carousel extends React.Component<CarouselProps, CarouselSta
                 onSlid
             }
         } = this
-        let el = children[curIndex] as HTMLElement
-        let prevEl = children[prevIndex] as HTMLElement
-        let clsMap: any = {
+        const el = children[curIndex] as HTMLElement
+        const prevEl = children[prevIndex] as HTMLElement
+        const clsMap: any = {
             prev: "right",
             next: "left"
         }
-        let cls1 = `${PREFIX}-${this.dir}`
-        let cls2 = `${PREFIX}-${clsMap[this.dir]}`
+        const cls1 = `${PREFIX}-${this.dir}`
+        const cls2 = `${PREFIX}-${clsMap[this.dir]}`
 
-        if (!el) return
+        if (!el) {
+            return
+        }
 
         //component just mounted
         if (!isUpdate) {
@@ -147,27 +149,37 @@ export default class Carousel extends React.Component<CarouselProps, CarouselSta
     }
 
     to(index: number) {
-        let childrenLen = this.getChildren().length
-        let { curIndex } = this.state
+        const childrenLen = this.getChildren().length
+        const {
+            curIndex 
+        } = this.state
 
-        if (typeof index !== "number") throw new Error("The param must be a number")
+        if (typeof index !== "number") {
+            throw new Error("The param must be a number")
+        }
 
-        if (this.transitioning || childrenLen <= 1) return
+        if (this.transitioning || childrenLen <= 1) {
+            return
+        }
 
         //cycle
         if (index >= childrenLen) {
             index = 0
-        } else if (index < 0) {
+        }
+        else if (index < 0) {
             index = childrenLen - 1
         }
 
-        if (index === curIndex) return
+        if (index === curIndex) {
+            return
+        }
 
         //component just mount
         if (curIndex === -1) {
             this.dir = ""
-        } else {
-            if (!this.dir) this.dir = index > curIndex ? "next" : "prev"
+        }
+        else if (!this.dir) {
+            this.dir = index > curIndex ? "next" : "prev"
         }
 
         this.setState({
@@ -184,7 +196,7 @@ export default class Carousel extends React.Component<CarouselProps, CarouselSta
     }
 
     start = () => {
-        let children = this.getChildren()
+        const children = this.getChildren()
 
         this.stop()
         children.length > 1 && this.cycle()
@@ -197,7 +209,9 @@ export default class Carousel extends React.Component<CarouselProps, CarouselSta
     }
 
     toPrev = (evt?: React.MouseEvent) => {
-        let { curIndex } = this.state
+        let {
+            curIndex 
+        } = this.state
         this.dir = "prev"
 
         this.to(--curIndex)
@@ -205,7 +219,9 @@ export default class Carousel extends React.Component<CarouselProps, CarouselSta
     }
 
     toNext = (evt?: React.MouseEvent) => {
-        let { curIndex } = this.state
+        let {
+            curIndex 
+        } = this.state
         this.dir = "next"
 
         this.to(++curIndex)
@@ -213,8 +229,8 @@ export default class Carousel extends React.Component<CarouselProps, CarouselSta
     }
 
     handleClickIndicator = (evt: React.MouseEvent) => {
-        let tgt = evt.target as HTMLElement
-        let index = parseInt(tgt.dataset.index as any)
+        const tgt = evt.target as HTMLElement
+        const index = parseInt(tgt.dataset.index as any)
 
         this.to(index)
     }
@@ -226,26 +242,33 @@ export default class Carousel extends React.Component<CarouselProps, CarouselSta
     handleTouchEnd = (evt: React.TouchEvent) => {
 
         //after all touches end
-        if (evt.touches.length) return
+        if (evt.touches.length) {
+            return
+        }
 
         const THRESHOLD = 100
         const distance = evt.changedTouches[0].clientX - this.startX
 
         this.start()
 
-        if (Math.abs(distance) < THRESHOLD) return
+        if (Math.abs(distance) < THRESHOLD) {
+            return
+        }
 
         if (distance < 0) {
             this.toNext()
-        } else {
+        }
+        else {
             this.toPrev()
         }
     }
 
     getChildren() {
-        let el = this.el.current
+        const el = this.el.current
 
-        if (!el) return []
+        if (!el) {
+            return []
+        }
 
         return Array.from(el.children)
     }
@@ -278,13 +301,13 @@ export default class Carousel extends React.Component<CarouselProps, CarouselSta
                 {
                     React.Children.map(
                         children,
-                        (c, i) => (
+                        (c, i) => 
                             <li
                                 key={i}
                                 data-index={i}
                                 onClick={this.handleClickIndicator}
                                 className={classNames(curIndex === i && "active")} />
-                        )
+                        
                     )
                 }
             </ol>
@@ -330,7 +353,9 @@ export default class Carousel extends React.Component<CarouselProps, CarouselSta
                 <div className="carousel-inner" ref={this.el}>
                     {
                         React.Children.map(children, (c, i) => {
-                            if (!React.isValidElement(c)) return null
+                            if (!React.isValidElement(c)) {
+                                return null
+                            }
 
                             return React.cloneElement(
                                 c,

@@ -1,9 +1,9 @@
 import * as React from "react"
-import { chainFunction } from "../utils"
-import Popup, { PopupCommonProps, PopupProps } from "./Popup"
+import {chainFunction, isUndef} from "../utils"
+import Popup, {PopupCommonProps, PopupProps} from "./Popup"
 import PropTypes from "prop-types"
-import { findDOMNode } from "react-dom"
-import { ModalContext } from "./contexts"
+import {findDOMNode} from "react-dom"
+import {ModalContext} from "./contexts"
 import omitProps from "../utils/omitProps"
 
 export type action = "hover" | "click" | "contextmenu" | "focus"
@@ -39,7 +39,8 @@ export function handleDelay(delay?: number | DelayObject) {
     if (delay) {
         if (typeof delay === "number") {
             ret.show = ret.hide = delay
-        } else {
+        }
+        else {
             ret = delay
         }
     }
@@ -49,7 +50,7 @@ export function handleDelay(delay?: number | DelayObject) {
 
 export default class Overlay extends React.Component<OverlayProps, OverlayState> {
 
-    private timer: NodeJS.Timeout | null = null
+    private timer: any
     private delayTimer: NodeJS.Timeout | null = null
 
     static propTypes = {
@@ -95,16 +96,19 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
     }
 
     getAction() {
-        const { trigger } = this.props
-        let action: Array<any> = []
+        const {
+            trigger 
+        } = this.props
+        let actions: Array<any> = []
 
         if (Array.isArray(trigger)) {
-            action = trigger
-        } else {
-            action = [trigger]
+            actions = trigger
+        }
+        else {
+            actions = [trigger]
         }
 
-        return action
+        return actions
     }
 
     isControlled() {
@@ -119,7 +123,9 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
         if (
             src.disabled ||
             src.classList.contains("disabled")
-        ) return
+        ) {
+            return
+        }
 
         this.clearTimer()
         this.clearDelayTimer()
@@ -127,19 +133,19 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
         evt.stopPropagation()
 
         switch (type) {
-            case "click":
-                this.toggle()
-                break
-            case "mouseenter":
-            case "focus":
-                this.open()
-                break
-            case "mouseleave":
-                this.delayClose()
-                break
-            case "blur":
-                this.close()
-                break
+        case "click":
+            this.toggle()
+            break
+        case "mouseenter":
+        case "focus":
+            this.open()
+            break
+        case "mouseleave":
+            this.delayClose()
+            break
+        case "blur":
+            this.close()
+            break
         }
     }
 
@@ -155,9 +161,9 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
     }
 
     handlePopupMouseLeave = () => {
-        const action = this.getAction()
+        const actions = this.getAction()
 
-        if (action.indexOf("hover") > -1) {
+        if (actions.indexOf("hover") > -1) {
             this.delayClose()
         }
     }
@@ -176,35 +182,47 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
     }
 
     open = () => {
-        if (this.state.visible || this.isControlled()) return
+        if (this.state.visible || this.isControlled()) {
+            return
+        }
 
         const open = () => this.setVisible(true)
-        const { show = 0 } = handleDelay(this.props.delay)
+        const {
+            show = 0 
+        } = handleDelay(this.props.delay)
 
         this.delayTimer = setTimeout(open, show)
 
     }
 
     close = () => {
-        if (!this.state.visible || this.isControlled()) return
+        if (!this.state.visible || this.isControlled()) {
+            return
+        }
 
         const close = () => this.setVisible(false)
-        const { hide = 0 } = handleDelay(this.props.delay)
+        const {
+            hide = 0 
+        } = handleDelay(this.props.delay)
 
         this.delayTimer = setTimeout(close, hide)
     }
 
     toggle = () => {
-        const { visible } = this.state
+        const {
+            visible 
+        } = this.state
 
         visible ? this.close() : this.open()
     }
 
     //for hover, prevent the popup from hiding when mouseout fires
     delayClose() {
-        const { hide = 0 } = handleDelay(this.props.delay)
+        const {
+            hide = 0 
+        } = handleDelay(this.props.delay)
 
-        if (this.timer != null) {
+        if (!isUndef(this.timer)) {
             clearTimeout(this.timer)
             this.timer = null
         }
@@ -217,7 +235,8 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
             children,
             ...otherProps
         } = this.props
-        let eventHandlers: any = {}
+        let eventHandlers: any = {
+        }
 
         omitProps(
             otherProps,
@@ -266,9 +285,9 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
                     onBlur: chainFunction(handler, otherProps.onBlur || onBlur)
                 }
             }
-            const action = this.getAction()
+            const actions = this.getAction()
 
-            action.forEach((a: string) => {
+            actions.forEach((a: string) => {
                 if (a in actionMap) {
                     eventHandlers = {
                         ...eventHandlers,
@@ -313,7 +332,9 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
             }
         } = this
         
-        if (popup == undefined) return children
+        if (isUndef(popup)) {
+            return children
+        }
 
         const props = {
             fade,
@@ -337,7 +358,9 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
                 <ModalContext.Consumer>
                     {
                         //when placed within modals, dismiss once modals are closed
-                        ({ isModal, visible: mVisible }) => {
+                        ({
+                            isModal, visible: mVisible 
+                        }) => {
                             if (visible && isModal && !mVisible) {
                                 this.close()
                             }

@@ -2,10 +2,11 @@ import * as React from "react"
 import PropTypes from "prop-types"
 import {
     classNames,
+    isUndef,
     variantArray,
     variantType
 } from "../utils"
-import { CommonProps } from "../Common/CommonPropsInterface"
+import {CommonProps} from "../Common/CommonPropsInterface"
 
 export interface SpinnerProps extends CommonProps<HTMLDivElement> {
     variant?: variantType
@@ -21,7 +22,8 @@ export default function Spinner(props: SpinnerProps) {
         animation,
         className,
         children,
-        style = {},
+        style = {
+        },
         borderWidth,
         ...otherProps
     } = props
@@ -31,7 +33,7 @@ export default function Spinner(props: SpinnerProps) {
         style.width = style.height = size
     }
 
-    if (animation === "border" && borderWidth != undefined) {
+    if (animation === "border" && !isUndef(borderWidth)) {
         style.borderWidth = borderWidth
     }
 

@@ -1,7 +1,7 @@
 import * as React from "react"
-import { classNames } from "../utils"
+import {classNames} from "../utils"
 import Button from "../Button"
-import DropdownInner, { DropdownProps } from "./DropdownInner"
+import DropdownInner, {DropdownProps} from "./DropdownInner"
 
 export default function Dropdown(props: DropdownProps) {
     const {

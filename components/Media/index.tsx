@@ -1,7 +1,10 @@
 import * as React from "react"
 import PropTypes from "prop-types"
-import { classNames } from "../utils"
-import { CommonPropsWithoutTitle } from "../Common/CommonPropsInterface"
+import {
+    classNames,
+    isUndef
+} from "../utils"
+import {CommonPropsWithoutTitle} from "../Common/CommonPropsInterface"
 
 export interface MediaProps extends CommonPropsWithoutTitle<HTMLDivElement> {
     img?: string | React.ReactNode
@@ -41,7 +44,7 @@ export default function Media(props: MediaProps) {
     )
 
     if (typeof img === "string") {
-        _img = (
+        _img =
             <img
                 src={img}
                 alt={imgAlt}
@@ -49,8 +52,9 @@ export default function Media(props: MediaProps) {
                 className={imgClasses}
                 width={imgSize}
                 height={imgSize} />
-        )
-    } else if (React.isValidElement(img)) {
+
+    }
+    else if (React.isValidElement(img)) {
         _img = React.cloneElement<any>(
             img,
             {
@@ -62,16 +66,16 @@ export default function Media(props: MediaProps) {
         )
     }
 
-    const body = (
+    const body =
         <div className="media-body">
             {
-                title != undefined && (
-                    <h5 className="mt-0 mb-1">{title}</h5>
-                )
+                !isUndef(title) &&
+                <h5 className="mt-0 mb-1">{title}</h5>
+
             }
             {children}
         </div>
-    )
+
 
     return (
         <div

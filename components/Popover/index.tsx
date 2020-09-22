@@ -1,9 +1,9 @@
 import * as React from "react"
 import PropTypes from "prop-types"
-import Overlay, { CommonProps } from "../Common/Overlay"
-import { handleArrowStyle } from "../Tooltip"
-import { PopupContext } from "../Common/contexts"
-import { classNames } from "../utils"
+import Overlay, {CommonProps} from "../Common/Overlay"
+import {handleArrowStyle} from "../Tooltip"
+import {PopupContext} from "../Common/contexts"
+import {classNames} from "../utils"
 
 export interface PopoverProps extends CommonProps {
     header?: string | React.ReactNode
@@ -16,15 +16,18 @@ export default function Popover(props: PopoverProps) {
         children,
         placement,
         content,
-        style = {},
+        style = {
+        },
         ...otherProps
     } = props
     style.position = "relative"
 
-    const popup = (
+    const popup = 
         <PopupContext.Consumer>
             {
-                ({ arrowLeft, arrowTop, placement: p }) => (
+                ({
+                    arrowLeft, arrowTop, placement: p 
+                }) => 
                     <div style={style}
                         className={
                             classNames(
@@ -37,18 +40,18 @@ export default function Popover(props: PopoverProps) {
                             margin: 0
                         }} />
                         {
-                            !!header && (
+                            !!header && 
                                 <h3 className="popover-header">{header}</h3>
-                            )
+                            
                         }
                         <div className="popover-body">
                             {content}
                         </div>
                     </div>
-                )
+                
             }
         </PopupContext.Consumer>
-    )
+    
     return (
         <Overlay
             unmountOnExit

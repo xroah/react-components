@@ -1,10 +1,10 @@
-import { FunctionComponent } from "react" 
-import { createComponentByClass } from "../utils"
+import {FunctionComponent} from "react" 
+import {createComponentByClass} from "../utils"
 import Brand from "./Brand"
 import Collapse from "./Collapse"
 import Toggle from "./Toggle"
 import Navbar from "./Navbar"
-import { CommonProps } from "../Common/CommonPropsInterface"
+import {CommonProps} from "../Common/CommonPropsInterface"
 
 interface NavbarComponent {
     Brand: typeof Brand

@@ -4,11 +4,11 @@ import {
     FunctionComponent
 } from "react"
 import ButtonGroup from "./ButtonGroup"
-import Button, { ButtonProps } from "./Button"
+import Button, {ButtonProps} from "./Button"
 import Toggle from "./ToggleButton"
-import { createComponentByClass } from "../utils"
+import {createComponentByClass} from "../utils"
 import ToggleGroup from "./ToggleGroup"
-import { CommonProps } from "../Common/CommonPropsInterface"
+import {CommonProps} from "../Common/CommonPropsInterface"
 
 interface ButtonInterface {
     Group: typeof ButtonGroup

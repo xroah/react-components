@@ -1,7 +1,7 @@
 import * as React from "react"
 import PropTypes from "prop-types"
-import { classNames } from "../utils"
-import { CommonProps } from "../Common/CommonPropsInterface"
+import {classNames} from "../utils"
+import {CommonProps} from "../Common/CommonPropsInterface"
 
 export interface ContainerProps extends CommonProps<HTMLElement> {
     variant?: "fluid" | "sm" | "md" | "lg" | "xl"

@@ -1,9 +1,9 @@
 import * as React from "react"
 import PropTypes from "prop-types"
-import Col, { ColProps } from "../Layout/Col"
-import { classNames } from "../utils"
-import { FormContext } from "../Common/contexts"
-import { CommonProps } from "../Common/CommonPropsInterface"
+import Col, {ColProps} from "../Layout/Col"
+import {classNames} from "../utils"
+import {FormContext} from "../Common/contexts"
+import {CommonProps} from "../Common/CommonPropsInterface"
 
 export interface FormItemProps extends CommonProps<HTMLElement> {
     horizontal?: boolean
@@ -42,7 +42,9 @@ function Label(props: LabelProps) {
                     labelAlign: contextLabelAlign,
                     horizontal: contextHorizontal
                 }: any) => {
-                    const _labelCol = labelCol || contextLabelCol || { span: false }
+                    const _labelCol = labelCol || contextLabelCol || {
+                        span: false
+                    }
                     const _labelAlign = labelAlign || contextLabelAlign
                     const h = horizontal || contextHorizontal || false
                     const colCls = _labelAlign === "right" ? "text-right" : undefined
@@ -80,16 +82,20 @@ function Wrapper(props: WrapperProps) {
     return (
         <FormContext.Consumer>
             {
-                ({ wrapperCol: contextWrapperCol }: any) => {
-                    const _wrapperCol = wrapperCol || contextWrapperCol || { span: false }
+                ({
+                    wrapperCol: contextWrapperCol
+                }: any) => {
+                    const _wrapperCol = wrapperCol || contextWrapperCol || {
+                        span: false
+                    }
 
                     return (
                         <Col {..._wrapperCol}>
                             {children}
                             {
-                                help && (
-                                    <small className="form-text text-muted">{help}</small>
-                                )
+                                help &&
+                                <small className="form-text text-muted">{help}</small>
+
                             }
                         </Col>
                     )
@@ -123,7 +129,7 @@ export default function FormItem(props: FormItemProps) {
     if (React.isValidElement(children)) {
         let {
             id,
-            className,
+            className: cls,
             ...otherChildrenProps
         } = children.props as any
         const PREFIX = "form-control"
@@ -132,10 +138,9 @@ export default function FormItem(props: FormItemProps) {
             if (!_for) {
                 _for = id
             }
-        } else {
-            if (_for) {
-                id = _for
-            }
+        }
+        else if (_for) {
+            id = _for
         }
 
         _children = React.cloneElement<any>(
@@ -143,7 +148,7 @@ export default function FormItem(props: FormItemProps) {
             {
                 id,
                 className: classNames(
-                    className,
+                    cls,
                     control && PREFIX,
                 ),
                 ...otherChildrenProps
@@ -152,14 +157,14 @@ export default function FormItem(props: FormItemProps) {
     }
 
     if (labelText) {
-        let props = {
+        const labelProps = {
             htmlFor: _for || undefined,
             horizontal,
             labelCol,
             labelAlign,
             label
         }
-        _label = <Label {...props}>{labelText}</Label>
+        _label = <Label {...labelProps}>{labelText}</Label>
     }
 
     return (

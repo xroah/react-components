@@ -5,8 +5,8 @@ import {
     variantType,
     variantArray
 } from "../utils"
-import { CommonProps } from "../Common/CommonPropsInterface"
-import { ListGroupContext } from "../Common/contexts"
+import {CommonProps} from "../Common/CommonPropsInterface"
+import {ListGroupContext} from "../Common/contexts"
 
 export interface ListGroupItemProps extends CommonProps<HTMLElement> {
     action?: boolean
@@ -28,12 +28,12 @@ export default function ListGroupItem(props: ListGroupItemProps) {
         ...otherProps
     } = props
     const PREFIX = "list-group-item"
-    let tag = href ? "a" : action ? "button" : "div"
+    const tag = href ? "a" : action ? "button" : "div"
 
     return (
         <ListGroupContext.Consumer>
             {
-                equalWidth => (
+                equalWidth => 
                     React.createElement(
                         tag,
                         {
@@ -54,7 +54,7 @@ export default function ListGroupItem(props: ListGroupItemProps) {
                             ...otherProps
                         }
                     )
-                )
+                
             }
         </ListGroupContext.Consumer>
     )

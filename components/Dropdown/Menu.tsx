@@ -1,8 +1,8 @@
 import * as React from "react"
 import PropTypes from "prop-types"
-import { classNames } from "../utils"
-import { CommonProps } from "../Common/CommonPropsInterface"
-import { DropdownContext } from "../Common/contexts"
+import {classNames, isUndef} from "../utils"
+import {CommonProps} from "../Common/CommonPropsInterface"
+import {DropdownContext} from "../Common/contexts"
 
 export interface MenuProps extends CommonProps<HTMLDivElement> {
     header?: string | React.ReactNode
@@ -13,15 +13,15 @@ export default function DropdownMenu(props: MenuProps) {
         header,
         className,
         children,
-        style = {},
-        onClick,
+        style = {
+        },
         ...otherProps
     } = props
     const context = React.useContext(DropdownContext)
     style.left = 0
     style.top = 0
     style.position = "relative"
-    style.outline =  style.outline || "none"
+    style.outline = style.outline || "none"
 
     //for calculating size correctly
     if (context.isDropdown) {
@@ -40,7 +40,7 @@ export default function DropdownMenu(props: MenuProps) {
             }
             {...otherProps}>
             {
-                header != undefined && <div className="dropdown-header">{header}</div>
+                !isUndef(header) && <div className="dropdown-header">{header}</div>
             }
             {children}
         </div>

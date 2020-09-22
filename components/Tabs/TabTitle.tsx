@@ -1,6 +1,6 @@
 import * as React from "react"
 import Nav from "../Nav"
-import { TabContext } from "../Common/contexts"
+import {TabContext} from "../Common/contexts"
 
 interface TabTitleProps {
     itemKey?: string
@@ -26,7 +26,7 @@ export default function TabTitle(props: TabTitleProps) {
     return (
         <TabContext.Consumer>
             {
-                value => (
+                value => 
                     <Nav.Link
                         active={value.activeKey === itemKey}
                         disabled={disabled}
@@ -35,7 +35,7 @@ export default function TabTitle(props: TabTitleProps) {
                         {...otherProps}>
                         {children}
                     </Nav.Link>
-                )
+                
             }
         </TabContext.Consumer>
     )

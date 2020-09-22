@@ -1,7 +1,8 @@
 import * as React from "react"
 import PropTypes from "prop-types"
-import { classNames } from "../utils"
-import { CommonProps } from "../Common/CommonPropsInterface"
+import {classNames} from "../utils"
+import {CommonProps} from "../Common/CommonPropsInterface"
+import omitProps from "../utils/omitProps"
 
 export interface PaginationProps extends CommonProps<HTMLUListElement> {
     size?: "lg" | "sm"
@@ -10,7 +11,6 @@ export interface PaginationProps extends CommonProps<HTMLUListElement> {
 
 export default function Pagination(props: PaginationProps) {
     const {
-        className,
         size,
         alignment,
         ...otherProps
@@ -20,6 +20,8 @@ export default function Pagination(props: PaginationProps) {
         center: "justify-content-center",
         right: "justify-content-end"
     }
+
+    omitProps(otherProps, ["className"])
 
     return (
         <ul className={

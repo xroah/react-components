@@ -2,9 +2,12 @@ import * as React from "react"
 import PropTypes from "prop-types"
 import TabPane from "./TabPane"
 import Nav from "../Nav"
-import { handleFuncProp } from "../utils"
-import { TabContext } from "../Common/contexts"
-import { CommonProps } from "../Common/CommonPropsInterface"
+import {
+    handleFuncProp,
+    isUndef
+} from "../utils"
+import {TabContext} from "../Common/contexts"
+import {CommonProps} from "../Common/CommonPropsInterface"
 import TabTitle from "./TabTitle"
 import omitProps from "../utils/omitProps"
 
@@ -23,7 +26,7 @@ interface TabsState {
 }
 
 function isKeyEmpty(key: any) {
-    return key == undefined || !String(key).trim()
+    return key === undefined || key === null || !String(key).trim()
 }
 
 export default class Tabs extends React.Component<TabsProps, TabsState> {
@@ -88,8 +91,12 @@ export default class Tabs extends React.Component<TabsProps, TabsState> {
 
     componentDidUpdate(prevProps: TabsProps, prevState: TabsState) {
         const {
-            state: { activeKey },
-            props: { onTabChange }
+            state: {
+                activeKey
+            },
+            props: {
+                onTabChange
+            }
         } = this
 
         if (prevState.activeKey !== activeKey) {
@@ -105,8 +112,12 @@ export default class Tabs extends React.Component<TabsProps, TabsState> {
 
     handleClickTab = (key?: string, evt?: React.MouseEvent) => {
         const {
-            props: { onTabClick },
-            state: { activeKey },
+            props: {
+                onTabClick
+            },
+            state: {
+                activeKey
+            },
         } = this
 
         handleFuncProp(onTabClick)(key, evt)
@@ -131,14 +142,14 @@ export default class Tabs extends React.Component<TabsProps, TabsState> {
             if (React.isValidElement(c)) {
                 let {
                     tab,
-                    children,
+                    children: _children,
                     disabled
                 } = c.props as any
 
                 if (c.type === TabPane) {
-                    const key = c.key == undefined ? i.toString() : c.key
+                    const key = isUndef(c.key) ? i.toString() : c.key
 
-                    if (children) {
+                    if (_children) {
                         content.push(
                             React.cloneElement<any>(
                                 c,
@@ -151,9 +162,11 @@ export default class Tabs extends React.Component<TabsProps, TabsState> {
                         )
                     }
 
-                    if (!tab) return
+                    if (!tab) {
+                        return
+                    }
 
-                    tab = (
+                    tab =
                         <Nav.Item key={key}>
                             <TabTitle
                                 disabled={disabled}
@@ -162,7 +175,7 @@ export default class Tabs extends React.Component<TabsProps, TabsState> {
                                 {tab}
                             </TabTitle>
                         </Nav.Item>
-                    )
+
 
                     return tabs.push(tab)
                 }
@@ -173,11 +186,11 @@ export default class Tabs extends React.Component<TabsProps, TabsState> {
 
             content.push(c)
         })
-        const _tabs = tabs.length ? (
+        const _tabs = tabs.length ?
             <Nav variant={pill ? "pill" : "tab"}>
                 {tabs}
             </Nav>
-        ) : null
+            : null
 
         return [_tabs, content]
     }
@@ -185,7 +198,6 @@ export default class Tabs extends React.Component<TabsProps, TabsState> {
     render() {
         const {
             props: {
-                children,
                 fade,
                 ...otherProps
             },
@@ -199,7 +211,14 @@ export default class Tabs extends React.Component<TabsProps, TabsState> {
 
         omitProps(
             otherProps,
-            ["defaultActiveKey", "activeKey", "pill", "onTabChange", "onTabClick"]
+            [
+                "children",
+                "defaultActiveKey",
+                "activeKey",
+                "pill",
+                "onTabChange",
+                "onTabClick"
+            ]
         )
 
         return (

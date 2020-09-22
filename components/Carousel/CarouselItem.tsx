@@ -1,7 +1,7 @@
 import * as React from "react"
 import PropTypes from "prop-types"
-import { classNames } from "../utils"
-import { CommonProps } from "../Common/CommonPropsInterface"
+import {classNames, isUndef} from "../utils"
+import {CommonProps} from "../Common/CommonPropsInterface"
 
 export interface ItemProps extends CommonProps<HTMLDivElement> {
     caption?: React.ReactNode
@@ -22,14 +22,14 @@ export default function CarouselItem(props: ItemProps) {
                 "carousel-item"
             )
         }
-            {...otherProps}>
+        {...otherProps}>
             {children}
             {
-                caption != undefined && (
+                !isUndef(caption) && 
                     <div className="carousel-caption">
                         {caption}
                     </div>
-                )
+                
             }
         </div>
     )

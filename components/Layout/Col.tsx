@@ -1,7 +1,7 @@
 import * as React from "react"
 import PropTypes from "prop-types"
-import { classNames } from "../utils"
-import { CommonProps } from "../Common/CommonPropsInterface"
+import {classNames, isUndef} from "../utils"
+import {CommonProps} from "../Common/CommonPropsInterface"
 
 type spanType = "auto" | boolean | number
 
@@ -65,17 +65,20 @@ export default class Col extends React.Component<ColProps> {
     }
 
     handleOffsetOrOrder(type: string, val?: number) {
-        return (val == undefined) ? "" : `${type}-${val}`
+        return isUndef(val) ? "" : `${type}-${val}`
     }
 
     handleSize(val: sizeType, type: "sm" | "md" | "lg" | "xl") {
         const prefix = `col-${type}`
 
-        if (val == undefined || val === false) return ""
+        if (isUndef(val) || val === false) {
+            return ""
+        }
 
         if (val === true) {
             return prefix
-        } else if (val === "auto" || typeof val === "number") {
+        }
+        else if (val === "auto" || typeof val === "number") {
             return `${prefix}-${val}`
         }
 
@@ -115,7 +118,7 @@ export default class Col extends React.Component<ColProps> {
         ]
 
         size.forEach(([type, val]) => {
-            let tmp = this.handleSize(
+            const tmp = this.handleSize(
                 val as sizeType,
                 type as any
             )

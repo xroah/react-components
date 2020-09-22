@@ -1,6 +1,6 @@
 import * as React from "react"
-import { CommonProps } from "./CommonPropsInterface"
-import { getScrollParent } from "../utils"
+import {CommonProps} from "./CommonPropsInterface"
+import {getScrollParent} from "../utils"
 import omitProps from "../utils/omitProps"
 
 export type position = "top" | "right" | "bottom" | "left"
@@ -24,20 +24,21 @@ export default class Popup extends React.Component<AlignProps> {
             const len = offset.length
 
             switch (len) {
-                case 0:
-                    ret = [0, 0]
-                    break
-                case 1:
-                    ret = Array(2).fill(offset[0])
-                    break
-                default:
-                    ret = offset.slice(0, 2)
+            case 0:
+                ret = [0, 0]
+                break
+            case 1:
+                ret = Array(2).fill(offset[0])
+                break
+            default:
+                ret = offset.slice(0, 2)
             }
 
             if (!len) {
                 ret = [0, 0]
             }
-        } else {
+        }
+        else {
             ret = Array(2).fill(offset === undefined ? 0 : offset)
         }
 
@@ -66,30 +67,38 @@ export default class Popup extends React.Component<AlignProps> {
         if (el === body) {
             left = body.scrollLeft || html.scrollLeft
             top = body.scrollTop || html.scrollTop
-        } else {
+        }
+        else {
             left = el.scrollLeft
             top = el.scrollTop
         }
 
-        return { left, top }
+        return {
+            left,
+            top 
+        }
     }
 
     //get left and top(positioned element) relative to its scroll parent
     getRelativeOffset(parent: HTMLElement, el: HTMLElement) {
         const parentRect = parent.getBoundingClientRect()
         const elRect = el.getBoundingClientRect()
-        let { left, top } = this.getScrollOffset(parent)
+        let {
+            left, top 
+        } = this.getScrollOffset(parent)
         let rectLeft = 0
         let rectTop = 0
 
         if (parent === el) {
             left = top = 0
-        } else if (parent === document.body) {
+        }
+        else if (parent === document.body) {
             left += elRect.left
             top += elRect.top
             rectLeft = left
             rectTop = top
-        } else {
+        }
+        else {
             //top and left offset relative to its parent
             rectLeft = elRect.left - parentRect.left
             rectTop = elRect.top - parentRect.top
@@ -111,7 +120,7 @@ export default class Popup extends React.Component<AlignProps> {
         const scrollParent = getScrollParent(target)
         //if positioned element is in scrollParent or is scrollParent
         //the element offset is relative to the scrollParent, otherwise relative to body
-        const relativeParent = (scrollParent === positioned || scrollParent.contains(positioned)) ? scrollParent : document.body
+        const relativeParent = scrollParent === positioned || scrollParent.contains(positioned) ? scrollParent : document.body
         const {
             left: positionedLeft,
             top: positionedTop
@@ -161,7 +170,13 @@ export default class Popup extends React.Component<AlignProps> {
         let left = 0
         let top = 0
 
-        if (!child || !target) return { left, top, placement }
+        if (!child || !target) {
+            return {
+                left,
+                top,
+                placement 
+            }
+        }
 
         const targetWidth = target.offsetWidth
         const targetHeight = target.offsetHeight
@@ -234,27 +249,36 @@ export default class Popup extends React.Component<AlignProps> {
             if (verticalCenter) {
                 top += (targetHeight - childHeight) / 2
             }
-        } else {
+        }
+        else {
             //horizontal alignment
             switch (alignment) {
-                case "center":
-                    left += (targetWidth - childWidth) / 2
-                    break
-                case "right":
-                    left += targetWidth - childWidth
-                    break
-                default:
+            case "center":
+                left += (targetWidth - childWidth) / 2
+                break
+            case "right":
+                left += targetWidth - childWidth
+                break
+            default:
             }
         }
 
-        return { left, top, placement }
+        return {
+            left,
+            top,
+            placement 
+        }
     }
 
     //if the element top/right/bottom/left is out of the corresponding edge
     adjustElement() {
-        const { target } = this.props as any
+        const {
+            target 
+        } = this.props as any
         const child = this.childRef.current as HTMLElement
-        const { parent } = this.getBaseAlignmentPosition(child, target)
+        const {
+            parent 
+        } = this.getBaseAlignmentPosition(child, target)
         const childRect = child.getBoundingClientRect()
         const parentRect = parent.getBoundingClientRect()
         const body = document.body
@@ -269,13 +293,15 @@ export default class Popup extends React.Component<AlignProps> {
 
         if (rectLeft < 0) {
             leftOffset = Math.abs(rectLeft)
-        } else if (rightSpace > 0) {
+        }
+        else if (rightSpace > 0) {
             leftOffset = -rightSpace
         }
 
         if (rectTop < 0) {
             topOffset = Math.abs(rectTop)
-        } else if (bottomSpace > 0) {
+        }
+        else if (bottomSpace > 0) {
             topOffset = -bottomSpace
         }
 
@@ -292,7 +318,7 @@ export default class Popup extends React.Component<AlignProps> {
     handleRefs(...refs: React.Ref<any>[]) {
         return (node: any) => {
             refs.forEach((ref: any) => {
-                if (ref && ("current" in ref)) {
+                if (ref && "current" in ref) {
                     ref.current = node
                 }
             })
@@ -310,7 +336,9 @@ export default class Popup extends React.Component<AlignProps> {
             ["verticalCenter", "offset", "target", "placement", "alignment"]
         )
 
-        if (!children) return null
+        if (!children) {
+            return null
+        }
 
         if (React.isValidElement(children)) {
             return React.cloneElement<any>(

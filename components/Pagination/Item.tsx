@@ -1,7 +1,7 @@
 import * as React from "react"
 import PropTypes from "prop-types"
-import { classNames } from "../utils"
-import { CommonProps } from "../Common/CommonPropsInterface"
+import {classNames} from "../utils"
+import {CommonProps} from "../Common/CommonPropsInterface"
 
 export interface ItemProps extends CommonProps<HTMLElement> {
     active?: boolean
@@ -32,10 +32,10 @@ export default function PaginationItem(props: ItemProps) {
             )
         } {...otherProps}>
             <a 
-            href="#" 
-            className="page-link"
-            tabIndex={disabled ? -1 : undefined}
-            onClick={handleClick}>{children}</a>
+                href="#" 
+                className="page-link"
+                tabIndex={disabled ? -1 : undefined}
+                onClick={handleClick}>{children}</a>
         </li>
     )
 }

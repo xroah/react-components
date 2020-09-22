@@ -5,7 +5,7 @@ import {
     variantArray
 } from "../utils"
 import PropTypes from "prop-types"
-import { AnchorCommonProps } from "../Common/CommonPropsInterface"
+import {AnchorCommonProps} from "../Common/CommonPropsInterface"
 
 export interface BadgeProps extends AnchorCommonProps<HTMLSpanElement & HTMLAnchorElement> {
     variant?: variantType

@@ -1,10 +1,10 @@
 import * as React from "react"
 import PropTypes from "prop-types"
-import { classNames, handleFuncProp } from "../utils"
+import {classNames, handleFuncProp} from "../utils"
 import Fade from "../Common/Fade"
-import { TabContext } from "../Common/contexts"
+import {TabContext} from "../Common/contexts"
 import NoTransition from "../Common/NoTransition"
-import { CommonProps } from "../Common/CommonPropsInterface"
+import {CommonProps} from "../Common/CommonPropsInterface"
 import omitProps from "../utils/omitProps"
 
 export interface TabPaneProps extends CommonProps<HTMLDivElement> {
@@ -43,7 +43,7 @@ export default function TabPane(props: TabPaneProps) {
                         in: _in,
                         onExited: handleExited
                     }
-                    const pane = (
+                    const pane = 
                         <div className={
                             classNames(
                                 className,
@@ -51,7 +51,7 @@ export default function TabPane(props: TabPaneProps) {
                                 (_in || p === panelKey) && "active"
                             )
                         } {...otherProps} />
-                    )
+                    
 
                     return (
                         fade ?

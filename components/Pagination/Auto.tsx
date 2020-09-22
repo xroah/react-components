@@ -1,7 +1,7 @@
 import * as React from "react"
 import Pagination from "./Pagination"
-import { PaginationProps } from "./Pagination"
-import { handleFuncProp } from "../utils"
+import {PaginationProps} from "./Pagination"
+import {handleFuncProp} from "../utils"
 import Item from "./Item"
 
 export interface AutoPaginationProps extends PaginationProps {
@@ -97,7 +97,9 @@ export default class AutoPagination extends React.Component<AutoPaginationProps,
     }
 
     handlePage(page: number) {
-        let { current } = this.state
+        const {
+            current 
+        } = this.state
 
         if (page !== current) {
             if (!("current" in this.props)) {
@@ -123,7 +125,9 @@ export default class AutoPagination extends React.Component<AutoPaginationProps,
 
     renderPageItems() {
         const {
-            props: { total },
+            props: {
+                total 
+            },
             state: {
                 current,
                 pageSize
@@ -133,13 +137,18 @@ export default class AutoPagination extends React.Component<AutoPaginationProps,
         const ellipsis = <Item disabled>...</Item>
         const first = this.generateItem(1)
         const last = this.generateItem(totalPages)
-        const leftEllipsis = React.cloneElement(ellipsis, { key: "leftEllipsis" })
-        const rightEllipsis = React.cloneElement(ellipsis, { key: "rightEllipsis" })
+        const leftEllipsis = React.cloneElement(ellipsis, {
+            key: "leftEllipsis" 
+        })
+        const rightEllipsis = React.cloneElement(ellipsis, {
+            key: "rightEllipsis" 
+        })
         let items: React.ReactNode[] = []
 
         if (totalPages <= 10) {
             items = Array(totalPages).fill(0).map((item, i) => this.generateItem(i + 1))
-        } else {
+        }
+        else {
             //left ellipsis
             if (current >= totalPages - 4) {
                 items = [
@@ -147,13 +156,15 @@ export default class AutoPagination extends React.Component<AutoPaginationProps,
                     leftEllipsis,
                     ...Array(6).fill(0).map((item, i) => this.generateItem(i + totalPages - 5))
                 ]
-            } else if (current <= 5) { //right ellipsis
+            }
+            else if (current <= 5) { //right ellipsis
                 items = [
                     ...Array(6).fill(0).map((item, i) => this.generateItem(i + 1)),
                     rightEllipsis,
                     last
                 ]
-            } else { // both ellipsis
+            }
+            else { // both ellipsis
                 items = [
                     first,
                     leftEllipsis,

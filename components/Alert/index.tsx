@@ -10,7 +10,7 @@ import {
     handleFuncProp,
     createComponentByClass
 } from "../utils"
-import { CommonProps } from "../Common/CommonPropsInterface"
+import {CommonProps} from "../Common/CommonPropsInterface"
 
 export interface AlertProps extends CommonProps<HTMLDivElement> {
     variant?: variantType
@@ -58,7 +58,7 @@ export default function Alert(props: AlertProps) {
     }
 
     if (dismissible) {
-        button = (
+        button = 
             <Button
                 variant="link"
                 type="button"
@@ -66,20 +66,20 @@ export default function Alert(props: AlertProps) {
                 onClick={handleClick}>
                 <span aria-hidden="true">&times</span>
             </Button>
-        )
+        
     }
 
-    const child = (
+    const child = 
         <div className={classes} {...otherProps}>
             {
-                heading !== undefined && (
+                heading !== undefined && 
                     <h4 className={`${PREFIX}-heading`}>{heading}</h4>
-                )
+                
             }
             {children}
             {button}
         </div>
-    )
+    
     const transitionProps = {
         in: !!visible,
         unmountOnExit: true,

@@ -1,8 +1,8 @@
-import { FunctionComponent } from "react"
-import { createComponentByClass } from "../utils"
+import {FunctionComponent} from "react"
+import {createComponentByClass} from "../utils"
 import Link from "./Link"
 import Nav from "./Nav"
-import { CommonProps } from "../Common/CommonPropsInterface"
+import {CommonProps} from "../Common/CommonPropsInterface"
 
 type NavType = typeof Nav & {Link: typeof Link, Item: FunctionComponent<CommonProps<HTMLDivElement>>}
 

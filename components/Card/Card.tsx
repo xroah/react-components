@@ -3,11 +3,11 @@ import PropTypes from "prop-types"
 import {
     classNames,
     variantType,
-    variantArray
+    variantArray, isUndef
 } from "../utils"
-import { colorType, color } from "./CardTitle"
-import { CommonProps } from "../Common/CommonPropsInterface"
-import { CardBody } from "./Others"
+import {colorType, color} from "./CardTitle"
+import {CommonProps} from "../Common/CommonPropsInterface"
+import {CardBody} from "./Others"
 
 export interface CardProps extends CommonProps<HTMLDivElement> {
     header?: React.ReactNode
@@ -39,7 +39,7 @@ export default function Card(props: CardProps) {
         imgTitle,
         alignment,
         bg,
-        color,
+        color: colorProp,
         border,
         headerStyle,
         body,
@@ -52,7 +52,7 @@ export default function Card(props: CardProps) {
 
     if (img) {
         let _img: React.ReactElement
-        let cls = `card-img-${imgPosition}`
+        const cls = `card-img-${imgPosition}`
 
         if (React.isValidElement(img)) {
             _img = React.cloneElement<any>(
@@ -61,19 +61,21 @@ export default function Card(props: CardProps) {
                     className: classNames((img.props as any).className, cls)
                 }
             )
-        } else {
-            _img = (
+        }
+        else {
+            _img = 
                 <img
                     className={cls}
                     src={img as string}
                     alt={imgAlt}
                     title={imgTitle} />
-            )
+            
         }
 
         if (imgPosition === "top") {
             topImg = _img
-        } else {
+        }
+        else {
             bottomImg = _img
         }
     }
@@ -86,31 +88,31 @@ export default function Card(props: CardProps) {
                 alignment && `text-${alignment}`,
                 bg && `bg-${bg}`,
                 border && `border-${border}`,
-                color && `text-${color}`
+                colorProp && `text-${colorProp}`
             )
         } {...otherProps}>
             {
-                header != undefined && (
+                !isUndef(header) && 
                     <div style={headerStyle} className="card-header">{header}</div>
-                )
+                
             }
             {topImg}
             {
-                isImgOverlay && !!img ? (
+                isImgOverlay && !!img ? 
                     <div className="card-img-overlay">
                         {children}
                     </div>
-                ) : body ? (
-                    <CardBody>
-                        {children}
-                    </CardBody>
-                ) : children
+                    : body ? 
+                        <CardBody>
+                            {children}
+                        </CardBody>
+                        : children
             }
             {bottomImg}
             {
-                footer != undefined && (
+                !isUndef(footer) && 
                     <div style={footerStyle} className="card-footer">{footer}</div>
-                )
+                
             }
         </div>
     )

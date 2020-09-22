@@ -8,10 +8,14 @@ interface CreateProps {
 }
 
 export default (options: CreateProps) => {
-    const { className, tag = "div", displayName } = options
+    const {
+        className, tag = "div", displayName 
+    } = options
 
-    let Comp: any = (props: React.AllHTMLAttributes<HTMLElement>) => {
-        const { className: _className, ...otherProps } = props
+    const Comp: any = (props: React.AllHTMLAttributes<HTMLElement>) => {
+        const {
+            className: _className, ...otherProps 
+        } = props
 
         return React.createElement(
             tag,

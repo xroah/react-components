@@ -2,7 +2,7 @@ import * as React from "react"
 import PropTypes from "prop-types"
 import Portal from "../Common/Portal"
 import CSSTransition from "../Common/CSSTransition"
-import { CommonProps } from "../Common/CommonPropsInterface"
+import {CommonProps} from "../Common/CommonPropsInterface"
 import {
     classNames,
     handleFuncProp,
@@ -88,7 +88,9 @@ export default class Drawer extends React.Component<DrawerProps, DrawerState> {
     }
 
     componentDidUpdate(prevProps: DrawerProps) {
-        const { visible } = this.props
+        const {
+            visible 
+        } = this.props
         const el = this.ref.current as HTMLElement
 
         if (visible !== prevProps.visible) {
@@ -111,18 +113,18 @@ export default class Drawer extends React.Component<DrawerProps, DrawerState> {
         const scrollTop = el.scrollTop
         
         if (
-            (
-                isScrollHorizontal && (
-                    (disX > 0 && scrollLeft <= 0) ||
-                    (disX < 0 && scrollLeft >= maxDisX)
-                )
-            ) ||
-            (
-                isScrollVertical && (
-                    (disY > 0 && scrollTop <= 0) ||
-                    (disY < 0 && scrollTop >= maxDisY)
-                )
+            
+            isScrollHorizontal && (
+                disX > 0 && scrollLeft <= 0 ||
+                    disX < 0 && scrollLeft >= maxDisX
             )
+             ||
+            
+                isScrollVertical && (
+                    disY > 0 && scrollTop <= 0 ||
+                    disY < 0 && scrollTop >= maxDisY
+                )
+            
         ) {
             return false
         }
@@ -133,7 +135,9 @@ export default class Drawer extends React.Component<DrawerProps, DrawerState> {
     preventTouchMove = (evt: TouchEvent) => {
         const touches = evt.touches
 
-        if (touches.length > 1 || !evt.cancelable) return
+        if (touches.length > 1 || !evt.cancelable) {
+            return
+        }
 
         const currentX = touches[0].clientX
         const currentY = touches[0].clientY
@@ -159,14 +163,18 @@ export default class Drawer extends React.Component<DrawerProps, DrawerState> {
     handleTouchStart = (evt: React.TouchEvent<HTMLElement>) => {
         const touches = evt.touches
 
-        if (touches.length > 1) return
+        if (touches.length > 1) {
+            return
+        }
         
         this.startX = touches[0].clientX
         this.startY = touches[0].clientY
     }
 
     focus = () => {
-        (this.ref.current as HTMLElement).focus()
+        const current = this.ref.current as HTMLElement
+        
+        current && current.focus()
     }
 
     handleClickBackdrop = () => {
@@ -177,7 +185,8 @@ export default class Drawer extends React.Component<DrawerProps, DrawerState> {
 
         if (backdrop && backdrop !== "static") {
             handleFuncProp(onClose)()
-        } else {
+        }
+        else {
             this.focus()
         }
     }
@@ -244,7 +253,7 @@ export default class Drawer extends React.Component<DrawerProps, DrawerState> {
     render() {
         const {
             children,
-            placement,
+            placement: placementProp,
             visible,
             width,
             height,
@@ -259,12 +268,16 @@ export default class Drawer extends React.Component<DrawerProps, DrawerState> {
             exited
         } = this.state
         const PREFIX = "bs-drawer"
-        const style: React.CSSProperties = {}
+        const style: React.CSSProperties = {
+        }
 
-        if (placement === "left" || placement === "right") {
+        if (placementProp === "left" || placementProp === "right") {
             style.width = width
-        } else {
+            style.height = window.innerHeight
+        }
+        else {
             style.width = window.innerWidth
+            style.height = height
         }
 
         if (!visible && unmountOnClose && exited) {
@@ -286,13 +299,13 @@ export default class Drawer extends React.Component<DrawerProps, DrawerState> {
                         classNames(
                             className,
                             PREFIX,
-                            `${PREFIX}-${placement}`,
+                            `${PREFIX}-${placementProp}`,
                             stateClass
                         )
                     }
                     {...otherProps}>
                     {
-                        !!backdrop && (
+                        !!backdrop && 
                             <Fade
                                 unmountOnExit
                                 in={!!visible}>
@@ -300,7 +313,7 @@ export default class Drawer extends React.Component<DrawerProps, DrawerState> {
                                     className="bs-drawer-backdrop"
                                     onClick={this.handleClickBackdrop} />
                             </Fade>
-                        )
+                        
                     }
                     <CSSTransition
                         appear

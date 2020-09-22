@@ -6,7 +6,7 @@ import {
     reflow
 } from "../utils"
 import CSSTransition from "../Common/CSSTransition"
-import { CommonProps } from "../Common/CommonPropsInterface"
+import {CommonProps} from "../Common/CommonPropsInterface"
 import omitProps from "../utils/omitProps"
 
 export interface CollapseProps extends CommonProps<HTMLDivElement> {
