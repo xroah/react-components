@@ -13,8 +13,8 @@
         "build:doc": "webpack",
         "build": "node ./rmdir && npm run lib && npm run es && npm run dev && npm run prod",
         "start": "webpack-dev-server --env development",
-        "lint": "eslint --ext .ts,.tsx components/**",
-        "fix": "eslint --ext .ts,.tsx --fix components/**/"
+        "lint": "eslint --ext .ts,.tsx components",
+        "fix": "eslint --ext .ts,.tsx --fix components"
     },
     "repository": {
         "type": "git",
