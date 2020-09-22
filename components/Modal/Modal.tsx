@@ -234,7 +234,7 @@ export default class Modal extends React.Component<ModalProps, ModalState> {
                         className="close"
                         onClick={this.handleCancel}
                         aria-label="Close">
-                        <span aria-hidden="true">&times</span>
+                        <span aria-hidden="true">&times;</span>
                     </button>
 
                 }

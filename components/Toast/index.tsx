@@ -154,7 +154,7 @@ export default class Toast extends React.Component<ToastProps> {
                                 className="ml-2 mb-1 close"
                                 aria-label="Close"
                                 onClick={this.handleClose}>
-                                <span aria-hidden="true">&times</span>
+                                <span aria-hidden="true">&times;</span>
                             </button>
                         )
                     }

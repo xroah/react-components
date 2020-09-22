@@ -64,7 +64,7 @@ export default function Alert(props: AlertProps) {
                 type="button"
                 className="close"
                 onClick={handleClick}>
-                <span aria-hidden="true">&times</span>
+                <span aria-hidden="true">&times;</span>
             </Button>
         )
     }
