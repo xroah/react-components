@@ -31,6 +31,6 @@ export default class LoadingDialog extends Dialog {
             </Loading>
         )
     }
-    
+
 }
 

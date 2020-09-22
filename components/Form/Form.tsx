@@ -25,7 +25,7 @@ export default function Form(props: FormProps) {
     } = props
 
     return (
-        <FormContext.Provider value={{ 
+        <FormContext.Provider value={{
             labelCol,
             wrapperCol,
             horizontal,

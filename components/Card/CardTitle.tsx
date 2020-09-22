@@ -1,7 +1,10 @@
 import * as React from "react"
 import PropTypes from "prop-types"
 import {
-    variantType, classNames, variantArray, isUndef 
+    variantType,
+    classNames,
+    variantArray,
+    isUndef 
 } from "../utils"
 import {CommonProps} from "../Common/CommonPropsInterface"
 
@@ -35,11 +38,11 @@ export default function CardTitle(props: CardTitleProps) {
                 )
             }>{children}</h5>
             {
-                !isUndef(subtitle) && 
+                !isUndef(subtitle) && (
                     <h6 className={`card-subtitle mb-2 text-${subTitleColor}`}>
                         {subtitle}
                     </h6>
-                
+                )
             }
         </div>
     )

@@ -1,5 +1,8 @@
 import * as React from "react"
-import {render, unmountComponentAtNode} from "react-dom"
+import {
+    render,
+    unmountComponentAtNode
+} from "react-dom"
 import {DialogOption} from "./interface"
 
 export const modals: Dialog[] = []

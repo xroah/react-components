@@ -111,7 +111,7 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
     handleClickOutSide = (evt: MouseEvent) => {
         const t = evt.target as HTMLElement
         const {
-            onClickOutside 
+            onClickOutside
         } = this.props
         const parent = this.ref.current
 
@@ -128,10 +128,10 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
         const {
             props: {
                 placement,
-                target,
+                target
             },
             ref: {
-                current: child 
+                current: child
             }
         } = this
 
@@ -155,7 +155,7 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
         }
 
         this.setState({
-            arrowPos 
+            arrowPos
         })
     }
 
@@ -167,7 +167,7 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
         }
 
         const {
-            left, top, placement 
+            left, top, placement
         } = alignRef.align()
 
         this.setState(
@@ -192,7 +192,7 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
 
     handleMouseEvent = (evt: React.MouseEvent<HTMLElement>) => {
         const {
-            onMouseLeave, onMouseEnter 
+            onMouseLeave, onMouseEnter
         } = this.props
 
         evt.type === "mouseenter" ? handleFuncProp(onMouseEnter)(evt)
@@ -215,7 +215,7 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
 
     handleEnter = (node: HTMLElement) => {
         const {
-            onShow 
+            onShow
         } = this.props
 
         this.setState({
@@ -228,7 +228,7 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
 
     handleEntered = (node: HTMLElement) => {
         const {
-            onShown 
+            onShown
         } = this.props
 
         handleFuncProp(onShown)(node)
@@ -242,7 +242,7 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
 
     handleExit = (node: HTMLElement) => {
         const {
-            onHide 
+            onHide
         } = this.props
 
         handleFuncProp(onHide)(node)
@@ -250,7 +250,7 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
 
     handleExited = (node: HTMLElement) => {
         const {
-            onHidden 
+            onHidden
         } = this.props
         this.setState({
             display: "none",
@@ -320,7 +320,7 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
             arrowTop: arrowPos.top,
             placement
         }
-        const child = 
+        const child = (
             <div style={{
                 display,
                 position: "absolute",
@@ -332,15 +332,15 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
             }} ref={this.ref}>
                 <div {...{
                     ...mouseEvent,
-                    ...otherProps 
+                    ...otherProps
                 }}>
                     <PopupContext.Provider value={context}>
                         {_children}
                     </PopupContext.Provider>
                 </div>
             </div>
-        
-        const align = 
+        )
+        const align = (
             <Align
                 ref={this.alignRef}
                 offset={offset}
@@ -350,7 +350,7 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
                 verticalCenter={verticalCenter}>
                 {child}
             </Align>
-        
+        )
         const transitionProps = {
             appear: true,
             onEnter: this.handleEnter,

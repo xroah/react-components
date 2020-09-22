@@ -171,7 +171,7 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
         const {
             onEntering,
             onEntered,
-            timeout = 0,
+            timeout = 0
         } = this.props
         const enteredCallback = () => {
             this.setState({

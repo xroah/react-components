@@ -5,7 +5,10 @@ import {
     variantType,
     variantArray, isUndef
 } from "../utils"
-import {colorType, color} from "./CardTitle"
+import {
+    colorType,
+    color
+} from "./CardTitle"
 import {CommonProps} from "../Common/CommonPropsInterface"
 import {CardBody} from "./Others"
 
@@ -63,13 +66,13 @@ export default function Card(props: CardProps) {
             )
         }
         else {
-            _img = 
+            _img = (
                 <img
                     className={cls}
                     src={img as string}
                     alt={imgAlt}
                     title={imgTitle} />
-            
+            )
         }
 
         if (imgPosition === "top") {
@@ -92,27 +95,31 @@ export default function Card(props: CardProps) {
             )
         } {...otherProps}>
             {
-                !isUndef(header) && 
+                !isUndef(header) && (
                     <div style={headerStyle} className="card-header">{header}</div>
-                
+                )
             }
             {topImg}
             {
-                isImgOverlay && !!img ? 
-                    <div className="card-img-overlay">
-                        {children}
-                    </div>
-                    : body ? 
-                        <CardBody>
+                isImgOverlay && !!img ?
+                    (
+                        <div className="card-img-overlay">
                             {children}
-                        </CardBody>
+                        </div>
+                    )
+                    : body ?
+                        (
+                            <CardBody>
+                                {children}
+                            </CardBody>
+                        )
                         : children
             }
             {bottomImg}
             {
-                !isUndef(footer) && 
+                !isUndef(footer) && (
                     <div style={footerStyle} className="card-footer">{footer}</div>
-                
+                )
             }
         </div>
     )
@@ -131,7 +138,7 @@ Card.propTypes = {
     align: PropTypes.oneOf(["left", "center", "right"]),
     bg: PropTypes.oneOf(variantArray),
     border: PropTypes.oneOf(variantArray),
-    color: PropTypes.oneOf(color),
+    color: PropTypes.oneOf(color)
 }
 
 Card.defaultProps = {

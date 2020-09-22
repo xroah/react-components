@@ -31,13 +31,13 @@ const CustomControl = React.forwardRef(
             _id = `bs-custom-control-${uuid++}`
         }
 
-        _label = 
+        _label = (
             <label
                 htmlFor={_id}
                 className={`${PREFIX}-label`}>
                 {children}
             </label>
-        
+        )
 
         return (
             <div className={

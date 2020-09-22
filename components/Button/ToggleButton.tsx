@@ -7,7 +7,9 @@ import {
 } from "./Button"
 import {InputCommonProps} from "../Common/CommonPropsInterface"
 import {ToggleButtonGroupContext} from "../Common/contexts"
-import {classNames, chainFunction} from "../utils"
+import {
+    classNames, chainFunction
+} from "../utils"
 
 export interface ToggleButtonProps extends InputCommonProps<HTMLInputElement>, CommonProps {
     type?: "checkbox" | "radio"
@@ -45,8 +47,8 @@ const ToggleButton = React.forwardRef(
             <ToggleButtonGroupContext.Consumer>
                 {
                     ({
-                        type: ctxType 
-                    }) => 
+                        type: ctxType
+                    }) =>
                         <label
                             style={style}
                             className={
@@ -64,7 +66,7 @@ const ToggleButton = React.forwardRef(
                                 {...props} />
                             {children}
                         </label>
-                    
+
                 }
             </ToggleButtonGroupContext.Consumer>
         )

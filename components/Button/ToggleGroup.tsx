@@ -19,7 +19,7 @@ export default function ToggleGroup(props: ToggleGroupProps) {
 
     return (
         <ToggleButtonGroupContext.Provider value={{
-            type: type as string 
+            type: type as string
         }}>
             <ButtonGroup className={
                 classNames(

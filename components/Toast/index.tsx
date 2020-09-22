@@ -1,7 +1,10 @@
 import * as React from "react"
 import PropTypes from "prop-types"
 import Fade from "../Common/Fade"
-import {classNames, handleFuncProp} from "../utils"
+import {
+    classNames,
+    handleFuncProp
+} from "../utils"
 import NoTransition from "../Common/NoTransition"
 import {CommonPropsWithoutTitle} from "../Common/CommonPropsInterface"
 
@@ -124,30 +127,28 @@ export default class Toast extends React.Component<ToastProps> {
 
         if (header === undefined) {
             if (typeof img === "string") {
-                img = 
+                img = (
                     <img
                         className="rounded"
                         src={img}
                         width={iconSize}
                         height={iconSize} />
-                
+                )
             }
 
-            header = 
+            header = (
                 <>
                     {img}
                     {
-                        !!title && 
-                            <strong className="ml-2">{title}</strong>
-                        
+                        !!title && <strong className="ml-2">{title}</strong>
+
                     }
                     {
-                        !!extra && 
-                            <small className="text-muted ml-auto">{extra}</small>
-                        
+                        !!extra && <small className="text-muted ml-auto">{extra}</small>
+
                     }
                     {
-                        closable && 
+                        closable && (
                             <button
                                 type="button"
                                 className="ml-2 mb-1 close"
@@ -155,10 +156,10 @@ export default class Toast extends React.Component<ToastProps> {
                                 onClick={this.handleClose}>
                                 <span aria-hidden="true">&times</span>
                             </button>
-                        
+                        )
                     }
                 </>
-            
+            )
         }
 
         return (
@@ -191,7 +192,7 @@ export default class Toast extends React.Component<ToastProps> {
         delete otherProps.onHide
         delete otherProps.onHidden
 
-        const toast = 
+        const toast =
             <div className={
                 classNames(
                     className,
@@ -203,7 +204,7 @@ export default class Toast extends React.Component<ToastProps> {
                     {children}
                 </div>
             </div>
-        
+
         const transitionProps = {
             in: !!visible,
             unmountOnExit: true,

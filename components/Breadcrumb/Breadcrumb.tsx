@@ -3,7 +3,9 @@ import {CommonProps} from "../Common/CommonPropsInterface"
 
 function Breadcrumb(props: CommonProps<HTMLElement>) {
     const {
-        className, children, ...otherProps 
+        className,
+        children,
+        ...otherProps 
     } = props
 
     return (

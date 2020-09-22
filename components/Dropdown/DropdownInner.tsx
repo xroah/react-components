@@ -4,7 +4,9 @@ import {
     classNames,
     chainFunction
 } from "../utils"
-import Overlay, {CommonProps, handleDelay} from "../Common/Overlay"
+import Overlay, {
+    CommonProps, handleDelay
+} from "../Common/Overlay"
 import {findDOMNode} from "react-dom"
 import {DropdownContext} from "../Common/contexts"
 
@@ -71,7 +73,7 @@ export default class Dropdown extends React.Component<DropdownProps, DropdownSta
 
     handleUpdated() {
         const {
-            visible 
+            visible
         } = this.state
         const node = findDOMNode(this)
         let parent: HTMLElement | null
@@ -105,7 +107,7 @@ export default class Dropdown extends React.Component<DropdownProps, DropdownSta
             hide = 0
         } = handleDelay(this.props.delay)
         const callback = () => this.setState({
-            visible 
+            visible
         })
         this.delayTimer = setTimeout(
             callback,
@@ -146,7 +148,7 @@ export default class Dropdown extends React.Component<DropdownProps, DropdownSta
         const key = evt.key.toLowerCase()
         const target = evt.target as HTMLButtonElement
         const {
-            visible, popupId 
+            visible, popupId
         } = this.state
         const tag = target.tagName.toLowerCase()
         const isInput = /input|textarea/.test(tag)
@@ -244,13 +246,14 @@ export default class Dropdown extends React.Component<DropdownProps, DropdownSta
         }
         const position = positionMap[placement as string]
         let child = React.Children.only(children) as React.ReactElement<React.HTMLAttributes<HTMLElement>>
-        const _overlay = 
-            <DropdownContext.Provider value={{ close: this.close,
-                isDropdown: true }}>
+        const _overlay = (
+            <DropdownContext.Provider value={{
+                close: this.close,
+                isDropdown: true
+            }}>
                 {overlay}
             </DropdownContext.Provider>
-        
-
+        )
         const {
             onClick,
             onKeyDown

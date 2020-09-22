@@ -217,7 +217,7 @@ export default class Modal extends React.Component<ModalProps, ModalState> {
         const {
             header,
             title,
-            closable,
+            closable
         } = this.props
 
         if (header === null) {
@@ -349,7 +349,7 @@ export default class Modal extends React.Component<ModalProps, ModalState> {
         )
         const _header = this.getHeader()
         const _footer = this.getFooter()
-        const modal =
+        const modal = (
             <div
                 style={{
                     display
@@ -372,7 +372,7 @@ export default class Modal extends React.Component<ModalProps, ModalState> {
                     </div>
                 </div>
             </div>
-
+        )
         const backdropEl = <div className="modal-backdrop" />
         const transitionProps = {
             in: !!visible,
@@ -380,7 +380,7 @@ export default class Modal extends React.Component<ModalProps, ModalState> {
             onEnter: this.handleEnter,
             onEntered: this.handleEntered,
             onExit: this.handleExit,
-            onExited: this.handleExited,
+            onExited: this.handleExited
         }
         const backdropProps = {
             in: !!visible,

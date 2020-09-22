@@ -1,6 +1,9 @@
 import * as React from "react"
 import PropTypes from "prop-types"
-import {classNames, isUndef} from "../utils"
+import {
+    classNames,
+    isUndef
+} from "../utils"
 import {InputGroupContext} from "../Common/contexts"
 import InputGroup from "./InputGroup"
 import {InputCommonProps} from "../Common/CommonPropsInterface"
@@ -44,37 +47,40 @@ const Input = React.forwardRef(
             sizing && noAppendix && `${PREFIX}-${sizing}`,
             otherProps.readOnly && plaintext ? `${PREFIX}-plaintext` : PREFIX
         )
-        const input = variant === "input" ? 
-            <input
-                ref={ref}
-                type={type}
-                className={classes}
-                {...otherProps} />
-            : 
-            <textarea
-                ref={ref}
-                className={classes}
-                {...otherProps} />
-            
-        const inputWithAddons = 
+        const input = variant === "input" ?
+            (
+                <input
+                    ref={ref}
+                    type={type}
+                    className={classes}
+                    {...otherProps} />
+            )
+            :
+            (
+                <textarea
+                    ref={ref}
+                    className={classes}
+                    {...otherProps} />
+            )
+        const inputWithAddons = (
             <>
                 {
-                    !isUndef(prepend) && 
+                    !isUndef(prepend) && (
                         <div className="input-group-prepend">
                             {handleAddon(prepend)}
                         </div>
-                    
+                    )
                 }
                 {input}
                 {
-                    !isUndef(append) && 
+                    !isUndef(append) && (
                         <div className="input-group-append">
                             {handleAddon(append)}
                         </div>
-                    
+                    )
                 }
             </>
-        
+        )
 
         if (noAppendix) {
             return input
@@ -84,11 +90,11 @@ const Input = React.forwardRef(
             <InputGroupContext.Consumer>
                 {
                     // prevent nesting
-                    value => 
+                    value =>
                         value ?
                             inputWithAddons :
                             <InputGroup size={sizing}>{inputWithAddons}</InputGroup>
-                    
+
                 }
             </InputGroupContext.Consumer>
         )

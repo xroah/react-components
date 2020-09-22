@@ -25,7 +25,7 @@ export default class PopupDialog extends Dialog {
             options = {
             }
         }
-        
+
         this.type = type
         this.options = options
     }
@@ -66,14 +66,14 @@ export default class PopupDialog extends Dialog {
                 header={others.title ? undefined : null}>{/* //if no title, remove the header */}
                 <div className="bs-dialog-message">{message}</div>
                 {
-                    this.type === "prompt" && 
+                    this.type === "prompt" && (
                         <Input
                             ref={inputRef}
                             className="bs-dialog-input"
                             onKeyDown={this.handleKeydown}
                             placeholder={placeholder}
                             defaultValue={defaultValue} />
-                    
+                    )
                 }
             </Modal>
         )
@@ -90,8 +90,8 @@ export default class PopupDialog extends Dialog {
     focus = () => {
         const {
             inputRef: {
-                current: input 
-            } 
+                current: input
+            }
         } = this
 
         input && input.focus()
@@ -100,8 +100,8 @@ export default class PopupDialog extends Dialog {
     getValue() {
         const {
             inputRef: {
-                current: input 
-            } 
+                current: input
+            }
         } = this
 
         if (input) {

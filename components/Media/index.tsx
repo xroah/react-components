@@ -44,7 +44,7 @@ export default function Media(props: MediaProps) {
     )
 
     if (typeof img === "string") {
-        _img =
+        _img = (
             <img
                 src={img}
                 alt={imgAlt}
@@ -52,7 +52,7 @@ export default function Media(props: MediaProps) {
                 className={imgClasses}
                 width={imgSize}
                 height={imgSize} />
-
+        )
     }
     else if (React.isValidElement(img)) {
         _img = React.cloneElement<any>(
@@ -66,16 +66,16 @@ export default function Media(props: MediaProps) {
         )
     }
 
-    const body =
+    const body = (
         <div className="media-body">
             {
-                !isUndef(title) &&
-                <h5 className="mt-0 mb-1">{title}</h5>
-
+                !isUndef(title) && (
+                    <h5 className="mt-0 mb-1">{title}</h5>
+                )
             }
             {children}
         </div>
-
+    )
 
     return (
         <div

@@ -19,7 +19,7 @@ export default function Dropdown(props: DropdownProps) {
     }
     const position = positionMap[placement as string]
     const classes = classNames(className, position)
-    
+
     return (
         <Button.Group className={classes} style={style}>
             <DropdownInner

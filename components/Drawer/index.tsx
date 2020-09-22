@@ -89,7 +89,7 @@ export default class Drawer extends React.Component<DrawerProps, DrawerState> {
 
     componentDidUpdate(prevProps: DrawerProps) {
         const {
-            visible 
+            visible
         } = this.props
         const el = this.ref.current as HTMLElement
 
@@ -111,20 +111,20 @@ export default class Drawer extends React.Component<DrawerProps, DrawerState> {
         const maxDisY = el.scrollHeight - el.clientHeight
         const scrollLeft = el.scrollLeft
         const scrollTop = el.scrollTop
-        
+
         if (
-            
+
             isScrollHorizontal && (
                 disX > 0 && scrollLeft <= 0 ||
-                    disX < 0 && scrollLeft >= maxDisX
+                disX < 0 && scrollLeft >= maxDisX
             )
-             ||
-            
-                isScrollVertical && (
-                    disY > 0 && scrollTop <= 0 ||
-                    disY < 0 && scrollTop >= maxDisY
-                )
-            
+            ||
+
+            isScrollVertical && (
+                disY > 0 && scrollTop <= 0 ||
+                disY < 0 && scrollTop >= maxDisY
+            )
+
         ) {
             return false
         }
@@ -166,14 +166,14 @@ export default class Drawer extends React.Component<DrawerProps, DrawerState> {
         if (touches.length > 1) {
             return
         }
-        
+
         this.startX = touches[0].clientX
         this.startY = touches[0].clientY
     }
 
     focus = () => {
         const current = this.ref.current as HTMLElement
-        
+
         current && current.focus()
     }
 
@@ -234,7 +234,7 @@ export default class Drawer extends React.Component<DrawerProps, DrawerState> {
 
     handleExit = () => {
         this.setState({
-            className: "",
+            className: ""
         })
         handleFuncProp(this.props.onHide)()
     }
@@ -305,7 +305,7 @@ export default class Drawer extends React.Component<DrawerProps, DrawerState> {
                     }
                     {...otherProps}>
                     {
-                        !!backdrop && 
+                        !!backdrop && (
                             <Fade
                                 unmountOnExit
                                 in={!!visible}>
@@ -313,7 +313,7 @@ export default class Drawer extends React.Component<DrawerProps, DrawerState> {
                                     className="bs-drawer-backdrop"
                                     onClick={this.handleClickBackdrop} />
                             </Fade>
-                        
+                        )
                     }
                     <CSSTransition
                         appear

@@ -32,7 +32,7 @@ module.exports = {
         "eqeqeq": [2],
         "no-new-func": [2],
         "no-undef-init": [2],
-        "no-use-before-define": [1, { "functions": false }],
+        //"no-use-before-define": [1, { "functions": false }],
         "no-unused-vars": [2, { "args": "none" }],
         "require-await": [2],
         "no-shadow": [2],
@@ -42,8 +42,18 @@ module.exports = {
         "new-cap": [2],
         "no-var": [2],
         "one-var": [2, "never"],
-        "object-curly-newline": [2, { "ImportDeclaration": { "multiline": true, "minProperties": 3 } }],
+        "object-curly-newline": [2, {
+            "ImportDeclaration": {
+                "multiline": true,
+                "minProperties": 2
+            },
+            "ExportDeclaration": {
+                "multiline": true,
+                "minProperties": 2
+            }
+        }],
         "object-property-newline": [2],
+        "block-spacing": [2],
         "no-lone-blocks": [2],
         "no-new-object": [2],
         "no-eval": [2],
@@ -53,6 +63,8 @@ module.exports = {
         "prefer-spread": [0],
         "indent": [2, 4],
         "prefer-rest-params": [0],
-        "prefer-const": [0]
+        "prefer-const": [0],
+        "comma-dangle": [2],
+        "comma-spacing": [2]
     }
 }

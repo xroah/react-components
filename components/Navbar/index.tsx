@@ -1,4 +1,4 @@
-import {FunctionComponent} from "react" 
+import {FunctionComponent} from "react"
 import {createComponentByClass} from "../utils"
 import Brand from "./Brand"
 import Collapse from "./Collapse"

@@ -55,7 +55,7 @@ export default function Tooltip(props: TooltipProps) {
     style.position = "relative"
     style.willChange = "transform"
 
-    const popup = title ?
+    const popup = title ? (
         <PopupContext.Consumer>
             {
                 ({
@@ -63,8 +63,8 @@ export default function Tooltip(props: TooltipProps) {
                 }) =>
                     <div className={
                         classNames(
-                            "tooltip",//.tooltip{opacity: 0}
-                            "show",//.tooltip.show{opacity: .9},
+                            "tooltip", //.tooltip{opacity: 0}
+                            "show", //.tooltip.show{opacity: .9},
                             `bs-tooltip-${p || placement}`
                         )
                     } style={style}>
@@ -77,7 +77,7 @@ export default function Tooltip(props: TooltipProps) {
 
             }
         </PopupContext.Consumer>
-        : null
+    ) : null
 
     return (
         <Overlay

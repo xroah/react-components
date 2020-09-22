@@ -28,7 +28,7 @@ export default function Container(props: ContainerProps) {
 Container.propTypes = {
     variant: PropTypes.oneOf([
         "fluid",
-        "sm", 
+        "sm",
         "md",
         "lg",
         "md"

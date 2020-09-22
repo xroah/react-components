@@ -98,7 +98,7 @@ export default class AutoPagination extends React.Component<AutoPaginationProps,
 
     handlePage(page: number) {
         const {
-            current 
+            current
         } = this.state
 
         if (page !== current) {
@@ -126,7 +126,7 @@ export default class AutoPagination extends React.Component<AutoPaginationProps,
     renderPageItems() {
         const {
             props: {
-                total 
+                total
             },
             state: {
                 current,
@@ -138,10 +138,10 @@ export default class AutoPagination extends React.Component<AutoPaginationProps,
         const first = this.generateItem(1)
         const last = this.generateItem(totalPages)
         const leftEllipsis = React.cloneElement(ellipsis, {
-            key: "leftEllipsis" 
+            key: "leftEllipsis"
         })
         const rightEllipsis = React.cloneElement(ellipsis, {
-            key: "rightEllipsis" 
+            key: "rightEllipsis"
         })
         let items: React.ReactNode[] = []
 

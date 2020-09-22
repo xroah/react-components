@@ -34,9 +34,9 @@ export default function Progress(props: ProgressProps) {
     const PREFIX = "progress-bar"
     const v = value!
     const width = `${v > 100 ? 100 : v < 0 ? 0 : v}%`
-    const bar = 
+    const bar =
         <div style={{
-            width 
+            width
         }}
         className={
             classNames(
@@ -49,7 +49,7 @@ export default function Progress(props: ProgressProps) {
         }>
             {!!showLabel && <span className="label">{width}</span>}
         </div>
-    
+
     const wrapper = <div className={classNames(className, "progress")} />
 
     //multiple progress bars
@@ -57,7 +57,7 @@ export default function Progress(props: ProgressProps) {
         const _children = React.Children.map(children, c => {
             if (React.isValidElement(c) && c.type === Progress) {
                 return React.cloneElement<any>(c, {
-                    __isChild__: true 
+                    __isChild__: true
                 })
             }
 
@@ -65,7 +65,7 @@ export default function Progress(props: ProgressProps) {
         })
 
         return React.cloneElement(wrapper, {
-            style 
+            style
         }, _children)
     }
 
@@ -74,12 +74,12 @@ export default function Progress(props: ProgressProps) {
             ...otherProps,
             style: {
                 ...style,
-                width 
-            } 
+                width
+            }
         }) :
         React.cloneElement<any>(wrapper, {
             style,
-            ...otherProps 
+            ...otherProps
         }, bar)
 }
 

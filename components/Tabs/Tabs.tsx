@@ -117,7 +117,7 @@ export default class Tabs extends React.Component<TabsProps, TabsState> {
             },
             state: {
                 activeKey
-            },
+            }
         } = this
 
         handleFuncProp(onTabClick)(key, evt)
@@ -166,7 +166,7 @@ export default class Tabs extends React.Component<TabsProps, TabsState> {
                         return
                     }
 
-                    tab =
+                    tab = (
                         <Nav.Item key={key}>
                             <TabTitle
                                 disabled={disabled}
@@ -175,7 +175,7 @@ export default class Tabs extends React.Component<TabsProps, TabsState> {
                                 {tab}
                             </TabTitle>
                         </Nav.Item>
-
+                    )
 
                     return tabs.push(tab)
                 }
@@ -187,9 +187,11 @@ export default class Tabs extends React.Component<TabsProps, TabsState> {
             content.push(c)
         })
         const _tabs = tabs.length ?
-            <Nav variant={pill ? "pill" : "tab"}>
-                {tabs}
-            </Nav>
+            (
+                <Nav variant={pill ? "pill" : "tab"}>
+                    {tabs}
+                </Nav>
+            )
             : null
 
         return [_tabs, content]

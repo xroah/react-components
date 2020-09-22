@@ -149,7 +149,7 @@ export default function FormItem(props: FormItemProps) {
                 id,
                 className: classNames(
                     cls,
-                    control && PREFIX,
+                    control && PREFIX
                 ),
                 ...otherChildrenProps
             }

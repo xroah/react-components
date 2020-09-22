@@ -21,37 +21,39 @@ export default function Popover(props: PopoverProps) {
         ...otherProps
     } = props
     style.position = "relative"
-
-    const popup = 
+    const popup = (
         <PopupContext.Consumer>
             {
                 ({
-                    arrowLeft, arrowTop, placement: p 
-                }) => 
-                    <div style={style}
-                        className={
-                            classNames(
-                                "popover",
-                                `bs-popover-${p || placement}`
-                            )
-                        }>
-                        <div className="arrow" style={{
-                            ...handleArrowStyle(arrowLeft, arrowTop, placement),
-                            margin: 0
-                        }} />
-                        {
-                            !!header && 
-                                <h3 className="popover-header">{header}</h3>
-                            
-                        }
-                        <div className="popover-body">
-                            {content}
+                    arrowLeft,
+                    arrowTop,
+                    placement: p
+                }) =>
+                    (
+                        <div style={style}
+                            className={
+                                classNames(
+                                    "popover",
+                                    `bs-popover-${p || placement}`
+                                )
+                            }>
+                            <div className="arrow" style={{
+                                ...handleArrowStyle(arrowLeft, arrowTop, placement),
+                                margin: 0
+                            }} />
+                            {
+                                !!header && <h3 className="popover-header">{header}</h3>
+
+                            }
+                            <div className="popover-body">
+                                {content}
+                            </div>
                         </div>
-                    </div>
-                
+                    )
             }
         </PopupContext.Consumer>
-    
+    )
+
     return (
         <Overlay
             unmountOnExit

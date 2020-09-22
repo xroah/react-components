@@ -31,8 +31,8 @@ export default function PaginationItem(props: ItemProps) {
                 disabled && "disabled"
             )
         } {...otherProps}>
-            <a 
-                href="#" 
+            <a
+                href="#"
                 className="page-link"
                 tabIndex={disabled ? -1 : undefined}
                 onClick={handleClick}>{children}</a>

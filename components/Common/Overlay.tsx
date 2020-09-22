@@ -1,6 +1,12 @@
 import * as React from "react"
-import {chainFunction, isUndef} from "../utils"
-import Popup, {PopupCommonProps, PopupProps} from "./Popup"
+import {
+    chainFunction,
+    isUndef
+} from "../utils"
+import Popup, {
+    PopupCommonProps,
+    PopupProps
+} from "./Popup"
 import PropTypes from "prop-types"
 import {findDOMNode} from "react-dom"
 import {ModalContext} from "./contexts"

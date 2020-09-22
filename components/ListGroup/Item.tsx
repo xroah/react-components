@@ -33,7 +33,7 @@ export default function ListGroupItem(props: ListGroupItemProps) {
     return (
         <ListGroupContext.Consumer>
             {
-                equalWidth => 
+                equalWidth =>
                     React.createElement(
                         tag,
                         {
@@ -54,7 +54,7 @@ export default function ListGroupItem(props: ListGroupItemProps) {
                             ...otherProps
                         }
                     )
-                
+
             }
         </ListGroupContext.Consumer>
     )

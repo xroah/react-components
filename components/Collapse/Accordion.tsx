@@ -1,7 +1,10 @@
 import * as React from "react"
 import PropTypes from "prop-types"
 import {
-    classNames, handleFuncProp, chainFunction, isUndef 
+    classNames,
+    handleFuncProp,
+    chainFunction,
+    isUndef
 } from "../utils"
 import {AccordionContext} from "../Common/contexts"
 import {CommonProps} from "../Common/CommonPropsInterface"
@@ -13,7 +16,7 @@ export interface AccordionProps extends CommonProps<HTMLDivElement> {
     multiple?: boolean
     activeKey?: keyType
     defaultActiveKey?: keyType
-    onHeaderClick?: (key?: string, evt?: React.MouseEvent) => void 
+    onHeaderClick?: (key?: string, evt?: React.MouseEvent) => void
     onPanelChange?: (keys?: string[]) => void
 }
 
@@ -29,7 +32,7 @@ const _keyType = PropTypes.oneOfType([
 ])
 
 export default class Accordion extends React.Component<AccordionProps, AccordionStates> {
-    
+
     static propTypes = {
         multiple: PropTypes.bool,
         activeKey: _keyType,
@@ -63,7 +66,7 @@ export default class Accordion extends React.Component<AccordionProps, Accordion
     componentDidUpdate(prevProps: AccordionProps, prevState: AccordionStates) {
         const prevKey = prevState.activeKey
         const curKey = this.state.activeKey
-        
+
         if (this.isKeyChanged(prevKey, curKey)) {
             handleFuncProp(this.props.onPanelChange)(Array.from(curKey))
         }
@@ -72,8 +75,8 @@ export default class Accordion extends React.Component<AccordionProps, Accordion
     isKeyChanged(prevKeys: Set<any>, curKey: Set<any>) {
         const prevKeyArray = Array.from(prevKeys)
         const curKeyArray = Array.from(curKey)
-        
-        if (prevKeyArray.length !== curKeyArray.length){
+
+        if (prevKeyArray.length !== curKeyArray.length) {
             return true
         }
 
@@ -148,7 +151,7 @@ export default class Accordion extends React.Component<AccordionProps, Accordion
 
     renderChildren(children: React.ReactNode) {
         const {
-            onHeaderClick 
+            onHeaderClick
         } = this.props
 
         //React.Children.toArray will add ".$" prefix to the key value
@@ -187,7 +190,13 @@ export default class Accordion extends React.Component<AccordionProps, Accordion
 
         omitProps(
             otherProps,
-            ["multiple", "activeKey", "defaultActiveKey", "onHeaderClick", "onPanelChange"]
+            [
+                "multiple",
+                "activeKey",
+                "defaultActiveKey",
+                "onHeaderClick",
+                "onPanelChange"
+            ]
         )
 
         return (

@@ -61,14 +61,13 @@ export default function DropdownButton(props: DropdownButtonProps) {
     }
 
     if (split) {
-        let leftBtn = 
-            <Button {...btnProps}>{children}</Button>
-        
-        let rightBtn = 
+        let leftBtn = <Button {...btnProps}>{children}</Button>
+
+        let rightBtn = (
             <Button
                 className="dropdown-toggle-split"
                 {...btnProps} />
-        
+        )
 
         if (placement === "left") {
             [leftBtn, rightBtn] = [rightBtn, leftBtn]
@@ -88,37 +87,38 @@ export default function DropdownButton(props: DropdownButtonProps) {
                 {
                     // place dropdown button left
                     placement === "left" ?
-                        
-                        <>
-                            <Dropdown {...dropdownProps}>
-                                {_leftBtn}
-                            </Dropdown>
-                            {_rightBtn}
-                        </>
-                        :
-                        
-                        <>
-                            {_leftBtn}
-                            <Dropdown {...dropdownProps}>
+                        (
+                            <>
+                                <Dropdown {...dropdownProps}>
+                                    {_leftBtn}
+                                </Dropdown>
                                 {_rightBtn}
-                            </Dropdown>
-                        </>
-                        
+                            </>
+                        )
+                        :
+                        (
+                            <>
+                                {_leftBtn}
+                                <Dropdown {...dropdownProps}>
+                                    {_rightBtn}
+                                </Dropdown>
+                            </>
+                        )
                 }
             </Button.Group>
         )
     }
 
-    const btn = 
+    const btn = (
         <Button
             size={size}
             {...{
                 ...btnProps,
-                ...otherProps,
+                ...otherProps
             }}>
             {children}
         </Button>
-    
+    )
     const [_btn] = render!([btn])
 
     return (

@@ -22,16 +22,17 @@ export default function NavLink(props: NavLinkProps) {
     }
 
     return (
-        <a className={
-            classNames(
-                className,
-                "nav-link",
-                active && "active",
-                disabled && "disabled"
-            )
-        } 
-        onClick={handleClick}
-        {...otherProps} />
+        <a
+            className={
+                classNames(
+                    className,
+                    "nav-link",
+                    active && "active",
+                    disabled && "disabled"
+                )
+            }
+            onClick={handleClick}
+            {...otherProps} />
     )
 }
 

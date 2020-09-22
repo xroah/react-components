@@ -151,7 +151,7 @@ export default class Carousel extends React.Component<CarouselProps, CarouselSta
     to(index: number) {
         const childrenLen = this.getChildren().length
         const {
-            curIndex 
+            curIndex
         } = this.state
 
         if (typeof index !== "number") {
@@ -210,7 +210,7 @@ export default class Carousel extends React.Component<CarouselProps, CarouselSta
 
     toPrev = (evt?: React.MouseEvent) => {
         let {
-            curIndex 
+            curIndex
         } = this.state
         this.dir = "prev"
 
@@ -220,7 +220,7 @@ export default class Carousel extends React.Component<CarouselProps, CarouselSta
 
     toNext = (evt?: React.MouseEvent) => {
         let {
-            curIndex 
+            curIndex
         } = this.state
         this.dir = "next"
 
@@ -240,7 +240,6 @@ export default class Carousel extends React.Component<CarouselProps, CarouselSta
     }
 
     handleTouchEnd = (evt: React.TouchEvent) => {
-
         //after all touches end
         if (evt.touches.length) {
             return
@@ -296,18 +295,19 @@ export default class Carousel extends React.Component<CarouselProps, CarouselSta
         const {
             curIndex
         } = this.state
+
         return (
             <ol className="carousel-indicators">
                 {
                     React.Children.map(
                         children,
-                        (c, i) => 
+                        (c, i) =>
                             <li
                                 key={i}
                                 data-index={i}
                                 onClick={this.handleClickIndicator}
                                 className={classNames(curIndex === i && "active")} />
-                        
+
                     )
                 }
             </ol>

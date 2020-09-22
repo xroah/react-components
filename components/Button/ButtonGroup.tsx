@@ -24,7 +24,7 @@ export default function ButtonGroup(props: ButtonGroupProps) {
                 classNames(
                     className,
                     vertical ? `${PREFIX}-vertical` : PREFIX,
-                    size && `${PREFIX}-${size}`,
+                    size && `${PREFIX}-${size}`
                 )
             }
             {...otherProps}>

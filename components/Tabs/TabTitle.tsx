@@ -26,7 +26,7 @@ export default function TabTitle(props: TabTitleProps) {
     return (
         <TabContext.Consumer>
             {
-                value => 
+                value => (
                     <Nav.Link
                         active={value.activeKey === itemKey}
                         disabled={disabled}
@@ -35,7 +35,7 @@ export default function TabTitle(props: TabTitleProps) {
                         {...otherProps}>
                         {children}
                     </Nav.Link>
-                
+                )
             }
         </TabContext.Consumer>
     )

@@ -15,13 +15,15 @@ export default function Jumbotron(props: JumbotronProps) {
     } = props
     const PREFIX = "jumbotron"
 
-    return <div className={
-        classNames(
-            className,
-            PREFIX,
-            fluid && `${PREFIX}-fluid`
-        )
-    } {...otherProps}/>
+    return (
+        <div className={
+            classNames(
+                className,
+                PREFIX,
+                fluid && `${PREFIX}-fluid`
+            )
+        } {...otherProps} />
+    )
 }
 
 Jumbotron.propTypes = {

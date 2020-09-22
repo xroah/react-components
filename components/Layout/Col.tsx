@@ -1,6 +1,9 @@
 import * as React from "react"
 import PropTypes from "prop-types"
-import {classNames, isUndef} from "../utils"
+import {
+    classNames,
+    isUndef
+} from "../utils"
 import {CommonProps} from "../Common/CommonPropsInterface"
 
 type spanType = "auto" | boolean | number
