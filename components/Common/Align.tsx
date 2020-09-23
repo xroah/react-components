@@ -341,7 +341,7 @@ export default class Popup extends React.Component<AlignProps> {
         }
 
         if (React.isValidElement(children)) {
-            return React.cloneElement<any>(
+            return React.cloneElement(
                 children as React.ReactElement,
                 {
                     //make the children's ref(if has) and this.childRef reference the node(ref func)

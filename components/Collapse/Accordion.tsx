@@ -162,7 +162,7 @@ export default class Accordion extends React.Component<AccordionProps, Accordion
                     const controlled = "activeKey" in this.props
                     const onClick = chainFunction(controlled ? null : this.handleClick, onHeaderClick)
 
-                    return React.cloneElement<any>(
+                    return React.cloneElement(
                         c,
                         {
                             panelKey: isUndef(c.key) ? i.toString() : c.key,

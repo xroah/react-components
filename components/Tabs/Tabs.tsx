@@ -151,10 +151,10 @@ export default class Tabs extends React.Component<TabsProps, TabsState> {
 
                     if (_children) {
                         content.push(
-                            React.cloneElement<any>(
+                            React.cloneElement(
                                 c,
                                 {
-                                    key: key,
+                                    key: key!,
                                     panelKey: key,
                                     onHidden: this.handleTabHidden
                                 }
@@ -167,7 +167,7 @@ export default class Tabs extends React.Component<TabsProps, TabsState> {
                     }
 
                     tab = (
-                        <Nav.Item key={key}>
+                        <Nav.Item key={key!}>
                             <TabTitle
                                 disabled={disabled}
                                 itemKey={String(key)}

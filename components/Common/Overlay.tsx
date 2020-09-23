@@ -304,7 +304,7 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
         }
 
         //The event handlers of child will be overrode
-        return React.cloneElement<any>(
+        return React.cloneElement(
             children as React.ReactElement,
             {
                 ...otherProps,

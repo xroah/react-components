@@ -258,7 +258,7 @@ export default class Dropdown extends React.Component<DropdownProps, DropdownSta
             onClick,
             onKeyDown
         } = child.props
-        child = React.cloneElement<any>(
+        child = React.cloneElement(
             child,
             {
                 className: classNames(child.props.className, "dropdown-toggle"),

@@ -143,7 +143,7 @@ export default function FormItem(props: FormItemProps) {
             id = _for
         }
 
-        _children = React.cloneElement<any>(
+        _children = React.cloneElement(
             children,
             {
                 id,

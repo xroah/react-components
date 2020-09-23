@@ -55,7 +55,7 @@ export default function Media(props: MediaProps) {
         )
     }
     else if (React.isValidElement(img)) {
-        _img = React.cloneElement<any>(
+        _img = React.cloneElement(
             img,
             {
                 className: classNames(
