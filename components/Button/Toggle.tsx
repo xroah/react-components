@@ -34,9 +34,6 @@ const Toggle = React.forwardRef(
         const handleClick = (evt: React.MouseEvent<HTMLElement>) => {
             const active = !_active
 
-            evt.preventDefault()
-            update(active)
-
             if (typeof onStateChange === "function") {
                 onStateChange(active)
             }
@@ -44,6 +41,9 @@ const Toggle = React.forwardRef(
             if (typeof onClick === "function") {
                 onClick(evt)
             }
+
+            update(active)
+            evt.preventDefault()
         }
 
         return (
