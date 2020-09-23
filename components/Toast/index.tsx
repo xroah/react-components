@@ -6,7 +6,8 @@ import {
     handleFuncProp
 } from "../utils"
 import NoTransition from "../Common/NoTransition"
-import {CommonPropsWithoutTitle} from "../Common/CommonPropsInterface"
+import { CommonPropsWithoutTitle } from "../Common/CommonPropsInterface"
+import omitProps from "../utils/omitProps"
 
 export interface ToastProps extends CommonPropsWithoutTitle<HTMLDivElement> {
     title?: string | React.ReactNode
@@ -178,19 +179,24 @@ export default class Toast extends React.Component<ToastProps> {
             ...otherProps
         } = this.props
 
-        delete otherProps.icon
-        delete otherProps.iconSize
-        delete otherProps.extra
-        delete otherProps.autoHide
-        delete otherProps.closable
-        delete otherProps.header
-        delete otherProps.delay
-        delete otherProps.onClose
-        delete otherProps.title
-        delete otherProps.onShow
-        delete otherProps.onShown
-        delete otherProps.onHide
-        delete otherProps.onHidden
+        omitProps(
+            otherProps,
+            [
+                "icon",
+                "iconSize",
+                "extra",
+                "autoHide",
+                "closable",
+                "header",
+                "delay",
+                "onClose",
+                "title",
+                "onShow",
+                "onShown",
+                "onHide",
+                "onHidden"
+            ]
+        )
 
         const toast =
             <div className={

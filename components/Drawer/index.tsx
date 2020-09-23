@@ -11,6 +11,7 @@ import {
 } from "../utils"
 import Fade from "../Common/Fade"
 import "./style/index.scss"
+import omitProps from "../utils/omitProps"
 
 type placement = "left" | "top" | "right" | "bottom"
 
@@ -284,8 +285,10 @@ export default class Drawer extends React.Component<DrawerProps, DrawerState> {
             return null
         }
 
-        delete otherProps.keyboard
-        delete otherProps.autoFocus
+        omitProps(
+            otherProps,
+            ["keyboard", "autoFocus"]
+        )
 
         return (
             <Portal

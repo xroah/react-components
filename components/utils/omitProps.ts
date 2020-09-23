@@ -4,6 +4,4 @@ export default (obj: any, props: string[]) => {
             delete obj[prop]
         }
     })
-
-    return obj
 }

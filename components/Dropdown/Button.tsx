@@ -4,6 +4,7 @@ import Button from "../Button"
 import Dropdown from "./Dropdown"
 import {DropdownProps} from "./DropdownInner"
 import {variantType} from "../utils"
+import omitProps from "../utils/omitProps"
 
 export interface DropdownButtonProps extends DropdownProps {
     variant?: variantType
@@ -75,8 +76,10 @@ export default function DropdownButton(props: DropdownButtonProps) {
 
         const [_leftBtn, _rightBtn] = render!([leftBtn, rightBtn])
 
-        delete dropdownProps.className
-        delete dropdownProps.style
+        omitProps(
+            dropdownProps,
+            ["className", "style"]
+        )
 
         return (
             <Button.Group
