@@ -182,10 +182,13 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
                     topOffset
                 } = alignRef.adjustElement()
 
-                this.setState({
-                    left: left + leftOffset,
-                    top: top + topOffset
-                }, this.handleArrowPosition)
+                this.setState(
+                    {
+                        left: left + leftOffset,
+                        top: top + topOffset
+                    },
+                    this.handleArrowPosition
+                )
             }
         )
     }

@@ -24,14 +24,14 @@ export default class Popup extends React.Component<AlignProps> {
             const len = offset.length
 
             switch (len) {
-            case 0:
-                ret = [0, 0]
-                break
-            case 1:
-                ret = Array(2).fill(offset[0])
-                break
-            default:
-                ret = offset.slice(0, 2)
+                case 0:
+                    ret = [0, 0]
+                    break
+                case 1:
+                    ret = Array(2).fill(offset[0])
+                    break
+                default:
+                    ret = offset.slice(0, 2)
             }
 
             if (!len) {
@@ -45,12 +45,15 @@ export default class Popup extends React.Component<AlignProps> {
         return ret
     }
 
+    //get closest positioned(position is not static) parent
     getPositionedParent(el: HTMLElement) {
         const body = document.body
         let parent = el
 
         while ((parent = parent.parentNode as HTMLElement) && parent !== body) {
-            if (getComputedStyle(parent).getPropertyValue("position") !== "static") {
+            const pos = getComputedStyle(parent).getPropertyValue("position")
+
+            if (pos !== "static") {
                 return parent
             }
         }
@@ -75,7 +78,7 @@ export default class Popup extends React.Component<AlignProps> {
 
         return {
             left,
-            top 
+            top
         }
     }
 
@@ -84,7 +87,8 @@ export default class Popup extends React.Component<AlignProps> {
         const parentRect = parent.getBoundingClientRect()
         const elRect = el.getBoundingClientRect()
         let {
-            left, top 
+            left,
+            top
         } = this.getScrollOffset(parent)
         let rectLeft = 0
         let rectTop = 0
@@ -118,9 +122,12 @@ export default class Popup extends React.Component<AlignProps> {
     getBaseAlignmentPosition(toBeAligned: HTMLElement, target: HTMLElement) {
         const positioned = this.getPositionedParent(toBeAligned)
         const scrollParent = getScrollParent(target)
-        //if positioned element is in scrollParent or is scrollParent
+        //if the positioned element is in scrollParent or is scrollParent
         //the element offset is relative to the scrollParent, otherwise relative to body
-        const relativeParent = scrollParent === positioned || scrollParent.contains(positioned) ? scrollParent : document.body
+        const relativeParent = (
+            scrollParent === positioned || scrollParent.contains(positioned) ?
+                scrollParent : document.body
+        )
         const {
             left: positionedLeft,
             top: positionedTop
@@ -174,7 +181,7 @@ export default class Popup extends React.Component<AlignProps> {
             return {
                 left,
                 top,
-                placement 
+                placement
             }
         }
 
@@ -253,31 +260,31 @@ export default class Popup extends React.Component<AlignProps> {
         else {
             //horizontal alignment
             switch (alignment) {
-            case "center":
-                left += (targetWidth - childWidth) / 2
-                break
-            case "right":
-                left += targetWidth - childWidth
-                break
-            default:
+                case "center":
+                    left += (targetWidth - childWidth) / 2
+                    break
+                case "right":
+                    left += targetWidth - childWidth
+                    break
+                default:
             }
         }
 
         return {
             left,
             top,
-            placement 
+            placement
         }
     }
 
     //if the element top/right/bottom/left is out of the corresponding edge
     adjustElement() {
         const {
-            target 
+            target
         } = this.props as any
         const child = this.childRef.current as HTMLElement
         const {
-            parent 
+            parent
         } = this.getBaseAlignmentPosition(child, target)
         const childRect = child.getBoundingClientRect()
         const parentRect = parent.getBoundingClientRect()
@@ -333,7 +340,13 @@ export default class Popup extends React.Component<AlignProps> {
 
         omitProps(
             otherProps,
-            ["verticalCenter", "offset", "target", "placement", "alignment"]
+            [
+                "verticalCenter",
+                "offset",
+                "target",
+                "placement",
+                "alignment"
+            ]
         )
 
         if (!children) {

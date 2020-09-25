@@ -8,7 +8,8 @@ import {
     variantType,
     variantArray,
     handleFuncProp,
-    createComponentByClass
+    createComponentByClass,
+    isUndef
 } from "../utils"
 import {CommonProps} from "../Common/CommonPropsInterface"
 
@@ -21,8 +22,6 @@ export interface AlertProps extends CommonProps<HTMLDivElement> {
     onClose?: Function
     onClosed?: Function
 }
-
-const PREFIX = "alert"
 
 export default function Alert(props: AlertProps) {
     const {
@@ -37,7 +36,7 @@ export default function Alert(props: AlertProps) {
         onClosed,
         ...otherProps
     } = props
-    let button: React.ReactNode = null
+    const PREFIX = "alert"
     const classes = classNames(
         className,
         PREFIX,
@@ -56,6 +55,7 @@ export default function Alert(props: AlertProps) {
             handleClick()
         }
     }
+    let button: React.ReactNode = null
 
     if (dismissible) {
         button = (
@@ -72,7 +72,7 @@ export default function Alert(props: AlertProps) {
     const child = (
         <div className={classes} {...otherProps}>
             {
-                heading !== undefined && (
+                isUndef(heading) && (
                     <h4 className={`${PREFIX}-heading`}>{heading}</h4>
                 )
             }
@@ -115,5 +115,5 @@ Alert.defaultProps = {
 Alert.Link = createComponentByClass({
     tag: "a",
     displayName: "AlertLink",
-    className: `${PREFIX}-alert`
+    className: "alert-link"
 })

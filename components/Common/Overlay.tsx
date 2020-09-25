@@ -103,7 +103,7 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
 
     getAction() {
         const {
-            trigger 
+            trigger
         } = this.props
         let actions: Array<any> = []
 
@@ -139,19 +139,19 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
         evt.stopPropagation()
 
         switch (type) {
-        case "click":
-            this.toggle()
-            break
-        case "mouseenter":
-        case "focus":
-            this.open()
-            break
-        case "mouseleave":
-            this.delayClose()
-            break
-        case "blur":
-            this.close()
-            break
+            case "click":
+                this.toggle()
+                break
+            case "mouseenter":
+            case "focus":
+                this.open()
+                break
+            case "mouseleave":
+                this.delayClose()
+                break
+            case "blur":
+                this.close()
+                break
         }
     }
 
@@ -194,7 +194,7 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
 
         const open = () => this.setVisible(true)
         const {
-            show = 0 
+            show = 0
         } = handleDelay(this.props.delay)
 
         this.delayTimer = setTimeout(open, show)
@@ -208,7 +208,7 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
 
         const close = () => this.setVisible(false)
         const {
-            hide = 0 
+            hide = 0
         } = handleDelay(this.props.delay)
 
         this.delayTimer = setTimeout(close, hide)
@@ -216,7 +216,7 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
 
     toggle = () => {
         const {
-            visible 
+            visible
         } = this.state
 
         visible ? this.close() : this.open()
@@ -225,7 +225,7 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
     //for hover, prevent the popup from hiding when mouseout fires
     delayClose() {
         const {
-            hide = 0 
+            hide = 0
         } = handleDelay(this.props.delay)
 
         if (!isUndef(this.timer)) {
@@ -241,8 +241,7 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
             children,
             ...otherProps
         } = this.props
-        let eventHandlers: any = {
-        }
+        let eventHandlers = Object.create(null)
 
         omitProps(
             otherProps,
@@ -337,7 +336,7 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
                 node
             }
         } = this
-        
+
         if (isUndef(popup)) {
             return children
         }
@@ -365,7 +364,7 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
                     {
                         //when placed within modals, dismiss once modals are closed
                         ({
-                            isModal, visible: mVisible 
+                            isModal, visible: mVisible
                         }) => {
                             if (visible && isModal && !mVisible) {
                                 this.close()

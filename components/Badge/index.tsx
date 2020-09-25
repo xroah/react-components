@@ -22,12 +22,6 @@ export default function Badge(props: BadgeProps) {
         ...otherProps
     } = props
     const PREFIX = "badge"
-    const classes = classNames(
-        className,
-        PREFIX,
-        variant && `${PREFIX}-${variant}`,
-        pill && `${PREFIX}-pill`
-    )
     let tag = "span"
 
     if (href) {
@@ -38,7 +32,12 @@ export default function Badge(props: BadgeProps) {
         tag,
         {
             href,
-            className: classes,
+            className: classNames(
+                className,
+                PREFIX,
+                variant && `${PREFIX}-${variant}`,
+                pill && `${PREFIX}-pill`
+            ),
             ...otherProps
         },
         children
