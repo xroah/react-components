@@ -160,9 +160,12 @@ export default class Modal extends React.Component<ModalProps, ModalState> {
 
     handleEnter = () => {
         const body = document.body
-        const hasScrollbar = document.documentElement.clientWidth < window.innerWidth
-        const scrollWidth = getScrollBarWidth()
-        const pr = parseFloat(getComputedStyle(body).getPropertyValue("padding-right"))
+        const html = document.documentElement
+        const hasScrollbar = html.clientWidth < window.innerWidth
+        const scrollBarWidth = getScrollBarWidth()
+        const pr = parseFloat(
+            getComputedStyle(body).getPropertyValue("padding-right")
+        ) || 0
         this.activeElement = document.activeElement
         this.previousBodyClassName = body.className
         this.previousBodyPadding = body.style.paddingRight || ""
@@ -170,10 +173,10 @@ export default class Modal extends React.Component<ModalProps, ModalState> {
         body.classList.add("modal-open")
 
         //may has style="overflow: scroll" or something else
-        const afterHasScrollbar = body.clientWidth < window.innerWidth
+        const afterHasScrollbar = html.clientWidth < window.innerWidth
 
         if (hasScrollbar && !afterHasScrollbar) {
-            body.style.paddingRight = `${pr + scrollWidth}px`
+            body.style.paddingRight = `${pr + scrollBarWidth}px`
         }
 
         handleFuncProp(this.props.onShow)()
@@ -224,22 +227,22 @@ export default class Modal extends React.Component<ModalProps, ModalState> {
             return null
         }
 
-        const defaultHeader =
+        const defaultHeader = (
             <>
                 <h5 className="modal-title">{title}</h5>
                 {
-                    closable &&
-                    <button
-                        type="button"
-                        className="close"
-                        onClick={this.handleCancel}
-                        aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-
+                    closable && (
+                        <button
+                            type="button"
+                            className="close"
+                            onClick={this.handleCancel}
+                            aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    )
                 }
             </>
-
+        )
 
         return (
             <div className="modal-header">
@@ -263,24 +266,24 @@ export default class Modal extends React.Component<ModalProps, ModalState> {
             return null
         }
 
-        const defaultFooter =
+        const defaultFooter = (
             <>
                 {
-                    showCancel &&
-                    <Button variant={cancelType} onClick={this.handleCancel}>
-                        {cancelText}
-                    </Button>
-
+                    showCancel && (
+                        <Button variant={cancelType} onClick={this.handleCancel}>
+                            {cancelText}
+                        </Button>
+                    )
                 }
                 {
-                    showOk &&
-                    <Button variant={okType} onClick={this.handleOk}>
-                        {okText}
-                    </Button>
-
+                    showOk && (
+                        <Button variant={okType} onClick={this.handleOk}>
+                            {okText}
+                        </Button>
+                    )
                 }
             </>
-
+        )
 
         return (
             <div className="modal-footer">
