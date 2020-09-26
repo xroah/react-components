@@ -103,12 +103,14 @@ $navHeight: calc(100vh - #{$headerHeight});
     padding: 1.5rem;
 
     .code-container {
-        max-height: 360px;
-        overflow: auto;
-        cursor: text;
+        margin: .5rem 0;
+        border: 1px solid transparent;
 
-        &:not(:nth-child(2)) {
-            margin-top: 10px;
+        pre {
+            max-height: 360px;
+            overflow: auto;
+            font-size: 12px !important;
+            cursor: text;
         }
     }
 
@@ -150,8 +152,8 @@ $navHeight: calc(100vh - #{$headerHeight});
 
 .btn-clipboard {
     position: absolute;
-    top: 1.5rem;
-    right: 1rem;
+    top: 1rem;
+    right: 1.2rem;
     z-index: 10;
     display: block;
     padding: .25rem .5rem;
