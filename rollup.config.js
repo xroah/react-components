@@ -2,18 +2,29 @@ import babel from "@rollup/plugin-babel"
 import tsPlugin from "@rollup/plugin-typescript"
 import resolve from "@rollup/plugin-node-resolve"
 import cjs from "@rollup/plugin-commonjs"
-import { uglify } from "rollup-plugin-uglify"
+import {terser} from "rollup-plugin-terser"
 
-const config = {
+const commonCfg = {
+    format: "umd",
+    name: "reap",
+    globals: {
+        "react": "React",
+        "react-dom": "ReactDOM"
+    }
+}
+const FILE_PREFIX = "./dist/reap-ui"
+
+export default {
     input: "components/index.ts",
-    output: {
-        format: "umd",
-        name: "reap",
-        globals: {
-            "react": "React",
-            "react-dom": "ReactDOM"
-        }
-    },
+    output: [{
+        ...commonCfg,
+        file: `${FILE_PREFIX}.js`
+    }, {
+        ...commonCfg,
+        file: `${FILE_PREFIX}.min.js`,
+        sourcemap: true,
+        plugins: [terser()]
+    }],
     plugins: [
         resolve(),
         cjs(),
@@ -25,27 +36,4 @@ const config = {
         })
     ],
     external: ["react", "react-dom"]
-}
-
-export default () => {
-    const FILE_PREFIX = "./dist/reap-ui"
-    let file
-    let sourcemap = false
-    let output = config.output
-
-    if (process.env.NODE_ENV === "production") {
-        sourcemap = true
-        file = `${FILE_PREFIX}.min.js`
-        config.plugins.push(uglify())
-    } else {
-        file = `${FILE_PREFIX}.js`
-    }
-
-    config.output = {
-        ...output,
-        file,
-        sourcemap
-    }
-
-    return config
 }
