@@ -139,19 +139,19 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
         evt.stopPropagation()
 
         switch (type) {
-            case "click":
-                this.toggle()
-                break
-            case "mouseenter":
-            case "focus":
-                this.open()
-                break
-            case "mouseleave":
-                this.delayClose()
-                break
-            case "blur":
-                this.close()
-                break
+        case "click":
+            this.toggle()
+            break
+        case "mouseenter":
+        case "focus":
+            this.open()
+            break
+        case "mouseleave":
+            this.delayClose()
+            break
+        case "blur":
+            this.close()
+            break
         }
     }
 
@@ -247,6 +247,7 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
             otherProps,
             [
                 "popup",
+                "elRef",
                 "popupProps",
                 "placement",
                 "alignment",
@@ -317,6 +318,7 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
             props: {
                 children,
                 popup,
+                elRef,
                 popupProps,
                 placement,
                 alignment,
@@ -344,6 +346,7 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
         const props = {
             fade,
             offset,
+            elRef,
             placement,
             alignment,
             unmountOnExit,

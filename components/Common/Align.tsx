@@ -1,6 +1,9 @@
 import * as React from "react"
 import {CommonProps} from "./CommonPropsInterface"
-import {getScrollParent} from "../utils"
+import {
+    getScrollParent,
+    mergeRef
+} from "../utils"
 import omitProps from "../utils/omitProps"
 
 export type position = "top" | "right" | "bottom" | "left"
@@ -24,14 +27,14 @@ export default class Popup extends React.Component<AlignProps> {
             const len = offset.length
 
             switch (len) {
-                case 0:
-                    ret = [0, 0]
-                    break
-                case 1:
-                    ret = Array(2).fill(offset[0])
-                    break
-                default:
-                    ret = offset.slice(0, 2)
+            case 0:
+                ret = [0, 0]
+                break
+            case 1:
+                ret = Array(2).fill(offset[0])
+                break
+            default:
+                ret = offset.slice(0, 2)
             }
 
             if (!len) {
@@ -260,13 +263,13 @@ export default class Popup extends React.Component<AlignProps> {
         else {
             //horizontal alignment
             switch (alignment) {
-                case "center":
-                    left += (targetWidth - childWidth) / 2
-                    break
-                case "right":
-                    left += targetWidth - childWidth
-                    break
-                default:
+            case "center":
+                left += (targetWidth - childWidth) / 2
+                break
+            case "right":
+                left += targetWidth - childWidth
+                break
+            default:
             }
         }
 
@@ -322,16 +325,6 @@ export default class Popup extends React.Component<AlignProps> {
         return this.handlePosition()
     }
 
-    handleRefs(...refs: React.Ref<any>[]) {
-        return (node: any) => {
-            refs.forEach((ref: any) => {
-                if (ref && "current" in ref) {
-                    ref.current = node
-                }
-            })
-        }
-    }
-
     render() {
         const {
             children,
@@ -358,7 +351,7 @@ export default class Popup extends React.Component<AlignProps> {
                 children as React.ReactElement,
                 {
                     //make the children's ref(if has) and this.childRef reference the node(ref func)
-                    ref: this.handleRefs((children as any).ref, this.childRef),
+                    ref: mergeRef((children as any).ref, this.childRef),
                     ...otherProps
                 }
             )

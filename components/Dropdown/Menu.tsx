@@ -26,11 +26,6 @@ export default function DropdownMenu(props: MenuProps) {
     style.position = "relative"
     style.outline = style.outline || "none"
 
-    //for calculating size correctly
-    if (context.isDropdown) {
-        style.float = "none"
-    }
-
     return (
         <div
             tabIndex={-1}

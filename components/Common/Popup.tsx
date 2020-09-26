@@ -3,7 +3,7 @@ import PropTypes from "prop-types"
 import {
     handleFuncProp,
     throttle,
-    reflow
+    reflow, mergeRef
 } from "../utils"
 import Fade from "./Fade"
 import {PopupContext} from "./contexts"
@@ -50,6 +50,7 @@ export interface PopupProps extends PopupCommonProps {
     target?: HTMLElement | null//calc position based on this element
     verticalCenter?: boolean
     onClickOutside?: Function
+    elRef?: React.RefObject<HTMLElement>
 }
 
 export default class Popup extends React.Component<PopupProps, PopupState> {
@@ -277,6 +278,7 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
                 target,
                 popupMountNode,
                 verticalCenter,
+                elRef = null,
                 ...otherProps
             },
             state: {
@@ -289,10 +291,6 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
             }
         } = this
         const _children = children as React.ReactElement
-
-        /* if (typeof children === "function") {
-            _children = children()
-        } */
 
         if (
             !children ||
@@ -332,11 +330,13 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
                 willChange: "transform",
                 transform: `translate3d(${left}px, ${top}px, 0)`,
                 zIndex: 99999
-            }} ref={this.ref}>
-                <div {...{
-                    ...mouseEvent,
-                    ...otherProps
-                }}>
+            }} ref={mergeRef(this.ref, elRef)}>
+                <div
+                    style={{overflow: "hidden"}}
+                    {...{
+                        ...mouseEvent,
+                        ...otherProps
+                    }}>
                     <PopupContext.Provider value={context}>
                         {_children}
                     </PopupContext.Provider>

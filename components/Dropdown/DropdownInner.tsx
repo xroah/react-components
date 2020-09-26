@@ -5,7 +5,8 @@ import {
     chainFunction
 } from "../utils"
 import Overlay, {
-    CommonProps, handleDelay
+    CommonProps,
+    handleDelay
 } from "../Common/Overlay"
 import {findDOMNode} from "react-dom"
 import {DropdownContext} from "../Common/contexts"
@@ -17,10 +18,8 @@ export interface DropdownProps extends CommonProps {
 
 interface DropdownState {
     visible: boolean
-    popupId: string
 }
 
-const ID_PREFIX = "reap-ui-dropdown"
 const VALID_SELECTOR = ".dropdown-menu .dropdown-item:not(.disabled):not(:disabled)"
 const keySet = new Set(
     [
@@ -45,13 +44,13 @@ export default class Dropdown extends React.Component<DropdownProps, DropdownSta
     }
 
     private delayTimer: NodeJS.Timeout | null = null
+    private ref = React.createRef<HTMLElement>()
 
     constructor(props: DropdownProps) {
         super(props)
 
         this.state = {
             visible: !!props.visible || !!props.defaultVisible,
-            popupId: `${ID_PREFIX}-${uuid++}`
         }
     }
 
@@ -148,7 +147,7 @@ export default class Dropdown extends React.Component<DropdownProps, DropdownSta
         const key = evt.key.toLowerCase()
         const target = evt.target as HTMLButtonElement
         const {
-            visible, popupId
+            visible
         } = this.state
         const tag = target.tagName.toLowerCase()
         const isInput = /input|textarea/.test(tag)
@@ -168,8 +167,8 @@ export default class Dropdown extends React.Component<DropdownProps, DropdownSta
         evt.stopPropagation()
 
         if (key === "arrowup" || key === "arrowdown" || key === "tab") {
-            const popupElement = document.getElementById(popupId)
-
+            const popupElement = this.ref.current
+console.log(popupElement)
             if (!visible && key !== "tab") {
                 return this.open()
             }
@@ -231,8 +230,7 @@ export default class Dropdown extends React.Component<DropdownProps, DropdownSta
             ...otherProps
         } = this.props
         const {
-            visible,
-            popupId
+            visible
         } = this.state
 
         if (!overlay) {
@@ -248,8 +246,7 @@ export default class Dropdown extends React.Component<DropdownProps, DropdownSta
         let child = React.Children.only(children) as React.ReactElement<React.HTMLAttributes<HTMLElement>>
         const _overlay = (
             <DropdownContext.Provider value={{
-                close: this.close,
-                isDropdown: true
+                close: this.close
             }}>
                 {overlay}
             </DropdownContext.Provider>
@@ -270,13 +267,13 @@ export default class Dropdown extends React.Component<DropdownProps, DropdownSta
         return (
             <Overlay
                 popup={_overlay}
+                elRef={this.ref}
                 visible={visible}
                 placement={placement}
                 onClickOutside={this.close}
                 popupProps={{
                     className: position,
-                    onKeyDown: this.handlePopupKeydown,
-                    id: popupId
+                    onKeyDown: this.handlePopupKeydown
                 }}
                 {...otherProps}>
                 {child}
