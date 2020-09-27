@@ -1,7 +1,9 @@
-import * as React from "react";
-import { Popover, Button, Row, Col } from "reap-ui";
+import * as React from "react"
+import {
+    Popover, Button, Row, Col 
+} from "reap-ui"
 
-const CONTENT = "Vivamus sagittis lacus vel augue laoreet rutrum faucibus.";
+const CONTENT = "Vivamus sagittis lacus vel augue laoreet rutrum faucibus."
 
 export default () => (
     <Row>
@@ -26,4 +28,4 @@ export default () => (
             </Popover>
         </Col>
     </Row>
-);
+)

@@ -1,10 +1,10 @@
-import * as React from "react";
+import * as React from "react"
 import {
     withRouter,
     RouteComponentProps
-} from "react-router-dom";
-import routes from "../../routes";
-import { Nav } from "reap-ui";
+} from "react-router-dom"
+import routes from "../../routes"
+import { Nav } from "reap-ui"
 
 interface Props extends RouteComponentProps {
     onItemClick?: (evt: React.MouseEvent<HTMLElement>) => void;
@@ -15,15 +15,15 @@ function DocNav(props: Props) {
         onItemClick,
         history,
         location
-    } = props;
+    } = props
     const handleClick = (path: string) => (evt: React.MouseEvent<HTMLElement>) => {
-        onItemClick && onItemClick(evt);
-        evt.preventDefault();
+        onItemClick && onItemClick(evt)
+        evt.preventDefault()
 
         if (location.pathname !== path) {
-            history.push(path);
+            history.push(path)
         }
-    };
+    }
     return (
         <aside className="aside-nav">
             <Nav vertical>
@@ -44,7 +44,7 @@ function DocNav(props: Props) {
                 }
             </Nav>
         </aside>
-    );
+    )
 }
 
-export default withRouter(DocNav);
+export default withRouter(DocNav)

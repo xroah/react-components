@@ -1,12 +1,12 @@
-import * as React from "react";
-import PropsTable from "../../PropsTable";
-import LangMsg from "../../Language/LanguageMessage";
+import * as React from "react"
+import PropsTable from "../../PropsTable"
+import LangMsg from "../../Language/LanguageMessage"
 
 const ContainerProps = [{
     name: "variant",
-    type: `"fluid" | "sm" | "md" | "lg" | 'xl'`,
+    type: "\"fluid\" | \"sm\" | \"md\" | \"lg\" | 'xl'",
     description: <LangMsg id="variantApi" />
-}];
+}]
 const RowProps = [{
     name: "noGutters",
     type: "boolean",
@@ -14,11 +14,11 @@ const RowProps = [{
     description: <LangMsg id="noGuttersApi" />
 }, {
     name: "alignment",
-    type: `"start" | "center" | "end"`,
+    type: "\"start\" | \"center\" | \"end\"",
     description: <LangMsg id="rowAlignmentApi" />
 }, {
     name: "justify",
-    type: `"start" | "center" | "end" | "around" | "between"`,
+    type: "\"start\" | \"center\" | \"end\" | \"around\" | \"between\"",
     description: <LangMsg id="justifyApi" />
 }, {
     name: "form",
@@ -29,15 +29,15 @@ const RowProps = [{
     name: "cols",
     type: "number | object({default?: number, sm?: number, md?: number, lg?: number, xl?: number})",
     description: <LangMsg id="colsApi" />
-}];
-const breakpoint = `number | boolean | "auto" | object({span?: "auto" | boolean | number, offset?: number, order?: number})`
+}]
+const breakpoint = "number | boolean | \"auto\" | object({span?: \"auto\" | boolean | number, offset?: number, order?: number})"
 const ColProps = [{
     name: "alignment",
-    type: `"start" | "center" | "end"`,
+    type: "\"start\" | \"center\" | \"end\"",
     description: <LangMsg id="colAlignmentApi" />
 }, {
     name: "span",
-    type: `number | "auto" | boolean`,
+    type: "number | \"auto\" | boolean",
     default: "true",
     description: <LangMsg id="spanApi" />
 }, {
@@ -64,7 +64,7 @@ const ColProps = [{
     name: "xl",
     type: breakpoint,
     description: <LangMsg id="xlApi" />
-}];
+}]
 
 export default () => (
     <>
@@ -72,4 +72,4 @@ export default () => (
         <PropsTable title="Row" data={RowProps} />
         <PropsTable title="Col" data={ColProps} />
     </>
-);
+)

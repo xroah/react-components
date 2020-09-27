@@ -1,17 +1,17 @@
-import * as React from "react";
-import DemoExample from "../../DemoExample";
-import DocHeading from "../../DocHeading";
-import Basic from "./Basic";
-import BasicSrc from "!!raw-loader!./Basic";
+import * as React from "react"
+import DemoExample from "../../DemoExample"
+import DocHeading from "../../DocHeading"
+import Basic from "./Basic"
+import BasicSrc from "!!raw-loader!./Basic"
 import Sizing from "./Sizing"
-import SizingSrc from "!!raw-loader!./Sizing";
-import Vertical from "./Vertical";
-import VerticalSrc from "!!raw-loader!./Vertical";
-import ButtonToolbar from "./ButtonToolbar";
-import ButtonToolbarSrc from "!!raw-loader!./ButtonToolbar";
-import Nesting from "./Nesting";
-import NestingSrc from "!!raw-loader!./Nesting";
-import LangMsg from "../../Language/LanguageMessage";
+import SizingSrc from "!!raw-loader!./Sizing"
+import Vertical from "./Vertical"
+import VerticalSrc from "!!raw-loader!./Vertical"
+import ButtonToolbar from "./ButtonToolbar"
+import ButtonToolbarSrc from "!!raw-loader!./ButtonToolbar"
+import Nesting from "./Nesting"
+import NestingSrc from "!!raw-loader!./Nesting"
+import LangMsg from "../../Language/LanguageMessage"
 
 import {
     groupId,
@@ -23,9 +23,9 @@ import {
     nestingTitle,
     verticalId,
     verticalTitle
-} from "../Button/RightNav";
+} from "../Button/RightNav"
 
-const { H3 } = DocHeading;
+const { H3 } = DocHeading
 
 export default () => (
     <>
@@ -60,4 +60,4 @@ export default () => (
             <LangMsg id="verticalDesc" />
         </DemoExample>
     </>
-);
+)

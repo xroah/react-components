@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from "react"
 
 export default {
     compDesc: "Add dialogs to your site for lightboxes, user notifications, or completely custom content.",

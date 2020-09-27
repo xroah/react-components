@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from "react"
 
 export const commonLang = {
     visibleApi: "控制下拉菜单是否可见(受控组件)",
@@ -10,11 +10,11 @@ export const commonLang = {
     onShowApi: <>当<code>visible</code>从<code>false</code>变为<code>true</code>是的回调</>, 
     onShownApi: "当下拉菜单显示出来后的回调",
     onHideApi: <>当<code>visible</code>从<code>true</code>变为<code>false</code>时的回调</>,
-    onHiddenApi: "下拉菜单完全隐藏时候的回调函数",
-};
+    onHiddenApi: "下拉菜单完全隐藏时候的回调函数"
+}
 
 export default {
-    compDesc:　"弹出的下拉列表。",
+    compDesc: "弹出的下拉列表。",
     singleTitle: "单个按钮",
     splitTitle: "分开的按钮",
     sizeTitle: "尺寸",

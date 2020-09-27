@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from "react"
 
 export default {
     compDesc: "Examples and usage guidelines for form control styles, layout options, and custom components for creating a wide variety of forms.",

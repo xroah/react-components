@@ -1,5 +1,5 @@
-import * as React from "react";
-import { Alert } from "reap-ui";
+import * as React from "react"
+import { Alert } from "reap-ui"
 
 export default function Basic() {
     return (
@@ -29,5 +29,5 @@ export default function Basic() {
                 A simple dark alert—check it out!
             </Alert>
         </>
-    );
+    )
 }

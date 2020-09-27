@@ -1,11 +1,13 @@
-import * as React from "react";
-import { Tabs, ListGroup, Row, Col } from "reap-ui";
+import * as React from "react"
+import {
+    Tabs, ListGroup, Row, Col 
+} from "reap-ui"
 
 export default () => {
-    const [activeKey, updateTab] = React.useState("home");
+    const [activeKey, updateTab] = React.useState("home")
     const factory = key => () => {
         if (key !== activeKey) {
-            updateTab(key);
+            updateTab(key)
         }
     } 
 
@@ -14,10 +16,10 @@ export default () => {
             <Row>
                 <Col span={4}>
                     <ListGroup>
-                        <ListGroup.Item action active={activeKey === "home"}  onClick={factory("home")}>Home</ListGroup.Item>
-                        <ListGroup.Item action active={activeKey === "profile"}  onClick={factory("profile")}>Profile</ListGroup.Item>
-                        <ListGroup.Item action active={activeKey === "messages"}  onClick={factory("messages")}>Messages</ListGroup.Item>
-                        <ListGroup.Item action active={activeKey === "settings"}  onClick={factory("settings")}>Settings</ListGroup.Item>
+                        <ListGroup.Item action active={activeKey === "home"} onClick={factory("home")}>Home</ListGroup.Item>
+                        <ListGroup.Item action active={activeKey === "profile"} onClick={factory("profile")}>Profile</ListGroup.Item>
+                        <ListGroup.Item action active={activeKey === "messages"} onClick={factory("messages")}>Messages</ListGroup.Item>
+                        <ListGroup.Item action active={activeKey === "settings"} onClick={factory("settings")}>Settings</ListGroup.Item>
                     </ListGroup>
                 </Col>
                 <Col>
@@ -38,5 +40,5 @@ export default () => {
                 </Col>
             </Row>
         </>
-    );
-};
+    )
+}

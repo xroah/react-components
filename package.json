@@ -12,8 +12,10 @@
         "build:doc": "webpack",
         "build": "node ./rmdir && npm run lib && npm run es && npm run rollup",
         "start": "webpack-dev-server --env development",
-        "lint": "eslint --ext .ts,.tsx components",
-        "fix": "eslint --ext .ts,.tsx --fix components"
+        "lint": "eslint --ext .ts,.tsx components/",
+        "fix": "eslint --ext .ts,.tsx --fix components/",
+        "lint:doc": "eslint --ext .ts,.tsx docs/",
+        "fix:doc": "eslint --ext .ts,.tsx --fix docs/"
     },
     "repository": {
         "type": "git",

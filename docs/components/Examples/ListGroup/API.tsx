@@ -1,6 +1,6 @@
-import * as React from "react";
-import PropsTable from "../../PropsTable";
-import LangMsg from "../../Language/LanguageMessage";
+import * as React from "react"
+import PropsTable from "../../PropsTable"
+import LangMsg from "../../Language/LanguageMessage"
 
 const ListGroupProps = [{
     name: "horizontal",
@@ -14,14 +14,14 @@ const ListGroupProps = [{
     description: <LangMsg id="flushApi" />
 }, {
     name: "minWidth",
-    type: `"sm" | "md" | "lg" | "xl"`,
+    type: "\"sm\" | \"md\" | \"lg\" | \"xl\"",
     description: <LangMsg id="minWidthApi" />
 }, {
     name: "equalWidth",
     type: "boolean",
     default: "false",
     description: <LangMsg id="equalWithApi" />
-}];
+}]
 const ItemProps = [{
     name: "active",
     type: "boolean",
@@ -52,11 +52,11 @@ const ItemProps = [{
     name: "href",
     type: "string",
     description: <LangMsg id="hrefApi" />
-}];
+}]
 
 export default () => (
     <>
         <PropsTable title="ListGroup" data={ListGroupProps}/>
         <PropsTable title="ListGroup.Item" data={ItemProps}/>
     </>
-);
+)

@@ -1,31 +1,31 @@
-import * as React from "react";
-import DocHeading from "../../DocHeading";
-import DemoExample from "../../DemoExample";
-import Basic from "./Basic";
-import BasicSrc from "!!raw-loader!./Basic";
-import Center from "./Center";
-import CenterSrc from "!!raw-loader!./Center";
-import Right from "./Right";
-import RightSrc from "!!raw-loader!./Right";
-import Vertical from "./Vertical";
-import VerticalSrc from "!!raw-loader!./Vertical";
-import Tabs from "./Tabs";
-import TabsSrc from "!!raw-loader!./Tabs";
-import Pill from "./Pill";
-import PillSrc from "!!raw-loader!./Pill";
-import Fill from "./Fill";
-import FillSrc from "!!raw-loader!./Fill";
-import Justify from "./Justify";
-import JustifySrc from "!!raw-loader!./Justify";
-import TabDropdown from "./TabDropdown";
-import TabDropdownSrc from "!!raw-loader!./TabDropdown";
-import PillDropdown from "./PillDropdown";
-import PillDropdownSrc from "!!raw-loader!./PillDropdown";
-import API from "./API";
-import Main from "../../Main";
-import LangProvider from "../../Language/LanguageProvider";
-import LangMsg from "../../Language/LanguageMessage";
-import lang from "./lang";
+import * as React from "react"
+import DocHeading from "../../DocHeading"
+import DemoExample from "../../DemoExample"
+import Basic from "./Basic"
+import BasicSrc from "!!raw-loader!./Basic"
+import Center from "./Center"
+import CenterSrc from "!!raw-loader!./Center"
+import Right from "./Right"
+import RightSrc from "!!raw-loader!./Right"
+import Vertical from "./Vertical"
+import VerticalSrc from "!!raw-loader!./Vertical"
+import Tabs from "./Tabs"
+import TabsSrc from "!!raw-loader!./Tabs"
+import Pill from "./Pill"
+import PillSrc from "!!raw-loader!./Pill"
+import Fill from "./Fill"
+import FillSrc from "!!raw-loader!./Fill"
+import Justify from "./Justify"
+import JustifySrc from "!!raw-loader!./Justify"
+import TabDropdown from "./TabDropdown"
+import TabDropdownSrc from "!!raw-loader!./TabDropdown"
+import PillDropdown from "./PillDropdown"
+import PillDropdownSrc from "!!raw-loader!./PillDropdown"
+import API from "./API"
+import Main from "../../Main"
+import LangProvider from "../../Language/LanguageProvider"
+import LangMsg from "../../Language/LanguageMessage"
+import lang from "./lang"
 import RightNav, {
     baseId,
     baseTitle,
@@ -48,9 +48,9 @@ import RightNav, {
     pdId,
     pdTitle,
     apiId
-} from "./RightNav";
+} from "./RightNav"
 
-const { H3 } = DocHeading;
+const { H3 } = DocHeading
 
 export default () => (
     <LangProvider language={lang}>
@@ -117,4 +117,4 @@ export default () => (
         </Main>
         <RightNav />
     </LangProvider>
-);
+)

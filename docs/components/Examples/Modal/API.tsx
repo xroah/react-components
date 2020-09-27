@@ -1,6 +1,6 @@
-import * as React from "react";
-import PropsTable from "../../PropsTable";
-import LangMsg from "../../Language/LanguageMessage";
+import * as React from "react"
+import PropsTable from "../../PropsTable"
+import LangMsg from "../../Language/LanguageMessage"
 
 const props = [{
     name: "visible",
@@ -68,7 +68,7 @@ const props = [{
     description: <LangMsg id="centeredApi" />
 }, {
     name: "size",
-    type: `"xl" | "lg" | "sm"`,
+    type: "\"xl\" | \"lg\" | \"sm\"",
     description: <LangMsg id="sizeAPi" />
 }, {
     name: "autoFocus",
@@ -82,7 +82,7 @@ const props = [{
     description: <LangMsg id="scrollableApi" />
 }, {
     name: "backdrop",
-    type: `boolean | "static"`,
+    type: "boolean | \"static\"",
     default: "true",
     description: <LangMsg id="backdropApi" />
 }, {
@@ -117,8 +117,8 @@ const props = [{
     name: "onHidden",
     type: "Function",
     description: <LangMsg id="onHiddenApi" />
-}];
+}]
 
 export default () => (
     <PropsTable title="Modal" data={props} />
-);
+)

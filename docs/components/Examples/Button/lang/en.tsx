@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from "react"
 
 export default {
     compDesc: "Use Bootstrap’s custom button styles for actions in forms, dialogs, and more with support for multiple sizes, states, and more.",
@@ -17,7 +17,7 @@ export default {
     carDesc: (
         <>
             <p>
-                Bootstrap’s <code>Button</code> styles can be applied to other elements, such as <code>label</code>s, to provide checkbox or radio style button toggling. Add <code dangerouslySetInnerHTML={{ __html: `<Button.ToggleGroup/>` }} /> to style the <code>input</code>s within your buttons. <strong>Note that you can create single input-powered buttons or groups of them</strong>.``
+                Bootstrap’s <code>Button</code> styles can be applied to other elements, such as <code>label</code>s, to provide checkbox or radio style button toggling. Add <code dangerouslySetInnerHTML={{ __html: "<Button.ToggleGroup/>" }} /> to style the <code>input</code>s within your buttons. <strong>Note that you can create single input-powered buttons or groups of them</strong>.``
             </p>
             The checked state for these buttons is only updated via click event on the button. You’ll need to toggle <code>active</code> prop manually.
         </>
@@ -40,8 +40,8 @@ export default {
     nestingDesc: <>Place a <code>Button.Group</code> within another <code>Button.Group</code>  when you want dropdown menus mixed with a series of buttons.</>,
     verticalTitle: "vertical",
     verticalDesc: <>Make a set of buttons appear vertically stacked rather than horizontally.
-    <strong>Split button dropdowns are not supported here.</strong></>,
+        <strong>Split button dropdowns are not supported here.</strong></>,
     groupSizeApi: "Set the size in the group of Buttons",
     verticalApi: "Make a set of buttons appear vertically stacked rather than horizontally. ",
     tgGroupTypeApi: <>Type for underlying <code>input</code> of <code>Button.Toggle</code></>
-};
+}

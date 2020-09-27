@@ -1,5 +1,7 @@
-import * as React from "react";
-import { Form, Input, Radio, Checkbox, Row, Col, Button } from "reap-ui";
+import * as React from "react"
+import {
+    Form, Input, Radio, Checkbox, Row, Col, Button 
+} from "reap-ui"
 
 export default () => (
     <Form
@@ -26,4 +28,4 @@ export default () => (
             </Col>
         </Row>
     </Form>
-);
+)

@@ -1,11 +1,11 @@
-import * as React from "react";
-import PropsTable from "../../PropsTable";
-import NoAPI from "../../NoAPI";
-import LangMsg from "../../Language/LanguageMessage";
+import * as React from "react"
+import PropsTable from "../../PropsTable"
+import NoAPI from "../../NoAPI"
+import LangMsg from "../../Language/LanguageMessage"
 
 const CarouselProps = [{
     name: "animation",
-    type: `"slide" | "fade"`,
+    type: "\"slide\" | \"fade\"",
     default: "slide",
     description: <LangMsg id="animationApi" />
 }, {
@@ -51,11 +51,11 @@ const CarouselProps = [{
     name: "onSlid",
     type: "Function",
     description: <LangMsg id="onSlidApi" />
-},];
+}]
 
 export default () => (
     <>
         <PropsTable title="Carousel" data={CarouselProps} />
         <NoAPI title="Carousel.Item" />
     </>
-);
+)

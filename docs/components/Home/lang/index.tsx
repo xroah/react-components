@@ -1,4 +1,4 @@
-import en from "./en";
+import en from "./en"
 import zh from "./zh"
 
 export default {

@@ -1,22 +1,22 @@
-import * as React from "react";
-import DocHeading from "../../DocHeading";
-import DemoExample from '../../DemoExample';
-import Basic from "./Basic";
-import BasicSrc from "!!raw-loader!./Basic";
-import Accordion from "./Accordion";
-import AccordionSrc from "!!raw-loader!./Accordion";
-import API from "./API";
-import LangProvider from "../../Language/LanguageProvider";
-import LangMsg from "../../Language/LanguageMessage";
-import lang from "./lang";
-import Main from "../../Main";
-import RightNav from "../../RightNav";
+import * as React from "react"
+import DocHeading from "../../DocHeading"
+import DemoExample from "../../DemoExample"
+import Basic from "./Basic"
+import BasicSrc from "!!raw-loader!./Basic"
+import Accordion from "./Accordion"
+import AccordionSrc from "!!raw-loader!./Accordion"
+import API from "./API"
+import LangProvider from "../../Language/LanguageProvider"
+import LangMsg from "../../Language/LanguageMessage"
+import lang from "./lang"
+import Main from "../../Main"
+import RightNav from "../../RightNav"
 
-const egId = "collapseExample";
-const egTitle = <LangMsg id="egTitle" />;
-const accordionId = "accordion";
-const accordionTitle = <LangMsg id="accordionTitle" />;
-const apiId = "collapseApi";
+const egId = "collapseExample"
+const egTitle = <LangMsg id="egTitle" />
+const accordionId = "accordion"
+const accordionTitle = <LangMsg id="accordionTitle" />
+const apiId = "collapseApi"
 
 export default () => {
     return (
@@ -46,5 +46,5 @@ export default () => {
                 href: `#${apiId}`
             }]}/>
         </LangProvider>
-    );
-};
+    )
+}

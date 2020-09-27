@@ -1,20 +1,20 @@
-import * as React from "react";
-import DocHeading from "../../DocHeading";
-import DemoExample from "../../DemoExample";
-import Main from "../../Main";
-import RightNav from "../../RightNav";
-import Demo from "./Demo";
-import DemoSrc from "!!raw-loader!./Demo";
-import Fluid from "./Fluid";
-import FluidSrc from "!!raw-loader!./Fluid";
-import API from "./API";
-import LangProvider from "../../Language/LanguageProvider";
-import LangMsg from "../../Language/LanguageMessage";
-import lang from "./lang";
+import * as React from "react"
+import DocHeading from "../../DocHeading"
+import DemoExample from "../../DemoExample"
+import Main from "../../Main"
+import RightNav from "../../RightNav"
+import Demo from "./Demo"
+import DemoSrc from "!!raw-loader!./Demo"
+import Fluid from "./Fluid"
+import FluidSrc from "!!raw-loader!./Fluid"
+import API from "./API"
+import LangProvider from "../../Language/LanguageProvider"
+import LangMsg from "../../Language/LanguageMessage"
+import lang from "./lang"
 
-const egId = "jumbotronExample";
-const egTitle = <LangMsg id="egTitle" />;
-const apiId = "jumbotronApi";
+const egId = "jumbotronExample"
+const egTitle = <LangMsg id="egTitle" />
+const apiId = "jumbotronApi"
 
 export default () => (
     <LangProvider language={lang}>
@@ -43,4 +43,4 @@ export default () => (
             href: `#${apiId}`
         }]} />
     </LangProvider>
-);
+)

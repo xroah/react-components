@@ -1,5 +1,3 @@
-import * as React from "react";
-
 export default {
     compDesc: "Documentation and examples for Bootstrap’s media object to construct highly repetitive components like blog comments, tweets, and the like. ",
     egTitle: "Example",

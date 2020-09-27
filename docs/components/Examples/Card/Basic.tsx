@@ -1,6 +1,8 @@
-import * as React from "react";
-import { Card, Button } from "reap-ui";
-import img from "../../../assets/card_img.svg";
+import * as React from "react"
+import {
+    Card, Button 
+} from "reap-ui"
+import img from "../../../assets/card_img.svg"
 
 export default () => (
     <Card body style={{width: "18rem"}} img={img}>
@@ -10,4 +12,4 @@ export default () => (
         </Card.Text>
         <Button href="#">Go somewhere</Button>
     </Card>
-);
+)

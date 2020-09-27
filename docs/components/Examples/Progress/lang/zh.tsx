@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from "react"
 
 export default {
     compDesc: "自定义进度条，支持堆叠的进度条、动画和文本标签。",

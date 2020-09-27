@@ -1,15 +1,17 @@
-import * as React from "react";
-import { Navbar, Nav, Form, Input, Button } from "reap-ui";
+import * as React from "react"
+import {
+    Navbar, Nav, Form, Input, Button 
+} from "reap-ui"
 
 const {
     Brand,
     Collapse,
     Toggle
-} = Navbar;
+} = Navbar
 const {
     Item,
     Link
-} = Nav;
+} = Nav
 
 export default () => (
     <>
@@ -39,4 +41,4 @@ export default () => (
             </Collapse>
         </Navbar>
     </>
-);
+)

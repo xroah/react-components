@@ -1,6 +1,6 @@
-import * as React from "react";
-import { Card } from "reap-ui";
-import img from "../../../assets/image_cap.svg";
+import * as React from "react"
+import { Card } from "reap-ui"
+import img from "../../../assets/image_cap.svg"
 
 export default () => (
     <Card.Deck>
@@ -32,4 +32,4 @@ export default () => (
             </Card.Text>
         </Card>
     </Card.Deck>
-);
+)

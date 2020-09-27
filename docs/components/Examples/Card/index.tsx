@@ -1,35 +1,35 @@
-import * as React from "react";
-import { Card } from "reap-ui";
-import Main from "../../Main";
-import DocHeading from "../../DocHeading";
-import DemoExample from "../../DemoExample";
-import Basic from "./Basic";
-import BasicSrc from "!!raw-loader!./Basic";
-import TTL from "./TitlesTextLinks";
-import TTLSrc from "!!raw-loader!./TitlesTextLinks";
-import SyntaxHighlighter from "../../SyntaxHighlighter";
-import ListGroup from "./ListGroup";
-import ListGroupSrc from "!!raw-loader!./ListGroup";
-import KitchenSink from "./KitchenSink";
-import KitchenSinkSrc from "!!raw-loader!./KitchenSink";
-import FooterHeader from "./FooterHeader";
-import FooterHeaderSrc from "!!raw-loader!./FooterHeader";
-import ImageCap from "./ImageCap";
-import ImageCapSrc from "!!raw-loader!./ImageCap";
-import ImageOverlay from "./ImageOverlay";
-import ImageOverlaySrc from "!!raw-loader!./ImageOverlay";
-import Group from "./Group";
-import GroupSrc from "!!raw-loader!./Group";
-import Deck from "./Deck";
-import DeckSrc from "!!raw-loader!./Deck";
-import Grid from "./Grid";
-import GridSrc from "!!raw-loader!./Grid";
-import Column from "./Column";
-import ColumnSrc from "!!raw-loader!./Column";
-import API from "./API";
-import LangProvider from "../../Language/LanguageProvider";
-import LangMsg from "../../Language/LanguageMessage";
-import lang from "./lang";
+import * as React from "react"
+import { Card } from "reap-ui"
+import Main from "../../Main"
+import DocHeading from "../../DocHeading"
+import DemoExample from "../../DemoExample"
+import Basic from "./Basic"
+import BasicSrc from "!!raw-loader!./Basic"
+import TTL from "./TitlesTextLinks"
+import TTLSrc from "!!raw-loader!./TitlesTextLinks"
+import SyntaxHighlighter from "../../SyntaxHighlighter"
+import ListGroup from "./ListGroup"
+import ListGroupSrc from "!!raw-loader!./ListGroup"
+import KitchenSink from "./KitchenSink"
+import KitchenSinkSrc from "!!raw-loader!./KitchenSink"
+import FooterHeader from "./FooterHeader"
+import FooterHeaderSrc from "!!raw-loader!./FooterHeader"
+import ImageCap from "./ImageCap"
+import ImageCapSrc from "!!raw-loader!./ImageCap"
+import ImageOverlay from "./ImageOverlay"
+import ImageOverlaySrc from "!!raw-loader!./ImageOverlay"
+import Group from "./Group"
+import GroupSrc from "!!raw-loader!./Group"
+import Deck from "./Deck"
+import DeckSrc from "!!raw-loader!./Deck"
+import Grid from "./Grid"
+import GridSrc from "!!raw-loader!./Grid"
+import Column from "./Column"
+import ColumnSrc from "!!raw-loader!./Column"
+import API from "./API"
+import LangProvider from "../../Language/LanguageProvider"
+import LangMsg from "../../Language/LanguageMessage"
+import lang from "./lang"
 import RightNav, {
     basicId,
     basicTitle,
@@ -62,9 +62,9 @@ import RightNav, {
     deckId,
     deckTitle,
     cardApiId
-} from "./RightNav";
+} from "./RightNav"
 
-const { H3 } = DocHeading;
+const { H3 } = DocHeading
 
 export default () => (
     <LangProvider language={lang}>
@@ -89,7 +89,7 @@ export default () => (
     <Card.Body>This is some text within a card body.</Card.Body>
 </Card>`} />
                 or
-                <SyntaxHighlighter code={`<Card body>This is some text within a card body.</Card>`} />
+                <SyntaxHighlighter code={"<Card body>This is some text within a card body.</Card>"} />
             </div>
             <H3 id={ttlId}>{ttlTitle}</H3>
             <DemoExample
@@ -150,4 +150,4 @@ export default () => (
         </Main>
         <RightNav />
     </LangProvider>
-);
+)

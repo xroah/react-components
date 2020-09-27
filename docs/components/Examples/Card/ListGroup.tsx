@@ -1,5 +1,7 @@
-import * as React from "react";
-import { Card, ListGroup } from "reap-ui";
+import * as React from "react"
+import {
+    Card, ListGroup 
+} from "reap-ui"
 
 export default () => (
     <Card header="Featured" style={{width: "18rem"}}>
@@ -9,4 +11,4 @@ export default () => (
             <ListGroup.Item>Vestibulum at eros</ListGroup.Item>
         </ListGroup>
     </Card>
-);
+)

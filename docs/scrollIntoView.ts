@@ -16,89 +16,94 @@ interface Callback {
     (): void;
 }
 
-let timer: any = null;
-let callback: Callback | null = null;
+let timer: any = null
+let callback: Callback | null = null
 
 function cancelScroll() {
     if (timer !== null) {
-        cancelAnimationFrame(timer);
-        timer = null;
+        cancelAnimationFrame(timer)
+        timer = null
     }
 
-    invokeCallback();
+    invokeCallback()
 }
 
 function invokeCallback() {
     if (callback !== null) {
-        callback();
-        callback = null;
+        callback()
+        callback = null
     }
 }
 
-window.addEventListener("wheel", cancelScroll);
+window.addEventListener("wheel", cancelScroll)
 window.addEventListener("keydown", e => {
     if (e.key.toLowerCase().includes("arrow")) {
-        cancelScroll();
+        cancelScroll()
     }
-});
+})
 window.addEventListener("touchmove", cancelScroll)
 
 export function scrollTo(pos: number, offset = 0) {
     const scroll = () => {
-        const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-        const THRESHOLD = 10;
-        const dis = pos - scrollTop - offset;
-        let speed = dis / THRESHOLD;
+        const scrollTop = document.documentElement.scrollTop || document.body.scrollTop
+        const THRESHOLD = 10
+        const dis = pos - scrollTop - offset
+        let speed = dis / THRESHOLD
 
-        if (Math.abs(speed) < THRESHOLD) speed = speed < 0 ? -THRESHOLD : THRESHOLD;
+        if (Math.abs(speed) < THRESHOLD) {
+            speed = speed < 0 ? -THRESHOLD : THRESHOLD
+        }
 
         if (Math.abs(dis) > THRESHOLD) {
-            window.scrollTo(0, scrollTop + speed);
-            timer = requestAnimationFrame(scroll);
+            window.scrollTo(0, scrollTop + speed)
+            timer = requestAnimationFrame(scroll)
 
-            return;
+            return
         }
 
         //complete
-        window.scrollTo(0, pos - offset);
-        invokeCallback();
+        window.scrollTo(0, pos - offset)
+        invokeCallback()
     }
 
-    scroll();
+    scroll()
 }
 
 export default function scrollIntoView(el: HTMLElement | string, complete: Callback = null) {
-    callback = complete;
+    callback = complete
 
     if (typeof el === "string") {
         try {
-            el = document.querySelector(el) as HTMLElement;
-        } catch (error) {
-            return invokeCallback();
+            el = document.querySelector(el) as HTMLElement
+        }
+        catch (error) {
+            return invokeCallback()
         }
     }
     
-    if (!el) return invokeCallback();
+    if (!el) {
+        return invokeCallback()
+    }
 
     /* if (behaviorSupported) {
         return el.scrollIntoView({ behavior: "smooth" });
     } */
 
     if (timer) {
-        cancelAnimationFrame(timer);
-        timer = null;
+        cancelAnimationFrame(timer)
+        timer = null
     }
 
-    let offsetTop = el.offsetTop;
-    let parent = el.offsetParent as HTMLElement;
+    let offsetTop = el.offsetTop
+    let parent = el.offsetParent as HTMLElement
 
     while (parent && parent !== document.body) {
-        const borderTop = parseFloat(getComputedStyle(parent).getPropertyValue("border-top")) || 0;
-        offsetTop += borderTop + parent.offsetTop;
-        parent = parent.offsetParent as HTMLElement;
+        const borderTop = parseFloat(getComputedStyle(parent).getPropertyValue("border-top")) || 0
+        offsetTop += borderTop + parent.offsetTop
+        parent = parent.offsetParent as HTMLElement
     }
     
-    scrollTo(offsetTop, 100);
+    scrollTo(offsetTop, 100)
     
-    return cancelScroll;
+    return cancelScroll
 }

@@ -1,5 +1,7 @@
-import * as React from "react";
-import { Card, ListGroup } from "reap-ui";
+import * as React from "react"
+import {
+    Card, ListGroup 
+} from "reap-ui"
 import imageCap from "../../../assets/image_cap.svg"
 
 export default () => (
@@ -18,4 +20,4 @@ export default () => (
             <Card.Link href="#">Another link</Card.Link>
         </Card.Body>
     </Card>
-);
+)

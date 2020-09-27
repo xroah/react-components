@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from "react"
 
 export default {
     compDesc: "为用户的操作提供一些有用的、灵活的、与上下文有关的反馈信息。",

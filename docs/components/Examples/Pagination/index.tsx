@@ -1,12 +1,12 @@
-import * as React from "react";
-import DocHeading from "../../DocHeading";
-import { Pagination } from "reap-ui";
-import SyntaxHighlighter from "../../SyntaxHighlighter";
-import API from "./API";
-import Main from "../../Main";
-import LangProvider from "../../Language/LanguageProvider";
-import LangMsg from "../../Language/LanguageMessage";
-import lang from "./lang";
+import * as React from "react"
+import DocHeading from "../../DocHeading"
+import { Pagination } from "reap-ui"
+import SyntaxHighlighter from "../../SyntaxHighlighter"
+import API from "./API"
+import Main from "../../Main"
+import LangProvider from "../../Language/LanguageProvider"
+import LangMsg from "../../Language/LanguageMessage"
+import lang from "./lang"
 import RightNav, {
     basicId,
     basicTitle,
@@ -17,9 +17,9 @@ import RightNav, {
     alignmentId,
     alignmentTitle,
     apiId
-} from "./RightNav";
+} from "./RightNav"
 
-const { H3 } = DocHeading;
+const { H3 } = DocHeading
 
 export default () => (
     <LangProvider language={lang}>
@@ -126,4 +126,4 @@ export default () => (
         </Main>
         <RightNav />
     </LangProvider>
-);
+)

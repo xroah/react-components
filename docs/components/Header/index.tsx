@@ -1,31 +1,31 @@
-import * as React from "react";
+import * as React from "react"
 import {
     Navbar,
     Nav,
     Collapse
-} from "reap-ui";
+} from "reap-ui"
 import {
     useHistory,
     useLocation
-} from "react-router-dom";
-import LangSelector from "../Language/Selector";
-import Links from "./Links";
-import logo from "../../assets/logo.svg";
-import github from "../../assets/github.svg";
+} from "react-router-dom"
+import LangSelector from "../Language/Selector"
+import Links from "./Links"
+import logo from "../../assets/logo.svg"
+import github from "../../assets/github.svg"
 
 export default () => {
-    const location = useLocation();
-    const history = useHistory();
+    const location = useLocation()
+    const history = useHistory()
     const handleClickBrand = (evt: React.MouseEvent) => {
         if (location.pathname !== "/") {
-            history.push("/");
+            history.push("/")
         }
 
-        evt.preventDefault();
-    };
-    const [isOpen, toggle] = React.useState(false);
-    const handleClick = () => toggle(!isOpen);
-    const LOGO_SIZE = 32;
+        evt.preventDefault()
+    }
+    const [isOpen, toggle] = React.useState(false)
+    const handleClick = () => toggle(!isOpen)
+    const LOGO_SIZE = 32
 
     return (
         <div className="bd-header">
@@ -63,5 +63,5 @@ export default () => {
                 </Nav>
             </Collapse>
         </div>
-    );
+    )
 }

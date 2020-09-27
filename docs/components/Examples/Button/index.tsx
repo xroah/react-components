@@ -1,23 +1,23 @@
-import * as React from "react";
-import DocHeading from "../../DocHeading";
-import DemoExample from "../../DemoExample";
-import Main from "../../Main";
-import SyntaxHighlighter from "../../SyntaxHighlighter";
-import Basic from "./Basic";
-import BasicSrc from "!!raw-loader!./Basic";
-import OutlinedSrc from "!!raw-loader!./Outlined";
-import Outlined from "./Outlined";
-import { Button } from "reap-ui";
-import ButtonGroup from "../ButtonGroup";
-import Checkbox from "./Checkbox";
-import CheckboxSrc from "!!raw-loader!./Checkbox";
-import Radio from "./Radio";
-import RadioSrc from "!!raw-loader!./Radio";
-import API from "./API";
-import ButtonGroupAPI from "../ButtonGroup/API";
-import LangProvider from "../../Language/LanguageProvider";
-import LangMsg from "../../Language/LanguageMessage";
-import lang from "./lang";
+import * as React from "react"
+import DocHeading from "../../DocHeading"
+import DemoExample from "../../DemoExample"
+import Main from "../../Main"
+import SyntaxHighlighter from "../../SyntaxHighlighter"
+import Basic from "./Basic"
+import BasicSrc from "!!raw-loader!./Basic"
+import OutlinedSrc from "!!raw-loader!./Outlined"
+import Outlined from "./Outlined"
+import { Button } from "reap-ui"
+import ButtonGroup from "../ButtonGroup"
+import Checkbox from "./Checkbox"
+import CheckboxSrc from "!!raw-loader!./Checkbox"
+import Radio from "./Radio"
+import RadioSrc from "!!raw-loader!./Radio"
+import API from "./API"
+import ButtonGroupAPI from "../ButtonGroup/API"
+import LangProvider from "../../Language/LanguageProvider"
+import LangMsg from "../../Language/LanguageMessage"
+import lang from "./lang"
 import RightNav, {
     egId,
     egTitle,
@@ -32,9 +32,9 @@ import RightNav, {
     carId,
     carTitle,
     btnApiId
-} from "./RightNav";
+} from "./RightNav"
 
-const { H3 } = DocHeading;
+const { H3 } = DocHeading
 
 export default () => (
     <LangProvider language={lang}>
@@ -118,4 +118,4 @@ export default () => (
         </Main>
         <RightNav />
     </LangProvider>
-);
+)

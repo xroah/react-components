@@ -1,14 +1,16 @@
-import * as React from "react";
-import { Tabs, Nav, Row, Col } from "reap-ui";
+import * as React from "react"
+import {
+    Tabs, Nav, Row, Col 
+} from "reap-ui"
 
-const { TabPane } = Tabs;
+const { TabPane } = Tabs
 
 export default () => {
-    const [activeKey, update] = React.useState("home");
+    const [activeKey, update] = React.useState("home")
     const onClick = item => e => {
-        update(item);
-        e.preventDefault();
-    };
+        update(item)
+        e.preventDefault()
+    }
     const navItems = [
         "home",
         "profile",
@@ -22,7 +24,7 @@ export default () => {
                 {item}
             </Nav.Link>
         </Nav.Item>
-    ));
+    ))
 
     return (
         <Row>
@@ -49,4 +51,4 @@ export default () => {
             </Col>
         </Row>
     )
-};
+}

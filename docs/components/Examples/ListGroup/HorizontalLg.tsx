@@ -1,7 +1,7 @@
-import * as React from "react";
-import { ListGroup } from "reap-ui";
+import * as React from "react"
+import { ListGroup } from "reap-ui"
 
-const { Item } = ListGroup;
+const { Item } = ListGroup
 
 export default () => (
     <ListGroup horizontal minWidth="lg" equalWidth>
@@ -9,4 +9,4 @@ export default () => (
         <Item>Dapibus ac facilisis in</Item>
         <Item>Morbi leo risus</Item>
     </ListGroup>
-);
+)

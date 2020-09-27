@@ -1,11 +1,13 @@
-import * as React from "react";
-import { Alert, Button } from "reap-ui";
+import * as React from "react"
+import {
+    Alert, Button 
+} from "reap-ui"
 
 export default function Dismissible() {
-    const [visible, setVisible] = React.useState(true);
+    const [visible, setVisible] = React.useState(true)
     const toggle = () => {
-        setVisible(!visible);
-    };
+        setVisible(!visible)
+    }
 
     return (
         <>
@@ -14,5 +16,5 @@ export default function Dismissible() {
                 Holy guacamole! You should check in on some of those fields below.
             </Alert>
         </>
-    );
+    )
 }

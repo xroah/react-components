@@ -1,5 +1,7 @@
-import * as React from "react";
-import { Container, Row, Col } from "reap-ui";
+import * as React from "react"
+import {
+    Container, Row, Col 
+} from "reap-ui"
 
 export default () => (
     <Container>
@@ -15,4 +17,4 @@ export default () => (
             </Col>
         </Row>
     </Container>
-);
+)

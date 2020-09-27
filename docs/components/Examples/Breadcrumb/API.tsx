@@ -1,7 +1,7 @@
-import * as React from "react";
-import PropsTable from "../../PropsTable";
-import NoAPI from "../../NoAPI";
-import LangMsg from "../../Language/LanguageMessage";
+import * as React from "react"
+import PropsTable from "../../PropsTable"
+import NoAPI from "../../NoAPI"
+import LangMsg from "../../Language/LanguageMessage"
 
 const ItemProps = [{
     name: "active",
@@ -12,11 +12,11 @@ const ItemProps = [{
     name: "href",
     type: "string",
     description: <LangMsg id="hrefApi"/>
-}];
+}]
 
 export default () => (
     <>
         <NoAPI title="Breadcrumb" />
         <PropsTable title="Breadcrumb.Item" data={ItemProps} />
     </>
-);
+)

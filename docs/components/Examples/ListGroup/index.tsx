@@ -1,31 +1,31 @@
-import * as React from "react";
-import DocHeading from "../../DocHeading";
-import DemoExample from "../../DemoExample";
-import Basic from "./Basic";
-import BasicSrc from "!!raw-loader!./Basic";
-import ActiveOrDisable from "./ActiveOrDisable";
-import ActiveOrDisableSrc from "!!raw-loader!./ActiveOrDisable";
-import Action from "./Action";
-import ActionSrc from "!!raw-loader!./Action";
-import Flush from "./Flush";
-import FlushSrc from "!!raw-loader!./Flush";
-import Horizontal from "./Horizontal";
-import HorizontalSrc from "!!raw-loader!./Horizontal";
-import HorizontalSm from "./HorizontalSm";
-import HorizontalSmSrc from "!!raw-loader!./HorizontalSm";
-import HorizontalLg from "./HorizontalLg";
-import HorizontalLgSrc from "!!raw-loader!./HorizontalLg";
-import Contextual from "./Contextual";
-import ContextualSrc from "!!raw-loader!./Contextual";
-import ContextualAction from "./ContextualAction";
-import ContextualActionSrc from "!!raw-loader!./ContextualAction";
-import Tab from "./Tab";
-import TabSrc from "!!raw-loader!./Tab";
-import API from "./API";
-import Main from "../../Main";
-import LangProvider from "../../Language/LanguageProvider";
-import LangMsg from "../../Language/LanguageMessage";
-import lang from "./lang";
+import * as React from "react"
+import DocHeading from "../../DocHeading"
+import DemoExample from "../../DemoExample"
+import Basic from "./Basic"
+import BasicSrc from "!!raw-loader!./Basic"
+import ActiveOrDisable from "./ActiveOrDisable"
+import ActiveOrDisableSrc from "!!raw-loader!./ActiveOrDisable"
+import Action from "./Action"
+import ActionSrc from "!!raw-loader!./Action"
+import Flush from "./Flush"
+import FlushSrc from "!!raw-loader!./Flush"
+import Horizontal from "./Horizontal"
+import HorizontalSrc from "!!raw-loader!./Horizontal"
+import HorizontalSm from "./HorizontalSm"
+import HorizontalSmSrc from "!!raw-loader!./HorizontalSm"
+import HorizontalLg from "./HorizontalLg"
+import HorizontalLgSrc from "!!raw-loader!./HorizontalLg"
+import Contextual from "./Contextual"
+import ContextualSrc from "!!raw-loader!./Contextual"
+import ContextualAction from "./ContextualAction"
+import ContextualActionSrc from "!!raw-loader!./ContextualAction"
+import Tab from "./Tab"
+import TabSrc from "!!raw-loader!./Tab"
+import API from "./API"
+import Main from "../../Main"
+import LangProvider from "../../Language/LanguageProvider"
+import LangMsg from "../../Language/LanguageMessage"
+import lang from "./lang"
 import RightNav, {
     basicId,
     basicTitle,
@@ -42,9 +42,9 @@ import RightNav, {
     tabId,
     tabTitle,
     apiId
-} from "./RightNav";
+} from "./RightNav"
 
-const { H3 } = DocHeading;
+const { H3 } = DocHeading
 
 export default () => (
     <LangProvider language={lang}>
@@ -105,4 +105,4 @@ export default () => (
         </Main>
         <RightNav />
     </LangProvider>
-);
+)

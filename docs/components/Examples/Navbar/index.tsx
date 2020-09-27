@@ -1,26 +1,26 @@
-import * as React from "react";
-import DocHeading from "../../DocHeading";
-import DemoExample from "../../DemoExample";
-import { Navbar } from "reap-ui";
-import SyntaxHighlighter from "../../SyntaxHighlighter";
-import logo from "../../../assets/logo.svg";
-import Demo from "./Demo";
-import DemoSrc from "!!raw-loader!./Demo";
-import Color from "./Color";
-import ColorSrc from "!!raw-loader!./Color";
-import Toggler from "./Toggler";
-import TogglerSrc from "!!raw-loader!./Toggler";
-import LeftToggler from "./LeftToggler";
-import LeftTogglerSrc from "!!raw-loader!./LeftToggler";
-import RightToggler from "./RightToggler";
-import RightTogglerSrc from "!!raw-loader!./RightToggler";
-import ExternalContent from "./ExternalContent";
-import ExternalContentSrc from "!!raw-loader!./ExternalContent";
-import API from "./API";
-import Main from "../../Main";
-import LangProvider from "../../Language/LanguageProvider";
-import LangMsg from "../../Language/LanguageMessage";
-import lang from "./lang";
+import * as React from "react"
+import DocHeading from "../../DocHeading"
+import DemoExample from "../../DemoExample"
+import { Navbar } from "reap-ui"
+import SyntaxHighlighter from "../../SyntaxHighlighter"
+import logo from "../../../assets/logo.svg"
+import Demo from "./Demo"
+import DemoSrc from "!!raw-loader!./Demo"
+import Color from "./Color"
+import ColorSrc from "!!raw-loader!./Color"
+import Toggler from "./Toggler"
+import TogglerSrc from "!!raw-loader!./Toggler"
+import LeftToggler from "./LeftToggler"
+import LeftTogglerSrc from "!!raw-loader!./LeftToggler"
+import RightToggler from "./RightToggler"
+import RightTogglerSrc from "!!raw-loader!./RightToggler"
+import ExternalContent from "./ExternalContent"
+import ExternalContentSrc from "!!raw-loader!./ExternalContent"
+import API from "./API"
+import Main from "../../Main"
+import LangProvider from "../../Language/LanguageProvider"
+import LangMsg from "../../Language/LanguageMessage"
+import lang from "./lang"
 import RightNav, {
     egId,
     egTitle,
@@ -39,9 +39,9 @@ import RightNav, {
     externalId,
     externalTitle,
     apiId
-} from "./RightNav";
+} from "./RightNav"
 
-const { H3 } = DocHeading;
+const { H3 } = DocHeading
 
 export default () => (
     <LangProvider language={lang}>
@@ -95,7 +95,7 @@ export default () => (
                     <Navbar.Brand href="#">
                         <img src={logo} alt="" width={30} height={30} />
                     &nbsp;Bootstrap
-                </Navbar.Brand>
+                    </Navbar.Brand>
                 </Navbar>
                 <SyntaxHighlighter code={`<!-- Image and text -->
 <Navbar bg="light">
@@ -151,4 +151,4 @@ export default () => (
         </Main>
         <RightNav />
     </LangProvider >
-);
+)

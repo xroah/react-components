@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from "react"
 
 export default {
     compDesc: "指示当前页面的层级结构，通过CSS自动添加分隔符。",

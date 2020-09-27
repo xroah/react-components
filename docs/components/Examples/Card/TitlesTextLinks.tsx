@@ -1,5 +1,5 @@
-import * as React from "react";
-import { Card } from "reap-ui";
+import * as React from "react"
+import { Card } from "reap-ui"
 
 export default () => (
     <Card body style={{width: "18rem"}}>
@@ -10,4 +10,4 @@ export default () => (
         <Card.Link href="#">Card Link</Card.Link>
         <Card.Link href="#">Another Link</Card.Link>
     </Card>
-);
+)

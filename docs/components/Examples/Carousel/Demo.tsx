@@ -1,5 +1,5 @@
-import * as React from "react";
-import { Carousel } from "reap-ui";
+import * as React from "react"
+import { Carousel } from "reap-ui"
 
 export default () => (
     <Carousel>
@@ -28,4 +28,4 @@ export default () => (
             </svg>
         </Carousel.Item>
     </Carousel>
-);
+)

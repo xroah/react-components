@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from "react"
 
 export default {
     compDesc: "Toast是一个轻量级通知组建，为模仿移动端和桌面端推送通知而设计。使用flexbox创建，所以很容易排列和定位。",

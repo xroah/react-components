@@ -1,5 +1,7 @@
-import * as React from "react";
-import { Input, Dropdown } from "reap-ui";
+import * as React from "react"
+import {
+    Input, Dropdown 
+} from "reap-ui"
 
 const overlay = (
     <Dropdown.Menu>
@@ -9,7 +11,7 @@ const overlay = (
         <Dropdown.Divider />
         <Dropdown.Item href="#">Separated link</Dropdown.Item>
     </Dropdown.Menu>
-);
+)
 
 const button = (
     <Dropdown.Button
@@ -17,8 +19,8 @@ const button = (
         variant="secondary"
         overlay={overlay}>
         Dropdown
-        </Dropdown.Button>
-);
+    </Dropdown.Button>
+)
 const split = (
     <Dropdown.Button
         split
@@ -26,8 +28,8 @@ const split = (
         variant="secondary"
         overlay={overlay}>
         Action
-        </Dropdown.Button>
-);
+    </Dropdown.Button>
+)
 
 export default () => (
     <>
@@ -36,4 +38,4 @@ export default () => (
         <Input prepend={split} />
         <Input append={split} />
     </>
-);
+)

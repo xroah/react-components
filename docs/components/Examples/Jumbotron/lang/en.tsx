@@ -1,8 +1,8 @@
-import * as React from "react";
+import * as React from "react"
 
 const apiMsg = {
     fluidApi: "To make the jumbotron full width, and without rounded corners"
-};
+}
 
 export default {
     compDesc: "Lightweight, flexible component for showcasing hero unit style content.",

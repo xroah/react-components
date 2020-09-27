@@ -1,11 +1,11 @@
-import * as React from "react";
-import PropsTable from "../../PropsTable";
-import LangMsg from "../../Language/LanguageMessage";
-import NoAPI from "../../NoAPI";
+import * as React from "react"
+import PropsTable from "../../PropsTable"
+import LangMsg from "../../Language/LanguageMessage"
+import NoAPI from "../../NoAPI"
 
 const NavProps = [{
     name: "variant",
-    type: `"tab" | "pill"`,
+    type: "\"tab\" | \"pill\"",
     description: <LangMsg id="variantApi" />
 }, {
     name: "vertical",
@@ -14,11 +14,11 @@ const NavProps = [{
     description: <LangMsg id="verticalApi" />
 }, {
     name: "minWidth",
-    type: `"sm" | "md" | "lg" | "xl"`,
+    type: "\"sm\" | \"md\" | \"lg\" | \"xl\"",
     description: <LangMsg id="minWidthApi" />
 }, {
     name: "alignment",
-    type: `"left" | "center" | "right"`,
+    type: "\"left\" | \"center\" | \"right\"",
     default: "left",
     description: <LangMsg id="alignmentApi" />
 }, {
@@ -31,7 +31,7 @@ const NavProps = [{
     type: "boolean",
     default: "false",
     description: <LangMsg id="equalWidthApi" />
-}];
+}]
 const LinkProps = [{
     name: "active",
     type: "boolean",
@@ -46,7 +46,7 @@ const LinkProps = [{
     name: "href",
     type: "sting",
     description: <LangMsg id="hrefApi" />
-}];
+}]
 
 export default () => (
     <>
@@ -54,4 +54,4 @@ export default () => (
         <NoAPI title="Nav.Item" />
         <PropsTable title="Nav.Link" data={LinkProps} />
     </>
-);
+)

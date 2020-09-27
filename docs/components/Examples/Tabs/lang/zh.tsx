@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from "react"
 
 export default {
     compDesc: "动态的标签页不应该包含下拉菜单，这样会导致可用性和可访问性问题。对于可用性来说，当前显示的标签页不是立即可见的（内部的关闭的下拉菜单也是如此），这样会导致困惑。对于可访问性来说，没有可感知的方法建立标准的WAI ARIA模式，这意味着对于使用辅助技术的用户来说不容易被理解。",

@@ -1,6 +1,6 @@
-import * as React from "react";
-import PropsTable from "../../PropsTable";
-import LangMsg from "../../Language/LanguageMessage";
+import * as React from "react"
+import PropsTable from "../../PropsTable"
+import LangMsg from "../../Language/LanguageMessage"
 
 const CollapseProps = [{
     name: "isOpen",
@@ -22,7 +22,7 @@ const CollapseProps = [{
     name: "onHidden",
     type: "Function",
     description: <LangMsg id="onHiddenApi" />
-}];
+}]
 const AccordionProps = [{
     name: "activeKey",
     type: "string | number | string[] | number[]",
@@ -44,7 +44,7 @@ const AccordionProps = [{
     name: "onPanelChange",
     type: "Function(keys: key[])",
     description: <LangMsg id="panelChangeApi" />
-}];
+}]
 const PanelProps = [{
     name: "key",
     type: "string | number",
@@ -53,7 +53,7 @@ const PanelProps = [{
     name: "header",
     type: "string | ReactNode",
     description: <LangMsg id="headerApi" />
-}];
+}]
 
 export default () => (
     <>
@@ -61,4 +61,4 @@ export default () => (
         <PropsTable title="Accordion" data={AccordionProps} />
         <PropsTable title="Accordion.Panel" data={PanelProps} />
     </>
-);
+)

@@ -1,9 +1,9 @@
-import * as React from "react";
-import PropsTable from "../../PropsTable";
-import LangMsg from "../../Language/LanguageMessage";
-import NoAPI from "../../NoAPI";
-import { Link } from "react-router-dom";
-import DocHeading from "../../DocHeading";
+import * as React from "react"
+import PropsTable from "../../PropsTable"
+import LangMsg from "../../Language/LanguageMessage"
+import NoAPI from "../../NoAPI"
+import { Link } from "react-router-dom"
+import DocHeading from "../../DocHeading"
 
 const NavbarProps = [{
     name: "variant",
@@ -23,10 +23,10 @@ const NavbarProps = [{
     description: <LangMsg id="bgApi" />
 }, {
     name: "expand",
-    type: `boolean | "sm" | "md" | "lg" | "xl"`,
+    type: "boolean | \"sm\" | \"md\" | \"lg\" | \"xl\"",
     default: "false",
     description: <LangMsg id="expandApi" />
-}];
+}]
 const BrandProps = [{
     name: "tag",
     type: "string",
@@ -36,12 +36,12 @@ const BrandProps = [{
     name: "href",
     type: "string",
     description: <LangMsg id="hrefApi" />
-}];
+}]
 const ToggleProps = [{
     name: "onClick",
     type: "Function",
     description: <LangMsg id="onClickApi" />
-}];
+}]
 
 export default () => (
     <>
@@ -55,4 +55,4 @@ export default () => (
         <PropsTable title="Navbar.Toggle" data={ToggleProps}/>
         <NoAPI title="Navbar.Text" />
     </>
-);
+)

@@ -1,6 +1,6 @@
-import * as React from "react";
-import SyntaxHighlighter from "../SyntaxHighlighter";
-import { classNames } from "../../../components/utils";
+import * as React from "react"
+import SyntaxHighlighter from "../SyntaxHighlighter"
+import { classNames } from "../../../components/utils"
 
 interface Props extends React.HTMLAttributes<HTMLElement> {
     component: React.ReactElement;
@@ -13,7 +13,7 @@ export default function DemoExample(props: Props) {
         className,
         source,
         children
-    } = props;
+    } = props
 
     return (
         <>
@@ -33,5 +33,5 @@ export default function DemoExample(props: Props) {
                 }
             </div>
         </>
-    );
-};
+    )
+}

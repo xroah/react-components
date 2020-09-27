@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from "react"
 
 export default {
     compDesc: "Documentation and examples for how to use Bootstrap’s included navigation components.",

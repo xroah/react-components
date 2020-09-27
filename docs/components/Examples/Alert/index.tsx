@@ -1,21 +1,21 @@
-import * as React from "react";
-import DocHeading from "../../DocHeading";
-import DemoExample from "../../DemoExample";
-import Main from "../../Main";
-import Basic from "./Basic";
-import BasicSrc from "!!raw-loader!./Basic";
-import Dismissible from "./Dismissible";
-import DismissibleSrc from "!!raw-loader!./Dismissible";
-import Toggle from "./Toggle";
-import ToggleSrc from "!!raw-loader!./Toggle";
-import Link from "./Link";
-import LinkSrc from "!!raw-loader!./Link";
-import AdditionalContent from "./AdditionalContent";
-import AdditionalContentSrc from "!!raw-loader!./AdditionalContent";
-import API from "./API";
-import LangProvider from "../../Language/LanguageProvider";
-import LangMsg from "../../Language/LanguageMessage";
-import lang from "./lang";
+import * as React from "react"
+import DocHeading from "../../DocHeading"
+import DemoExample from "../../DemoExample"
+import Main from "../../Main"
+import Basic from "./Basic"
+import BasicSrc from "!!raw-loader!./Basic"
+import Dismissible from "./Dismissible"
+import DismissibleSrc from "!!raw-loader!./Dismissible"
+import Toggle from "./Toggle"
+import ToggleSrc from "!!raw-loader!./Toggle"
+import Link from "./Link"
+import LinkSrc from "!!raw-loader!./Link"
+import AdditionalContent from "./AdditionalContent"
+import AdditionalContentSrc from "!!raw-loader!./AdditionalContent"
+import API from "./API"
+import LangProvider from "../../Language/LanguageProvider"
+import LangMsg from "../../Language/LanguageMessage"
+import lang from "./lang"
 import RightNav, {
     egId,
     egTitle,
@@ -28,9 +28,9 @@ import RightNav, {
     tgId,
     tgTitle,
     apiId
-} from "./RightNav";
+} from "./RightNav"
 
-const { H3 } = DocHeading;
+const { H3 } = DocHeading
 
 export default () => (
     <LangProvider language={lang}>
@@ -62,4 +62,4 @@ export default () => (
         </Main>
         <RightNav />
     </LangProvider>
-);
+)

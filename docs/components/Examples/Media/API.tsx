@@ -1,6 +1,6 @@
-import * as React from "react";
-import PropsTable from "../../PropsTable";
-import LangMsg from "../../Language/LanguageMessage";
+import * as React from "react"
+import PropsTable from "../../PropsTable"
+import LangMsg from "../../Language/LanguageMessage"
 
 const props = [{
     name: "title",
@@ -25,18 +25,18 @@ const props = [{
     description: <LangMsg id="imgSizeApi" />
 }, {
     name: "imgBorder",
-    type: `"rounded" | "circle"`,
+    type: "\"rounded\" | \"circle\"",
     description: <LangMsg id="imgBorderApi" />
 }, {
     name: "imgPosition",
-    type: `"left" | "right"`,
+    type: "\"left\" | \"right\"",
     description: <LangMsg id="imgPosApi" />
 }, {
     name: "alignment",
-    type: `"top" | "middle" | "bottom"`,
+    type: "\"top\" | \"middle\" | \"bottom\"",
     description: <LangMsg id="alignmentApi" />
-}];
+}]
 
 export default () => (
     <PropsTable title="Media" data={props} />
-);
+)

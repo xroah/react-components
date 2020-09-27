@@ -1,42 +1,42 @@
-import * as React from "react";
+import * as React from "react"
 import {
     Switch,
     Route,
     Redirect,
     useLocation
-} from "react-router-dom";;
-import routes from "./routes";
-import Loading from "./components/Loading";
+} from "react-router-dom"
+import routes from "./routes"
+import Loading from "./components/Loading"
 
 function _Loading(props: { mountCallback?: Function }) {
     React.useEffect(() => () => {
-        props.mountCallback && props.mountCallback();
-    });
+        props.mountCallback && props.mountCallback()
+    })
 
-    return <Loading />;
+    return <Loading />
 }
 
-let prevPath = "";
-let loaded: any = {};
-let currentComponent: any;
+let prevPath = ""
+let loaded: any = {}
+let currentComponent: any
 
 export default () => {
-    const location = useLocation();
-    const path = location.pathname;
-    const [, update] = React.useState();
+    const location = useLocation()
+    const path = location.pathname
+    const [, update] = React.useState()
     const fallback = (
         <_Loading
-        mountCallback={
+            mountCallback={
                 () => {
-                    loaded[path] = currentComponent;
+                    loaded[path] = currentComponent
                     //force render the component once loaded(replace the previous component)
-                    update(Math.random() as any);
+                    update(Math.random() as any)
                 }
             } />
-    );
+    )
 
     if (!location.pathname.includes("/components")) {
-        prevPath = "";
+        prevPath = ""
     }
 
     return (
@@ -49,29 +49,30 @@ export default () => {
                             path={item.path}
                             exact
                             render={() => {
-                                const Component = item.component;
-                                const prev = loaded[prevPath];
-                                const cur = loaded[path];
+                                const Component = item.component
+                                const prev = loaded[prevPath]
+                                const cur = loaded[path]
                                 const suspense = (
                                     <React.Suspense fallback={fallback}>
                                         <Component />
                                     </React.Suspense>
-                                );
-                                currentComponent = suspense;
+                                )
+                                currentComponent = suspense
 
                                 if (cur || prev) {
                                     document.title = `${item.name}--reap-ui`
                                 }
                                 
                                 if (cur) {
-                                    prevPath = path;
+                                    prevPath = path
 
                                     if (!location.hash) {
-                                        window.scrollTo(0, 0);
+                                        window.scrollTo(0, 0)
                                     }
 
-                                    return cur;
-                                } else if (prev) {
+                                    return cur
+                                }
+                                else if (prev) {
                                     //render the prev component until current has been loaded
                                     return (
                                         <>
@@ -79,15 +80,15 @@ export default () => {
                                             {/* load current component while rendering previous */}
                                             {suspense}
                                         </>
-                                    );
+                                    )
                                 }
 
-                                return suspense;
+                                return suspense
                             }} />
-                    );
+                    )
                 })
             }
             <Redirect to="/components/alert" />
         </Switch>
-    );
+    )
 }

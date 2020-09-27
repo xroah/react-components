@@ -1,24 +1,26 @@
-import * as React from "react";
-import { Navbar, Nav, Dropdown, Form, Input, Button } from "reap-ui";
+import * as React from "react"
+import {
+    Navbar, Nav, Dropdown, Form, Input, Button 
+} from "reap-ui"
 
 const {
     Brand,
     Collapse,
     Toggle
-} = Navbar;
+} = Navbar
 const {
     Link,
     Item
-} = Nav;
+} = Nav
 const {
     Menu,
     Item: MenuItem,
     Divider
-} = Dropdown;
+} = Dropdown
 
 export default () => {
-    const [isOpen, toggleOpen] = React.useState(false);
-    const toggle = () => toggleOpen(!isOpen);
+    const [isOpen, toggleOpen] = React.useState(false)
+    const toggle = () => toggleOpen(!isOpen)
     const overlay = (
         <Menu>
             <MenuItem href="#">Action</MenuItem>
@@ -26,7 +28,7 @@ export default () => {
             <Divider />
             <MenuItem href="#">Something else here</MenuItem>
         </Menu>
-    );
+    )
 
     return (
         <>
@@ -66,5 +68,5 @@ export default () => {
                 </Collapse>
             </Navbar>
         </>
-    );
+    )
 }

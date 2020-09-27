@@ -1,5 +1,7 @@
-import * as React from "react";
-import { Jumbotron, Button } from "reap-ui";
+import * as React from "react"
+import {
+    Jumbotron, Button 
+} from "reap-ui"
 
 export default () => (
     <Jumbotron>
@@ -9,4 +11,4 @@ export default () => (
         <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
         <Button href="#">Learn more</Button>
     </Jumbotron>
-);
+)

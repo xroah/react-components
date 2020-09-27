@@ -1,7 +1,7 @@
-import * as React from "react";
-import { Nav } from "reap-ui";
+import * as React from "react"
+import { Nav } from "reap-ui"
 
-const { Link } = Nav;
+const { Link } = Nav
 
 export default () => (
     <Nav alignment="center">
@@ -10,4 +10,4 @@ export default () => (
         <Link href="#">Link</Link>
         <Link disabled href="#">Disabled</Link>
     </Nav>
-);
+)

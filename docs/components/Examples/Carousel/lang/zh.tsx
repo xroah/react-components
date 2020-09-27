@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from "react"
 
 export default {
     compDesc: "一个幻灯片组件，可展示图像、文本等内容。",
@@ -14,4 +14,4 @@ export default {
     touchApi: "是否支持触屏左滑/右滑",
     onSlideApi: "幻灯片开始切换是的回调函数",
     onSlidApi: "幻灯片切换完成后的回调函数"
-};
+}

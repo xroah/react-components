@@ -1,9 +1,9 @@
-import * as React from "react";
-import { Button } from "reap-ui";
+import * as React from "react"
+import { Button } from "reap-ui"
 
 export default () => {
-    const [value, update] = React.useState("1");
-    const handleClick = evt => update(evt.target.value);
+    const [value, update] = React.useState("1")
+    const handleClick = evt => update(evt.target.value)
 
     return (
         <Button.ToggleGroup type="radio">
@@ -29,5 +29,5 @@ export default () => {
                 Radio
             </Button.Toggle>
         </Button.ToggleGroup>
-    );
+    )
 }

@@ -1,27 +1,29 @@
-import * as React from "react";
-import DocHeading from "../../DocHeading";
-import DemoExample from "../../DemoExample";
-import Basic from "./Basic";
-import BasicSrc from "!!raw-loader!./Basic";
-import Grid from "./Grid";
-import GridSrc from "!!raw-loader!./Grid";
-import Row from "./FormRow";
-import RowSrc from "!!raw-loader!./FormRow";
-import ComplexGrid from "./ComplexGrid";
-import ComplexGridSrc from "!!raw-loader!./ComplexGrid";
-import Horizontal from "./Horizontal";
-import HorizontalSrc from "!!raw-loader!./Horizontal";
-import Inline from "./Inline";
-import InlineSrc from "!!raw-loader!./Inline";
-import Indeterminate from "./Indeterminate";
-import IndeterminateSrc from "!!raw-loader!./Indeterminate";
-import { Checkbox, Radio, Switch } from "reap-ui";
-import API from "./API";
-import SyntaxHighlighter from "../../SyntaxHighlighter";
-import Main from "../../Main";
-import LangProvider from "../../Language/LanguageProvider";
-import LangMsg from "../../Language/LanguageMessage";
-import lang from "./lang";
+import * as React from "react"
+import DocHeading from "../../DocHeading"
+import DemoExample from "../../DemoExample"
+import Basic from "./Basic"
+import BasicSrc from "!!raw-loader!./Basic"
+import Grid from "./Grid"
+import GridSrc from "!!raw-loader!./Grid"
+import Row from "./FormRow"
+import RowSrc from "!!raw-loader!./FormRow"
+import ComplexGrid from "./ComplexGrid"
+import ComplexGridSrc from "!!raw-loader!./ComplexGrid"
+import Horizontal from "./Horizontal"
+import HorizontalSrc from "!!raw-loader!./Horizontal"
+import Inline from "./Inline"
+import InlineSrc from "!!raw-loader!./Inline"
+import Indeterminate from "./Indeterminate"
+import IndeterminateSrc from "!!raw-loader!./Indeterminate"
+import {
+    Checkbox, Radio, Switch 
+} from "reap-ui"
+import API from "./API"
+import SyntaxHighlighter from "../../SyntaxHighlighter"
+import Main from "../../Main"
+import LangProvider from "../../Language/LanguageProvider"
+import LangMsg from "../../Language/LanguageMessage"
+import lang from "./lang"
 import RightNav, {
     basicId,
     basicTitle,
@@ -40,9 +42,9 @@ import RightNav, {
     switchId,
     switchTitle,
     apiId
-} from "./RightNav";
+} from "./RightNav"
 
-const { H3 } = DocHeading;
+const { H3 } = DocHeading
 
 export default () => (
     <LangProvider language={lang}>
@@ -98,7 +100,7 @@ export default () => (
                 <Radio name="radio">Toggle this custom radio</Radio>
                 <Radio name="radio">Or toggle this other custom radio</Radio>
                 <Radio name="radio" disabled>Disabled radio</Radio>
-                <SyntaxHighlighter code={`<Radio name="radio">Toggle this custom radio</Radio>\n<Radio name="radio">Or toggle this other custom radio</Radio>\n<Radio name="radio" disabled>Disabled radio</Radio>`} />
+                <SyntaxHighlighter code={"<Radio name=\"radio\">Toggle this custom radio</Radio>\n<Radio name=\"radio\">Or toggle this other custom radio</Radio>\n<Radio name=\"radio\" disabled>Disabled radio</Radio>"} />
             </div>
             <H3 id={switchId}>{switchTitle}</H3>
             <div className="bd-example">
@@ -111,4 +113,4 @@ export default () => (
         </Main>
         <RightNav />
     </LangProvider>
-);
+)

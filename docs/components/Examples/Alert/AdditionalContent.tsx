@@ -1,5 +1,5 @@
-import * as React from "react";
-import { Alert } from "reap-ui";
+import * as React from "react"
+import { Alert } from "reap-ui"
 
 export default () => (
     <Alert variant="success" heading="Well done!">
@@ -7,4 +7,4 @@ export default () => (
         <hr />
         <p className="mb-0">Whenever you need to, be sure to use margin utilities to keep things nice and tidy.</p>
     </Alert>
-);
+)

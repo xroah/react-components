@@ -1,26 +1,26 @@
-import * as React from "react";
-import DocHeading from "../../DocHeading";
-import DemoExample from "../../DemoExample";
-import Basic from "./Basic";
-import BasicSrc from "!!raw-loader!./Basic";
-import Dismissing from "./Dismissing";
-import DismissingSrc from "!!raw-loader!./Dismissing";
-import AutoHide from "./AutoHide";
-import AutoHideSrc from "!!raw-loader!./AutoHide";
-import API from "./API";
-import Main from "../../Main";
-import LangProvider from "../../Language/LanguageProvider";
-import LangMsg from "../../Language/LanguageMessage";
-import RightNav from "../../RightNav";
-import lang from "./lang";
+import * as React from "react"
+import DocHeading from "../../DocHeading"
+import DemoExample from "../../DemoExample"
+import Basic from "./Basic"
+import BasicSrc from "!!raw-loader!./Basic"
+import Dismissing from "./Dismissing"
+import DismissingSrc from "!!raw-loader!./Dismissing"
+import AutoHide from "./AutoHide"
+import AutoHideSrc from "!!raw-loader!./AutoHide"
+import API from "./API"
+import Main from "../../Main"
+import LangProvider from "../../Language/LanguageProvider"
+import LangMsg from "../../Language/LanguageMessage"
+import RightNav from "../../RightNav"
+import lang from "./lang"
 
-const egId = "toastExample";
-const egTitle = <LangMsg id="egTitle" />;
-const dismissingId = "toastDismissing";
-const dismissingTitle = <LangMsg id="dismissingTitle" />;
-const autoHideId = "autoHideToast";
-const autoHideTitle = <LangMsg id="autoHideTitle" />;
-const apiId = "toastApi";
+const egId = "toastExample"
+const egTitle = <LangMsg id="egTitle" />
+const dismissingId = "toastDismissing"
+const dismissingTitle = <LangMsg id="dismissingTitle" />
+const autoHideId = "autoHideToast"
+const autoHideTitle = <LangMsg id="autoHideTitle" />
+const apiId = "toastApi"
 
 export default () => (
     <LangProvider language={lang}>
@@ -37,8 +37,8 @@ export default () => (
                 source={DismissingSrc} />
             <DocHeading.H3 id={autoHideId}>{autoHideTitle}</DocHeading.H3>
             <DemoExample
-            component={<AutoHide />}
-            source={AutoHideSrc}/>
+                component={<AutoHide />}
+                source={AutoHideSrc}/>
             <DocHeading id={apiId}>API</DocHeading>
             <API />
         </Main>
@@ -53,4 +53,4 @@ export default () => (
             href: `#${apiId}`
         }]} />
     </LangProvider>
-);
+)

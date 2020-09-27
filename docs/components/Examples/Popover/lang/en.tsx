@@ -1,5 +1,4 @@
-import * as React from "react";
-import { commonLang } from "../../Dropdown/lang/en";
+import { commonLang } from "../../Dropdown/lang/en"
 
 export default {
     compDesc: "Documentation and examples for adding Bootstrap popovers, like those found in iOS, to any element on your site.",

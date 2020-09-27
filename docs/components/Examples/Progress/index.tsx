@@ -1,12 +1,12 @@
-import * as React from "react";
-import DocHeading from "../../DocHeading";
-import SyntaxHighlighter from "../../SyntaxHighlighter";
-import { Progress } from "reap-ui";
-import API from "./API";
-import Main from "../../Main";
-import LangProvider from "../../Language/LanguageProvider";
-import LangMsg from "../../Language/LanguageMessage";
-import lang from "./lang";
+import * as React from "react"
+import DocHeading from "../../DocHeading"
+import SyntaxHighlighter from "../../SyntaxHighlighter"
+import { Progress } from "reap-ui"
+import API from "./API"
+import Main from "../../Main"
+import LangProvider from "../../Language/LanguageProvider"
+import LangMsg from "../../Language/LanguageMessage"
+import lang from "./lang"
 import RightNav, {
     egId,
     egTitle,
@@ -23,9 +23,9 @@ import RightNav, {
     animId,
     animTitle,
     apiId
-} from "./RightNav";
+} from "./RightNav"
 
-const { H3 } = DocHeading;
+const { H3 } = DocHeading
 
 export default () => (
     <LangProvider language={lang}>
@@ -91,11 +91,11 @@ export default () => (
             <div><LangMsg id="animDesc" /></div>
             <div className="bd-example">
                 <Progress value={75} striped animated />
-                <SyntaxHighlighter code={`<Progress value={75} striped animated />`} />
+                <SyntaxHighlighter code={"<Progress value={75} striped animated />"} />
             </div>
             <DocHeading id={apiId}>API</DocHeading>
             <API />
         </Main>
         <RightNav />
     </LangProvider>
-);
+)

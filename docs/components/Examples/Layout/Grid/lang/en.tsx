@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from "react"
 
 export default {
     gridTitle: "Grid",
@@ -8,7 +8,7 @@ export default {
     oneColWidthTitle: "Setting one column width",
     oneColWidthDesc: "Auto-layout for flexbox grid columns also means you can set the width of one column and have the sibling columns automatically resize around it.  Note that the other columns will resize no matter the width of the center column.",
     variableContentTitle: "Variable width content",
-    variableContentDesc: <>Use <code dangerouslySetInnerHTML={{ __html: `{breakpoint}="auto"` }} /> props to size columns based on the natural width of their content.</>,
+    variableContentDesc: <>Use <code dangerouslySetInnerHTML={{ __html: "{breakpoint}=\"auto\"" }} /> props to size columns based on the natural width of their content.</>,
     mixTitle: "Mix and match",
     mixDesc: "Don’t want your columns to simply stack in some grid tiers? Use a combination of different props for each tier as needed. See the example below for a better idea of how it all works.",
     rowColTitle: "Row columns",
@@ -27,7 +27,7 @@ export default {
     noGuttersDesc: <>The gutters between columns in our predefined grid classes can be removed with <code>noGutters</code> prop. This removes the negative margins from <code>Row</code> and the horizontal padding from all immediate children columns.</>,
     horizontalTitle: "Horizontal alignment",
     reorderingTitle: "Reordering",
-    reorderingDesc: <>Use <code>order</code> props for controlling the visual order of your content. These classes are responsive, so you can set the order by breakpoint (e.g., <code dangerouslySetInnerHTML={{ __html: '<Col order={1} md={{order: 2}}/>' }} />). Includes support for 1 through 12 across all five grid tiers.</>,
+    reorderingDesc: <>Use <code>order</code> props for controlling the visual order of your content. These classes are responsive, so you can set the order by breakpoint (e.g., <code dangerouslySetInnerHTML={{ __html: "<Col order={1} md={{order: 2}}/>" }} />). Includes support for 1 through 12 across all five grid tiers.</>,
     offsetTitle: "Offset",
     offsetDesc: "You can offset grid columns in two ways: our responsive offset props and our margin utilities."
 }

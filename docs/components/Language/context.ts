@@ -1,4 +1,4 @@
-import { createContext } from "react";
+import { createContext } from "react"
 
-export const LangContext = createContext("");
-export const LangMessageContext = createContext({});
+export const LangContext = createContext("")
+export const LangMessageContext = createContext({})

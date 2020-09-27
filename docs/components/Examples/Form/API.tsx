@@ -1,13 +1,13 @@
-import * as React from "react";
-import PropsTable from "../../PropsTable";
-import LangMsg from "../../Language/LanguageMessage";
+import * as React from "react"
+import PropsTable from "../../PropsTable"
+import LangMsg from "../../Language/LanguageMessage"
 
 const FormProps = [{
     name: "Inline",
     type: "boolean",
     default: "false",
     description: <LangMsg id="inlineApi" />
-},{
+}, {
     name: "labelCol",
     type: "object",
     description: <LangMsg id="labelColApi" />
@@ -22,10 +22,10 @@ const FormProps = [{
     description: <LangMsg id="horizontalApi" />
 }, {
     name: "labelAlign",
-    type: `"left" | "right"`,
+    type: "\"left\" | \"right\"",
     default: "left",
     description: <LangMsg id="labelAlignApi" />
-}];
+}]
 const FormItemProps = [{
     name: "horizontal",
     type: "boolean",
@@ -50,10 +50,10 @@ const FormItemProps = [{
     description: <LangMsg id="itemWrapperColApi" />
 }, {
     name: "labelAlign",
-    type: `"left" | "right"`,
+    type: "\"left\" | \"right\"",
     default: "left",
     description: <LangMsg id="itemLabelAlignApi" />
-},{
+}, {
     name: "htmlFor",
     type: "string",
     description: <LangMsg id="htmlForApi" />
@@ -65,7 +65,7 @@ const FormItemProps = [{
     name: "control",
     type: "boolean",
     description: <LangMsg id="controlApi" />
-}];
+}]
 const CustomProps = [{
     name: "autoFocus",
     type: "boolean",
@@ -95,7 +95,7 @@ const CustomProps = [{
     type: "boolean",
     default: "false",
     description: <LangMsg id="customInlineApi" />
-}];
+}]
 
 export default () => (
     <>
@@ -104,4 +104,4 @@ export default () => (
         <PropsTable title="Checkbox, Radio and Switch" data={CustomProps}/>
         <div><LangMsg id="noteDesc" /></div>
     </>
-);
+)

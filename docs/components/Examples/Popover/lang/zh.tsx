@@ -1,5 +1,4 @@
-import * as React from "react";
-import { commonLang } from "../../Dropdown/lang/zh";
+import { commonLang } from "../../Dropdown/lang/zh"
 
 export default {
     compDesc: "给网站添加类似iOS的气泡卡片。",

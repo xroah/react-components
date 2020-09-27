@@ -1,5 +1,5 @@
-import * as React from "react";
-import { Button } from "reap-ui";
+import * as React from "react"
+import { Button } from "reap-ui"
 
 export default () => (
     <div className="d-inline-flex flex-column">
@@ -19,4 +19,4 @@ export default () => (
             <Button>Right</Button>
         </Button.Group>
     </div>
-);
+)

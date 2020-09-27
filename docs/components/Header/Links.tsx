@@ -1,6 +1,6 @@
-import * as React from "react";
+import * as React from "react"
 import { NavLink } from "react-router-dom"
-import { connect } from "react-redux";
+import { connect } from "react-redux"
 
 const langMsg = {
     en: {
@@ -11,7 +11,7 @@ const langMsg = {
         home: "首页",
         comp: "组件"
     }
-};
+}
 
 export default connect(
     (state: any) => ({
@@ -35,4 +35,4 @@ export default connect(
             </NavLink>
         </>
     )
-);
+)

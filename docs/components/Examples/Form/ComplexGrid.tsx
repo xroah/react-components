@@ -1,5 +1,7 @@
-import * as React from "react";
-import { Form, Row, Col, Input, Checkbox, Button } from "reap-ui";
+import * as React from "react"
+import {
+    Form, Row, Col, Input, Checkbox, Button 
+} from "reap-ui"
 
 export default () => (
     <Form>
@@ -46,4 +48,4 @@ export default () => (
         </Form.Item>
         <Button type="submit">Sign in</Button>
     </Form>
-);
+)

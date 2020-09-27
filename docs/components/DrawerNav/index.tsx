@@ -1,28 +1,31 @@
-import * as React from "react";
-import DocNav from "../DocNav";
-import Drawer from "../../../components/Drawer";
-import { Button } from "reap-ui";
+import * as React from "react"
+import DocNav from "../DocNav"
+import Drawer from "../../../components/Drawer"
+import { Button } from "reap-ui"
 
 export default () => {
-    const [visible, updateVisible] = React.useState(false);
-    const WIDTH = 200;
-    const root = document.getElementById("root") as HTMLElement;
+    const [visible, updateVisible] = React.useState(false)
+    const WIDTH = 200
+    const root = document.getElementById("root") as HTMLElement
     const toggle = () => {
-        let afterVisible = !visible;
+        let afterVisible = !visible
 
         if (afterVisible) {
-            root.style.filter = "blur(1px)";
-        } else {
-            root.style.filter = "";
+            root.style.filter = "blur(1px)"
+        }
+        else {
+            root.style.filter = ""
         }
 
-        updateVisible(afterVisible);
-    };
+        updateVisible(afterVisible)
+    }
     const onItemClick = (evt: React.MouseEvent<HTMLElement>) => {
-        if ((evt.target as HTMLElement).classList.contains("active")) return;
+        if ((evt.target as HTMLElement).classList.contains("active")) {
+            return
+        }
 
-        toggle();
-    };
+        toggle()
+    }
 
     return (
         <Drawer
@@ -40,5 +43,5 @@ export default () => {
             </Button>
             <DocNav onItemClick={onItemClick} />
         </Drawer>
-    );
+    )
 }

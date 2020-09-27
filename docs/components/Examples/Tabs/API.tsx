@@ -1,6 +1,6 @@
-import * as React from "react";
-import PropsTable from "../../PropsTable";
-import LangMsg from "../../Language/LanguageMessage";
+import * as React from "react"
+import PropsTable from "../../PropsTable"
+import LangMsg from "../../Language/LanguageMessage"
 
 const TabProps = [{
     name: "activeKey",
@@ -28,7 +28,7 @@ const TabProps = [{
     name: "onTabClick",
     type: "Function(key, e)",
     description: <LangMsg id="onTabClickApi" />
-}];
+}]
 const TabPaneProps = [{
     name: "tab",
     type: "string | ReactNode",
@@ -49,4 +49,4 @@ export default () => (
         <PropsTable title="Tabs" data={TabProps}/>
         <PropsTable title="Tabs.TabPane" data={TabPaneProps}/>
     </>
-);
+)

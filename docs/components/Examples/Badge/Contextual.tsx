@@ -1,5 +1,5 @@
-import * as React from "react";
-import { Badge } from "reap-ui";
+import * as React from "react"
+import { Badge } from "reap-ui"
 
 export default () => (
     <>
@@ -12,4 +12,4 @@ export default () => (
         <Badge variant="light">Light</Badge>
         <Badge variant="dark">Dark</Badge>
     </>
-);
+)

@@ -1,5 +1,7 @@
-import * as React from "react";
-import { Popover, Button } from "reap-ui";
+import * as React from "react"
+import {
+    Popover, Button 
+} from "reap-ui"
 
 export default () => (
     <Popover
@@ -9,4 +11,4 @@ export default () => (
             Click to toggle popover
         </Button>
     </Popover>
-);
+)

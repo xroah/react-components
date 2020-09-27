@@ -1,6 +1,5 @@
-import * as React from "react";
-import containerLang from "../Container/lang/zh";
-import gridLang from "../Grid/lang/zh";
+import containerLang from "../Container/lang/zh"
+import gridLang from "../Grid/lang/zh"
 
 export default {
     ...containerLang,

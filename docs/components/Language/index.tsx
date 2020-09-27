@@ -1,6 +1,6 @@
-import * as React from "react";
-import { LangContext } from "./context";
-import { connect } from "react-redux";
+import * as React from "react"
+import { LangContext } from "./context"
+import { connect } from "react-redux"
 
 function Language({
     lang,
@@ -11,11 +11,11 @@ function Language({
         <LangContext.Provider value={lang}>
             {children}
         </LangContext.Provider>
-    );
-};
+    )
+}
 
 export default connect(
     (state: any) => ({
         lang: state.lang
     })
-)(Language);
+)(Language)

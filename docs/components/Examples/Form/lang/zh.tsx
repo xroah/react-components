@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from "react"
 
 export default {
     compDesc: "表单样式、布局选项和自定义组件的示例和使用方法，来创建各种表单。",

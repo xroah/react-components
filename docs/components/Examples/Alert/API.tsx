@@ -1,7 +1,7 @@
-import * as React from "react";
-import PropsTable from "../../PropsTable";
-import NoAPI from "../../NoAPI";
-import LangMsg from "../../Language/LanguageMessage";
+import * as React from "react"
+import PropsTable from "../../PropsTable"
+import NoAPI from "../../NoAPI"
+import LangMsg from "../../Language/LanguageMessage"
 
 const AlertProps = [{
     name: "variant",
@@ -42,11 +42,11 @@ const AlertProps = [{
     name: "onClosed",
     type: "Function",
     description: <LangMsg id="onClosedApi"/>
-}];
+}]
 
 export default () => (
     <>
         <PropsTable title="Alert" data={AlertProps} />
         <NoAPI title="Alert.Link" />
     </>
-);
+)

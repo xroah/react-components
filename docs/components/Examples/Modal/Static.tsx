@@ -1,9 +1,11 @@
-import * as React from "react";
-import { Modal, Button } from "reap-ui";
+import * as React from "react"
+import {
+    Modal, Button 
+} from "reap-ui"
 
 export default () => {
-    const [visible, setVisible] = React.useState(false);
-    const toggle = () => setVisible(!visible);
+    const [visible, setVisible] = React.useState(false)
+    const toggle = () => setVisible(!visible)
 
     return (
         <>
@@ -16,5 +18,5 @@ export default () => {
                 I will not close if you click outside me.
             </Modal>
         </>
-    );
-};
+    )
+}

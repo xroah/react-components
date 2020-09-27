@@ -1,14 +1,16 @@
-import * as React from "react";
+import * as React from "react"
 import {
     Switch,
     Route,
     Redirect
-} from "react-router-dom";
-import { Col, Row } from "reap-ui";
-import Examples from "./examplesRouter";
-import Home from "./components/Home";
-import DocNav from "./components/DocNav";
-import DrawerNav from "./components/DrawerNav";
+} from "react-router-dom"
+import {
+    Col, Row 
+} from "reap-ui"
+import Examples from "./examplesRouter"
+import Home from "./components/Home"
+import DocNav from "./components/DocNav"
+import DrawerNav from "./components/DrawerNav"
 
 export default () => (
     <Switch>
@@ -26,10 +28,10 @@ export default () => (
             </Row>
         </Route>
         <Route path="/" exact render={() => {
-            document.title = "reap-ui--Bootstrap components built with React";
+            document.title = "reap-ui--Bootstrap components built with React"
 
-            return <Home />;
+            return <Home />
         }} />
         <Redirect to="/" />
     </Switch>
-);
+)

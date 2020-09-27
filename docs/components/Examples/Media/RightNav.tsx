@@ -1,14 +1,14 @@
-import * as React from "react";
-import RightNav from "../../RightNav";
-import LangMsg from "../../Language/LanguageMessage";
+import * as React from "react"
+import RightNav from "../../RightNav"
+import LangMsg from "../../Language/LanguageMessage"
 
-export const egId = "mediaObjectExample";
-export const egTitle = <LangMsg id="egTitle" />;
-export const nestingId = "nestingMediaObject";
-export const nestingTitle = <LangMsg id="nestingTitle" />;
-export const alignmentId = "mediaObjectAlignment";
-export const alignmentTitle = <LangMsg id="alignmentTitle" />;
-export const apiId = "mediaObjectApi";
+export const egId = "mediaObjectExample"
+export const egTitle = <LangMsg id="egTitle" />
+export const nestingId = "nestingMediaObject"
+export const nestingTitle = <LangMsg id="nestingTitle" />
+export const alignmentId = "mediaObjectAlignment"
+export const alignmentTitle = <LangMsg id="alignmentTitle" />
+export const apiId = "mediaObjectApi"
 
 export default () => (
     <RightNav data={[{
@@ -24,4 +24,4 @@ export default () => (
         name: "API",
         href: `#${apiId}`
     }]} />
-);
+)

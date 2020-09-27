@@ -1,12 +1,14 @@
-import * as React from "react";
-import DocHeading from "../../DocHeading";
-import { Spinner, Button } from "reap-ui";
-import SyntaxHighlighter from "../../SyntaxHighlighter";
-import API from "./API";
-import Main from "../../Main";
-import LangProvider from "../../Language/LanguageProvider";
-import LangMsg from "../../Language/LanguageMessage";
-import lang from "./lang";
+import * as React from "react"
+import DocHeading from "../../DocHeading"
+import {
+    Spinner, Button 
+} from "reap-ui"
+import SyntaxHighlighter from "../../SyntaxHighlighter"
+import API from "./API"
+import Main from "../../Main"
+import LangProvider from "../../Language/LanguageProvider"
+import LangMsg from "../../Language/LanguageMessage"
+import lang from "./lang"
 import RightNav, {
     borderId,
     borderTitle,
@@ -19,9 +21,9 @@ import RightNav, {
     btnId,
     btnTitle,
     apiId
-} from "./RightNav";
+} from "./RightNav"
 
-const { H3 } = DocHeading;
+const { H3 } = DocHeading
 
 export default () => (
     <LangProvider language={lang}>
@@ -31,7 +33,7 @@ export default () => (
             <H3 id={borderId}>{borderTitle}</H3>
             <div className="bd-example">
                 <Spinner animation="border" />
-                <SyntaxHighlighter code={`<Spinner animation="border"/>`} />
+                <SyntaxHighlighter code={"<Spinner animation=\"border\"/>"} />
             </div>
             <H3 id={variantId}>{variantTitle}</H3>
             <div className="bd-example">
@@ -57,7 +59,7 @@ export default () => (
             <H3 id={growingId}>{growingTitle}</H3>
             <div className="bd-example">
                 <Spinner animation="grow" />
-                <SyntaxHighlighter code={`<Spinner animation="grow"/>`} />
+                <SyntaxHighlighter code={"<Spinner animation=\"grow\"/>"} />
             </div>
             <div className="bd-example">
                 <Spinner animation="grow" variant="primary" />
@@ -106,7 +108,7 @@ export default () => (
                 </Button>
                 <Button disabled>
                     <Spinner animation="border" size="sm" /> Loading
-            </Button>
+                </Button>
                 <SyntaxHighlighter code={`<>
     <Button disabled>
         <Spinner animation="border" size="sm" />
@@ -122,7 +124,7 @@ export default () => (
                 </Button>
                 <Button disabled>
                     <Spinner animation="grow" size="sm" /> Loading
-            </Button>
+                </Button>
                 <SyntaxHighlighter code={`<>
     <Button disabled>
         <Spinner animation="grow" size="sm" />
@@ -137,4 +139,4 @@ export default () => (
         </Main>
         <RightNav />
     </LangProvider>
-);
+)

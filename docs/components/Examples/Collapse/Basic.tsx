@@ -1,9 +1,11 @@
-import * as React from "react";
-import { Collapse, Button, Card } from "reap-ui";
+import * as React from "react"
+import {
+    Collapse, Button, Card 
+} from "reap-ui"
 
 export default () => {
-    const [isOpen, updateState] = React.useState(false);
-    const handleClick = () => updateState(!isOpen);
+    const [isOpen, updateState] = React.useState(false)
+    const handleClick = () => updateState(!isOpen)
 
     return (
         <>
@@ -14,5 +16,5 @@ export default () => {
                 </Card>
             </Collapse>
         </>
-    );
-};
+    )
+}

@@ -1,7 +1,9 @@
-import * as React from "react";
-import { Nav, Dropdown } from "reap-ui";
+import * as React from "react"
+import {
+    Nav, Dropdown 
+} from "reap-ui"
 
-const { Item, Link } = Nav;
+const { Item, Link } = Nav
 const overlay = (
     <Dropdown.Menu>
         <Dropdown.Item href="#">Action</Dropdown.Item>
@@ -10,12 +12,12 @@ const overlay = (
         <Dropdown.Divider />
         <Dropdown.Item href="#">Separated link</Dropdown.Item>
     </Dropdown.Menu>
-);
+)
 const dropdown = (
     <Dropdown overlay={overlay}>
         <Nav.Link href="#">Dropdown</Nav.Link>
     </Dropdown>
-);
+)
 
 export default () => (
     <Nav variant="pill">
@@ -32,4 +34,4 @@ export default () => (
             <Link disabled href="#">Disabled</Link>
         </Item>
     </Nav>
-);
+)

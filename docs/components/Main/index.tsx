@@ -1,5 +1,5 @@
-import * as React from "react";
-import { Col } from "reap-ui";
+import * as React from "react"
+import { Col } from "reap-ui"
 
 export default (props: { children?: React.ReactNode }) => (
     <Col
@@ -9,4 +9,4 @@ export default (props: { children?: React.ReactNode }) => (
         className="pb-3">
         {props.children}
     </Col>
-);
+)

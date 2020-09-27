@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from "react"
 
 export default {
     compDesc: "A slideshow component for cycling through elements—images or slides of text—like a carousel.",
@@ -14,4 +14,4 @@ export default {
     touchApi: "Support left/right swipe interactions on touchscreen devices or not",
     onSlideApi: "Callback when the slide started",
     onSlidApi: "Callback when the carousel has completed its slide transition"
-};
+}

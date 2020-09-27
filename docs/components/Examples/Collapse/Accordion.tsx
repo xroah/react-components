@@ -1,5 +1,5 @@
-import * as React from "react";
-import { Accordion } from "reap-ui";
+import * as React from "react"
+import { Accordion } from "reap-ui"
 
 export default () => (
     <Accordion defaultActiveKey="0">
@@ -13,4 +13,4 @@ export default () => (
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius totam maiores impedit vitae pariatur et suscipit inventore dolore voluptates quam, assumenda cumque cupiditate neque atque amet! Suscipit laudantium nisi non!
         </Accordion.Panel>
     </Accordion>
-);
+)

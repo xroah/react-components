@@ -1,12 +1,12 @@
-import * as React from "react";
+import * as React from "react"
 import { Container } from "reap-ui"
 import LangProvider from "../Language/LanguageProvider"
 import LangMsg from "../Language/LanguageMessage"
 import lang from "./lang"
-import SyntaxHighlighter from "../SyntaxHighlighter";
+import SyntaxHighlighter from "../SyntaxHighlighter"
 import logo from "../../assets/logo.svg"
-import Button from "../../../components/Button/Button";
-import { Link } from "react-router-dom";
+import Button from "../../../components/Button/Button"
+import { Link } from "react-router-dom"
 
 const LOGO_SIZE = 150
 
@@ -45,10 +45,10 @@ export default () => (
             </div>
             <SyntaxHighlighter code="npm i bootstrap" />
             <p><LangMsg id="importBSDesc" /></p>
-            <SyntaxHighlighter code={`import "bootstrap/dist/css/bootstrap.min.css";`} />
+            <SyntaxHighlighter code={"import \"bootstrap/dist/css/bootstrap.min.css\";"} />
             <p className="my-3">
                 <LangMsg id="noteDesc" />
             </p>
         </Container>
     </LangProvider>
-);
+)

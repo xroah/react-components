@@ -1,6 +1,6 @@
-import * as React from "react";
-import { Card } from "reap-ui";
-import img from "../../../assets/image_cap.svg";
+import * as React from "react"
+import { Card } from "reap-ui"
+import img from "../../../assets/image_cap.svg"
 
 export default () => (
     <Card body img={<img src={img} style={{ height: 180 }} />}>
@@ -12,4 +12,4 @@ export default () => (
             <small className="text-muted">Last updated 3 mins ago</small>
         </Card.Text>
     </Card>
-);
+)

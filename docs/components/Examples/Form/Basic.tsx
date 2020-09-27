@@ -1,7 +1,9 @@
-import * as React from "react";
-import { Form, Input, Checkbox, Button } from "reap-ui";
+import * as React from "react"
+import {
+    Form, Input, Checkbox, Button 
+} from "reap-ui"
 
-const asterisk = <span style={{ color: "red"}}>*</span>;
+const asterisk = <span style={{ color: "red"}}>*</span>
 
 export default () => (
     <Form>
@@ -31,4 +33,4 @@ export default () => (
             <Button type="submit">Submit</Button>
         </Form.Item>
     </Form>
-);
+)

@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from "react"
 
 export default (
     <>
@@ -21,4 +21,4 @@ export default (
         <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.</p>
         <p>Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.</p>
     </>
-);
+)

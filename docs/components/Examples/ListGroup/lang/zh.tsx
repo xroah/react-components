@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from "react"
 
 export default {
     compDesc: "一个灵活的强大的展示一系列内容的组件。可以通过修改和扩展来展示任何内容。",

@@ -1,7 +1,7 @@
-import * as React from "react";
-import { ListGroup } from "reap-ui";
+import * as React from "react"
+import { ListGroup } from "reap-ui"
 
-const { Item } = ListGroup;
+const { Item } = ListGroup
 
 export default () => (
     <ListGroup>
@@ -15,4 +15,4 @@ export default () => (
         <Item variant="light">A simple light list group item</Item>
         <Item variant="dark">A simple dark list group item</Item>
     </ListGroup>
-);
+)

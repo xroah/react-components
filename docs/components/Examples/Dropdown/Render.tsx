@@ -1,5 +1,7 @@
-import * as React from "react";
-import { Dropdown, Tooltip } from "reap-ui";
+import * as React from "react"
+import {
+    Dropdown, Tooltip 
+} from "reap-ui"
 
 export default () => {
     const overlay = (
@@ -8,7 +10,7 @@ export default () => {
             <Dropdown.Item href="#" disabled>Another action</Dropdown.Item>
             <Dropdown.Item href="#">Something else here</Dropdown.Item>
         </Dropdown.Menu>
-    );
+    )
 
     return (
         <Dropdown.Button
@@ -26,4 +28,4 @@ export default () => {
             Split button
         </Dropdown.Button>
     )
-};
+}

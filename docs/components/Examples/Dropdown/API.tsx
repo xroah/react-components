@@ -1,10 +1,9 @@
-import * as React from "react";
-import PropsTable from "../../PropsTable";
-import { Link } from "react-router-dom";
-import NoAPI from "../../NoAPI";
-import LangMsg from "../../Language/LanguageMessage";
+import * as React from "react"
+import PropsTable from "../../PropsTable"
+import NoAPI from "../../NoAPI"
+import LangMsg from "../../Language/LanguageMessage"
 
-export const TRIGGER_TYPE = "hover | click | focus | Array<hover | click | focus>";
+export const TRIGGER_TYPE = "hover | click | focus | Array<hover | click | focus>"
 export const commonProps = [
     {
         name: "visible",
@@ -52,25 +51,25 @@ export const commonProps = [
         type: "Function",
         description: <LangMsg id="onHiddenApi" />
     }
-];
+]
 
 const DropdownProps = [
     ...commonProps,
     {
         name: "placement",
-        type: `"top" | "bottom" | "left" | "right"`,
+        type: "\"top\" | \"bottom\" | \"left\" | \"right\"",
         default: "bottom",
         description: <LangMsg id="placementApi" />
     }, {
         name: "alignment",
-        type: `"left" | "center" | "right"`,
+        type: "\"left\" | \"center\" | \"right\"",
         default: "left",
         description: <LangMsg id="alignmentApi" />
     }, {
         name: "overlay",
         type: "ReactElement",
         description: <LangMsg id="overlayApi" />
-    }];
+    }]
 const DropdownButtonProps = [{
     name: "variant",
     type: `"primary" |
@@ -85,7 +84,7 @@ const DropdownButtonProps = [{
     description: <LangMsg id="variantApi" />
 }, {
     name: "size",
-    type: `"lg" | "small"`,
+    type: "\"lg\" | \"small\"",
     description: <LangMsg id="sizeApi" />
 }, {
     name: "disabled",
@@ -110,12 +109,12 @@ const DropdownButtonProps = [{
     name: "render",
     type: "(buttons:ReactNode[]) => ReactNode[]",
     description: <LangMsg id="renderApi" />
-}];
+}]
 const DropdownMenuProps = [{
     name: "header",
     type: "string | ReactNode",
     description: <LangMsg id="headerAPi" />
-}];
+}]
 const MenuItemProps = [{
     name: "tag",
     type: "string",
@@ -135,7 +134,7 @@ const MenuItemProps = [{
     type: "boolean",
     default: "false",
     description: <LangMsg id="itemDisabledApi" />
-}];
+}]
 
 export default () => (
     <>
@@ -145,4 +144,4 @@ export default () => (
         <PropsTable title="Dropdown.Item" data={MenuItemProps} />
         <NoAPI title="Dropdown.Divider" />
     </>
-);
+)

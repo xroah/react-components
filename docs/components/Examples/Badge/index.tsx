@@ -1,20 +1,20 @@
-import * as React from "react";
-import DemoExample from "../../DemoExample";
-import DocHeading from "../../DocHeading";
-import Main from "../../Main";
-import ScaleMatch from "./ScaleMatch";
-import ScaleMathSrc from "!!raw-loader!./ScaleMatch";
-import Contextual from "./Contextual";
-import ContextualSrc from "!!raw-loader!./Contextual";
-import Pill from "./Pill";
-import PillSrc from "!!raw-loader!./Pill";
-import Link from "./Link";
-import LinkSrc from "!!raw-loader!./Link";
-import ButtonCounter from "./ButtonCounter";
-import ButtonCounterSrc from "!!raw-loader!./ButtonCounter";
-import API from "./API";
-import LangProvider from "../../Language/LanguageProvider";
-import LangMsg from "../../Language/LanguageMessage";
+import * as React from "react"
+import DemoExample from "../../DemoExample"
+import DocHeading from "../../DocHeading"
+import Main from "../../Main"
+import ScaleMatch from "./ScaleMatch"
+import ScaleMathSrc from "!!raw-loader!./ScaleMatch"
+import Contextual from "./Contextual"
+import ContextualSrc from "!!raw-loader!./Contextual"
+import Pill from "./Pill"
+import PillSrc from "!!raw-loader!./Pill"
+import Link from "./Link"
+import LinkSrc from "!!raw-loader!./Link"
+import ButtonCounter from "./ButtonCounter"
+import ButtonCounterSrc from "!!raw-loader!./ButtonCounter"
+import API from "./API"
+import LangProvider from "../../Language/LanguageProvider"
+import LangMsg from "../../Language/LanguageMessage"
 import RightNav, {
     egId,
     egTitle,
@@ -25,10 +25,10 @@ import RightNav, {
     linkId,
     linkTitle,
     apiId
-} from "./RightNav";
-import lang from "./lang";
+} from "./RightNav"
+import lang from "./lang"
 
-const { H3 } = DocHeading;
+const { H3 } = DocHeading
 
 export default () => (
     <LangProvider language={lang}>
@@ -73,4 +73,4 @@ export default () => (
         </Main>
         <RightNav />
     </LangProvider>
-);
+)

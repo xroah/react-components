@@ -1,13 +1,15 @@
-import * as React from "react";
-import { Modal, Button } from "reap-ui";
+import * as React from "react"
+import {
+    Modal, Button 
+} from "reap-ui"
 
 export default () => {
-    const [xlVisible, updateXlVisible] = React.useState(false);
-    const toggleXl = () => updateXlVisible(!xlVisible);
-    const [lgVisible, updateLgVisible] = React.useState(false);
-    const toggleLg = () => updateLgVisible(!lgVisible);
-    const [smVisible, updateSmVisible] = React.useState(false);
-    const toggleSm = () => updateSmVisible(!smVisible);
+    const [xlVisible, updateXlVisible] = React.useState(false)
+    const toggleXl = () => updateXlVisible(!xlVisible)
+    const [lgVisible, updateLgVisible] = React.useState(false)
+    const toggleLg = () => updateLgVisible(!lgVisible)
+    const [smVisible, updateSmVisible] = React.useState(false)
+    const toggleSm = () => updateSmVisible(!smVisible)
 
     return (
         <>
@@ -38,5 +40,5 @@ export default () => {
                 Woohoo, you're reading this text in a modal!
             </Modal>
         </>
-    );
-};
+    )
+}

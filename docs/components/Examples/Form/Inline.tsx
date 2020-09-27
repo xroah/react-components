@@ -1,5 +1,7 @@
-import * as React from "react";
-import { Form, Input, Checkbox, Button } from "reap-ui";
+import * as React from "react"
+import {
+    Form, Input, Checkbox, Button 
+} from "reap-ui"
 
 export default () => (
     <Form inline>
@@ -14,4 +16,4 @@ export default () => (
         </Form.Item>
         <Button type="submit">Submit</Button>
     </Form>
-);
+)

@@ -1,6 +1,6 @@
-import * as React from "react";
-import DocHeading from "../DocHeading";
-import { connect } from "react-redux";
+import * as React from "react"
+import DocHeading from "../DocHeading"
+import { connect } from "react-redux"
 
 type type = string | React.ReactNode;
 
@@ -22,7 +22,7 @@ function PropsTable(props: Props) {
         data,
         lang,
         title
-    } = props;
+    } = props
 
     return (
         <div>
@@ -39,13 +39,13 @@ function PropsTable(props: Props) {
                                     <th>说明</th>
                                 </tr>
                             ) : (
-                                    <tr>
-                                        <th>Name</th>
-                                        <th>Type</th>
-                                        <th>Default</th>
-                                        <th>Description</th>
-                                    </tr>
-                                )
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Type</th>
+                                    <th>Default</th>
+                                    <th>Description</th>
+                                </tr>
+                            )
                         }
                     </thead>
                     <tbody>
@@ -65,11 +65,11 @@ function PropsTable(props: Props) {
                 </table>
             </div>
         </div>
-    );
+    )
 }
 
 export default connect(
     (state: any) => ({
         lang: state.lang
     })
-)(PropsTable);
+)(PropsTable)

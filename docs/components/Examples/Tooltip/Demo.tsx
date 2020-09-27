@@ -1,5 +1,7 @@
-import * as React from "react";
-import { Tooltip, Button, Row, Col } from "reap-ui";
+import * as React from "react"
+import {
+    Tooltip, Button, Row, Col 
+} from "reap-ui"
 
 export default () => (
     <Row>
@@ -24,4 +26,4 @@ export default () => (
             </Tooltip>
         </Col>
     </Row>
-);
+)

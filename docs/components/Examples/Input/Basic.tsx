@@ -1,5 +1,5 @@
-import * as React from "react";
-import { Input } from "reap-ui";
+import * as React from "react"
+import { Input } from "reap-ui"
 
 export default () => (
     <>
@@ -11,4 +11,4 @@ export default () => (
         <Input prepend="$" append=".00"/>
         <Input variant="textarea" prepend="With textarea"/>
     </>
-);
+)

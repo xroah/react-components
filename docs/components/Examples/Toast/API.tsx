@@ -1,6 +1,6 @@
-import * as React from "react";
-import LangMsg from "../../Language/LanguageMessage";
-import PropsTable from "../../PropsTable";
+import * as React from "react"
+import LangMsg from "../../Language/LanguageMessage"
+import PropsTable from "../../PropsTable"
 
 const props = [{
     name: "visible",
@@ -68,8 +68,8 @@ const props = [{
     name: "onHidden",
     type: "Function",
     description: <LangMsg id="onHiddenApi" />
-}];
+}]
 
 export default () => (
     <PropsTable title="Toast" data={props} />
-);
+)

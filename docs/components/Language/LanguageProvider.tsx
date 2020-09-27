@@ -1,8 +1,8 @@
-import * as React from "react";
+import * as React from "react"
 import {
     LangContext,
     LangMessageContext
-} from "./context";
+} from "./context"
 
 export default (
     {
@@ -10,13 +10,13 @@ export default (
         children
     }: { language: any, children: React.ReactNode }
 ) => (
-        <LangContext.Consumer>
-            {
-                lang => (
-                    <LangMessageContext.Provider value={language[lang]}>
-                        {children}
-                    </LangMessageContext.Provider>
-                )
-            }
-        </LangContext.Consumer>
-    );
+    <LangContext.Consumer>
+        {
+            lang => (
+                <LangMessageContext.Provider value={language[lang]}>
+                    {children}
+                </LangMessageContext.Provider>
+            )
+        }
+    </LangContext.Consumer>
+)

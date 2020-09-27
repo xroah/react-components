@@ -1,5 +1,7 @@
-import * as React from "react";
-import { Card, Button } from "reap-ui";
+import * as React from "react"
+import {
+    Card, Button 
+} from "reap-ui"
 
 export default () => (
     <Card
@@ -11,4 +13,4 @@ export default () => (
         <Card.Text>With supporting text below as a natural lead-in to additional content.</Card.Text>
         <Button href="#">Go somewhere</Button>
     </Card>
-);
+)

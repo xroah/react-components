@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from "react"
 
 export default {
     compDesc: "强大的响应式导航头部，支持商标、导航、折叠插件等。",

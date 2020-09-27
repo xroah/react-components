@@ -1,5 +1,7 @@
-import * as React from "react";
-import { Dropdown, Button } from "reap-ui";
+import * as React from "react"
+import {
+    Dropdown, Button 
+} from "reap-ui"
 
 export default () => (
     <Button.Group>
@@ -14,6 +16,6 @@ export default () => (
                 </Dropdown.Menu>
             }>
             Dropdown
-            </Dropdown.Button>
+        </Dropdown.Button>
     </Button.Group>
-);
+)

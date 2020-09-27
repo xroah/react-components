@@ -1,5 +1,5 @@
-import * as React from "react";
-import { Button } from "reap-ui";
+import * as React from "react"
+import { Button } from "reap-ui"
 
 export default () => (
     <>
@@ -13,4 +13,4 @@ export default () => (
         <Button outline variant="dark">Dark</Button>
         <Button outline variant="link">Link</Button>
     </>
-);
+)

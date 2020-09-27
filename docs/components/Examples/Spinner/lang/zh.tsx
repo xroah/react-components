@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from "react"
 
 export default {
     compDesc: "Spinner可以用来展示加载状态。它们是通过HTML和CSS创建的，意味着不需要任何js。在某些情况下需要用js来切换状态。外观、对齐方式和尺寸都很容易自定义。",

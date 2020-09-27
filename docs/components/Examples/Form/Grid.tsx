@@ -1,5 +1,7 @@
-import * as React from "react";
-import { Form, Row, Col, Input } from "reap-ui";
+import * as React from "react"
+import {
+    Form, Row, Col, Input 
+} from "reap-ui"
 
 export default () => (
     <Form>
@@ -16,4 +18,4 @@ export default () => (
             </Col>
         </Row>
     </Form>
-);
+)

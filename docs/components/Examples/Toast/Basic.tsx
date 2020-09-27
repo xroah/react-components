@@ -1,5 +1,7 @@
-import * as React from "react";
-import { Toast, Spinner } from "reap-ui";
+import * as React from "react"
+import {
+    Toast, Spinner 
+} from "reap-ui"
 
 export default () => (
     <Toast
@@ -12,4 +14,4 @@ export default () => (
         delay={3000}>
         Hello, world! This is a toast message.
     </Toast>
-);
+)

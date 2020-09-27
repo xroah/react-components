@@ -1,7 +1,7 @@
-import * as React from "react";
-import { Nav } from "reap-ui";
+import * as React from "react"
+import { Nav } from "reap-ui"
 
-const { Item, Link } = Nav;
+const { Item, Link } = Nav
 
 export default () => (
     <Nav variant="pill" equalWidth>
@@ -18,4 +18,4 @@ export default () => (
             <Link disabled href="#">Disabled</Link>
         </Item>
     </Nav>
-);
+)

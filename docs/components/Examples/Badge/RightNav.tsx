@@ -1,16 +1,16 @@
-import * as React from "react";
-import RightNav from "../../RightNav";
-import LangMsg from "../../Language/LanguageMessage";
+import * as React from "react"
+import RightNav from "../../RightNav"
+import LangMsg from "../../Language/LanguageMessage"
 
-export const egTitle = <LangMsg id="egTitle" />;
-export const varTitle = <LangMsg id="varTitle" />;
-export const pillTitle = <LangMsg id="pillTitle" />;
-export const linkTitle = <LangMsg id="linkTitle" />;
-export const egId = "badgeExample";
-export const varId = "contextualVariations";
-export const pillId = "pillBadges";
-export const linkId = "links";
-export const apiId = "badgeApi";
+export const egTitle = <LangMsg id="egTitle" />
+export const varTitle = <LangMsg id="varTitle" />
+export const pillTitle = <LangMsg id="pillTitle" />
+export const linkTitle = <LangMsg id="linkTitle" />
+export const egId = "badgeExample"
+export const varId = "contextualVariations"
+export const pillId = "pillBadges"
+export const linkId = "links"
+export const apiId = "badgeApi"
 
 export default () => (
     <RightNav data={[
@@ -31,4 +31,4 @@ export default () => (
             href: `#${apiId}`
         }
     ]} />
-);
+)

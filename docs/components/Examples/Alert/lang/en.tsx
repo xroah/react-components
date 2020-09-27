@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from "react"
 
 export default {
     compDesc: "Provide contextual feedback messages for typical user actions with the handful of available and flexible alert messages.",

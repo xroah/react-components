@@ -1,11 +1,13 @@
-import * as React from "react";
-import { ListGroup, Button } from "reap-ui";
+import * as React from "react"
+import {
+    ListGroup, Button 
+} from "reap-ui"
 
-const { Item } = ListGroup;
+const { Item } = ListGroup
 
 export default () => {
-    const [active, updateActive] = React.useState(false);
-    const handleActive = () => updateActive(!active);
+    const [active, updateActive] = React.useState(false)
+    const handleActive = () => updateActive(!active)
 
     return (
         <>
@@ -24,5 +26,5 @@ export default () => {
                 <Item active={active} action variant="dark">A simple dark list group item</Item>
             </ListGroup>
         </>
-    );
-};
+    )
+}

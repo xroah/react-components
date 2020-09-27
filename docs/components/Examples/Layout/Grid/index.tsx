@@ -1,31 +1,31 @@
-import * as React from "react";
-import DocHeading from "../../../DocHeading";
-import DemoExample from "../../../DemoExample";
-import EqualWidth from "./EqualWidth";
-import EqualWidthSrc from "!!raw-loader!./EqualWidth";
-import OneColumnWidth from "./OneColumnWidth";
-import OneColumnWidthSrc from "!!raw-loader!./OneColumnWidth";
-import VariableWidthContent from "./VariableWidthContent";
-import VariableWidthContentSrc from "!!raw-loader!./VariableWidthContent";
-import MixAndMatch from "./MixAndMatch";
-import MixAndMatchSrc from "!!raw-loader!./MixAndMatch";
-import RowColumns from "./RowColumns";
-import RowColumnsSrc from "!!raw-loader!./RowColumns";
-import RowColumns2 from "./RowColumns2";
-import RowColumns2Src from "!!raw-loader!./RowColumns2";
-import RowColumns3 from "./RowColumns3";
-import RowColumns3Src from "!!raw-loader!./RowColumns3";
-import VerticalAlignment from "./VerticalAlignment";
-import VerticalAlignmentSrc from "!!raw-loader!./VerticalAlignment";
-import VerticalAlignment2 from "./VerticalAlignment2";
-import VerticalAlignment2Src from "!!raw-loader!./VerticalAlignment2";
-import HorizontalAlignment from "./HorizontalAlignment";
-import HorizontalAlignmentSrc from "!!raw-loader!./HorizontalAlignment";
-import Order from "./Order";
-import OrderSrc from "!!raw-loader!./Order";
-import Offset from "./Offset";
-import OffsetSrc from "!!raw-loader!./Offset";
-import LangMsg from "../../../Language/LanguageMessage";
+import * as React from "react"
+import DocHeading from "../../../DocHeading"
+import DemoExample from "../../../DemoExample"
+import EqualWidth from "./EqualWidth"
+import EqualWidthSrc from "!!raw-loader!./EqualWidth"
+import OneColumnWidth from "./OneColumnWidth"
+import OneColumnWidthSrc from "!!raw-loader!./OneColumnWidth"
+import VariableWidthContent from "./VariableWidthContent"
+import VariableWidthContentSrc from "!!raw-loader!./VariableWidthContent"
+import MixAndMatch from "./MixAndMatch"
+import MixAndMatchSrc from "!!raw-loader!./MixAndMatch"
+import RowColumns from "./RowColumns"
+import RowColumnsSrc from "!!raw-loader!./RowColumns"
+import RowColumns2 from "./RowColumns2"
+import RowColumns2Src from "!!raw-loader!./RowColumns2"
+import RowColumns3 from "./RowColumns3"
+import RowColumns3Src from "!!raw-loader!./RowColumns3"
+import VerticalAlignment from "./VerticalAlignment"
+import VerticalAlignmentSrc from "!!raw-loader!./VerticalAlignment"
+import VerticalAlignment2 from "./VerticalAlignment2"
+import VerticalAlignment2Src from "!!raw-loader!./VerticalAlignment2"
+import HorizontalAlignment from "./HorizontalAlignment"
+import HorizontalAlignmentSrc from "!!raw-loader!./HorizontalAlignment"
+import Order from "./Order"
+import OrderSrc from "!!raw-loader!./Order"
+import Offset from "./Offset"
+import OffsetSrc from "!!raw-loader!./Offset"
+import LangMsg from "../../../Language/LanguageMessage"
 import {
     gridId,
     gridTitle,
@@ -51,9 +51,9 @@ import {
     reorderingTitle,
     offsetId,
     offsetTitle
-} from "../RightNav";
+} from "../RightNav"
 
-const { H3 } = DocHeading;
+const { H3 } = DocHeading
 
 export default () => (
     <>
@@ -135,4 +135,4 @@ export default () => (
             <LangMsg id="offsetDesc" />
         </DemoExample>
     </>
-);
+)

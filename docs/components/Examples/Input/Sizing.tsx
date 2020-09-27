@@ -1,5 +1,5 @@
-import * as React from "react";
-import { Input } from "reap-ui";
+import * as React from "react"
+import { Input } from "reap-ui"
 
 export default () => (
     <>
@@ -7,4 +7,4 @@ export default () => (
         <Input prepend="Default" />
         <Input sizing="lg" prepend="Large" />
     </>
-);
+)

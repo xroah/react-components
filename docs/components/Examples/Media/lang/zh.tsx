@@ -1,5 +1,3 @@
-import * as React from "react";
-
 export default {
     compDesc: "媒体对象可以用来创建高度重复的内容如评论、推文或者相似的内容",
     egTitle: "示例",

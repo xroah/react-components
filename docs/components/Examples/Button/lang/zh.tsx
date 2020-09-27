@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from "react"
 
 export default {
     compDesc: "在表单、对话框等当中使用，支持多种尺寸、状态等。",
@@ -17,7 +17,7 @@ export default {
     carDesc: (
         <>
             <p>
-                <code>Button</code>的样式可以被应用到其他的元素，如<code>label</code>， 变成可切换的按钮. 将按钮放置到<code dangerouslySetInnerHTML={{ __html: `<Button.ToggleGroup/>` }} />中， 使<code>input</code>呈现按钮的样式. 
+                <code>Button</code>的样式可以被应用到其他的元素，如<code>label</code>， 变成可切换的按钮. 将按钮放置到<code dangerouslySetInnerHTML={{ __html: "<Button.ToggleGroup/>" }} />中， 使<code>input</code>呈现按钮的样式. 
             </p>
             <code>checked</code>的状态通过点击来更新，需要手动设置<code>active</code>属性。
         </>
@@ -43,4 +43,4 @@ export default {
     groupSizeApi: "设置按钮组的尺寸",
     verticalApi: "使按钮垂直摆放",
     tgGroupTypeApi: <>该组件内<code>input</code>元素的类型</>
-};
+}

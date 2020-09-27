@@ -1,22 +1,22 @@
-import * as React from "react";
-import DocHeading from "../../DocHeading";
-import DemoExample from '../../DemoExample';
-import Demo from "./Demo";
-import DemoSrc from "!!raw-loader!./Demo";
-import WithHTML from "./WithHTML";
+import * as React from "react"
+import DocHeading from "../../DocHeading"
+import DemoExample from "../../DemoExample"
+import Demo from "./Demo"
+import DemoSrc from "!!raw-loader!./Demo"
+import WithHTML from "./WithHTML"
 import WithHTMLSrc from "!!raw-loader!./WithHTML"
-import API from "./API";
-import Main from "../../Main";
-import RightNav from "../../RightNav";
-import LangProvider from "../../Language/LanguageProvider";
-import LangMsg from "../../Language/LanguageMessage";
-import lang from "./lang";
+import API from "./API"
+import Main from "../../Main"
+import RightNav from "../../RightNav"
+import LangProvider from "../../Language/LanguageProvider"
+import LangMsg from "../../Language/LanguageMessage"
+import lang from "./lang"
 
-const egId = "tooltipExamples";
-const egTitle = <LangMsg id="egTitle" />;
-const htmlId = "tooltipWithCustomHTML";
-const htmlTitle = <LangMsg id="htmlTitle" />;
-const apiId = "tooltipApi";
+const egId = "tooltipExamples"
+const egTitle = <LangMsg id="egTitle" />
+const htmlId = "tooltipWithCustomHTML"
+const htmlTitle = <LangMsg id="htmlTitle" />
+const apiId = "tooltipApi"
 
 export default () => {
     return (
@@ -46,5 +46,5 @@ export default () => {
                 href: `#${apiId}`
             }]} />
         </LangProvider>
-    );
-};
+    )
+}

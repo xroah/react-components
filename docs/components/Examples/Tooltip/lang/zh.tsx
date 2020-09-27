@@ -1,5 +1,4 @@
-import * as React from "react";
-import { commonLang } from "../../Dropdown/lang/zh";
+import { commonLang } from "../../Dropdown/lang/zh"
 
 export default {
     compDesc: "使用CSS和js创建的工具提示。",

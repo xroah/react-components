@@ -1,25 +1,25 @@
-import * as React from "react";
-import DocHeading from "../../DocHeading";
-import DemoExample from "../../DemoExample";
-import Main from "../../Main";
-import SingleButton from "./SingleButton";
-import SingleButtonSrc from "!!raw-loader!./SingleButton";
-import SplitButton from "./SplitButton";
-import SplitButtonSrc from "!!raw-loader!./SplitButton";
-import Sizing from "./Sizing";
-import SizingSrc from "!!raw-loader!./Sizing";
-import Render from "./Render";
-import RenderSrc from "!!raw-loader!./Render";
-import Directions from "./Directions";
-import DirectionSrc from "!!raw-loader!./Directions";
-import Alignment from "./Alignment";
-import AlignmentSrc from "!!raw-loader!./Alignment";
-import Custom from "./Custom";
-import CustomSrc from "!!raw-loader!./Custom";
-import API from "./API";
-import LangProvider from "../../Language/LanguageProvider";
-import LangMsg from "../../Language/LanguageMessage";
-import lang from "./lang";
+import * as React from "react"
+import DocHeading from "../../DocHeading"
+import DemoExample from "../../DemoExample"
+import Main from "../../Main"
+import SingleButton from "./SingleButton"
+import SingleButtonSrc from "!!raw-loader!./SingleButton"
+import SplitButton from "./SplitButton"
+import SplitButtonSrc from "!!raw-loader!./SplitButton"
+import Sizing from "./Sizing"
+import SizingSrc from "!!raw-loader!./Sizing"
+import Render from "./Render"
+import RenderSrc from "!!raw-loader!./Render"
+import Directions from "./Directions"
+import DirectionSrc from "!!raw-loader!./Directions"
+import Alignment from "./Alignment"
+import AlignmentSrc from "!!raw-loader!./Alignment"
+import Custom from "./Custom"
+import CustomSrc from "!!raw-loader!./Custom"
+import API from "./API"
+import LangProvider from "../../Language/LanguageProvider"
+import LangMsg from "../../Language/LanguageMessage"
+import lang from "./lang"
 import RightNav, {
     singleId,
     singleTitle,
@@ -36,9 +36,9 @@ import RightNav, {
     customId,
     customTitle,
     apiId
-} from "./RightNav";
+} from "./RightNav"
 
-const { H3 } = DocHeading;
+const { H3 } = DocHeading
 
 export default () => (
     <LangProvider language={lang}>
@@ -86,4 +86,4 @@ export default () => (
         </Main>
         <RightNav />
     </LangProvider>
-);
+)

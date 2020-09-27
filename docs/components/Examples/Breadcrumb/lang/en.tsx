@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from "react"
 
 export default {
     compDesc: "Indicate the current page’s location within a navigational hierarchy that automatically adds separators via CSS.",

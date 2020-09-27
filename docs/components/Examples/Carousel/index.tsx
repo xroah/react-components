@@ -1,18 +1,18 @@
-import * as React from "react";
-import Demo from "./Demo";
-import DemoSrc from "!!raw-loader!./Demo";
-import DocHeading from "../../DocHeading";
-import DemoExample from "../../DemoExample";
-import API from "./API";
-import LangProvider from "../../Language/LanguageProvider";
-import LangMsg from "../../Language/LanguageMessage";
-import Main from "../../Main";
-import RightNav from "../../RightNav";
-import lang from "./lang";
+import * as React from "react"
+import Demo from "./Demo"
+import DemoSrc from "!!raw-loader!./Demo"
+import DocHeading from "../../DocHeading"
+import DemoExample from "../../DemoExample"
+import API from "./API"
+import LangProvider from "../../Language/LanguageProvider"
+import LangMsg from "../../Language/LanguageMessage"
+import Main from "../../Main"
+import RightNav from "../../RightNav"
+import lang from "./lang"
 
-const egId = "carouseExample";
-const egTitle = <LangMsg id="egTitle" />;
-const apiId = "carouselApiId";
+const egId = "carouseExample"
+const egTitle = <LangMsg id="egTitle" />
+const apiId = "carouselApiId"
 
 export default () => (
     <LangProvider language={lang}>
@@ -36,5 +36,5 @@ export default () => (
             href: `#${apiId}`
         }]}/>
     </LangProvider>
-);
+)
 

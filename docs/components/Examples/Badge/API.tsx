@@ -1,6 +1,6 @@
-import * as React from "react";
-import PropsTable from "../../PropsTable";
-import LangMsg from "../../Language/LanguageMessage";
+import * as React from "react"
+import PropsTable from "../../PropsTable"
+import LangMsg from "../../Language/LanguageMessage"
 
 const BadgeProps = [{
     name: "variant",
@@ -22,10 +22,10 @@ const BadgeProps = [{
     type: "boolean",
     default: "false",
     description: <LangMsg id="pillApi"/>
-}];
+}]
 
 export default () => (
     <>
         <PropsTable title="Badge" data={BadgeProps}/>
     </>
-);
+)

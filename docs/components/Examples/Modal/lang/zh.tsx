@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from "react"
 
 export default {
     compDesc: "添加对话框到网站上，可以包含灯箱、用户通知或者完全自定义的内容。",

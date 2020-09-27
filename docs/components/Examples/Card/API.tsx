@@ -1,7 +1,7 @@
-import * as React from "react";
-import PropsTable from "../../PropsTable";
-import NoAPI from "../../NoAPI";
-import LangMsg from "../../Language/LanguageMessage";
+import * as React from "react"
+import PropsTable from "../../PropsTable"
+import NoAPI from "../../NoAPI"
+import LangMsg from "../../Language/LanguageMessage"
 
 const color = `"primary" |
 "secondary" |
@@ -10,7 +10,7 @@ const color = `"primary" |
 "warning" |
 "info" |
 "dark" |
-"light"`;
+"light"`
 
 const CardProps = [{
     name: "header",
@@ -20,7 +20,7 @@ const CardProps = [{
     name: "footer",
     type: "string | ReactNode",
     default: "",
-    description:  <LangMsg id="footerApi" />
+    description: <LangMsg id="footerApi" />
 }, /* {
     name: "headerStyle",
     type: "object",
@@ -33,59 +33,59 @@ const CardProps = [{
     name: "body",
     type: "boolean",
     default: "false",
-    description:  <LangMsg id="bodyApi" />
+    description: <LangMsg id="bodyApi" />
 }, {
     name: "img",
     type: "string | ReactNode",
-    description:  <LangMsg id="imgApi" />
+    description: <LangMsg id="imgApi" />
 }, {
     name: "imgAlt",
     type: "string",
-    description:  <LangMsg id="imgAltApi" />
+    description: <LangMsg id="imgAltApi" />
 }, {
     name: "imgTitle",
     type: "string",
-    description:  <LangMsg id="imgTitleApi" />
+    description: <LangMsg id="imgTitleApi" />
 }, {
     name: "imgPosition",
-    type:  `"top" | "bottom"`,
+    type: "\"top\" | \"bottom\"",
     default: "top",
-    description:  <LangMsg id="imgPisApi" />
+    description: <LangMsg id="imgPisApi" />
 }, {
     name: "isImgOverlay",
     type: "boolean",
     default: "false",
-    description:  <LangMsg id="overlayApi" />
+    description: <LangMsg id="overlayApi" />
 }, {
     name: "alignment",
-    type: `"left" | "center" | "right"`,
+    type: "\"left\" | \"center\" | \"right\"",
     default: "left",
     description: <LangMsg id="alignmentApi" />
 }, {
     name: "bg",
     type: color,
-    description:  <LangMsg id="bgApi" />
+    description: <LangMsg id="bgApi" />
 }, {
     name: "border",
     type: color,
-    description:  <LangMsg id="borderApi" />
+    description: <LangMsg id="borderApi" />
 }, {
     name: "color",
     type: `${color} | "white" | "muted" | "white-50" | "black-50"`,
-    description:  <LangMsg id="colorApi" />
-}];
+    description: <LangMsg id="colorApi" />
+}]
 const CardTitleProps = [{
     name: "color",
-    type:  <LangMsg id="sameAs" />,
-    description:  <LangMsg id="titleColorApi" />
-}, , {
+    type: <LangMsg id="sameAs" />,
+    description: <LangMsg id="titleColorApi" />
+}, {
     name: "subtitle",
     type: "string"
 }, {
     name: "subtitleColor",
-    type:  <LangMsg id="sameAs" />,
-    description:  <LangMsg id="subTitleColorApi" />
-}];
+    type: <LangMsg id="sameAs" />,
+    description: <LangMsg id="subTitleColorApi" />
+}]
 
 export default () => (
     <>
@@ -97,4 +97,4 @@ export default () => (
         <NoAPI title="Card.Column" />
         <NoAPI title="Card.Group" />
     </>
-);
+)

@@ -1,6 +1,6 @@
-import * as React from "react";
-import PropsTable from "../../PropsTable";
-import LangMsg from "../../Language/LanguageMessage";
+import * as React from "react"
+import PropsTable from "../../PropsTable"
+import LangMsg from "../../Language/LanguageMessage"
 
 const props = [{
     name: "variant",
@@ -33,10 +33,10 @@ const props = [{
     type: "boolean",
     default: "false",
     description: <LangMsg id="animatedApi" />
-}];
+}]
 
 export default () => (
     <>
         <PropsTable title="Progress" data={props}/>
     </>
-);
+)

@@ -1,9 +1,11 @@
-import * as React from "react";
-import { Modal, Button, Tooltip, Popover } from "reap-ui";
+import * as React from "react"
+import {
+    Modal, Button, Tooltip, Popover 
+} from "reap-ui"
 
 export default () => {
-    const [visible, setVisible] = React.useState(false);
-    const toggle = () => setVisible(!visible);
+    const [visible, setVisible] = React.useState(false)
+    const toggle = () => setVisible(!visible)
 
     return (
         <>
@@ -21,7 +23,7 @@ export default () => {
                         <Button variant="secondary">button</Button>
                     </Popover>
                     triggers a popover on click.
-                 </p>
+                </p>
                 <hr />
                 <h5>Tooltips in a modal</h5>
                 <p>
@@ -36,5 +38,5 @@ export default () => {
                 </p>
             </Modal>
         </>
-    );
-};
+    )
+}

@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from "react"
 
 export default {
     compDesc: "Custom progress bars featuring support for stacked bars, animated backgrounds, and text labels.",

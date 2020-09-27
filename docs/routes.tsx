@@ -1,4 +1,4 @@
-import { lazy } from "react";
+import { lazy } from "react"
 
 export default [
     {
@@ -127,4 +127,4 @@ export default [
         component: lazy(() => import("./components/Examples/Tooltip")),
         name: "Tooltip"
     }
-];
+]

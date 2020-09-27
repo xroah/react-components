@@ -1,9 +1,9 @@
-import * as React from "react";
-import { Card } from "reap-ui";
+import * as React from "react"
+import { Card } from "reap-ui"
 
 const svg = (
     <svg style={{textAnchor: "middle"}} width="100%" height="270" xmlns="http://www.w3.org/2000/svg"><rect width="100%" height="100%" fill="#868e96"></rect><text x="50%" y="50%" fill="#dee2e6" dy=".3em" fontSize="30px">Card image</text></svg>
-);
+)
 
 export default () => (
     <Card color="white" bg="dark" isImgOverlay img={svg}>
@@ -15,4 +15,4 @@ export default () => (
             <small>Last updated 3 mins ago</small>
         </Card.Text>
     </Card>
-);
+)

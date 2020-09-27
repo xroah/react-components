@@ -1,5 +1,5 @@
-import * as React from "react";
-import { Breadcrumb } from "reap-ui";
+import * as React from "react"
+import { Breadcrumb } from "reap-ui"
 
 export default () => (
     <>
@@ -9,5 +9,5 @@ export default () => (
             <Breadcrumb.Item active>Data</Breadcrumb.Item>
         </Breadcrumb>
     </>
-);
+)
 

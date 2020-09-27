@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from "react"
 
 export const commonLang = {
     visibleApi: "Control the visibility(controlled component)",
@@ -9,11 +9,11 @@ export const commonLang = {
     delayApi: "A millisecond delay to show or hide the popup",
     onShowApi: <>Callback is invoked when <code>visible</code> changes from <code>false</code> to <code>true</code></>, 
     onShownApi: "Callback is invoked when popup has shown",
-    onHideApi: <>Callback is invoked when <code>visible</code> changes from <code>true</code> to <code>false</code></>,
-};
+    onHideApi: <>Callback is invoked when <code>visible</code> changes from <code>true</code> to <code>false</code></>
+}
 
 export default {
-    compDesc:　"Dropdowns are toggleable, contextual overlays for displaying lists of links and more.",
+    compDesc: "Dropdowns are toggleable, contextual overlays for displaying lists of links and more.",
     singleTitle: "Single button",
     splitTitle: "Split button",
     sizeTitle: "Sizing",

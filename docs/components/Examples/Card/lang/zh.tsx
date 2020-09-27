@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from "react"
 
 export default {
     compDesc: "卡片是以个灵活的、可扩展的容器。包含可选的头部和底部，各种内容、背景色和强大的显示选项",

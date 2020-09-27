@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from "react"
 
 export default {
     compDesc: "通过添加文本、按钮或者按钮组在input的两边来扩展表单控件。",

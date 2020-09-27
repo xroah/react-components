@@ -1,25 +1,25 @@
-import * as React from "react";
-import DocHeading from "../../DocHeading";
-import DemoExample from "../../DemoExample";
-import SyntaxHighlighter from "../../SyntaxHighlighter";
-import Main from "../../Main";
-import { Input } from "reap-ui";
-import Basic from "./Basic";
-import BasicSrc from "!!raw-loader!./Basic";
-import Sizing from "./Sizing";
-import SizingSrc from "!!raw-loader!./Sizing";
-import Multiple from "./Multiple";
-import MultipleSrc from "!!raw-loader!./Multiple";
-import MultiAddons from "./MultiAddons";
-import MultiAddonsSrc from "!!raw-loader!./MultiAddons";
-import ButtonAddons from "./ButtonAddons";
-import ButtonAddonsSrc from "!!raw-loader!./ButtonAddons";
-import DropdownAddons from "./DropdownAddons";
-import DropdownAddonsSrc from "!!raw-loader!./DropdownAddons";
-import API from "./API";
-import LangProvider from "../../Language/LanguageProvider";
-import LangMsg from "../../Language/LanguageMessage";
-import lang from "./lang";
+import * as React from "react"
+import DocHeading from "../../DocHeading"
+import DemoExample from "../../DemoExample"
+import SyntaxHighlighter from "../../SyntaxHighlighter"
+import Main from "../../Main"
+import { Input } from "reap-ui"
+import Basic from "./Basic"
+import BasicSrc from "!!raw-loader!./Basic"
+import Sizing from "./Sizing"
+import SizingSrc from "!!raw-loader!./Sizing"
+import Multiple from "./Multiple"
+import MultipleSrc from "!!raw-loader!./Multiple"
+import MultiAddons from "./MultiAddons"
+import MultiAddonsSrc from "!!raw-loader!./MultiAddons"
+import ButtonAddons from "./ButtonAddons"
+import ButtonAddonsSrc from "!!raw-loader!./ButtonAddons"
+import DropdownAddons from "./DropdownAddons"
+import DropdownAddonsSrc from "!!raw-loader!./DropdownAddons"
+import API from "./API"
+import LangProvider from "../../Language/LanguageProvider"
+import LangMsg from "../../Language/LanguageMessage"
+import lang from "./lang"
 import RightNav, {
     egId,
     egTitle,
@@ -38,9 +38,9 @@ import RightNav, {
     dropdownId,
     dropdownTitle,
     apiId
-} from "./RightNav";
+} from "./RightNav"
 
-const { H3 } = DocHeading;
+const { H3 } = DocHeading
 
 export default () => (
     <LangProvider language={lang}>
@@ -57,13 +57,13 @@ export default () => (
             <div><LangMsg id="readonlyDesc" /></div>
             <div className="bd-example">
                 <Input readOnly value="Readonly input" />
-                <SyntaxHighlighter code={`<Input readOnly value="Readonly input"/>`} />
+                <SyntaxHighlighter code={"<Input readOnly value=\"Readonly input\"/>"} />
             </div>
             <H3 id={plainId}>{plainTitle}</H3>
             <div><LangMsg id="plainDesc" /></div>
             <div className="bd-example">
                 <Input plaintext readOnly value="email@example.com" />
-                <SyntaxHighlighter code={`<Input plaintext readOnly value="email@example.com"/>`} />
+                <SyntaxHighlighter code={"<Input plaintext readOnly value=\"email@example.com\"/>"} />
             </div>
             <H3 id={sizingId}>{sizingTitle}</H3>
             <DemoExample
@@ -92,4 +92,4 @@ export default () => (
         </Main>
         <RightNav />
     </LangProvider>
-);
+)
