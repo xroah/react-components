@@ -15,8 +15,10 @@ import Inline from "./Inline"
 import InlineSrc from "!!raw-loader!./Inline"
 import Indeterminate from "./Indeterminate"
 import IndeterminateSrc from "!!raw-loader!./Indeterminate"
+import Validation from "./Validation"
+import ValidationSrc from "!!raw-loader!./Validation"
 import {
-    Checkbox, Radio, Switch 
+    Checkbox, Radio, Switch
 } from "reap-ui"
 import API from "./API"
 import SyntaxHighlighter from "../../SyntaxHighlighter"
@@ -41,10 +43,10 @@ import RightNav, {
     radioTitle,
     switchId,
     switchTitle,
-    apiId
+    apiId, validationId, validationTitle
 } from "./RightNav"
 
-const { H3 } = DocHeading
+const {H3} = DocHeading
 
 export default () => (
     <LangProvider language={lang}>
@@ -84,6 +86,11 @@ export default () => (
                 source={InlineSrc}>
                 <LangMsg id="inlineDesc" />
             </DemoExample>
+            <H3 id={validationId}>{validationTitle}</H3>
+            <DemoExample
+                component={<Validation />}
+                source={ValidationSrc}
+            />
             <H3 id={checkboxId}>{checkboxTitle}</H3>
             <div className="bd-example">
                 <Checkbox>Check this custom checkbox</Checkbox>

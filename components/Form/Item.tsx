@@ -1,9 +1,11 @@
 import * as React from "react"
 import PropTypes from "prop-types"
-import Col, {ColProps} from "../Layout/Col"
+import {ColProps} from "../Layout/Col"
 import {classNames} from "../utils"
 import {FormContext} from "../Common/contexts"
 import {CommonProps} from "../Common/CommonPropsInterface"
+import Label from "./Label"
+import Wrapper from "./Wrapper"
 
 export interface FormItemProps extends CommonProps<HTMLElement> {
     horizontal?: boolean
@@ -15,94 +17,8 @@ export interface FormItemProps extends CommonProps<HTMLElement> {
     htmlFor?: string
     help?: string
     control?: boolean
-}
-
-interface LabelProps extends React.HTMLAttributes<HTMLLabelElement> {
-    horizontal?: boolean
-    label?: boolean
-    labelCol?: ColProps
-    labelAlign?: "left" | "right"
-    htmlFor?: string
-}
-
-function Label(props: LabelProps) {
-    const {
-        children,
-        labelCol,
-        label,
-        labelAlign,
-        horizontal
-    } = props
-
-    return (
-        <FormContext.Consumer>
-            {
-                ({
-                    labelCol: contextLabelCol,
-                    labelAlign: contextLabelAlign,
-                    horizontal: contextHorizontal
-                }: any) => {
-                    const _labelCol = labelCol || contextLabelCol || {
-                        span: false
-                    }
-                    const _labelAlign = labelAlign || contextLabelAlign
-                    const h = horizontal || contextHorizontal || false
-                    const colCls = _labelAlign === "right" ? "text-right" : undefined
-                    const labelCls = h ? "col-form-label" : undefined
-
-                    return (
-                        <Col
-                            className={colCls}
-                            {..._labelCol}>
-                            {
-                                label ?
-                                    <label className={labelCls}>{children}</label> :
-                                    children
-                            }
-                        </Col>
-                    )
-                }
-            }
-        </FormContext.Consumer>
-    )
-}
-
-interface WrapperProps extends React.HTMLAttributes<HTMLElement> {
-    wrapperCol?: ColProps
-    help?: string | React.ReactNode
-}
-
-function Wrapper(props: WrapperProps) {
-    const {
-        children,
-        wrapperCol,
-        help
-    } = props
-
-    return (
-        <FormContext.Consumer>
-            {
-                ({
-                    wrapperCol: contextWrapperCol
-                }: any) => {
-                    const _wrapperCol = wrapperCol || contextWrapperCol || {
-                        span: false
-                    }
-
-                    return (
-                        <Col {..._wrapperCol}>
-                            {children}
-                            {
-                                help &&
-                                <small className="form-text text-muted">{help}</small>
-
-                            }
-                        </Col>
-                    )
-                }
-            }
-        </FormContext.Consumer>
-    )
+    validText?: string | React.ReactNode
+    invalidText?: string | React.ReactNode
 }
 
 export default function FormItem(props: FormItemProps) {
@@ -118,6 +34,8 @@ export default function FormItem(props: FormItemProps) {
         help,
         control,
         labelAlign,
+        validText,
+        invalidText,
         ...otherProps
     } = props
     let _for: string = htmlFor || ""
@@ -178,7 +96,9 @@ export default function FormItem(props: FormItemProps) {
             {_label}
             <Wrapper
                 wrapperCol={wrapperCol}
-                help={help}>
+                help={help}
+                validText={validText}
+                invalidText={invalidText}>
                 {_children}
             </Wrapper>
         </div>

@@ -7,6 +7,9 @@ let uuid = 0
 
 export interface CustomControlProps extends InputCommonProps<HTMLInputElement> {
     inline?: boolean
+    validText?: string | React.ReactNode
+    invalidText?: string | React.ReactNode
+    __reapui_custom_control__?: true
 }
 
 const CustomControl = React.forwardRef(
@@ -18,6 +21,10 @@ const CustomControl = React.forwardRef(
             className,
             children,
             style,
+            required,
+            validText,
+            invalidText,
+            __reapui_custom_control__,
             ...otherProps
         }: CustomControlProps,
         ref: React.Ref<HTMLInputElement>
@@ -34,27 +41,50 @@ const CustomControl = React.forwardRef(
         _label = (
             <label
                 htmlFor={_id}
-                className={`${PREFIX}-label`}>
+                className={
+                    classNames(
+                        `${PREFIX}-label`,
+                        required && "form-check-label"
+                    )
+                }>
                 {children}
             </label>
         )
 
         return (
-            <div className={
-                classNames(
-                    className,
-                    PREFIX,
-                    `custom-${type}`,
-                    inline && `${PREFIX}-inline`
-                )
-            } style={style}>
+            <div
+                className={
+                    classNames(
+                        className,
+                        PREFIX,
+                        `custom-${type}`,
+                        inline && `${PREFIX}-inline`
+                    )
+                }
+                style={style}>
                 <input
                     type={_type}
                     id={_id}
                     ref={ref}
-                    className={`${PREFIX}-input`}
+                    required={required}
+                    className={
+                        classNames(
+                            `${PREFIX}-input`,
+                            required && "form-check-input"
+                        )
+                    }
                     {...otherProps} />
                 {_label}
+                {
+                    validText && (
+                        <div className="valid-feedback">{validText}</div>
+                    )
+                }
+                {
+                    invalidText && (
+                        <div className="invalid-feedback">{invalidText}</div>
+                    )
+                }
             </div>
         )
     })

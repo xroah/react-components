@@ -12,6 +12,8 @@ export const horizontalId = "horizontalForm"
 export const horizontalTitle = <LangMsg id="horizontalTitle" />
 export const inlineId = "inlineForm"
 export const inlineTitle = <LangMsg id="inlineTitle" />
+export const validationId = "formValidation"
+export const validationTitle = "Validation"
 export const checkboxId = "checkboxes"
 export const checkboxTitle = <LangMsg id="checkboxTitle" />
 export const radioId = "radios"
@@ -37,6 +39,9 @@ export default () => (
         name: inlineTitle,
         href: `#${inlineId}`
     }, {
+        name: validationTitle,
+        href: `#${validationId}`
+    },{
         name: checkboxTitle,
         href: `#${checkboxId}`
     }, {

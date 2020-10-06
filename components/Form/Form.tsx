@@ -1,9 +1,14 @@
 import * as React from "react"
 import PropTypes from "prop-types"
-import {classNames} from "../utils"
+import {classNames, handleFuncProp} from "../utils"
 import {ColProps} from "../Layout/Col"
 import {FormContext} from "../Common/contexts"
 import {FormCommonProps} from "../Common/CommonPropsInterface"
+import omitProps from "../utils/omitProps"
+
+interface State {
+    validated: boolean
+}
 
 export interface FormProps extends FormCommonProps<HTMLFormElement> {
     inline?: boolean
@@ -11,42 +16,92 @@ export interface FormProps extends FormCommonProps<HTMLFormElement> {
     wrapperCol?: ColProps
     horizontal?: boolean
     labelAlign?: "left" | "right"
+    onValidate?: (valid: boolean) => void
 }
 
-export default function Form(props: FormProps) {
-    const {
-        className,
-        inline,
-        labelCol,
-        labelAlign,
-        wrapperCol,
-        horizontal,
-        ...otherProps
-    } = props
+export default class Form extends React.Component<FormProps, State> {
+    static propTypes = {
+        inline: PropTypes.bool,
+        labelCol: PropTypes.object,
+        wrapperCol: PropTypes.object,
+        horizontal: PropTypes.bool,
+        labelAlign: PropTypes.oneOf(["left", "right"])
+    }
+    static defaultProps = {
+        inline: false,
+        horizontal: false,
+        noValidate: false
+    }
 
-    return (
-        <FormContext.Provider value={{
+    state = {
+        validated: false
+    }
+
+    private formRef = React.createRef<HTMLFormElement>()
+
+    handleSubmit = (evt: React.FormEvent) => {
+        const {
+            noValidate,
+            onValidate
+        } = this.props
+
+        if (!noValidate) {
+            const {
+                current: form
+            } = this.formRef
+
+            if (form) {
+                handleFuncProp(onValidate)(form.checkValidity())
+            }
+
+            evt.preventDefault()
+            evt.stopPropagation()
+            this.setState({
+                validated: true
+            })
+        }
+    }
+
+    reset() {
+        this.formRef.current?.reset()
+        this.setState({
+            validated: false
+        })
+    }
+
+    render() {
+        const {
+            className,
+            inline,
             labelCol,
+            labelAlign,
             wrapperCol,
             horizontal,
-            labelAlign
-        }}>
-            <form
-                className={
-                    classNames(className, inline && "form-inline")
-                } {...otherProps} />
-        </FormContext.Provider>
-    )
-}
+            noValidate,
+            ...otherProps
+        } = this.props
+        const classes = classNames(
+            className,
+            inline && "form-inline",
+            this.state.validated && "was-validated"
+        )
 
-Form.propTypes = {
-    inline: PropTypes.bool,
-    labelCol: PropTypes.object,
-    wrapperCol: PropTypes.object,
-    horizontal: PropTypes.bool,
-    labelAlign: PropTypes.oneOf(["left", "right"])
-}
-Form.defaultProps = {
-    inline: false,
-    horizontal: false
+        omitProps(otherProps, ["onValidate"])
+
+        return (
+            <FormContext.Provider value={{
+                labelCol,
+                wrapperCol,
+                horizontal,
+                labelAlign
+            }}>
+                <form
+                    ref={this.formRef}
+                    noValidate={!noValidate}
+                    onSubmit={this.handleSubmit}
+                    className={classes}
+                    {...otherProps} />
+            </FormContext.Provider>
+        )
+    }
 }
