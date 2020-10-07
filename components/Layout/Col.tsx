@@ -130,7 +130,11 @@ export default class Col extends React.Component<ColProps> {
 
         return (
             <div className={
-                classNames(classes, sizeClasses)
+                classNames(
+                    "position-relative",
+                    classes,
+                    sizeClasses
+                )
             } {...otherProps} />
         )
     }

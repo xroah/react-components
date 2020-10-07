@@ -73,11 +73,8 @@ export default () => {
                     </Form.Item>
                 </Col>
             </Row>
-            <Form.Item>
-                <Checkbox
-                    id="invalidCheck"
-                    invalidText="You must agree before submitting."
-                    required>
+            <Form.Item invalidText="You must agree before submitting.">
+                <Checkbox id="invalidCheck" required>
                     Agree to terms and conditions
                 </Checkbox>
             </Form.Item>

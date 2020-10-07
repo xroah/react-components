@@ -4,10 +4,13 @@ import {
     classNames,
     isUndef
 } from "../utils"
-import {InputGroupContext} from "../Common/contexts"
+import {
+    FormItemContext, InputGroupContext
+} from "../Common/contexts"
 import InputGroup from "./InputGroup"
 import {InputCommonProps} from "../Common/CommonPropsInterface"
 import Text from "./Text"
+import {handleFeedback} from "../Form/Item"
 
 export interface InputProps extends InputCommonProps<HTMLInputElement & HTMLTextAreaElement> {
     prepend?: React.ReactNode
@@ -62,39 +65,73 @@ const Input = React.forwardRef(
                     className={classes}
                     {...otherProps} />
             )
-        const inputWithAddons = (
-            <>
-                {
-                    !isUndef(prepend) && (
-                        <div className="input-group-prepend">
-                            {handleAddon(prepend)}
-                        </div>
-                    )
-                }
-                {input}
-                {
-                    !isUndef(append) && (
-                        <div className="input-group-append">
-                            {handleAddon(append)}
-                        </div>
-                    )
-                }
-            </>
+        const inputWithAddons = (valid: any, invalid: any, tooltip: any) => (
+            (
+                <>
+                    {
+                        !isUndef(prepend) && (
+                            <div className="input-group-prepend">
+                                {handleAddon(prepend)}
+                            </div>
+                        )
+                    }
+                    {input}
+                    {handleFeedback(valid, tooltip)}
+                    {handleFeedback(invalid, tooltip, false)}
+                    {
+                        !isUndef(append) && (
+                            <div className="input-group-append">
+                                {handleAddon(append)}
+                            </div>
+                        )
+                    }
+                </>
+            )
         )
 
         if (noAppendix) {
-            return input
+            return (
+                <FormItemContext.Consumer>
+                    {
+                        ({
+                            valid,
+                            invalid,
+                            tooltip
+                        }) => (
+                            <>
+                                {input}
+                                {handleFeedback(valid, tooltip)}
+                                {handleFeedback(invalid, tooltip, false)}
+                            </>
+                        )
+                    }
+                </FormItemContext.Consumer>
+            )
         }
 
         return (
             <InputGroupContext.Consumer>
                 {
                     // prevent nesting
-                    value =>
-                        value ?
-                            inputWithAddons :
-                            <InputGroup size={sizing}>{inputWithAddons}</InputGroup>
-
+                    value => (
+                        <FormItemContext.Consumer>
+                            {
+                                ({
+                                    invalid,
+                                    valid,
+                                    tooltip
+                                }) => {
+                                    const c = inputWithAddons(valid, invalid, tooltip)
+                                    
+                                    return (
+                                        value ?
+                                            c :
+                                            <InputGroup size={sizing}>{c}</InputGroup>
+                                    )
+                                }
+                            }
+                        </FormItemContext.Consumer>
+                    )
                 }
             </InputGroupContext.Consumer>
         )

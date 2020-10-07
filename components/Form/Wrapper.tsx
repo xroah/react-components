@@ -1,13 +1,29 @@
 import * as React from "react"
 import Col, {ColProps} from "../Layout/Col"
 import {FormContext} from "../Common/contexts"
-import CustomControl from "../CustomControl/CustomControl"
 
 interface WrapperProps extends React.HTMLAttributes<HTMLElement> {
     wrapperCol?: ColProps
-    help?: string | React.ReactNode
-    validText?: string | React.ReactNode
-    invalidText?: string | React.ReactNode
+    help?: React.ReactNode
+    valid?: React.ReactNode
+    invalid?: React.ReactNode
+    tooltip?: boolean
+}
+export function handleFeedback(
+    text: React.ReactNode,
+    tooltip = false,
+    valid = true
+) {
+    let className: string
+
+    if (tooltip) {
+        className = valid ? "valid-tooltip" : "invalid-tooltip"
+    }
+    else {
+        className = valid ? "valid-feedback" : "invalid-feedback"
+    }
+
+    return text ? <div className={className}>{text}</div> : null
 }
 
 export default function Wrapper(props: WrapperProps) {
@@ -15,11 +31,11 @@ export default function Wrapper(props: WrapperProps) {
         children,
         wrapperCol,
         help,
-        validText,
-        invalidText
+        valid,
+        invalid,
+        tooltip
     } = props
-
-    console.log(children)
+    const c = children as React.ReactElement
 
     return (
         <FormContext.Consumer>
@@ -33,21 +49,18 @@ export default function Wrapper(props: WrapperProps) {
 
                     return (
                         <Col {..._wrapperCol}>
-                            {children}
                             {
-                                help &&
-                                <small className="form-text text-muted">{help}</small>
+                                typeof c.type === "string" ?
+                                    (
+                                    //html element rather than a react component
+                                        <>
+                                            {c}
+                                            {handleFeedback(valid, tooltip)}
+                                            {handleFeedback(invalid, tooltip, false)}
+                                        </>
+                                    ) : c//handled by context
                             }
-                            {
-                                validText && (
-                                    <div className="valid-feedback">{validText}</div>
-                                )
-                            }
-                            {
-                                invalidText && (
-                                    <div className="invalid-feedback">{invalidText}</div>
-                                )
-                            }
+                            {help && <small className="form-text text-muted">{help}</small>}
                         </Col>
                     )
                 }

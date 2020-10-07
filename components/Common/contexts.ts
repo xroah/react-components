@@ -39,3 +39,9 @@ export const ToggleButtonGroupContext = createContext({
 })
 
 export const ListGroupContext = createContext(false)
+
+export const FormItemContext = createContext({
+    valid: null,
+    invalid: null,
+    tooltip: false
+} as any)
