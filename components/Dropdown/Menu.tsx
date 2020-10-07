@@ -5,7 +5,6 @@ import {
     isUndef
 } from "../utils"
 import {CommonProps} from "../Common/CommonPropsInterface"
-import {DropdownContext} from "../Common/contexts"
 
 export interface MenuProps extends CommonProps<HTMLDivElement> {
     header?: string | React.ReactNode
@@ -20,7 +19,6 @@ export default function DropdownMenu(props: MenuProps) {
         },
         ...otherProps
     } = props
-    const context = React.useContext(DropdownContext)
     style.left = 0
     style.top = 0
     style.position = "relative"

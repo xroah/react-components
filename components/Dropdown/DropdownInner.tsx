@@ -30,7 +30,6 @@ const keySet = new Set(
         "esc"
     ]
 )
-let uuid = 0
 
 export default class Dropdown extends React.Component<DropdownProps, DropdownState> {
 
@@ -50,7 +49,7 @@ export default class Dropdown extends React.Component<DropdownProps, DropdownSta
         super(props)
 
         this.state = {
-            visible: !!props.visible || !!props.defaultVisible,
+            visible: !!props.visible || !!props.defaultVisible
         }
     }
 
@@ -168,7 +167,6 @@ export default class Dropdown extends React.Component<DropdownProps, DropdownSta
 
         if (key === "arrowup" || key === "arrowdown" || key === "tab") {
             const popupElement = this.ref.current
-console.log(popupElement)
             if (!visible && key !== "tab") {
                 return this.open()
             }
