@@ -5,13 +5,7 @@ import { tomorrow } from "react-syntax-highlighter/dist/esm/styles/prism"
 export default function SyntaxHighlighter(props: { code: string }) {
     const { code } = props
     const handleClick = function handleClick() {
-        const textarea = document.createElement("textarea")
-        textarea.value = code
-        textarea.style.cssText = "position: absolute; left: -10000px;"
-        document.body.append(textarea)
-        textarea.select()
-        document.execCommand("copy")
-        textarea.remove()
+        navigator.clipboard.writeText(code)
     }
     return (
         <>
