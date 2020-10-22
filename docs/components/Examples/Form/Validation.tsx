@@ -9,12 +9,23 @@ import {
 } from "reap-ui"
 
 export default () => {
-    const onValidate = (valid: boolean) => {
-        console.log("Validation result", valid)
+    const [validated, updateValidated] = React.useState(false)
+    const onSubmit = evt => {
+        const form = evt.currentTarget
+
+        if (!form.checkValidity()) {
+            evt.preventDefault()
+            evt.stopPropagation()
+        }
+
+        updateValidated(true)
     }
 
     return (
-        <Form onValidate={onValidate}>
+        <Form
+            noValidate
+            validated={validated}
+            onSubmit={onSubmit}>
             <Row form>
                 <Col md={{span: 6}} className="mb-3">
                     <Form.Item
@@ -52,11 +63,12 @@ export default () => {
                 </Col>
                 <Col md={{span: 3}} className="mb-3">
                     <Form.Item
+                        control
                         label
                         labelText="State"
                         htmlFor="validationCustom4"
                         invalidText="Please select a valid state">
-                        <select defaultValue="" className="custom-select" required>
+                        <select defaultValue="" required>
                             <option value="" disabled>Choose...</option>
                             <option>...</option>
                         </select>

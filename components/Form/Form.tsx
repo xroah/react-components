@@ -6,22 +6,16 @@ import {
 import {ColProps} from "../Layout/Col"
 import {FormContext} from "../Common/contexts"
 import {FormCommonProps} from "../Common/CommonPropsInterface"
-import omitProps from "../utils/omitProps"
-
-interface State {
-    validated: boolean
-}
-
 export interface FormProps extends FormCommonProps<HTMLFormElement> {
     inline?: boolean
     labelCol?: ColProps
     wrapperCol?: ColProps
     horizontal?: boolean
     labelAlign?: "left" | "right"
-    onValidate?: (valid: boolean) => void
+    validated?: boolean
 }
 
-export default class Form extends React.Component<FormProps, State> {
+export default class Form extends React.Component<FormProps> {
     static propTypes = {
         inline: PropTypes.bool,
         labelCol: PropTypes.object,
@@ -35,40 +29,10 @@ export default class Form extends React.Component<FormProps, State> {
         noValidate: false
     }
 
-    state = {
-        validated: false
-    }
-
     private formRef = React.createRef<HTMLFormElement>()
-
-    handleSubmit = (evt: React.FormEvent) => {
-        const {
-            noValidate,
-            onValidate
-        } = this.props
-
-        if (!noValidate) {
-            const {
-                current: form
-            } = this.formRef
-
-            if (form) {
-                handleFuncProp(onValidate)(form.checkValidity())
-            }
-
-            evt.preventDefault()
-            evt.stopPropagation()
-            this.setState({
-                validated: true
-            })
-        }
-    }
 
     reset() {
         this.formRef.current?.reset()
-        this.setState({
-            validated: false
-        })
     }
 
     render() {
@@ -80,15 +44,14 @@ export default class Form extends React.Component<FormProps, State> {
             wrapperCol,
             horizontal,
             noValidate,
+            validated,
             ...otherProps
         } = this.props
         const classes = classNames(
             className,
             inline && "form-inline",
-            this.state.validated && "was-validated"
+            validated && "was-validated"
         )
-
-        omitProps(otherProps, ["onValidate"])
 
         return (
             <FormContext.Provider value={{
@@ -99,8 +62,7 @@ export default class Form extends React.Component<FormProps, State> {
             }}>
                 <form
                     ref={this.formRef}
-                    noValidate={!noValidate}
-                    onSubmit={this.handleSubmit}
+                    noValidate={noValidate}
                     className={classes}
                     {...otherProps} />
             </FormContext.Provider>

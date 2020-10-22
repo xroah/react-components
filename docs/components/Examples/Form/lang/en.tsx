@@ -12,7 +12,7 @@ export default {
     inlineTitle: "Inline form",
     inlineDesc:<>Use the <code>inline</code> prop to display a series of labels, form controls, and buttons on a single horizontal row.</>,
     checkboxTitle: "Checkboxes",
-    inDeterminateDesc: <>Custom checkboxes can also utilize the <code>:indeterminate</code> pseudo class when manually set via JavaScript (there is no available HTML attribute for specifying it).</>,
+    indeterminateDesc: <>Custom checkboxes can also utilize the <code>:indeterminate</code> pseudo class when manually set via JavaScript (there is no available HTML attribute for specifying it).</>,
     radioTitle: "Radios",
     switchTitle: "Switches",
     inlineApi: "Display the series of labels, form controls, and buttons on a single horizontal row",
