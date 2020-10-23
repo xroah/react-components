@@ -76,8 +76,6 @@ const Input = React.forwardRef(
                         )
                     }
                     {input}
-                    {handleFeedback(valid, tooltip)}
-                    {handleFeedback(invalid, tooltip, false)}
                     {
                         !isUndef(append) && (
                             <div className="input-group-append">
@@ -85,6 +83,8 @@ const Input = React.forwardRef(
                             </div>
                         )
                     }
+                    {handleFeedback(valid, tooltip)}
+                    {handleFeedback(invalid, tooltip, false)}
                 </>
             )
         )

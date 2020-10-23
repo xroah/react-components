@@ -23,7 +23,6 @@ export default function InputGroup(props: InputGroupProps) {
                 classNames(
                     className,
                     PREFIX,
-                    "flex-nowrap",
                     size && `${PREFIX}-${size}`
                 )
             } {...otherProps}>

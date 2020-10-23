@@ -27,18 +27,17 @@ export default () => {
             validated={validated}
             onSubmit={onSubmit}>
             <Row form>
-                <Col md={{span: 6}} className="mb-3">
+                <Col md={{span: 4}} className="mb-3">
                     <Form.Item
                         control
                         label
                         labelText="First name"
                         htmlFor="validationCustom01"
-                        validText="Looks good!"
-                    >
-                        <Input required />
+                        validText="Looks good!">
+                        <Input append="aaa" required />
                     </Form.Item>
                 </Col>
-                <Col md={{span: 6}} className="mb-3">
+                <Col md={{span: 4}} className="mb-3">
                     <Form.Item
                         control
                         label
@@ -49,6 +48,15 @@ export default () => {
                         <Input required />
                     </Form.Item>
                 </Col>
+                <Col md={{span: 4}} className="mb-3">
+                    <Form.Item
+                        label
+                        labelText="Username"
+                        htmlFor="validationCustom3"
+                        invalidText="Please choose a username.">
+                        <Input prepend="@" required />
+                    </Form.Item>
+                </Col>
             </Row>
             <Row form>
                 <Col md={{span: 6}} className="mb-3">
@@ -56,7 +64,7 @@ export default () => {
                         control
                         label
                         labelText="City"
-                        htmlFor="validationCustom3"
+                        htmlFor="validationCustom4"
                         invalidText="Please provide a valid city">
                         <Input required />
                     </Form.Item>
@@ -66,7 +74,7 @@ export default () => {
                         control
                         label
                         labelText="State"
-                        htmlFor="validationCustom4"
+                        htmlFor="validationCustom5"
                         invalidText="Please select a valid state">
                         <select defaultValue="" required>
                             <option value="" disabled>Choose...</option>
@@ -79,7 +87,7 @@ export default () => {
                         control
                         label
                         labelText="zip"
-                        htmlFor="validationCustom5"
+                        htmlFor="validationCustom6"
                         invalidText="Please provide a valid zip">
                         <Input required />
                     </Form.Item>

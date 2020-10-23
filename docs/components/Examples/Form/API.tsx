@@ -64,6 +64,7 @@ const FormItemProps = [{
 }, {
     name: "control",
     type: "boolean",
+    default: "false",
     description: <LangMsg id="controlApi" />
 }]
 const CustomProps = [{
