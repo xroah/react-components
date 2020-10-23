@@ -3,11 +3,15 @@ import PropTypes from "prop-types"
 import {ColProps} from "../Layout/Col"
 import {classNames} from "../utils"
 import {
-    FormContext, FormItemContext
+    FormContext,
+    FormItemContext
 } from "../Common/contexts"
 import {CommonProps} from "../Common/CommonPropsInterface"
 import Label from "./Label"
-import Wrapper, {handleFeedback} from "./Wrapper"
+import Wrapper, {
+    handleFeedback, 
+    handleHelp
+} from "./Wrapper"
 
 export interface FormItemProps extends CommonProps<HTMLElement> {
     horizontal?: boolean
@@ -24,7 +28,10 @@ export interface FormItemProps extends CommonProps<HTMLElement> {
     validationTooltip?: boolean
 }
 
-export {handleFeedback}
+export {
+    handleFeedback,
+    handleHelp
+}
 
 export default function FormItem(props: FormItemProps) {
     const {
@@ -49,7 +56,7 @@ export default function FormItem(props: FormItemProps) {
     let child = React.Children.only(children)
     const context = React.useContext(FormContext)
     const h = horizontal || context.horizontal || false
-    
+
     if (React.isValidElement(children)) {
         let {
             id,
@@ -95,7 +102,8 @@ export default function FormItem(props: FormItemProps) {
         <FormItemContext.Provider value={{
             valid: validText,
             invalid: invalidText,
-            tooltip: validationTooltip
+            tooltip: validationTooltip,
+            help
         }}>
             <div className={
                 classNames(

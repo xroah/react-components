@@ -26,6 +26,14 @@ export function handleFeedback(
     return text ? <div className={className}>{text}</div> : null
 }
 
+export function handleHelp(help: React.ReactNode) {
+    return help ? (
+        <small className="form-text text-muted w-100">
+            {help}
+        </small>
+    ) : null
+}
+
 export default function Wrapper(props: WrapperProps) {
     const {
         children,
@@ -52,15 +60,15 @@ export default function Wrapper(props: WrapperProps) {
                             {
                                 typeof c.type === "string" ?
                                     (
-                                    //html element rather than a react component
+                                        //html element rather than a react component
                                         <>
                                             {c}
+                                            {handleHelp(help)}
                                             {handleFeedback(valid, tooltip)}
                                             {handleFeedback(invalid, tooltip, false)}
                                         </>
                                     ) : c//handled by context
                             }
-                            {help && <small className="form-text text-muted">{help}</small>}
                         </Col>
                     )
                 }

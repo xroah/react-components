@@ -51,6 +51,7 @@ export default () => {
                 <Col md={{span: 4}} className="mb-3">
                     <Form.Item
                         label
+                        help="username"
                         labelText="Username"
                         htmlFor="validationCustom3"
                         invalidText="Please choose a username.">
@@ -64,6 +65,7 @@ export default () => {
                         control
                         label
                         labelText="City"
+                        help="city"
                         htmlFor="validationCustom4"
                         invalidText="Please provide a valid city">
                         <Input required />

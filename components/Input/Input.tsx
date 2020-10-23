@@ -10,7 +10,10 @@ import {
 import InputGroup from "./InputGroup"
 import {InputCommonProps} from "../Common/CommonPropsInterface"
 import Text from "./Text"
-import {handleFeedback} from "../Form/Item"
+import {
+    handleFeedback,
+    handleHelp
+} from "../Form/Item"
 
 export interface InputProps extends InputCommonProps<HTMLInputElement & HTMLTextAreaElement> {
     prepend?: React.ReactNode
@@ -65,29 +68,36 @@ const Input = React.forwardRef(
                     className={classes}
                     {...otherProps} />
             )
-        const inputWithAddons = (valid: any, invalid: any, tooltip: any) => (
-            (
-                <>
-                    {
-                        !isUndef(prepend) && (
-                            <div className="input-group-prepend">
-                                {handleAddon(prepend)}
-                            </div>
-                        )
-                    }
-                    {input}
-                    {
-                        !isUndef(append) && (
-                            <div className="input-group-append">
-                                {handleAddon(append)}
-                            </div>
-                        )
-                    }
-                    {handleFeedback(valid, tooltip)}
-                    {handleFeedback(invalid, tooltip, false)}
-                </>
+        const inputWithAddons = ({
+            tooltip,
+            valid,
+            invalid,
+            help
+        }: any) => (
+                (
+                    <>
+                        {
+                            !isUndef(prepend) && (
+                                <div className="input-group-prepend">
+                                    {handleAddon(prepend)}
+                                </div>
+                            )
+                        }
+                        {input}
+                        {
+                            !isUndef(append) && (
+                                <div className="input-group-append">
+                                    {handleAddon(append)}
+                                </div>
+                            )
+                        }
+                        {handleHelp(help)}
+                        {handleFeedback(valid, tooltip)}
+                        {handleFeedback(invalid, tooltip, false)}
+                        
+                    </>
+                )
             )
-        )
 
         if (noAppendix) {
             return (
@@ -96,14 +106,16 @@ const Input = React.forwardRef(
                         ({
                             valid,
                             invalid,
-                            tooltip
+                            tooltip,
+                            help
                         }) => (
-                            <>
-                                {input}
-                                {handleFeedback(valid, tooltip)}
-                                {handleFeedback(invalid, tooltip, false)}
-                            </>
-                        )
+                                <>
+                                    {input}
+                                    {handleHelp(help)}
+                                    {handleFeedback(valid, tooltip)}
+                                    {handleFeedback(invalid, tooltip, false)}
+                                </>
+                            )
                     }
                 </FormItemContext.Consumer>
             )
@@ -116,13 +128,9 @@ const Input = React.forwardRef(
                     value => (
                         <FormItemContext.Consumer>
                             {
-                                ({
-                                    invalid,
-                                    valid,
-                                    tooltip
-                                }) => {
-                                    const c = inputWithAddons(valid, invalid, tooltip)
-                                    
+                                v => {
+                                    const c = inputWithAddons(v)
+
                                     return (
                                         value ?
                                             c :

@@ -3,7 +3,7 @@ import PropTypes from "prop-types"
 import {classNames} from "../utils"
 import {InputCommonProps} from "../Common/CommonPropsInterface"
 import {FormItemContext} from "../Common/contexts"
-import {handleFeedback} from "../Form/Item"
+import {handleFeedback, handleHelp} from "../Form/Item"
 
 let uuid = 0
 
@@ -53,7 +53,8 @@ const CustomControl = React.forwardRef(
                     ({
                         invalid,
                         valid,
-                        tooltip
+                        tooltip,
+                        help
                     }) => (
                         <div
                             className={
@@ -78,6 +79,7 @@ const CustomControl = React.forwardRef(
                                 }
                                 {...otherProps} />
                             {_label}
+                            {handleHelp(help)}
                             {handleFeedback(valid, tooltip)}
                             {handleFeedback(invalid, tooltip, false)}
                         </div>
