@@ -31,7 +31,7 @@ const stringOrNode = PropTypes.oneOfType([PropTypes.string, PropTypes.node])
 
 export default class Toast extends React.Component<ToastProps> {
 
-    private timer: NodeJS.Timeout | null = null
+    private timer: any = null
 
     static propTypes = {
         title: stringOrNode,
@@ -107,6 +107,7 @@ export default class Toast extends React.Component<ToastProps> {
     handleCallback = (cb: "onShow" | "onShown" | "onHide" | "onHidden") => {
         return () => {
             const props = this.props as any
+            
             handleFuncProp(props[cb])()
         }
     }

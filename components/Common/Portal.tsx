@@ -20,8 +20,9 @@ export default class Portal extends React.Component<PortalProps, PortalState> {
     static propTypes = {
         mountNode: PropTypes.oneOfType([
             PropTypes.string,
-            //node env has no HTMLElement
-            typeof HTMLElement === "undefined" ? PropTypes.object : PropTypes.instanceOf(HTMLElement),
+            //node env(SSR) has no HTMLElement
+            typeof HTMLElement === "undefined" ?
+                PropTypes.object : PropTypes.instanceOf(HTMLElement),
             PropTypes.oneOf([false])
         ]),
         visible: PropTypes.bool,
@@ -64,7 +65,7 @@ export default class Portal extends React.Component<PortalProps, PortalState> {
 
     getParent() {
         const {
-            mountNode 
+            mountNode
         } = this.props
 
         if (!mountNode) {
@@ -116,7 +117,7 @@ export default class Portal extends React.Component<PortalProps, PortalState> {
         }
 
         this.mount()
-        
+
         return createPortal(
             children,
             this.container as HTMLElement

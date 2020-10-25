@@ -24,7 +24,7 @@ export default class NoTransition extends React.Component<NoTransitionProps> {
         if (_in) {
             if (appear) {
                 this.componentDidUpdate({
-                    in: false 
+                    in: false
                 } as any)
             }
             else {
@@ -79,7 +79,12 @@ export default class NoTransition extends React.Component<NoTransitionProps> {
 
         omitProps(
             otherProps,
-            ["onEnter", "onEntered", "onExit", "onExited"]
+            [
+                "onEnter",
+                "onEntered",
+                "onExit",
+                "onExited"
+            ]
         )
 
         const child = React.Children.only(children) as React.ReactElement

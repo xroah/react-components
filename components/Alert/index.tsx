@@ -72,7 +72,7 @@ export default function Alert(props: AlertProps) {
     const child = (
         <div className={classes} {...otherProps}>
             {
-                isUndef(heading) && (
+                !isUndef(heading) && (
                     <h4 className={`${PREFIX}-heading`}>{heading}</h4>
                 )
             }

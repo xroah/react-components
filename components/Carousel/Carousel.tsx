@@ -328,7 +328,13 @@ export default class Carousel extends React.Component<CarouselProps, CarouselSta
 
         omitProps(
             otherProps,
-            ["activeIndex", "onSlide", "onSlid", "defaultActiveIndex", "interval"]
+            [
+                "activeIndex",
+                "onSlide",
+                "onSlid",
+                "defaultActiveIndex",
+                "interval"
+            ]
         )
 
         if (pauseOnHover) {

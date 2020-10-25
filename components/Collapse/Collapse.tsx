@@ -67,7 +67,12 @@ export default class Collapse extends React.Component<CollapseProps> {
 
         omitProps(
             otherProps,
-            ["onShow", "onShown", "onHide", "onHidden"]
+            [
+                "onShow",
+                "onShown",
+                "onHide",
+                "onHidden"
+            ]
         )
 
         return (

@@ -1,5 +1,5 @@
 export default (fn: Function, timeout: number = 100) => {
-    let timer: NodeJS.Timeout | null = null
+    let timer: any = null
     let previous = 0
     const throttled = function throttled() {
         const now = Date.now()
