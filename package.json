@@ -34,7 +34,7 @@
     "bugs": {
         "url": "https://github.com/xroah/reap-ui/issues"
     },
-    "homepage": "https://github.com/xroah/reap-ui#readme",
+    "homepage": "https://reap-ui.github.io",
     "devDependencies": {
         "@babel/core": "^7.11.6",
         "@babel/plugin-proposal-class-properties": "^7.10.4",
@@ -72,8 +72,8 @@
         "node-sass": "^4.14.1",
         "optimize-css-assets-webpack-plugin": "^5.0.4",
         "raw-loader": "^4.0.1",
-        "react": "^16.13.1",
-        "react-dom": "^16.13.1",
+        "react": "^17.0.1",
+        "react-dom": "^17.0.1",
         "react-redux": "^7.2.1",
         "react-router-dom": "^5.2.0",
         "react-syntax-highlighter": "^13.5.3",
