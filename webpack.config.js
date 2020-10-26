@@ -52,10 +52,14 @@ const config = {
             }
         ]
     },
+    externals: {
+        "react": "React",
+        "react-dom": "ReactDOM",
+        "react-router-dom": "ReactRouterDOM"
+    },
     plugins: [
         new HTMLWebpackPlugin({
-            title: "reap-ui--Bootstrap components built with React",
-            meta: {viewport: "width=device-width, initial-scale=1"},
+            template: "./index.html",
             hash: true,
             favicon: "./docs/assets/logo.png"
         })
