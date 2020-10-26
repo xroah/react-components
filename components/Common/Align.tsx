@@ -168,7 +168,7 @@ export default class Popup extends React.Component<AlignProps> {
         }
     }
 
-    handlePosition() {
+    align() {
         const child = this.childRef.current
         let {
             placement,
@@ -319,10 +319,6 @@ export default class Popup extends React.Component<AlignProps> {
             leftOffset,
             topOffset
         }
-    }
-
-    align = () => {
-        return this.handlePosition()
     }
 
     render() {

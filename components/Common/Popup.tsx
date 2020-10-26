@@ -168,7 +168,9 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
         }
 
         const {
-            left, top, placement
+            left,
+            top,
+            placement
         } = alignRef.align()
 
         this.setState(

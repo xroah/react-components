@@ -3,7 +3,9 @@ import PropTypes from "prop-types"
 import {classNames} from "../utils"
 import {InputCommonProps} from "../Common/CommonPropsInterface"
 import {FormItemContext} from "../Common/contexts"
-import {handleFeedback, handleHelp} from "../Form/Item"
+import {
+    handleFeedback, handleHelp
+} from "../Form/Item"
 
 let uuid = 0
 

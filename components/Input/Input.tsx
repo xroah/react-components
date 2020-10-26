@@ -74,30 +74,30 @@ const Input = React.forwardRef(
             invalid,
             help
         }: any) => (
-                (
-                    <>
-                        {
-                            !isUndef(prepend) && (
-                                <div className="input-group-prepend">
-                                    {handleAddon(prepend)}
-                                </div>
-                            )
-                        }
-                        {input}
-                        {
-                            !isUndef(append) && (
-                                <div className="input-group-append">
-                                    {handleAddon(append)}
-                                </div>
-                            )
-                        }
-                        {handleHelp(help)}
-                        {handleFeedback(valid, tooltip)}
-                        {handleFeedback(invalid, tooltip, false)}
+            (
+                <>
+                    {
+                        !isUndef(prepend) && (
+                            <div className="input-group-prepend">
+                                {handleAddon(prepend)}
+                            </div>
+                        )
+                    }
+                    {input}
+                    {
+                        !isUndef(append) && (
+                            <div className="input-group-append">
+                                {handleAddon(append)}
+                            </div>
+                        )
+                    }
+                    {handleHelp(help)}
+                    {handleFeedback(valid, tooltip)}
+                    {handleFeedback(invalid, tooltip, false)}
                         
-                    </>
-                )
+                </>
             )
+        )
 
         if (noAppendix) {
             return (
@@ -109,13 +109,13 @@ const Input = React.forwardRef(
                             tooltip,
                             help
                         }) => (
-                                <>
-                                    {input}
-                                    {handleHelp(help)}
-                                    {handleFeedback(valid, tooltip)}
-                                    {handleFeedback(invalid, tooltip, false)}
-                                </>
-                            )
+                            <>
+                                {input}
+                                {handleHelp(help)}
+                                {handleFeedback(valid, tooltip)}
+                                {handleFeedback(invalid, tooltip, false)}
+                            </>
+                        )
                     }
                 </FormItemContext.Consumer>
             )

@@ -1,8 +1,6 @@
 import * as React from "react"
 import PropTypes from "prop-types"
-import {
-    classNames, handleFuncProp
-} from "../utils"
+import {classNames} from "../utils"
 import {ColProps} from "../Layout/Col"
 import {FormContext} from "../Common/contexts"
 import {FormCommonProps} from "../Common/CommonPropsInterface"

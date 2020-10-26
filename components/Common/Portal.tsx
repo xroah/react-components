@@ -118,9 +118,10 @@ export default class Portal extends React.Component<PortalProps, PortalState> {
 
         this.mount()
 
-        return createPortal(
-            children,
-            this.container as HTMLElement
-        )
+        return this.container ?
+            createPortal(
+                children,
+                this.container as HTMLElement
+            ) : null
     }
 }
