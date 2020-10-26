@@ -23,8 +23,8 @@ export interface FormItemProps extends CommonProps<HTMLElement> {
     htmlFor?: string
     help?: string
     control?: boolean
-    validText?: React.ReactNode
-    invalidText?: React.ReactNode
+    validFeedback?: React.ReactNode
+    invalidFeedback?: React.ReactNode
     validationTooltip?: boolean
 }
 
@@ -46,8 +46,8 @@ export default function FormItem(props: FormItemProps) {
         help,
         control,
         labelAlign,
-        validText,
-        invalidText,
+        validFeedback,
+        invalidFeedback,
         validationTooltip,
         ...otherProps
     } = props
@@ -100,8 +100,8 @@ export default function FormItem(props: FormItemProps) {
 
     return (
         <FormItemContext.Provider value={{
-            valid: validText,
-            invalid: invalidText,
+            valid: validFeedback,
+            invalid: invalidFeedback,
             tooltip: validationTooltip,
             help
         }}>
@@ -116,8 +116,8 @@ export default function FormItem(props: FormItemProps) {
                 <Wrapper
                     wrapperCol={wrapperCol}
                     help={help}
-                    valid={validText}
-                    invalid={invalidText}
+                    valid={validFeedback}
+                    invalid={invalidFeedback}
                     tooltip={validationTooltip}>
                     {child}
                 </Wrapper>
@@ -138,8 +138,8 @@ FormItem.propTypes = {
         PropTypes.string,
         PropTypes.node
     ]),
-    validText: PropTypes.node,
-    invalidText: PropTypes.node,
+    validFeedback: PropTypes.node,
+    invalidFeedback: PropTypes.node,
     validationTooltip: PropTypes.bool
 }
 FormItem.defaultProps = {
