@@ -7,7 +7,7 @@ export default {
         <>
             Navigation available in Bootstrap share general markup and styles, from the base <code>Nav</code> to the active and disabled states.
             The base <code>Nav</code> component is built with flexbox and provide a strong foundation for building all types of navigation components.
-            <div className="bd-callout-info">
+            <div className="bd-callout bd-callout-warning">
                 The base <code>Nav</code> component does not include any active state. The following examples include the active prop, mainly to demonstrate that this particular prop does not trigger any special styling.
             </div>
         </>

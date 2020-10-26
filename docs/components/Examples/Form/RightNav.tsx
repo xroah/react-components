@@ -13,7 +13,13 @@ export const horizontalTitle = <LangMsg id="horizontalTitle" />
 export const inlineId = "inlineForm"
 export const inlineTitle = <LangMsg id="inlineTitle" />
 export const validationId = "formValidation"
-export const validationTitle = "Validation"
+export const validationTitle = <LangMsg id="validationTitle"/>
+export const customStylesId = "formValidationCustomStyle"
+export const customStylesTitle = <LangMsg id="customStylesTitle"/>
+export const browserDefaultId = "formValidationBrowserDefault"
+export const browserDefaultTitle = <LangMsg id="browserDefaultTitle"/>
+export const tooltipsId = "formValidationTooltips"
+export const tooltipsTitle = <LangMsg id="tooltipsTitle"/>
 export const checkboxId = "checkboxes"
 export const checkboxTitle = <LangMsg id="checkboxTitle" />
 export const radioId = "radios"
@@ -40,7 +46,17 @@ export default () => (
         href: `#${inlineId}`
     }, {
         name: validationTitle,
-        href: `#${validationId}`
+        href: `#${validationId}`,
+        children: [{
+            name: customStylesTitle,
+            href: `#${customStylesId}`
+        }, {
+            name: browserDefaultTitle,
+            href: `#${browserDefaultId}`
+        },{
+            name: tooltipsTitle,
+            href: `#${tooltipsId}`
+        }]
     },{
         name: checkboxTitle,
         href: `#${checkboxId}`

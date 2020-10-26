@@ -137,14 +137,6 @@ $navHeight: calc(100vh - #{$headerHeight});
     }
 }
 
-.bd-callout-info {
-    background-color: rgba(255, 193, 7, .3);
-    margin: 1.25rem 0;
-    padding: 1.25rem;
-    border-left: solid .25rem #ffc107;
-    border-radius: .25rem;
-}
-
 .doc-heading {
     margin-top: 1rem;
     margin-bottom: .5rem;
@@ -298,4 +290,55 @@ $navHeight: calc(100vh - #{$headerHeight});
         background-color: rgba(0, 0, 0, .3);
         box-shadow: 0 0 5px 0 rgba(0, 0, 0, .2);
     }
+}
+
+//
+// Callouts
+//
+
+.bd-callout {
+    padding: 1.25rem;
+    margin-top: 1.25rem;
+    margin-bottom: 1.25rem;
+    border: 1px solid #eee;
+    border-left-width: .25rem;
+    border-radius: .25rem;
+
+    h4 {
+        margin-top: 0;
+        margin-bottom: .25rem;
+    }
+
+    p:last-child {
+        margin-bottom: 0;
+    }
+
+    code {
+        border-radius: .25rem;
+    }
+
+    +.bd-callout {
+        margin-top: -.25rem;
+    }
+}
+
+// Variations
+@mixin bs-callout-variant($color) {
+    border-left-color: $color;
+
+    h4 {
+        color: $color;
+    }
+}
+
+.bd-callout-info {
+    @include bs-callout-variant(#5bc0de);
+}
+
+.bd-callout-warning {
+    @include bs-callout-variant(#f0ad4e);
+}
+
+.bd-callout-danger {
+    @include bs-callout-variant(#d9534f);
 }

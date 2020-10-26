@@ -46,7 +46,7 @@ export default () => {
                     <Links />
                 </Nav>
                 <LangSelector className="ml-auto" />
-                <a href="https://github.com/xroah/reap-ui">
+                <a href="https://github.com/xroah/reap-ui" target="_blank">
                     <img
                         width={LOGO_SIZE}
                         height={LOGO_SIZE}

@@ -6,7 +6,7 @@ export default {
     baseDesc: (
         <>
             导航组建支持基础、激活和禁用状态。基础<code>Nav</code>组件是使用flexbox创建并且提供一个强大的建立各种类型导航的基础。
-            <div className="bd-callout-info">
+            <div className="bd-callout bd-callout-warning">
                 基础的<code>Nav</code>组件不包含任何的激活状态。下面的示例包含active属性，主要是用来演示这个属性不会应用任何特殊的样式。
             </div>
         </>

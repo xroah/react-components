@@ -1,9 +1,9 @@
 import * as React from "react"
 import {
-    Col, Nav 
+    Col, Nav
 } from "reap-ui"
 import {
-    RouteComponentProps, withRouter 
+    RouteComponentProps, withRouter
 } from "react-router-dom"
 import scrollIntoView from "../../scrollIntoView"
 
@@ -24,7 +24,7 @@ class RightNav extends React.Component<Props> {
     private cancel: Function | null = null;
 
     componentDidMount() {
-        const { hash } = this.props.location
+        const {hash} = this.props.location
 
         window.addEventListener("scroll", this._handleScroll)
         scrollIntoView(hash)
@@ -131,7 +131,7 @@ class RightNav extends React.Component<Props> {
     handleClick = (evt: React.MouseEvent) => {
         const a = evt.target as HTMLAnchorElement
         const hash = a.hash
-        const { location, history } = this.props
+        const {location, history} = this.props
         this.isClick = true
 
         if (location.hash !== hash) {
@@ -168,8 +168,10 @@ class RightNav extends React.Component<Props> {
             <Col
                 span={false}
                 xl={2}
-                className="d-none d-xl-block right-nav">
-                {this.handleLink(this.props.data)}
+                className="d-none d-xl-block">
+                <div className="right-nav">
+                    {this.handleLink(this.props.data)}
+                </div>
             </Col>
         )
     }

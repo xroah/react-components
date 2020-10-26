@@ -66,6 +66,19 @@ const FormItemProps = [{
     type: "boolean",
     default: "false",
     description: <LangMsg id="controlApi" />
+}, {
+    name: "validFeedback",
+    type: "string | ReactNode",
+    description: <LangMsg id="validFeedbackApi" />
+}, {
+    name: "invalidFeedback",
+    type: "string | ReactNode",
+    description: <LangMsg id="invalidFeedbackApi" />
+}, {
+    name: "validationTooltip",
+    type: "boolean",
+    default: "false",
+    description: <LangMsg id="validationTooltipApi" />
 }]
 const CustomProps = [{
     name: "autoFocus",
@@ -102,6 +115,7 @@ export default () => (
     <>
         <PropsTable title="Form" data={FormProps}/>
         <PropsTable title="Form.Item" data={FormItemProps}/>
+        <div><LangMsg id="formItemNote"/></div>
         <PropsTable title="Checkbox, Radio and Switch" data={CustomProps}/>
         <div><LangMsg id="noteDesc" /></div>
     </>

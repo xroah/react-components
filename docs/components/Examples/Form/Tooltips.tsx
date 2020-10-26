@@ -32,8 +32,9 @@ export default () => {
                         control
                         label
                         labelText="First name"
-                        htmlFor="validationCustom1"
-                        validFeedback="Looks good!">
+                        htmlFor="validationCustom21"
+                        validFeedback="Looks good!"
+                        validationTooltip>
                         <Input required />
                     </Form.Item>
                 </Col>
@@ -42,9 +43,10 @@ export default () => {
                         control
                         label
                         labelText="Last name"
-                        htmlFor="validationCustom2"
+                        htmlFor="validationCustom22"
                         validFeedback="Looks good!"
-                        invalidFeedback="Required">
+                        invalidFeedback="Required"
+                        validationTooltip>
                         <Input required />
                     </Form.Item>
                 </Col>
@@ -53,8 +55,9 @@ export default () => {
                         label
                         help="username"
                         labelText="Username"
-                        htmlFor="validationCustom3"
-                        invalidFeedback="Please choose a username.">
+                        htmlFor="validationCustom23"
+                        invalidFeedback="Please choose a username."
+                        validationTooltip>
                         <Input prepend="@" className="rounded" required />
                     </Form.Item>
                 </Col>
@@ -66,17 +69,20 @@ export default () => {
                         label
                         labelText="City"
                         help="city"
-                        htmlFor="validationCustom4"
-                        invalidFeedback="Please provide a valid city">
+                        htmlFor="validationCustom24"
+                        invalidFeedback="Please provide a valid city"
+                        validationTooltip>
                         <Input required />
                     </Form.Item>
                 </Col>
                 <Col md={{span: 3}} className="mb-3">
                     <Form.Item
+                        control
                         label
                         labelText="State"
-                        htmlFor="validationCustom5"
-                        invalidFeedback="Please select a valid state">
+                        htmlFor="validationCustom25"
+                        invalidFeedback="Please select a valid state"
+                        validationTooltip>
                         <select defaultValue="" className="custom-select" required>
                             <option value="" disabled>Choose...</option>
                             <option>...</option>
@@ -88,14 +94,17 @@ export default () => {
                         control
                         label
                         labelText="zip"
-                        htmlFor="validationCustom6"
-                        invalidFeedback="Please provide a valid zip">
+                        htmlFor="validationCustom26"
+                        invalidFeedback="Please provide a valid zip"
+                        validationTooltip>
                         <Input required />
                     </Form.Item>
                 </Col>
             </Row>
-            <Form.Item invalidFeedback="You must agree before submitting.">
-                <Checkbox id="invalidCheck" required>
+            <Form.Item
+                invalidFeedback="You must agree before submitting."
+                validationTooltip>
+                <Checkbox id="invalidCheck3" required>
                     Agree to terms and conditions
                 </Checkbox>
             </Form.Item>
