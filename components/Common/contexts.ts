@@ -46,3 +46,7 @@ export const FormItemContext = createContext({
     tooltip: false,
     help: null
 } as any)
+
+export const MediaContext = createContext({
+    imagePosition: ""
+})
