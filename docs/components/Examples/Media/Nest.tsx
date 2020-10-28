@@ -18,11 +18,11 @@ const img = (
 export default () => (
     <Media
         title="Media heading"
-        img={img}>
+        image={<Media.Image img={img}/>}>
         Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
         <Media
             title="Media heading"
-            img={img}
+            image={<Media.Image img={img}/>}
             className="mt-3">
             Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
         </Media>

@@ -22,7 +22,7 @@ export default () => (
     <Card 
     color="white" 
     bg="dark" 
-    isImgOverlay 
+    imageOverlay
     image={<Card.Image img={svg}/>}>
         <Card.Title>Card title</Card.Title>
         <Card.Text>

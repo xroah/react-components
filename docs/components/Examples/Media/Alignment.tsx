@@ -8,22 +8,17 @@ Donec sed odio dui. Nullam quis risus eget urna mollis ornare vel eu leo. Cum so
 export default () => (
     <>
         <Media
-            img={img}
-            imgBorder="rounded"
+            image={<Media.Image border="rounded" alignment="start" src={img}/>}
             title="Top-aligned media">
             <p>{text}</p>
         </Media>
         <Media
-            img={img}
-            imgBorder="rounded"
-            alignment="middle"
+            image={<Media.Image border="rounded" alignment="center" src={img}/>}
             title="Center-aligned media">
             <p>{text}</p>
         </Media>
         <Media
-            img={img}
-            imgBorder="rounded"
-            alignment="bottom"
+            image={<Media.Image border="rounded" alignment="end" src={img}/>}
             title="Bottom-aligned media">
             <p className="mb-0">{text}</p>
         </Media>
