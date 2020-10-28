@@ -7,10 +7,15 @@ import {
 import img from "../../../assets/image_cap.svg"
 
 export default () => (
-    <Row cols={{default: 1,
-        md: 2}}>
+    <Row cols={{
+        default: 1,
+        md: 2
+    }}>
         <Col className="mb-4">
-            <Card className="h-100" img={img} body>
+            <Card
+                className="h-100"
+                image={<Card.Image src={img} />}
+                body>
                 <Card.Title>Card title</Card.Title>
                 <Card.Text>
                     This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.
@@ -18,7 +23,10 @@ export default () => (
             </Card>
         </Col>
         <Col className="mb-4">
-            <Card className="h-100" img={img} body>
+            <Card
+                className="h-100"
+                image={<Card.Image src={img} />}
+                body>
                 <Card.Title>Card title</Card.Title>
                 <Card.Text>
                     This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.
@@ -26,7 +34,10 @@ export default () => (
             </Card>
         </Col>
         <Col className="mb-4">
-            <Card className="h-100" img={img} body>
+            <Card
+                className="h-100"
+                image={<Card.Image src={img} />}
+                body>
                 <Card.Title>Card title</Card.Title>
                 <Card.Text>
                     This is a longer card with supporting text below as a natural lead-in to additional content.
@@ -34,7 +45,10 @@ export default () => (
             </Card>
         </Col>
         <Col className="mb-4">
-            <Card className="h-100" img={img} body>
+            <Card
+                className="h-100"
+                image={<Card.Image src={img} />}
+                body>
                 <Card.Title>Card title</Card.Title>
                 <Card.Text>
                     This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.

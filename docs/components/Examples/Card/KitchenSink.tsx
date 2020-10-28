@@ -1,11 +1,13 @@
 import * as React from "react"
 import {
-    Card, ListGroup 
+    Card, ListGroup
 } from "reap-ui"
 import imageCap from "../../../assets/image_cap.svg"
 
 export default () => (
-    <Card img={imageCap} style={{width: "18rem"}}>
+    <Card
+        image={<Card.Image src={imageCap} />}
+        style={{width: "18rem"}}>
         <Card.Body>
             <Card.Title>Card title</Card.Title>
             Some quick example text to build on the card title and make up the bulk of the card's content.

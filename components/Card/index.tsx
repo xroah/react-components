@@ -1,5 +1,6 @@
 import Card from "./Card"
 import CardTitle from "./CardTitle"
+import CardImage from "./image"
 import {
     CardBody,
     CardColumns,
@@ -17,6 +18,7 @@ interface CardComponent {
     Deck: typeof CardDeck
     Columns: typeof CardColumns
     Title: typeof CardTitle
+    Image: typeof CardImage
 }
 
 type CardType = typeof Card & CardComponent
@@ -30,5 +32,6 @@ _Card.Deck = CardDeck
 _Card.Link = CardLink
 _Card.Text = CardText
 _Card.Title = CardTitle
+_Card.Image = CardImage
 
 export default _Card

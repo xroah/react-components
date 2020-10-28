@@ -11,6 +11,7 @@ import {
 } from "./CardTitle"
 import {CommonProps} from "../Common/CommonPropsInterface"
 import {CardBody} from "./Others"
+import CardImage, {CardImageProps} from "./image"
 
 export interface CardProps extends CommonProps<HTMLDivElement> {
     header?: React.ReactNode
@@ -18,10 +19,7 @@ export interface CardProps extends CommonProps<HTMLDivElement> {
     headerStyle?: React.CSSProperties
     footerStyle?: React.CSSProperties
     body?: boolean
-    img?: React.ReactElement | string
-    imgAlt?: string
-    imgTitle?: string
-    imgPosition?: "top" | "bottom"
+    image?: React.ReactElement<CardImageProps>
     isImgOverlay?: boolean
     alignment?: "left" | "center" | "right"
     bg?: variantType
@@ -33,13 +31,10 @@ export default function Card(props: CardProps) {
     const {
         header,
         footer,
-        img,
-        imgPosition,
+        image,
         className,
         children,
         isImgOverlay,
-        imgAlt,
-        imgTitle,
         alignment,
         bg,
         color: colorProp,
@@ -49,37 +44,40 @@ export default function Card(props: CardProps) {
         footerStyle,
         ...otherProps
     } = props
+    let _children = (
+        isImgOverlay && !!image ?
+            (
+                <div className="card-img-overlay">
+                    {children}
+                </div>
+            )
+            : body ?
+                (
+                    <CardBody>
+                        {children}
+                    </CardBody>
+                )
+                : children
+    )
 
-    let topImg
-    let bottomImg
+    if (image && image.type === CardImage) {
+        const {props} = image
 
-    if (img) {
-        let _img: React.ReactElement
-        const cls = `card-img-${imgPosition}`
-
-        if (React.isValidElement(img)) {
-            _img = React.cloneElement(
-                img,
-                {
-                    className: classNames((img.props as any).className, cls)
-                }
+        if (props.position === "top") {
+            _children = (
+                <>
+                    {image}
+                    {_children}
+                </>
             )
         }
         else {
-            _img = (
-                <img
-                    className={cls}
-                    src={img as string}
-                    alt={imgAlt}
-                    title={imgTitle} />
+            _children = (
+                <>
+                    {_children}
+                    {image}
+                </>
             )
-        }
-
-        if (imgPosition === "top") {
-            topImg = _img
-        }
-        else {
-            bottomImg = _img
         }
     }
 
@@ -99,23 +97,7 @@ export default function Card(props: CardProps) {
                     <div style={headerStyle} className="card-header">{header}</div>
                 )
             }
-            {topImg}
-            {
-                isImgOverlay && !!img ?
-                    (
-                        <div className="card-img-overlay">
-                            {children}
-                        </div>
-                    )
-                    : body ?
-                        (
-                            <CardBody>
-                                {children}
-                            </CardBody>
-                        )
-                        : children
-            }
-            {bottomImg}
+            {_children}
             {
                 !isUndef(footer) && (
                     <div style={footerStyle} className="card-footer">{footer}</div>
@@ -131,9 +113,7 @@ Card.propTypes = {
     headerStyle: PropTypes.object,
     footerStyle: PropTypes.object,
     body: PropTypes.bool,
-    img: PropTypes.oneOfType([PropTypes.element, PropTypes.string]),
-    imgAlt: PropTypes.string,
-    imgPosition: PropTypes.oneOf(["top", "bottom"]),
+    image: PropTypes.element,
     isImgOverlay: PropTypes.bool,
     align: PropTypes.oneOf(["left", "center", "right"]),
     bg: PropTypes.oneOf(variantArray),
