@@ -1,6 +1,6 @@
 import Card from "./Card"
 import CardTitle from "./CardTitle"
-import CardImage from "./image"
+import CardImage from "./Image"
 import {
     CardBody,
     CardColumns,

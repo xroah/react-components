@@ -50,3 +50,7 @@ export const FormItemContext = createContext({
 export const MediaContext = createContext({
     imagePosition: ""
 })
+
+export const CardContext = createContext({
+    imagePosition: ""
+})

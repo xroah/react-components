@@ -11,7 +11,9 @@ import {
 } from "./CardTitle"
 import {CommonProps} from "../Common/CommonPropsInterface"
 import {CardBody} from "./Others"
-import CardImage, {CardImageProps} from "./image"
+import CardImage, {CardImageProps} from "./Image"
+import warning from "warning"
+import {CardContext} from "../Common/contexts"
 
 export interface CardProps extends CommonProps<HTMLDivElement> {
     header?: React.ReactNode
@@ -20,7 +22,8 @@ export interface CardProps extends CommonProps<HTMLDivElement> {
     footerStyle?: React.CSSProperties
     body?: boolean
     image?: React.ReactElement<CardImageProps>
-    isImgOverlay?: boolean
+    imagePosition?: "top" | "bottom"
+    imageOverlay?: boolean
     alignment?: "left" | "center" | "right"
     bg?: variantType
     border?: variantType
@@ -34,7 +37,8 @@ export default function Card(props: CardProps) {
         image,
         className,
         children,
-        isImgOverlay,
+        imageOverlay,
+        imagePosition,
         alignment,
         bg,
         color: colorProp,
@@ -45,65 +49,56 @@ export default function Card(props: CardProps) {
         ...otherProps
     } = props
     let _children = (
-        isImgOverlay && !!image ?
+        imageOverlay && !!image ?
             (
                 <div className="card-img-overlay">
                     {children}
                 </div>
-            )
-            : body ?
-                (
-                    <CardBody>
-                        {children}
-                    </CardBody>
-                )
-                : children
+            ) :
+            body ?
+                <CardBody>{children}</CardBody> :
+                children
     )
+    let img: React.ReactElement<CardImageProps> | undefined
 
     if (image && image.type === CardImage) {
-        const {props} = image
-
-        if (props.position === "top") {
-            _children = (
-                <>
-                    {image}
-                    {_children}
-                </>
-            )
-        }
-        else {
-            _children = (
-                <>
-                    {_children}
-                    {image}
-                </>
-            )
-        }
+        img = image
     }
 
+    warning(
+        !(image && image.type !== CardImage),
+        "The image prop is not a CardImage component, this will be rendered null"
+    )
+
     return (
-        <div className={
-            classNames(
-                className,
-                "card",
-                alignment && `text-${alignment}`,
-                bg && `bg-${bg}`,
-                border && `border-${border}`,
-                colorProp && `text-${colorProp}`
-            )
-        } {...otherProps}>
-            {
-                !isUndef(header) && (
-                    <div style={headerStyle} className="card-header">{header}</div>
+        <CardContext.Provider value={{imagePosition: imagePosition!}}>
+            <div className={
+                classNames(
+                    className,
+                    "card",
+                    alignment && `text-${alignment}`,
+                    bg && `bg-${bg}`,
+                    border && `border-${border}`,
+                    colorProp && `text-${colorProp}`
                 )
-            }
-            {_children}
-            {
-                !isUndef(footer) && (
-                    <div style={footerStyle} className="card-footer">{footer}</div>
-                )
-            }
-        </div>
+            } {...otherProps}>
+                {
+                    !isUndef(header) && (
+                        <div style={headerStyle} className="card-header">{header}</div>
+                    )
+                }
+                {
+                    imagePosition === "bottom" ?
+                        <>{_children}{img}</> :
+                        <>{img}{_children}</>
+                }
+                {
+                    !isUndef(footer) && (
+                        <div style={footerStyle} className="card-footer">{footer}</div>
+                    )
+                }
+            </div>
+        </CardContext.Provider>
     )
 }
 
@@ -114,7 +109,7 @@ Card.propTypes = {
     footerStyle: PropTypes.object,
     body: PropTypes.bool,
     image: PropTypes.element,
-    isImgOverlay: PropTypes.bool,
+    imageOverlay: PropTypes.bool,
     align: PropTypes.oneOf(["left", "center", "right"]),
     bg: PropTypes.oneOf(variantArray),
     border: PropTypes.oneOf(variantArray),
@@ -122,7 +117,7 @@ Card.propTypes = {
 }
 
 Card.defaultProps = {
-    imgPosition: "top",
-    isImgOverlay: false,
+    imagePosition: "top",
+    imageOverlay: false,
     body: false
 }
