@@ -1,6 +1,6 @@
 {
     "name": "reap-ui",
-    "version": "1.2.0",
+    "version": "2.0.0",
     "description": "Bootstrap components built with react",
     "main": "lib/index.js",
     "scripts": {
@@ -94,6 +94,7 @@
     },
     "dependencies": {
         "@babel/runtime": "^7.11.2",
+        "@types/warning": "^3.0.0",
         "prop-types": "^15.7.2",
         "warning": "^4.0.3"
     },
