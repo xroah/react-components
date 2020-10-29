@@ -3,7 +3,7 @@ import DocHeading from "../../DocHeading"
 import DemoExample from "../../DemoExample"
 import SyntaxHighlighter from "../../SyntaxHighlighter"
 import Main from "../../Main"
-import { Input } from "reap-ui"
+import {Input} from "reap-ui"
 import Basic from "./Basic"
 import BasicSrc from "!!raw-loader!./Basic"
 import Sizing from "./Sizing"
@@ -29,10 +29,10 @@ import RightNav, {
     plainTitle,
     sizingId,
     sizingTitle,
-    multiInputId,
-    multiInputTitle,
-    multiAddonId,
-    multiAddonTitle,
+    multiInputsId,
+    multiInputsTitle,
+    multiAddonsId,
+    multiAddonsTitle,
     btnId,
     btnTitle,
     dropdownId,
@@ -40,7 +40,7 @@ import RightNav, {
     apiId
 } from "./RightNav"
 
-const { H3 } = DocHeading
+const {H3} = DocHeading
 
 export default () => (
     <LangProvider language={lang}>
@@ -71,14 +71,18 @@ export default () => (
                 source={SizingSrc}>
                 <LangMsg id="sizingDesc" />
             </DemoExample>
-            <H3 id={multiInputId}>{multiInputTitle}</H3>
+            <H3 id={multiInputsId}>{multiInputsTitle}</H3>
             <DemoExample
                 component={<Multiple />}
-                source={MultipleSrc} />
-            <H3 id={multiAddonId}>{multiAddonTitle}</H3>
+                source={MultipleSrc}>
+                    <LangMsg id="multiInputsDesc"/>
+                </DemoExample>
+            <H3 id={multiAddonsId}>{multiAddonsTitle}</H3>
             <DemoExample
                 component={<MultiAddons />}
-                source={MultiAddonsSrc} />
+                source={MultiAddonsSrc} >
+                <LangMsg id="multiAddonsDesc" />
+            </DemoExample>
             <H3 id={btnId}>{btnTitle}</H3>
             <DemoExample
                 component={<ButtonAddons />}
