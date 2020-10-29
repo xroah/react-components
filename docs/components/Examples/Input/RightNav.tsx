@@ -10,10 +10,11 @@ export const plainId = "plainTextInput"
 export const plainTitle = <LangMsg id="plainTitle" />
 export const sizingId = "inputSizing"
 export const sizingTitle = <LangMsg id="sizingTitle" />
-export const multiInputId = "multipleInputs"
-export const multiInputTitle = <LangMsg id="multiTitle" />
-export const multiAddonId = "multipleAddons"
-export const multiAddonTitle = <LangMsg id="multiAddonTitle" />
+export const multiInputsId = "multipleInputs"
+export const multiInputsTitle = <LangMsg id="multiInputsTitle" />
+export const multiInputsDesc = <LangMsg id="multiInputsDesc" />
+export const multiAddonsId = "multipleAddons"
+export const multiAddonsTitle = <LangMsg id="multiAddonsTitle" />
 export const btnId = "btnAddons"
 export const btnTitle = <LangMsg id="btnTitle" />
 export const dropdownId = "btnWithDropdowns"
@@ -34,11 +35,11 @@ export default () => (
         name: sizingTitle,
         href: `#${sizingId}`
     }, {
-        name: multiInputTitle,
-        href: `#${multiInputId}`
+        name: multiInputsTitle,
+        href: `#${multiInputsId}`
     }, {
-        name: multiAddonTitle,
-        href: `#${multiAddonId}`
+        name: multiAddonsTitle,
+        href: `#${multiAddonsId}`
     }, {
         name: btnTitle,
         href: `#${btnId}`
