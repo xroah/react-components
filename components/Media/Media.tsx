@@ -33,15 +33,10 @@ export default function Media(props: MediaProps) {
             {children}
         </div>
     )
-    let img: React.ReactElement<MediaImageProps> | undefined
-
-    if (image && image.type === MediaImage) {
-        img = image
-    }
     
     warning(
         !(image && image.type !== MediaImage),
-        "The image prop is not a MediaImage component, this will be rendered null"
+        "The image prop is not a MediaImage component"
     )
 
     return (
@@ -51,8 +46,8 @@ export default function Media(props: MediaProps) {
                 {...otherProps}>
                 {
                     imagePosition === "right" ?
-                        <>{body}{img}</> :
-                        <>{img}{body}</>
+                        <>{body}{image}</> :
+                        <>{image}{body}</>
                 }
             </div>
         </MediaContext.Provider>

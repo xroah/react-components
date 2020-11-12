@@ -11,7 +11,8 @@ import {
 } from "./CardTitle"
 import {CommonProps} from "../Common/CommonPropsInterface"
 import {CardBody} from "./Others"
-import CardImage, {CardImageProps} from "./Image"
+import {ImageProps} from "../Common/Image"
+import CardImage from "./Image"
 import warning from "warning"
 import {CardContext} from "../Common/contexts"
 
@@ -21,7 +22,7 @@ export interface CardProps extends CommonProps<HTMLDivElement> {
     headerStyle?: React.CSSProperties
     footerStyle?: React.CSSProperties
     body?: boolean
-    image?: React.ReactElement<CardImageProps>
+    image?: React.ReactElement<ImageProps>
     imagePosition?: "top" | "bottom"
     imageOverlay?: boolean
     alignment?: "left" | "center" | "right"
@@ -59,15 +60,10 @@ export default function Card(props: CardProps) {
                 <CardBody>{children}</CardBody> :
                 children
     )
-    let img: React.ReactElement<CardImageProps> | undefined
-
-    if (image && image.type === CardImage) {
-        img = image
-    }
 
     warning(
         !(image && image.type !== CardImage),
-        "The image prop is not a CardImage component, this will be rendered null"
+        "The image prop is not a CardImage component"
     )
 
     return (
@@ -89,8 +85,8 @@ export default function Card(props: CardProps) {
                 }
                 {
                     imagePosition === "bottom" ?
-                        <>{_children}{img}</> :
-                        <>{img}{_children}</>
+                        <>{_children}{image}</> :
+                        <>{image}{_children}</>
                 }
                 {
                     !isUndef(footer) && (
