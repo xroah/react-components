@@ -6,7 +6,7 @@ import {
 export default () => (
     <Toast
         title="Bootstrap"
-        icon={<Spinner animation="border" size="sm" />}
+        icon={<Toast.Icon img={<Spinner animation="border" size="sm" />}/>}
         extra="11 minutes ago"
         closable
         autoHide

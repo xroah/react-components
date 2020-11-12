@@ -13,7 +13,7 @@ export default () => {
             <Button className="mb-3" onClick={toggle}>Toggle</Button>
             <Toast
                 title="Bootstrap"
-                icon={icon}
+                icon={<Toast.Icon src={icon}/>}
                 extra="just now"
                 onClose={toggle}
                 autoHide={false}
