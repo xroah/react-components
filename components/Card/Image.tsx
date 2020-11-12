@@ -1,46 +1,26 @@
 import * as React from "react"
 import {classNames} from "../utils"
+import Image, {ImageProps} from "../Common/Image"
 import PropTypes from "prop-types"
-import warning from "warning"
 import {CardContext} from "../Common/contexts"
 
-export interface CardImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
-    img?: React.ReactElement
-}
-
-export default function CardImage(props: CardImageProps) {
+export default function CardImage(props: ImageProps) {
     const {
         className,
-        src,
-        img,
         ...otherProps
     } = props
 
     return (
         <CardContext.Consumer>
             {
-                ({imagePosition}) => {
-                    const classes = classNames(
-                        className,
-                        `card-img-${imagePosition}`
-                    )
-
-                    if (React.isValidElement(img)) {
-                        return React.cloneElement(
-                            img,
-                            {
-                                className: classes
-                            }
+                ({imagePosition}) => (
+                    <Image className={
+                        classNames(
+                            className,
+                            `card-img-${imagePosition}`
                         )
-                    }
-
-                    return (
-                        <img
-                            src={src}
-                            className={classes}
-                            {...otherProps} />
-                    )
-                }
+                    } {...otherProps} />
+                )
             }
         </CardContext.Consumer>
     )
