@@ -12,8 +12,6 @@ import {
 import {CommonProps} from "../Common/CommonPropsInterface"
 import {CardBody} from "./Others"
 import {ImageProps} from "../Common/Image"
-import CardImage from "./Image"
-import warning from "warning"
 import {CardContext} from "../Common/contexts"
 
 export interface CardProps extends CommonProps<HTMLDivElement> {
@@ -59,11 +57,6 @@ export default function Card(props: CardProps) {
             body ?
                 <CardBody>{children}</CardBody> :
                 children
-    )
-
-    warning(
-        !(image && image.type !== CardImage),
-        "The image prop is not a CardImage component"
     )
 
     return (

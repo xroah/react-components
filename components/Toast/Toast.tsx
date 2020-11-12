@@ -8,9 +8,7 @@ import {
 import NoTransition from "../Common/NoTransition"
 import { CommonPropsWithoutTitle } from "../Common/CommonPropsInterface"
 import omitProps from "../utils/omitProps"
-import warning from "warning"
 import {ImageProps} from "../Common/Image"
-import Icon from "./Icon"
 
 export interface ToastProps extends CommonPropsWithoutTitle<HTMLDivElement> {
     title?: string | React.ReactNode
@@ -186,10 +184,6 @@ export default class Toast extends React.Component<ToastProps> {
                 "onHide",
                 "onHidden"
             ]
-        )
-        warning(
-            !(icon && icon.type !== Icon),
-            "The icon prop is not a Toast.Icon component"
         )
         
         const toast =

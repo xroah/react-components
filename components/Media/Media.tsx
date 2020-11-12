@@ -5,9 +5,8 @@ import {
     isUndef
 } from "../utils"
 import {CommonPropsWithoutTitle} from "../Common/CommonPropsInterface"
-import MediaImage, {MediaImageProps} from "./Image"
+import {MediaImageProps} from "./Image"
 import {MediaContext} from "../Common/contexts"
-import warning from "warning"
 export interface MediaProps extends CommonPropsWithoutTitle<HTMLDivElement> {
     title?: string | React.ReactNode
     image?: React.ReactElement<MediaImageProps>
@@ -32,11 +31,6 @@ export default function Media(props: MediaProps) {
             }
             {children}
         </div>
-    )
-    
-    warning(
-        !(image && image.type !== MediaImage),
-        "The image prop is not a MediaImage component"
     )
 
     return (
