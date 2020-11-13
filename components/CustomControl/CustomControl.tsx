@@ -3,9 +3,7 @@ import PropTypes from "prop-types"
 import {classNames} from "../utils"
 import {InputCommonProps} from "../Common/CommonPropsInterface"
 import {FormItemContext} from "../Common/contexts"
-import {
-    handleFeedback, handleHelp
-} from "../Form/Item"
+import CustomFeedback from "../Form/CustomFeedback"
 
 let uuid = 0
 
@@ -50,44 +48,31 @@ const CustomControl = React.forwardRef(
         )
 
         return (
-            <FormItemContext.Consumer>
-                {
-                    ({
-                        invalid,
-                        valid,
-                        tooltip,
-                        help
-                    }) => (
-                        <div
-                            className={
-                                classNames(
-                                    className,
-                                    PREFIX,
-                                    `custom-${type}`,
-                                    inline && `${PREFIX}-inline`
-                                )
-                            }
-                            style={style}>
-                            <input
-                                type={_type}
-                                id={_id}
-                                ref={ref}
-                                required={required}
-                                className={
-                                    classNames(
-                                        `${PREFIX}-input`,
-                                        required && "form-check-input"
-                                    )
-                                }
-                                {...otherProps} />
-                            {_label}
-                            {handleHelp(help)}
-                            {handleFeedback(valid, tooltip)}
-                            {handleFeedback(invalid, tooltip, false)}
-                        </div>
+            <div
+                className={
+                    classNames(
+                        className,
+                        PREFIX,
+                        `custom-${type}`,
+                        inline && `${PREFIX}-inline`
                     )
                 }
-            </FormItemContext.Consumer>
+                style={style}>
+                <input
+                    type={_type}
+                    id={_id}
+                    ref={ref}
+                    required={required}
+                    className={
+                        classNames(
+                            `${PREFIX}-input`,
+                            required && "form-check-input"
+                        )
+                    }
+                    {...otherProps} />
+                {_label}
+                <CustomFeedback />
+            </div>
         )
     })
 

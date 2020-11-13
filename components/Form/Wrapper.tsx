@@ -26,6 +26,19 @@ export function handleFeedback(
     return text ? <div className={className}>{text}</div> : null
 }
 
+export function getFeedbacks(
+    valid: any,
+    invalid: any,
+    tooltip: any
+) {
+    return (
+        <>
+            {handleFeedback(valid, tooltip)}
+            {handleFeedback(invalid, tooltip, false)}
+        </>
+    )
+}
+
 export function handleHelp(help: React.ReactNode) {
     return help ? (
         <small className="form-text text-muted w-100">
@@ -63,12 +76,11 @@ export default function Wrapper(props: WrapperProps) {
                                         //html element rather than a react component
                                         <>
                                             {c}
-                                            {handleHelp(help)}
-                                            {handleFeedback(valid, tooltip)}
-                                            {handleFeedback(invalid, tooltip, false)}
+                                            {getFeedbacks(valid, invalid, tooltip)}
                                         </>
                                     ) : c//handled by context
                             }
+                            {handleHelp(help)}
                         </Col>
                     )
                 }

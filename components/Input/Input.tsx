@@ -5,15 +5,12 @@ import {
     isUndef
 } from "../utils"
 import {
-    FormItemContext, InputGroupContext
+    InputGroupContext
 } from "../Common/contexts"
 import InputGroup from "./InputGroup"
 import {InputCommonProps} from "../Common/CommonPropsInterface"
 import Text from "./Text"
-import {
-    handleFeedback,
-    handleHelp
-} from "../Form/Item"
+import CustomFeedback from "../Form/CustomFeedback"
 
 export interface InputProps extends InputCommonProps<HTMLInputElement & HTMLTextAreaElement> {
     prepend?: React.ReactNode
@@ -68,56 +65,33 @@ const Input = React.forwardRef(
                     className={classes}
                     {...otherProps} />
             )
-        const inputWithAddons = ({
-            tooltip,
-            valid,
-            invalid,
-            help
-        }: any) => (
-            (
-                <>
-                    {
-                        !isUndef(prepend) && (
-                            <div className="input-group-prepend">
-                                {handleAddon(prepend)}
-                            </div>
-                        )
-                    }
-                    {input}
-                    {
-                        !isUndef(append) && (
-                            <div className="input-group-append">
-                                {handleAddon(append)}
-                            </div>
-                        )
-                    }
-                    {handleHelp(help)}
-                    {handleFeedback(valid, tooltip)}
-                    {handleFeedback(invalid, tooltip, false)}
-                        
-                </>
-            )
+        const inputWithAddons = (
+            <>
+                {
+                    !isUndef(prepend) && (
+                        <div className="input-group-prepend">
+                            {handleAddon(prepend)}
+                        </div>
+                    )
+                }
+                {input}
+                {
+                    !isUndef(append) && (
+                        <div className="input-group-append">
+                            {handleAddon(append)}
+                        </div>
+                    )
+                }
+                <CustomFeedback />
+            </>
         )
 
         if (noAppendix) {
             return (
-                <FormItemContext.Consumer>
-                    {
-                        ({
-                            valid,
-                            invalid,
-                            tooltip,
-                            help
-                        }) => (
-                            <>
-                                {input}
-                                {handleHelp(help)}
-                                {handleFeedback(valid, tooltip)}
-                                {handleFeedback(invalid, tooltip, false)}
-                            </>
-                        )
-                    }
-                </FormItemContext.Consumer>
+                <>
+                    {input}
+                    <CustomFeedback />
+                </>
             )
         }
 
@@ -126,19 +100,9 @@ const Input = React.forwardRef(
                 {
                     // prevent nesting
                     value => (
-                        <FormItemContext.Consumer>
-                            {
-                                v => {
-                                    const c = inputWithAddons(v)
-
-                                    return (
-                                        value ?
-                                            c :
-                                            <InputGroup size={sizing}>{c}</InputGroup>
-                                    )
-                                }
-                            }
-                        </FormItemContext.Consumer>
+                        value ?
+                            inputWithAddons :
+                            <InputGroup size={sizing}>{inputWithAddons}</InputGroup>
                     )
                 }
             </InputGroupContext.Consumer>

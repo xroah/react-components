@@ -55,7 +55,7 @@ export default () => {
                         labelText="Username"
                         htmlFor="validationCustom3"
                         invalidFeedback="Please choose a username.">
-                        <Input prepend="@" className="rounded" required />
+                        <Input prepend="@" required />
                     </Form.Item>
                 </Col>
             </Row>
