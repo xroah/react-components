@@ -35,18 +35,10 @@ const CardProps = [{
     default: "false",
     description: <LangMsg id="bodyApi" />
 }, {
-    name: "img",
-    type: "string | ReactNode",
+    name: "image",
+    type: "ReactElement",
     description: <LangMsg id="imgApi" />
-}, {
-    name: "imgAlt",
-    type: "string",
-    description: <LangMsg id="imgAltApi" />
-}, {
-    name: "imgTitle",
-    type: "string",
-    description: <LangMsg id="imgTitleApi" />
-}, {
+},{
     name: "imgPosition",
     type: "\"top\" | \"bottom\"",
     default: "top",

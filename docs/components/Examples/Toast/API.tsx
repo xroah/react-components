@@ -25,11 +25,6 @@ const props = [{
     type: "string | ReactNode",
     description: <LangMsg id="iconApi" />
 }, {
-    name: "iconSize",
-    type: "number",
-    default: "20",
-    description: <LangMsg id="iconSizeApi" />
-}, {
     name: "autoHide",
     type: "boolean",
     default: "false",
