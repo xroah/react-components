@@ -1,12 +1,12 @@
 import * as React from "react"
 import {
-    Toast, Spinner 
+    Toast, Spinner
 } from "reap-ui"
 
 export default () => (
     <Toast
         title="Bootstrap"
-        icon={<Toast.Icon img={<Spinner animation="border" size="sm" />}/>}
+        icon={<Spinner animation="border" size="sm" />}
         extra="11 minutes ago"
         closable
         autoHide

@@ -11,8 +11,6 @@ import {
 } from "./CardTitle"
 import {CommonProps} from "../Common/CommonPropsInterface"
 import {CardBody} from "./Others"
-import {ImageProps} from "../Common/Image"
-import {CardContext} from "../Common/contexts"
 
 export interface CardProps extends CommonProps<HTMLDivElement> {
     header?: React.ReactNode
@@ -20,7 +18,7 @@ export interface CardProps extends CommonProps<HTMLDivElement> {
     headerStyle?: React.CSSProperties
     footerStyle?: React.CSSProperties
     body?: boolean
-    image?: React.ReactElement<ImageProps>
+    image?: React.ReactElement
     imagePosition?: "top" | "bottom"
     imageOverlay?: boolean
     alignment?: "left" | "center" | "right"
@@ -58,36 +56,47 @@ export default function Card(props: CardProps) {
                 <CardBody>{children}</CardBody> :
                 children
     )
+    let img = image
+
+    if (React.isValidElement(image)) {
+        img = React.cloneElement(
+            image,
+            {
+                className: classNames(
+                    image.props.className,
+                    `card-img-${imagePosition}`
+                )
+            }
+        )
+    }
 
     return (
-        <CardContext.Provider value={{imagePosition: imagePosition!}}>
-            <div className={
-                classNames(
-                    className,
-                    "card",
-                    alignment && `text-${alignment}`,
-                    bg && `bg-${bg}`,
-                    border && `border-${border}`,
-                    colorProp && `text-${colorProp}`
+        <div className={
+            classNames(
+                className,
+                "card",
+                alignment && `text-${alignment}`,
+                bg && `bg-${bg}`,
+                border && `border-${border}`,
+                colorProp && `text-${colorProp}`
+            )
+        } {...otherProps}>
+            {
+                !isUndef(header) && (
+                    <div style={headerStyle} className="card-header">{header}</div>
                 )
-            } {...otherProps}>
-                {
-                    !isUndef(header) && (
-                        <div style={headerStyle} className="card-header">{header}</div>
-                    )
-                }
-                {
-                    imagePosition === "bottom" ?
-                        <>{_children}{image}</> :
-                        <>{image}{_children}</>
-                }
-                {
-                    !isUndef(footer) && (
-                        <div style={footerStyle} className="card-footer">{footer}</div>
-                    )
-                }
-            </div>
-        </CardContext.Provider>
+            }
+            {
+                imagePosition === "bottom" ?
+                    <>{_children}{img}</> :
+                    <>{img}{_children}</>
+            }
+            {
+                !isUndef(footer) && (
+                    <div style={footerStyle} className="card-footer">{footer}</div>
+                )
+            }
+        </div>
     )
 }
 

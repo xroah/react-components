@@ -8,11 +8,10 @@ import {
 import NoTransition from "../Common/NoTransition"
 import { CommonPropsWithoutTitle } from "../Common/CommonPropsInterface"
 import omitProps from "../utils/omitProps"
-import {ImageProps} from "../Common/Image"
 
 export interface ToastProps extends CommonPropsWithoutTitle<HTMLDivElement> {
     title?: string | React.ReactNode
-    icon?: React.ReactElement<ImageProps>
+    icon?: React.ReactElement
     extra?: string | React.ReactNode
     autoHide?: boolean
     closable?: boolean

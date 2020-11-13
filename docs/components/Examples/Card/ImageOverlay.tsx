@@ -23,7 +23,7 @@ export default () => (
     color="white" 
     bg="dark" 
     imageOverlay
-    image={<Card.Image img={svg}/>}>
+    image={svg}>
         <Card.Title>Card title</Card.Title>
         <Card.Text>
             This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.

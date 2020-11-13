@@ -1,7 +1,6 @@
 import * as React from "react"
 import PropTypes from "prop-types"
 import {classNames} from "../utils"
-import {MediaContext} from "../Common/contexts"
 import Image, {ImageProps} from "../Common/Image"
 
 export interface MediaImageProps extends ImageProps {
@@ -14,28 +13,19 @@ export default function MediaImage(props: MediaImageProps) {
         className,
         ...otherProps
     } = props
+    const alignmentMap: any = {
+        start: "align-self-start",
+        center: "align-self-center",
+        end: "align-self-end"
+    }
 
     return (
-        <MediaContext.Consumer>
-            {
-                ({imagePosition}) => {
-                    const alignmentMap: any = {
-                        start: "align-self-start",
-                        center: "align-self-center",
-                        end: "align-self-end"
-                    }
-                    const classes = classNames(
-                        className,
-                        alignmentMap[alignment as string],
-                        imagePosition === "right" ? "ml-3" : "mr-3"
-                    )
-                    
-                    return (
-                        <Image className={classes} {...otherProps}/>
-                    )
-                }
-            }
-        </MediaContext.Consumer>
+        <Image className={
+            classNames(
+                className,
+                alignmentMap[alignment as string]
+            )
+        } {...otherProps} />
     )
 }
 

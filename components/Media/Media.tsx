@@ -5,11 +5,9 @@ import {
     isUndef
 } from "../utils"
 import {CommonPropsWithoutTitle} from "../Common/CommonPropsInterface"
-import {MediaImageProps} from "./Image"
-import {MediaContext} from "../Common/contexts"
 export interface MediaProps extends CommonPropsWithoutTitle<HTMLDivElement> {
     title?: string | React.ReactNode
-    image?: React.ReactElement<MediaImageProps>
+    image?: React.ReactElement
     imagePosition?: "left" | "right"
 }
 
@@ -32,19 +30,30 @@ export default function Media(props: MediaProps) {
             {children}
         </div>
     )
+    let img = image
+
+    if (React.isValidElement(image)) {
+        img = React.cloneElement(
+            image,
+            {
+                className: classNames(
+                    image.props.className,
+                    imagePosition === "right" ? "ml-3" : "mr-3"
+                )
+            }
+        )
+    }
 
     return (
-        <MediaContext.Provider value={{imagePosition: imagePosition!}}>
-            <div
-                className={classNames(className, "media")}
-                {...otherProps}>
-                {
-                    imagePosition === "right" ?
-                        <>{body}{image}</> :
-                        <>{image}{body}</>
-                }
-            </div>
-        </MediaContext.Provider>
+        <div
+            className={classNames(className, "media")}
+            {...otherProps}>
+            {
+                imagePosition === "right" ?
+                    <>{body}{img}</> :
+                    <>{img}{body}</>
+            }
+        </div>
     )
 }
 
