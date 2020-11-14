@@ -2,7 +2,8 @@ import * as React from "react"
 import {
     classNames,
     variantType,
-    variantArray
+    variantArray,
+    isUndef
 } from "../utils"
 import PropTypes from "prop-types"
 import {AnchorCommonProps} from "../Common/CommonPropsInterface"
@@ -18,13 +19,12 @@ export default function Badge(props: BadgeProps) {
         variant,
         pill,
         href,
-        children,
         ...otherProps
     } = props
     const PREFIX = "badge"
     let tag = "span"
 
-    if (href) {
+    if (!isUndef(href)) {
         tag = "a"
     }
 
@@ -39,8 +39,7 @@ export default function Badge(props: BadgeProps) {
                 pill && `${PREFIX}-pill`
             ),
             ...otherProps
-        },
-        children
+        }
     )
 }
 

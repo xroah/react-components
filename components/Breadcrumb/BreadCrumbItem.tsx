@@ -3,7 +3,7 @@ import PropTypes from "prop-types"
 import {classNames} from "../utils"
 import {AnchorCommonProps} from "../Common/CommonPropsInterface"
 
-export interface BreadcrumbItemProps extends AnchorCommonProps<HTMLLIElement> {
+export interface BreadcrumbItemProps extends AnchorCommonProps<HTMLAnchorElement> {
     active?: boolean
 }
 
@@ -11,18 +11,19 @@ function BreadcrumbItem(props: BreadcrumbItemProps) {
     const {
         className,
         children,
-        href,
-        active
+        active,
+        ...otherProps
     } = props
 
     return (
-        <li
-            className={classNames(
+        <li className={
+            classNames(
                 className,
                 "breadcrumb-item",
                 active && "active"
-            )}>
-            <a href={href}>{children}</a>
+            )
+        }>
+            <a {...otherProps}>{children}</a>
         </li>
     )
 }

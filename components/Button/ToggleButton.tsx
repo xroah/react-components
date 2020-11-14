@@ -37,6 +37,13 @@ const ToggleButton = React.forwardRef(
         const [focused, updateFocus] = React.useState(false)
         const handleBlur = () => updateFocus(false)
         const handleFocus = () => updateFocus(true)
+        const classes = classNames(
+            className,
+            focused && "focus",
+            (checked || defaultChecked) && "active"
+        )
+        const _onFocus = chainFunction(handleFocus, onFocus)
+        const _onBlur = chainFunction(handleBlur, onBlur)
 
         if (props.disabled) {
             style.pointerEvents = "none"
@@ -51,18 +58,12 @@ const ToggleButton = React.forwardRef(
                     }) =>
                         <label
                             style={style}
-                            className={
-                                classNames(
-                                    className,
-                                    focused && "focus",
-                                    (checked || defaultChecked) && "active"
-                                )
-                            }>
+                            className={classes}>
                             <input
                                 ref={ref}
                                 type={type || ctxType}
-                                onFocus={chainFunction(handleFocus, onFocus)}
-                                onBlur={chainFunction(handleBlur, onBlur)}
+                                onFocus={_onFocus}
+                                onBlur={_onBlur}
                                 {...props} />
                             {children}
                         </label>

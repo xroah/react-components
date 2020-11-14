@@ -67,7 +67,6 @@ const Button = React.forwardRef(
 
         if (otherProps.href) {
             tag = "a"
-
             buttonProps.target = target
 
             omitProps(

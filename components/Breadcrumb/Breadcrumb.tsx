@@ -3,13 +3,12 @@ import {CommonProps} from "../Common/CommonPropsInterface"
 
 function Breadcrumb(props: CommonProps<HTMLElement>) {
     const {
-        className,
         children,
-        ...otherProps 
+        ...otherProps
     } = props
 
     return (
-        <nav className={className} {...otherProps}>
+        <nav {...otherProps}>
             <ol className="breadcrumb">
                 {children}
             </ol>
