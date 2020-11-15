@@ -4,9 +4,7 @@ import {
     classNames,
     isUndef
 } from "../utils"
-import {
-    InputGroupContext
-} from "../Common/contexts"
+import {InputGroupContext} from "../Common/contexts"
 import InputGroup from "./InputGroup"
 import {InputCommonProps} from "../Common/CommonPropsInterface"
 import Text from "./Text"

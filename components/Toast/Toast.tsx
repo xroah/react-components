@@ -164,13 +164,13 @@ export default class Toast extends React.Component<ToastProps> {
             children,
             visible,
             fade,
-            icon,
             ...otherProps
         } = this.props
 
         omitProps(
             otherProps,
             [
+                "icon",
                 "extra",
                 "autoHide",
                 "closable",

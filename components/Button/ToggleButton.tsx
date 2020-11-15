@@ -8,7 +8,8 @@ import {
 import {InputCommonProps} from "../Common/CommonPropsInterface"
 import {ToggleButtonGroupContext} from "../Common/contexts"
 import {
-    classNames, chainFunction
+    classNames,
+    chainFunction
 } from "../utils"
 
 export interface ToggleButtonProps extends InputCommonProps<HTMLInputElement>, CommonProps {
