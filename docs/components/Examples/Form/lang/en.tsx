@@ -27,10 +27,10 @@ export default {
         <>
             <p>
                     For custom Bootstrap form validation messages, you’ll need to add the <code>novalidate</code> boolean attribute to <code>Form</code>. This disables the browser default feedback tooltips, but still provides access to the form validation APIs in JavaScript. Try to submit the form below; our JavaScript will intercept the submit button and relay feedback to you. When attempting to submit, you’ll see the <code>:invalid</code> and <code>:valid</code> styles applied to your form controls
-               </p>
-                <p>
+            </p>
+            <p>
                     Custom feedback styles apply custom colors, borders, focus styles, and background icons to better communicate feedback. Background icons for <code>&lt;select&gt;</code>s are only available with <code>.custom-select</code>, and not <code>.form-control</code>
-                </p>
+            </p>
         </>
     ),
     browserDefaultTitle: "Browser default",
@@ -38,10 +38,10 @@ export default {
         <>
             <p>
                     Not interested in custom validation feedback messages or writing JavaScript to change form behaviors? All good, you can use the browser defaults. Try submitting the form below. Depending on your browser and OS, you’ll see a slightly different style of feedback
-                </p>
-                <p>
+            </p>
+            <p>
                     While these feedback styles cannot be styled with CSS, you can still customize the feedback text through JavaScript
-                </p>
+            </p>
         </>
     ),
     tooltipsTitle: "Tooltips",
@@ -67,7 +67,7 @@ export default {
     validFeedbackApi: "Validation success message",
     invalidFeedbackApi: "Validation failure message",
     validationTooltipApi: "Display validation feedback in a styled tooltip.",
-    formItemNote: <><strong>Note:</strong>If the children of <code>Form.Item</code> are custom components, you may need handle <code>help</code>, <code>validFeedback</code> and <code>invalidFeedback</code> props manually</>,
+    formItemNote: <><strong>Note:</strong>If the children of <code>Form.Item</code> are custom components, you may need handle <code>validFeedback</code> and <code>invalidFeedback</code> props manually</>,
     autoFocusApi: "Auto focus once the component mounted",
     checkedApi: "The component checked or not",
     defaultCheckedApi: "Initial checked of the component",

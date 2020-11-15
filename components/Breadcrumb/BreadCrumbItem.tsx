@@ -23,7 +23,7 @@ function BreadcrumbItem(props: BreadcrumbItemProps) {
                 active && "active"
             )
         }>
-            <a {...otherProps}>{children}</a>
+            {active ? children : <a {...otherProps}>{children}</a>}
         </li>
     )
 }

@@ -17,7 +17,7 @@ export default function PaginationItem(props: ItemProps) {
         onClick,
         ...otherProps
     } = props
-    const handleClick = (evt: React.MouseEvent<HTMLElement, MouseEvent>) => {
+    const handleClick = (evt: React.MouseEvent<HTMLAnchorElement>) => {
         onClick && !disabled && onClick(evt)
         evt.preventDefault()
     }
@@ -30,12 +30,15 @@ export default function PaginationItem(props: ItemProps) {
                 active && "active",
                 disabled && "disabled"
             )
-        } {...otherProps}>
+        }>
             <a
                 href="#"
                 className="page-link"
                 tabIndex={disabled ? -1 : undefined}
-                onClick={handleClick}>{children}</a>
+                onClick={handleClick}
+                {...otherProps}>
+                {children}
+            </a>
         </li>
     )
 }

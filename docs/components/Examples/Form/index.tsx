@@ -22,7 +22,9 @@ import BrowserDefaultSrc from "!!raw-loader!./BrowserDefault"
 import Tooltips from "./Tooltips"
 import TooltipsSrc from "!!raw-loader!./Tooltips"
 import {
-    Checkbox, Radio, Switch
+    Checkbox,
+    Radio,
+    Switch
 } from "reap-ui"
 import API from "./API"
 import SyntaxHighlighter from "../../SyntaxHighlighter"
@@ -47,7 +49,15 @@ import RightNav, {
     radioTitle,
     switchId,
     switchTitle,
-    apiId, validationId, validationTitle, customStylesId, customStylesTitle, browserDefaultId, browserDefaultTitle, tooltipsId, tooltipsTitle
+    apiId,
+    validationId,
+    validationTitle,
+    customStylesId,
+    customStylesTitle,
+    browserDefaultId,
+    browserDefaultTitle,
+    tooltipsId,
+    tooltipsTitle
 } from "./RightNav"
 
 const {H3} = DocHeading
@@ -91,24 +101,24 @@ export default () => (
                 <LangMsg id="inlineDesc" />
             </DemoExample>
             <H3 id={validationId}>{validationTitle}</H3>
-            <LangMsg id="validationDesc"/>
+            <LangMsg id="validationDesc" />
             <H3 id={customStylesId}>{customStylesTitle}</H3>
             <DemoExample
                 component={<Validation />}
                 source={ValidationSrc}>
-                <LangMsg id="customStylesDesc"/>
+                <LangMsg id="customStylesDesc" />
             </DemoExample>
             <H3 id={browserDefaultId}>{browserDefaultTitle}</H3>
             <DemoExample
                 component={<BrowserDefault />}
                 source={BrowserDefaultSrc}>
-                <LangMsg id="browserDefaultDesc"/>
+                <LangMsg id="browserDefaultDesc" />
             </DemoExample>
             <H3 id={tooltipsId}>{tooltipsTitle}</H3>
             <DemoExample
                 component={<Tooltips />}
                 source={TooltipsSrc}>
-                <LangMsg id="tooltipsDesc"/>
+                <LangMsg id="tooltipsDesc" />
             </DemoExample>
             <H3 id={checkboxId}>{checkboxTitle}</H3>
             <div className="bd-example">

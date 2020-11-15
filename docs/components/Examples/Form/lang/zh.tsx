@@ -68,7 +68,7 @@ export default {
     validFeedbackApi: "验证成功的信息",
     invalidFeedbackApi: "验证失败的信息",
     validationTooltipApi: "以tooltip的样式显示反馈信息",
-    formItemNote: <><strong>注:</strong>如果<code>Form.Item</code>的children是自定义组件， <code>help</code>, <code>validFeedback</code>和<code>invalidFeedback</code>属性需要手动处理</>,
+    formItemNote: <><strong>注:</strong>如果<code>Form.Item</code>的children是自定义组件， <code>validFeedback</code>和<code>invalidFeedback</code>属性需要手动处理</>,
     autoFocusApi: "自动聚焦",
     checkedApi: "是否选中",
     defaultCheckedApi: "初始的选中状态",

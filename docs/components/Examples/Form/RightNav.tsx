@@ -53,11 +53,11 @@ export default () => (
         }, {
             name: browserDefaultTitle,
             href: `#${browserDefaultId}`
-        },{
+        }, {
             name: tooltipsTitle,
             href: `#${tooltipsId}`
         }]
-    },{
+    }, {
         name: checkboxTitle,
         href: `#${checkboxId}`
     }, {

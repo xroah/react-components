@@ -61,7 +61,7 @@ Media.defaultProps = {
     imagePosition: "left"
 }
 Media.propTypes = {
-    title: PropTypes.oneOfType([PropTypes.bool, PropTypes.node]),
+    title: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
     image: PropTypes.element,
     imgPosition: PropTypes.oneOf(["left", "right"])
 }

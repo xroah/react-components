@@ -45,8 +45,7 @@ export default function Badge(props: BadgeProps) {
 
 Badge.propTypes = {
     variant: PropTypes.oneOf(variantArray),
-    pill: PropTypes.bool,
-    href: PropTypes.string
+    pill: PropTypes.bool
 }
 Badge.defaultProps = {
     pill: false

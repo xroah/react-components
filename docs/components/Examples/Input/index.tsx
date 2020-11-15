@@ -75,8 +75,8 @@ export default () => (
             <DemoExample
                 component={<Multiple />}
                 source={MultipleSrc}>
-                    <LangMsg id="multiInputsDesc"/>
-                </DemoExample>
+                <LangMsg id="multiInputsDesc"/>
+            </DemoExample>
             <H3 id={multiAddonsId}>{multiAddonsTitle}</H3>
             <DemoExample
                 component={<MultiAddons />}

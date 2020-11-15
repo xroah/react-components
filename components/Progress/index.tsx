@@ -64,23 +64,34 @@ export default function Progress(props: ProgressProps) {
             return c
         })
 
-        return React.cloneElement(wrapper, {
-            style
-        }, _children)
+        return React.cloneElement(
+            wrapper,
+            {
+                style
+            },
+            _children
+        )
     }
 
     return __isChild__ ?
-        React.cloneElement(bar, {
-            ...otherProps,
-            style: {
-                ...style,
-                width
+        React.cloneElement(
+            bar,
+            {
+                ...otherProps,
+                style: {
+                    ...style,
+                    width
+                }
             }
-        }) :
-        React.cloneElement(wrapper, {
-            style,
-            ...otherProps
-        }, bar)
+        ) :
+        React.cloneElement(
+            wrapper,
+            {
+                style,
+                ...otherProps
+            },
+            bar
+        )
 }
 
 Progress.defaultProps = {

@@ -38,7 +38,7 @@ const CardProps = [{
     name: "image",
     type: "ReactElement",
     description: <LangMsg id="imgApi" />
-},{
+}, {
     name: "imgPosition",
     type: "\"top\" | \"bottom\"",
     default: "top",

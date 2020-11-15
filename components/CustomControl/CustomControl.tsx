@@ -38,12 +38,7 @@ const CustomControl = React.forwardRef(
         const _label = (
             <label
                 htmlFor={_id}
-                className={
-                    classNames(
-                        `${PREFIX}-label`,
-                        required && "form-check-label"
-                    )
-                }>
+                className={`${PREFIX}-label`}>
                 {children}
             </label>
         )
@@ -64,12 +59,7 @@ const CustomControl = React.forwardRef(
                     id={_id}
                     ref={ref}
                     required={required}
-                    className={
-                        classNames(
-                            `${PREFIX}-input`,
-                            required && "form-check-input"
-                        )
-                    }
+                    className={`${PREFIX}-input`}
                     {...otherProps} />
                 {_label}
                 <CustomFeedback />
