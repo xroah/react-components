@@ -3,7 +3,7 @@ import PropTypes from "prop-types"
 import {classNames} from "../utils"
 import {DropdownContext} from "../Common/contexts"
 import {CommonProps} from "../Common/CommonPropsInterface"
-import omitProps from "../utils/omitProps"
+import {omit} from "../utils"
 
 export interface ItemProps extends CommonProps<HTMLElement> {
     tag?: React.ElementType
@@ -23,7 +23,7 @@ export default function DropdownMenuItem(props: ItemProps) {
     } = props
     const context = React.useContext(DropdownContext)
     if (tag !== "a") {
-        omitProps(otherProps, ["href"])
+        omit(otherProps, ["href"])
     }
 
     return React.createElement(

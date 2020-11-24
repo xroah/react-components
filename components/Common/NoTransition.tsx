@@ -5,7 +5,7 @@ import {
 } from "../utils"
 import {findDOMNode} from "react-dom"
 import {CSSTransitionProps} from "./CSSTransition"
-import omitProps from "../utils/omitProps"
+import {omit} from "../utils"
 
 //compatible with CSSTransition(some components animation is configurable)
 export interface NoTransitionProps extends CSSTransitionProps {
@@ -77,7 +77,7 @@ export default class NoTransition extends React.Component<NoTransitionProps> {
             return children(undefined as any)
         }
 
-        omitProps(
+        omit(
             otherProps,
             [
                 "onEnter",

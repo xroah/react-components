@@ -6,7 +6,7 @@ import {
     variantArray
 } from "../utils"
 import {ButtonCommonProps} from "../Common/CommonPropsInterface"
-import omitProps from "../utils/omitProps"
+import {omit} from "../utils"
 
 export interface CommonProps {
     variant?: variantType | "link"
@@ -69,7 +69,7 @@ const Button = React.forwardRef(
             tag = "a"
             buttonProps.target = target
 
-            omitProps(
+            omit(
                 buttonProps,
                 ["disabled", "type"]
             )

@@ -7,7 +7,7 @@ import {
 } from "../utils"
 import NoTransition from "../Common/NoTransition"
 import { CommonPropsWithoutTitle } from "../Common/CommonPropsInterface"
-import omitProps from "../utils/omitProps"
+import {omit} from "../utils"
 
 export interface ToastProps extends CommonPropsWithoutTitle<HTMLDivElement> {
     title?: string | React.ReactNode
@@ -167,7 +167,7 @@ export default class Toast extends React.Component<ToastProps> {
             ...otherProps
         } = this.props
 
-        omitProps(
+        omit(
             otherProps,
             [
                 "icon",

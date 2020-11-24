@@ -55,7 +55,7 @@ export default function Alert(props: AlertProps) {
             handleClick()
         }
     }
-    let button: React.ReactNode = null
+    let button: React.ReactNode
 
     if (dismissible) {
         button = (

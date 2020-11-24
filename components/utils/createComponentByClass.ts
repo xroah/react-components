@@ -1,4 +1,4 @@
-import React from "react"
+import React, {FunctionComponent} from "react"
 import classNames from "./classNames"
 
 interface CreateProps {
@@ -9,12 +9,15 @@ interface CreateProps {
 
 export default (options: CreateProps) => {
     const {
-        className, tag = "div", displayName 
+        className,
+        tag = "div",
+        displayName
     } = options
 
-    const Comp: any = (props: React.AllHTMLAttributes<HTMLElement>) => {
+    const Component: FunctionComponent = (props: React.AllHTMLAttributes<HTMLElement>) => {
         const {
-            className: _className, ...otherProps 
+            className: _className,
+            ...otherProps
         } = props
 
         return React.createElement(
@@ -27,8 +30,8 @@ export default (options: CreateProps) => {
     }
 
     if (displayName) {
-        Comp.displayName = displayName
+        Component.displayName = displayName
     }
 
-    return Comp
+    return Component
 }

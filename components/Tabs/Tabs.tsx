@@ -9,7 +9,7 @@ import {
 import {TabContext} from "../Common/contexts"
 import {CommonProps} from "../Common/CommonPropsInterface"
 import TabTitle from "./TabTitle"
-import omitProps from "../utils/omitProps"
+import {omit} from "../utils"
 
 export interface TabsProps extends CommonProps<HTMLDivElement> {
     defaultActiveKey?: string | number
@@ -211,7 +211,7 @@ export default class Tabs extends React.Component<TabsProps, TabsState> {
             fade
         }
 
-        omitProps(
+        omit(
             otherProps,
             [
                 "children",

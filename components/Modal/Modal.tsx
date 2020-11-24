@@ -16,7 +16,7 @@ import {
     ModalProps,
     ModalState
 } from "./interface"
-import omitProps from "../utils/omitProps"
+import {omit} from "../utils"
 
 const stringOrNode = PropTypes.oneOfType([PropTypes.string, PropTypes.node])
 let zIndex = 2000
@@ -314,7 +314,7 @@ export default class Modal extends React.Component<ModalProps, ModalState> {
             }
         } = this
 
-        omitProps(
+        omit(
             otherProps,
             [
                 "onOk",

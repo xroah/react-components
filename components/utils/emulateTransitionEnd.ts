@@ -1,4 +1,4 @@
-export function getTransitionDuration(el: HTMLElement) {
+function getTransitionDuration(el: HTMLElement) {
     const style = getComputedStyle(el)
     let duration = parseFloat(style.getPropertyValue("transition-duration")) || 0
     duration += parseFloat(style.getPropertyValue("transition-delay")) || 0

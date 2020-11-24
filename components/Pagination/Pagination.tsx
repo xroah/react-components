@@ -2,7 +2,7 @@ import * as React from "react"
 import PropTypes from "prop-types"
 import {classNames} from "../utils"
 import {CommonProps} from "../Common/CommonPropsInterface"
-import omitProps from "../utils/omitProps"
+import {omit} from "../utils"
 
 export interface PaginationProps extends CommonProps<HTMLUListElement> {
     size?: "lg" | "sm"
@@ -21,7 +21,7 @@ export default function Pagination(props: PaginationProps) {
         right: "justify-content-end"
     }
 
-    omitProps(otherProps, ["className"])
+    omit(otherProps, ["className"])
 
     return (
         <ul className={

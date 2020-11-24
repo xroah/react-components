@@ -3,7 +3,7 @@ import Pagination from "./Pagination"
 import {PaginationProps} from "./Pagination"
 import {handleFuncProp} from "../utils"
 import Item from "./Item"
-import omitProps from "../utils/omitProps"
+import {omit} from "../utils"
 
 export interface AutoPaginationProps extends PaginationProps {
     current?: number
@@ -197,7 +197,7 @@ export default class AutoPagination extends React.Component<AutoPaginationProps,
             ...otherProps
         } = this.props
 
-        omitProps(
+        omit(
             otherProps,
             [
                 "onPageChange",

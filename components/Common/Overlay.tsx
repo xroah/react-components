@@ -10,7 +10,7 @@ import Popup, {
 import PropTypes from "prop-types"
 import {findDOMNode} from "react-dom"
 import {ModalContext} from "./contexts"
-import omitProps from "../utils/omitProps"
+import {omit} from "../utils"
 
 export type action = "hover" | "click" | "contextmenu" | "focus"
 
@@ -243,7 +243,7 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
         } = this.props
         let eventHandlers = Object.create(null)
 
-        omitProps(
+        omit(
             otherProps,
             [
                 "popup",

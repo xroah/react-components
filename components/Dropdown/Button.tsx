@@ -4,7 +4,7 @@ import Button from "../Button"
 import Dropdown from "./Dropdown"
 import {DropdownProps} from "./DropdownInner"
 import {variantType} from "../utils"
-import omitProps from "../utils/omitProps"
+import {omit} from "../utils"
 
 export interface DropdownButtonProps extends DropdownProps {
     variant?: variantType
@@ -76,7 +76,7 @@ export default function DropdownButton(props: DropdownButtonProps) {
 
         const [_leftBtn, _rightBtn] = render!([leftBtn, rightBtn])
 
-        omitProps(
+        omit(
             dropdownProps,
             ["className", "style"]
         )

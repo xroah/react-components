@@ -1,7 +1,7 @@
 import * as React from "react"
 import {findDOMNode} from "react-dom"
 import {handleFuncProp} from "../utils"
-import omitProps from "../utils/omitProps"
+import {omit} from "../utils"
 
 const ENTER = "enter"
 const ENTERING = "entering"
@@ -259,7 +259,7 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
             ...otherProps
         } = this.props
 
-        omitProps(
+        omit(
             otherProps,
             [
                 "in",

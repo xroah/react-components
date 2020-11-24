@@ -4,7 +4,7 @@ import {
     getScrollParent,
     mergeRef
 } from "../utils"
-import omitProps from "../utils/omitProps"
+import {omit} from "../utils"
 
 export type position = "top" | "right" | "bottom" | "left"
 
@@ -327,7 +327,7 @@ export default class Popup extends React.Component<AlignProps> {
             ...otherProps
         } = this.props
 
-        omitProps(
+        omit(
             otherProps,
             [
                 "verticalCenter",

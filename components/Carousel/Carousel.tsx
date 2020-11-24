@@ -7,7 +7,7 @@ import {
     classNames
 } from "../utils"
 import {CommonProps} from "../Common/CommonPropsInterface"
-import omitProps from "../utils/omitProps"
+import {omit} from "../utils"
 
 export interface CarouselProps extends CommonProps<HTMLDivElement> {
     animation?: "slide" | "fade"
@@ -326,7 +326,7 @@ export default class Carousel extends React.Component<CarouselProps, CarouselSta
             ...otherProps
         } = this.props
 
-        omitProps(
+        omit(
             otherProps,
             [
                 "activeIndex",

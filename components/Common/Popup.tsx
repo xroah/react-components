@@ -11,7 +11,7 @@ import Align from "./Align"
 import NoTransition from "./NoTransition"
 import Portal from "./Portal"
 import {CommonPropsWithoutTitle} from "./CommonPropsInterface"
-import omitProps from "../utils/omitProps"
+import {omit} from "../utils"
 
 export type position = "top" | "right" | "bottom" | "left"
 
@@ -302,7 +302,7 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
             return null
         }
 
-        omitProps(
+        omit(
             otherProps,
             [
                 "onClickOutside",

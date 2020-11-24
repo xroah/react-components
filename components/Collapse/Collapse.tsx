@@ -7,7 +7,7 @@ import {
 } from "../utils"
 import CSSTransition from "../Common/CSSTransition"
 import {CommonProps} from "../Common/CommonPropsInterface"
-import omitProps from "../utils/omitProps"
+import {omit} from "../utils"
 
 export interface CollapseProps extends CommonProps<HTMLDivElement> {
     isOpen?: boolean
@@ -65,7 +65,7 @@ export default class Collapse extends React.Component<CollapseProps> {
             ...otherProps
         } = this.props
 
-        omitProps(
+        omit(
             otherProps,
             [
                 "onShow",

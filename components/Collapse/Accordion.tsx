@@ -8,7 +8,7 @@ import {
 } from "../utils"
 import {AccordionContext} from "../Common/contexts"
 import {CommonProps} from "../Common/CommonPropsInterface"
-import omitProps from "../utils/omitProps"
+import {omit} from "../utils"
 
 type keyType = number | string | number[] | string[]
 
@@ -188,7 +188,7 @@ export default class Accordion extends React.Component<AccordionProps, Accordion
             }
         } = this
 
-        omitProps(
+        omit(
             otherProps,
             [
                 "multiple",
