@@ -20,6 +20,7 @@ export {
     Radio,
     Switch
 } from "./CustomControl"
+export {default as Image} from "./Image"
 export {default as Input} from "./Input"
 export {default as Jumbotron} from "./Jumbotron"
 export {default as ListGroup} from "./ListGroup"

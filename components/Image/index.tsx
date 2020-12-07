@@ -7,7 +7,8 @@ import {
 
 export interface ImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
     size?: number
-    border?: "rounded" | "circle"
+    border?: "rounded" | "circle" | "thumbnail"
+    fluid?: boolean
 }
 
 export default function Image(props: ImageProps) {
@@ -15,12 +16,16 @@ export default function Image(props: ImageProps) {
         border,
         size,
         className,
+        fluid,
         ...otherProps
     } = props
 
     const classes = classNames(
         className,
-        border && (border === "rounded" ? "rounded" : "rounded-circle")
+        border === "rounded" ? "rounded" :
+            border === "circle" ? "rounded-circle" :
+                border === "thumbnail" ? "img-thumbnail" : "",
+        fluid && "img-fluid"
     )
     const img = <img className={classes} {...otherProps} />
 
@@ -36,6 +41,11 @@ export default function Image(props: ImageProps) {
 }
 
 Image.propTypes = {
-    border: PropTypes.oneOf(["border", "circle"]),
-    size: PropTypes.number
+    border: PropTypes.oneOf(["border", "circle", "thumbnail"]),
+    size: PropTypes.number,
+    fluid: PropTypes.bool
+}
+
+Image.defaultProps = {
+    fluid: false
 }

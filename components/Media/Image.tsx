@@ -1,7 +1,7 @@
 import * as React from "react"
 import PropTypes from "prop-types"
 import {classNames} from "../utils"
-import Image, {ImageProps} from "../Common/Image"
+import Image, {ImageProps} from "../Image"
 
 export interface MediaImageProps extends ImageProps {
     alignment?: "start" | "center" | "end"
