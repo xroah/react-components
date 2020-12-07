@@ -2,7 +2,8 @@ import * as React from "react"
 import {
     Card,
     Row,
-    Col
+    Col,
+    Image
 } from "reap-ui"
 import img from "../../../assets/image_cap.svg"
 
@@ -14,7 +15,7 @@ export default () => (
         <Col className="mb-4">
             <Card
                 className="h-100"
-                image={<Card.Image src={img} />}
+                image={<Image src={img} />}
                 body>
                 <Card.Title>Card title</Card.Title>
                 <Card.Text>
@@ -25,7 +26,7 @@ export default () => (
         <Col className="mb-4">
             <Card
                 className="h-100"
-                image={<Card.Image src={img} />}
+                image={<Image src={img} />}
                 body>
                 <Card.Title>Card title</Card.Title>
                 <Card.Text>
@@ -36,7 +37,7 @@ export default () => (
         <Col className="mb-4">
             <Card
                 className="h-100"
-                image={<Card.Image src={img} />}
+                image={<Image src={img} />}
                 body>
                 <Card.Title>Card title</Card.Title>
                 <Card.Text>
@@ -47,7 +48,7 @@ export default () => (
         <Col className="mb-4">
             <Card
                 className="h-100"
-                image={<Card.Image src={img} />}
+                image={<Image src={img} />}
                 body>
                 <Card.Title>Card title</Card.Title>
                 <Card.Text>

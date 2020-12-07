@@ -1,12 +1,14 @@
 import * as React from "react"
 import {
-    Card, ListGroup
+    Card, 
+    ListGroup,
+    Image
 } from "reap-ui"
 import imageCap from "../../../assets/image_cap.svg"
 
 export default () => (
     <Card
-        image={<Card.Image src={imageCap} />}
+        image={<Image src={imageCap} />}
         style={{width: "18rem"}}>
         <Card.Body>
             <Card.Title>Card title</Card.Title>
