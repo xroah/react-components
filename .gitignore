@@ -1,8 +1,9 @@
-/node_modules/
-/dist/
-/lib/
-/es/
-/docs-dist/
-/.idea/
-/.history/
-/coverage/
+/node_modules
+/dist
+/lib
+/es
+/docs-dist
+/.idea
+/.history
+/coverage
+.DS_Store
