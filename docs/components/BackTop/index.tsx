@@ -1,6 +1,6 @@
 import * as React from "react"
 import Fade from "../../../components/Common/Fade"
-import { scrollTo } from "../../scrollIntoView"
+import { scrollTo } from "../../scroll-into-view"
 
 interface State {
     visible?: boolean;

@@ -3,7 +3,7 @@ import {
     withRouter,
     RouteComponentProps
 } from "react-router-dom"
-import routes from "../../routes"
+import routes from "../../example-routes"
 import { Nav } from "reap-ui"
 
 interface Props extends RouteComponentProps {

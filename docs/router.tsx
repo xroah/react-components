@@ -7,7 +7,7 @@ import {
 import {
     Col, Row 
 } from "reap-ui"
-import Examples from "./examplesRouter"
+import Examples from "./example-router"
 import Home from "./components/Home"
 import DocNav from "./components/DocNav"
 import DrawerNav from "./components/DrawerNav"

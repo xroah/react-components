@@ -5,23 +5,22 @@ import {
 import {
     RouteComponentProps, withRouter
 } from "react-router-dom"
-import scrollIntoView from "../../scrollIntoView"
+import scrollIntoView from "../../scroll-into-view"
 
 interface Link {
-    name: string | React.ReactNode;
-    href: string;
-    children?: Link[];
+    name: string | React.ReactNode
+    href: string
+    children?: Link[]
 }
 
 interface Props extends React.HTMLAttributes<HTMLElement>, RouteComponentProps {
-    data: Link[];
+    data: Link[]
 }
 
 class RightNav extends React.Component<Props> {
 
-    private timer: any = null;
-    private isClick = false;
-    private cancel: Function | null = null;
+    private timer: any = null
+    private clicked = false
 
     componentDidMount() {
         const {hash} = this.props.location
@@ -31,10 +30,6 @@ class RightNav extends React.Component<Props> {
     }
 
     componentWillUnmount() {
-        if (this.cancel) {
-            this.cancel()
-        }
-
         window.removeEventListener("scroll", this._handleScroll)
     }
 
@@ -78,17 +73,21 @@ class RightNav extends React.Component<Props> {
     handleScroll = () => {
         const rightNav = document.querySelector(".right-nav")
 
+        this.timer = null
+
         if (
             !rightNav ||
-            getComputedStyle(rightNav).getPropertyValue("display") === "none" ||
-            this.isClick
+            getComputedStyle(rightNav).getPropertyValue("display") === "none"
         ) {
             return
         }
 
+        if (this.clicked) {
+            return Promise.resolve().then(() => this.clicked = false)
+        }
+
         const anchors = document.querySelectorAll(".right-nav .right-nav-link")
         const as = Array.from(anchors) as Array<HTMLAnchorElement>
-
         let nextActive: HTMLAnchorElement | null = null
 
         for (let a of as) {
@@ -125,22 +124,25 @@ class RightNav extends React.Component<Props> {
             this.timer = null
         }
 
-        this.timer = setTimeout(this.handleScroll, 50)
+        this.timer = setTimeout(this.handleScroll, 100)
     }
 
     handleClick = (evt: React.MouseEvent) => {
         const a = evt.target as HTMLAnchorElement
         const hash = a.hash
         const {location, history} = this.props
-        this.isClick = true
 
         if (location.hash !== hash) {
             history.push(`${location.pathname}${hash}`)
         }
 
+        this.clicked = true
+
+        scrollIntoView(hash)
+
         this.removeActive()
         this.activateElement(a)
-        this.cancel = scrollIntoView(hash, () => this.isClick = false) || null
+
         evt.preventDefault()
     };
 

@@ -1,47 +1,8 @@
-/* let behaviorSupported = false;
-
-const obj: any = {};
-
-Object.defineProperty(obj, "behavior", {
-    get() {
-        behaviorSupported = true;
-    }
-});
-
-const el = document.createElement("div");
-
-el.scrollIntoView(obj); */
-
 interface Callback {
     (): void;
 }
 
 let timer: any = null
-let callback: Callback | null = null
-
-function cancelScroll() {
-    if (timer !== null) {
-        cancelAnimationFrame(timer)
-        timer = null
-    }
-
-    invokeCallback()
-}
-
-function invokeCallback() {
-    if (callback !== null) {
-        callback()
-        callback = null
-    }
-}
-
-window.addEventListener("wheel", cancelScroll)
-window.addEventListener("keydown", e => {
-    if (e.key.toLowerCase().includes("arrow")) {
-        cancelScroll()
-    }
-})
-window.addEventListener("touchmove", cancelScroll)
 
 export function scrollTo(pos: number, offset = 0) {
     const scroll = () => {
@@ -63,37 +24,27 @@ export function scrollTo(pos: number, offset = 0) {
 
         //complete
         window.scrollTo(0, pos - offset)
-        invokeCallback()
     }
 
     scroll()
 }
 
-export default function scrollIntoView(el: HTMLElement | string, complete: Callback = null) {
-    callback = complete
+export default function scrollIntoView(el: HTMLElement | string) {
 
     if (typeof el === "string") {
         try {
             el = document.querySelector(el) as HTMLElement
         }
         catch (error) {
-            return invokeCallback()
+            return
         }
     }
-    
+
     if (!el) {
-        return invokeCallback()
+        return
     }
 
-    /* if (behaviorSupported) {
-        return el.scrollIntoView({ behavior: "smooth" });
-    } */
-
-    if (timer) {
-        cancelAnimationFrame(timer)
-        timer = null
-    }
-
+    const OFFSET = 80
     let offsetTop = el.offsetTop
     let parent = el.offsetParent as HTMLElement
 
@@ -103,7 +54,5 @@ export default function scrollIntoView(el: HTMLElement | string, complete: Callb
         parent = parent.offsetParent as HTMLElement
     }
     
-    scrollTo(offsetTop, 100)
-    
-    return cancelScroll
+    window.scrollTo(0, offsetTop - OFFSET)
 }

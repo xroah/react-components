@@ -5,7 +5,7 @@ import {
     Redirect,
     useLocation
 } from "react-router-dom"
-import routes from "./routes"
+import routes from "./example-routes"
 import Loading from "./components/Loading"
 
 function _Loading(props: { mountCallback?: Function }) {
