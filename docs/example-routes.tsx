@@ -3,42 +3,42 @@ import { lazy } from "react"
 export default [
     {
         path: "/components/alert",
-        component: lazy(() => import("./Examples/Alert")),
+        component: lazy(() => import("./examples/Alert")),
         name: "Alert"
     },
     {
         path: "/components/badge",
-        component: lazy(() => import("./Examples/Badge")),
+        component: lazy(() => import("./examples/Badge")),
         name: "Badge"
     },
     {
         path: "/components/breadcrumb",
-        component: lazy(() => import("./Examples/Breadcrumb")),
+        component: lazy(() => import("./examples/Breadcrumb")),
         name: "Breadcrumb"
     },
     {
         path: "/components/button",
-        component: lazy(() => import("./Examples/Button")),
+        component: lazy(() => import("./examples/Button")),
         name: "Button"
     },
     {
         path: "/components/card",
-        component: lazy(() => import("./Examples/Card")),
+        component: lazy(() => import("./examples/Card")),
         name: "Card"
     },
     {
         path: "/components/carousel",
-        component: lazy(() => import("./Examples/Carousel")),
+        component: lazy(() => import("./examples/Carousel")),
         name: "Carousel"
     },
     {
         path: "/components/collapse",
-        component: lazy(() => import("./Examples/Collapse")),
+        component: lazy(() => import("./examples/Collapse")),
         name: "Collapse"
     },
     {
         path: "/components/dropdown",
-        component: lazy(() => import("./Examples/Dropdown")),
+        component: lazy(() => import("./examples/Dropdown")),
         name: "Dropdown"
     },
     /*   {
@@ -48,83 +48,83 @@ export default [
       }, */
     {
         path: "/components/form",
-        component: lazy(() => import("./Examples/Form")),
+        component: lazy(() => import("./examples/Form")),
         name: "Form"
     },
 
     {
         path: "/components/input",
-        component: lazy(() => import("./Examples/Input")),
+        component: lazy(() => import("./examples/Input")),
         name: "Input"
     },
     {
         path: "/components/jumbotron",
-        component: lazy(() => import("./Examples/Jumbotron")),
+        component: lazy(() => import("./examples/Jumbotron")),
         name: "Jumbotron"
     },
     {
         path: "/components/layout",
-        component: lazy(() => import("./Examples/Layout")),
+        component: lazy(() => import("./examples/Layout")),
         name: "Layout"
     },
     {
         path: "/components/list-group",
-        component: lazy(() => import("./Examples/ListGroup")),
+        component: lazy(() => import("./examples/ListGroup")),
         name: "ListGroup"
     },
     {
         path: "/components/media",
-        component: lazy(() => import("./Examples/Media")),
+        component: lazy(() => import("./examples/Media")),
         name: "Media"
     },
     {
         path: "/components/modal",
-        component: lazy(() => import("./Examples/Modal")),
+        component: lazy(() => import("./examples/Modal")),
         name: "Modal"
     },
     {
         path: "/components/nav",
-        component: lazy(() => import("./Examples/Nav")),
+        component: lazy(() => import("./examples/Nav")),
         name: "Nav"
     },
     {
         path: "/components/navbar",
-        component: lazy(() => import("./Examples/Navbar")),
+        component: lazy(() => import("./examples/Navbar")),
         name: "Navbar"
     },
     {
         path: "/components/pagination",
-        component: lazy(() => import("./Examples/Pagination")),
+        component: lazy(() => import("./examples/Pagination")),
         name: "Pagination"
     },
     {
         path: "/components/popover",
-        component: lazy(() => import("./Examples/Popover")),
+        component: lazy(() => import("./examples/Popover")),
         name: "Popover"
     },
     {
         path: "/components/progress",
-        component: lazy(() => import("./Examples/Progress")),
+        component: lazy(() => import("./examples/Progress")),
         name: "Progress"
     },
     {
         path: "/components/spinner",
-        component: lazy(() => import("./Examples/Spinner")),
+        component: lazy(() => import("./examples/Spinner")),
         name: "Spinner"
     },
     {
         path: "/components/tabs",
-        component: lazy(() => import("./Examples/Tabs")),
+        component: lazy(() => import("./examples/Tabs")),
         name: "Tabs"
     },
     {
         path: "/components/toast",
-        component: lazy(() => import("./Examples/Toast")),
+        component: lazy(() => import("./examples/Toast")),
         name: "Toast"
     },
     {
         path: "/components/tooltip",
-        component: lazy(() => import("./Examples/Tooltip")),
+        component: lazy(() => import("./examples/Tooltip")),
         name: "Tooltip"
     }
 ]
