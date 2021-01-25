@@ -13,17 +13,16 @@ export default (options: CreateProps) => {
         tag = "div",
         displayName
     } = options
-
-    const Component: FunctionComponent = (props: React.AllHTMLAttributes<HTMLElement>) => {
+    const Component = (props: React.AllHTMLAttributes<HTMLElement>) => {
         const {
-            className: _className,
+            className: cls,
             ...otherProps
         } = props
 
         return React.createElement(
             tag,
             {
-                className: classNames(className, _className),
+                className: classNames(className, cls),
                 ...otherProps
             }
         )

@@ -3,7 +3,8 @@ import PropTypes from "prop-types"
 import {
     classNames,
     variantType,
-    variantArray, isUndef
+    variantArray,
+    isUndef
 } from "../utils"
 import {
     colorType,
