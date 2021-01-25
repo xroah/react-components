@@ -32,6 +32,3 @@ export default function MediaImage(props: MediaImageProps) {
 MediaImage.propTypes = {
     alignment: PropTypes.oneOf(["start", "center", "end"])
 }
-MediaImage.defaultProps = {
-    size: 64
-}
