@@ -1,0 +1,30 @@
+{
+  "name": "reap-utils",
+  "version": "1.0.0",
+  "description": "",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/reap-ui/reap-utils.git"
+  },
+  "keywords": [
+    "util"
+  ],
+  "author": "xroah",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/reap-ui/reap-utils/issues"
+  },
+  "homepage": "https://github.com/reap-ui/reap-utils#readme",
+  "devDependencies": {
+    "@types/react": "^17.0.0",
+    "react": "^17.0.1",
+    "typescript": "^4.1.3"
+  },
+  "files": [
+    "lib"
+  ]
+}
