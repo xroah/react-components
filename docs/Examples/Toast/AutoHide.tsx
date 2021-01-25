@@ -1,7 +1,8 @@
 import * as React from "react"
 import {
     Toast, 
-    Button 
+    Button,
+    Image
 } from "reap-ui"
 import icon from "../../assets/toast.svg"
 
@@ -15,7 +16,7 @@ export default () => {
             <Button className="mb-3" onClick={show}>Show toast</Button>
             <Toast
                 title="Bootstrap"
-                icon={<Toast.Icon src={icon}/>}
+                icon={<Image src={icon}/>}
                 extra="just now"
                 onClose={hide}
                 visible={visible}
