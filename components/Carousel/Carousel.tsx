@@ -165,8 +165,7 @@ export default class Carousel extends React.Component<CarouselProps, CarouselSta
         //cycle
         if (index >= childrenLen) {
             index = 0
-        }
-        else if (index < 0) {
+        } else if (index < 0) {
             index = childrenLen - 1
         }
 
@@ -177,8 +176,7 @@ export default class Carousel extends React.Component<CarouselProps, CarouselSta
         //component just mount
         if (curIndex === -1) {
             this.dir = ""
-        }
-        else if (!this.dir) {
+        } else if (!this.dir) {
             this.dir = index > curIndex ? "next" : "prev"
         }
 
@@ -256,8 +254,7 @@ export default class Carousel extends React.Component<CarouselProps, CarouselSta
 
         if (distance < 0) {
             this.toNext()
-        }
-        else {
+        } else {
             this.toPrev()
         }
     }

@@ -26,8 +26,7 @@ export default class NoTransition extends React.Component<NoTransitionProps> {
                 this.componentDidUpdate({
                     in: false
                 } as any)
-            }
-            else {
+            } else {
                 handleFuncProp(onEntered)
             }
         }
@@ -52,8 +51,7 @@ export default class NoTransition extends React.Component<NoTransitionProps> {
             handleFuncProp(onEnter)(node)
             handleFuncProp(onEntering)(node)
             handleFuncProp(onEntered)(node)
-        }
-        else {
+        } else {
             handleFuncProp(onExit)(node)
             handleFuncProp(onExiting)(node)
             handleFuncProp(onExited)(node)

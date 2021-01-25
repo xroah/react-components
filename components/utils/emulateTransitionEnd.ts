@@ -20,7 +20,7 @@ export default (el: HTMLElement, handler: Function) => {
         el.removeEventListener("transitionend", _handler)
         clearTimeout(timer)
     }
-    
+
     function _handler(evt: TransitionEvent) {
 
         if (

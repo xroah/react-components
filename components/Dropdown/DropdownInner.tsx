@@ -206,8 +206,7 @@ export default class Dropdown extends React.Component<DropdownProps, DropdownSta
 
         if (key === "arrowup" && index > 0) {
             index--
-        }
-        else if (
+        } else if (
             (key === "arrowdown" || key === "tab") &&
             index < len - 1
         ) {

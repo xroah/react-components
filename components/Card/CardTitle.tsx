@@ -4,7 +4,7 @@ import {
     variantType,
     classNames,
     variantArray,
-    isUndef 
+    isUndef
 } from "../utils"
 import {CommonProps} from "../Common/CommonPropsInterface"
 

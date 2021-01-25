@@ -101,12 +101,10 @@ export default class Accordion extends React.Component<AccordionProps, Accordion
             })
             if (multiple) {
                 set = new Set<string>(activeKey)
-            }
-            else {
+            } else {
                 set.add(activeKey[0].toString())
             }
-        }
-        else if (!isUndef(keys)) {
+        } else if (!isUndef(keys)) {
             set.add(keys!.toString())
         }
 
@@ -136,11 +134,9 @@ export default class Accordion extends React.Component<AccordionProps, Accordion
 
         if (_activeKey.has(key)) {
             _activeKey.delete(key)
-        }
-        else if (multiple) {
+        } else if (multiple) {
             _activeKey.add(key)
-        }
-        else {
+        } else {
             _activeKey = new Set<string>([key])
         }
 

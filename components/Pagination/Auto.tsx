@@ -148,8 +148,7 @@ export default class AutoPagination extends React.Component<AutoPaginationProps,
 
         if (totalPages <= 10) {
             items = Array(totalPages).fill(0).map((item, i) => this.generateItem(i + 1))
-        }
-        else {
+        } else {
             //left ellipsis
             if (current >= totalPages - 4) {
                 items = [
@@ -157,15 +156,13 @@ export default class AutoPagination extends React.Component<AutoPaginationProps,
                     leftEllipsis,
                     ...Array(6).fill(0).map((item, i) => this.generateItem(i + totalPages - 5))
                 ]
-            }
-            else if (current <= 5) { //right ellipsis
+            } else if (current <= 5) { //right ellipsis
                 items = [
                     ...Array(6).fill(0).map((item, i) => this.generateItem(i + 1)),
                     rightEllipsis,
                     last
                 ]
-            }
-            else { // both ellipsis
+            } else { // both ellipsis
                 items = [
                     first,
                     leftEllipsis,

@@ -80,8 +80,7 @@ export default class Col extends React.Component<ColProps> {
 
         if (val === true) {
             return prefix
-        }
-        else if (val === "auto" || typeof val === "number") {
+        } else if (val === "auto" || typeof val === "number") {
             return `${prefix}-${val}`
         }
 

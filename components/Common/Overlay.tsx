@@ -45,8 +45,7 @@ export function handleDelay(delay?: number | DelayObject) {
     if (delay) {
         if (typeof delay === "number") {
             ret.show = ret.hide = delay
-        }
-        else {
+        } else {
             ret = delay
         }
     }
@@ -109,8 +108,7 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
 
         if (Array.isArray(trigger)) {
             actions = trigger
-        }
-        else {
+        } else {
             actions = [trigger]
         }
 

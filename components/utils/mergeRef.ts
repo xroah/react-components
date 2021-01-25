@@ -4,8 +4,7 @@ export default (...refs: React.Ref<any>[]) => {
             if (ref) {
                 if ("current" in ref) {
                     ref.current = node
-                }
-                else if (typeof ref === "function") {
+                } else if (typeof ref === "function") {
                     ref(node)
                 }
             }

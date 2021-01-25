@@ -40,8 +40,7 @@ export default class Popup extends React.Component<AlignProps> {
             if (!len) {
                 ret = [0, 0]
             }
-        }
-        else {
+        } else {
             ret = Array(2).fill(offset === undefined ? 0 : offset)
         }
 
@@ -73,8 +72,7 @@ export default class Popup extends React.Component<AlignProps> {
         if (el === body) {
             left = body.scrollLeft || html.scrollLeft
             top = body.scrollTop || html.scrollTop
-        }
-        else {
+        } else {
             left = el.scrollLeft
             top = el.scrollTop
         }
@@ -98,14 +96,12 @@ export default class Popup extends React.Component<AlignProps> {
 
         if (parent === el) {
             left = top = 0
-        }
-        else if (parent === document.body) {
+        } else if (parent === document.body) {
             left += elRect.left
             top += elRect.top
             rectLeft = left
             rectTop = top
-        }
-        else {
+        } else {
             //top and left offset relative to its parent
             rectLeft = elRect.left - parentRect.left
             rectTop = elRect.top - parentRect.top
@@ -259,8 +255,7 @@ export default class Popup extends React.Component<AlignProps> {
             if (verticalCenter) {
                 top += (targetHeight - childHeight) / 2
             }
-        }
-        else {
+        } else {
             //horizontal alignment
             switch (alignment) {
             case "center":
@@ -303,15 +298,13 @@ export default class Popup extends React.Component<AlignProps> {
 
         if (rectLeft < 0) {
             leftOffset = Math.abs(rectLeft)
-        }
-        else if (rightSpace > 0) {
+        } else if (rightSpace > 0) {
             leftOffset = -rightSpace
         }
 
         if (rectTop < 0) {
             topOffset = Math.abs(rectTop)
-        }
-        else if (bottomSpace > 0) {
+        } else if (bottomSpace > 0) {
             topOffset = -bottomSpace
         }
 

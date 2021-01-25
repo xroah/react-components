@@ -14,8 +14,7 @@ export default (fn: Function, timeout: number = 100) => {
 
             previous = now
             fn.apply(null, args)
-        }
-        else if (!timer) {
+        } else if (!timer) {
             timer = setTimeout(() => {
                 timer = null
                 fn.apply(null, args)

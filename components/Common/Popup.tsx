@@ -150,8 +150,7 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
 
         if (isArrowVertical) {
             arrowPos.top = nRect.top - cRect.top + nRect.height / 2
-        }
-        else {
+        } else {
             arrowPos.left = nRect.left - cRect.left + nRect.width / 2
         }
 

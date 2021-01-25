@@ -186,8 +186,7 @@ export default class Drawer extends React.Component<DrawerProps, DrawerState> {
 
         if (backdrop && backdrop !== "static") {
             handleFuncProp(onClose)()
-        }
-        else {
+        } else {
             this.focus()
         }
     }
@@ -275,8 +274,7 @@ export default class Drawer extends React.Component<DrawerProps, DrawerState> {
         if (placementProp === "left" || placementProp === "right") {
             style.width = width
             style.height = window.innerHeight
-        }
-        else {
+        } else {
             style.width = window.innerWidth
             style.height = height
         }

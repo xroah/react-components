@@ -70,5 +70,6 @@ const CustomControl = React.forwardRef(
 CustomControl.propTypes = {
     inline: PropTypes.bool
 }
+CustomControl.displayName = "CustomControl"
 
 export default CustomControl

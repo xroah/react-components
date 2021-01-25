@@ -9,7 +9,7 @@ import {
 import {CommonProps} from "../Common/CommonPropsInterface"
 import Label from "./Label"
 import Wrapper, {
-    handleFeedback, 
+    handleFeedback,
     handleHelp
 } from "./Wrapper"
 
@@ -69,8 +69,7 @@ export default function FormItem(props: FormItemProps) {
             if (!_for) {
                 _for = id
             }
-        }
-        else if (_for) {
+        } else if (_for) {
             id = _for
         }
 

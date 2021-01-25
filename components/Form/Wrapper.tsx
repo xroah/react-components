@@ -18,8 +18,7 @@ export function handleFeedback(
 
     if (tooltip) {
         className = valid ? "valid-tooltip" : "invalid-tooltip"
-    }
-    else {
+    } else {
         className = valid ? "valid-feedback" : "invalid-feedback"
     }
 

@@ -2,8 +2,8 @@ import * as React from "react"
 import {FormItemContext} from "../Common/contexts"
 import {getFeedbacks} from "./Wrapper"
 
-export default () => {
-    return <FormItemContext.Consumer>
+const FeedBack= () => (
+    <FormItemContext.Consumer>
         {
             ({
                 invalid,
@@ -12,4 +12,7 @@ export default () => {
             }) => getFeedbacks(valid, invalid, tooltip)
         }
     </FormItemContext.Consumer>
-}
+)
+FeedBack.displayName = "FeedBack"
+
+export default FeedBack

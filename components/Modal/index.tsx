@@ -21,13 +21,11 @@ const factory = (type: popupDialogType | "loading") =>
         if (isUndef(message)) {
             _options = options || {
             }
-        }
-        else if (typeof message === "object") {
+        } else if (typeof message === "object") {
             _options = {
                 ...message
             }
-        }
-        else {
+        } else {
             _options = {
                 message: String(message),
                 ...options
@@ -36,8 +34,7 @@ const factory = (type: popupDialogType | "loading") =>
 
         if (type === "loading") {
             modal = new LoadingDialog(_options)
-        }
-        else {
+        } else {
             modal = new PopupDialog(type, _options)
         }
 

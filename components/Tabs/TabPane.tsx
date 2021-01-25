@@ -55,7 +55,7 @@ export default function TabPane(props: TabPaneProps) {
                             )
                         } {...otherProps} />
                     )
-                    
+
                     return (
                         fade ?
                             <Fade {...transitionProps}>{pane}</Fade> :

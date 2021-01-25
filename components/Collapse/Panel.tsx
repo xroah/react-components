@@ -10,8 +10,8 @@ import {CommonProps} from "../Common/CommonPropsInterface"
 
 export interface PanelProps extends CommonProps<HTMLDivElement> {
     header: React.ReactNode
-    panelKey?: string | number 
-    onHeaderClick?: (key?: string, evt?: React.MouseEvent) => void 
+    panelKey?: string | number
+    onHeaderClick?: (key?: string, evt?: React.MouseEvent) => void
 }
 
 export default function AccordionPanel(props: PanelProps) {
@@ -36,7 +36,7 @@ export default function AccordionPanel(props: PanelProps) {
     return (
         <AccordionContext.Consumer>
             {
-                context => 
+                context =>
                     <div className={classNames(className, "card")} {...otherProps}>
                         <div
                             style={style}
@@ -48,7 +48,7 @@ export default function AccordionPanel(props: PanelProps) {
                             </div>
                         </Collapse>
                     </div>
-                
+
             }
         </AccordionContext.Consumer>
     )

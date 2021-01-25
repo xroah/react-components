@@ -32,8 +32,7 @@ export function handleArrowStyle(left: number, top: number, placement: any) {
 
     if (isVertical) {
         style.top = `${top}px`
-    }
-    else {
+    } else {
         style.left = `${left}px`
     }
 

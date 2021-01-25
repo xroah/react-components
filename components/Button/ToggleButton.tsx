@@ -82,5 +82,6 @@ ToggleButton.propTypes = {
 ToggleButton.defaultProps = {
     variant: "primary"
 }
+ToggleButton.displayName = "ToggleButton"
 
-export default ToggleButton 
+export default ToggleButton

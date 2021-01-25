@@ -10,12 +10,10 @@ export default function classNames(...args: any): string {
 
         if (argType === "string") {
             classes.push(arg)
-        }
-        else if (Array.isArray(arg)) {
+        } else if (Array.isArray(arg)) {
             const cls = classNames(...arg)
             cls && classes.push(cls)
-        }
-        else if (argType === "object") {
+        } else if (argType === "object") {
             Object.keys(arg).forEach(a => arg[a] && classes.push(a))
         }
     }

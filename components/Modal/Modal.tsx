@@ -121,8 +121,7 @@ export default class Modal extends React.Component<ModalProps, ModalState> {
 
         if (backdrop !== "static") {
             handleCancel(evt)
-        }
-        else {
+        } else {
             this.setState({
                 className: "modal-static"
             })
