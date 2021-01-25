@@ -1,0 +1,1 @@
+export default (v: any) => v === undefined || v === null
