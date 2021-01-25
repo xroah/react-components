@@ -82,14 +82,12 @@ export default () => (
             <H3 id={bodyId}>{bodyTitle}</H3>
             <div><LangMsg id="bodyDesc" /></div>
             <div className="bd-example">
-                <Card body>
-                    This is some text within a card body.
+                <Card>
+                    <Card.Body>This is some text within a card body.</Card.Body>
                 </Card>
                 <SyntaxHighlighter code={`<Card>
     <Card.Body>This is some text within a card body.</Card.Body>
 </Card>`} />
-                or
-                <SyntaxHighlighter code={"<Card body>This is some text within a card body.</Card>"} />
             </div>
             <H3 id={ttlId}>{ttlTitle}</H3>
             <DemoExample

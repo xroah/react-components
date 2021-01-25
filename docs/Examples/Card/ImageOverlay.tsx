@@ -19,17 +19,16 @@ const svg = (
 )
 
 export default () => (
-    <Card 
-        color="white" 
-        bg="dark" 
-        imageOverlay
-        image={svg}>
-        <Card.Title>Card title</Card.Title>
-        <Card.Text>
-            This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.
-        </Card.Text>
-        <Card.Text>
-            <small>Last updated 3 mins ago</small>
-        </Card.Text>
+    <Card color="white" bg="dark" >
+        <Card.Image img={svg} />
+        <Card.Body overlay>
+            <Card.Title>Card title</Card.Title>
+            <Card.Text>
+                This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.
+            </Card.Text>
+            <Card.Text>
+                <small>Last updated 3 mins ago</small>
+            </Card.Text>
+        </Card.Body>
     </Card>
 )

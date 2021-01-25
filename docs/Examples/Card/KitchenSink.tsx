@@ -7,9 +7,8 @@ import {
 import imageCap from "../../assets/image_cap.svg"
 
 export default () => (
-    <Card
-        image={<Image src={imageCap} />}
-        style={{width: "18rem"}}>
+    <Card style={{width: "18rem"}}>
+        <Card.Image src={imageCap} />
         <Card.Body>
             <Card.Title>Card title</Card.Title>
             Some quick example text to build on the card title and make up the bulk of the card's content.
