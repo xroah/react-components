@@ -1,3 +1,7 @@
+/node_modules
 /lib
-node_modules
+/es
+/.idea
+/.history
+/coverage
 .DS_Store
