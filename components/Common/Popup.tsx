@@ -3,7 +3,8 @@ import PropTypes from "prop-types"
 import {
     handleFuncProp,
     throttle,
-    reflow, mergeRef
+    reflow,
+    mergeRef
 } from "../utils"
 import Fade from "./Fade"
 import {PopupContext} from "./contexts"

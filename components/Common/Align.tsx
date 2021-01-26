@@ -17,7 +17,6 @@ export interface AlignProps extends CommonProps<HTMLElement> {
 }
 
 export default class Popup extends React.Component<AlignProps> {
-
     childRef = React.createRef<HTMLElement>()
 
     handleOffset(offset?: number | number[]) {
@@ -27,18 +26,14 @@ export default class Popup extends React.Component<AlignProps> {
             const len = offset.length
 
             switch (len) {
-            case 0:
-                ret = [0, 0]
-                break
-            case 1:
-                ret = Array(2).fill(offset[0])
-                break
-            default:
-                ret = offset.slice(0, 2)
-            }
-
-            if (!len) {
-                ret = [0, 0]
+                case 0:
+                    ret = [0, 0]
+                    break
+                case 1:
+                    ret = Array(2).fill(offset[0])
+                    break
+                default:
+                    ret = offset.slice(0, 2)
             }
         } else {
             ret = Array(2).fill(offset === undefined ? 0 : offset)
@@ -51,16 +46,19 @@ export default class Popup extends React.Component<AlignProps> {
     getPositionedParent(el: HTMLElement) {
         const body = document.body
         let parent = el
+        let ret = body
 
         while ((parent = parent.parentNode as HTMLElement) && parent !== body) {
             const pos = getComputedStyle(parent).getPropertyValue("position")
 
             if (pos !== "static") {
-                return parent
+                ret = parent
+
+                break
             }
         }
 
-        return body
+        return ret
     }
 
     getScrollOffset(el: HTMLElement) {
@@ -258,13 +256,13 @@ export default class Popup extends React.Component<AlignProps> {
         } else {
             //horizontal alignment
             switch (alignment) {
-            case "center":
-                left += (targetWidth - childWidth) / 2
-                break
-            case "right":
-                left += targetWidth - childWidth
-                break
-            default:
+                case "center":
+                    left += (targetWidth - childWidth) / 2
+                    break
+                case "right":
+                    left += targetWidth - childWidth
+                    break
+                default:
             }
         }
 

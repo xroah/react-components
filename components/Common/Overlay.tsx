@@ -46,7 +46,8 @@ export function handleDelay(delay?: number | DelayObject) {
         if (typeof delay === "number") {
             ret.show = ret.hide = delay
         } else {
-            ret = delay
+            ret.show = delay.show || 0
+            ret.hide = delay.hide || 0
         }
     }
 
@@ -54,7 +55,6 @@ export function handleDelay(delay?: number | DelayObject) {
 }
 
 export default class Overlay extends React.Component<OverlayProps, OverlayState> {
-
     private timer: any
     private delayTimer: NodeJS.Timeout | null = null
 
