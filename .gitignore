@@ -1,0 +1,7 @@
+/node_modules
+/lib
+/es
+/.idea
+/.history
+/coverage
+.DS_Store
