@@ -26,7 +26,8 @@
     "typescript": "^4.1.3"
   },
   "files": [
-    "lib"
+    "lib",
+	"es"
   ],
   "dependencies": {
     "react": "^17.0.1"
