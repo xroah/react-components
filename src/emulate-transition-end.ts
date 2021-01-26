@@ -20,9 +20,7 @@ export default (el: HTMLElement, handler: Function) => {
         el.removeEventListener("transitionend", _handler)
         clearTimeout(timer)
     }
-
-    function _handler(evt: TransitionEvent) {
-
+    const _handler = (evt: TransitionEvent) => {
         if (
             called ||
             // if children set transition, the event will be triggered
