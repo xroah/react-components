@@ -1,5 +1,6 @@
 export default (el: HTMLElement, until: HTMLElement = document.body) => {
     let parent: HTMLElement = el
+    let ret: HTMLElement | null = null
 
     while ((parent = parent.parentNode as HTMLElement) && until !== parent) {
         const w = parent.clientWidth
@@ -19,8 +20,12 @@ export default (el: HTMLElement, until: HTMLElement = document.body) => {
                 overflowY !== "visible"
             )
         ) {
-            return parent
+            ret = parent
         }
+    }
+
+    if (!ret) {
+        ret = until
     }
 
     return until
