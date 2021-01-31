@@ -1,6 +1,6 @@
 {
   "name": "reap-utils",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "main": "lib/index.js",
   "scripts": {
@@ -27,7 +27,7 @@
   },
   "files": [
     "lib",
-	"es"
+    "es"
   ],
   "dependencies": {
     "react": "^17.0.1"
