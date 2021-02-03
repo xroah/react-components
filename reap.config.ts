@@ -1,6 +1,6 @@
 const path = require("path")
 
-module.exports = {
+export default {
     webpack: {
         entry: "./docs/index.tsx",
         resolve: {
