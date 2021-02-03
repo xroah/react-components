@@ -2,7 +2,6 @@
   "name": "reap-utils",
   "version": "1.0.1",
   "description": "",
-  "main": "lib/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "reap-scripts rm lib es && reap-scripts tsc --lib --es -d"
