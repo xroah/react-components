@@ -12,7 +12,8 @@ export default (el: HTMLElement, handler: Function) => {
     let timer: any = null
     const DELAY = 10
     const duration = getTransitionDuration(el) * 1000
-    const cancel = () => {
+
+    function cancel() {
         if (called) {
             return
         }
@@ -20,7 +21,8 @@ export default (el: HTMLElement, handler: Function) => {
         el.removeEventListener("transitionend", _handler)
         clearTimeout(timer)
     }
-    const _handler = (evt: TransitionEvent) => {
+
+    function _handler(evt: TransitionEvent) {
         if (
             called ||
             // if children set transition, the event will be triggered
