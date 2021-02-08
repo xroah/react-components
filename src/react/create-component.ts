@@ -4,7 +4,7 @@ import classNames from "../class-names"
 interface CreateProps {
     className?: string
     tag?: string
-    displayName?: string
+    displayName: string
 }
 
 export default (options: CreateProps) => {
@@ -28,9 +28,7 @@ export default (options: CreateProps) => {
         )
     }
 
-    if (displayName) {
-        Component.displayName = displayName
-    }
+    Component.displayName = displayName
 
     return Component
 }
