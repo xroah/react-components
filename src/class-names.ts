@@ -1,3 +1,5 @@
+import isPlainObject from "./is-plain-object"
+
 export default function classNames(...args: any): string {
     const classes = []
 
@@ -11,10 +13,19 @@ export default function classNames(...args: any): string {
         if (argType === "string") {
             classes.push(arg)
         } else if (Array.isArray(arg)) {
-            const cls = classNames(...arg)
-            cls && classes.push(cls)
-        } else if (argType === "object") {
-            Object.keys(arg).forEach(a => arg[a] && classes.push(a))
+            classes.push(classNames(...arg))
+        } else if (isPlainObject(arg)) {
+            Object.keys(arg).forEach(
+                a => {
+                    const v = arg[a]
+
+                    if (v) {
+                        classes.push(classNames(v))
+                    }
+                }
+            )
+        } else if (argType === "function") {
+            classes.push(classNames(arg()))
         }
     }
 
