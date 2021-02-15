@@ -28,7 +28,7 @@ export default (fn: Function, delay: number = 100, options: Options = {}) => {
             timer = setTimeout(() => {
                 timer = null
                 fn.apply(null, args)
-            }, delay)
+            }, remaining)
         }
     }
 
