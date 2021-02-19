@@ -1,9 +1,7 @@
 import * as React from "react"
-import {
-    mergeRef,
-    omit
-} from "reap-utils"
-import getScrollParent from "reap-utils/lib/get-scroll-parent"
+import omit from "reap-utils/lib/omit"
+import mergeRef from "reap-utils/lib/react/merge-ref"
+import getScrollParent from "reap-utils/lib/dom/get-scroll-parent"
 
 export type position = "top" | "right" | "bottom" | "left"
 

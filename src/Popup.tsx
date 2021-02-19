@@ -1,17 +1,15 @@
 import * as React from "react"
 import PropTypes from "prop-types"
-import {
-    handleFuncProp,
-    throttle,
-    reflow,
-    mergeRef,
-    omit
-} from "reap-utils"
+import handleFuncProp from "reap-utils/lib/react/handle-func-prop"
+import throttle from "reap-utils/lib/throttle"
+import reflow from "reap-utils/lib/dom/reflow"
+import mergeRef from "reap-utils/lib/react/merge-ref"
+import omit from "reap-utils/lib/omit"
 import Fade from "./Fade"
 import {PopupContext} from "./contexts"
 import NoTransition from "reap-transition/lib/NoTransition"
 import Align from "./Align"
-import Portal from "./Portal"
+import Portal from "reap-utils/lib/react/portal"
 
 export type position = "top" | "right" | "bottom" | "left"
 

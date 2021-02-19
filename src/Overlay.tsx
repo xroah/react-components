@@ -1,9 +1,7 @@
 import * as React from "react"
-import {
-    chainFunction,
-    isUndef,
-    omit
-} from "reap-utils"
+import omit from "reap-utils/lib/omit"
+import chainFunction from "reap-utils/lib/chain-function"
+import isUndef from "reap-utils/lib/is-undef"
 import Popup, {
     PopupCommonProps,
     PopupProps

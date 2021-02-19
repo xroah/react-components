@@ -1,6 +1,6 @@
 import * as React from "react"
 import CSSTransition, {CSSTransitionProps} from "reap-transition/lib/CSSTransition"
-import {classNames} from "reap-utils"
+import classNames from "reap-utils/lib/class-names"
 
 export default function Fade(props: CSSTransitionProps) {
     const {
