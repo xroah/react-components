@@ -3,7 +3,7 @@
   "version": "1.0.1",
   "description": "",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "reap-scripts test --coverage",
     "build": "reap-scripts rm lib es && reap-scripts tsc --lib --es -d"
   },
   "repository": {
