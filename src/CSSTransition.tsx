@@ -1,7 +1,6 @@
 import * as React from "react"
 import {findDOMNode} from "react-dom"
 import {handleFuncProp, omit} from "reap-utils"
-
 const ENTER = "enter"
 const ENTERING = "entering"
 const ENTERED = "entered"
@@ -32,7 +31,7 @@ interface State {
 
 export default class CSSTransition extends React.Component<CSSTransitionProps, State> {
     timer: NodeJS.Timeout | null = null
-    nextTimer: NodeJS.Timeout | null = null
+    nextTimer: number | null = null
     next: Function | null = null
 
     constructor(props: CSSTransitionProps) {
@@ -89,7 +88,7 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
             status = _in ? ENTER : EXIT
 
             this.clearTimer()
-            this.clearNext()
+            this.clear()
             this.updateStatus(status as stateType)
         } else if (next) {
             this.nextTick(next)
@@ -98,7 +97,7 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
 
     componentWillUnmount() {
         this.clearTimer()
-        this.clearNext()
+        this.clear()
     }
 
     //in case findDOMNode returns null
@@ -115,6 +114,7 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
     clearTimer() {
         if (this.timer !== null) {
             clearTimeout(this.timer)
+
             this.timer = null
         }
     }
@@ -124,17 +124,15 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
             return callback()
         }
 
-        this.nextTimer = setTimeout(
-            this.safeCallback(callback),
-            20
-        )
+        this.nextTimer = requestAnimationFrame(this.safeCallback(callback))
     }
 
-    clearNext() {
+    clear() {
         this.next = null
 
         if (this.nextTimer !== null) {
-            clearTimeout(this.nextTimer)
+            cancelAnimationFrame(this.nextTimer)
+
             this.nextTimer = null
         }
     }
