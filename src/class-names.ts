@@ -1,33 +1,38 @@
 import isPlainObject from "./is-plain-object"
 
-export default function classNames(...args: any): string {
+function _classNames(...args: any[]): string[] {
     const classes = []
 
     for (const arg of args) {
-        if (!arg) {
+        if (!arg && arg !== 0) {
             continue
         }
 
         const argType = typeof arg
 
-        if (argType === "string") {
-            classes.push(arg)
+        if (argType === "string" || argType === "number") {
+            classes.push(arg.toString())
         } else if (Array.isArray(arg)) {
-            classes.push(classNames(...arg))
+            classes.push(..._classNames(...arg))
         } else if (isPlainObject(arg)) {
             Object.keys(arg).forEach(
                 a => {
                     const v = arg[a]
 
                     if (v) {
-                        classes.push(classNames(v))
+                        classes.push(..._classNames(a))
                     }
                 }
             )
         } else if (argType === "function") {
-            classes.push(classNames(arg()))
+            classes.push(..._classNames(arg()))
         }
     }
 
-    return classes.join(" ")
+    return classes
+}
+
+export default function classNames(...args: any[]): string {
+    //unique
+    return Array.from(new Set(_classNames(...args))).join(" ")
 }
