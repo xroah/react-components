@@ -4,24 +4,24 @@ const CLS1 = "class-name1"
 const CLS2 = "class-name2"
 const CLS3 = "class-name3"
 
-test("Should be empty string", () => {
+it("Should be empty string", () => {
     expect(classNames()).toBe("")
     expect(classNames("", null, false, true)).toBe("")
 })
 
-test("Should 0 be '0'", () => {
+it("Should 0 be '0'", () => {
     expect(classNames(0)).toBe("0")
 })
 
-test("Should string be correct", () => {
+it("Should string be correct", () => {
     expect(classNames(CLS1, CLS2)).toBe(`${CLS1} ${CLS2}`)
 })
 
-test("Should array be correct", () => {
+it("Should array be correct", () => {
     expect(classNames(CLS1, [CLS2, CLS3, ""])).toBe(`${CLS1} ${CLS2} ${CLS3}`)
 })
 
-test("Should object be correct", () => {
+it("Should object be correct", () => {
     expect(
         classNames({
             [CLS1]: true,
@@ -31,11 +31,11 @@ test("Should object be correct", () => {
     ).toBe(`${CLS1} ${CLS3}`)
 })
 
-test("Should function be correct", () => {
+it("Should function be correct", () => {
     expect(classNames(CLS1, () => CLS2)).toBe(`${CLS1} ${CLS2}`)
 })
 
-test("Should be unique", () => {
+it("Should be unique", () => {
     expect(
         classNames(
             CLS1,
