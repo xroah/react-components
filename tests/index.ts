@@ -18,14 +18,23 @@ const cfg: ConfigOptions = {
     },
     files: [
         "src/**/*.ts?(x)",
-        "tests/**/*.spec.ts"
+        "tests/**/*.spec.ts?(x)"
+    ],
+    exclude: [
+        "**/*.d.ts"
     ],
     preprocessors: {
-        "src/**/*.ts?(x)": "coverage",
-        "**/*.ts?(x)": "karma-typescript"
+        "tests/**/*.ts?(x)": "karma-typescript",
+        "src/**/*.ts?(x)": ["karma-typescript", "coverage"]
     }
 } as ConfigOptions
 
-const server = new Server(cfg)
+const server = new Server(
+    cfg,
+    exitCode => {
+        console.log(`Karma has exited with ${exitCode}`)
+        process.exit(exitCode)
+    }
+)
 
 server.start()
