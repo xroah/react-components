@@ -1,4 +1,4 @@
-export default (...fn: any[]) => {
+export default (...fn: Function[]) => {
     return fn.reduce(
         (acc, cur) => (...args: any[]) => {
             acc.apply(null, args)
