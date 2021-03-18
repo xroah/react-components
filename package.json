@@ -11,7 +11,9 @@
     "url": "git+https://github.com/reap-ui/reap-utils.git"
   },
   "keywords": [
-    "util"
+    "util",
+    "javascript",
+    "react"
   ],
   "author": "xroah",
   "license": "MIT",
