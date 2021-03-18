@@ -1,4 +1,4 @@
-import chainFunction from "../src/chain-function"
+import chainFunction from "../../src/chain-function"
 
 it("Should all functions be called", () => {
     const fn1 = jasmine.createSpy()

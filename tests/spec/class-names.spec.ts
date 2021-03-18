@@ -1,4 +1,4 @@
-import classNames from "../src/class-names"
+import classNames from "../../src/class-names"
 
 const CLS1 = "class-name1"
 const CLS2 = "class-name2"
