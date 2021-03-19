@@ -1,6 +1,8 @@
 import * as React from "react"
 import {findDOMNode} from "react-dom"
-import {handleFuncProp, omit} from "reap-utils"
+import handleFuncProp from "reap-utils/lib/react/handle-func-prop"
+import omit from "reap-utils/lib/omit"
+
 const ENTER = "enter"
 const ENTERING = "entering"
 const ENTERED = "entered"
@@ -251,7 +253,7 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
             ...otherProps
         } = this.props
 
-        omit(
+        const restProps = omit(
             otherProps,
             [
                 "in",
@@ -272,6 +274,6 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
 
         const child = React.Children.only(children) as React.ReactElement
 
-        return React.cloneElement(child, otherProps)
+        return React.cloneElement(child, restProps)
     }
 }
