@@ -1,11 +1,12 @@
 import * as React from "react"
-import {
-    handleFuncProp,
-    classNames,
-    omit
-} from "reap-utils"
+import classNames from "reap-utils/lib/class-names"
+import handleFuncProp from "reap-utils/lib/react/handle-func-prop"
 import {findDOMNode} from "react-dom"
-import {CSSTransitionProps} from "./CSSTransition"
+import {
+    CSSTransitionProps,
+    ENTERED,
+    EXITED
+} from "./CSSTransition"
 
 //compatible with CSSTransition(some components animation is configurable)
 export interface NoTransitionProps extends CSSTransitionProps {
@@ -62,8 +63,7 @@ export default class NoTransition extends React.Component<NoTransitionProps> {
             children,
             in: _in,
             unmountOnExit,
-            visibleClass,
-            ...otherProps
+            visibleClass
         } = this.props
         const child = React.Children.only(children) as React.ReactElement
 
@@ -72,23 +72,13 @@ export default class NoTransition extends React.Component<NoTransitionProps> {
         }
 
         if (typeof children === "function") {
-            return children(undefined as any)
+            return children(_in ? ENTERED : EXITED)
         }
-
-        omit(
-            otherProps,
-            [
-                "onEnter",
-                "onEntered",
-                "onExit",
-                "onExited"
-            ]
-        )
 
         return React.cloneElement(
             child,
             {
-                className: classNames((child.props as any).className, visibleClass)
+                className: classNames(child.props.className, visibleClass)
             }
         )
     }
