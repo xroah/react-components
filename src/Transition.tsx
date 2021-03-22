@@ -13,11 +13,10 @@ export const UNMOUNTED = "unmounted"
 
 type stateType = "enter" | "entering" | "entered" | "exit" | "exiting" | "exited"
 
-export interface CSSTransitionProps {
+export interface TransitionProps {
     in: boolean
     timeout?: number
     unmountOnExit?: boolean
-    invisibleOnExit?: boolean
     appear?: boolean
     children: ((state: stateType) => React.ReactElement) | React.ReactElement
     onEnter?: (node: HTMLElement) => void
@@ -30,15 +29,14 @@ export interface CSSTransitionProps {
 
 interface State {
     status: stateType | "unmounted"
-    display?: string
 }
 
-export default class CSSTransition extends React.Component<CSSTransitionProps, State> {
+export default class CSSTransition extends React.Component<TransitionProps, State> {
     timer: any = null
     nextTimer: any = null
     next: Function | null = null
 
-    constructor(props: CSSTransitionProps) {
+    constructor(props: TransitionProps) {
         super(props)
 
         const {
@@ -55,8 +53,7 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
         }
 
         this.state = {
-            status: status as stateType,
-            display: status === EXITED ? "none" : ""
+            status: status as stateType
         }
     }
 
@@ -71,14 +68,14 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
             if (appear) {
                 this.componentDidUpdate({
                     in: false
-                } as CSSTransitionProps)
+                } as TransitionProps)
             } else {
                 handleFuncProp(onEntered)(findDOMNode(this))
             }
         }
     }
 
-    componentDidUpdate(prevProps: CSSTransitionProps) {
+    componentDidUpdate(prevProps: TransitionProps) {
         let {
             props: {
                 in: _in
@@ -106,7 +103,7 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
     }
 
     //in case findDOMNode returns null
-    static getDerivedStateFromProps(nextProps: CSSTransitionProps, nextState: State) {
+    static getDerivedStateFromProps(nextProps: TransitionProps, nextState: State) {
         if (nextProps.in && nextState.status === UNMOUNTED) {
             return {
                 status: EXITED
@@ -194,8 +191,7 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
             onExiting,
             onExited,
             timeout,
-            unmountOnExit,
-            invisibleOnExit
+            unmountOnExit
         } = this.props
         const unmount = () => {
             this.next = null
@@ -207,8 +203,7 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
         const exitedCallback = () => {
             this.setState(
                 {
-                    status: EXITED,
-                    display: invisibleOnExit ? "none" : ""
+                    status: EXITED
                 }
             )
             handleFuncProp(onExited)(node)
@@ -233,8 +228,7 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
         const node = findDOMNode(this) as HTMLElement
 
         this.setState({
-            status,
-            display: ""
+            status
         })
 
         if (status === ENTER) {
@@ -248,10 +242,9 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
 
     render() {
         const {
-            status,
-            display
+            status
         } = this.state
-        
+
         if (status === UNMOUNTED) {
             return null
         }
@@ -273,36 +266,16 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
                 "onExit",
                 "onExiting",
                 "onExited",
-                "invisibleOnExit",
                 "unmountOnExit"
             ]
         )
 
         if (typeof children === "function") {
-            const child = children(status) as React.ReactElement
-
-            return React.cloneElement(
-                child,
-                {
-                    style: {
-                        ...child.props.style,
-                        display
-                    }
-                }
-            )
+            return children(status)
         }
 
         const child = React.Children.only(children) as React.ReactElement
 
-        return React.cloneElement(
-            child,
-            {
-                ...restProps,
-                style: {
-                    ...child.props.style,
-                    display
-                }
-            }
-        )
+        return React.cloneElement(child, restProps)
     }
 }

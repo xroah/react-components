@@ -1,8 +1,18 @@
 import * as React from "react"
-import CSSTransition, {CSSTransitionProps} from "./CSSTransition"
+import Transition,
+{
+    ENTERED,
+    ENTERING,
+    EXITED,
+    TransitionProps
+} from "./Transition"
 import classNames from "reap-utils/lib/class-names"
 
-export default function Fade(props: CSSTransitionProps) {
+export interface FadeProps extends TransitionProps {
+    invisibleOnExit?: Boolean
+}
+
+export default function Fade(props: FadeProps) {
     const {
         children,
         timeout,
@@ -22,7 +32,6 @@ export default function Fade(props: CSSTransitionProps) {
         timeout,
         in: _in,
         unmountOnExit,
-        invisibleOnExit,
         appear,
         onEnter,
         onEntering,
@@ -33,32 +42,39 @@ export default function Fade(props: CSSTransitionProps) {
     }
 
     return (
-        <CSSTransition {...transitionProps}>
+        <Transition {...transitionProps}>
             {
                 state => {
                     const child = React.Children.only(children) as React.ReactElement
+                    const {style = {}} = child.props
+                    let display = style.display || ""
                     let classes = classNames(
                         child.props.className,
                         "fade"
                     )
-                    const enterSet = new Set(["enter", "entering", "entered"])
 
-                    if (enterSet.has(state)) {
-                        if (state !== "enter") {
-                            classes = classNames(classes, "show")
-                        }
+                    if (state === EXITED && invisibleOnExit) {
+                        display = "none"
+                    }
+
+                    if (state === ENTERING || state === ENTERED) {
+                        classes = classNames(classes, "show")
                     }
 
                     return React.cloneElement(
                         child,
                         {
                             className: classes,
-                            ...otherProps
+                            ...otherProps,
+                            style: {
+                                ...style,
+                                display
+                            }
                         }
                     )
                 }
             }
-        </CSSTransition>
+        </Transition>
     )
 }
 

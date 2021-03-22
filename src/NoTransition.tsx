@@ -3,13 +3,13 @@ import classNames from "reap-utils/lib/class-names"
 import handleFuncProp from "reap-utils/lib/react/handle-func-prop"
 import {findDOMNode} from "react-dom"
 import {
-    CSSTransitionProps,
+    TransitionProps,
     ENTERED,
     EXITED
-} from "./CSSTransition"
+} from "./Transition"
 
 //compatible with CSSTransition(some components animation is configurable)
-export interface NoTransitionProps extends CSSTransitionProps {
+export interface NoTransitionProps extends TransitionProps {
     visibleClass?: string
 }
 
