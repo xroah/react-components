@@ -17,6 +17,7 @@ export interface CSSTransitionProps {
     in: boolean
     timeout?: number
     unmountOnExit?: boolean
+    invisibleOnExit?: boolean
     appear?: boolean
     children: ((state: stateType) => React.ReactElement) | React.ReactElement
     onEnter?: (node: HTMLElement) => void
@@ -29,11 +30,12 @@ export interface CSSTransitionProps {
 
 interface State {
     status: stateType | "unmounted"
+    display?: string
 }
 
 export default class CSSTransition extends React.Component<CSSTransitionProps, State> {
-    timer: NodeJS.Timeout | null = null
-    nextTimer: number | null = null
+    timer: any = null
+    nextTimer: any = null
     next: Function | null = null
 
     constructor(props: CSSTransitionProps) {
@@ -53,7 +55,8 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
         }
 
         this.state = {
-            status: status as stateType
+            status: status as stateType,
+            display: status === EXITED ? "none" : ""
         }
     }
 
@@ -126,14 +129,14 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
             return callback()
         }
 
-        this.nextTimer = requestAnimationFrame(this.safeCallback(callback))
+        this.nextTimer = setTimeout(this.safeCallback(callback), 20)
     }
 
     clear() {
         this.next = null
 
         if (this.nextTimer !== null) {
-            cancelAnimationFrame(this.nextTimer)
+            clearTimeout(this.nextTimer)
 
             this.nextTimer = null
         }
@@ -191,7 +194,8 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
             onExiting,
             onExited,
             timeout,
-            unmountOnExit
+            unmountOnExit,
+            invisibleOnExit
         } = this.props
         const unmount = () => {
             this.next = null
@@ -203,7 +207,8 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
         const exitedCallback = () => {
             this.setState(
                 {
-                    status: EXITED
+                    status: EXITED,
+                    display: invisibleOnExit ? "none" : ""
                 }
             )
             handleFuncProp(onExited)(node)
@@ -222,12 +227,14 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
 
     updateStatus(status: stateType) {
         const {
-            onEnter, onExit
+            onEnter,
+            onExit
         } = this.props
         const node = findDOMNode(this) as HTMLElement
 
         this.setState({
-            status
+            status,
+            display: ""
         })
 
         if (status === ENTER) {
@@ -241,9 +248,10 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
 
     render() {
         const {
-            status
+            status,
+            display
         } = this.state
-
+        
         if (status === UNMOUNTED) {
             return null
         }
@@ -264,16 +272,37 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
                 "onEntered",
                 "onExit",
                 "onExiting",
-                "onExited"
+                "onExited",
+                "invisibleOnExit",
+                "unmountOnExit"
             ]
         )
 
         if (typeof children === "function") {
-            return children(status)
+            const child = children(status) as React.ReactElement
+
+            return React.cloneElement(
+                child,
+                {
+                    style: {
+                        ...child.props.style,
+                        display
+                    }
+                }
+            )
         }
 
         const child = React.Children.only(children) as React.ReactElement
 
-        return React.cloneElement(child, restProps)
+        return React.cloneElement(
+            child,
+            {
+                ...restProps,
+                style: {
+                    ...child.props.style,
+                    display
+                }
+            }
+        )
     }
 }
