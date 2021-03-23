@@ -86,7 +86,8 @@ Fade.defaultProps = {
     timeout: 150,
     activeClass: "show",
     transitionClass: "fade",
-    tag: "div"
+    tag: "div",
+    invisibleOnExit: true
 }
 
 Fade.propTypes = {
