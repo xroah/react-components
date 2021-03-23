@@ -13,7 +13,6 @@ export interface FadeProps extends TransitionProps {
     invisibleOnExit?: Boolean
     transitionClass?: string
     activeClass?: string
-    tag?: React.ElementType
 }
 
 export default function Fade(props: FadeProps) {
@@ -30,10 +29,8 @@ export default function Fade(props: FadeProps) {
         onExit,
         onExiting,
         onExited,
-        tag,
         transitionClass,
-        activeClass,
-        ...otherProps
+        activeClass
     } = props
     const transitionProps = {
         timeout,
@@ -53,7 +50,7 @@ export default function Fade(props: FadeProps) {
             {
                 state => {
                     const child = React.Children.only(children) as React.ReactElement
-                    const style: React.CSSProperties = {display: ""}
+                    const {style = {}} = child.props
                     let classes = classNames(
                         child.props.className,
                         transitionClass
@@ -66,14 +63,12 @@ export default function Fade(props: FadeProps) {
                     if (state === ENTERING || state === ENTERED) {
                         classes = classNames(classes, activeClass)
                     }
-
-                    return React.createElement(
-                        tag as React.ElementType,
+                    
+                    return React.cloneElement(
+                        child,
                         {
                             className: classes,
-                            style,
-                            children: child,
-                            ...otherProps
+                            style
                         }
                     )
                 }
@@ -86,13 +81,11 @@ Fade.defaultProps = {
     timeout: 150,
     activeClass: "show",
     transitionClass: "fade",
-    tag: "div",
     invisibleOnExit: true
 }
 
 Fade.propTypes = {
     invisibleOnExit: PropTypes.bool,
     transitionClass: PropTypes.string,
-    activeClass: PropTypes.string,
-    tag: PropTypes.elementType
+    activeClass: PropTypes.string
 }
