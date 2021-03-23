@@ -10,6 +10,8 @@ import classNames from "reap-utils/lib/class-names"
 
 export interface FadeProps extends TransitionProps {
     invisibleOnExit?: Boolean
+    transitionClass?: string
+    activeClass?: string
 }
 
 export default function Fade(props: FadeProps) {
