@@ -7,11 +7,13 @@ import Transition,
     TransitionProps
 } from "./Transition"
 import classNames from "reap-utils/lib/class-names"
+import PropTypes from "prop-types"
 
 export interface FadeProps extends TransitionProps {
     invisibleOnExit?: Boolean
     transitionClass?: string
     activeClass?: string
+    tag?: React.ElementType
 }
 
 export default function Fade(props: FadeProps) {
@@ -28,6 +30,9 @@ export default function Fade(props: FadeProps) {
         onExit,
         onExiting,
         onExited,
+        tag,
+        transitionClass,
+        activeClass,
         ...otherProps
     } = props
     const transitionProps = {
@@ -48,30 +53,27 @@ export default function Fade(props: FadeProps) {
             {
                 state => {
                     const child = React.Children.only(children) as React.ReactElement
-                    const {style = {}} = child.props
-                    let display = style.display || ""
+                    const style: React.CSSProperties = {display: ""}
                     let classes = classNames(
                         child.props.className,
-                        "fade"
+                        transitionClass
                     )
 
                     if (state === EXITED && invisibleOnExit) {
-                        display = "none"
+                        style.display = "none"
                     }
 
                     if (state === ENTERING || state === ENTERED) {
-                        classes = classNames(classes, "show")
+                        classes = classNames(classes, activeClass)
                     }
 
-                    return React.cloneElement(
-                        child,
+                    return React.createElement(
+                        tag as React.ElementType,
                         {
                             className: classes,
-                            ...otherProps,
-                            style: {
-                                ...style,
-                                display
-                            }
+                            style,
+                            children: child,
+                            ...otherProps
                         }
                     )
                 }
@@ -81,5 +83,15 @@ export default function Fade(props: FadeProps) {
 }
 
 Fade.defaultProps = {
-    timeout: 150
+    timeout: 150,
+    activeClass: "show",
+    transitionClass: "fade",
+    tag: "div"
+}
+
+Fade.propTypes = {
+    invisibleOnExit: PropTypes.bool,
+    transitionClass: PropTypes.string,
+    activeClass: PropTypes.string,
+    tag: PropTypes.elementType
 }
