@@ -11,7 +11,8 @@ export default function () {
             <button onClick={handleClick}>toggle</button>
             <Fade 
             in={visible} 
-            onEnter={node => console.log(node)}>
+            onEnter={node => console.log(node)}
+            onEntering={() => console.log("entering")}>
                 <div className="div">Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat, labore maiores expedita at magnam perspiciatis consequuntur architecto voluptas quo quos eum repellendus repellat rerum officia accusamus odio nesciunt consectetur. Dignissimos.</div>
             </Fade>
         </>

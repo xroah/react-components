@@ -184,12 +184,13 @@ export default class Transition extends React.Component<TransitionProps, State> 
         this.timer = setTimeout(this.safeCallback(callback), timeout)
     }
 
-    handleEnter(node: HTMLElement | null) {
+    handleEnter() {
         const {
             onEntering,
             onEntered,
             timeout = 0
         } = this.props
+        const node = getNode(this.ref)
         const enteredCallback = () => {
             this.setState({
                 status: ENTERED
@@ -208,13 +209,14 @@ export default class Transition extends React.Component<TransitionProps, State> 
         handleFuncProp(onEntering)(node)
     }
 
-    handleExit(node: HTMLElement | null) {
+    handleExit() {
         const {
             onExiting,
             onExited,
             timeout,
             unmountOnExit
         } = this.props
+        const node = getNode(this.ref)
         const unmount = () => {
             this.next = null
 
@@ -247,18 +249,19 @@ export default class Transition extends React.Component<TransitionProps, State> 
             onEnter,
             onExit
         } = this.props
-        const node = getNode(this.ref)
 
-        this.setState({
-            status
-        })
+        this.setState(
+            {status},
+            () => handleFuncProp(
+                status === ENTER ? onEnter :
+                    status === EXIT ? onExit : undefined
+            )(getNode(this.ref))
+        )
 
         if (status === ENTER) {
-            this.next = () => this.handleEnter(node)
-            handleFuncProp(onEnter)(node)
+            this.next = () => this.handleEnter()
         } else if (status === EXIT) {
-            this.next = () => this.handleExit(node)
-            handleFuncProp(onExit)(node)
+            this.next = () => this.handleExit()
         }
     }
 
@@ -311,7 +314,7 @@ export default class Transition extends React.Component<TransitionProps, State> 
         return (
             <>
                 {/* div: for finding the node */}
-                <Placeholder ref={this.ref}/>
+                <Placeholder ref={this.ref} />
                 {el}
             </>
         )
