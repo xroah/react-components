@@ -2,6 +2,7 @@ import * as React from "react"
 import {findDOMNode} from "react-dom"
 import handleFuncProp from "reap-utils/lib/react/handle-func-prop"
 import omit from "reap-utils/lib/omit"
+import PropTypes from "prop-types"
 
 export const ENTER = "enter"
 export const ENTERING = "entering"
@@ -31,10 +32,28 @@ interface State {
     status: stateType | "unmounted"
 }
 
+export const propTypes = {
+    in: PropTypes.bool,
+    timeout: PropTypes.number,
+    unmountOnExit: PropTypes.bool,
+    appear: PropTypes.bool,
+    children: PropTypes.oneOf([PropTypes.func, PropTypes.element]),
+    onEnter: PropTypes.func,
+    onEntering: PropTypes.func,
+    onEntered: PropTypes.func,
+    onExit: PropTypes.func,
+    onExiting: PropTypes.func,
+    onExited: PropTypes.func,
+}
+
 export default class CSSTransition extends React.Component<TransitionProps, State> {
     timer: any = null
     nextTimer: any = null
     next: Function | null = null
+
+    static propTypes = {
+        ...propTypes
+    }
 
     constructor(props: TransitionProps) {
         super(props)

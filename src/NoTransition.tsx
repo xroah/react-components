@@ -5,15 +5,22 @@ import {findDOMNode} from "react-dom"
 import {
     TransitionProps,
     ENTERED,
-    EXITED
+    EXITED,
+    propTypes
 } from "./Transition"
+import PropTypes from "prop-types"
 
-//compatible with CSSTransition(some components animation is configurable)
+//compatible with Transition(some components animation is configurable)
 export interface NoTransitionProps extends TransitionProps {
-    visibleClass?: string
+    activeClass?: string
 }
 
 export default class NoTransition extends React.Component<NoTransitionProps> {
+    static propTypes = {
+        ...propTypes,
+        activeClass: PropTypes.string
+    }
+
     componentDidMount() {
         const {
             onEntered,
@@ -63,7 +70,7 @@ export default class NoTransition extends React.Component<NoTransitionProps> {
             children,
             in: _in,
             unmountOnExit,
-            visibleClass
+            activeClass
         } = this.props
         const child = React.Children.only(children) as React.ReactElement
 
@@ -78,7 +85,7 @@ export default class NoTransition extends React.Component<NoTransitionProps> {
         return React.cloneElement(
             child,
             {
-                className: classNames(child.props.className, visibleClass)
+                className: classNames(child.props.className, activeClass)
             }
         )
     }
