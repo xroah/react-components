@@ -9,7 +9,9 @@ export default function () {
         <>
             <p>Fade demo</p>
             <button onClick={handleClick}>toggle</button>
-            <Fade in={visible} timeout={300}>
+            <Fade 
+            in={visible} 
+            onEnter={node => console.log(node)}>
                 <div className="div">Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat, labore maiores expedita at magnam perspiciatis consequuntur architecto voluptas quo quos eum repellendus repellat rerum officia accusamus odio nesciunt consectetur. Dignissimos.</div>
             </Fade>
         </>

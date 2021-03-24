@@ -1,7 +1,6 @@
 import * as React from "react"
 import classNames from "reap-utils/lib/class-names"
 import handleFuncProp from "reap-utils/lib/react/handle-func-prop"
-import {findDOMNode} from "react-dom"
 import {
     TransitionProps,
     ENTERED,
@@ -9,6 +8,8 @@ import {
     propTypes
 } from "./Transition"
 import PropTypes from "prop-types"
+import {getNode} from "./utils"
+import Placeholder from "./placeholder"
 
 //compatible with Transition(some components animation is configurable)
 export interface NoTransitionProps extends TransitionProps {
@@ -16,6 +17,8 @@ export interface NoTransitionProps extends TransitionProps {
 }
 
 export default class NoTransition extends React.Component<NoTransitionProps> {
+    private ref = React.createRef<HTMLDivElement>()
+
     static propTypes = {
         ...propTypes,
         activeClass: PropTypes.string
@@ -49,7 +52,8 @@ export default class NoTransition extends React.Component<NoTransitionProps> {
             onExiting,
             onExited
         } = this.props
-        const node = findDOMNode(this)
+        const node = getNode(this.ref)
+
         if (prevProps.in === _in) {
             return
         }
@@ -65,7 +69,7 @@ export default class NoTransition extends React.Component<NoTransitionProps> {
         }
     }
 
-    render() {
+    renderEl() {
         const {
             children,
             in: _in,
@@ -87,6 +91,21 @@ export default class NoTransition extends React.Component<NoTransitionProps> {
             {
                 className: classNames(child.props.className, activeClass)
             }
+        )
+    }
+
+    render() {
+        const el = this.renderEl()
+
+        if (!el) {
+            return null
+        }
+
+        return (
+            <>
+                <Placeholder ref={this.ref}/>
+                {el}
+            </>
         )
     }
 
