@@ -93,7 +93,7 @@ export default class CSSTransition extends React.Component<TransitionProps, Stat
             this.clear()
             this.updateStatus(status as stateType)
         } else if (next) {
-            this.nextTick(next)
+            this.callNext(next)
         }
     }
 
@@ -121,7 +121,7 @@ export default class CSSTransition extends React.Component<TransitionProps, Stat
         }
     }
 
-    nextTick(callback: Function) {
+    callNext(callback: Function) {
         if (!this.props.timeout) {
             return callback()
         }
