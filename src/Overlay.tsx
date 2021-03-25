@@ -211,6 +211,7 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
     }
 
     renderChildren() {
+        const noop = () => {}
         const {
             children,
             ...otherProps
@@ -246,11 +247,11 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
         if (!this.isControlled()) {
             const handler = this.handleEvent
             const {
-                onClick,
-                onMouseEnter,
-                onMouseLeave,
-                onBlur,
-                onFocus
+                onClick = noop,
+                onMouseEnter = noop,
+                onMouseLeave = noop,
+                onBlur = noop,
+                onFocus = noop
             } = (children as React.ReactElement<React.HTMLAttributes<HTMLElement>>).props
             const actionMap: any = {
                 hover: {
