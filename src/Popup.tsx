@@ -5,7 +5,7 @@ import throttle from "reap-utils/lib/throttle"
 import reflow from "reap-utils/lib/dom/reflow"
 import mergeRef from "reap-utils/lib/react/merge-ref"
 import omit from "reap-utils/lib/omit"
-import Fade from "./Fade"
+import Fade from "reap-transition/lib/Fade"
 import {PopupContext} from "./contexts"
 import NoTransition from "reap-transition/lib/NoTransition"
 import Align from "./Align"
@@ -354,7 +354,7 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
                 {child}
             </Align>
         )
-        const transitionProps = {
+        const transitionProps: any = {
             appear: true,
             onEnter: this.handleEnter,
             onEntering: this.handleEntering,
