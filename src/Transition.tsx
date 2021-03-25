@@ -3,7 +3,7 @@ import handleFuncProp from "reap-utils/lib/react/handle-func-prop"
 import omit from "reap-utils/lib/omit"
 import PropTypes from "prop-types"
 import {getNode} from "./utils"
-import Placeholder from "./placeholder"
+import Placeholder from "./Placeholder"
 
 export const ENTER = "enter"
 export const ENTERING = "entering"

@@ -9,7 +9,7 @@ import {
 } from "./Transition"
 import PropTypes from "prop-types"
 import {getNode} from "./utils"
-import Placeholder from "./placeholder"
+import Placeholder from "./Placeholder"
 
 //compatible with Transition(some components animation is configurable)
 export interface NoTransitionProps extends TransitionProps {
