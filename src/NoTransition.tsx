@@ -8,8 +8,8 @@ import {
     propTypes
 } from "./Transition"
 import PropTypes from "prop-types"
-import {getNode} from "./utils"
-import Placeholder from "./Placeholder"
+import getNextNodeByRef from "reap-utils/lib/react/get-next-node-by-ref"
+import Placeholder from "reap-utils/lib/react/Placeholder"
 
 //compatible with Transition(some components animation is configurable)
 export interface NoTransitionProps extends TransitionProps {
@@ -52,7 +52,7 @@ export default class NoTransition extends React.Component<NoTransitionProps> {
             onExiting,
             onExited
         } = this.props
-        const node = getNode(this.ref)
+        const node = getNextNodeByRef(this.ref)
 
         if (prevProps.in === _in) {
             return

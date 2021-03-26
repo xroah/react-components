@@ -2,8 +2,8 @@ import * as React from "react"
 import handleFuncProp from "reap-utils/lib/react/handle-func-prop"
 import omit from "reap-utils/lib/omit"
 import PropTypes from "prop-types"
-import {getNode} from "./utils"
-import Placeholder from "./Placeholder"
+import getNextNodeByRef from "reap-utils/lib/react/get-next-node-by-ref"
+import Placeholder from "reap-utils/lib/react/Placeholder"
 
 export const ENTER = "enter"
 export const ENTERING = "entering"
@@ -92,7 +92,7 @@ export default class Transition extends React.Component<TransitionProps, State> 
                     in: false
                 } as TransitionProps)
             } else {
-                handleFuncProp(onEntered)(getNode(this.ref))
+                handleFuncProp(onEntered)(getNextNodeByRef(this.ref))
             }
         }
     }
@@ -162,7 +162,7 @@ export default class Transition extends React.Component<TransitionProps, State> 
     }
 
     safeCallback(callback: Function) {
-        const node = getNode(this.ref)
+        const node = getNextNodeByRef(this.ref)
         const _callback = () => {
             //node may removed(unmounted)
             //Can't perform a React state update on an unmounted component
@@ -190,7 +190,7 @@ export default class Transition extends React.Component<TransitionProps, State> 
             onEntered,
             timeout = 0
         } = this.props
-        const node = getNode(this.ref)
+        const node = getNextNodeByRef(this.ref)
         const enteredCallback = () => {
             this.setState({
                 status: ENTERED
@@ -216,7 +216,7 @@ export default class Transition extends React.Component<TransitionProps, State> 
             timeout,
             unmountOnExit
         } = this.props
-        const node = getNode(this.ref)
+        const node = getNextNodeByRef(this.ref)
         const unmount = () => {
             this.next = null
 
@@ -250,13 +250,11 @@ export default class Transition extends React.Component<TransitionProps, State> 
             onExit
         } = this.props
 
-        this.setState(
-            {status},
-            () => handleFuncProp(
-                status === ENTER ? onEnter :
-                    status === EXIT ? onExit : undefined
-            )(getNode(this.ref))
-        )
+        this.setState({status})
+        handleFuncProp(
+            status === ENTER ? onEnter :
+                status === EXIT ? onExit : undefined
+        )(getNextNodeByRef(this.ref))
 
         if (status === ENTER) {
             this.next = () => this.handleEnter()
