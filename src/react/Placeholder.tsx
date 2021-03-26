@@ -6,10 +6,13 @@ const Placeholder = React.forwardRef(
         ref: React.ForwardedRef<HTMLDivElement>
     ) => (
         <div
-            className="reap-transition-placeholder"
+            className="reap-ui-placeholder"
             style={{display: "none"}}
             {...props}
-            ref={ref} />
+            ref={ref}>
+                This element is a placeholder for finding DOM node of a component,
+                due to ReactDOM.findDOMNode has been deprecated in StrictMode.
+        </div>
     )
 )
 
