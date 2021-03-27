@@ -13,7 +13,7 @@ import Portal from "reap-utils/lib/react/portal"
 
 export type position = "top" | "right" | "bottom" | "left"
 
-export interface PopupCommonProps extends React.HTMLAttributes<HTMLElement>{
+export interface PopupCommonProps extends React.HTMLAttributes<HTMLElement> {
     placement?: position
     visible?: boolean
     popupMountNode?: HTMLElement | string
@@ -37,7 +37,6 @@ interface PopupState {
     placement?: position
     left?: number
     top?: number
-    display?: "none" | "block"
     exited?: boolean
 }
 
@@ -223,7 +222,6 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
         } = this.props
 
         this.setState({
-            display: "block",
             exited: false
         })
 
@@ -256,8 +254,8 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
         const {
             onHidden
         } = this.props
+
         this.setState({
-            display: "none",
             exited: true
         })
 
@@ -282,21 +280,16 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
                 ...otherProps
             },
             state: {
-                left,
-                top,
+                left = 0,
+                top = 0,
                 arrowPos,
                 placement,
-                display,
                 exited
             }
         } = this
         const _children = children as React.ReactElement
 
-        if (
-            !children ||
-            !target ||
-            !visible && unmountOnExit && exited
-        ) {
+        if (!children || !target) {
             return null
         }
 
@@ -323,7 +316,6 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
         }
         const child = (
             <div style={{
-                display,
                 position: "absolute",
                 left: 0,
                 top: 0,
@@ -363,11 +355,11 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
             onExited: this.handleExited,
             in: !!visible
         }
-        
+
         return (
             <Portal
                 mountNode={popupMountNode}
-                visible={visible}
+                visible={visible || !exited}
                 forceRender={forceRender}>
                 {
                     fade ?
