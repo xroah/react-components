@@ -5,7 +5,8 @@
   "main": "lib/index.js",
   "scripts": {
     "test": "reap-scripts test --coverage",
-    "build": "reap-scripts rm lib es && reap-scripts --lib --es -d"
+    "build": "reap-scripts rm lib es && reap-scripts --lib --es -d",
+    "start:demo": "reap-scripts start --index demo/index.html -e demo/index.tsx -o"
   },
   "repository": {
     "type": "git",
@@ -18,14 +19,17 @@
   },
   "homepage": "https://github.com/reap-ui/reap-popup#readme",
   "devDependencies": {
+    "@types/jest": "^26.0.22",
+    "@types/prop-types": "^15.7.3",
     "@types/react": "^17.0.3",
     "@types/react-dom": "^17.0.3",
     "react": "^17.0.2",
     "react-dom": "^17.0.2"
   },
   "dependencies": {
-    "reap-transition": "^1.2.0",
-    "reap-utils": "^1.1.2"
+    "prop-types": "^15.7.2",
+    "reap-transition": "^1.2.1",
+    "reap-utils": "^1.2.0"
   },
   "files": [
     "lib",
