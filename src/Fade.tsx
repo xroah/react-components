@@ -51,13 +51,14 @@ export default function Fade(props: FadeProps) {
                 state => {
                     const child = React.Children.only(children) as React.ReactElement
                     const {style = {}} = child.props
+                    let display = ""
                     let classes = classNames(
                         child.props.className,
                         transitionClass
                     )
 
                     if (state === EXITED && invisibleOnExit) {
-                        style.display = "none"
+                        display = "none"
                     }
 
                     if (state === ENTERING || state === ENTERED) {
@@ -68,7 +69,10 @@ export default function Fade(props: FadeProps) {
                         child,
                         {
                             className: classes,
-                            style
+                            style: {
+                                ...style,
+                                display
+                            }
                         }
                     )
                 }
