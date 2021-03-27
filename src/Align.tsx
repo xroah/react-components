@@ -1,7 +1,7 @@
 import * as React from "react"
-import omit from "reap-utils/lib/omit"
 import mergeRef from "reap-utils/lib/react/merge-ref"
 import getScrollParent from "reap-utils/lib/dom/get-scroll-parent"
+import classNames from "reap-utils/lib/class-names"
 
 export type position = "top" | "right" | "bottom" | "left"
 
@@ -313,18 +313,14 @@ export default class Popup extends React.Component<AlignProps> {
     render() {
         const {
             children,
-            ...otherProps
+            style,
+            className
         } = this.props
-        const restProps = omit(
-            otherProps,
-            [
-                "verticalCenter",
-                "offset",
-                "target",
-                "placement",
-                "alignment"
-            ]
-        )
+        const child = React.Children.only(children) as React.ReactElement
+        const {
+            style: childStyle,
+            className: childClassName
+        } = child.props
 
         if (!children) {
             return null
@@ -332,11 +328,15 @@ export default class Popup extends React.Component<AlignProps> {
 
         if (React.isValidElement(children)) {
             return React.cloneElement(
-                children as React.ReactElement,
+                child,
                 {
                     //make the children's ref(if has) and this.childRef reference the node(ref func)
                     ref: mergeRef((children as any).ref, this.childRef),
-                    ...restProps
+                    style: {
+                        ...childStyle,
+                        ...style
+                    },
+                    className: classNames(childClassName, className)
                 }
             )
         }
