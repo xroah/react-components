@@ -211,14 +211,13 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
     }
 
     renderChildren() {
-        const noop = () => {}
+        const noop = () => { }
         const {
             children,
             ...otherProps
         } = this.props
         let eventHandlers = Object.create(null)
-
-        omit(
+        const restProps = omit(
             otherProps,
             [
                 "popup",
@@ -255,15 +254,15 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
             } = (children as React.ReactElement<React.HTMLAttributes<HTMLElement>>).props
             const actionMap: any = {
                 hover: {
-                    onMouseEnter: chainFunction(handler, otherProps.onMouseEnter || onMouseEnter),
-                    onMouseLeave: chainFunction(handler, otherProps.onMouseLeave || onMouseLeave)
+                    onMouseEnter: chainFunction(handler, restProps.onMouseEnter || onMouseEnter),
+                    onMouseLeave: chainFunction(handler, restProps.onMouseLeave || onMouseLeave)
                 },
                 click: {
-                    onClick: chainFunction(handler, otherProps.onClick || onClick)
+                    onClick: chainFunction(handler, restProps.onClick || onClick)
                 },
                 focus: {
-                    onFocus: chainFunction(handler, otherProps.onFocus || onFocus),
-                    onBlur: chainFunction(handler, otherProps.onBlur || onBlur)
+                    onFocus: chainFunction(handler, restProps.onFocus || onFocus),
+                    onBlur: chainFunction(handler, restProps.onBlur || onBlur)
                 }
             }
             const actions = this.getAction()
@@ -282,7 +281,7 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
         return React.cloneElement(
             children as React.ReactElement,
             {
-                ...otherProps,
+                ...restProps,
                 ...eventHandlers
             }
         )

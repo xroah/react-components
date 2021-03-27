@@ -191,7 +191,6 @@ export default class Popup extends React.Component<AlignProps> {
             top: baseTop,
             parent
         } = this.getBaseAlignmentPosition(child, target)
-
         const {
             bottom: bottomSpace,
             top: topSpace,
@@ -264,7 +263,7 @@ export default class Popup extends React.Component<AlignProps> {
                 default:
             }
         }
-
+        
         return {
             left,
             top,
@@ -316,8 +315,7 @@ export default class Popup extends React.Component<AlignProps> {
             children,
             ...otherProps
         } = this.props
-
-        omit(
+        const restProps = omit(
             otherProps,
             [
                 "verticalCenter",
@@ -338,7 +336,7 @@ export default class Popup extends React.Component<AlignProps> {
                 {
                     //make the children's ref(if has) and this.childRef reference the node(ref func)
                     ref: mergeRef((children as any).ref, this.childRef),
-                    ...otherProps
+                    ...restProps
                 }
             )
         }

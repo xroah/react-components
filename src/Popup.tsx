@@ -300,7 +300,7 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
             return null
         }
 
-        omit(
+        const restProps = omit(
             otherProps,
             [
                 "onClickOutside",
@@ -335,7 +335,7 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
                     style={{overflow: "hidden"}}
                     {...{
                         ...mouseEvent,
-                        ...otherProps
+                        ...restProps
                     }}>
                     <PopupContext.Provider value={context}>
                         {_children}
@@ -363,7 +363,7 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
             onExited: this.handleExited,
             in: !!visible
         }
-
+        
         return (
             <Portal
                 mountNode={popupMountNode}
