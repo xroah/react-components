@@ -20,6 +20,7 @@
   "homepage": "https://github.com/reap-ui/reap-transition#readme",
   "devDependencies": {
     "@types/jest": "^26.0.22",
+    "@types/prop-types": "^15.7.3",
     "@types/react": "^17.0.3",
     "@types/react-dom": "^17.0.3",
     "@types/react-is": "^17.0.0",
