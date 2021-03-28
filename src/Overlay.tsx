@@ -8,6 +8,7 @@ import {
     OverlayState
 } from "./interface"
 import Popup from "./Popup"
+import Fade from "reap-transition/lib/Fade"
 import PropTypes from "prop-types"
 import {
     getAction,
@@ -36,12 +37,30 @@ export default class Overlay extends React.Component<_OverlayProps, OverlayState
                 show: PropTypes.number,
                 hide: PropTypes.number
             })
-        ])
+        ]),
+        placement: PropTypes.oneOf(["top", "bottom", "left", "right"]),
+        transition: PropTypes.oneOfType([
+            PropTypes.func,
+            PropTypes.instanceOf(React.Component)
+        ]),
+        transitionProps: PropTypes.object,
+        offset: PropTypes.oneOfType([
+            PropTypes.number,
+            PropTypes.arrayOf(PropTypes.number)
+        ]),
+        onShow: PropTypes.func,
+        onShown: PropTypes.func,
+        onHide: PropTypes.func,
+        onHidden: PropTypes.func,
+        alignment: PropTypes.oneOf(["left", "center", "right"])
     }
     static defaultProps = {
         trigger: ["click"],
         delay: 0,
-        placement: "bottom"
+        placement: "bottom",
+        offset: [0, 0],
+        defaultVisible: false,
+        transition: Fade
     }
 
     constructor(props: _OverlayProps) {

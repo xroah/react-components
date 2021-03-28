@@ -1,50 +1,29 @@
 import * as React from "react"
-import PropTypes from "prop-types"
 import handleFuncProp from "reap-utils/lib/react/handle-func-prop"
 import throttle from "reap-utils/lib/throttle"
 import chainFunction from "reap-utils/lib/chain-function"
-import Fade from "reap-transition/lib/Fade"
 import NoTransition from "reap-transition/lib/NoTransition"
-import {PopupContext} from "./contexts"
 import Align from "./Align"
 import Portal from "reap-utils/lib/react/portal"
 import {
     PopupProps,
-    PopupState,
-    Position
+    PopupState
 } from "./interface"
-import {noop} from "./utils"
+import {getArrowPosition, noop} from "./utils"
 import {TransitionProps} from "reap-transition/lib/Transition"
+import PopupInner from "./PopupInner"
 
-export default class Popup extends React.Component<PopupProps, PopupState> {
+interface _PopupProps extends PopupProps {
+    onMouseEnter?: React.MouseEventHandler<HTMLElement>
+    onMouseLeave?: React.MouseEventHandler<HTMLElement>
+}
+
+export default class Popup extends React.Component<_PopupProps, PopupState> {
     private ref = React.createRef<HTMLDivElement>()
     private alignRef = React.createRef<Align>()
     private handleResize: () => void
 
-    static propTypes = {
-        placement: PropTypes.oneOf(["top", "bottom", "left", "right"]),
-        transition: PropTypes.oneOfType([
-            PropTypes.func,
-            PropTypes.instanceOf(React.Component)
-        ]),
-        transitionProps: PropTypes.object,
-        offset: PropTypes.oneOfType([
-            PropTypes.number,
-            PropTypes.arrayOf(PropTypes.number)
-        ]),
-        onShow: PropTypes.func,
-        onShown: PropTypes.func,
-        onHide: PropTypes.func,
-        onHidden: PropTypes.func,
-        alignment: PropTypes.oneOf(["left", "center", "right"])
-    }
-    static defaultProps = {
-        transition: Fade,
-        offset: [0, 0],
-        defaultVisible: false,
-    }
-
-    constructor(props: PopupProps) {
+    constructor(props: _PopupProps) {
         super(props)
 
         this.state = {
@@ -53,6 +32,8 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
                 left: 0,
                 top: 0
             },
+            left: 0,
+            top: 0,
             exited: true
         }
         this.handleResize = throttle(this._handleResize, 300)
@@ -105,23 +86,30 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
             return
         }
 
-        const nRect = target.getBoundingClientRect()
-        const cRect = child.getBoundingClientRect()
-        const isArrowVertical = placement === "left" || placement === "right"
-        const arrowPos: Position = {
-            left: 0,
-            top: 0
-        }
-
-        if (isArrowVertical) {
-            arrowPos.top = nRect.top - cRect.top + nRect.height / 2
-        } else {
-            arrowPos.left = nRect.left - cRect.left + nRect.width / 2
-        }
-
         this.setState({
-            arrowPos
+            arrowPos: getArrowPosition(target, child, placement!)
         })
+    }
+
+    afterAlign(left: number, top: number) {
+        () => {
+            const {
+                leftOffset,
+                topOffset
+            } = this.alignRef.current!.adjustElement()
+
+            if (leftOffset !== 0 || topOffset !== 0) {
+                this.setState(
+                    {
+                        left: left + leftOffset,
+                        top: top + topOffset
+                    },
+                    this.handleArrowPosition
+                )
+            } else {
+                this.handleArrowPosition()
+            }
+        }
     }
 
     updatePosition = () => {
@@ -143,30 +131,8 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
                 top,
                 placement
             },
-            () => {
-                const {
-                    leftOffset,
-                    topOffset
-                } = alignRef.adjustElement()
-
-                this.setState(
-                    {
-                        left: left + leftOffset,
-                        top: top + topOffset
-                    },
-                    this.handleArrowPosition
-                )
-            }
+            () => this.afterAlign(left, top)
         )
-    }
-
-    handleMouseEvent = (evt: React.MouseEvent<HTMLElement>) => {
-        const {
-            onMouseLeave,
-            onMouseEnter
-        } = this.props
-
-        handleFuncProp(evt.type === "mouseenter" ? onMouseEnter : onMouseLeave)(evt)
     }
 
     _handleResize = () => {
@@ -200,7 +166,6 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
                 }
             }
         )
-
         handleFuncProp(onShow)(node)
     }
 
@@ -230,6 +195,8 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
             props: {
                 children,
                 elRef = null,
+                onMouseEnter,
+                onMouseLeave
             },
             state: {
                 left = 0,
@@ -239,17 +206,6 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
                 exited
             }
         } = this
-        const _children = children as React.ReactElement
-
-        const mouseEvent: any = {
-            onMouseEnter: chainFunction(this.handleMouseEvent, _children.props.onMouseEnter),
-            onMouseLeave: chainFunction(this.handleMouseEvent, _children.props.onMouseLeave)
-        }
-        const context: any = {
-            arrowLeft: arrowPos.left,
-            arrowTop: arrowPos.top,
-            placement
-        }
 
         return (
             <div
@@ -263,15 +219,14 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
                     zIndex: 99999
                 }}
                 ref={this.ref}>
-                <div
-                    className="reap-popup-body"
-                    ref={elRef as any}
-                    style={{overflow: "hidden"}}
-                    {...mouseEvent}>
-                    <PopupContext.Provider value={context}>
-                        {_children}
-                    </PopupContext.Provider>
-                </div>
+                <PopupInner
+                    elRef={elRef}
+                    placement={placement}
+                    arrowPos={arrowPos}
+                    onMouseEnter={onMouseEnter}
+                    onMouseLeave={onMouseLeave}>
+                    {children}
+                </PopupInner>
             </div>
         )
     }
@@ -288,7 +243,7 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
                 target,
                 popupMountNode,
                 verticalCenter,
-                transitionProps = {} as TransitionProps
+                transitionProps: tProps = {} as TransitionProps
             },
             state: {
                 exited
@@ -298,7 +253,7 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
         if (!target) {
             return null
         }
-        
+
         const align = (
             <Align
                 ref={this.alignRef}
@@ -312,22 +267,18 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
         )
         const newTransitionProps: any = {
             appear: true,
-            ...transitionProps,
-            onEnter: chainFunction(this.handleEnter, transitionProps.onEnter || noop),
-            onEntering: chainFunction(this.handleEntering, transitionProps.onEntering || noop),
-            onEntered: chainFunction(this.handleEntered, transitionProps.onEntered || noop),
-            onExit: chainFunction(this.handleExit, transitionProps.onExit || noop),
-            onExited: chainFunction(this.handleExited, transitionProps.onExited || noop),
+            ...tProps,
+            onEnter: chainFunction(this.handleEnter, tProps.onEnter || noop),
+            onEntering: chainFunction(this.handleEntering, tProps.onEntering || noop),
+            onEntered: chainFunction(this.handleEntered, tProps.onEntered || noop),
+            onExit: chainFunction(this.handleExit, tProps.onExit || noop),
+            onExited: chainFunction(this.handleExited, tProps.onExited || noop),
             in: !!visible
         }
         const element: any = transition ? transition : NoTransition
         const c = React.createElement(element, newTransitionProps, align)
 
-        if (popupMountNode === null) {
-            return c
-        }
-
-        return (
+        return popupMountNode === null ? c : (
             <Portal
                 mountNode={popupMountNode}
                 visible={visible || !exited}

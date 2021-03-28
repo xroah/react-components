@@ -8,19 +8,13 @@ import {
     getRelativeOffset,
     handleOffset
 } from "./utils"
-import {Alignment, BaseAlignment, SpareSpace} from "./interface"
-
-export type position = "top" | "right" | "bottom" | "left"
-
-export interface AlignProps {
-    placement?: position
-    offset?: number | number[]
-    target: HTMLElement | null
-    alignment?: "left" | "center" | "right"
-    verticalCenter?: boolean
-    style?: React.CSSProperties,
-    className?: string
-}
+import {
+    Alignment,
+    BaseAlignment,
+    position,
+    SpareSpace,
+    AlignProps
+} from "./interface"
 
 export default class Popup extends React.Component<AlignProps> {
     private childRef = React.createRef<HTMLElement>()
