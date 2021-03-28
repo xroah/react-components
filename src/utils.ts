@@ -1,7 +1,6 @@
-export interface DelayObject {
-    show?: number
-    hide?: number
-}
+import {action, DelayObject, trigger} from "./interface"
+
+export function noop() {}
 
 export function handleDelay(delay?: number | DelayObject) {
     let ret: DelayObject = {
@@ -19,6 +18,18 @@ export function handleDelay(delay?: number | DelayObject) {
     }
 
     return ret
+}
+
+export function getAction(a: trigger) {
+    let actions: Array<action> = []
+
+    if (Array.isArray(a)) {
+        actions = a
+    } else {
+        actions = [a]
+    }
+
+    return actions
 }
 
 export function handleOffset(offset?: number | number[]) {

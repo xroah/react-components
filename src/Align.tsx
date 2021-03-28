@@ -2,11 +2,13 @@ import * as React from "react"
 import mergeRef from "reap-utils/lib/react/merge-ref"
 import getScrollParent from "reap-utils/lib/dom/get-scroll-parent"
 import classNames from "reap-utils/lib/class-names"
+import reflow from "reap-utils/lib/dom/reflow"
 import {
     getPositionedParent,
     getRelativeOffset,
     handleOffset
 } from "./utils"
+import {Alignment, BaseAlignment, SpareSpace} from "./interface"
 
 export type position = "top" | "right" | "bottom" | "left"
 
@@ -24,7 +26,10 @@ export default class Popup extends React.Component<AlignProps> {
     private childRef = React.createRef<HTMLElement>()
 
     //the left value and top value relative to top-left of the target
-    getBaseAlignmentPosition(toBeAligned: HTMLElement, target: HTMLElement) {
+    getBaseAlignmentPosition(
+        toBeAligned: HTMLElement,
+        target: HTMLElement
+    ): BaseAlignment {
         const positioned = getPositionedParent(toBeAligned)
         const scrollParent = getScrollParent(target)
         //if the positioned element is in scrollParent or is scrollParent
@@ -50,7 +55,11 @@ export default class Popup extends React.Component<AlignProps> {
     }
 
     //top/bottom/left/right spare space
-    getSpareSpace(parent: HTMLElement, target: HTMLElement, el: HTMLElement) {
+    getSpareSpace(
+        parent: HTMLElement,
+        target: HTMLElement,
+        el: HTMLElement
+    ): SpareSpace {
         const targetRect = target.getBoundingClientRect()
         const parentRect = parent.getBoundingClientRect()
         const body = document.body
@@ -64,103 +73,134 @@ export default class Popup extends React.Component<AlignProps> {
 
         return {
             top: rectTop - elHeight - vOffset,
-            right: rectLeft + elWidth + target.offsetWidth - maxWidth + hOffset,
-            bottom: rectTop + elHeight + target.offsetHeight - maxHeight + hOffset,
+            right: rectLeft + elWidth + targetRect.width - maxWidth + hOffset,
+            bottom: rectTop + elHeight + targetRect.height - maxHeight + hOffset,
             left: rectLeft - elWidth - vOffset
         }
     }
 
+    getTargetOrChildSize(type: "target" | "child" = "target") {
+        const target = this.props.target!
+        const child = this.childRef.current!
+        const el = type === "target" ? target : child
+
+        return {
+            width: el.offsetWidth,
+            height: el.offsetHeight
+        }
+    }
+
+    getAlginObj(left: number, top: number, placement: position) {
+        return {
+            left,
+            top,
+            placement
+        }
+    }
+
+    alignBottom(base: BaseAlignment, space: SpareSpace, flip = true): Alignment {
+        //flip to top
+        if (flip && space.bottom > 0) {
+            return this.alignTop(base, space, false)
+        }
+
+        const [hOffset, vOffset] = handleOffset(this.props.offset)
+        const left = base.left + hOffset
+        const top = base.top + vOffset + this.getTargetOrChildSize().height
+
+        return this.getAlginObj(left, top, "bottom")
+    }
+
+    alignTop(base: BaseAlignment, space: SpareSpace, flip = true): Alignment {
+        //flip to bottom
+        if (flip && space.top < 0) {
+            return this.alignBottom(base, space, false)
+        }
+
+        const [hOffset, vOffset] = handleOffset(this.props.offset)
+        const left = base.left + hOffset
+        const top = base.top - this.getTargetOrChildSize("child").height - vOffset
+
+        return this.getAlginObj(left, top, "top")
+    }
+
+    alignLeft(base: BaseAlignment, space: SpareSpace, flip = true): Alignment {
+        //flip to right
+        if (flip && space.left < 0) {
+            return this.alignRight(base, space, false)
+        }
+
+        const [hOffset, vOffset] = handleOffset(this.props.offset)
+        const left = base.left - this.getTargetOrChildSize("child").width - hOffset
+        const top = base.top + vOffset
+
+        return this.getAlginObj(left, top, "left")
+    }
+
+    alignRight(base: BaseAlignment, space: SpareSpace, flip = true): Alignment {
+        //flip to right
+        if (flip && space.right > 0) {
+            return this.alignLeft(base, space, false)
+        }
+
+        const [hOffset, vOffset] = handleOffset(this.props.offset)
+        const left = base.left + this.getTargetOrChildSize().width - hOffset
+        const top = base.top + vOffset
+
+        return this.getAlginObj(left, top, "right")
+    }
+
     align() {
-        const child = this.childRef.current
+        const {current: child} = this.childRef
         let {
             placement,
-            target,
-            offset,
+            target
+        } = this.props
+
+        if (!child || !target) {
+            return this.getAlginObj(0, 0, placement!)
+        }
+
+        reflow(child)
+
+        const baseAlignment = this.getBaseAlignmentPosition(child, target)
+        const spareSpace = this.getSpareSpace(baseAlignment.parent, target, child)
+        const placementFnMap: {
+            [prop: string]: "alignTop" | "alignBottom" | "alignLeft" | "alignRight"
+        } = {
+            top: "alignTop",
+            bottom: "alignBottom",
+            left: "alignLeft",
+            right: "alignRight"
+        }
+        const aligned = this[placementFnMap[placement!]](baseAlignment, spareSpace)
+        const placementOffset = this.handlePlacement(placement as position)
+
+        return {
+            left: aligned.left + placementOffset.left,
+            top: aligned.top + placementOffset.top,
+            placement
+        }
+    }
+
+    handlePlacement(placement: position) {
+        const {
             verticalCenter,
             alignment
         } = this.props
         let left = 0
         let top = 0
 
-        if (!child || !target) {
-            return {
-                left,
-                top,
-                placement
-            }
-        }
-
-        const targetWidth = target.offsetWidth
-        const targetHeight = target.offsetHeight
-        const childHeight = child.offsetHeight
-        const childWidth = child.offsetWidth
-        const [hOffset, vOffset] = handleOffset(offset)
-        const {
-            left: baseLeft,
-            top: baseTop,
-            parent
-        } = this.getBaseAlignmentPosition(child, target)
-        const {
-            bottom: bottomSpace,
-            top: topSpace,
-            left: leftSpace,
-            right: rightSpace
-        } = this.getSpareSpace(parent, target, child)
-        const placeBottom = (flip: boolean = true) => {
-            left = baseLeft + hOffset
-            top = baseTop + vOffset + targetHeight
-            placement = "bottom"
-
-            //flip to top
-            if (flip && bottomSpace > 0) {
-                placeTop(false)
-            }
-        }
-        const placeTop = (flip: boolean = true) => {
-            left = baseLeft + hOffset
-            top = baseTop - childHeight - vOffset
-            placement = "top"
-
-            //flip to bottom
-            if (flip && topSpace < 0) {
-                placeBottom(false)
-            }
-        }
-        const placeLeft = (flip: boolean = true) => {
-            left = baseLeft - childWidth - hOffset
-            top = baseTop + vOffset
-            placement = "left"
-
-            //flip to right
-            if (flip && leftSpace < 0) {
-                placeRight(false)
-            }
-        }
-        const placeRight = (flip: boolean = true) => {
-            left = baseLeft + targetWidth - hOffset
-            top = baseTop + vOffset
-            placement = "right"
-
-            //flip to left
-            if (flip && rightSpace > 0) {
-                placeLeft(false)
-            }
-        }
-        const placementFnMap: any = {
-            top: placeTop,
-            bottom: placeBottom,
-            left: placeLeft,
-            right: placeRight
-        }
-
-        placementFnMap[placement as position]()
-
         if (placement === "left" || placement === "right") {
             //vertical center
             if (verticalCenter) {
-                top += (targetHeight - childHeight) / 2
+                top += (
+                    this.getTargetOrChildSize().height - this.getTargetOrChildSize("child").height
+                ) / 2
             }
         } else {
+            const targetWidth = this.getTargetOrChildSize().width
+            const childWidth = this.getTargetOrChildSize("child").width
             //horizontal alignment
             switch (alignment) {
                 case "center":
@@ -175,8 +215,7 @@ export default class Popup extends React.Component<AlignProps> {
 
         return {
             left,
-            top,
-            placement
+            top
         }
     }
 
@@ -225,31 +264,27 @@ export default class Popup extends React.Component<AlignProps> {
             style,
             className
         } = this.props
-        const child = React.Children.only(children) as React.ReactElement
+        const _children = children as React.ReactElement
         const {
             style: childStyle,
             className: childClassName
-        } = child.props
+        } = _children.props
 
         if (!children) {
             return null
         }
 
-        if (React.isValidElement(children)) {
-            return React.cloneElement(
-                child,
-                {
-                    //make the children's ref(if has) and this.childRef reference the node(ref func)
-                    ref: mergeRef((children as any).ref, this.childRef),
-                    style: {
-                        ...childStyle,
-                        ...style
-                    },
-                    className: classNames(childClassName, className)
-                }
-            )
-        }
-
-        return children
+        return React.cloneElement(
+            _children,
+            {
+                //make the children's ref(if has) and this.childRef reference the node(ref func)
+                ref: mergeRef((_children as any).ref, this.childRef),
+                style: {
+                    ...childStyle,
+                    ...style
+                },
+                className: classNames(childClassName, className)
+            }
+        )
     }
 }

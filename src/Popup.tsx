@@ -2,62 +2,32 @@ import * as React from "react"
 import PropTypes from "prop-types"
 import handleFuncProp from "reap-utils/lib/react/handle-func-prop"
 import throttle from "reap-utils/lib/throttle"
-import reflow from "reap-utils/lib/dom/reflow"
-import mergeRef from "reap-utils/lib/react/merge-ref"
 import chainFunction from "reap-utils/lib/chain-function"
 import Fade from "reap-transition/lib/Fade"
-import {PopupContext} from "./contexts"
 import NoTransition from "reap-transition/lib/NoTransition"
+import {PopupContext} from "./contexts"
 import Align from "./Align"
 import Portal from "reap-utils/lib/react/portal"
-
-export type position = "top" | "right" | "bottom" | "left"
-
-export interface PopupCommonProps extends React.HTMLAttributes<HTMLElement> {
-    placement?: position
-    visible?: boolean
-    popupMountNode?: HTMLElement | string
-    offset?: number | number[]
-    defaultVisible?: boolean
-    fade?: boolean
-    forceRender?: boolean
-    onShow?: Function
-    onShown?: Function
-    onHide?: Function
-    onHidden?: Function
-}
-
-interface Position {
-    left: number
-    top: number
-}
-
-interface PopupState {
-    arrowPos: Position
-    placement?: position
-    left?: number
-    top?: number
-    exited?: boolean
-}
-
-export interface PopupProps extends PopupCommonProps {
-    alignment?: "left" | "center" | "right"
-    //below props are internal temporarily
-    unmountOnExit?: boolean
-    target?: HTMLElement | null//calc position based on this element
-    verticalCenter?: boolean
-    onClickOutside?: Function
-    elRef?: React.RefObject<HTMLElement>
-}
+import {
+    PopupProps,
+    PopupState,
+    Position
+} from "./interface"
+import {noop} from "./utils"
+import {TransitionProps} from "reap-transition/lib/Transition"
 
 export default class Popup extends React.Component<PopupProps, PopupState> {
-
     private ref = React.createRef<HTMLDivElement>()
     private alignRef = React.createRef<Align>()
+    private handleResize: () => void
 
     static propTypes = {
         placement: PropTypes.oneOf(["top", "bottom", "left", "right"]),
-        fade: PropTypes.bool,
+        transition: PropTypes.oneOfType([
+            PropTypes.func,
+            PropTypes.instanceOf(React.Component)
+        ]),
+        transitionProps: PropTypes.object,
         offset: PropTypes.oneOfType([
             PropTypes.number,
             PropTypes.arrayOf(PropTypes.number)
@@ -69,30 +39,27 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
         alignment: PropTypes.oneOf(["left", "center", "right"])
     }
     static defaultProps = {
-        fade: true,
+        transition: Fade,
         offset: [0, 0],
-        defaultVisible: false
+        defaultVisible: false,
     }
 
     constructor(props: PopupProps) {
         super(props)
 
         this.state = {
-            arrowPos: {//for popup arrow(tooltip, popover)
+            //for popup arrow(tooltip, popover)
+            arrowPos: {
                 left: 0,
                 top: 0
             },
             exited: true
         }
-        this.handleResize = throttle(this.handleResize)
+        this.handleResize = throttle(this._handleResize, 300)
     }
 
     componentDidUpdate(prevProps: PopupProps) {
-        const {
-            props: {
-                visible
-            }
-        } = this
+        const {visible} = this.props
 
         if (prevProps.visible !== visible) {
             if (visible) {
@@ -199,12 +166,11 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
             onMouseEnter
         } = this.props
 
-        evt.type === "mouseenter" ? handleFuncProp(onMouseEnter)(evt)
-            : handleFuncProp(onMouseLeave)(evt)
+        handleFuncProp(evt.type === "mouseenter" ? onMouseEnter : onMouseLeave)(evt)
     }
 
-    handleResize = () => {
-        requestAnimationFrame(this.updatePosition)
+    _handleResize = () => {
+        this.updatePosition()
     }
 
     addEvent() {
@@ -219,64 +185,51 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
 
     handleEnter = (node: HTMLElement) => {
         const {
-            onShow
+            onShow,
+            transition
         } = this.props
 
-        this.setState({
-            exited: false
-        })
+        this.setState(
+            {
+                exited: false
+            },
+            () => {
+                //update position, in case calc incorrectly(display: none)
+                if (!transition) {
+                    this.updatePosition()
+                }
+            }
+        )
 
         handleFuncProp(onShow)(node)
     }
 
-    handleEntered = (node: HTMLElement) => {
-        const {
-            onShown
-        } = this.props
-
-        handleFuncProp(onShown)(node)
+    handleEntering = () => {
+        if (this.props.transition) {
+            this.updatePosition()
+        }
     }
 
-    handleEntering = (node: HTMLElement) => {
-        //update position, in case calc incorrectly(invisible) when fade in
-        node && reflow(node)
-        this.handleResize()
+    handleEntered = (node: HTMLElement) => {
+        handleFuncProp(this.props.onShown)(node)
     }
 
     handleExit = (node: HTMLElement) => {
-        const {
-            onHide
-        } = this.props
-
-        handleFuncProp(onHide)(node)
+        handleFuncProp(this.props.onHide)(node)
     }
 
     handleExited = (node: HTMLElement) => {
-        const {
-            onHidden
-        } = this.props
-
         this.setState({
             exited: true
         })
-
-        handleFuncProp(onHidden)(node)
+        handleFuncProp(this.props.onHidden)(node)
     }
 
-    render() {
+    renderChildren() {
         const {
             props: {
                 children,
-                fade,
-                visible,
-                offset,
-                alignment,
-                placement: propPlacement,
-                forceRender,
-                target,
-                popupMountNode,
-                verticalCenter,
-                elRef = null
+                elRef = null,
             },
             state: {
                 left = 0,
@@ -288,11 +241,7 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
         } = this
         const _children = children as React.ReactElement
 
-        if (!children || !target) {
-            return null
-        }
-
-        const mouseEvent = {
+        const mouseEvent: any = {
             onMouseEnter: chainFunction(this.handleMouseEvent, _children.props.onMouseEnter),
             onMouseLeave: chainFunction(this.handleMouseEvent, _children.props.onMouseLeave)
         }
@@ -301,27 +250,55 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
             arrowTop: arrowPos.top,
             placement
         }
-        const child = (
-            <div style={{
-                position: "absolute",
-                left: 0,
-                top: 0,
-                willChange: "transform",
-                transform: `translate3d(${left}px, ${top}px, 0)`,
-                zIndex: 99999
-            }} ref={mergeRef(this.ref, elRef)}>
-                <PopupContext.Provider value={context}>
-                    {
-                        React.cloneElement(
-                            _children,
-                            {
-                                ...mouseEvent
-                            }
-                        )
-                    }
-                </PopupContext.Provider>
+
+        return (
+            <div
+                className="reap-popup"
+                style={{
+                    display: exited ? "none" : "",
+                    position: "absolute",
+                    left,
+                    top,
+                    willChange: "transform",
+                    zIndex: 99999
+                }}
+                ref={this.ref}>
+                <div
+                    className="reap-popup-body"
+                    ref={elRef as any}
+                    style={{overflow: "hidden"}}
+                    {...mouseEvent}>
+                    <PopupContext.Provider value={context}>
+                        {_children}
+                    </PopupContext.Provider>
+                </div>
             </div>
         )
+    }
+
+    render() {
+        const {
+            props: {
+                transition,
+                visible,
+                offset,
+                alignment,
+                placement: propPlacement,
+                forceRender,
+                target,
+                popupMountNode,
+                verticalCenter,
+                transitionProps = {} as TransitionProps
+            },
+            state: {
+                exited
+            }
+        } = this
+
+        if (!target) {
+            return null
+        }
+        
         const align = (
             <Align
                 ref={this.alignRef}
@@ -330,17 +307,24 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
                 placement={propPlacement}
                 alignment={alignment}
                 verticalCenter={verticalCenter}>
-                {child}
+                {this.renderChildren()}
             </Align>
         )
-        const transitionProps: any = {
+        const newTransitionProps: any = {
             appear: true,
-            onEnter: this.handleEnter,
-            onEntering: this.handleEntering,
-            onEntered: this.handleEntered,
-            onExit: this.handleExit,
-            onExited: this.handleExited,
+            ...transitionProps,
+            onEnter: chainFunction(this.handleEnter, transitionProps.onEnter || noop),
+            onEntering: chainFunction(this.handleEntering, transitionProps.onEntering || noop),
+            onEntered: chainFunction(this.handleEntered, transitionProps.onEntered || noop),
+            onExit: chainFunction(this.handleExit, transitionProps.onExit || noop),
+            onExited: chainFunction(this.handleExited, transitionProps.onExited || noop),
             in: !!visible
+        }
+        const element: any = transition ? transition : NoTransition
+        const c = React.createElement(element, newTransitionProps, align)
+
+        if (popupMountNode === null) {
+            return c
         }
 
         return (
@@ -348,11 +332,7 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
                 mountNode={popupMountNode}
                 visible={visible || !exited}
                 forceRender={forceRender}>
-                {
-                    fade ?
-                        <Fade {...transitionProps}>{align}</Fade> :
-                        <NoTransition {...transitionProps}>{align}</NoTransition>
-                }
+                {c}
             </Portal>
         )
     }
