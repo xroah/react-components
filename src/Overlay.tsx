@@ -2,12 +2,13 @@ import * as React from "react"
 import omit from "reap-utils/lib/omit"
 import chainFunction from "reap-utils/lib/chain-function"
 import isUndef from "reap-utils/lib/is-undef"
+import getNextNodeByRef from "reap-utils/lib/react/get-next-node-by-ref"
+import Placeholder from "reap-utils/lib/react/Placeholder"
 import Popup, {
     PopupCommonProps,
     PopupProps
 } from "./Popup"
 import PropTypes from "prop-types"
-import {findDOMNode} from "react-dom"
 import {handleDelay, DelayObject} from "./utils"
 
 export type action = "hover" | "click" | "contextmenu" | "focus"
@@ -21,6 +22,7 @@ export interface OverlayProps extends CommonProps, PopupProps {
     popup: React.ReactNode
     popupProps?: React.HTMLAttributes<HTMLElement>
     extraRender?: (overlay: Overlay) => JSX.Element
+    closeOnClickOutSide?: boolean
 }
 
 interface OverlayState {
@@ -33,6 +35,7 @@ const actionType = ["hover", "click", "focus"]
 export default class Overlay extends React.Component<OverlayProps, OverlayState> {
     private timer: any
     private delayTimer: any = null
+    private ref = React.createRef<HTMLDivElement>()
 
     static propTypes = {
         trigger: PropTypes.oneOfType([
@@ -69,11 +72,22 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
     }
 
     componentDidMount() {
-        const node = findDOMNode(this) as HTMLElement
+        const node = getNextNodeByRef(this.ref) as HTMLElement
 
         this.setState({
             node
         })
+    }
+
+    componentDidUpdate() {
+        const {node} = this.state
+        const newNode = getNextNodeByRef(this.ref) as HTMLElement
+
+        if (newNode !== node) {
+            this.setState({
+                node: newNode
+            })
+        }
     }
 
     getAction() {
@@ -210,6 +224,14 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
         this.timer = setTimeout(this.close, hide > 100 ? 0 : 150)
     }
 
+    handleClickOutSide = () => {
+        const {closeOnClickOutSide} = this.props
+
+        if (closeOnClickOutSide) {
+            this.close()
+        }
+    }
+
     renderChildren() {
         const noop = () => { }
         const {
@@ -238,7 +260,8 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
                 "onShown",
                 "onHide",
                 "onHidden",
-                "popupMountNode"
+                "popupMountNode",
+                "closeOnClickOutSide"
             ]
         )
 
@@ -304,7 +327,7 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
                 onHide,
                 unmountOnExit,
                 verticalCenter,
-                onClickOutside,
+                onClickOutside = () => {},
                 popupMountNode,
                 extraRender
             },
@@ -330,13 +353,14 @@ export default class Overlay extends React.Component<OverlayProps, OverlayState>
             onShown,
             onHide,
             onHidden,
-            onClickOutside,
+            onClickOutside: chainFunction(this.handleClickOutSide, onClickOutside),
             popupMountNode,
             ...popupProps
         }
 
         return (
             <>
+                <Placeholder ref={this.ref} />
                 {this.renderChildren()}
                 {extraRender ? extraRender(this) : null}
                 {/* <ModalContext.Consumer>
