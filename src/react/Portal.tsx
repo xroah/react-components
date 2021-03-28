@@ -100,6 +100,8 @@ export default class Portal extends React.Component<PortalProps, PortalState> {
         } = this.props
 
         if (!visible && !forceRender) {
+            this.unmount()
+
             return null
         }
 
