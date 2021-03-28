@@ -2,6 +2,11 @@ import * as React from "react"
 import mergeRef from "reap-utils/lib/react/merge-ref"
 import getScrollParent from "reap-utils/lib/dom/get-scroll-parent"
 import classNames from "reap-utils/lib/class-names"
+import {
+    getPositionedParent,
+    getRelativeOffset,
+    handleOffset
+} from "./utils"
 
 export type position = "top" | "right" | "bottom" | "left"
 
@@ -16,107 +21,11 @@ export interface AlignProps {
 }
 
 export default class Popup extends React.Component<AlignProps> {
-    childRef = React.createRef<HTMLElement>()
-
-    handleOffset(offset?: number | number[]) {
-        let ret: number[]
-
-        if (Array.isArray(offset)) {
-            const len = offset.length
-
-            switch (len) {
-                case 0:
-                    ret = [0, 0]
-                    break
-                case 1:
-                    ret = Array(2).fill(offset[0])
-                    break
-                default:
-                    ret = offset.slice(0, 2)
-            }
-        } else {
-            ret = Array(2).fill(offset === undefined ? 0 : offset)
-        }
-
-        return ret
-    }
-
-    //get closest positioned(position is not static) parent
-    getPositionedParent(el: HTMLElement) {
-        const body = document.body
-        let parent = el
-        let ret = body
-
-        while ((parent = parent.parentNode as HTMLElement) && parent !== body) {
-            const pos = getComputedStyle(parent).getPropertyValue("position")
-
-            if (pos !== "static") {
-                ret = parent
-
-                break
-            }
-        }
-
-        return ret
-    }
-
-    getScrollOffset(el: HTMLElement) {
-        let left = 0
-        let top = 0
-        const body = document.body
-        const html = document.documentElement
-
-        if (el === body) {
-            left = body.scrollLeft || html.scrollLeft
-            top = body.scrollTop || html.scrollTop
-        } else {
-            left = el.scrollLeft
-            top = el.scrollTop
-        }
-
-        return {
-            left,
-            top
-        }
-    }
-
-    //get left and top(positioned element) relative to its scroll parent
-    getRelativeOffset(parent: HTMLElement, el: HTMLElement) {
-        const parentRect = parent.getBoundingClientRect()
-        const elRect = el.getBoundingClientRect()
-        let {
-            left,
-            top
-        } = this.getScrollOffset(parent)
-        let rectLeft = 0
-        let rectTop = 0
-
-        if (parent === el) {
-            left = top = 0
-        } else if (parent === document.body) {
-            left += elRect.left
-            top += elRect.top
-            rectLeft = left
-            rectTop = top
-        } else {
-            //top and left offset relative to its parent
-            rectLeft = elRect.left - parentRect.left
-            rectTop = elRect.top - parentRect.top
-            left += rectLeft
-            top += rectTop
-        }
-
-        return {
-            left,
-            top,
-            rectLeft,
-            rectTop
-        }
-    }
+    private childRef = React.createRef<HTMLElement>()
 
     //the left value and top value relative to top-left of the target
     getBaseAlignmentPosition(toBeAligned: HTMLElement, target: HTMLElement) {
-        const positioned = this.getPositionedParent(toBeAligned)
+        const positioned = getPositionedParent(toBeAligned)
         const scrollParent = getScrollParent(target)
         //if the positioned element is in scrollParent or is scrollParent
         //the element offset is relative to the scrollParent, otherwise relative to body
@@ -127,11 +36,11 @@ export default class Popup extends React.Component<AlignProps> {
         const {
             left: positionedLeft,
             top: positionedTop
-        } = this.getRelativeOffset(relativeParent, positioned)
+        } = getRelativeOffset(relativeParent, positioned)
         const {
             left: targetLeft,
             top: targetTop
-        } = this.getRelativeOffset(relativeParent, target)
+        } = getRelativeOffset(relativeParent, target)
 
         return {
             left: targetLeft - positionedLeft,
@@ -145,7 +54,7 @@ export default class Popup extends React.Component<AlignProps> {
         const targetRect = target.getBoundingClientRect()
         const parentRect = parent.getBoundingClientRect()
         const body = document.body
-        const [hOffset, vOffset] = this.handleOffset(this.props.offset)
+        const [hOffset, vOffset] = handleOffset(this.props.offset)
         const maxWidth = parent.clientWidth
         const maxHeight = parent === body ? window.innerHeight : parent.clientHeight
         const rectLeft = parent === body ? targetRect.left : targetRect.left - parentRect.left
@@ -185,7 +94,7 @@ export default class Popup extends React.Component<AlignProps> {
         const targetHeight = target.offsetHeight
         const childHeight = child.offsetHeight
         const childWidth = child.offsetWidth
-        const [hOffset, vOffset] = this.handleOffset(offset)
+        const [hOffset, vOffset] = handleOffset(offset)
         const {
             left: baseLeft,
             top: baseTop,
@@ -263,7 +172,7 @@ export default class Popup extends React.Component<AlignProps> {
                 default:
             }
         }
-        
+
         return {
             left,
             top,
