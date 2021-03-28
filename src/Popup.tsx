@@ -4,7 +4,7 @@ import handleFuncProp from "reap-utils/lib/react/handle-func-prop"
 import throttle from "reap-utils/lib/throttle"
 import reflow from "reap-utils/lib/dom/reflow"
 import mergeRef from "reap-utils/lib/react/merge-ref"
-import omit from "reap-utils/lib/omit"
+import chainFunction from "reap-utils/lib/chain-function"
 import Fade from "reap-transition/lib/Fade"
 import {PopupContext} from "./contexts"
 import NoTransition from "reap-transition/lib/NoTransition"
@@ -81,7 +81,8 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
             arrowPos: {//for popup arrow(tooltip, popover)
                 left: 0,
                 top: 0
-            }
+            },
+            exited: true
         }
         this.handleResize = throttle(this.handleResize)
     }
@@ -271,13 +272,11 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
                 offset,
                 alignment,
                 placement: propPlacement,
-                unmountOnExit,
                 forceRender,
                 target,
                 popupMountNode,
                 verticalCenter,
-                elRef = null,
-                ...otherProps
+                elRef = null
             },
             state: {
                 left = 0,
@@ -293,21 +292,9 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
             return null
         }
 
-        const restProps = omit(
-            otherProps,
-            [
-                "onClickOutside",
-                "defaultVisible",
-                "onShow",
-                "onShown",
-                "onHide",
-                "onHidden"
-            ]
-        )
-
         const mouseEvent = {
-            onMouseEnter: this.handleMouseEvent,
-            onMouseLeave: this.handleMouseEvent
+            onMouseEnter: chainFunction(this.handleMouseEvent, _children.props.onMouseEnter),
+            onMouseLeave: chainFunction(this.handleMouseEvent, _children.props.onMouseLeave)
         }
         const context: any = {
             arrowLeft: arrowPos.left,
@@ -323,16 +310,16 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
                 transform: `translate3d(${left}px, ${top}px, 0)`,
                 zIndex: 99999
             }} ref={mergeRef(this.ref, elRef)}>
-                <div
-                    style={{overflow: "hidden"}}
-                    {...{
-                        ...mouseEvent,
-                        ...restProps
-                    }}>
-                    <PopupContext.Provider value={context}>
-                        {_children}
-                    </PopupContext.Provider>
-                </div>
+                <PopupContext.Provider value={context}>
+                    {
+                        React.cloneElement(
+                            _children,
+                            {
+                                ...mouseEvent
+                            }
+                        )
+                    }
+                </PopupContext.Provider>
             </div>
         )
         const align = (
