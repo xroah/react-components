@@ -3,14 +3,12 @@ import Transition,
 {
     ENTERED,
     ENTERING,
-    EXITED,
     TransitionProps
 } from "./Transition"
 import classNames from "reap-utils/lib/class-names"
 import PropTypes from "prop-types"
 
 export interface FadeProps extends TransitionProps {
-    invisibleOnExit?: Boolean
     transitionClass?: string
     activeClass?: string
 }
@@ -21,7 +19,6 @@ export default function Fade(props: FadeProps) {
         timeout,
         in: _in,
         unmountOnExit,
-        invisibleOnExit,
         appear,
         onEnter,
         onEntering,
@@ -50,16 +47,10 @@ export default function Fade(props: FadeProps) {
             {
                 state => {
                     const child = React.Children.only(children) as React.ReactElement
-                    const {style = {}} = child.props
-                    let display = ""
                     let classes = classNames(
                         child.props.className,
                         transitionClass
                     )
-
-                    if (state === EXITED && invisibleOnExit) {
-                        display = "none"
-                    }
 
                     if (state === ENTERING || state === ENTERED) {
                         classes = classNames(classes, activeClass)
@@ -68,11 +59,7 @@ export default function Fade(props: FadeProps) {
                     return React.cloneElement(
                         child,
                         {
-                            className: classes,
-                            style: {
-                                ...style,
-                                display
-                            }
+                            className: classes
                         }
                     )
                 }
