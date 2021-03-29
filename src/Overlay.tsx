@@ -18,7 +18,7 @@ import omit from "reap-utils/lib/omit"
 import {overlayPropTypes} from "./prop-types"
 
 //for mouse out, prevent from closing when mouse out
-const DELAY = 300
+const DELAY = 200
 
 type _OverlayProps = OverlayProps<Overlay>
 
@@ -122,6 +122,7 @@ export default class Overlay extends React.Component<_OverlayProps, OverlayState
         const {popup} = this.props
 
         this.clearTimer("timer")
+        this.clearTimer("delayTimer")
         handleFuncProp(popup.props.onMouseEnter)(evt)
     }
 
