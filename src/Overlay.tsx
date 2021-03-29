@@ -9,57 +9,28 @@ import {
 } from "./interface"
 import Popup from "./Popup"
 import Fade from "reap-transition/lib/Fade"
-import PropTypes from "prop-types"
 import {
     getAction,
     handleDelay,
-    noop
 } from "./utils"
 import omit from "reap-utils/lib/omit"
+import {overlayPropTypes} from "./prop-types"
 
-const actionType = ["hover", "click", "focus"]
+//for mouse out, prevent from closing when mouse out
+const DELAY = 300
 
 type _OverlayProps = OverlayProps<Overlay>
-
 export default class Overlay extends React.Component<_OverlayProps, OverlayState> {
     private timer: any = null
     private delayTimer: any = null
     private ref = React.createRef<HTMLDivElement>()
 
-    static propTypes = {
-        trigger: PropTypes.oneOfType([
-            PropTypes.oneOf(actionType),
-            PropTypes.arrayOf(PropTypes.oneOf(actionType))
-        ]),
-        delay: PropTypes.oneOfType([
-            PropTypes.number,
-            PropTypes.shape({
-                show: PropTypes.number,
-                hide: PropTypes.number
-            })
-        ]),
-        placement: PropTypes.oneOf(["top", "bottom", "left", "right"]),
-        transition: PropTypes.oneOfType([
-            PropTypes.func,
-            PropTypes.instanceOf(React.Component)
-        ]),
-        transitionProps: PropTypes.object,
-        offset: PropTypes.oneOfType([
-            PropTypes.number,
-            PropTypes.arrayOf(PropTypes.number)
-        ]),
-        onShow: PropTypes.func,
-        onShown: PropTypes.func,
-        onHide: PropTypes.func,
-        onHidden: PropTypes.func,
-        alignment: PropTypes.oneOf(["left", "center", "right"])
-    }
+    static propTypes = overlayPropTypes
     static defaultProps = {
         trigger: ["click"],
         delay: 0,
         placement: "bottom",
         offset: [0, 0],
-        defaultVisible: false,
         transition: Fade
     }
 
@@ -84,10 +55,8 @@ export default class Overlay extends React.Component<_OverlayProps, OverlayState
     }
 
     componentDidMount() {
-        const node = getNextNodeByRef(this.ref) as HTMLElement
-
         this.setState({
-            node
+            node: getNextNodeByRef(this.ref) as HTMLElement
         })
     }
 
@@ -136,7 +105,6 @@ export default class Overlay extends React.Component<_OverlayProps, OverlayState
                 break
             case "blur":
                 this.close()
-                break
         }
     }
 
@@ -147,22 +115,22 @@ export default class Overlay extends React.Component<_OverlayProps, OverlayState
         }
     }
 
+    canTriggerByHover() {
+        return getAction(this.props.trigger!).indexOf("hover") > -1
+    }
+
     handlePopupMouseEnter = () => {
         this.clearTimer("timer")
     }
 
     handlePopupMouseLeave = () => {
-        const actions = getAction(this.props.trigger!)
-
-        if (actions.indexOf("hover") > -1) {
+        if (this.canTriggerByHover()) {
             this.delayClose()
         }
     }
 
     setVisible = (visible: boolean) => {
-        this.setState({
-            visible
-        })
+        this.setState({visible})
     }
 
     open = () => {
@@ -171,12 +139,13 @@ export default class Overlay extends React.Component<_OverlayProps, OverlayState
         }
 
         const open = () => this.setVisible(true)
-        const {
-            show = 0
-        } = handleDelay(this.props.delay)
+        const {show = 0} = handleDelay(this.props.delay)
 
-        this.delayTimer = setTimeout(open, show)
-
+        if (show > 0) {
+            this.delayTimer = setTimeout(open, show)
+        } else {
+            open()
+        }
     }
 
     close = () => {
@@ -185,30 +154,28 @@ export default class Overlay extends React.Component<_OverlayProps, OverlayState
         }
 
         const close = () => this.setVisible(false)
-        const {
-            hide = 0
-        } = handleDelay(this.props.delay)
+        let {hide = 0} = handleDelay(this.props.delay)
 
-        this.delayTimer = setTimeout(close, hide)
+        if (hide > 0) {
+            if (this.canTriggerByHover()) {
+                hide = Math.abs(hide - DELAY)
+            }
+
+            this.delayTimer = setTimeout(close, hide)
+        } else {
+            close()
+        }
     }
 
     toggle = () => {
-        const {
-            visible
-        } = this.state
-
-        visible ? this.close() : this.open()
+        this.state.visible ? this.close() : this.open()
     }
 
     //for hover, prevent the popup from hiding when mouseout fires
     delayClose() {
-        const {
-            hide = 0
-        } = handleDelay(this.props.delay)
-
         this.clearTimer("timer")
-
-        this.timer = setTimeout(this.close, hide > 100 ? 0 : 150)
+        console.log("DDDD")
+        this.timer = setTimeout(this.close, DELAY)
     }
 
     handleClickOutSide = () => {
@@ -229,11 +196,11 @@ export default class Overlay extends React.Component<_OverlayProps, OverlayState
         if (!this.isControlled()) {
             const handler = this.handleEvent
             const {
-                onClick = noop,
-                onMouseEnter = noop,
-                onMouseLeave = noop,
-                onBlur = noop,
-                onFocus = noop
+                onClick,
+                onMouseEnter,
+                onMouseLeave,
+                onBlur,
+                onFocus
             } = _children.props
             const actionMap: any = {
                 hover: {
@@ -268,7 +235,7 @@ export default class Overlay extends React.Component<_OverlayProps, OverlayState
             props: {
                 popup,
                 children,
-                onClickOutside = noop,
+                onClickOutside,
                 popupProps,
                 ...otherProps
             },
@@ -283,8 +250,18 @@ export default class Overlay extends React.Component<_OverlayProps, OverlayState
         }
 
         const newPopupProps = {
-            ...omit(otherProps, ["extraRender", "closeOnClickOutSide"]),
-            onClickOutside: chainFunction(this.handleClickOutSide, onClickOutside),
+            ...omit(
+                otherProps,
+                [
+                    "extraRender",
+                    "closeOnClickOutSide",
+                    "trigger",
+                    "delay",
+                    "visible",
+                    "defaultVisible"
+                ]
+            ),
+            onClickOutside: chainFunction(this.handleClickOutSide, onClickOutside as any),
             ...popupProps
         }
 
@@ -293,11 +270,11 @@ export default class Overlay extends React.Component<_OverlayProps, OverlayState
                 <Placeholder ref={this.ref} />
                 {this.renderChildren()}
                 <Popup
+                    {...newPopupProps}
                     visible={visible}
                     onMouseEnter={this.handlePopupMouseEnter}
                     onMouseLeave={this.handlePopupMouseLeave}
-                    target={node}
-                    {...newPopupProps}>
+                    target={node}>
                     {popup}
                 </Popup>
             </>

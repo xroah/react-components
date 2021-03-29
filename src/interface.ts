@@ -9,12 +9,15 @@ type callback = (node: HTMLElement | null) => void
 export interface PopupCommonProps {
     placement?: position
     visible?: boolean
-    popupMountNode?: HTMLElement | string | null
+    popupMountNode?: HTMLElement | string
     offset?: number | number[]
-    defaultVisible?: boolean
     transition?: React.FunctionComponent<any> | typeof React.Component | null
     transitionProps?: TransitionProps
     forceRender?: boolean
+    alignment?: "left" | "center" | "right",
+    onClickOutside?: Function
+    elRef?: React.RefObject<HTMLElement>
+    verticalCenter?: boolean
     onShow?: callback
     onShown?: callback
     onHide?: callback
@@ -22,14 +25,10 @@ export interface PopupCommonProps {
 }
 
 export interface PopupProps extends PopupCommonProps {
-    alignment?: "left" | "center" | "right"
     //below props are internal temporarily
-    unmountOnExit?: boolean
     target?: HTMLElement | null//calc position based on this element
-    verticalCenter?: boolean
-    onClickOutside?: Function
-    elRef?: React.RefObject<HTMLElement>
-
+    onMouseEnter?: React.MouseEventHandler<HTMLElement>
+    onMouseLeave?: React.MouseEventHandler<HTMLElement>
 }
 
 export interface Position {
@@ -38,11 +37,11 @@ export interface Position {
 }
 
 export interface PopupState extends Position{
-    arrowPos: Position
-    placement?: position
+    placement: position
     left: number
     top: number
-    exited?: boolean
+    exited: boolean
+    zIndex: number
 }
 
 export interface DelayObject {
@@ -50,13 +49,14 @@ export interface DelayObject {
     hide?: number
 }
 
-export interface OverlayProps<T> extends PopupProps {
+export interface OverlayProps<T> extends PopupCommonProps {
     trigger?: trigger
     delay?: number | DelayObject
-    popup: React.ReactNode
+    popup: React.ReactElement
     popupProps?: React.HTMLAttributes<HTMLElement>
     extraRender?: (overlay: T) => JSX.Element
     closeOnClickOutSide?: boolean
+    defaultVisible?: boolean
 }
 
 export interface OverlayState {
@@ -71,10 +71,6 @@ export interface SpareSpace extends Position {
 
 export interface BaseAlignment extends Position {
     parent: HTMLElement
-}
-
-export interface Alignment extends Position {
-    placement: position
 }
 
 export interface AlignProps {

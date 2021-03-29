@@ -9,7 +9,6 @@ import {
     handleOffset
 } from "./utils"
 import {
-    Alignment,
     BaseAlignment,
     position,
     SpareSpace,
@@ -92,56 +91,72 @@ export default class Popup extends React.Component<AlignProps> {
         }
     }
 
-    alignBottom(base: BaseAlignment, space: SpareSpace, flip = true): Alignment {
-        //flip to top
-        if (flip && space.bottom > 0) {
-            return this.alignTop(base, space, false)
+    handleAlignment(base: BaseAlignment, space: SpareSpace) {
+        const p = this.props.placement!
+        const targetSize = this.getTargetOrChildSize()
+        const childSize = this.getTargetOrChildSize("child")
+        const [hOffset, vOffset] = handleOffset(this.props.offset)
+        const alignFnMap = {
+            bottom: () => {
+                const left = base.left + hOffset
+                const top = base.top + vOffset + targetSize.height
+
+                return this.getAlginObj(left, top, "bottom")
+            },
+            top: () => {
+                const left = base.left + hOffset
+                const top = base.top - childSize.height - vOffset
+
+                return this.getAlginObj(left, top, "top")
+            },
+            left: () => {
+                const left = base.left - childSize.width - hOffset
+                const top = base.top + vOffset
+
+                return this.getAlginObj(left, top, "left")
+            },
+            right: () => {
+                const left = base.left + targetSize.width - hOffset
+                const top = base.top + vOffset
+
+                return this.getAlginObj(left, top, "right")
+            }
+        }
+        const flip = this.isNeedFlip(space, p)
+
+        if (flip) {
+            return alignFnMap[flip]()
         }
 
-        const [hOffset, vOffset] = handleOffset(this.props.offset)
-        const left = base.left + hOffset
-        const top = base.top + vOffset + this.getTargetOrChildSize().height
-
-        return this.getAlginObj(left, top, "bottom")
+        return alignFnMap[p]()
     }
 
-    alignTop(base: BaseAlignment, space: SpareSpace, flip = true): Alignment {
-        //flip to bottom
-        if (flip && space.top < 0) {
-            return this.alignBottom(base, space, false)
+    isNeedFlip(space: SpareSpace, placement: position): false | position {
+        let ret: false | position = false
+
+        switch (placement) {
+            case "bottom":
+                if (space.bottom > 0) {
+                    ret = "top"
+                }
+                break
+            case "top":
+                if (space.top < 0) {
+                    ret = "bottom"
+                }
+                break
+            case "left":
+                if (space.left < 0) {
+                    ret = "right"
+                }
+                break
+            case "right":
+                if (space.right > 0) {
+                    ret = "left"
+                }
         }
 
-        const [hOffset, vOffset] = handleOffset(this.props.offset)
-        const left = base.left + hOffset
-        const top = base.top - this.getTargetOrChildSize("child").height - vOffset
-
-        return this.getAlginObj(left, top, "top")
-    }
-
-    alignLeft(base: BaseAlignment, space: SpareSpace, flip = true): Alignment {
-        //flip to right
-        if (flip && space.left < 0) {
-            return this.alignRight(base, space, false)
-        }
-
-        const [hOffset, vOffset] = handleOffset(this.props.offset)
-        const left = base.left - this.getTargetOrChildSize("child").width - hOffset
-        const top = base.top + vOffset
-
-        return this.getAlginObj(left, top, "left")
-    }
-
-    alignRight(base: BaseAlignment, space: SpareSpace, flip = true): Alignment {
-        //flip to right
-        if (flip && space.right > 0) {
-            return this.alignLeft(base, space, false)
-        }
-
-        const [hOffset, vOffset] = handleOffset(this.props.offset)
-        const left = base.left + this.getTargetOrChildSize().width - hOffset
-        const top = base.top + vOffset
-
-        return this.getAlginObj(left, top, "right")
+        return ret
     }
 
     align() {
@@ -150,31 +165,24 @@ export default class Popup extends React.Component<AlignProps> {
             placement,
             target
         } = this.props
+        const p = placement!
 
         if (!child || !target) {
-            return this.getAlginObj(0, 0, placement!)
+            return this.getAlginObj(0, 0, p)
         }
 
         reflow(child)
 
         const baseAlignment = this.getBaseAlignmentPosition(child, target)
         const spareSpace = this.getSpareSpace(baseAlignment.parent, target, child)
-        const placementFnMap: {
-            [prop: string]: "alignTop" | "alignBottom" | "alignLeft" | "alignRight"
-        } = {
-            top: "alignTop",
-            bottom: "alignBottom",
-            left: "alignLeft",
-            right: "alignRight"
-        }
-        const aligned = this[placementFnMap[placement!]](baseAlignment, spareSpace)
-        const placementOffset = this.handlePlacement(placement as position)
+        const aligned = this.handleAlignment(baseAlignment, spareSpace)
+        const placementOffset = this.handlePlacement(p)
 
-        return {
-            left: aligned.left + placementOffset.left,
-            top: aligned.top + placementOffset.top,
-            placement
-        }
+        return this.getAlginObj(
+            aligned.left + placementOffset.left,
+            aligned.top + placementOffset.top,
+            aligned.placement
+        )
     }
 
     handlePlacement(placement: position) {
@@ -182,35 +190,28 @@ export default class Popup extends React.Component<AlignProps> {
             verticalCenter,
             alignment
         } = this.props
+        const targetSize = this.getTargetOrChildSize()
+        const childSize = this.getTargetOrChildSize("child")
         let left = 0
         let top = 0
 
         if (placement === "left" || placement === "right") {
             //vertical center
             if (verticalCenter) {
-                top += (
-                    this.getTargetOrChildSize().height - this.getTargetOrChildSize("child").height
-                ) / 2
+                top += (targetSize.height - childSize.height) / 2
             }
         } else {
-            const targetWidth = this.getTargetOrChildSize().width
-            const childWidth = this.getTargetOrChildSize("child").width
             //horizontal alignment
             switch (alignment) {
                 case "center":
-                    left += (targetWidth - childWidth) / 2
+                    left += (targetSize.width - childSize.width) / 2
                     break
                 case "right":
-                    left += targetWidth - childWidth
-                    break
-                default:
+                    left += targetSize.width - childSize.width
             }
         }
 
-        return {
-            left,
-            top
-        }
+        return this.getAlginObj(left, top, placement)
     }
 
     //if the element top/right/bottom/left is out of the corresponding edge

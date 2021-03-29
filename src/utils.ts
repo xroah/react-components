@@ -1,4 +1,4 @@
-import {action, DelayObject, position, trigger} from "./interface"
+import {action, DelayObject, trigger} from "./interface"
 
 export function noop() { }
 
@@ -126,22 +126,4 @@ export function getRelativeOffset(parent: HTMLElement, el: HTMLElement) {
         rectLeft,
         rectTop
     }
-}
-
-export function getArrowPosition(target: HTMLElement, el: HTMLElement, placement: position) {
-    const tRect = target.getBoundingClientRect()
-    const eRect = el.getBoundingClientRect()
-    const isArrowVertical = placement === "left" || placement === "right"
-    const arrowPos = {
-        left: 0,
-        top: 0
-    }
-
-    if (isArrowVertical) {
-        arrowPos.top = tRect.top - eRect.top + tRect.height / 2
-    } else {
-        arrowPos.left = tRect.left - eRect.left + tRect.width / 2
-    }
-
-    return arrowPos
 }

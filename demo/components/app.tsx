@@ -35,6 +35,7 @@ export default () => {
                 placement="top"
                 forceRender
                 transition={null}
+                delay={3000}
                 popup={
                     <div className="dropdown-menu show" style={{position: "relative"}}>
                         <a className="dropdown-item" href="#">Action</a>

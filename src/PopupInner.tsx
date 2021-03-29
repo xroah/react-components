@@ -4,7 +4,6 @@ import {PopupContext} from "./contexts"
 
 export default (props: any) => {
     const {
-        arrowPos,
         placement,
         children,
         elRef
@@ -19,23 +18,15 @@ export default (props: any) => {
             evt.type === "mouseenter" ? onMouseEnter : onMouseLeave
         )(evt)
     }
-    const context: any = {
-        arrowLeft: arrowPos.left,
-        arrowTop: arrowPos.top,
-        placement
-    }
-    const mouseEvent: any = {
-        onMouseEnter: handleMouseEvent,
-        onMouseLeave: handleMouseEvent
-    }
 
     return (
         <div
             className="reap-popup-body"
             ref={elRef}
             style={{overflow: "hidden"}}
-            {...mouseEvent}>
-            <PopupContext.Provider value={context}>
+            onMouseEnter={handleMouseEvent}
+            onMouseLeave={handleMouseEvent}>
+            <PopupContext.Provider value={{placement}}>
                 {children}
             </PopupContext.Provider>
         </div>
