@@ -11,7 +11,7 @@ import {
 } from "./interface"
 import PopupInner from "./PopupInner"
 
-let zIndex = 2000
+let popupZIndex = 2000
 export default class Popup extends React.Component<PopupProps, PopupState> {
     private ref = React.createRef<HTMLDivElement>()
     private alignRef = React.createRef<Align>()
@@ -24,7 +24,7 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
             left: 0,
             top: 0,
             exited: true,
-            zIndex,
+            zIndex: popupZIndex,
             placement: props.placement!
         }
         this.handleResize = throttle(this._handleResize, 300)
@@ -119,7 +119,7 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
         this.setState(
             {
                 exited: false,
-                zIndex: zIndex++
+                zIndex: popupZIndex++
             },
             //update position, in case calc incorrectly(display: none)
             //exited: false, display: "none" will be removed
@@ -143,46 +143,6 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
         handleFuncProp(this.props.onHidden)(node)
     }
 
-    renderChildren() {
-        const {
-            props: {
-                children,
-                elRef = null,
-                onMouseEnter,
-                onMouseLeave
-            },
-            state: {
-                left = 0,
-                top = 0,
-                placement,
-                exited,
-                zIndex
-            }
-        } = this
-
-        return (
-            <div
-                className="reap-popup"
-                style={{
-                    display: exited ? "none" : "",
-                    position: "absolute",
-                    left,
-                    top,
-                    willChange: "transform",
-                    zIndex
-                }}
-                ref={this.ref}>
-                <PopupInner
-                    elRef={elRef}
-                    placement={placement}
-                    onMouseEnter={onMouseEnter}
-                    onMouseLeave={onMouseLeave}>
-                    {children}
-                </PopupInner>
-            </div>
-        )
-    }
-
     render() {
         const {
             props: {
@@ -195,10 +155,17 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
                 target,
                 popupMountNode,
                 verticalCenter,
-                transitionProps: tProps = {} as any
+                transitionProps: tProps = {} as any,
+                children,
+                elRef = null,
+                ...otherProps
             },
             state: {
-                exited
+                left = 0,
+                top = 0,
+                placement,
+                exited,
+                zIndex
             }
         } = this
 
@@ -214,7 +181,19 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
                 placement={propPlacement}
                 alignment={alignment}
                 verticalCenter={verticalCenter}>
-                {this.renderChildren()}
+                <PopupInner
+                    elRef={elRef}
+                    placement={placement}
+                    style={{
+                        display: exited ? "none" : "",
+                        left,
+                        top,
+                        zIndex
+                    }}
+                    ref={this.ref}
+                    {...otherProps}>
+                    {children}
+                </PopupInner>
             </Align>
         )
         const transitionProps: any = {

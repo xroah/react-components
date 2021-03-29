@@ -1,9 +1,9 @@
 import * as React from "react"
-import chainFunction from "reap-utils/lib/chain-function"
-import isUndef from "reap-utils/lib/is-undef"
+import handleFuncProp from "reap-utils/lib/react/handle-func-prop"
 import getNextNodeByRef from "reap-utils/lib/react/get-next-node-by-ref"
 import Placeholder from "reap-utils/lib/react/Placeholder"
 import {
+    action,
     OverlayProps,
     OverlayState
 } from "./interface"
@@ -11,7 +11,8 @@ import Popup from "./Popup"
 import Fade from "reap-transition/lib/Fade"
 import {
     getAction,
-    handleDelay,
+    getHandlers,
+    handleDelay
 } from "./utils"
 import omit from "reap-utils/lib/omit"
 import {overlayPropTypes} from "./prop-types"
@@ -20,6 +21,7 @@ import {overlayPropTypes} from "./prop-types"
 const DELAY = 300
 
 type _OverlayProps = OverlayProps<Overlay>
+
 export default class Overlay extends React.Component<_OverlayProps, OverlayState> {
     private timer: any = null
     private delayTimer: any = null
@@ -61,13 +63,10 @@ export default class Overlay extends React.Component<_OverlayProps, OverlayState
     }
 
     componentDidUpdate() {
-        const {node} = this.state
         const newNode = getNextNodeByRef(this.ref) as HTMLElement
 
-        if (newNode !== node) {
-            this.setState({
-                node: newNode
-            })
+        if (newNode !== this.state.node) {
+            this.setState({node: newNode})
         }
     }
 
@@ -119,17 +118,24 @@ export default class Overlay extends React.Component<_OverlayProps, OverlayState
         return getAction(this.props.trigger!).indexOf("hover") > -1
     }
 
-    handlePopupMouseEnter = () => {
+    handlePopupMouseEnter = (evt: React.MouseEvent) => {
+        const {popup} = this.props
+
         this.clearTimer("timer")
+        handleFuncProp(popup.props.onMouseEnter)(evt)
     }
 
-    handlePopupMouseLeave = () => {
+    handlePopupMouseLeave = (evt: React.MouseEvent) => {
+        const {popup} = this.props
+
         if (this.canTriggerByHover()) {
             this.delayClose()
         }
+
+        handleFuncProp(popup.props.onMouseLeave)(evt)
     }
 
-    setVisible = (visible: boolean) => {
+    setVisible(visible: boolean) {
         this.setState({visible})
     }
 
@@ -167,21 +173,28 @@ export default class Overlay extends React.Component<_OverlayProps, OverlayState
         }
     }
 
-    toggle = () => {
+    toggle() {
         this.state.visible ? this.close() : this.open()
     }
 
     //for hover, prevent the popup from hiding when mouseout fires
     delayClose() {
         this.clearTimer("timer")
-        console.log("DDDD")
+
         this.timer = setTimeout(this.close, DELAY)
     }
 
     handleClickOutSide = () => {
-        if (this.props.closeOnClickOutSide) {
+        const {
+            closeOnClickOutSide,
+            onClickOutside
+        } = this.props
+
+        if (closeOnClickOutSide) {
             this.close()
         }
+
+        handleFuncProp(onClickOutside)()
     }
 
     renderChildren() {
@@ -194,33 +207,13 @@ export default class Overlay extends React.Component<_OverlayProps, OverlayState
 
         //if controlled do not add these event handlers
         if (!this.isControlled()) {
-            const handler = this.handleEvent
-            const {
-                onClick,
-                onMouseEnter,
-                onMouseLeave,
-                onBlur,
-                onFocus
-            } = _children.props
-            const actionMap: any = {
-                hover: {
-                    onMouseEnter: chainFunction(handler, onMouseEnter),
-                    onMouseLeave: chainFunction(handler, onMouseLeave)
-                },
-                click: {
-                    onClick: chainFunction(handler, onClick)
-                },
-                focus: {
-                    onFocus: chainFunction(handler, onFocus),
-                    onBlur: chainFunction(handler, onBlur)
-                }
-            }
+            const handlers = getHandlers(_children, this.handleEvent)
 
-            getAction(trigger!).forEach((a: string) => {
-                if (a in actionMap) {
+            getAction(trigger!).forEach((a: action) => {
+                if (a in handlers) {
                     eventHandlers = {
                         ...eventHandlers,
-                        ...actionMap[a]
+                        ...handlers[a]
                     }
                 }
             })
@@ -234,8 +227,6 @@ export default class Overlay extends React.Component<_OverlayProps, OverlayState
         const {
             props: {
                 popup,
-                children,
-                onClickOutside,
                 popupProps,
                 ...otherProps
             },
@@ -245,11 +236,8 @@ export default class Overlay extends React.Component<_OverlayProps, OverlayState
             }
         } = this
 
-        if (isUndef(popup)) {
-            return children
-        }
-
         const newPopupProps = {
+            ...popupProps,
             ...omit(
                 otherProps,
                 [
@@ -258,27 +246,25 @@ export default class Overlay extends React.Component<_OverlayProps, OverlayState
                     "trigger",
                     "delay",
                     "visible",
-                    "defaultVisible"
+                    "defaultVisible",
+                    "onClickOutside",
+                    "children"
                 ]
             ),
-            onClickOutside: chainFunction(this.handleClickOutSide, onClickOutside as any),
-            ...popupProps
+            onClickOutside: this.handleClickOutSide,
+            visible,
+            onMouseEnter: this.handlePopupMouseEnter,
+            onMouseLeave: this.handlePopupMouseLeave,
+            target: node,
+            children: popup
         }
 
         return (
             <>
                 <Placeholder ref={this.ref} />
                 {this.renderChildren()}
-                <Popup
-                    {...newPopupProps}
-                    visible={visible}
-                    onMouseEnter={this.handlePopupMouseEnter}
-                    onMouseLeave={this.handlePopupMouseLeave}
-                    target={node}>
-                    {popup}
-                </Popup>
+                <Popup {...newPopupProps} />
             </>
         )
     }
-
 }

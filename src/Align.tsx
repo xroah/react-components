@@ -135,25 +135,25 @@ export default class Popup extends React.Component<AlignProps> {
         let ret: false | position = false
 
         switch (placement) {
-            case "bottom":
-                if (space.bottom > 0) {
-                    ret = "top"
-                }
-                break
-            case "top":
-                if (space.top < 0) {
-                    ret = "bottom"
-                }
-                break
-            case "left":
-                if (space.left < 0) {
-                    ret = "right"
-                }
-                break
-            case "right":
-                if (space.right > 0) {
-                    ret = "left"
-                }
+        case "bottom":
+            if (space.bottom > 0) {
+                ret = "top"
+            }
+            break
+        case "top":
+            if (space.top < 0) {
+                ret = "bottom"
+            }
+            break
+        case "left":
+            if (space.left < 0) {
+                ret = "right"
+            }
+            break
+        case "right":
+            if (space.right > 0) {
+                ret = "left"
+            }
         }
 
         return ret
@@ -203,11 +203,11 @@ export default class Popup extends React.Component<AlignProps> {
         } else {
             //horizontal alignment
             switch (alignment) {
-                case "center":
-                    left += (targetSize.width - childSize.width) / 2
-                    break
-                case "right":
-                    left += targetSize.width - childSize.width
+            case "center":
+                left += (targetSize.width - childSize.width) / 2
+                break
+            case "right":
+                left += targetSize.width - childSize.width
             }
         }
 

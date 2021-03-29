@@ -1,34 +1,46 @@
 import * as React from "react"
-import handleFuncProp from "reap-utils/lib/react/handle-func-prop"
 import {PopupContext} from "./contexts"
+import omit from "reap-utils/lib/omit"
 
-export default (props: any) => {
-    const {
-        placement,
-        children,
-        elRef
-    } = props
-    const handleMouseEvent = (evt: React.MouseEvent<HTMLElement>) => {
+const PopupInner = React.forwardRef(
+    (props: any, ref: React.ForwardedRef<HTMLDivElement>) => {
         const {
-            onMouseLeave,
-            onMouseEnter
+            placement,
+            children,
+            elRef,
+            style,
+            ...otherProps
         } = props
 
-        handleFuncProp(
-            evt.type === "mouseenter" ? onMouseEnter : onMouseLeave
-        )(evt)
+        return (
+            <div
+                className="reap-popup"
+                ref={ref}
+                style={{
+                    ...style,
+                    position: "absolute",
+                    willChange: "transform"
+                }}
+                {...omit(otherProps, [
+                    "onClickOutside",
+                    "onShow",
+                    "onShown",
+                    "onHidden",
+                    "onHide"
+                ])}>
+                <div
+                    className="reap-popup-body"
+                    ref={elRef}
+                    style={{overflow: "hidden"}}>
+                    <PopupContext.Provider value={{placement}}>
+                        {children}
+                    </PopupContext.Provider>
+                </div>
+            </div>
+        )
     }
+)
 
-    return (
-        <div
-            className="reap-popup-body"
-            ref={elRef}
-            style={{overflow: "hidden"}}
-            onMouseEnter={handleMouseEvent}
-            onMouseLeave={handleMouseEvent}>
-            <PopupContext.Provider value={{placement}}>
-                {children}
-            </PopupContext.Provider>
-        </div>
-    )
-}
+PopupInner.displayName = "PopupInner"
+
+export default PopupInner

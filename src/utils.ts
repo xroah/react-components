@@ -1,4 +1,7 @@
-import {action, DelayObject, trigger} from "./interface"
+import {
+    action, DelayObject, trigger
+} from "./interface"
+import chainFunction from "reap-utils/lib/chain-function"
 
 export function noop() { }
 
@@ -39,14 +42,14 @@ export function handleOffset(offset?: number | number[]) {
         const len = offset.length
 
         switch (len) {
-            case 0:
-                ret = [0, 0]
-                break
-            case 1:
-                ret = Array(2).fill(offset[0])
-                break
-            default:
-                ret = offset.slice(0, 2)
+        case 0:
+            ret = [0, 0]
+            break
+        case 1:
+            ret = Array(2).fill(offset[0])
+            break
+        default:
+            ret = offset.slice(0, 2)
         }
     } else {
         ret = Array(2).fill(offset === undefined ? 0 : offset)
@@ -125,5 +128,29 @@ export function getRelativeOffset(parent: HTMLElement, el: HTMLElement) {
         top,
         rectLeft,
         rectTop
+    }
+}
+
+export function getHandlers(children: React.ReactElement, handler: Function) {
+    const {
+        onClick,
+        onMouseEnter,
+        onMouseLeave,
+        onBlur,
+        onFocus
+    } = children.props
+
+    return {
+        hover: {
+            onMouseEnter: chainFunction(handler, onMouseEnter),
+            onMouseLeave: chainFunction(handler, onMouseLeave)
+        },
+        click: {
+            onClick: chainFunction(handler, onClick)
+        },
+        focus: {
+            onFocus: chainFunction(handler, onFocus),
+            onBlur: chainFunction(handler, onBlur)
+        }
     }
 }

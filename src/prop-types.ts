@@ -30,7 +30,7 @@ export const overlayPropTypes = {
             hide: PropTypes.number
         })
     ]),
-    popup: PropTypes.element,
+    popup: PropTypes.element.isRequired,
     popupProps: PropTypes.object,
     extraRender: PropTypes.func,
     closeOnClickOutSide: PropTypes.bool
