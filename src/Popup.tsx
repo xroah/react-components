@@ -156,14 +156,13 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
                 popupMountNode,
                 verticalCenter,
                 transitionProps: tProps = {} as any,
-                children,
                 elRef = null,
                 ...otherProps
             },
             state: {
                 left = 0,
                 top = 0,
-                placement,
+                placement, //real placement, may flip
                 exited,
                 zIndex
             }
@@ -191,9 +190,7 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
                         zIndex
                     }}
                     ref={this.ref}
-                    {...otherProps}>
-                    {children}
-                </PopupInner>
+                    {...otherProps} />
             </Align>
         )
         const transitionProps: any = {
