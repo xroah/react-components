@@ -1,5 +1,5 @@
 {
-  "name": "reap-popup",
+  "name": "reap-overlay",
   "version": "1.0.0",
   "description": "",
   "main": "lib/index.js",
@@ -10,14 +10,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/reap-ui/reap-popup.git"
+    "url": "git+https://github.com/reap-ui/reap-overlay.git"
   },
   "author": "xroah",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/reap-ui/reap-popup/issues"
+    "url": "https://github.com/reap-ui/reap-overlay/issues"
   },
-  "homepage": "https://github.com/reap-ui/reap-popup#readme",
+  "homepage": "https://github.com/reap-ui/reap-overlay#readme",
   "devDependencies": {
     "@types/jest": "^26.0.22",
     "@types/prop-types": "^15.7.3",
