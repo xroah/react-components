@@ -15,7 +15,7 @@ export interface PopupCommonProps {
     transitionProps?: TransitionProps
     forceRender?: boolean
     alignment?: "left" | "center" | "right",
-    onClickOutside?: Function
+    onClickOutside?: (evt: MouseEvent) => void
     elRef?: React.RefObject<HTMLElement>
     verticalCenter?: boolean
     onShow?: callback

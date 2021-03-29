@@ -119,25 +119,17 @@ export default class Overlay extends React.Component<_OverlayProps, OverlayState
     }
 
     handlePopupMouseEnter = (evt: React.MouseEvent) => {
-        const {popup} = this.props
-
         this.clearTimer("timer")
         this.clearTimer("delayTimer")
-        handleFuncProp(popup.props.onMouseEnter)(evt)
+        handleFuncProp(this.props.popup.props.onMouseEnter)(evt)
     }
 
     handlePopupMouseLeave = (evt: React.MouseEvent) => {
-        const {popup} = this.props
-
         if (this.canTriggerByHover()) {
             this.delayClose()
         }
 
-        handleFuncProp(popup.props.onMouseLeave)(evt)
-    }
-
-    setVisible(visible: boolean) {
-        this.setState({visible})
+        handleFuncProp(this.props.popup.props.onMouseLeave)(evt)
     }
 
     open = () => {
@@ -145,7 +137,7 @@ export default class Overlay extends React.Component<_OverlayProps, OverlayState
             return
         }
 
-        const open = () => this.setVisible(true)
+        const open = () => this.setState({visible: true})
         const {show = 0} = handleDelay(this.props.delay)
 
         if (show > 0) {
@@ -160,7 +152,7 @@ export default class Overlay extends React.Component<_OverlayProps, OverlayState
             return
         }
 
-        const close = () => this.setVisible(false)
+        const close = () => this.setState({visible: false})
         let {hide = 0} = handleDelay(this.props.delay)
 
         if (hide > 0) {
@@ -185,17 +177,12 @@ export default class Overlay extends React.Component<_OverlayProps, OverlayState
         this.timer = setTimeout(this.close, DELAY)
     }
 
-    handleClickOutSide = () => {
-        const {
-            closeOnClickOutSide,
-            onClickOutside
-        } = this.props
-
-        if (closeOnClickOutSide) {
+    handleClickOutSide = (evt: MouseEvent) => {
+        if (this.props.closeOnClickOutSide) {
             this.close()
         }
 
-        handleFuncProp(onClickOutside)()
+        handleFuncProp(this.props.onClickOutside)(evt)
     }
 
     renderChildren() {
@@ -229,6 +216,7 @@ export default class Overlay extends React.Component<_OverlayProps, OverlayState
             props: {
                 popup,
                 popupProps,
+                extraRender,
                 ...otherProps
             },
             state: {
@@ -242,7 +230,6 @@ export default class Overlay extends React.Component<_OverlayProps, OverlayState
             ...omit(
                 otherProps,
                 [
-                    "extraRender",
                     "closeOnClickOutSide",
                     "trigger",
                     "delay",
@@ -264,6 +251,7 @@ export default class Overlay extends React.Component<_OverlayProps, OverlayState
             <>
                 <Placeholder ref={this.ref} />
                 {this.renderChildren()}
+                {extraRender ? extraRender(this) : null}
                 <Popup {...newPopupProps} />
             </>
         )
