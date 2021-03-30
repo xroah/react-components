@@ -49,11 +49,14 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
     handleClickOutSide = (evt: MouseEvent) => {
         const t = evt.target as HTMLElement
         const parent = this.ref.current
+        const target = this.props.target!
 
         if (
             parent &&
             t !== parent &&
-            !parent.contains(t)
+            !parent.contains(t) &&
+            t !== target &&
+            !target.contains(t)
         ) {
             handleFuncProp(this.props.onClickOutside)(evt)
         }

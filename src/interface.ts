@@ -55,7 +55,7 @@ export interface OverlayProps<T> extends PopupCommonProps {
     popup: React.ReactElement
     popupProps?: React.HTMLAttributes<HTMLElement>
     extraRender?: (overlay: T) => JSX.Element
-    closeOnClickOutSide?: boolean
+    closeOnClickOutside?: boolean
     defaultVisible?: boolean
 }
 

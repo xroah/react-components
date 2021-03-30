@@ -11,7 +11,6 @@ export default () => {
             }} id="container">
                 <Overlay
                     trigger="click"
-                    closeOnClickOutSide
                     popupMountNode="#container"
                     popup={
                         <div style={{width: 200, backgroundColor: "deepskyblue"}}>

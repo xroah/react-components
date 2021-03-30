@@ -33,7 +33,8 @@ export default class Overlay extends React.Component<_OverlayProps, OverlayState
         delay: 0,
         placement: "bottom",
         offset: [0, 0],
-        transition: Fade
+        transition: Fade,
+        closeOnClickOutside: true
     }
 
     constructor(props: _OverlayProps) {
@@ -147,7 +148,8 @@ export default class Overlay extends React.Component<_OverlayProps, OverlayState
         }
     }
 
-    close = () => {
+    //force for closing when once click outside
+    close = (force?: boolean) => {
         if (!this.state.visible || this.isControlled()) {
             return
         }
@@ -155,7 +157,7 @@ export default class Overlay extends React.Component<_OverlayProps, OverlayState
         const close = () => this.setState({visible: false})
         let {hide = 0} = handleDelay(this.props.delay)
 
-        if (hide > 0) {
+        if (hide > 0 && !force) {
             if (this.canTriggerByHover()) {
                 hide = Math.abs(hide - DELAY)
             }
@@ -178,8 +180,9 @@ export default class Overlay extends React.Component<_OverlayProps, OverlayState
     }
 
     handleClickOutSide = (evt: MouseEvent) => {
-        if (this.props.closeOnClickOutSide) {
-            this.close()
+        if (this.props.closeOnClickOutside) {
+            //close immediately
+            this.close(true)
         }
 
         handleFuncProp(this.props.onClickOutside)(evt)
@@ -230,7 +233,7 @@ export default class Overlay extends React.Component<_OverlayProps, OverlayState
             ...omit(
                 otherProps,
                 [
-                    "closeOnClickOutSide",
+                    "closeOnClickOutside",
                     "trigger",
                     "delay",
                     "visible",
