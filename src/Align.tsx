@@ -122,7 +122,7 @@ export default class Popup extends React.Component<AlignProps> {
                 return this.getAlginObj(left, top, "right")
             }
         }
-        const flip = this.isNeedFlip(space, p)
+        const flip = this.getRealPlacement(space, p)
 
         if (flip) {
             return alignFnMap[flip]()
@@ -131,8 +131,8 @@ export default class Popup extends React.Component<AlignProps> {
         return alignFnMap[p]()
     }
 
-    isNeedFlip(space: SpareSpace, placement: position): false | position {
-        let ret: false | position = false
+    getRealPlacement(space: SpareSpace, placement: position): position {
+        let ret: position | undefined
 
         switch (placement) {
         case "bottom":
@@ -154,6 +154,10 @@ export default class Popup extends React.Component<AlignProps> {
             if (space.right > 0) {
                 ret = "left"
             }
+        }
+
+        if (!ret) {
+            ret = placement
         }
 
         return ret
@@ -264,10 +268,6 @@ export default class Popup extends React.Component<AlignProps> {
             style: childStyle,
             className: childClassName
         } = _children.props
-
-        if (!children) {
-            return null
-        }
 
         return React.cloneElement(
             _children,
