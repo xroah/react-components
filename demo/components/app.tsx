@@ -12,6 +12,7 @@ export default () => {
                 <Overlay
                     trigger="click"
                     popupMountNode="#container"
+                    onAlign={() => console.log(Date.now(), "onAlign")}
                     popup={
                         <div style={{width: 200, backgroundColor: "deepskyblue"}}>
                             Lorem ipsum dolor sit amet consectetur, adipisicing elit. Suscipit magnam iusto similique unde ipsam quas at repellendus. Molestias id ad tempore odit. Laborum aut dignissimos aperiam amet itaque veritatis rem.

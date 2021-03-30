@@ -62,11 +62,16 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
         }
     }
 
-    afterAlign(left: number, top: number) {
+    afterAlign = () => {
         const {
             leftOffset,
             topOffset
         } = this.alignRef.current!.adjustElement()
+        const {
+            left,
+            top,
+            placement
+        } = this.state
 
         if (leftOffset !== 0 || topOffset !== 0) {
             this.setState(
@@ -76,6 +81,8 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
                 }
             )
         }
+
+        handleFuncProp(this.props.onAlign)(placement, this.props.target)
     }
 
     updatePosition = () => {
@@ -97,7 +104,7 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
                 top,
                 placement
             },
-            () => this.afterAlign(left, top)
+            this.afterAlign
         )
     }
 

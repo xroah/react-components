@@ -1,5 +1,4 @@
 import * as React from "react"
-import {PopupContext} from "./contexts"
 import omit from "reap-utils/lib/omit"
 
 const PopupInner = React.forwardRef(
@@ -26,15 +25,14 @@ const PopupInner = React.forwardRef(
                     "onShow",
                     "onShown",
                     "onHidden",
-                    "onHide"
+                    "onHide",
+                    "onAlign"
                 ])}>
                 <div
                     className="reap-popup-body"
                     ref={elRef}
                     style={{overflow: "hidden"}}>
-                    <PopupContext.Provider value={{placement}}>
-                        {children}
-                    </PopupContext.Provider>
+                    {children}
                 </div>
             </div>
         )

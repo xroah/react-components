@@ -18,6 +18,7 @@ export const overlayPropTypes = {
     onShown: PropTypes.func,
     onHide: PropTypes.func,
     onHidden: PropTypes.func,
+    onAlign: PropTypes.func,
     verticalCenter: PropTypes.bool,
     trigger: PropTypes.oneOfType([
         PropTypes.oneOf(actionType),

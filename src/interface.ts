@@ -22,6 +22,7 @@ export interface PopupCommonProps {
     onShown?: callback
     onHide?: callback
     onHidden?: callback
+    onAlign?: (placement: position, node: HTMLElement | null) => void
 }
 
 export interface PopupProps extends PopupCommonProps {
