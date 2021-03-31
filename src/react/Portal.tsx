@@ -1,7 +1,7 @@
 import * as React from "react"
 import {createPortal} from "react-dom"
 
-interface PortalProps {
+export interface PortalProps {
     mountNode?: HTMLElement | string | false
     visible?: boolean
     forceRender?: boolean
@@ -63,7 +63,7 @@ export default class Portal extends React.Component<PortalProps, PortalState> {
             return document.querySelector(mountNode)
         }
 
-        if (mountNode.nodeType === 1 && mountNode.parentElement) {
+        if (mountNode.nodeType === 1) {
             return mountNode
         }
 
@@ -100,6 +100,8 @@ export default class Portal extends React.Component<PortalProps, PortalState> {
         } = this.props
 
         if (!visible && !forceRender) {
+            this.unmount()
+
             return null
         }
 

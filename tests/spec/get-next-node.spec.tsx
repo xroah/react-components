@@ -14,13 +14,16 @@ it("Should get the button element", () => {
 
     document.body.appendChild(container)
     act(
-        () => render(
-            <>
-                <Placeholder ref={ref}/>
-                <Button/>
-            </>,
-            container
-        )
+        () => {
+            render(
+                <>
+                    <Placeholder ref={ref} />
+                    <Button />
+                </>,
+                container
+            )
+        }
     )
+
     expect(getNextNodeByRef(ref).id).toBe("btn")
 })
