@@ -179,7 +179,7 @@ export default class Overlay extends React.Component<_OverlayProps, OverlayState
         this.timer = setTimeout(this.close, DELAY)
     }
 
-    handleClickOutSide = (evt: MouseEvent) => {
+    handleClickOutside = (evt: MouseEvent) => {
         if (this.props.closeOnClickOutside) {
             //close immediately
             this.close(true)
@@ -242,7 +242,7 @@ export default class Overlay extends React.Component<_OverlayProps, OverlayState
                     "children"
                 ]
             ),
-            onClickOutside: this.handleClickOutSide,
+            onClickOutside: this.handleClickOutside,
             visible,
             onMouseEnter: this.handlePopupMouseEnter,
             onMouseLeave: this.handlePopupMouseLeave,

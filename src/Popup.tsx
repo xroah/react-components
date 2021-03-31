@@ -46,7 +46,7 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
         this.removeEvent()
     }
 
-    handleClickOutSide = (evt: MouseEvent) => {
+    handleClickOutside = (evt: MouseEvent) => {
         const t = evt.target as HTMLElement
         const parent = this.ref.current
         const target = this.props.target!
@@ -74,12 +74,10 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
         } = this.state
 
         if (leftOffset !== 0 || topOffset !== 0) {
-            this.setState(
-                {
-                    left: left + leftOffset,
-                    top: top + topOffset
-                }
-            )
+            this.setState({
+                left: left + leftOffset,
+                top: top + topOffset
+            })
         }
 
         handleFuncProp(this.props.onAlign)(placement, this.props.target)
@@ -88,24 +86,12 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
     updatePosition = () => {
         const alignRef = this.alignRef.current
 
-        if (!alignRef) {
-            return
+        if (alignRef) {
+            this.setState(
+                {...alignRef.align()},
+                this.afterAlign
+            )
         }
-
-        const {
-            left,
-            top,
-            placement
-        } = alignRef.align()
-
-        this.setState(
-            {
-                left,
-                top,
-                placement
-            },
-            this.afterAlign
-        )
     }
 
     _handleResize = () => {
@@ -113,12 +99,12 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
     }
 
     addEvent() {
-        document.addEventListener("click", this.handleClickOutSide)
+        document.addEventListener("click", this.handleClickOutside)
         window.addEventListener("resize", this.handleResize)
     }
 
     removeEvent() {
-        document.removeEventListener("click", this.handleClickOutSide)
+        document.removeEventListener("click", this.handleClickOutside)
         window.removeEventListener("resize", this.handleResize)
     }
 
@@ -144,9 +130,7 @@ export default class Popup extends React.Component<PopupProps, PopupState> {
     }
 
     handleExited = (node: HTMLElement) => {
-        this.setState({
-            exited: true
-        })
+        this.setState({exited: true})
         handleFuncProp(this.props.onHidden)(node)
     }
 
