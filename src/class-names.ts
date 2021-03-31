@@ -33,6 +33,5 @@ function _classNames(...args: any[]): string[] {
 }
 
 export default function classNames(...args: any[]): string {
-    //unique
-    return Array.from(new Set(_classNames(...args))).join(" ")
+    return _classNames(...args).join(" ")
 }
