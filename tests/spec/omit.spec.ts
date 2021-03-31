@@ -9,5 +9,5 @@ it("Should omitted", () => {
         e: 5
     }
 
-    expect(omit(obj, ["a", "b", "c"])).toEqual({d: 4, e: 5} as any)
+    expect(omit(obj, ["a", "b", "c"])).toEqual({d: 4, e: 5})
 })
