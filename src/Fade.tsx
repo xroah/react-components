@@ -9,59 +9,33 @@ import classNames from "reap-utils/lib/class-names"
 import PropTypes from "prop-types"
 
 export interface FadeProps extends TransitionProps {
-    transitionClass?: string
-    activeClass?: string
+    transitionClass: string
+    activeClass: string
 }
 
 export default function Fade(props: FadeProps) {
     const {
-        children,
-        timeout,
-        in: _in,
-        unmountOnExit,
-        appear,
-        onEnter,
-        onEntering,
-        onEntered,
-        onExit,
-        onExiting,
-        onExited,
         transitionClass,
-        activeClass
+        activeClass,
+        children,
+        ...otherProps
     } = props
-    const transitionProps = {
-        timeout,
-        in: _in,
-        unmountOnExit,
-        appear,
-        onEnter,
-        onEntering,
-        onEntered,
-        onExit,
-        onExiting,
-        onExited
-    }
 
     return (
-        <Transition {...transitionProps}>
+        <Transition {...otherProps}>
             {
                 state => {
                     const child = React.Children.only(children) as React.ReactElement
-                    let classes = classNames(
+                    let className = classNames(
                         child.props.className,
                         transitionClass
                     )
 
                     if (state === ENTERING || state === ENTERED) {
-                        classes = classNames(classes, activeClass)
+                        className = classNames(className, activeClass)
                     }
-                    
-                    return React.cloneElement(
-                        child,
-                        {
-                            className: classes
-                        }
-                    )
+
+                    return React.cloneElement(child, {className})
                 }
             }
         </Transition>
