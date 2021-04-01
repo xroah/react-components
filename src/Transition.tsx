@@ -6,7 +6,8 @@ import Placeholder from "reap-utils/lib/react/Placeholder"
 import {
     TransitionProps,
     TransitionState,
-    componentState
+    componentState,
+    stateType
 } from "./interface"
 import {propTypes} from "./prop-types"
 import {
@@ -23,7 +24,6 @@ export default class Transition extends React.Component<TransitionProps, Transit
     private ref = React.createRef<HTMLDivElement>()
     private timer: any = null
     private nextTimer: any = null
-    private next: Function | null = null
 
     static propTypes = {
         ...propTypes
@@ -57,9 +57,7 @@ export default class Transition extends React.Component<TransitionProps, Transit
 
         if (_in) {
             if (appear) {
-                this.componentDidUpdate({
-                    in: false
-                } as TransitionProps)
+                this.componentDidUpdate({in: false} as any)
             } else {
                 handleFuncProp(onEntered)(getNextNodeByRef(this.ref))
             }
@@ -67,19 +65,11 @@ export default class Transition extends React.Component<TransitionProps, Transit
     }
 
     componentDidUpdate(prevProps: TransitionProps) {
-        let {
-            props: {in: _in},
-            state: {status},
-            next
-        } = this
+        let {in: _in} = this.props
 
         if (_in !== prevProps.in) {
-            status = _in ? ENTER : EXIT
-
             this.clear()
-            this.updateStatus(status)
-        } else if (next) {
-            this.callNext(next)
+            this.updateStatus(_in ? ENTER : EXIT)
         }
     }
 
@@ -96,14 +86,6 @@ export default class Transition extends React.Component<TransitionProps, Transit
         return nextState
     }
 
-    callNext(callback: Function) {
-        if (!this.props.timeout) {
-            return callback()
-        }
-
-        this.nextTimer = setTimeout(this.safeCallback(callback), 20)
-    }
-
     clear() {
         if (this.nextTimer !== null) {
             clearTimeout(this.nextTimer)
@@ -113,7 +95,7 @@ export default class Transition extends React.Component<TransitionProps, Transit
             clearTimeout(this.timer)
         }
 
-        this.next = this.timer = this.nextTimer = null
+        this.timer = this.nextTimer = null
     }
 
     safeCallback(callback: Function) {
@@ -131,143 +113,125 @@ export default class Transition extends React.Component<TransitionProps, Transit
         return _callback
     }
 
-    delayEnterOrExit(timeout: number, callback: Function) {
-        if (!timeout) {
-            return callback()
-        }
-
-        this.timer = setTimeout(this.safeCallback(callback), timeout)
-    }
-
     handleEnter() {
-        const {
-            onEntering,
-            onEntered,
-            timeout = 0
-        } = this.props
+        const {onEntering, onEntered} = this.props
         const node = getNextNodeByRef(this.ref)
-        const enteredCallback = () => {
-            this.setState({
-                status: ENTERED
-            })
-            handleFuncProp(onEntered)(node)
-        }
-        this.next = () => {
-            this.next = null
 
-            this.delayEnterOrExit(timeout as number, enteredCallback)
-        }
-
-        this.setState({
-            status: ENTERING
-        })
-        handleFuncProp(onEntering)(node)
+        this.setState(
+            {status: ENTERING},
+            () => handleFuncProp(onEntering)(node)
+        )
+        this.onTransitionEnd(
+            () => this.setState(
+                {status: ENTERED},
+                () => handleFuncProp(onEntered)(node)
+            )
+        )
     }
 
     handleExit() {
-        const {
-            onExiting,
-            onExited,
-            timeout,
-            unmountOnExit
-        } = this.props
+        const {onExiting} = this.props
         const node = getNextNodeByRef(this.ref)
-        const unmount = () => {
-            this.next = null
 
-            this.setState({
-                status: UNMOUNTED
-            })
-        }
-        const exitedCallback = () => {
-            this.setState(
-                {
-                    status: EXITED
-                }
+        this.setState(
+            {status: EXITING},
+            () => handleFuncProp(onExiting)(node)
+        )
+        this.onTransitionEnd(
+            () => this.setState(
+                {status: EXITED},
+                this.afterExited.bind(this)
             )
-            handleFuncProp(onExited)(node)
-        }
-        this.next = () => {
-            this.next = unmountOnExit ? unmount : null
+        )
+    }
 
-            this.delayEnterOrExit(timeout as number, exitedCallback)
+    afterExited() {
+        const node = getNextNodeByRef(this.ref)
+        const {unmountOnExit, onExited} = this.props
+
+        if (unmountOnExit) {
+            this.setState({status: UNMOUNTED})
         }
 
-        this.setState({
-            status: EXITING
-        })
-        handleFuncProp(onExiting)(node)
+        handleFuncProp(onExited)(node)
     }
 
     updateStatus(status: componentState) {
-        const {
-            onEnter,
-            onExit
-        } = this.props
+        const {onEnter, onExit} = this.props
+        const TIMEOUT = 20
+        const TIMER = "nextTimer"
 
-        this.setState({status})
-        handleFuncProp(
-            status === ENTER ? onEnter :
-                status === EXIT ? onExit : undefined
-        )(getNextNodeByRef(this.ref))
+        this.setState(
+            {status},
+            () => {
+                const node = getNextNodeByRef(this.ref)
 
-        if (status === ENTER) {
-            this.next = () => this.handleEnter()
-        } else if (status === EXIT) {
-            this.next = () => this.handleExit()
-        }
+                if (status === ENTER) {
+                    this.setTimeout(this.handleEnter.bind(this), TIMEOUT, TIMER)
+                    handleFuncProp(onEnter)(node)
+                } else {
+                    this.setTimeout(this.handleExit.bind(this), TIMEOUT, TIMER)
+                    handleFuncProp(onExit)(node)
+                }
+            }
+        )
     }
 
-    renderEl() {
-        const {
-            status
-        } = this.state
+    setTimeout(cb: Function, timeout: number, timer: "timer" | "nextTimer") {
+        this[timer] = setTimeout(
+            () => {
+                cb()
 
-        if (status === UNMOUNTED) {
-            return null
-        }
-
-        const {
-            children,
-            ...otherProps
-        } = this.props
-        const restProps = omit(
-            otherProps,
-            [
-                "in",
-                "timeout",
-                "appear",
-                "onEnter",
-                "onEntering",
-                "onEntered",
-                "onExit",
-                "onExiting",
-                "onExited",
-                "unmountOnExit"
-            ]
+                this[timer] = null
+            },
+            timeout
         )
+    }
+
+    onTransitionEnd(callback: Function) {
+        const {timeout = 0} = this.props
+
+        this.setTimeout(callback, timeout, "timer")
+    }
+
+    renderEl(status: stateType) {
+        const {children, ...otherProps} = this.props
 
         if (typeof children === "function") {
             return children(status)
         }
 
-        const child = React.Children.only(children) as React.ReactElement
-
-        return React.cloneElement(child, restProps)
+        return React.cloneElement(
+            React.Children.only(children) as React.ReactElement,
+            omit(
+                otherProps,
+                [
+                    "in",
+                    "timeout",
+                    "appear",
+                    "onEnter",
+                    "onEntering",
+                    "onEntered",
+                    "onExit",
+                    "onExiting",
+                    "onExited",
+                    "unmountOnExit"
+                ]
+            )
+        )
     }
 
     render() {
-        const el = this.renderEl()
+        const {status} = this.state
 
-        if (!el) {
+        if (status === UNMOUNTED) {
             return null
         }
 
         return (
             <>
-                {/* div: for finding the node */}
                 <Placeholder ref={this.ref} />
-                {el}
+                {this.renderEl(status)}
             </>
         )
     }
