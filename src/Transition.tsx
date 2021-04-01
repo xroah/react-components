@@ -99,19 +99,14 @@ export default class Transition extends React.Component<TransitionProps, State> 
 
     componentDidUpdate(prevProps: TransitionProps) {
         let {
-            props: {
-                in: _in
-            },
-            state: {
-                status
-            },
+            props: {in: _in},
+            state: {status},
             next
         } = this
 
         if (_in !== prevProps.in) {
             status = _in ? ENTER : EXIT
 
-            this.clearTimer()
             this.clear()
             this.updateStatus(status as stateType)
         } else if (next) {
@@ -120,27 +115,16 @@ export default class Transition extends React.Component<TransitionProps, State> 
     }
 
     componentWillUnmount() {
-        this.clearTimer()
         this.clear()
     }
 
     //in case findDOMNode returns null
     static getDerivedStateFromProps(nextProps: TransitionProps, nextState: State) {
         if (nextProps.in && nextState.status === UNMOUNTED) {
-            return {
-                status: EXITED
-            }
+            return {status: EXITED}
         }
 
         return nextState
-    }
-
-    clearTimer() {
-        if (this.timer !== null) {
-            clearTimeout(this.timer)
-
-            this.timer = null
-        }
     }
 
     callNext(callback: Function) {
@@ -152,13 +136,15 @@ export default class Transition extends React.Component<TransitionProps, State> 
     }
 
     clear() {
-        this.next = null
-
         if (this.nextTimer !== null) {
             clearTimeout(this.nextTimer)
-
-            this.nextTimer = null
         }
+
+        if (this.timer !== null) {
+            clearTimeout(this.timer)
+        }
+
+        this.next = this.timer = this.nextTimer = null
     }
 
     safeCallback(callback: Function) {
@@ -276,7 +262,6 @@ export default class Transition extends React.Component<TransitionProps, State> 
             children,
             ...otherProps
         } = this.props
-
         const restProps = omit(
             otherProps,
             [
