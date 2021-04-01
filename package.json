@@ -6,7 +6,7 @@
   "scripts": {
     "test": "reap-scripts test --coverage",
     "build": "reap-scripts rm lib es && reap-scripts tsc --lib --es -d",
-    "start:demo": "reap-scripts start --index demo/index.html -e demo/index.tsx -o"
+    "demo": "reap-scripts start --index demo/index.html -e demo/index.tsx -o"
   },
   "repository": {
     "type": "git",
