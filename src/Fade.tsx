@@ -1,17 +1,9 @@
 import * as React from "react"
-import Transition,
-{
-    ENTERED,
-    ENTERING,
-    TransitionProps
-} from "./Transition"
+import Transition from "./Transition"
 import classNames from "reap-utils/lib/class-names"
 import PropTypes from "prop-types"
-
-export interface FadeProps extends TransitionProps {
-    transitionClass: string
-    activeClass: string
-}
+import {FadeProps} from "./interface"
+import {ENTERED, ENTERING} from "./constants"
 
 export default function Fade(props: FadeProps) {
     const {

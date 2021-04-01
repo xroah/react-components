@@ -1,54 +1,25 @@
 import * as React from "react"
 import handleFuncProp from "reap-utils/lib/react/handle-func-prop"
 import omit from "reap-utils/lib/omit"
-import PropTypes from "prop-types"
 import getNextNodeByRef from "reap-utils/lib/react/get-next-node-by-ref"
 import Placeholder from "reap-utils/lib/react/Placeholder"
+import {
+    TransitionProps,
+    TransitionState,
+    componentState
+} from "./interface"
+import {propTypes} from "./prop-types"
+import {
+    ENTER,
+    ENTERED,
+    ENTERING,
+    EXIT,
+    EXITING,
+    EXITED,
+    UNMOUNTED
+} from "./constants"
 
-export const ENTER = "enter"
-export const ENTERING = "entering"
-export const ENTERED = "entered"
-export const EXIT = "exit"
-export const EXITING = "exiting"
-export const EXITED = "exited"
-export const UNMOUNTED = "unmounted"
-
-type stateType = "enter" | "entering" | "entered" | "exit" | "exiting" | "exited"
-type callback = (node: HTMLElement | null) => void
-
-export interface TransitionProps {
-    in: boolean
-    timeout?: number
-    unmountOnExit?: boolean
-    appear?: boolean
-    children: ((state: stateType) => React.ReactElement) | React.ReactElement
-    onEnter?: callback
-    onEntering?: callback
-    onEntered?: callback
-    onExit?: callback
-    onExiting?: callback
-    onExited?: callback
-}
-
-interface State {
-    status: stateType | "unmounted"
-}
-
-export const propTypes = {
-    in: PropTypes.bool,
-    timeout: PropTypes.number,
-    unmountOnExit: PropTypes.bool,
-    appear: PropTypes.bool,
-    children: PropTypes.oneOfType([PropTypes.func, PropTypes.element]).isRequired,
-    onEnter: PropTypes.func,
-    onEntering: PropTypes.func,
-    onEntered: PropTypes.func,
-    onExit: PropTypes.func,
-    onExiting: PropTypes.func,
-    onExited: PropTypes.func,
-}
-
-export default class Transition extends React.Component<TransitionProps, State> {
+export default class Transition extends React.Component<TransitionProps, TransitionState> {
     private ref = React.createRef<HTMLDivElement>()
     private timer: any = null
     private nextTimer: any = null
@@ -66,7 +37,7 @@ export default class Transition extends React.Component<TransitionProps, State> 
             unmountOnExit,
             appear
         } = props
-        let status
+        let status: componentState
 
         if (_in) {
             status = appear ? EXITED : ENTERED
@@ -74,9 +45,7 @@ export default class Transition extends React.Component<TransitionProps, State> 
             status = unmountOnExit ? UNMOUNTED : EXITED
         }
 
-        this.state = {
-            status: status as stateType
-        }
+        this.state = {status}
     }
 
     componentDidMount() {
@@ -108,7 +77,7 @@ export default class Transition extends React.Component<TransitionProps, State> 
             status = _in ? ENTER : EXIT
 
             this.clear()
-            this.updateStatus(status as stateType)
+            this.updateStatus(status)
         } else if (next) {
             this.callNext(next)
         }
@@ -119,7 +88,7 @@ export default class Transition extends React.Component<TransitionProps, State> 
     }
 
     //in case findDOMNode returns null
-    static getDerivedStateFromProps(nextProps: TransitionProps, nextState: State) {
+    static getDerivedStateFromProps(nextProps: TransitionProps, nextState: TransitionState) {
         if (nextProps.in && nextState.status === UNMOUNTED) {
             return {status: EXITED}
         }
@@ -230,7 +199,7 @@ export default class Transition extends React.Component<TransitionProps, State> 
         handleFuncProp(onExiting)(node)
     }
 
-    updateStatus(status: stateType) {
+    updateStatus(status: componentState) {
         const {
             onEnter,
             onExit

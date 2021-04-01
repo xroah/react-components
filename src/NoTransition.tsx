@@ -1,21 +1,14 @@
 import * as React from "react"
 import classNames from "reap-utils/lib/class-names"
 import handleFuncProp from "reap-utils/lib/react/handle-func-prop"
-import {
-    TransitionProps,
-    ENTERED,
-    EXITED,
-    propTypes
-} from "./Transition"
+import {ENTERED, EXITED} from "./constants"
 import PropTypes from "prop-types"
 import getNextNodeByRef from "reap-utils/lib/react/get-next-node-by-ref"
 import Placeholder from "reap-utils/lib/react/Placeholder"
+import {NoTransitionProps} from "./interface"
+import {propTypes} from "./prop-types"
 
-//compatible with Transition(some components animation is configurable)
-export interface NoTransitionProps extends TransitionProps {
-    activeClass?: string
-}
-
+//compatible with Transition
 export default class NoTransition extends React.Component<NoTransitionProps> {
     private ref = React.createRef<HTMLDivElement>()
 
@@ -103,7 +96,7 @@ export default class NoTransition extends React.Component<NoTransitionProps> {
 
         return (
             <>
-                <Placeholder ref={this.ref}/>
+                <Placeholder ref={this.ref} />
                 {el}
             </>
         )
