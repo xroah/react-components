@@ -8,11 +8,13 @@ import {
     EXITED,
     EXITING
 } from "./constants";
+import PropTypes from "prop-types"
 
 export default function CSSTransition(props: CSSTransitionProps) {
     const {
         name,
         children,
+        hiddenOnExited,
         ...otherProps
     } = props
 
@@ -38,7 +40,9 @@ export default function CSSTransition(props: CSSTransitionProps) {
                             className.push(`${name}-exit-active`)
                             break
                         case EXITED:
-                            style.display = "none"
+                            if (hiddenOnExited) {
+                                style.display = "none"
+                            }
                     }
 
                     return React.cloneElement(
@@ -52,4 +56,13 @@ export default function CSSTransition(props: CSSTransitionProps) {
             }
         </Transition>
     )
+}
+
+CSSTransition.propTypes = {
+    name: PropTypes.string.isRequired,
+    hiddenOnExited: PropTypes.bool
+}
+
+CSSTransition.defaultProps = {
+    hiddenOnExited: true
 }

@@ -6,7 +6,7 @@ export default () => {
     const handleClick = () => toggle(!visible)
 
     return (
-        <div id="example-1">
+        <div style={{width: 200}}>
             <button onClick={handleClick}>
                 toggle css
             </button>
