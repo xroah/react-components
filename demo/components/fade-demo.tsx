@@ -13,8 +13,7 @@ export default function () {
                 in={visible}
                 onEnter={node => console.log(node)}
                 onEntering={() => console.log("entering")}
-                timeout={300}
-                unmountOnExit>
+                timeout={300}>
                 <div className="div" style={{lineHeight: 2}}>
                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat, labore maiores expedita at magnam perspiciatis consequuntur architecto voluptas quo quos eum repellendus repellat rerum officia accusamus odio nesciunt consectetur. Dignissimos.
                     </div>
