@@ -43,3 +43,7 @@ export interface FadeProps extends TransitionProps {
     transitionClass: string
     activeClass: string
 }
+
+export interface CSSTransitionProps extends TransitionProps {
+    name: string
+}
