@@ -34,18 +34,3 @@ it("Should object be correct", () => {
 it("Should function be correct", () => {
     expect(classNames(CLS1, () => CLS2)).toBe(`${CLS1} ${CLS2}`)
 })
-
-it("Should be unique", () => {
-    expect(
-        classNames(
-            CLS1,
-            {
-                [CLS2]: true,
-                [CLS3]: true
-            },
-            [CLS1, CLS2],
-            CLS3,
-            () => CLS1
-        )
-    ).toBe(`${CLS1} ${CLS2} ${CLS3}`)
-})
