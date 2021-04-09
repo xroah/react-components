@@ -1,4 +1,4 @@
-import {Server, ConfigOptions} from "karma"
+import {Server, ConfigOptions, config} from "karma"
 import {LOG_INFO} from "karma/lib/constants"
 
 const cfg: ConfigOptions = {
@@ -29,12 +29,15 @@ const cfg: ConfigOptions = {
     }
 } as ConfigOptions
 
-const server = new Server(
+config.parseConfig(
+    null,
     cfg,
-    exitCode => {
+    {promiseConfig: true}
+).then(karmaCfg => {
+    const server = new Server(karmaCfg, exitCode => {
         console.log(`Karma has exited with ${exitCode}`)
         process.exit(exitCode)
-    }
-)
+    })
 
-server.start()
+    server.start()
+})
