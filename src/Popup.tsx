@@ -4,7 +4,7 @@ import throttle from "reap-utils/lib/throttle"
 import chainFunction from "reap-utils/lib/chain-function"
 import NoTransition from "reap-transition/lib/NoTransition"
 import Align from "./Align"
-import Portal from "reap-utils/lib/react/portal"
+import Portal from "reap-utils/lib/react/Portal"
 import {
     PopupProps,
     PopupState
