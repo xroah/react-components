@@ -49,6 +49,7 @@ const Button = React.forwardRef(
         if (restProps.href) {
             tag = "a"
             restProps.tabIndex = -1
+            restProps.role = "button"
 
             omit(restProps, ["type"])
         } else {
