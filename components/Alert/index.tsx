@@ -17,6 +17,7 @@ export interface AlertProps extends CommonProps<HTMLDivElement> {
     heading?: string | React.ReactNode
     onClose?: Function
     onClosed?: Function
+    onCloseBtnClick?: Function
 }
 
 export default function Alert(props: AlertProps) {
@@ -25,12 +26,13 @@ export default function Alert(props: AlertProps) {
         variant,
         fade,
         dismissible,
-        visible,
         children,
         heading,
         onClose,
         onClosed,
-        ...otherProps
+        visible,
+        onCloseBtnClick,
+        ...restProps
     } = props
     const PREFIX = "alert"
     const classes = classNames(
@@ -39,17 +41,23 @@ export default function Alert(props: AlertProps) {
         variant && `${PREFIX}-${variant}`,
         dismissible && `${PREFIX}-dismissible`
     )
+    const controlled = "visible" in restProps
+    const [_visible, updateVisible] = React.useState(true)
     const handleClick = () => {
-        handleFuncProp(onClose)()
+        handleFuncProp(onCloseBtnClick)()
+
+        if (controlled) {
+            return 
+        }
+
+        updateVisible(!_visible)
     }
     const handleExited = () => {
         handleFuncProp(onClosed)()
     }
     const handleExit = () => {
         //toggle visible, invoke onClose callback
-        if (!dismissible) {
-            handleClick()
-        }
+        handleFuncProp(onClose)()
     }
     let button: React.ReactNode
 
@@ -64,7 +72,7 @@ export default function Alert(props: AlertProps) {
     }
 
     const child = (
-        <div className={classes} {...otherProps}>
+        <div className={classes} {...restProps}>
             {
                 !isUndef(heading) && (
                     <h4 className={`${PREFIX}-heading`}>{heading}</h4>
@@ -75,7 +83,7 @@ export default function Alert(props: AlertProps) {
         </div>
     )
     const transitionProps = {
-        in: !!visible,
+        in: visible === undefined ? _visible : !!visible,
         unmountOnExit: true,
         onExit: handleExit,
         onExited: handleExited
@@ -102,8 +110,7 @@ Alert.propTypes = {
 }
 Alert.defaultProps = {
     dismissible: false,
-    fade: true,
-    visible: true
+    fade: true
 }
 
 Alert.Link = function (props: React.AnchorHTMLAttributes<HTMLAnchorElement>) {
