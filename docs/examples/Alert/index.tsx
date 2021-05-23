@@ -31,7 +31,11 @@ export default () => {
                 </Alert>
             </div>
             <div>
-                <Alert visible={visible2} dismissible onClose={onClose}>
+                <Alert
+                    variant="danger"
+                    visible={visible2}
+                    dismissible
+                    onClose={onClose}>
                     A simple dismissible alert—check it out!
                 </Alert>
             </div>
