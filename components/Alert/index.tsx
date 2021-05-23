@@ -58,10 +58,8 @@ export default function Alert(props: AlertProps) {
             <Button
                 variant="link"
                 type="button"
-                className="close"
-                onClick={handleClick}>
-                <span aria-hidden="true">&times;</span>
-            </Button>
+                className="btn-close"
+                onClick={handleClick} />
         )
     }
 
@@ -108,6 +106,6 @@ Alert.defaultProps = {
     visible: true
 }
 
-Alert.Link = function(props: React.AnchorHTMLAttributes<HTMLAnchorElement>) {
-    return <a {...props}/>
+Alert.Link = function (props: React.AnchorHTMLAttributes<HTMLAnchorElement>) {
+    return <a {...props} />
 }
