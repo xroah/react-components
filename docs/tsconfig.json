@@ -3,7 +3,7 @@
     "jsx": "react",
     "baseUrl": ".",
     "paths": {
-      "reap-ui": ["../components/index"]
+      "reap-ui/*": ["../components/*"]
     }
   }
 }
