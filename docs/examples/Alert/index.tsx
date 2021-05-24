@@ -8,7 +8,7 @@ export default () => {
         update(!visible)
     }
     const [visible2, updateVisible] = React.useState(true)
-    const onClose = () => {
+    const onCloseBtnClick = () => {
         updateVisible(false)
     }
 
@@ -31,12 +31,17 @@ export default () => {
                 </Alert>
             </div>
             <div>
+                <Alert variant="warning" dismissible>
+                    A simple dismissible alert—check it out!
+                </Alert>
+            </div>
+            <div>
                 <Alert
                     variant="danger"
                     visible={visible2}
                     dismissible
-                    onClose={onClose}>
-                    A simple dismissible alert—check it out!
+                    onCloseBtnClick={onCloseBtnClick}>
+                    A simple controlled dismissible alert—check it out!
                 </Alert>
             </div>
         </div>
