@@ -8,6 +8,7 @@ import Button from "../Button"
 import isUndef from "reap-utils/lib/is-undef"
 import Fade from "../Commons/Fade"
 import NoTransition from "../Commons/NoTransition"
+import omit from "reap-utils/lib/omit"
 
 export interface AlertProps extends CommonProps<HTMLDivElement> {
     variant?: Variant
@@ -17,7 +18,7 @@ export interface AlertProps extends CommonProps<HTMLDivElement> {
     heading?: string | React.ReactNode
     onClose?: Function
     onClosed?: Function
-    onCloseBtnClick?: Function
+    onCloseButtonClick?: Function
 }
 
 export default function Alert(props: AlertProps) {
@@ -30,8 +31,7 @@ export default function Alert(props: AlertProps) {
         heading,
         onClose,
         onClosed,
-        visible,
-        onCloseBtnClick,
+        onCloseButtonClick,
         ...restProps
     } = props
     const PREFIX = "alert"
@@ -44,10 +44,10 @@ export default function Alert(props: AlertProps) {
     const controlled = "visible" in restProps
     const [_visible, updateVisible] = React.useState(true)
     const handleClick = () => {
-        handleFuncProp(onCloseBtnClick)()
+        handleFuncProp(onCloseButtonClick)()
 
         if (controlled) {
-            return 
+            return
         }
 
         updateVisible(!_visible)
@@ -59,10 +59,10 @@ export default function Alert(props: AlertProps) {
         //toggle visible, invoke onClose callback
         handleFuncProp(onClose)()
     }
-    let button: React.ReactNode
+    let closeBtn: React.ReactNode
 
     if (dismissible) {
-        button = (
+        closeBtn = (
             <Button
                 variant="link"
                 type="button"
@@ -71,28 +71,40 @@ export default function Alert(props: AlertProps) {
         )
     }
 
-    const child = (
-        <div className={classes} {...restProps}>
-            {
-                !isUndef(heading) && (
-                    <h4 className={`${PREFIX}-heading`}>{heading}</h4>
-                )
-            }
-            {children}
-            {button}
-        </div>
-    )
+    const getElement = (closeBtn?: React.ReactNode) => {
+        const props = {...restProps}
+
+        omit(props, ["visible"])
+
+        return (
+            <div className={classes} {...props}>
+                {
+                    !isUndef(heading) && (
+                        <h4 className={`${PREFIX}-heading`}>{heading}</h4>
+                    )
+                }
+                {children}
+                {closeBtn}
+            </div>
+        )
+    }
+
+    if (!controlled && !dismissible) {
+        return getElement()
+    }
+
     const transitionProps = {
-        in: visible === undefined ? _visible : !!visible,
+        in: controlled ? !!restProps.visible : _visible,
         unmountOnExit: true,
         onExit: handleExit,
         onExited: handleExited
     }
+    const element = getElement(closeBtn)
 
     return (
         fade ?
-            <Fade {...transitionProps}>{child}</Fade> :
-            <NoTransition {...transitionProps}>{child}</NoTransition>
+            <Fade {...transitionProps}>{element}</Fade> :
+            <NoTransition {...transitionProps}>{element}</NoTransition>
     )
 }
 
