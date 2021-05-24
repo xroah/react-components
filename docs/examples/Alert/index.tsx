@@ -40,7 +40,7 @@ export default () => {
                     variant="danger"
                     visible={visible2}
                     dismissible
-                    onCloseBtnClick={onCloseBtnClick}>
+                    onCloseButtonClick={onCloseBtnClick}>
                     A simple controlled dismissible alert—check it out!
                 </Alert>
             </div>
