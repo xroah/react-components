@@ -74,10 +74,8 @@ export default function Alert(props: AlertProps) {
     const getElement = (closeBtn?: React.ReactNode) => {
         const props = {...restProps}
 
-        omit(props, ["visible"])
-
         return (
-            <div className={classes} {...props}>
+            <div className={classes} {...omit(props, "visible")}>
                 {
                     !isUndef(heading) && (
                         <h4 className={`${PREFIX}-heading`}>{heading}</h4>
