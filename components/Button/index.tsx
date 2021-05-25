@@ -6,10 +6,9 @@ import {Variant, Variants} from "../Commons/Variants"
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLElement> {
     variant?: Variant | "link"
     outline?: boolean
-    size?: string
+    size?: "sm" | "lg"
     disabled?: boolean
     active?: boolean
-    block?: boolean
     target?: string
     textNoWrap?: boolean
     tag?: string
@@ -23,7 +22,6 @@ const Button = React.forwardRef(
         {
             children,
             className,
-            block,
             disabled,
             active,
             variant,
@@ -42,7 +40,6 @@ const Button = React.forwardRef(
             disabled && "disabled",
             active && "active",
             size && `${PREFIX}-${size}`,
-            block && `${PREFIX}-block`,
             outline ? `${PREFIX}-outline-${variant}` : `${PREFIX}-${variant}`,
             textNoWrap && "text-nowrap"
         )
@@ -63,11 +60,10 @@ const Button = React.forwardRef(
 Button.propTypes = {
     variant: PropTypes.oneOf([...Variants, "link"]) as any,
     outline: PropTypes.bool,
-    size: PropTypes.string,
+    size: PropTypes.oneOf(["sm", "lg"]),
     disabled: PropTypes.bool,
     type: PropTypes.oneOf(["button", "submit", "reset"]),
     active: PropTypes.bool,
-    block: PropTypes.bool
 }
 Button.defaultProps = {
     variant: "primary",
