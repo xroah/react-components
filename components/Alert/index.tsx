@@ -10,7 +10,7 @@ import Fade from "../Commons/Fade"
 import NoTransition from "../Commons/NoTransition"
 import omit from "reap-utils/lib/omit"
 
-export interface AlertProps extends CommonProps<HTMLDivElement> {
+export interface AlertProps extends React.HTMLAttributes<HTMLDivElement> {
     variant?: Variant
     fade?: boolean
     dismissible?: boolean
