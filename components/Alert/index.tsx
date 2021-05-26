@@ -1,14 +1,13 @@
 import * as React from "react"
 import PropTypes from "prop-types"
-import handleFuncProp from "reap-utils/lib/react/handle-func-prop"
 import classNames from "reap-utils/lib/class-names"
-import {CommonProps} from "../Commons/CommonPropsInterface"
 import {Variant, Variants} from "../Commons/Variants"
 import Button from "../Button"
 import isUndef from "reap-utils/lib/is-undef"
 import Fade from "../Commons/Fade"
 import NoTransition from "../Commons/NoTransition"
 import omit from "reap-utils/lib/omit"
+import handleFuncProp from "reap-utils/lib/react/handle-func-prop"
 
 export interface AlertProps extends React.HTMLAttributes<HTMLDivElement> {
     variant?: Variant
@@ -18,7 +17,7 @@ export interface AlertProps extends React.HTMLAttributes<HTMLDivElement> {
     heading?: string | React.ReactNode
     onClose?: Function
     onClosed?: Function
-    onCloseButtonClick?: Function
+    onCloseButtonClick?: (evt: React.MouseEvent<HTMLButtonElement>) => void
 }
 
 export default function Alert(props: AlertProps) {
@@ -43,14 +42,14 @@ export default function Alert(props: AlertProps) {
     )
     const controlled = "visible" in restProps
     const [_visible, updateVisible] = React.useState(true)
-    const handleClick = () => {
-        handleFuncProp(onCloseButtonClick)()
-
-        if (controlled) {
-            return
+    const handleClick = (evt: React.MouseEvent<HTMLButtonElement>) => {
+        if (!controlled) {
+            updateVisible(!_visible)
         }
 
-        updateVisible(!_visible)
+        if (typeof onCloseButtonClick === "function") {
+            onCloseButtonClick(evt)
+        }
     }
     const handleExited = () => {
         handleFuncProp(onClosed)()
