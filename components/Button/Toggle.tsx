@@ -4,6 +4,7 @@ import Button, {ButtonProps} from "./Button"
 
 interface ToggleProps extends ButtonProps {
     defaultActive?: boolean
+    onStateChange?: (state: boolean) => void
 }
 
 const Toggle = React.forwardRef(
@@ -11,6 +12,7 @@ const Toggle = React.forwardRef(
         {
             defaultActive,
             onClick,
+            onStateChange,
             ...restProps
         }: ToggleProps,
         ref: React.Ref<HTMLElement>
@@ -30,8 +32,14 @@ const Toggle = React.forwardRef(
 
         const [_active, update] = React.useState(defaultActive)
         const handleClick = (evt: React.MouseEvent<HTMLElement>) => {
+            const active = !_active
+
             evt.preventDefault()
-            update(!_active)
+            update(active)
+
+            if (typeof onStateChange === "function") {
+                onStateChange(active)
+            }
 
             if (typeof onClick === "function") {
                 onClick(evt)
@@ -52,7 +60,8 @@ Toggle.defaultProps = {
     defaultActive: false
 }
 Toggle.propTypes = {
-    defaultActive: PropTypes.bool
+    defaultActive: PropTypes.bool,
+    onStateChange: PropTypes.func
 }
 
 export default Toggle
