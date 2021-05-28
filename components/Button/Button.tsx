@@ -2,19 +2,18 @@ import * as React from "react"
 import PropTypes from "prop-types"
 import classNames from "reap-utils/lib/class-names"
 import {Variant, Variants} from "../Commons/Variants"
+import {AnchorCommonProps} from "../Commons/CommonPropsInterface"
 
-export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLElement> {
+type BaseProps = Omit<React.ButtonHTMLAttributes<HTMLElement>, "type">
+export interface ButtonProps extends BaseProps, AnchorCommonProps {
     variant?: Variant | "link"
     outline?: boolean
     size?: "sm" | "lg"
     disabled?: boolean
     active?: boolean
-    target?: string
     textNoWrap?: boolean
     tag?: string
-    href?: string,
-    value?: string
-    download?: string
+    type?: "reset" | "button" | "submit" | "checkbox" | "radio"
 }
 
 const Button = React.forwardRef(
@@ -62,7 +61,7 @@ Button.propTypes = {
     outline: PropTypes.bool,
     size: PropTypes.oneOf(["sm", "lg"]),
     disabled: PropTypes.bool,
-    type: PropTypes.oneOf(["button", "submit", "reset"]),
+    type: PropTypes.oneOf(["button", "submit", "reset", "checkbox", "radio"]),
     active: PropTypes.bool,
 }
 Button.defaultProps = {

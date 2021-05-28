@@ -3,7 +3,9 @@ import {
     DOMAttributes,
     ReactNode,
     CSSProperties,
-    ChangeEventHandler
+    ChangeEventHandler,
+    HTMLAttributeAnchorTarget,
+    HTMLAttributeReferrerPolicy
 } from "react"
 
 type Booleanish = boolean | "true" | "false"
@@ -29,10 +31,16 @@ export interface CommonProps<T> extends CommonPropsWithoutTitle<T> {
     title?: string
 }
 
-export interface AnchorCommonProps<T> extends CommonProps<T> {
-    download?: any
-    href?: string
-    target?: string
+export interface AnchorCommonProps {
+    download?: any;
+    href?: string | undefined;
+    hrefLang?: string | undefined;
+    media?: string | undefined;
+    ping?: string | undefined;
+    rel?: string | undefined;
+    target?: HTMLAttributeAnchorTarget | undefined;
+    type?: string | undefined;
+    referrerPolicy?: HTMLAttributeReferrerPolicy | undefined;
 }
 
 export interface ButtonCommonProps<T> extends CommonProps<T> {
