@@ -5,6 +5,9 @@ import {Variant, Variants} from "../Commons/Variants"
 import {AnchorCommonProps} from "../Commons/CommonPropsInterface"
 
 type BaseProps = Omit<React.ButtonHTMLAttributes<HTMLElement>, "type">
+
+let uuid = 0
+
 export interface ButtonProps extends BaseProps, AnchorCommonProps {
     variant?: Variant | "link"
     outline?: boolean
@@ -28,11 +31,14 @@ const Button = React.forwardRef(
             outline,
             textNoWrap,
             tag,
+            type,
+            id = `bs-btn-${uuid++}`,
             ...restProps
         }: ButtonProps,
-        ref: React.Ref<HTMLElement>
+        ref: React.Ref<HTMLElement & HTMLInputElement>
     ) => {
         const PREFIX = "btn"
+        const check = type === "checkbox" || type === "radio"
         const classes = classNames(
             className,
             PREFIX,
@@ -42,21 +48,55 @@ const Button = React.forwardRef(
             outline ? `${PREFIX}-outline-${variant}` : `${PREFIX}-${variant}`,
             textNoWrap && "text-nowrap"
         )
-        const _children = tag === "input" ? undefined : children
+        let _children = children
+
+        if (tag === undefined) {
+            if (check) {
+                tag = "input"
+            } else {
+                tag = "button"
+            }
+        }
+
+        if (tag === "input") {
+            if (check) {
+                const label = (
+                    <label className={classes} htmlFor={id}>
+                        {_children}
+                    </label>
+                )
+
+                return (
+                    <>
+                        <input
+                            id={id}
+                            className={`${PREFIX}-check`}
+                            ref={ref}
+                            {...restProps}
+                        />
+                        {label}
+                    </>
+                )
+            }
+
+            _children = undefined
+        }
 
         return React.createElement(
             tag!,
             {
                 className: classes,
                 ref,
+                type,
                 ...restProps
             },
-            _children
+            children
         )
     }
 )
 
 Button.propTypes = {
+    tag: PropTypes.string,
     variant: PropTypes.oneOf([...Variants, "link"]) as any,
     outline: PropTypes.bool,
     size: PropTypes.oneOf(["sm", "lg"]),
@@ -67,7 +107,6 @@ Button.propTypes = {
 Button.defaultProps = {
     variant: "primary",
     textNoWrap: false,
-    tag: "button"
 }
 Button.displayName = "Button"
 

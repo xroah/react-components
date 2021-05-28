@@ -24,6 +24,9 @@ export default () => {
                     Toggle button
                 </Button.Toggle>
             </div>
+            <div>
+                <Button type="checkbox">Checkbox</Button>
+            </div>
         </div>
     )
 }
