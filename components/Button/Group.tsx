@@ -18,9 +18,8 @@ export default function ButtonGroup(
     const PREFIX = "btn-group"
     const classes = classNames(
         className,
-        PREFIX,
         size && `${PREFIX}-${size}`,
-        vertical && `${PREFIX}-vertical`
+        vertical ? `${PREFIX}-vertical` : PREFIX
     )
 
     return <div className={classes} {...restProps} />
