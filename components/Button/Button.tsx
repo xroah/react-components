@@ -72,6 +72,7 @@ const Button = React.forwardRef(
                             id={id}
                             className={`${PREFIX}-check`}
                             ref={ref}
+                            type={type}
                             {...restProps}
                         />
                         {label}
