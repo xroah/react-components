@@ -15,7 +15,7 @@ const Toggle = React.forwardRef(
             onStateChange,
             ...restProps
         }: ToggleProps,
-        ref: React.Ref<HTMLElement>
+        ref: React.Ref<HTMLElement & HTMLInputElement>
     ) => {
         const controlled = "active" in restProps
 
