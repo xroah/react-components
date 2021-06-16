@@ -61,6 +61,12 @@ export default () => {
                     <Button variant="dark">Right</Button>
                 </Button.Group>
             </div>
+            <div>
+                <Button.Close disabled />
+            </div>
+            <div className="bg-dark">
+                <Button.Close variant="white" />
+            </div>
         </>
     )
 }
