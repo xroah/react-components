@@ -1,7 +1,7 @@
 import * as React from "react"
 import classNames from "reap-utils/lib/class-names"
 
-export default function Toolbar(
+export default function ButtonToolbar(
     {
         className,
         ...restProps

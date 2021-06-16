@@ -63,5 +63,6 @@ Toggle.propTypes = {
     defaultActive: PropTypes.bool,
     onStateChange: PropTypes.func
 }
+Toggle.displayName = "ButtonToggle"
 
 export default Toggle
