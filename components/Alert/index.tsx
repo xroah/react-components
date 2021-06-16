@@ -55,7 +55,6 @@ export default function Alert(props: AlertProps) {
         handleFuncProp(onClosed)()
     }
     const handleExit = () => {
-        //toggle visible, invoke onClose callback
         handleFuncProp(onClose)()
     }
     let closeBtn: React.ReactNode

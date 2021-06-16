@@ -2,7 +2,6 @@ import * as React from "react"
 import classNames from "reap-utils/lib/class-names"
 import PropTypes from "prop-types"
 import {Variant, Variants} from "../Commons/Variants"
-import omit from "reap-utils/lib/omit"
 
 export interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
     variant?: Variant
