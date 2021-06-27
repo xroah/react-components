@@ -1,6 +1,6 @@
 import * as React from "react"
 import PropTypes from "prop-types"
-import {Variant} from "../Commons/Variants"
+import {Variant, Variants} from "../Commons/Variants"
 import omit from "reap-utils/lib/omit"
 import classNames from "reap-utils/lib/class-names"
 
@@ -45,4 +45,12 @@ export default function Spinner(
 
 Spinner.defaultProps = {
     type: "border"
+}
+Spinner.PropTypes = {
+    type: PropTypes.oneOf(["border", "grow"]),
+    variant: PropTypes.oneOf(Variants),
+    size: PropTypes.oneOfType([
+        PropTypes.oneOf(["sm"]),
+        PropTypes.number
+    ])
 }
