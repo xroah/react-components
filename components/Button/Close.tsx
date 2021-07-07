@@ -15,7 +15,8 @@ const Close = React.forwardRef(
             className,
             variant,
             ...restProps
-        }: CloseProps
+        }: CloseProps,
+        ref: React.Ref<HTMLButtonElement>
     ) => {
         const PREFIX = "btn-close"
         const classes = classNames(
@@ -26,6 +27,7 @@ const Close = React.forwardRef(
 
         return (
             <button
+                ref={ref}
                 className={classes}
                 {...omit(restProps, "children")} />
         )
