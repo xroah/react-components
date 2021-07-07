@@ -6,7 +6,7 @@ export type Variant = "primary" |
     "info" |
     "light" |
     "dark"
-export const Variants = [
+export const variants = [
     "primary",
     "secondary",
     "success",

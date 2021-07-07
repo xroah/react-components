@@ -1,7 +1,7 @@
 import * as React from "react"
 import classNames from "reap-utils/lib/class-names"
 import PropTypes from "prop-types"
-import {Variant, Variants} from "../Commons/Variants"
+import {Variant, variants} from "../Commons/variants"
 
 export interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
     variant?: Variant
@@ -34,7 +34,7 @@ export default function Badge(props: BadgeProps) {
 }
 
 Badge.propTypes = {
-    variant: PropTypes.oneOf(Variants),
+    variant: PropTypes.oneOf(variants),
     pill: PropTypes.bool,
     color: PropTypes.oneOf(["light", "dark"])
 }

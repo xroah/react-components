@@ -1,7 +1,7 @@
 import * as React from "react"
 import PropTypes from "prop-types"
 import classNames from "reap-utils/lib/class-names"
-import {Variant, Variants} from "../Commons/Variants"
+import {Variant, variants} from "../Commons/variants"
 import Button from "../Button"
 import isUndef from "reap-utils/lib/is-undef"
 import Fade from "../Commons/Fade"
@@ -105,7 +105,7 @@ export default function Alert(props: AlertProps) {
 }
 
 Alert.propTypes = {
-    variant: PropTypes.oneOf(Variants),
+    variant: PropTypes.oneOf(variants),
     fade: PropTypes.bool,
     heading: PropTypes.oneOfType([
         PropTypes.string,

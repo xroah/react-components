@@ -1,7 +1,7 @@
 import * as React from "react"
 import classNames from "reap-utils/lib/class-names"
 import PropTypes from "prop-types"
-import {Variant, Variants} from "../Commons/Variants"
+import {Variant, variants} from "../Commons/variants"
 import omit from "reap-utils/lib/omit"
 import Badge from "./Badge"
 
@@ -42,7 +42,7 @@ export default function Indicator({
 
 Indicator.propTypes = {
     size: PropTypes.number,
-    variant: PropTypes.oneOf(Variants)
+    variant: PropTypes.oneOf(variants)
 }
 Indicator.defaultProps = {
     size: 16,
