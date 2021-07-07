@@ -46,7 +46,7 @@ export default function Spinner(
 Spinner.defaultProps = {
     type: "border"
 }
-Spinner.PropTypes = {
+Spinner.propTypes = {
     type: PropTypes.oneOf(["border", "grow"]),
     variant: PropTypes.oneOf(variants),
     size: PropTypes.oneOfType([
