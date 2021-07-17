@@ -69,7 +69,7 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
         if (_in) {
             if (appear) {
                 this.componentDidUpdate({
-                    in: false 
+                    in: false
                 } as CSSTransitionProps)
             }
             else {
@@ -81,10 +81,10 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
     componentDidUpdate(prevProps: CSSTransitionProps) {
         let {
             props: {
-                in: _in 
+                in: _in
             },
             state: {
-                status 
+                status
             },
             next
         } = this
@@ -110,7 +110,7 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
     static getDerivedStateFromProps(nextProps: CSSTransitionProps, nextState: State) {
         if (nextProps.in && nextState.status === UNMOUNTED) {
             return {
-                status: EXITED 
+                status: EXITED
             }
         }
 
@@ -141,7 +141,7 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
 
         if (this.nextTimer !== null) {
             clearTimeout(this.nextTimer)
-            
+
             this.nextTimer = null
         }
     }
@@ -208,11 +208,9 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
             })
         }
         const exitedCallback = () => {
-            this.setState(
-                {
-                    status: EXITED
-                }
-            )
+            this.setState({
+                status: EXITED
+            })
             handleFuncProp(onExited)(node)
         }
         this.next = () => {
@@ -229,13 +227,12 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
 
     updateStatus(status: stateType) {
         const {
-            onEnter, onExit 
+            onEnter,
+            onExit
         } = this.props
         const node = findDOMNode(this) as HTMLElement
 
-        this.setState({
-            status
-        })
+        this.setState({status})
 
         if (status === ENTER) {
             this.next = () => this.handleEnter(node)
@@ -249,7 +246,7 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
 
     render() {
         const {
-            status 
+            status
         } = this.state
 
         if (status === UNMOUNTED) {
