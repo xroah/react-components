@@ -94,7 +94,7 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
 
             this.clearTimer()
             this.clearNext()
-            this.updateStatus(status as stateType)
+            this.switchState(status as stateType)
         }
         else if (next) {
             this.nextTick(next)
@@ -161,12 +161,15 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
         return _callback
     }
 
-    delayEnterOrExit(timeout: number, callback: Function) {
+    delay(timeout: number, callback: Function) {
         if (!timeout) {
             return callback()
         }
 
-        this.timer = window.setTimeout(this.safeCallback(callback), timeout)
+        this.timer = window.setTimeout(
+            this.safeCallback(callback),
+            timeout
+        )
     }
 
     handleEnter(node: HTMLElement) {
@@ -184,7 +187,7 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
         this.next = () => {
             this.next = null
 
-            this.delayEnterOrExit(timeout as number, enteredCallback)
+            this.delay(timeout as number, enteredCallback)
         }
 
         this.setState({
@@ -216,7 +219,7 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
         this.next = () => {
             this.next = unmountOnExit ? unmount : null
 
-            this.delayEnterOrExit(timeout as number, exitedCallback)
+            this.delay(timeout as number, exitedCallback)
         }
 
         this.setState({
@@ -225,7 +228,7 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
         handleFuncProp(onExiting)(node)
     }
 
-    updateStatus(status: stateType) {
+    switchState(status: stateType) {
         const {
             onEnter,
             onExit
