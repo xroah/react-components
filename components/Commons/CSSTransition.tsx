@@ -1,5 +1,4 @@
 import * as React from "react"
-import {findDOMNode} from "react-dom"
 import handleFuncProp from "reap-utils/lib/react/handle-func-prop"
 import omitProps from "reap-utils/lib/omit"
 
@@ -19,12 +18,12 @@ export interface CSSTransitionProps {
     unmountOnExit?: boolean
     appear?: boolean
     children: ((state: stateType) => React.ReactElement) | React.ReactElement
-    onEnter?: (node: HTMLElement) => void
-    onEntering?: (node: HTMLElement) => void
-    onEntered?: (node: HTMLElement) => void
-    onExit?: (node: HTMLElement) => void
-    onExiting?: (node: HTMLElement) => void
-    onExited?: (node: HTMLElement) => void
+    onEnter?: () => void
+    onEntering?: () => void
+    onEntered?: () => void
+    onExit?: () => void
+    onExiting?: () => void
+    onExited?: () => void
 }
 
 interface State {
@@ -36,6 +35,7 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
     timer: number | null = null
     nextTimer: number | null = null
     next: Function | null = null
+    placeholderRef = React.createRef<HTMLDivElement>()
 
     constructor(props: CSSTransitionProps) {
         super(props)
@@ -73,7 +73,7 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
                 } as CSSTransitionProps)
             }
             else {
-                handleFuncProp(onEntered)(findDOMNode(this))
+                handleFuncProp(onEntered)()
             }
         }
     }
@@ -147,11 +147,11 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
     }
 
     safeCallback(callback: Function) {
-        const node = findDOMNode(this) as HTMLElement
         const _callback = () => {
+            const {current} = this.placeholderRef
             //node may removed(unmounted) 
             //Can't perform a React state update on an unmounted component
-            if (node && !node.parentNode) {
+            if (current && !current.parentNode) {
                 return
             }
 
@@ -172,7 +172,7 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
         )
     }
 
-    handleEnter(node: HTMLElement) {
+    handleEnter() {
         const {
             onEntering,
             onEntered,
@@ -182,7 +182,7 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
             this.setState({
                 status: ENTERED
             })
-            handleFuncProp(onEntered)(node)
+            handleFuncProp(onEntered)()
         }
         this.next = () => {
             this.next = null
@@ -193,10 +193,10 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
         this.setState({
             status: ENTERING
         })
-        handleFuncProp(onEntering)(node)
+        handleFuncProp(onEntering)()
     }
 
-    handleExit(node: HTMLElement) {
+    handleExit() {
         const {
             onExiting,
             onExited,
@@ -214,7 +214,7 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
             this.setState({
                 status: EXITED
             })
-            handleFuncProp(onExited)(node)
+            handleFuncProp(onExited)()
         }
         this.next = () => {
             this.next = unmountOnExit ? unmount : null
@@ -225,7 +225,7 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
         this.setState({
             status: EXITING
         })
-        handleFuncProp(onExiting)(node)
+        handleFuncProp(onExiting)()
     }
 
     switchState(status: stateType) {
@@ -233,17 +233,15 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
             onEnter,
             onExit
         } = this.props
-        const node = findDOMNode(this) as HTMLElement
 
         this.setState({status})
 
         if (status === ENTER) {
-            this.next = () => this.handleEnter(node)
-            handleFuncProp(onEnter)(node)
+            this.next = () => this.handleEnter()
+            handleFuncProp(onEnter)()
         }
         else if (status === EXIT) {
-            this.next = () => this.handleExit(node)
-            handleFuncProp(onExit)(node)
+            handleFuncProp(onExit)()
         }
     }
 
@@ -251,6 +249,7 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
         const {
             status
         } = this.state
+        const div = <div className="d-none" ref={this.placeholderRef}/>
 
         if (status === UNMOUNTED) {
             return null
@@ -277,12 +276,22 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
         )
 
         if (typeof children === "function") {
-            return children(status)
+            return (
+                <>
+                    {div}
+                    {children(status)}
+                </>
+            )
         }
 
         const child = React.Children.only(children) as React.ReactElement
 
-        return React.cloneElement(child, otherProps)
+        return (
+            <>
+                {div}
+                {React.cloneElement(child, otherProps)}
+            </>
+        )
     }
 
 }
