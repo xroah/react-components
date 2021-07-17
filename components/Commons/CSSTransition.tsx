@@ -26,15 +26,19 @@ export interface CSSTransitionProps {
     onExited?: () => void
 }
 
+interface Next {
+    fn: Function
+    timeout: number
+}
+
 interface State {
     status: stateType | "unmounted"
 }
 
 export default class CSSTransition extends React.Component<CSSTransitionProps, State> {
 
-    timer: number | null = null
     nextTimer: number | null = null
-    next: Function | null = null
+    next: Next | null = null
     placeholderRef = React.createRef<HTMLDivElement>()
 
     constructor(props: CSSTransitionProps) {
@@ -92,17 +96,15 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
         if (_in !== prevProps.in) {
             status = _in ? ENTER : EXIT
 
-            this.clearTimer()
             this.clearNext()
             this.switchState(status as stateType)
         }
         else if (next) {
-            this.nextTick(next)
+            this.performNext()
         }
     }
 
     componentWillUnmount() {
-        this.clearTimer()
         this.clearNext()
     }
 
@@ -117,22 +119,31 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
         return nextState
     }
 
-    clearTimer() {
-        if (this.timer !== null) {
-            clearTimeout(this.timer)
-
-            this.timer = null
+    setNext(fn: Function, timeout = 20) {
+        this.next = {
+            fn,
+            timeout
         }
     }
 
-    nextTick(callback: Function) {
+    performNext() {
+        if (!this.next) {
+            return
+        }
+
+        const {
+            fn,
+            timeout
+        } = this.next
+        const cb = fn.bind(this)
+
         if (!this.props.timeout) {
-            return callback()
+            return cb()
         }
 
         this.nextTimer = window.setTimeout(
-            this.safeCallback(callback),
-            20
+            this.safeCallback(cb),
+            timeout
         )
     }
 
@@ -161,87 +172,90 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
         return _callback
     }
 
-    delay(timeout: number, callback: Function) {
-        if (!timeout) {
-            return callback()
-        }
-
-        this.timer = window.setTimeout(
-            this.safeCallback(callback),
-            timeout
-        )
+    enter() {
+        this.setNext(this.entering)
+        this.setState({
+            status: ENTER
+        })
+        handleFuncProp(this.props.onEnter)()
     }
 
-    handleEnter() {
+    entering() {
         const {
-            onEntering,
-            onEntered,
-            timeout = 0
+            timeout,
+            onEntering
         } = this.props
-        const enteredCallback = () => {
-            this.setState({
-                status: ENTERED
-            })
-            handleFuncProp(onEntered)()
-        }
-        this.next = () => {
-            this.next = null
-
-            this.delay(timeout as number, enteredCallback)
-        }
 
         this.setState({
             status: ENTERING
         })
+        this.setNext(this.entered, timeout)
         handleFuncProp(onEntering)()
     }
 
-    handleExit() {
+    entered() {
+        this.clearNext()
+        this.setState({
+            status: ENTERED
+        })
+        handleFuncProp(this.props.onEntered)()
+    }
+
+
+    exit() {
+        this.setNext(this.exiting)
+        this.setState({
+            status: EXIT
+        })
+        handleFuncProp(this.props.onExiting)()
+    }
+
+    exiting() {
         const {
-            onExiting,
-            onExited,
             timeout,
-            unmountOnExit
+            onExiting
         } = this.props
-        const unmount = () => {
-            this.next = null
 
-            this.setState({
-                status: UNMOUNTED
-            })
-        }
-        const exitedCallback = () => {
-            this.setState({
-                status: EXITED
-            })
-            handleFuncProp(onExited)()
-        }
-        this.next = () => {
-            this.next = unmountOnExit ? unmount : null
-
-            this.delay(timeout as number, exitedCallback)
-        }
-
+        this.setNext(this.exited, timeout)
         this.setState({
             status: EXITING
         })
         handleFuncProp(onExiting)()
     }
 
-    switchState(status: stateType) {
+    exited() {
         const {
-            onEnter,
-            onExit
+            unmountOnExit,
+            onExited
         } = this.props
 
+        if (unmountOnExit) {
+            this.setNext(this.unmount)
+        } else {
+            this.clearNext()
+        }
+
+        this.setState({
+            status: EXITED
+        })
+        handleFuncProp(onExited)()
+    }
+
+    unmount() {
+        this.clearNext()
+        this.setState({
+            status: UNMOUNTED
+        })
+    }
+
+    switchState(status: stateType) {
         this.setState({status})
 
         if (status === ENTER) {
-            this.next = () => this.handleEnter()
-            handleFuncProp(onEnter)()
+            this.setNext(this.enter)
         }
         else if (status === EXIT) {
-            handleFuncProp(onExit)()
+            this.setNext(this.exit)
         }
     }
 
@@ -249,7 +263,7 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
         const {
             status
         } = this.state
-        const div = <div className="d-none" ref={this.placeholderRef}/>
+        const div = <div className="d-none" ref={this.placeholderRef} />
 
         if (status === UNMOUNTED) {
             return null
