@@ -33,8 +33,8 @@ interface State {
 
 export default class CSSTransition extends React.Component<CSSTransitionProps, State> {
 
-    timer: NodeJS.Timeout | null = null
-    nextTimer: NodeJS.Timeout | null = null
+    timer: number | null = null
+    nextTimer: number | null = null
     next: Function | null = null
 
     constructor(props: CSSTransitionProps) {
@@ -130,7 +130,7 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
             return callback()
         }
 
-        this.nextTimer = setTimeout(
+        this.nextTimer = window.setTimeout(
             this.safeCallback(callback),
             20
         )
@@ -166,7 +166,7 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
             return callback()
         }
 
-        this.timer = setTimeout(this.safeCallback(callback), timeout)
+        this.timer = window.setTimeout(this.safeCallback(callback), timeout)
     }
 
     handleEnter(node: HTMLElement) {
