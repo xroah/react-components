@@ -1,5 +1,5 @@
 import * as React from "react"
-import {CSSTransitionProps} from "../../interface";
+import {CSSTransitionProps} from "./interface";
 import Transition from "./Transition";
 import {
     ENTER,
@@ -7,7 +7,7 @@ import {
     EXIT,
     EXITED,
     EXITING
-} from "../../constants";
+} from "./constants";
 import PropTypes from "prop-types"
 
 export default function CSSTransition(props: CSSTransitionProps) {

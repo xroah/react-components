@@ -1,14 +1,14 @@
 import * as React from "react"
-import handleFuncProp from "reap-utils/lib/react/handle-func-prop"
-import omit from "reap-utils/lib/omit"
-import getNextNodeByRef from "reap-utils/lib/react/get-next-node-by-ref"
-import Placeholder from "reap-utils/lib/react/Placeholder"
+import handleFuncProp from "../handle-func-prop"
+import omit from "../../omit"
+import getNextNodeByRef from "../get-next-node-by-ref"
+import Placeholder from "../Placeholder"
 import {
     TransitionProps,
     TransitionState,
     componentState,
     stateType
-} from "../../interface"
+} from "./interface"
 import {
     ENTER,
     ENTERED,
@@ -17,8 +17,22 @@ import {
     EXITING,
     EXITED,
     UNMOUNTED
-} from "../../constants"
+} from "./constants"
 import PropTypes from "prop-types"
+
+export const propTypes = {
+    in: PropTypes.bool,
+    timeout: PropTypes.number,
+    unmountOnExit: PropTypes.bool,
+    appear: PropTypes.bool,
+    children: PropTypes.oneOfType([PropTypes.func, PropTypes.element]).isRequired,
+    onEnter: PropTypes.func,
+    onEntering: PropTypes.func,
+    onEntered: PropTypes.func,
+    onExit: PropTypes.func,
+    onExiting: PropTypes.func,
+    onExited: PropTypes.func,
+}
 
 export default class Transition extends React.Component<TransitionProps, TransitionState> {
     private ref = React.createRef<HTMLDivElement>()
@@ -26,17 +40,7 @@ export default class Transition extends React.Component<TransitionProps, Transit
     private nextTimer: any = null
 
     static propTypes = {
-        in: PropTypes.bool,
-        timeout: PropTypes.number,
-        unmountOnExit: PropTypes.bool,
-        appear: PropTypes.bool,
-        children: PropTypes.oneOfType([PropTypes.func, PropTypes.element]).isRequired,
-        onEnter: PropTypes.func,
-        onEntering: PropTypes.func,
-        onEntered: PropTypes.func,
-        onExit: PropTypes.func,
-        onExiting: PropTypes.func,
-        onExited: PropTypes.func,
+        ...propTypes
     }
 
     constructor(props: TransitionProps) {

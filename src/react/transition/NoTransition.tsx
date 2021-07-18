@@ -1,12 +1,12 @@
 import * as React from "react"
-import classNames from "reap-utils/lib/class-names"
-import handleFuncProp from "reap-utils/lib/react/handle-func-prop"
+import classNames from "../../class-names"
+import handleFuncProp from "../handle-func-prop"
 import {ENTERED, EXITED} from "./constants"
 import PropTypes from "prop-types"
-import getNextNodeByRef from "reap-utils/lib/react/get-next-node-by-ref"
-import Placeholder from "reap-utils/lib/react/Placeholder"
+import getNextNodeByRef from "../get-next-node-by-ref"
+import Placeholder from "../Placeholder"
 import {NoTransitionProps} from "./interface"
-import {propTypes} from "./prop-types"
+import {propTypes} from "./Transition"
 
 //compatible with Transition
 export default class NoTransition extends React.Component<NoTransitionProps> {
@@ -14,7 +14,7 @@ export default class NoTransition extends React.Component<NoTransitionProps> {
 
     static propTypes = {
         ...propTypes,
-        activeClass: PropTypes.string
+        showClass: PropTypes.string
     }
 
     componentDidMount() {
@@ -67,7 +67,7 @@ export default class NoTransition extends React.Component<NoTransitionProps> {
             children,
             in: _in,
             unmountOnExit,
-            activeClass
+            showClass
         } = this.props
         const child = React.Children.only(children) as React.ReactElement
 
@@ -82,7 +82,7 @@ export default class NoTransition extends React.Component<NoTransitionProps> {
         return React.cloneElement(
             child,
             {
-                className: classNames(child.props.className, activeClass)
+                className: classNames(child.props.className, showClass)
             }
         )
     }

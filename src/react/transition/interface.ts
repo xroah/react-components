@@ -36,7 +36,7 @@ export interface TransitionState {
 }
 
 export interface NoTransitionProps extends TransitionProps {
-    activeClass?: string
+    showClass?: string
 }
 
 export interface FadeProps extends TransitionProps {

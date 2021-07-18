@@ -1,8 +1,8 @@
 import * as React from "react"
 import Transition from "./Transition"
 import PropTypes from "prop-types"
-import {FadeProps} from "../../interface"
-import {ENTERED, ENTERING, EXITED} from "../../constants"
+import {FadeProps} from "./interface"
+import {ENTERED, ENTERING, EXITED} from "./constants"
 
 export default function Fade(props: FadeProps) {
     const {
