@@ -8,7 +8,7 @@ import {
     TransitionState,
     componentState,
     stateType
-} from "./interface"
+} from "../../interface"
 import {
     ENTER,
     ENTERED,
@@ -17,7 +17,7 @@ import {
     EXITING,
     EXITED,
     UNMOUNTED
-} from "./constants"
+} from "../../constants"
 import PropTypes from "prop-types"
 
 export default class Transition extends React.Component<TransitionProps, TransitionState> {
