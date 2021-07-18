@@ -41,5 +41,8 @@
     "lib",
     "es"
   ],
-  "dependencies": {}
+  "dependencies": {
+    "prop-types": "^15.7.2",
+    "warning": "^4.0.3"
+  }
 }
