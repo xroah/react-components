@@ -5,7 +5,10 @@ export default {
     timeout: PropTypes.number,
     unmountOnExit: PropTypes.bool,
     appear: PropTypes.bool,
-    children: PropTypes.oneOfType([PropTypes.func, PropTypes.element]).isRequired,
+    children: PropTypes.oneOfType([
+        PropTypes.func,
+        PropTypes.element
+    ]).isRequired,
     onEnter: PropTypes.func,
     onEntering: PropTypes.func,
     onEntered: PropTypes.func,

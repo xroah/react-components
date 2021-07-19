@@ -4,7 +4,6 @@ import handleFuncProp from "../handle-func-prop"
 import {ENTERED, EXITED} from "./constants"
 import PropTypes from "prop-types"
 import getNextNodeByRef from "../get-next-node-by-ref"
-import Placeholder from "../Placeholder"
 import {NoTransitionProps} from "./interface"
 import propTypes from "./propTeyps"
 
@@ -62,7 +61,7 @@ export default class NoTransition extends React.Component<NoTransitionProps> {
         }
     }
 
-    renderEl() {
+    render() {
         const {
             children,
             in: _in,
@@ -84,21 +83,6 @@ export default class NoTransition extends React.Component<NoTransitionProps> {
             {
                 className: classNames(child.props.className, showClass)
             }
-        )
-    }
-
-    render() {
-        const el = this.renderEl()
-
-        if (!el) {
-            return null
-        }
-
-        return (
-            <>
-                <Placeholder ref={this.ref} />
-                {el}
-            </>
         )
     }
 
