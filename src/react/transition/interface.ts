@@ -15,7 +15,7 @@ export type stateType = typeof ENTER |
     typeof EXITING |
     typeof EXITED
 export type componentState = stateType | typeof UNMOUNTED
-export type callback = (node: HTMLElement | null) => void
+export type callback = () => void
 
 export interface TransitionProps {
     in: boolean
@@ -48,4 +48,9 @@ export interface FadeProps extends TransitionProps {
 export interface CSSTransitionProps extends TransitionProps {
     name: string
     hiddenOnExited?: boolean
+}
+
+export interface Next {
+    fn: Function
+    timeout: number
 }
