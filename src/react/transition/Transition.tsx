@@ -16,21 +16,7 @@ import {
     EXITED,
     UNMOUNTED
 } from "./constants"
-import PropTypes from "prop-types"
-
-export const propTypes = {
-    in: PropTypes.bool,
-    timeout: PropTypes.number,
-    unmountOnExit: PropTypes.bool,
-    appear: PropTypes.bool,
-    children: PropTypes.oneOfType([PropTypes.func, PropTypes.element]).isRequired,
-    onEnter: PropTypes.func,
-    onEntering: PropTypes.func,
-    onEntered: PropTypes.func,
-    onExit: PropTypes.func,
-    onExiting: PropTypes.func,
-    onExited: PropTypes.func,
-}
+import propTeyps from "./propTeyps"
 
 export default class CSSTransition extends
     React.Component<TransitionProps, TransitionState> {
@@ -38,6 +24,8 @@ export default class CSSTransition extends
     nextTimer: number | null = null
     next: Next | null = null
     placeholderRef = React.createRef<HTMLDivElement>()
+
+    static propTypes = propTeyps
 
     constructor(props: TransitionProps) {
         super(props)

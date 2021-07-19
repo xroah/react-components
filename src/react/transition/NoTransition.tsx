@@ -6,7 +6,7 @@ import PropTypes from "prop-types"
 import getNextNodeByRef from "../get-next-node-by-ref"
 import Placeholder from "../Placeholder"
 import {NoTransitionProps} from "./interface"
-import {propTypes} from "./Transition"
+import propTypes from "./propTeyps"
 
 //compatible with Transition
 export default class NoTransition extends React.Component<NoTransitionProps> {
