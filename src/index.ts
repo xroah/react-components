@@ -1,0 +1,5 @@
+export {default as chainFunction} from "./chain-function"
+export {default as isPlainObject} from "./is-plain-object"
+export {default as isUndef} from "./is-undef"
+export {default as omit} from "./omit"
+export {default as throttle} from "./throttle"
