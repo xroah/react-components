@@ -57,18 +57,6 @@ export default function Alert(props: AlertProps) {
     const handleExit = () => {
         handleFuncProp(onClose)()
     }
-    let closeBtn: React.ReactNode
-
-    if (dismissible) {
-        closeBtn = (
-            <Button
-                variant="link"
-                type="button"
-                className="btn-close"
-                onClick={handleClick} />
-        )
-    }
-
     const getElement = (closeBtn?: React.ReactNode) => {
         const props = {...restProps}
 
@@ -82,6 +70,17 @@ export default function Alert(props: AlertProps) {
                 {children}
                 {closeBtn}
             </div>
+        )
+    }
+    let closeBtn: React.ReactNode
+
+    if (dismissible) {
+        closeBtn = (
+            <Button
+                variant="link"
+                type="button"
+                className="btn-close"
+                onClick={handleClick} />
         )
     }
 
