@@ -3,6 +3,7 @@ import PropTypes from "prop-types"
 import classNames from "reap-utils/lib/class-names"
 import {Variant, variants} from "../Commons/variants"
 import {AnchorCommonProps} from "../Commons/CommonPropsInterface"
+import warning from "warning"
 
 type BaseProps = Omit<React.ButtonHTMLAttributes<HTMLElement>, "type">
 
@@ -57,6 +58,12 @@ const Button = React.forwardRef(
                 tag = "button"
             }
         }
+        
+        warning(
+            !(check && tag !== "input"),
+            `Checkbox or radio type should along with 'input' tag,
+            received '${tag}'`
+        )
 
         if (tag === "input") {
             if (check) {
