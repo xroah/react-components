@@ -3,14 +3,11 @@ import classNames from "../../class-names"
 import handleFuncProp from "../handle-func-prop"
 import {ENTERED, EXITED} from "./constants"
 import PropTypes from "prop-types"
-import getNextNodeByRef from "../get-next-node-by-ref"
 import {NoTransitionProps} from "./interface"
 import propTypes from "./propTeyps"
 
 //compatible with Transition
 export default class NoTransition extends React.Component<NoTransitionProps> {
-    private ref = React.createRef<HTMLDivElement>()
-
     static propTypes = {
         ...propTypes,
         showClass: PropTypes.string
@@ -44,20 +41,19 @@ export default class NoTransition extends React.Component<NoTransitionProps> {
             onExiting,
             onExited
         } = this.props
-        const node = getNextNodeByRef(this.ref)
 
         if (prevProps.in === _in) {
             return
         }
 
         if (_in) {
-            handleFuncProp(onEnter)(node)
-            handleFuncProp(onEntering)(node)
-            handleFuncProp(onEntered)(node)
+            handleFuncProp(onEnter)()
+            handleFuncProp(onEntering)()
+            handleFuncProp(onEntered)()
         } else {
-            handleFuncProp(onExit)(node)
-            handleFuncProp(onExiting)(node)
-            handleFuncProp(onExited)(node)
+            handleFuncProp(onExit)()
+            handleFuncProp(onExiting)()
+            handleFuncProp(onExited)()
         }
     }
 
@@ -74,7 +70,7 @@ export default class NoTransition extends React.Component<NoTransitionProps> {
             return null
         }
 
-        if (typeof children === "function") {
+    if (typeof children === "function") {
             return children(_in ? ENTERED : EXITED)
         }
 
