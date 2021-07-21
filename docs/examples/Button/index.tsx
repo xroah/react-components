@@ -13,7 +13,7 @@ export default () => {
                 <div>
                     <Button>Primary</Button>
                     <Button variant="link">Link</Button>
-                    <Button tag="a" href="#">Link</Button>
+                    <Button href="#">Link</Button>
                     <Button tag="input" variant="danger" type="reset" value="reset" />
                     <Button outline>Outline primary</Button>
                     <Button size="lg">Large button</Button>

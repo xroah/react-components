@@ -54,11 +54,13 @@ const Button = React.forwardRef(
         if (tag === undefined) {
             if (check) {
                 tag = "input"
+            } else if ("href" in restProps) {
+                tag = "a"
             } else {
                 tag = "button"
             }
         }
-        
+
         warning(
             !(check && tag !== "input"),
             `Checkbox or radio type should along with 'input' tag,
