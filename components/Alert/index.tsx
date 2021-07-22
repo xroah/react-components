@@ -92,14 +92,13 @@ export default function Alert(props: AlertProps) {
         in: controlled ? !!restProps.visible : _visible,
         unmountOnExit: true,
         onExit: handleExit,
-        onExited: handleExited
+        onExited: handleExited,
+        children: getElement(closeBtn)
     }
-    const element = getElement(closeBtn)
 
-    return (
-        fade ?
-            <Fade {...transitionProps}>{element}</Fade> :
-            <NoTransition {...transitionProps}>{element}</NoTransition>
+    return React.createElement(
+        fade ? Fade : NoTransition,
+        transitionProps
     )
 }
 
