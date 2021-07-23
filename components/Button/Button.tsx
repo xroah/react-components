@@ -16,7 +16,7 @@ export interface ButtonProps extends BaseProps, AnchorCommonProps {
     disabled?: boolean
     active?: boolean
     textNoWrap?: boolean
-    tag?: string
+    tag?: React.ElementType
     type?: "reset" | "button" | "submit" | "checkbox" | "radio"
 }
 
@@ -106,7 +106,7 @@ const Button = React.forwardRef(
 )
 
 Button.propTypes = {
-    tag: PropTypes.string,
+    tag: PropTypes.elementType as any,
     variant: PropTypes.oneOf([...variants, "link"]) as any,
     outline: PropTypes.bool,
     size: PropTypes.oneOf(["sm", "lg"]),
