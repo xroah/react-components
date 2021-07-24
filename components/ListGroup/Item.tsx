@@ -4,11 +4,11 @@ import PropTypes from "prop-types"
 import {Variant, variants} from "../Commons/variants"
 import {getPrefixFunc} from "../Commons/utils"
 
-interface ListGroupItemProps extends React.LiHTMLAttributes<HTMLLIElement> {
+interface ListGroupItemProps extends React.AllHTMLAttributes<HTMLAnchorElement> {
     active?: boolean
     disabled?: boolean
     variant?: Variant
-    action?: boolean
+    actionable?: boolean
     tag?: React.ElementType
 }
 
@@ -16,7 +16,7 @@ export default function ListGroupItem({
     active,
     disabled,
     variant,
-    action,
+    actionable,
     tag,
     className,
     ...restProps
@@ -28,7 +28,7 @@ export default function ListGroupItem({
         active && "active",
         disabled && "disabled",
         variant && prefix(variant),
-        action && prefix("action")
+        actionable && prefix("action")
     )
 
     return React.createElement(
@@ -46,7 +46,4 @@ ListGroupItem.propTypes = {
     variant: PropTypes.oneOf(variants),
     action: PropTypes.bool,
     tag: PropTypes.elementType,
-}
-ListGroupItem.defaultProps = {
-    tag: "li"
 }
