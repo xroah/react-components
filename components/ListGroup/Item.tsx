@@ -31,8 +31,16 @@ export default function ListGroupItem({
         actionable && prefix("action")
     )
 
+    if (tag === undefined) {
+        if ("href" in restProps) {
+            tag = "a"
+        } else {
+            tag = "li"
+        }
+    }
+
     return React.createElement(
-        tag!,
+        tag,
         {
             className: classes,
             ...restProps
