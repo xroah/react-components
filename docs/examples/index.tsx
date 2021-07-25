@@ -2,6 +2,7 @@ import * as React from "react"
 import Alert from "./Alert"
 import Button from "./Button"
 import Badge from "./Badge"
+import ListGroup from "./ListGroup"
 import Spinner from "./Spinner"
 
 export default function () {
@@ -10,6 +11,7 @@ export default function () {
             <Alert />
             <Button />
             <Badge />
+            <ListGroup />
             <Spinner />
         </>
     )
