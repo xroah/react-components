@@ -2,10 +2,11 @@ import * as React from "react"
 import PropTypes from "prop-types"
 import classNames from "reap-utils/lib/class-names"
 
-type BaseProps = React.AnchorHTMLAttributes<HTMLAnchorElement>
+type BaseProps = React.LiHTMLAttributes<HTMLLIElement>
 
 export interface BreadcrumbItemProps extends BaseProps {
     active?: boolean
+    href?: string
 }
 
 function BreadcrumbItem(
@@ -13,7 +14,8 @@ function BreadcrumbItem(
         className,
         children,
         href,
-        active
+        active,
+        ...restProps
     }: BreadcrumbItemProps
 ) {
     return (
@@ -22,7 +24,7 @@ function BreadcrumbItem(
                 className,
                 "breadcrumb-item",
                 active && "active"
-            )}>
+            )} {...restProps}>
             <a href={href}>{children}</a>
         </li>
     )
