@@ -9,15 +9,15 @@ export interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
     textColor?: "light" | "dark"
 }
 
-export default function Badge(props: BadgeProps) {
-    const {
+export default function Badge(
+    {
         className,
         variant,
         pill,
         textColor,
         ...restProps
-    } = props
-
+    }: BadgeProps
+) {
     return (
         <span
             className={

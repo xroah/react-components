@@ -8,14 +8,14 @@ export interface BreadcrumbItemProps extends BaseProps {
     active?: boolean
 }
 
-function BreadcrumbItem(props: BreadcrumbItemProps) {
-    const {
+function BreadcrumbItem(
+    {
         className,
         children,
         href,
         active
-    } = props
-
+    }: BreadcrumbItemProps
+) {
     return (
         <li
             className={classNames(

@@ -10,12 +10,14 @@ interface IndicatorProps extends React.HTMLAttributes<HTMLElement> {
     variant?: Variant
 }
 
-export default function Indicator({
-    className,
-    size,
-    style = {},
-    ...restProps
-}: IndicatorProps) {
+export default function Indicator(
+    {
+        className,
+        size,
+        style = {},
+        ...restProps
+    }: IndicatorProps
+) {
     const classes = classNames(
         className,
         "position-absolute",

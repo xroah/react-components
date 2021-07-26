@@ -20,8 +20,8 @@ export interface AlertProps extends React.HTMLAttributes<HTMLDivElement> {
     onCloseButtonClick?: (evt: React.MouseEvent<HTMLButtonElement>) => void
 }
 
-export default function Alert(props: AlertProps) {
-    const {
+export default function Alert(
+    {
         className,
         variant,
         fade,
@@ -32,7 +32,8 @@ export default function Alert(props: AlertProps) {
         onClosed,
         onCloseButtonClick,
         ...restProps
-    } = props
+    }: AlertProps
+) {
     const PREFIX = "alert"
     const classes = classNames(
         className,

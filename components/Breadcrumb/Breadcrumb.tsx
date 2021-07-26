@@ -1,12 +1,12 @@
 import * as React from "react"
 
-function Breadcrumb(props: React.HTMLAttributes<HTMLElement>) {
-    const {
+function Breadcrumb(
+    {
         className,
         children,
-        ...restProps 
-    } = props
-
+        ...restProps
+    }: React.HTMLAttributes<HTMLElement>
+) {
     return (
         <nav className={className} {...restProps}>
             <ol className="breadcrumb">
