@@ -34,8 +34,5 @@ BreadcrumbItem.propTypes = {
     active: PropTypes.bool,
     href: PropTypes.string
 }
-BreadcrumbItem.defaultProps = {
-    active: false
-}
 
 export default BreadcrumbItem

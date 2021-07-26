@@ -38,6 +38,3 @@ Badge.propTypes = {
     pill: PropTypes.bool,
     color: PropTypes.oneOf(["light", "dark"])
 }
-Badge.defaultProps = {
-    pill: false
-}
