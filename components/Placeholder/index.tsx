@@ -18,6 +18,7 @@ export default function Placeholder(
         size,
         animation,
         className,
+        style = {},
         children,
         ...restProps
     }: PlaceholderProps
@@ -31,10 +32,15 @@ export default function Placeholder(
     )
     const placeholder = <span className={classes}/>
 
+    if (width) {
+        style.width = width
+    }
+
     if (animation) {
         const Wrapper = (props: React.HTMLAttributes<HTMLDivElement>) => (
             <div
                 className={prefix(animation)}
+                style={style}
                 {...restProps}
                 {...props} />
         )
