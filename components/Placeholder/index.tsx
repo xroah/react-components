@@ -47,3 +47,10 @@ export default function Placeholder(
 
     return React.cloneElement(placeholder, restProps)
 }
+
+Placeholder.propTypes = {
+    width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    variant: PropTypes.oneOf(variants),
+    size: PropTypes.oneOf(["xs", "sm", "lg"]),
+    animation: PropTypes.oneOf(["grow", "wave"])
+}
