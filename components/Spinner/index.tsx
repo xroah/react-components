@@ -30,7 +30,7 @@ export default function Spinner(
         sm && `${typeClass}-sm`
     )
 
-    if (!sm) {
+    if (size && !sm) {
         style.width = size
         style.height = size
     }
