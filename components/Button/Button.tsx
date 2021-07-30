@@ -4,6 +4,7 @@ import classNames from "reap-utils/lib/class-names"
 import {Variant, variants} from "../Commons/variants"
 import {AnchorCommonProps} from "../Commons/CommonPropsInterface"
 import warning from "warning"
+import {getPrefixFunc} from "../Commons/utils"
 
 type BaseProps = Omit<React.ButtonHTMLAttributes<HTMLElement>, "type">
 
@@ -38,15 +39,15 @@ const Button = React.forwardRef(
         }: ButtonProps,
         ref: React.Ref<HTMLElement & HTMLInputElement>
     ) => {
-        const PREFIX = "btn"
+        const prefix = getPrefixFunc("btn")
         const check = type === "checkbox" || type === "radio"
         const classes = classNames(
             className,
-            PREFIX,
+            prefix(),
             disabled && "disabled",
             active && "active",
-            size && `${PREFIX}-${size}`,
-            outline ? `${PREFIX}-outline-${variant}` : `${PREFIX}-${variant}`,
+            size && prefix(size),
+            outline ? prefix(`outline-${variant}`) : prefix(variant),
             textNoWrap && "text-nowrap"
         )
         let _children = children
@@ -79,7 +80,7 @@ const Button = React.forwardRef(
                     <>
                         <input
                             id={id}
-                            className={`${PREFIX}-check`}
+                            className={prefix("check")}
                             ref={ref}
                             type={type}
                             {...restProps}

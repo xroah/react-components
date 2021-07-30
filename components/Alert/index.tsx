@@ -8,6 +8,7 @@ import Fade from "../Commons/Fade"
 import NoTransition from "../Commons/NoTransition"
 import omit from "reap-utils/lib/omit"
 import handleFuncProp from "reap-utils/lib/react/handle-func-prop"
+import {getPrefixFunc} from "../Commons/utils"
 
 export interface AlertProps extends React.HTMLAttributes<HTMLDivElement> {
     variant?: Variant
@@ -34,12 +35,12 @@ export default function Alert(
         ...restProps
     }: AlertProps
 ) {
-    const PREFIX = "alert"
+    const prefix = getPrefixFunc("alert")
     const classes = classNames(
         className,
-        PREFIX,
-        variant && `${PREFIX}-${variant}`,
-        dismissible && `${PREFIX}-dismissible`
+        prefix(),
+        variant && prefix(variant),
+        dismissible && prefix("dismissible")
     )
     const controlled = "visible" in restProps
     const [_visible, updateVisible] = React.useState(true)
@@ -65,7 +66,7 @@ export default function Alert(
             <div className={classes} {...omit(props, "visible")}>
                 {
                     !isUndef(heading) && (
-                        <h4 className={`${PREFIX}-heading`}>{heading}</h4>
+                        <h4 className={prefix("heading")}>{heading}</h4>
                     )
                 }
                 {children}
