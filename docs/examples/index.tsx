@@ -3,6 +3,7 @@ import Alert from "./Alert"
 import Button from "./Button"
 import Badge from "./Badge"
 import ListGroup from "./ListGroup"
+import Placeholder from "./Placeholder"
 import Spinner from "./Spinner"
 
 export default function () {
@@ -12,6 +13,7 @@ export default function () {
             <Button />
             <Badge />
             <ListGroup />
+            <Placeholder />
             <Spinner />
         </>
     )
