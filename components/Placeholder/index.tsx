@@ -30,7 +30,7 @@ export default function Placeholder(
         variant && `bg-${variant}`,
         size && prefix(size),
     )
-    const placeholder = <span className={classes}/>
+    const placeholder = <span className={classes} />
 
     if (width) {
         style.width = width
@@ -51,7 +51,13 @@ export default function Placeholder(
         return <Wrapper>{placeholder}</Wrapper>
     }
 
-    return React.cloneElement(placeholder, restProps)
+    return React.cloneElement(
+        placeholder,
+        {
+            style,
+            ...restProps
+        }
+    )
 }
 
 Placeholder.propTypes = {
