@@ -11,6 +11,7 @@ interface ProgressProps extends React.HTMLAttributes<HTMLDivElement> {
     label?: boolean
     variant?: Variant
     height?: number
+    __isChild__?: boolean
 }
 
 export default function Progress(
@@ -23,6 +24,8 @@ export default function Progress(
         style = {},
         className,
         label,
+        __isChild__,
+        children,
         ...restProps
     }: ProgressProps
 ) {
@@ -38,19 +41,34 @@ export default function Progress(
     )
     const v = value! < MIN ? MIN : value! > MAX ? MAX : value
     const labelEl = barStyle.width = `${v}%`
+    const bar = (
+        <div style={barStyle} className={classes}>
+            {label ? labelEl : null}
+        </div>
+    )
 
     if (height) {
         style.height = height
     }
+
+    if (__isChild__) {
+        return bar
+    }
+
+    const _children = React.Children.map(children, function (c, index) {
+        if (React.isValidElement(c)) {
+            return React.cloneElement(c, {__isChild__: true})
+        }
+
+        return c
+    })
 
     return (
         <div
             style={style}
             className={classNames(className, "progress")}
             {...restProps}>
-            <div style={barStyle} className={classes}>
-                {label ? labelEl : null}
-            </div>
+            {_children ? _children : bar}
         </div>
     )
 }
