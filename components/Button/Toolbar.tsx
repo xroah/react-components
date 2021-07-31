@@ -11,7 +11,6 @@ export default function ButtonToolbar(
 
     return (
         <div
-            role="toolbar"
             className={classes}
             {...restProps} />
     )
