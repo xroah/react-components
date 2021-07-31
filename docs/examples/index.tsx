@@ -4,6 +4,7 @@ import Button from "./Button"
 import Badge from "./Badge"
 import ListGroup from "./ListGroup"
 import Placeholder from "./Placeholder"
+import Progress from "./Progress"
 import Spinner from "./Spinner"
 
 export default function () {
@@ -14,6 +15,7 @@ export default function () {
             <Badge />
             <ListGroup />
             <Placeholder />
+            <Progress />
             <Spinner />
         </>
     )

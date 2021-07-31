@@ -20,6 +20,7 @@ export default function Progress(
         animated,
         variant,
         height,
+        style = {},
         className,
         label,
         ...restProps
@@ -28,24 +29,28 @@ export default function Progress(
     const prefix = getPrefixFunc("progress-bar")
     const MIN = 0
     const MAX = 100
-    const style: React.CSSProperties = {}
+    const barStyle: React.CSSProperties = {}
     const classes = classNames(
-        className,
         prefix(),
         variant && `bg-${variant}`,
         striped && prefix("striped"),
         striped && animated && prefix("animated")
     )
     const v = value! < MIN ? MIN : value! > MAX ? MAX : value
-    const labelEl = style.width = `${v}%`
+    const labelEl = barStyle.width = `${v}%`
 
     if (height) {
         style.height = height
     }
 
     return (
-        <div className="progress" {...restProps}>
-            <div className={classes}>{labelEl}</div>
+        <div
+            style={style}
+            className={classNames(className, "progress")}
+            {...restProps}>
+            <div style={barStyle} className={classes}>
+                {label ? labelEl : null}
+            </div>
         </div>
     )
 }
