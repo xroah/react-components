@@ -33,3 +33,11 @@ export default function PaginationItem(
         </li>
     )
 }
+
+PaginationItem.propTypes = {
+    active: PropTypes.bool,
+    disabled: PropTypes.bool
+}
+PaginationItem.defaultProps = {
+    href: "#"
+}
