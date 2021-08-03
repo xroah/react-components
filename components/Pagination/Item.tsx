@@ -13,19 +13,21 @@ export default function PaginationItem(
         disabled,
         className,
         style,
+        href,
         children,
         ...restProps
     }: ItemProps
 ) {
     const classes = classNames(
         className,
+        "page-item",
         active && "active",
         disabled && "disabled"
     )
 
     return (
         <li style={style} className={classes}>
-            <a className="page-link" {...restProps}>
+            <a href={href} className="page-link" {...restProps}>
                 {children}
             </a>
         </li>
