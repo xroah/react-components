@@ -6,7 +6,7 @@ import omit from "reap-utils/lib/omit"
 import Badge from "./Badge"
 
 interface IndicatorProps extends React.HTMLAttributes<HTMLElement> {
-    size?: number
+    size?: number | string
     variant?: Variant
 }
 
@@ -43,7 +43,10 @@ export default function Indicator(
 }
 
 Indicator.propTypes = {
-    size: PropTypes.number,
+    size: PropTypes.oneOfType([
+        PropTypes.number,
+        PropTypes.string
+    ]),
     variant: PropTypes.oneOf(variants)
 }
 Indicator.defaultProps = {

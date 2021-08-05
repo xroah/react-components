@@ -7,7 +7,7 @@ import classNames from "reap-utils/lib/class-names"
 interface SpinnerProps extends React.HTMLAttributes<HTMLSpanElement> {
     variant?: Variant
     type?: "border" | "grow"
-    size?: "sm" | number
+    size?: "sm" | number | string
 }
 
 export default function Spinner(
@@ -51,6 +51,7 @@ Spinner.propTypes = {
     variant: PropTypes.oneOf(variants),
     size: PropTypes.oneOfType([
         PropTypes.oneOf(["sm"]),
-        PropTypes.number
+        PropTypes.number,
+        PropTypes.string
     ])
 }
