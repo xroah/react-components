@@ -4,6 +4,7 @@ import classNames from "reap-utils/lib/class-names"
 import {Variant, variants} from "../Commons/variants"
 import {getPrefixFunc, isValidNode} from "../Commons/utils"
 
+export type Color = Variant | "white" | "black" | "muted"
 interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
     header?: React.ReactNode
     footer?: React.ReactNode
@@ -13,7 +14,7 @@ interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
     img?: React.ReactNode
     imgPosition?: "top" | "bottom"
     bg?: Variant | "transparent"
-    textColor?: Variant | "white" | "dark"
+    textColor?: Color
     borderColor?: Variant
 }
 
