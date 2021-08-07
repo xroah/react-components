@@ -11,7 +11,7 @@ interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
     headerStyle?: React.CSSProperties
     footerStyle?: React.CSSProperties
     textAlignment?: "start" | "center" | "end"
-    img?: React.ReactNode
+    img?: React.ReactElement
     imgPosition?: "top" | "bottom"
     bg?: Variant | "transparent"
     textColor?: Color
@@ -35,6 +35,7 @@ export default function Card(
         ...restProps
     }: CardProps
 ) {
+    let imgEl: React.ReactElement | undefined
     const prefix = getPrefixFunc("card")
     const classes = classNames(
         className,
@@ -44,14 +45,33 @@ export default function Card(
         textColor && `text-${textColor}`,
         borderColor && `border-${borderColor}`
     )
-    let imgEl: React.ReactElement | undefined
+    const renderChildren = () => {
+        if (imgEl) {
+            return imgPosition === "bottom" ? (
+                <>
+                    {children}
+                    {imgEl}
+                </>
+            ) : (
+                <>
+                    {imgEl}
+                    {children}
+                </>
+            )
+        }
 
-    if (React.isValidElement(img)) {
+        return children
+    }
+
+    if (img) {
         const CLASS = prefix("img")
         imgEl = React.cloneElement(
             img,
             {
-                className: imgPosition ? CLASS : `${CLASS}-${imgPosition}`
+                className: classNames(
+                    img.props.className,
+                    imgPosition ? `${CLASS}-${imgPosition}` : CLASS
+                )
             }
         )
     }
@@ -65,19 +85,7 @@ export default function Card(
                     </div>
                 )
             }
-            {
-                imgPosition === "bottom" ? (
-                    <>
-                        {children}
-                        {imgEl}
-                    </>
-                ) : (
-                    <>
-                        {imgEl}
-                        {children}
-                    </>
-                )
-            }
+            {renderChildren()}
             {
                 isValidNode(footer) && (
                     <div className={prefix("footer")} style={headerStyle}>
