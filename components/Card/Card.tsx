@@ -14,7 +14,7 @@ interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
     img?: React.ReactElement
     imgPosition?: "top" | "bottom"
     bg?: Variant | "transparent"
-    textColor?: Color
+    color?: Color
     borderColor?: Variant
 }
 
@@ -29,7 +29,7 @@ export default function Card(
         imgPosition,
         bg,
         borderColor,
-        textColor,
+        color,
         children,
         className,
         ...restProps
@@ -42,7 +42,7 @@ export default function Card(
         prefix(),
         textAlignment && `text-${textAlignment}`,
         bg && `bg-${bg}`,
-        textColor && `text-${textColor}`,
+        color && `text-${color}`,
         borderColor && `border-${borderColor}`
     )
     const renderChildren = () => {
