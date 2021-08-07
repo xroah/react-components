@@ -18,6 +18,7 @@ export default function Text(
         className={
             classNames(
                 className,
+                "card-text",
                 color && `text-${color}`
             )
         } {...restProps}/>
