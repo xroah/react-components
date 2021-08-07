@@ -2,6 +2,7 @@ import * as React from "react"
 import Alert from "./Alert"
 import Button from "./Button"
 import Badge from "./Badge"
+import Card from "./Card"
 import ListGroup from "./ListGroup"
 import Pagination from "./Pagination"
 import Placeholder from "./Placeholder"
@@ -12,8 +13,9 @@ export default function () {
     return (
         <>
             <Alert />
-            <Button />
             <Badge />
+            <Button />
+            <Card />
             <ListGroup />
             <Pagination />
             <Placeholder />
