@@ -1,5 +1,6 @@
-type ValueOf<T extends readonly any[]> = T[number]
-export const variants = [
+export type ValueOf<T extends readonly string[]> = T[number]
+
+export const variants = <const>[
     "primary",
     "secondary",
     "success",
@@ -8,5 +9,8 @@ export const variants = [
     "info",
     "light",
     "dark"
-] as const
+]
 export type Variant = ValueOf<typeof variants>
+
+export const sizes = <const>["xs", "sm", "lg"]
+export type Size = ValueOf<typeof sizes>

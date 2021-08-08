@@ -1,24 +1,33 @@
 import * as React from "react"
 import PropTypes from "prop-types"
 import classNames from "reap-utils/lib/class-names"
-import {Variant, variants} from "../Commons/consts-and-types"
+import {
+    variants,
+    ValueOf,
+    Size,
+    sizes
+} from "../Commons/consts-and-types"
 import {AnchorCommonProps} from "../Commons/CommonPropsInterface"
 import warning from "warning"
 import {getPrefixFunc} from "../Commons/utils"
 
 type BaseProps = Omit<React.ButtonHTMLAttributes<HTMLElement>, "type">
+type BtnSize = Exclude<Size, "xs">
+
+const btnVariants = [...variants, "link"]
+const btnTypes = ["reset", "button", "submit", "checkbox", "radio"] as const
 
 let uuid = 0
 
 export interface ButtonProps extends BaseProps, AnchorCommonProps {
-    variant?: Variant | "link"
+    variant?: ValueOf<typeof btnVariants>
     outline?: boolean
-    size?: "sm" | "lg"
+    size?: BtnSize
     disabled?: boolean
     active?: boolean
     textNoWrap?: boolean
     tag?: React.ElementType
-    type?: "reset" | "button" | "submit" | "checkbox" | "radio"
+    type?: ValueOf<typeof btnTypes>
 }
 
 const Button = React.forwardRef(
@@ -108,11 +117,11 @@ const Button = React.forwardRef(
 
 Button.propTypes = {
     tag: PropTypes.elementType as any,
-    variant: PropTypes.oneOf([...variants, "link"]) as any,
+    variant: PropTypes.oneOf(btnVariants),
     outline: PropTypes.bool,
-    size: PropTypes.oneOf(["sm", "lg"]),
+    size: PropTypes.oneOf(sizes.filter(s => s !== "xs") as BtnSize[]),
     disabled: PropTypes.bool,
-    type: PropTypes.oneOf(["button", "submit", "reset", "checkbox", "radio"]),
+    type: PropTypes.oneOf(btnTypes),
     active: PropTypes.bool,
 }
 Button.defaultProps = {
