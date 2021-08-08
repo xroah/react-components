@@ -4,13 +4,21 @@ import classNames from "reap-utils/lib/class-names"
 import {Variant, variants} from "../Commons/variants"
 import {getPrefixFunc, isValidNode} from "../Commons/utils"
 
-export type Color = Variant |
-    "white" |
-    "black" |
-    "muted" |
-    "white-50" |
+const otherColors = [
+    "white",
+    "black",
+    "muted",
+    "white-50",
     "black-50"
-    
+] as const
+
+export type Color = Variant | (typeof otherColors)[number]
+
+export const colorPropType = PropTypes.oneOf([
+    ...variants,
+    ...otherColors
+])
+
 interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
     header?: React.ReactNode
     footer?: React.ReactNode
@@ -101,4 +109,17 @@ export default function Card(
             }
         </div>
     )
+}
+
+Card.propTypes = {
+    header: PropTypes.node,
+    footer: PropTypes.node,
+    headerStyle: PropTypes.object,
+    footerStyle: PropTypes.object,
+    textAlignment: PropTypes.oneOf(["start", "center", "end"]),
+    img: PropTypes.element,
+    imgPosition: PropTypes.oneOf(["top", "bottom"]),
+    bg: PropTypes.oneOf([...variants, "transparent"]),
+    color: colorPropType,
+    borderColor: PropTypes.oneOf(variants),
 }
