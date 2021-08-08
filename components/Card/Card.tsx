@@ -1,7 +1,7 @@
 import * as React from "react"
 import PropTypes from "prop-types"
 import classNames from "reap-utils/lib/class-names"
-import {Variant, variants} from "../Commons/variants"
+import {Variant, variants} from "../Commons/consts-and-types"
 import {getPrefixFunc, isValidNode} from "../Commons/utils"
 
 const otherColors = [

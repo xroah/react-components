@@ -1,6 +1,6 @@
 import * as React from "react"
 import PropTypes from "prop-types"
-import {Variant, variants} from "../Commons/variants"
+import {Variant, variants} from "../Commons/consts-and-types"
 import omit from "reap-utils/lib/omit"
 import classNames from "reap-utils/lib/class-names"
 

@@ -1,7 +1,7 @@
 import * as React from "react"
 import PropTypes from "prop-types"
 import classNames from "reap-utils/lib/class-names"
-import {Variant} from "../Commons/variants"
+import {Variant} from "../Commons/consts-and-types"
 import {Color} from "./Card"
 import {isValidNode} from "../Commons/utils"
 

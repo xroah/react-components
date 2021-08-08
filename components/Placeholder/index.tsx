@@ -1,7 +1,7 @@
 import * as React from "react"
 import classNames from "reap-utils/lib/class-names"
 import PropTypes from "prop-types"
-import {Variant, variants} from "../Commons/variants"
+import {Variant, variants} from "../Commons/consts-and-types"
 import {getPrefixFunc} from "../Commons/utils"
 
 interface PlaceholderProps extends React.HTMLAttributes<HTMLDivElement> {

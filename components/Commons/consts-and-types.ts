@@ -1,11 +1,4 @@
-export type Variant = "primary" |
-    "secondary" |
-    "success" |
-    "danger" |
-    "warning" |
-    "info" |
-    "light" |
-    "dark"
+type ValueOf<T extends readonly any[]> = T[number]
 export const variants = [
     "primary",
     "secondary",
@@ -15,4 +8,5 @@ export const variants = [
     "info",
     "light",
     "dark"
-]
+] as const
+export type Variant = ValueOf<typeof variants>
