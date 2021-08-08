@@ -1,7 +1,7 @@
 import * as React from "react"
 import PropTypes from "prop-types"
 import classNames from "reap-utils/lib/class-names"
-import {Variant, variants} from "../Commons/consts-and-types"
+import {Alignment, alignments, ValueOf, Variant, variants} from "../Commons/consts-and-types"
 import {getPrefixFunc, isValidNode} from "../Commons/utils"
 
 const otherColors = [
@@ -19,15 +19,18 @@ export const colorPropType = PropTypes.oneOf([
     ...otherColors
 ])
 
+const positions = ["top", "bottom"] as const
+const bgs = [...variants, "transparent"] as const
+
 interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
     header?: React.ReactNode
     footer?: React.ReactNode
     headerStyle?: React.CSSProperties
     footerStyle?: React.CSSProperties
-    textAlignment?: "start" | "center" | "end"
+    textAlignment?: Alignment
     img?: React.ReactElement
-    imgPosition?: "top" | "bottom"
-    bg?: Variant | "transparent"
+    imgPosition?: ValueOf<typeof positions>
+    bg?: ValueOf<typeof bgs>
     color?: Color
     borderColor?: Variant
 }
@@ -116,10 +119,10 @@ Card.propTypes = {
     footer: PropTypes.node,
     headerStyle: PropTypes.object,
     footerStyle: PropTypes.object,
-    textAlignment: PropTypes.oneOf(["start", "center", "end"]),
+    textAlignment: PropTypes.oneOf(alignments),
     img: PropTypes.element,
-    imgPosition: PropTypes.oneOf(["top", "bottom"]),
-    bg: PropTypes.oneOf([...variants, "transparent"]),
+    imgPosition: PropTypes.oneOf(positions),
+    bg: PropTypes.oneOf(bgs),
     color: colorPropType,
     borderColor: PropTypes.oneOf(variants),
 }

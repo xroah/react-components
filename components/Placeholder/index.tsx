@@ -1,14 +1,22 @@
 import * as React from "react"
 import classNames from "reap-utils/lib/class-names"
 import PropTypes from "prop-types"
-import {Variant, variants} from "../Commons/consts-and-types"
+import {
+    sizes,
+    ValueOf,
+    Variant,
+    variants
+} from "../Commons/consts-and-types"
 import {getPrefixFunc} from "../Commons/utils"
+
+const _sizes = ["xs", ...sizes]
+const animations = ["grow", "wave"] as const
 
 interface PlaceholderProps extends React.HTMLAttributes<HTMLDivElement> {
     width?: string | number
     variant?: Variant
-    size?: "xs" | "sm" | "lg"
-    animation?: "grow" | "wave"
+    size?: ValueOf<typeof _sizes>
+    animation?: ValueOf<typeof animations>
 }
 
 export default function Placeholder(
@@ -63,6 +71,6 @@ export default function Placeholder(
 Placeholder.propTypes = {
     width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     variant: PropTypes.oneOf(variants),
-    size: PropTypes.oneOf(["xs", "sm", "lg"]),
-    animation: PropTypes.oneOf(["grow", "wave"])
+    size: PropTypes.oneOf(_sizes),
+    animation: PropTypes.oneOf(animations)
 }

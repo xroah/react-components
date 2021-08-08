@@ -1,10 +1,16 @@
 import * as React from "react"
 import classNames from "reap-utils/lib/class-names"
 import PropTypes from "prop-types"
+import {
+    Alignment,
+    alignments,
+    Size,
+    sizes
+} from "../Commons/consts-and-types"
 
 interface PaginationProps extends React.HTMLAttributes<HTMLDivElement> {
-    size?: "lg" | "sm"
-    alignment?: "start" | "center" | "end"
+    size?: Size
+    alignment?: Alignment
 }
 
 export default function Pagination(
@@ -32,6 +38,6 @@ export default function Pagination(
 }
 
 Pagination.propTypes = {
-    size: PropTypes.oneOf(["sm", "lg"]),
-    alignment: PropTypes.oneOf(["start", "center", "end"])
+    size: PropTypes.oneOf(sizes),
+    alignment: PropTypes.oneOf(alignments)
 }

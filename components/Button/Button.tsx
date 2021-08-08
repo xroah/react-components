@@ -12,7 +12,6 @@ import warning from "warning"
 import {getPrefixFunc} from "../Commons/utils"
 
 type BaseProps = Omit<React.ButtonHTMLAttributes<HTMLElement>, "type">
-type BtnSize = Exclude<Size, "xs">
 
 const btnVariants = [...variants, "link"]
 const btnTypes = ["reset", "button", "submit", "checkbox", "radio"] as const
@@ -22,7 +21,7 @@ let uuid = 0
 export interface ButtonProps extends BaseProps, AnchorCommonProps {
     variant?: ValueOf<typeof btnVariants>
     outline?: boolean
-    size?: BtnSize
+    size?: Size
     disabled?: boolean
     active?: boolean
     textNoWrap?: boolean
@@ -119,7 +118,7 @@ Button.propTypes = {
     tag: PropTypes.elementType as any,
     variant: PropTypes.oneOf(btnVariants),
     outline: PropTypes.bool,
-    size: PropTypes.oneOf(sizes.filter(s => s !== "xs") as BtnSize[]),
+    size: PropTypes.oneOf(sizes),
     disabled: PropTypes.bool,
     type: PropTypes.oneOf(btnTypes),
     active: PropTypes.bool,

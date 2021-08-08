@@ -12,5 +12,8 @@ export const variants = <const>[
 ]
 export type Variant = ValueOf<typeof variants>
 
-export const sizes = <const>["xs", "sm", "lg"]
+export const sizes = <const>["sm", "lg"]
 export type Size = ValueOf<typeof sizes>
+
+export const alignments = <const>["start", "center", "end"]
+export type Alignment = ValueOf<typeof alignments>

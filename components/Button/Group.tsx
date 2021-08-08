@@ -1,9 +1,10 @@
 import * as React from "react"
 import classNames from "reap-utils/lib/class-names"
 import PropTypes from "prop-types"
+import {Size, sizes} from "../Commons/consts-and-types"
 
 interface GroupProps extends React.HTMLAttributes<HTMLDivElement> {
-    size?: "sm" | "lg"
+    size?: Size
     vertical?: boolean
 }
 
@@ -30,5 +31,5 @@ ButtonGroup.defaultProps = {
 }
 ButtonGroup.propTypes = {
     vertical: PropTypes.bool,
-    size: PropTypes.oneOf(["sm", "lg"])
+    size: PropTypes.oneOf(sizes)
 }
