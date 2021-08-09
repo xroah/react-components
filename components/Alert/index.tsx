@@ -1,5 +1,11 @@
 import * as React from "react"
-import PropTypes from "prop-types"
+import {
+    oneOf,
+    string,
+    bool,
+    node,
+    func
+} from "prop-types"
 import classNames from "reap-utils/lib/class-names"
 import {Variant, variants} from "../Commons/consts-and-types"
 import Button from "../Button"
@@ -105,16 +111,13 @@ export default function Alert(
 }
 
 Alert.propTypes = {
-    variant: PropTypes.oneOf(variants),
-    fade: PropTypes.bool,
-    heading: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.node
-    ]),
-    dismissible: PropTypes.bool,
-    visible: PropTypes.bool,
-    onClose: PropTypes.func,
-    onClosed: PropTypes.func
+    variant: oneOf(variants),
+    fade: bool,
+    heading: node,
+    dismissible: bool,
+    visible: bool,
+    onClose: func,
+    onClosed: func
 }
 Alert.defaultProps = {
     dismissible: false,
