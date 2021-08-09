@@ -1,8 +1,7 @@
 import * as React from "react"
 import PropTypes from "prop-types"
 import classNames from "reap-utils/lib/class-names"
-import {Variant} from "../Commons/consts-and-types"
-import {Color} from "./Card"
+import {Color, colorPropType} from "./Card"
 import {isValidNode} from "../Commons/utils"
 
 interface CardTitleProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -46,6 +45,11 @@ export default function CardTitle(
     )
 }
 
+CardTitle.propTypes = {
+    color: colorPropType,
+    subTitle: PropTypes.node,
+    subTitleColor: PropTypes.node
+}
 CardTitle.defaultProps = {
     subTitleColor: "muted"
 }

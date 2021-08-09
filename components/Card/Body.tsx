@@ -21,3 +21,7 @@ export default function CardBody({
         {...restProps}
     />
 }
+
+CardBody.propTypes = {
+    overlay: PropTypes.bool
+}
