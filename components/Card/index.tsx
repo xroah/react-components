@@ -1,23 +1,15 @@
 import * as React from "react"
-import classNames from "reap-utils/lib/class-names"
 import Card from "./Card"
 import Body from "./Body"
 import Title from "./Title"
 import Text from "./Text"
+import {createComponent} from "../Commons/utils"
 
-function Link(
-    {
-        className,
-        ...restProps
-    }: React.AnchorHTMLAttributes<HTMLAnchorElement>
-) {
-    return (
-        <a 
-        className={classNames(className, "card-link")}
-        {...restProps}
-        />
-    )
-}
+const Link = createComponent<React.AnchorHTMLAttributes<HTMLAnchorElement>>({
+    tag: "a",
+    className: "card-link",
+    displayName: "CardLink"
+})
 
 interface CardType {
     Body: typeof Body
