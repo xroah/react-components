@@ -1,12 +1,18 @@
 import * as React from "react"
 import classNames from "reap-utils/lib/class-names"
 import PropTypes from "prop-types"
-import {Variant, variants} from "../Commons/consts-and-types"
+import {
+    ValueOf,
+    Variant,
+    variants
+} from "../Commons/consts-and-types"
+
+const colors = ["light", "dark"] as const
 
 export interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
     variant?: Variant
     pill?: boolean
-    textColor?: "light" | "dark"
+    textColor?: ValueOf<typeof colors>
 }
 
 export default function Badge(
@@ -36,5 +42,5 @@ export default function Badge(
 Badge.propTypes = {
     variant: PropTypes.oneOf(variants),
     pill: PropTypes.bool,
-    color: PropTypes.oneOf(["light", "dark"])
+    color: PropTypes.oneOf(colors)
 }
