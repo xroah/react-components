@@ -14,7 +14,7 @@ import Fade from "../Commons/Fade"
 import NoTransition from "../Commons/NoTransition"
 import omit from "reap-utils/lib/omit"
 import handleFuncProp from "reap-utils/lib/react/handle-func-prop"
-import {getPrefixFunc} from "../Commons/utils"
+import {createComponent, getPrefixFunc} from "../Commons/utils"
 
 export interface AlertProps extends React.HTMLAttributes<HTMLDivElement> {
     variant?: Variant
@@ -124,6 +124,8 @@ Alert.defaultProps = {
     fade: true
 }
 
-Alert.Link = function (props: React.AnchorHTMLAttributes<HTMLAnchorElement>) {
-    return <a {...props} />
-}
+Alert.Link = createComponent<React.AnchorHTMLAttributes<HTMLAnchorElement>>({
+    tag: "a",
+    displayName: "AlertLink",
+    className: "alert-link"
+})
