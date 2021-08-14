@@ -1,34 +1,39 @@
-import * as React from "react"
+import {
+    createElement,
+    ElementType,
+    HTMLAttributes
+} from "react"
 import classNames from "../class-names"
 
 interface CreateProps {
     className?: string
     tag?: string
-    displayName: string
+    displayName?: string
 }
 
-export default (options: CreateProps) => {
-    const {
+export function createComponent<T extends HTMLAttributes<HTMLElement>>(
+    {
         className,
-        tag = "div",
+        tag="div",
         displayName
-    } = options
-    const Component = (props: React.AllHTMLAttributes<HTMLElement>) => {
-        const {
-            className: cls,
-            ...otherProps
-        } = props
-
-        return React.createElement(
+    }: CreateOptions,
+) {
+    const Component = ({
+        className: c,
+        ...restProps
+    }: T) => {
+        return createElement(
             tag,
             {
-                className: classNames(className, cls),
-                ...otherProps
+                className: classNames(className, c),
+                ...restProps
             }
         )
     }
 
-    Component.displayName = displayName
+    if (displayName) {
+        Component.displayName = displayName
+    }
 
     return Component
 }
