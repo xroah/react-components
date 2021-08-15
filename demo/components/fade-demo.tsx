@@ -1,5 +1,5 @@
 import React, {useState} from "react"
-import Fade from "../../src/Fade"
+import Fade from "../../src/react/transition/Fade"
 
 export default function () {
     const [visible, update] = useState(false)
@@ -11,7 +11,7 @@ export default function () {
             <button onClick={handleClick}>toggle</button>
             <Fade
                 in={visible}
-                onEnter={node => console.log(node)}
+                onEnter={() => console.log("onenter")}
                 onEntering={() => console.log("entering")}
                 timeout={300}>
                 <div className="div" style={{lineHeight: 2}}>

@@ -1,5 +1,5 @@
 import * as React from "react"
-import CSSTransition from "../../src/CSSTransition"
+import CSSTransition from "../../src/react/transition/CSSTransition"
 
 export default () => {
     const [visible, toggle] = React.useState(false)
