@@ -75,8 +75,7 @@ export default class CSSTransition extends
             },
             state: {
                 status
-            },
-            next
+            }
         } = this
 
         if (_in !== prevProps.in) {
@@ -85,7 +84,7 @@ export default class CSSTransition extends
             this.clearNext()
             this.switchState(status as stateType)
         }
-        else if (next) {
+        else {
             this.performNext()
         }
     }
