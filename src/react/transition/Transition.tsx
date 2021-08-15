@@ -108,10 +108,10 @@ export default class CSSTransition extends
         return nextState
     }
 
-    setNext(fn: Function, timeout = 20) {
+    setNext(fn: Function, timeout = 0) {
         this.next = {
             fn,
-            timeout
+            timeout: timeout + 20 //ensure transition ended
         }
     }
 
