@@ -14,14 +14,14 @@ export default function CardText(
     }: CardTextProps
 ) {
     return (
-        <p 
-        className={
-            classNames(
-                className,
-                "card-text",
-                color && `text-${color}`
-            )
-        } {...restProps}/>
+        <p
+            className={
+                classNames(
+                    className,
+                    "card-text",
+                    color && `text-${color}`
+                )
+            } {...restProps} />
     )
 }
 

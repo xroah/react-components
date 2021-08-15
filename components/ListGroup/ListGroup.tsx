@@ -5,10 +5,10 @@ import PropTypes from "prop-types"
 
 interface ListGroupProps extends
     React.OlHTMLAttributes<HTMLOListElement | HTMLUListElement> {
-        flush?: boolean
-        numbered?: boolean
-        horizontal?: boolean
-        tag?: React.ElementType
+    flush?: boolean
+    numbered?: boolean
+    horizontal?: boolean
+    tag?: React.ElementType
 }
 
 export default function ListGroup({

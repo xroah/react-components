@@ -1,4 +1,8 @@
-import {createElement, ElementType, HTMLAttributes} from "react"
+import {
+    createElement,
+    ElementType,
+    HTMLAttributes
+} from "react"
 import classNames from "reap-utils/lib/class-names"
 
 export function getPrefixFunc(prefix: string) {
@@ -20,10 +24,9 @@ interface CreateOptions {
 export function createComponent<T extends HTMLAttributes<HTMLElement>>(
     {
         className,
-        tag="div",
+        tag = "div",
         displayName
     }: CreateOptions,
-
 ) {
     const Component = ({
         className: c,

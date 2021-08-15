@@ -18,7 +18,7 @@ export default function Spinner(
         variant,
         className,
         size,
-        style={},
+        style = {},
         ...restProps
     }: SpinnerProps
 ) {
