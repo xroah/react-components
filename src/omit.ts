@@ -4,14 +4,12 @@ export default function omit<T extends object, K extends keyof T>
         props = [props]
     }
 
-    const clone = {...obj}
-
     for (let prop of props) {
-        if (prop in clone) {
-            delete clone[prop]
+        if (prop in obj) {
+            delete obj[prop]
         }
     }
 
 
-    return clone
+    return obj
 }
