@@ -26,7 +26,7 @@ export default class NoTransition extends React.Component<NoTransitionProps> {
                     in: false
                 } as any)
             } else {
-                handleFuncProp(onEntered)
+                handleFuncProp(onEntered)()
             }
         }
     }
