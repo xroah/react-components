@@ -5,23 +5,25 @@ import {
 } from "react"
 import classNames from "../class-names"
 
-interface CreateProps {
+interface CreateOptions {
     className?: string
-    tag?: string
+    tag?: ElementType
     displayName?: string
 }
 
 export function createComponent<T extends HTMLAttributes<HTMLElement>>(
     {
         className,
-        tag="div",
+        tag = "div",
         displayName
     }: CreateOptions,
 ) {
-    const Component = ({
-        className: c,
-        ...restProps
-    }: T) => {
+    const Component = (
+        {
+            className: c,
+            ...restProps
+        }: T
+    ) => {
         return createElement(
             tag,
             {
