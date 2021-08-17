@@ -18,7 +18,7 @@ import {
 } from "./constants"
 import propTeyps from "./propTeyps"
 
-export default class CSSTransition extends
+export default class Transition extends
     React.Component<TransitionProps, TransitionState> {
 
     nextTimer: number | null = null
