@@ -2,7 +2,7 @@ import * as React from "react"
 import classNames from "../../class-names"
 import handleFuncProp from "../handle-func-prop"
 import {ENTERED, EXITED} from "./constants"
-import PropTypes from "prop-types"
+import {string} from "prop-types"
 import {NoTransitionProps} from "./interface"
 import propTypes from "./propTeyps"
 
@@ -10,7 +10,7 @@ import propTypes from "./propTeyps"
 export default class NoTransition extends React.Component<NoTransitionProps> {
     static propTypes = {
         ...propTypes,
-        showClass: PropTypes.string
+        showClass: string
     }
 
     componentDidMount() {
