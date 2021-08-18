@@ -17,9 +17,10 @@ import {
     UNMOUNTED
 } from "./constants"
 import propTypes from "./propTypes"
+import BaseTransition from "./BaseTransition"
 
 export default class Transition extends
-    React.Component<TransitionProps, TransitionState> {
+    BaseTransition<TransitionProps, TransitionState> {
 
     nextTimer: number | null = null
     next: Next | null = null
@@ -46,25 +47,6 @@ export default class Transition extends
 
         this.state = {
             status: status as stateType
-        }
-    }
-
-    componentDidMount() {
-        const {
-            onEntered,
-            appear,
-            in: _in
-        } = this.props
-
-        if (_in) {
-            if (appear) {
-                this.componentDidUpdate({
-                    in: false
-                } as TransitionProps)
-            }
-            else {
-                handleFuncProp(onEntered)()
-            }
         }
     }
 
@@ -281,7 +263,7 @@ export default class Transition extends
             return (
                 <>
                     {div}
-                    {children(status)}
+                    {children(status!)}
                 </>
             )
         }

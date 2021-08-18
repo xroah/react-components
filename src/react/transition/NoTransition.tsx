@@ -5,30 +5,13 @@ import {ENTERED, EXITED} from "./constants"
 import {string} from "prop-types"
 import {NoTransitionProps} from "./interface"
 import propTypes from "./propTypes"
+import BaseTransition from "./BaseTransition"
 
 //compatible with Transition
-export default class NoTransition extends React.Component<NoTransitionProps> {
+export default class NoTransition extends BaseTransition<NoTransitionProps> {
     static propTypes = {
         ...propTypes,
         showClass: string
-    }
-
-    componentDidMount() {
-        const {
-            onEntered,
-            appear,
-            in: _in
-        } = this.props
-
-        if (_in) {
-            if (appear) {
-                this.componentDidUpdate({
-                    in: false
-                } as any)
-            } else {
-                handleFuncProp(onEntered)()
-            }
-        }
     }
 
     componentDidUpdate(prevProps: NoTransitionProps) {

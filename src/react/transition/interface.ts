@@ -32,7 +32,7 @@ export interface TransitionProps {
 }
 
 export interface TransitionState {
-    status: componentState
+    status?: componentState
 }
 
 export interface NoTransitionProps extends TransitionProps {
