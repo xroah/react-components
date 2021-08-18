@@ -4,7 +4,7 @@ import handleFuncProp from "../handle-func-prop"
 import {ENTERED, EXITED} from "./constants"
 import {string} from "prop-types"
 import {NoTransitionProps} from "./interface"
-import propTypes from "./propTeyps"
+import propTypes from "./propTypes"
 
 //compatible with Transition
 export default class NoTransition extends React.Component<NoTransitionProps> {

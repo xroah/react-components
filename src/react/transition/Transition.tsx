@@ -16,7 +16,7 @@ import {
     EXITED,
     UNMOUNTED
 } from "./constants"
-import propTeyps from "./propTeyps"
+import propTypes from "./propTypes"
 
 export default class Transition extends
     React.Component<TransitionProps, TransitionState> {
@@ -25,7 +25,7 @@ export default class Transition extends
     next: Next | null = null
     placeholderRef = React.createRef<HTMLDivElement>()
 
-    static propTypes = propTeyps
+    static propTypes = propTypes
 
     constructor(props: TransitionProps) {
         super(props)
