@@ -15,11 +15,11 @@ export default function CSSTransition(props: CSSTransitionProps) {
         name,
         children,
         hiddenOnExited,
-        ...otherProps
+        ...restProps
     } = props
 
     return (
-        <Transition {...otherProps}>
+        <Transition {...restProps}>
             {
                 state => {
                     const child = React.Children.only(children) as React.ReactElement

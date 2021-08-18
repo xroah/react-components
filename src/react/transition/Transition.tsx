@@ -1,6 +1,6 @@
 import * as React from "react"
 import handleFuncProp from "../handle-func-prop"
-import omitProps from "../../omit"
+import omit from "../../omit"
 import {
     TransitionProps,
     TransitionState,
@@ -241,11 +241,11 @@ export default class Transition extends
 
         const {
             children,
-            ...otherProps
+            ...restProps
         } = this.props
 
-        omitProps(
-            otherProps,
+        omit(
+            restProps,
             [
                 "in",
                 "timeout",
@@ -273,7 +273,7 @@ export default class Transition extends
         return (
             <>
                 {div}
-                {React.cloneElement(child, otherProps)}
+                {React.cloneElement(child, restProps)}
             </>
         )
     }

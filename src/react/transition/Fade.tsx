@@ -14,11 +14,11 @@ export default function Fade(props: FadeProps) {
         activeClass,
         children,
         hiddenOnExited,
-        ...otherProps
+        ...restProps
     } = props
 
     return (
-        <Transition {...otherProps}>
+        <Transition {...restProps}>
             {
                 state => {
                     const child = React.Children.only(children) as React.ReactElement
