@@ -8,12 +8,16 @@ import {
     UNMOUNTED
 } from "./constants"
 
-export type stateType = typeof ENTER |
-    typeof ENTERING |
-    typeof ENTERED |
-    typeof EXIT |
-    typeof EXITING |
-    typeof EXITED
+const states = [
+    ENTER,
+    ENTERING,
+    ENTERED,
+    EXIT,
+    EXITING,
+    EXITED,
+    UNMOUNTED
+] as const
+export type stateType = (typeof states)[number]
 export type componentState = stateType | typeof UNMOUNTED
 export type callback = () => void
 
