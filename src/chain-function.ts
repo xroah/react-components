@@ -1,3 +1,5 @@
+import noop from "./noop"
+
 export default (...fn: Function[]) => {
     return fn.reduce(
         (acc, cur) => (...args: any[]) => {
@@ -7,6 +9,6 @@ export default (...fn: Function[]) => {
                 cur.apply(null, args)
             }
         },
-        () => {}
+        noop
     )
 }

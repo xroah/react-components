@@ -1,6 +1,8 @@
+import noop from "../noop"
+
 export default (prop?: Function) => {
     if (typeof prop !== "function") {
-        return () => { }
+        return noop
     }
 
     return prop
