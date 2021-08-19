@@ -11,7 +11,7 @@ interface CreateOptions {
     displayName?: string
 }
 
-export function createComponent<T extends HTMLAttributes<HTMLElement>>(
+export default function createComponent<T extends HTMLAttributes<HTMLElement>>(
     {
         className,
         tag = "div",
