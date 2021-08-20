@@ -18,7 +18,7 @@ export default class BaseTransition<T extends Props, S extends State = {}>
             if (appear) {
                 this.componentDidUpdate({
                     in: false
-                } as any)
+                } as T)
             } else {
                 handleFuncProp(onEntered)()
             }

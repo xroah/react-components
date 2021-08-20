@@ -36,7 +36,7 @@ export default class Transition extends
             unmountOnExit,
             appear
         } = props
-        let status
+        let status: stateType
 
         if (_in) {
             status = appear ? EXITED : ENTERED
@@ -46,7 +46,7 @@ export default class Transition extends
         }
 
         this.state = {
-            status: status as stateType
+            status: status 
         }
     }
 
