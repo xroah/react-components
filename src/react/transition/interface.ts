@@ -1,32 +1,19 @@
-import {
-    ENTER,
-    ENTERED,
-    ENTERING,
-    EXIT,
-    EXITING,
-    EXITED,
-    UNMOUNTED
-} from "./constants"
+import {states, UNMOUNTED} from "./constants"
 
-const states = [
-    ENTER,
-    ENTERING,
-    ENTERED,
-    EXIT,
-    EXITING,
-    EXITED,
-    UNMOUNTED
-] as const
+
 export type stateType = (typeof states)[number]
-export type componentState = stateType | typeof UNMOUNTED
 export type callback = () => void
+
+type ChildrenFunc = (
+    state: Exclude<stateType, typeof UNMOUNTED>
+) => React.ReactElement
 
 export interface TransitionProps {
     in: boolean
     timeout?: number
     unmountOnExit?: boolean
     appear?: boolean
-    children: ((state: stateType) => React.ReactElement) | React.ReactElement
+    children: ChildrenFunc | React.ReactElement
     onEnter?: callback
     onEntering?: callback
     onEntered?: callback
@@ -36,7 +23,7 @@ export interface TransitionProps {
 }
 
 export interface TransitionState {
-    status?: componentState
+    status?: stateType
 }
 
 export interface NoTransitionProps extends TransitionProps {
