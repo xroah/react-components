@@ -46,7 +46,7 @@ export default class Transition extends
         }
 
         this.state = {
-            status: status 
+            status: status
         }
     }
 
@@ -148,10 +148,12 @@ export default class Transition extends
 
     enter() {
         this.setNext(this.entering)
-        this.setState({
-            status: ENTER
-        })
-        handleFuncProp(this.props.onEnter)()
+        this.setState(
+            {
+                status: ENTER
+            },
+            () => handleFuncProp(this.props.onEnter)()
+        )
     }
 
     entering() {
@@ -160,28 +162,34 @@ export default class Transition extends
             onEntering
         } = this.props
 
-        this.setState({
-            status: ENTERING
-        })
         this.setNext(this.entered, timeout)
-        handleFuncProp(onEntering)()
+        this.setState(
+            {
+                status: ENTERING
+            },
+            () => handleFuncProp(onEntering)()
+        )
     }
 
     entered() {
         this.clearNext()
-        this.setState({
-            status: ENTERED
-        })
-        handleFuncProp(this.props.onEntered)()
+        this.setState(
+            {
+                status: ENTERED
+            },
+            () => handleFuncProp(this.props.onEntered)()
+        )
     }
 
 
     exit() {
         this.setNext(this.exiting)
-        this.setState({
-            status: EXIT
-        })
-        handleFuncProp(this.props.onExiting)()
+        this.setState(
+            {
+                status: EXIT
+            },
+            () => handleFuncProp(this.props.onExiting)()
+        )
     }
 
     exiting() {
@@ -191,10 +199,12 @@ export default class Transition extends
         } = this.props
 
         this.setNext(this.exited, timeout)
-        this.setState({
-            status: EXITING
-        })
-        handleFuncProp(onExiting)()
+        this.setState(
+            {
+                status: EXITING
+            },
+            () => handleFuncProp(onExiting)()
+        )
     }
 
     exited() {
@@ -209,10 +219,12 @@ export default class Transition extends
             this.clearNext()
         }
 
-        this.setState({
-            status: EXITED
-        })
-        handleFuncProp(onExited)()
+        this.setState(
+            {
+                status: EXITED
+            },
+            () => handleFuncProp(onExited)()
+        )
     }
 
     unmount() {
