@@ -64,7 +64,7 @@ export default class Transition extends
             status = _in ? ENTER : EXIT
 
             this.clearNext()
-            this.switchState(status as stateType)
+            this.switchState(status)
         }
         else {
             this.performNext()
@@ -112,7 +112,11 @@ export default class Transition extends
         }
 
         this.nextTimer = window.setTimeout(
-            this.safeCallback(cb),
+            () => {
+                this.nextTimer = null
+
+                this.safeCallback(cb)
+            },
             timeout
         )
     }
