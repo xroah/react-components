@@ -25,6 +25,7 @@ export default class Transition extends
     nextTimer: number | null = null
     next: Next | null = null
     placeholderRef = React.createRef<HTMLDivElement>()
+    state: TransitionState
 
     static propTypes = propTypes
 
@@ -46,7 +47,7 @@ export default class Transition extends
         }
 
         this.state = {
-            status: status
+            status
         }
     }
 
