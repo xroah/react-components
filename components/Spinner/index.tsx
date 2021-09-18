@@ -1,6 +1,10 @@
 import * as React from "react"
 import PropTypes from "prop-types"
-import {ValueOf, Variant, variants} from "../Commons/consts-and-types"
+import {
+    ValueOf,
+    Variant,
+    variants
+} from "../Commons/consts-and-types"
 import classNames from "reap-utils/lib/class-names"
 
 const animations = ["border", "grow"] as const
