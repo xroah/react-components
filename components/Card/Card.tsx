@@ -1,7 +1,13 @@
 import * as React from "react"
 import PropTypes from "prop-types"
 import classNames from "reap-utils/lib/class-names"
-import {Alignment, alignments, ValueOf, Variant, variants} from "../Commons/consts-and-types"
+import {
+    Alignment,
+    alignments,
+    ValueOf,
+    Variant,
+    variants
+} from "../Commons/consts-and-types"
 import {getPrefixFunc, isValidNode} from "../Commons/utils"
 
 const otherColors = [
