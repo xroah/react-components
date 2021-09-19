@@ -4,9 +4,12 @@ import {
     HTMLAttributes
 } from "react"
 import classNames from "reap-utils/lib/class-names"
+import {PrefixFunc} from "./consts-and-types"
 
-export function getPrefixFunc(prefix: string) {
-    return (s?: string) => s ? `${prefix}-${s}` : prefix
+
+
+export function getPrefixFunc(prefix: string): PrefixFunc {
+    return (s?: string | number) => s ? `${prefix}-${s}` : prefix
 }
 
 export function isValidNode(node: any) {

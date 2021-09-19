@@ -24,3 +24,4 @@ export const breakpoints = [
     "xl",
     "xxl"
 ] as const
+export type PrefixFunc = (s?: string | number) => string
