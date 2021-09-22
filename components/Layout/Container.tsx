@@ -20,8 +20,9 @@ export default function Container(
     const prefix = getPrefixFunc("container")
     const classes = classNames(
         className,
-        fluid ? prefix("fluid") : prefix(),
-        breakpoint && prefix(breakpoint)
+        fluid ? prefix("fluid") :
+            breakpoint ? prefix(breakpoint) :
+                prefix()
     )
 
     return <div className={classes} {...restProps} />
