@@ -20,17 +20,17 @@ type GuttersObject = {
     x?: number
     y?: number
 }
+type ColsType = Cols | ColBreakpoint
+type GuttersType = number | GuttersObject | GutterBreakpoint
 
 interface RowProps extends HTMLAttributes<HTMLDivElement> {
-    cols?: Cols
-    colBreakpoints?: ColBreakpoint
-    gutters?: number | GuttersObject
-    gutterBreakpoints?: GutterBreakpoint
+    cols?: ColsType
+    gutters?: GuttersType
 }
 
 function handleCols(
     prefix: string,
-    cols?: Cols,
+    cols?: ColsType,
     breakpoint?: Breakpoint
 ) {
     if (!cols) {
@@ -39,7 +39,13 @@ function handleCols(
 
     const _prefix = getPrefixFunc(`${prefix}-cols`)
 
-    return breakpoint ? _prefix(`${breakpoint}-${cols}`) : _prefix(cols)
+    if (typeof cols === "object") {
+        return handleColBreakpoints(prefix, cols)
+    }
+
+    return breakpoint ?
+        _prefix(`${breakpoint}-${cols}`) :
+        _prefix(cols)
 }
 
 function handleColBreakpoints(
@@ -63,7 +69,7 @@ function handleColBreakpoints(
 }
 
 function handleGutters(
-    gutters?: number | GuttersObject,
+    gutters?: GuttersType,
     breakpoint?: Breakpoint
 ) {
     if (!gutters) {
@@ -88,11 +94,22 @@ function handleGutters(
         return getClass(gutters, "g", breakpoint)
     }
 
-    if (typeof gutters.x !== "undefined") {
-        return getClass(gutters.x, "gx", breakpoint)
-    } else if (typeof gutters.y !== "undefined") {
-        return getClass(gutters.y, "gy", breakpoint)
-    }
+    if ("x" in gutters || "y" in gutters) { 
+        const gutterClasses = []
+
+        if (typeof gutters.x !== "undefined") {
+            gutterClasses.push(getClass(gutters.x, "gx", breakpoint))
+        }
+
+        if (typeof gutters.y !== "undefined") {
+            gutterClasses.push(getClass(gutters.y, "gy", breakpoint))
+        }
+
+        return gutterClasses.join(" ")
+    } 
+    
+    
+    return handleGutterBreakpoints(gutters as GutterBreakpoint)
 }
 
 function handleGutterBreakpoints(breakpoints?: GutterBreakpoint) {
@@ -118,9 +135,7 @@ export default function Row(
     {
         className,
         cols,
-        colBreakpoints,
         gutters,
-        gutterBreakpoints,
         ...restProps
     }: RowProps
 ) {
@@ -130,9 +145,7 @@ export default function Row(
         className,
         p,
         handleCols(p, cols),
-        handleColBreakpoints(p, colBreakpoints),
-        handleGutters(gutters),
-        handleGutterBreakpoints(gutterBreakpoints)
+        handleGutters(gutters)
     )
 
     return <div className={classes} {...restProps} />
@@ -148,21 +161,25 @@ function getShape<T>(v: T) {
     return ret
 }
 
-const colType = oneOfType([
+const colTypes = [
     oneOf(["auto"]),
     number
-])
-const gutterType = oneOfType([
+]
+const gutterTypes = [
     number,
     shape({
         x: number,
         y: number
     })
-])
+]
 
 Row.propTypes = {
-    cols: colType,
-    colBreakpoints: shape(getShape(colType)),
-    gutters: gutterType,
-    gutterBreakpoints: shape(getShape(gutterType))
+    cols: oneOfType([
+        ...colTypes,
+        shape(getShape(oneOfType(colTypes)))
+    ]),
+    gutters: oneOfType([
+        ...gutterTypes,
+        shape(getShape(oneOfType(gutterTypes)))
+    ])
 }
