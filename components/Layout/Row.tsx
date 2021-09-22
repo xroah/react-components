@@ -59,11 +59,11 @@ function handleColBreakpoints(
     const classes: string[] = []
     const keys = Object.keys(breakpoints) as Array<keyof typeof breakpoints>
 
-    for (let key of keys) {
-        const v = breakpoints[key]
+    keys.forEach(k => {
+        const v = breakpoints[k]
 
-        classes.push(handleCols(prefix, v, key))
-    }
+        classes.push(handleCols(prefix, v, k))
+    })
 
     return classes.join(" ")
 }
@@ -94,7 +94,7 @@ function handleGutters(
         return getClass(gutters, "g", breakpoint)
     }
 
-    if ("x" in gutters || "y" in gutters) { 
+    if ("x" in gutters || "y" in gutters) {
         const gutterClasses = []
 
         if (typeof gutters.x !== "undefined") {
@@ -106,9 +106,9 @@ function handleGutters(
         }
 
         return gutterClasses.join(" ")
-    } 
-    
-    
+    }
+
+
     return handleGutterBreakpoints(gutters as GutterBreakpoint)
 }
 
@@ -120,13 +120,7 @@ function handleGutterBreakpoints(breakpoints?: GutterBreakpoint) {
     const classes: string[] = []
     const keys = Object.keys(breakpoints) as Array<keyof typeof breakpoints>
 
-    for (let key of keys) {
-        const c = handleGutters(breakpoints[key], key)
-
-        if (c) {
-            classes.push(c)
-        }
-    }
+    keys.forEach(k => classes.push(handleGutters(breakpoints[k], k)))
 
     return classes.join(" ")
 }
