@@ -1,17 +1,25 @@
 import React, {HTMLAttributes} from "react"
-import { } from "prop-types"
+import {
+    number,
+    oneOf,
+    oneOfType,
+    shape
+} from "prop-types"
 import classNames from "reap-utils/lib/class-names"
 import {breakpoints, ValueOf} from "../Commons/consts-and-types"
 import {getPrefixFunc} from "../Commons/utils"
 
 type Cols = "auto" | number
 type Breakpoint = ValueOf<typeof breakpoints>
-type ColBreakpoint = Record<Breakpoint, Cols>
+type BreakpointType<K extends Breakpoint, V> = {
+    [k in K]?: V
+}
+type ColBreakpoint = BreakpointType<Breakpoint, Cols>
+type GutterBreakpoint = BreakpointType<Breakpoint, number | GuttersObject>
 type GuttersObject = {
     x?: number
     y?: number
 }
-type GutterBreakpoint = Record<Breakpoint, number | GuttersObject>
 
 interface RowProps extends HTMLAttributes<HTMLDivElement> {
     cols?: Cols
@@ -128,4 +136,33 @@ export default function Row(
     )
 
     return <div className={classes} {...restProps} />
+}
+
+function getShape<T>(v: T) {
+    let ret: BreakpointType<Breakpoint, T> = {}
+
+    for (let bp of breakpoints) {
+        ret[bp] = v
+    }
+
+    return ret
+}
+
+const colType = oneOfType([
+    oneOf(["auto"]),
+    number
+])
+const gutterType = oneOfType([
+    number,
+    shape({
+        x: number,
+        y: number
+    })
+])
+
+Row.propTypes = {
+    cols: colType,
+    colBreakpoints: shape(getShape(colType)),
+    gutters: gutterType,
+    gutterBreakpoints: shape(getShape(gutterType))
 }
