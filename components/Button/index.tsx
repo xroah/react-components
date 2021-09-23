@@ -1,8 +1,14 @@
 import Button from "./Button"
 import Toggle from "./Toggle"
 import Group from "./Group"
-import Toolbar from "./Toolbar"
 import Close from "./Close"
+import {createComponent} from "../Commons/utils"
+
+const Toolbar = createComponent({
+    className: "btn-toolbar",
+    tag: "div",
+    displayName: "ButtonToolbar"
+})
 
 interface ButtonType {
     Toggle: typeof Toggle
