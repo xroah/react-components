@@ -15,7 +15,7 @@ export default () => (
             </ListGroup>
         </div>
         <div className="mb-2">
-            <ListGroup>
+            <ListGroup tag="div">
                 <Item href="#" active>An active item</Item>
                 <Item href="#" disabled>A disabled item</Item>
             </ListGroup>
