@@ -28,38 +28,33 @@ interface RowProps extends HTMLAttributes<HTMLDivElement> {
     gutters?: GuttersType
 }
 
-function handleCols(
+export function handleBreakpoints<T extends string | number | boolean>(
     prefix: string,
-    cols?: ColsType,
+    value?: BreakpointType<Breakpoint, T> | T,
     breakpoint?: Breakpoint
 ) {
-    if (!cols) {
+    if (!value) {
         return ""
     }
 
-    const _prefix = getPrefixFunc(`${prefix}-cols`)
+    const _prefix = getPrefixFunc(
+        breakpoint ? `${prefix}-${breakpoint}` : prefix
+    )
+    const t = typeof value
 
-    if (typeof cols === "object") {
-        return handleColBreakpoints(prefix, cols)
+    if (t === "number" || t === "string") {
+        return _prefix(value as any)
+    } else if (t === "boolean") {
+        return _prefix()
     }
 
-    return breakpoint ?
-        _prefix(`${breakpoint}-${cols}`) :
-        _prefix(cols)
-}
-
-function handleColBreakpoints(
-    prefix: string,
-    breakpoints: ColBreakpoint
-) {
+    const v = value as BreakpointType<Breakpoint, T>
+    const keys = Object.keys(v) as Array<keyof typeof v>
     const classes: string[] = []
-    const keys = Object.keys(breakpoints) as Array<keyof typeof breakpoints>
 
-    keys.forEach(k => {
-        const v = breakpoints[k]
-
-        classes.push(handleCols(prefix, v, k))
-    })
+    keys.forEach(
+        k => classes.push(handleBreakpoints(prefix, v[k], k))
+    )
 
     return classes.join(" ")
 }
@@ -125,19 +120,17 @@ export default function Row(
         ...restProps
     }: RowProps
 ) {
-    const prefix = getPrefixFunc("row")
-    const p = prefix()
     const classes = classNames(
         className,
-        p,
-        handleCols(p, cols),
+        "row",
+        handleBreakpoints("row-cols", cols),
         handleGutters(gutters)
     )
 
     return <div className={classes} {...restProps} />
 }
 
-function getShape<T>(v: T) {
+export function getShape<T>(v: T) {
     let ret: BreakpointType<Breakpoint, T> = {}
 
     for (let bp of breakpoints) {
