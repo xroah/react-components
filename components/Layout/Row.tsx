@@ -50,12 +50,8 @@ function handleCols(
 
 function handleColBreakpoints(
     prefix: string,
-    breakpoints?: ColBreakpoint
+    breakpoints: ColBreakpoint
 ) {
-    if (!breakpoints) {
-        return ""
-    }
-
     const classes: string[] = []
     const keys = Object.keys(breakpoints) as Array<keyof typeof breakpoints>
 
@@ -112,11 +108,7 @@ function handleGutters(
     return handleGutterBreakpoints(gutters as GutterBreakpoint)
 }
 
-function handleGutterBreakpoints(breakpoints?: GutterBreakpoint) {
-    if (!breakpoints) {
-        return ""
-    }
-
+function handleGutterBreakpoints(breakpoints: GutterBreakpoint) {
     const classes: string[] = []
     const keys = Object.keys(breakpoints) as Array<keyof typeof breakpoints>
 
