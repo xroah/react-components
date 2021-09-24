@@ -6,14 +6,14 @@ import {
     shape
 } from "prop-types"
 import classNames from "reap-utils/lib/class-names"
-import {breakpoints, ValueOf} from "../Commons/consts-and-types"
+import {
+    breakpoints,
+    Breakpoint,
+    BreakpointType
+} from "../Commons/consts-and-types"
 import {getPrefixFunc} from "../Commons/utils"
 
 type Cols = "auto" | number
-type Breakpoint = ValueOf<typeof breakpoints>
-type BreakpointType<K extends Breakpoint, V> = {
-    [k in K]?: V
-}
 type ColBreakpoint = BreakpointType<Breakpoint, Cols>
 type GutterBreakpoint = BreakpointType<Breakpoint, number | GuttersObject>
 type GuttersObject = {

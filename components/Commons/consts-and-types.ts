@@ -24,4 +24,9 @@ export const breakpoints = [
     "xl",
     "xxl"
 ] as const
+export type Breakpoint = ValueOf<typeof breakpoints>
+export type BreakpointType<K extends Breakpoint, V> = {
+    [k in K]?: V
+}
+
 export type PrefixFunc = (s?: string | number) => string
