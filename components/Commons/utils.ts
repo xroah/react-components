@@ -4,9 +4,12 @@ import {
     HTMLAttributes
 } from "react"
 import classNames from "reap-utils/lib/class-names"
-import {PrefixFunc} from "./consts-and-types"
-
-
+import {
+    PrefixFunc,
+    Breakpoint,
+    BreakpointType,
+    breakpoints
+} from "./consts-and-types"
 
 export function getPrefixFunc(prefix: string): PrefixFunc {
     return (s?: string | number) => s ? `${prefix}-${s}` : prefix
@@ -49,4 +52,47 @@ export function createComponent<T extends HTMLAttributes<HTMLElement>>(
     }
 
     return Component
+}
+
+export function getBreakpointClasses<T extends string | number | boolean>(
+    prefix: string,
+    value?: BreakpointType<Breakpoint, T> | T,
+    breakpoint?: Breakpoint
+) {
+    if (!value) {
+        return ""
+    }
+
+    const _prefix = getPrefixFunc(
+        breakpoint ? `${prefix}-${breakpoint}` : prefix
+    )
+    const t = typeof value
+
+    if (t === "number" || t === "string") {
+        return _prefix(value as any)
+    } else if (t === "boolean") {
+        return _prefix()
+    }
+
+    const v = value as BreakpointType<Breakpoint, T>
+    const keys = Object.keys(v) as Array<keyof typeof v>
+    const classes: string[] = []
+
+    keys.forEach(
+        k => classes.push(
+            getBreakpointClasses(prefix, v[k], k)
+        )
+    )
+
+    return classes.join(" ")
+}
+
+export function getShape<T>(v: T) {
+    let ret: BreakpointType<Breakpoint, T> = {}
+
+    for (let bp of breakpoints) {
+        ret[bp] = v
+    }
+
+    return ret
 }

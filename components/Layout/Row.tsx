@@ -6,12 +6,8 @@ import {
     shape
 } from "prop-types"
 import classNames from "reap-utils/lib/class-names"
-import {
-    breakpoints,
-    Breakpoint,
-    BreakpointType
-} from "../Commons/consts-and-types"
-import {getPrefixFunc} from "../Commons/utils"
+import {Breakpoint, BreakpointType} from "../Commons/consts-and-types"
+import {getBreakpointClasses, getShape} from "../Commons/utils"
 
 type Cols = "auto" | number
 type ColBreakpoint = BreakpointType<Breakpoint, Cols>
@@ -28,36 +24,6 @@ interface RowProps extends HTMLAttributes<HTMLDivElement> {
     gutters?: GuttersType
 }
 
-export function handleBreakpoints<T extends string | number | boolean>(
-    prefix: string,
-    value?: BreakpointType<Breakpoint, T> | T,
-    breakpoint?: Breakpoint
-) {
-    if (!value) {
-        return ""
-    }
-
-    const _prefix = getPrefixFunc(
-        breakpoint ? `${prefix}-${breakpoint}` : prefix
-    )
-    const t = typeof value
-
-    if (t === "number" || t === "string") {
-        return _prefix(value as any)
-    } else if (t === "boolean") {
-        return _prefix()
-    }
-
-    const v = value as BreakpointType<Breakpoint, T>
-    const keys = Object.keys(v) as Array<keyof typeof v>
-    const classes: string[] = []
-
-    keys.forEach(
-        k => classes.push(handleBreakpoints(prefix, v[k], k))
-    )
-
-    return classes.join(" ")
-}
 
 function handleGutters(
     gutters?: GuttersType,
@@ -123,21 +89,11 @@ export default function Row(
     const classes = classNames(
         className,
         "row",
-        handleBreakpoints("row-cols", cols),
+        getBreakpointClasses("row-cols", cols),
         handleGutters(gutters)
     )
 
     return <div className={classes} {...restProps} />
-}
-
-export function getShape<T>(v: T) {
-    let ret: BreakpointType<Breakpoint, T> = {}
-
-    for (let bp of breakpoints) {
-        ret[bp] = v
-    }
-
-    return ret
 }
 
 const colTypes = [
