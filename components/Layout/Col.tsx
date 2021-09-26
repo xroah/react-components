@@ -11,7 +11,7 @@ import {
     BreakpointType,
     ValueOf
 } from "../Commons/consts-and-types"
-import {getBreakpointClasses} from "../Commons/utils"
+import {getBreakpointClasses, getShape} from "../Commons/utils"
 
 const orders = ["first", "last"] as const
 
@@ -46,6 +46,29 @@ export default function Col(
     return <div className={classes} {...restProps}/>
 }
 
+const spanTypes = [
+    oneOf(["auto", true]),
+    number
+]
+const orderTypes = [
+    oneOf(orders),
+    number
+]
+
+Col.propTypes = {
+    span: oneOfType([
+        ...spanTypes,
+        shape(getShape(oneOfType(spanTypes)))
+    ]),
+    order: oneOfType([
+        ...orderTypes,
+        shape(getShape(oneOfType(orderTypes)))
+    ]),
+    offset: oneOfType([
+        number,
+        shape(getShape(number))
+    ])
+}
 Col.defaultProps = {
     span: true
 }
