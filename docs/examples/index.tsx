@@ -3,6 +3,7 @@ import Alert from "./Alert"
 import Button from "./Button"
 import Badge from "./Badge"
 import Card from "./Card"
+import Layout from "./Layout"
 import ListGroup from "./ListGroup"
 import Pagination from "./Pagination"
 import Placeholder from "./Placeholder"
@@ -16,6 +17,7 @@ export default function () {
             <Badge />
             <Button />
             <Card />
+            <Layout />
             <ListGroup />
             <Pagination />
             <Placeholder />
