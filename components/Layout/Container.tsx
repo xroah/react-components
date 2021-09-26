@@ -2,7 +2,7 @@ import * as React from "react"
 import {bool, oneOf} from "prop-types"
 import {breakpoints, Breakpoint} from "../Commons/consts-and-types"
 import classNames from "reap-utils/lib/class-names"
-import {getPrefixFunc} from "../Commons/utils"
+import {getBreakpointPrefixFunc, getPrefixFunc} from "../Commons/utils"
 
 interface ContainerProps extends React.HTMLAttributes<HTMLDivElement> {
     fluid?: boolean
@@ -18,11 +18,12 @@ export default function Container(
     }: ContainerProps
 ) {
     const prefix = getPrefixFunc("container")
+    const breakpointPrefix = getBreakpointPrefixFunc(prefix(), breakpoint)
     const classes = classNames(
         className,
-        fluid ? prefix("fluid") :
-            breakpoint && breakpoint !== "xs" ? prefix(breakpoint) :
-                prefix()
+        fluid ?
+            prefix("fluid") :
+            breakpointPrefix()
     )
 
     return <div className={classes} {...restProps} />

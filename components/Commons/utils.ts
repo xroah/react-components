@@ -54,6 +54,17 @@ export function createComponent<T extends HTMLAttributes<HTMLElement>>(
     return Component
 }
 
+export function getBreakpointPrefixFunc(
+    prefix: string,
+    breakpoint?: Breakpoint
+) {
+    return getPrefixFunc(
+        breakpoint && breakpoint !== "xs" ?
+            `${prefix}-${breakpoint}` :
+            prefix
+    )
+}
+
 export function getBreakpointClasses<T extends string | number | boolean>(
     prefix: string,
     value?: BreakpointType<Breakpoint, T> | T,
@@ -63,11 +74,7 @@ export function getBreakpointClasses<T extends string | number | boolean>(
         return ""
     }
 
-    const _prefix = getPrefixFunc(
-        breakpoint && breakpoint !== "xs" ?
-            `${prefix}-${breakpoint}` :
-            prefix
-    )
+    const _prefix = getBreakpointPrefixFunc(prefix, breakpoint)
     const t = typeof value
 
     if (t === "number" || t === "string") {
