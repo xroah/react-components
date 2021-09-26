@@ -18,6 +18,7 @@ export type Size = ValueOf<typeof sizes>
 export const alignments = <const>["start", "center", "end"]
 export type Alignment = ValueOf<typeof alignments>
 export const breakpoints = [
+    "xs",
     "sm",
     "md",
     "lg",

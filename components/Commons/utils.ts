@@ -64,7 +64,9 @@ export function getBreakpointClasses<T extends string | number | boolean>(
     }
 
     const _prefix = getPrefixFunc(
-        breakpoint ? `${prefix}-${breakpoint}` : prefix
+        breakpoint && breakpoint !== "xs" ?
+            `${prefix}-${breakpoint}` :
+            prefix
     )
     const t = typeof value
 

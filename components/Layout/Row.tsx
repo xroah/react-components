@@ -40,7 +40,7 @@ function handleGutters(
     ) => {
         const classes = [prefix, bp, gutter]
 
-        if (!bp) {
+        if (!bp || bp === "xs") {
             classes.splice(1, 1)
         }
 

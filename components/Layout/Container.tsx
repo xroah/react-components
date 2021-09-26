@@ -21,7 +21,7 @@ export default function Container(
     const classes = classNames(
         className,
         fluid ? prefix("fluid") :
-            breakpoint ? prefix(breakpoint) :
+            breakpoint && breakpoint !== "xs" ? prefix(breakpoint) :
                 prefix()
     )
 
