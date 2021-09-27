@@ -18,6 +18,7 @@ export default function Pagination(
     }: PaginationProps
 ) {
     const classes = classNames(
+        className,
         "pagination",
         size && `pagination-${size}`
     )
