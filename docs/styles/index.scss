@@ -15,6 +15,12 @@
     background-color: rgba(39, 41, 43, 0.03);
     border: 1px solid rgba(39, 41, 43, 0.1);
 }
-.layout-example .row{
+
+.layout-example .row {
     margin-bottom: 20px;
+}
+
+.row-flex-cols .row {
+    min-height: 10rem;
+    background-color: rgba(255, 0, 0, .1);
 }
