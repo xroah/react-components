@@ -27,9 +27,6 @@ export default function ButtonGroup(
     return <div className={classes} {...restProps} />
 }
 
-ButtonGroup.defaultProps = {
-    vertical: false
-}
 ButtonGroup.propTypes = {
     vertical: PropTypes.bool,
     size: PropTypes.oneOf(sizes)
