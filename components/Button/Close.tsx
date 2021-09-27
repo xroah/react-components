@@ -1,7 +1,6 @@
 import * as React from "react"
 import PropTypes from "prop-types"
 import classNames from "reap-utils/lib/class-names"
-import omit from "reap-utils/lib/omit"
 
 type BaseProps = React.ButtonHTMLAttributes<HTMLButtonElement>
 
@@ -29,7 +28,7 @@ const Close = React.forwardRef(
             <button
                 ref={ref}
                 className={classes}
-                {...omit(restProps, "children")} />
+                {...restProps} />
         )
     }
 )
