@@ -2,6 +2,7 @@ import * as React from "react"
 import classNames from "reap-utils/lib/class-names"
 import PropTypes from "prop-types"
 import {Size, sizes} from "../Commons/consts-and-types"
+import {getPrefixFunc} from "../Commons/utils"
 
 interface GroupProps extends React.HTMLAttributes<HTMLDivElement> {
     size?: Size
@@ -16,11 +17,11 @@ export default function ButtonGroup(
         ...restProps
     }: GroupProps
 ) {
-    const PREFIX = "btn-group"
+    const prefix = getPrefixFunc("btn-group")
     const classes = classNames(
         className,
-        size && `${PREFIX}-${size}`,
-        vertical ? `${PREFIX}-vertical` : PREFIX
+        size && prefix(size),
+        vertical ? prefix("vertical") : prefix()
     )
 
     return <div className={classes} {...restProps} />
