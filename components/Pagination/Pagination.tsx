@@ -3,7 +3,9 @@ import classNames from "reap-utils/lib/class-names"
 import PropTypes from "prop-types"
 import {Size, sizes} from "../Commons/consts-and-types"
 
-interface PaginationProps extends React.HTMLAttributes<HTMLUListElement> {
+type BaseProps = Omit<React.HTMLAttributes<HTMLUListElement>, "size">
+
+interface PaginationProps extends BaseProps {
     size?: Size
 }
 

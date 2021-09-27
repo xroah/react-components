@@ -11,7 +11,7 @@ import {AnchorCommonProps} from "../Commons/CommonPropsInterface"
 import warning from "warning"
 import {getPrefixFunc} from "../Commons/utils"
 
-type BaseProps = Omit<React.ButtonHTMLAttributes<HTMLElement>, "type">
+type BaseProps = Omit<React.ButtonHTMLAttributes<HTMLElement>, "type" | "size">
 
 const btnVariants = [...variants, "link"]
 const btnTypes = ["reset", "button", "submit", "checkbox", "radio"] as const
