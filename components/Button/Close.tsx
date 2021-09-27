@@ -1,6 +1,7 @@
 import * as React from "react"
 import PropTypes from "prop-types"
 import classNames from "reap-utils/lib/class-names"
+import {getPrefixFunc} from "../Commons/utils"
 
 type BaseProps = React.ButtonHTMLAttributes<HTMLButtonElement>
 
@@ -17,11 +18,11 @@ const Close = React.forwardRef(
         }: CloseProps,
         ref: React.Ref<HTMLButtonElement>
     ) => {
-        const PREFIX = "btn-close"
+        const prefix = getPrefixFunc("btn-close")
         const classes = classNames(
             className,
-            PREFIX,
-            variant && `${PREFIX}-${variant}`
+            prefix(),
+            variant && prefix(variant)
         )
 
         return (
