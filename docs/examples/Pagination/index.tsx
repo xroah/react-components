@@ -1,5 +1,6 @@
 import * as React from "react"
 import Pagination from "reap-ui/Pagination"
+import Alignment from "reap-ui/Alignment"
 
 const {Item} = Pagination
 
@@ -38,22 +39,26 @@ export default () => (
             </Pagination>
         </div>
         <div className="mb-2">
-            <Pagination alignment="center">
-                <Item disabled>Previous</Item>
-                <Item >1</Item>
-                <Item>2</Item>
-                <Item>3</Item>
-                <Item>Next</Item>
-            </Pagination>
+            <Alignment horizontal="center">
+                <Pagination>
+                    <Item disabled>Previous</Item>
+                    <Item >1</Item>
+                    <Item>2</Item>
+                    <Item>3</Item>
+                    <Item>Next</Item>
+                </Pagination>
+            </Alignment>
         </div>
         <div className="mb-2">
-            <Pagination alignment="end">
-                <Item disabled>Previous</Item>
-                <Item >1</Item>
-                <Item>2</Item>
-                <Item>3</Item>
-                <Item>Next</Item>
-            </Pagination>
+            <Alignment horizontal="end">
+                <Pagination>
+                    <Item disabled>Previous</Item>
+                    <Item >1</Item>
+                    <Item>2</Item>
+                    <Item>3</Item>
+                    <Item>Next</Item>
+                </Pagination>
+            </Alignment>
         </div>
     </>
 )
