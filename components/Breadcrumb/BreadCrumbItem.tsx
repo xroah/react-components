@@ -18,13 +18,14 @@ function BreadcrumbItem(
         ...restProps
     }: BreadcrumbItemProps
 ) {
+    const classes = classNames(
+        className,
+        "breadcrumb-item",
+        active && "active"
+    )
+
     return (
-        <li
-            className={classNames(
-                className,
-                "breadcrumb-item",
-                active && "active"
-            )} {...restProps}>
+        <li className={classes} {...restProps}>
             <a href={href}>{children}</a>
         </li>
     )
