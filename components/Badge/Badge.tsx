@@ -24,19 +24,15 @@ export default function Badge(
         ...restProps
     }: BadgeProps
 ) {
-    return (
-        <span
-            className={
-                classNames(
-                    className,
-                    "badge",
-                    variant && `bg-${variant}`,
-                    pill && "rounded-pill",
-                    textColor && `text-${textColor}`
-                )
-            }
-            {...restProps} />
+    const classes = classNames(
+        className,
+        "badge",
+        variant && `bg-${variant}`,
+        pill && "rounded-pill",
+        textColor && `text-${textColor}`
     )
+
+    return <span className={classes} {...restProps} />
 }
 
 Badge.propTypes = {
