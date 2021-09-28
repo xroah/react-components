@@ -1,4 +1,4 @@
-import React from "react"
+import * as React from "react"
 import {
     oneOf,
     bool,
@@ -15,6 +15,8 @@ import omit from "reap-utils/lib/omit"
 import handleFuncProp from "reap-utils/lib/react/handle-func-prop"
 import {createComponent, getPrefixFunc} from "../Commons/utils"
 
+type BtnClickEvt = React.MouseEvent<HTMLButtonElement>
+
 export interface AlertProps extends React.HTMLAttributes<HTMLDivElement> {
     variant?: Variant
     fade?: boolean
@@ -23,7 +25,7 @@ export interface AlertProps extends React.HTMLAttributes<HTMLDivElement> {
     heading?: string | React.ReactNode
     onClose?: Function
     onClosed?: Function
-    onCloseButtonClick?: (evt: React.MouseEvent<HTMLButtonElement>) => void
+    onCloseButtonClick?: (evt: BtnClickEvt) => void
 }
 
 export default function Alert(
@@ -49,7 +51,7 @@ export default function Alert(
     )
     const controlled = "visible" in restProps
     const [_visible, updateVisible] = React.useState(true)
-    const handleClick = (evt: React.MouseEvent<HTMLButtonElement>) => {
+    const handleClick = (evt: BtnClickEvt) => {
         if (!controlled) {
             updateVisible(!_visible)
         }
@@ -68,10 +70,14 @@ export default function Alert(
         const props = {...restProps}
 
         return (
-            <div className={classes} {...omit(props, "visible")}>
+            <div
+                className={classes}
+                {...omit(props, "visible")}>
                 {
                     !isUndef(heading) && (
-                        <h4 className={prefix("heading")}>{heading}</h4>
+                        <h4 className={prefix("heading")}>
+                            {heading}
+                        </h4>
                     )
                 }
                 {children}
@@ -119,7 +125,6 @@ Alert.propTypes = {
     onClosed: func
 }
 Alert.defaultProps = {
-    dismissible: false,
     fade: true
 }
 
