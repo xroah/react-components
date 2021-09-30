@@ -103,7 +103,9 @@ export default function Card(
         <div className={classes} {...restProps}>
             {
                 isValidNode(header) && (
-                    <div className={prefix("header")} style={headerStyle}>
+                    <div
+                        className={prefix("header")}
+                        style={headerStyle}>
                         {header}
                     </div>
                 )
@@ -111,7 +113,9 @@ export default function Card(
             {renderChildren()}
             {
                 isValidNode(footer) && (
-                    <div className={prefix("footer")} style={headerStyle}>
+                    <div
+                        className={prefix("footer")}
+                        style={headerStyle}>
                         {footer}
                     </div>
                 )
