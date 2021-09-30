@@ -19,24 +19,24 @@ export default function CardTitle(
         ...restProps
     }: CardTitleProps
 ) {
+    const classes = classNames(
+        "card-title",
+        color && `text-${color}`
+    )
+    const subClasses = classNames(
+        "card-title",
+        subTitleColor && `text-${subTitleColor}`
+    )
+
+
     return (
         <div {...restProps}>
-            <h5 className={
-                classNames(
-                    "card-title",
-                    color && `text-${color}`
-                )
-            }>
+            <h5 className={classes}>
                 {children}
             </h5>
             {
                 isValidNode(subTitle) && (
-                    <h6 className={
-                        classNames(
-                            "card-title",
-                            subTitleColor && `text-${subTitleColor}`
-                        )
-                    }>
+                    <h6 className={subClasses}>
                         {subTitle}
                     </h6>
                 )

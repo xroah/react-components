@@ -13,16 +13,13 @@ export default function CardText(
         ...restProps
     }: CardTextProps
 ) {
-    return (
-        <p
-            className={
-                classNames(
-                    className,
-                    "card-text",
-                    color && `text-${color}`
-                )
-            } {...restProps} />
+    const classes = classNames(
+        className,
+        "card-text",
+        color && `text-${color}`
     )
+
+    return <p className={classes} {...restProps} />
 }
 
 CardText.propTypes = {
