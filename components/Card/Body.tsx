@@ -11,14 +11,12 @@ export default function CardBody({
     className,
     ...restProps
 }: CardBodyProps) {
-    return <div
-        className={
-            classNames(
-                className,
-                overlay ? "card-img-overlay" : "card-body"
-            )
-        }
-        {...restProps}
+    const classes = classNames(
+        className,
+        overlay ? "card-img-overlay" : "card-body"
+    )
+
+    return <div className={classes} {...restProps}
     />
 }
 
