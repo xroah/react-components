@@ -87,13 +87,13 @@ export default function Card(
     }
 
     if (img) {
-        const CLASS = prefix("img")
+        const prefixImg = getPrefixFunc(prefix("img"))
         imgEl = React.cloneElement(
             img,
             {
                 className: classNames(
                     img.props.className,
-                    imgPosition ? `${CLASS}-${imgPosition}` : CLASS
+                    imgPosition ? prefixImg(imgPosition) : prefixImg()
                 )
             }
         )
