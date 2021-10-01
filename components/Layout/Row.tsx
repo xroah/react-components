@@ -7,7 +7,7 @@ import {
 } from "prop-types"
 import classNames from "reap-utils/lib/class-names"
 import {Breakpoint, BreakpointType} from "../Commons/consts-and-types"
-import {getBreakpointClasses, getShape} from "../Commons/utils"
+import {getBreakpointClasses, getBreakpointPrefixFunc, getShape} from "../Commons/utils"
 
 type Cols = "auto" | number
 type ColBreakpoint = BreakpointType<Breakpoint, Cols>
@@ -37,15 +37,7 @@ function handleGutters(
         gutter: number,
         prefix: string,
         bp?: Breakpoint
-    ) => {
-        const classes = [prefix, bp, gutter]
-
-        if (!bp || bp === "xs") {
-            classes.splice(1, 1)
-        }
-
-        return classes.join("-")
-    }
+    ) => getBreakpointPrefixFunc(prefix, bp)(gutter)
 
     if (typeof gutters === "number") {
         return getClass(gutters, "g", breakpoint)
