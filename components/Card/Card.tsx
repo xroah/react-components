@@ -9,7 +9,7 @@ import {
 } from "../Commons/consts-and-types"
 import {getPrefixFunc, isValidNode} from "../Commons/utils"
 
-const borderColors = [...variants, "white"]
+const borderColors = [...variants, "white"] as const
 const colors = [
     ...borderColors,
     "black",
