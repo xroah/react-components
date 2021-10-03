@@ -65,11 +65,33 @@ export function getBreakpointPrefixFunc(
     )
 }
 
-export function getBreakpointClasses<T extends string | number | boolean>(
+type BaseValue = string | number | boolean | object
+
+export function forEachBreakpoint<T extends BaseValue>(
+    v: BreakpointType<Breakpoint, T>,
+    callback?: (v: T, bp: Breakpoint) => string | undefined
+) {
+    const keys = Object.keys(v) as Array<keyof typeof v>
+    const classes: string[] = []
+
+    keys.forEach(
+        k => {
+            let ret: string | undefined
+
+            if (callback && (ret = callback(v[k] as T, k))) {
+                classes.push(ret)
+            }
+        }
+    )
+
+    return classes.join(" ")
+}
+
+export function getBreakpointClasses<T extends BaseValue>(
     prefix: string,
     value?: BreakpointType<Breakpoint, T> | T,
     breakpoint?: Breakpoint
-) {
+): string {
     if (!value) {
         return ""
     }
@@ -83,17 +105,10 @@ export function getBreakpointClasses<T extends string | number | boolean>(
         return _prefix()
     }
 
-    const v = value as BreakpointType<Breakpoint, T>
-    const keys = Object.keys(v) as Array<keyof typeof v>
-    const classes: string[] = []
-
-    keys.forEach(
-        k => classes.push(
-            getBreakpointClasses(prefix, v[k], k)
-        )
+    return forEachBreakpoint(
+        value as BreakpointType<Breakpoint, T>,
+        (v, bp) => getBreakpointClasses(prefix, v, bp)
     )
-
-    return classes.join(" ")
 }
 
 export function getShape<T>(v: T) {

@@ -7,7 +7,7 @@ import {
 } from "prop-types"
 import classNames from "reap-utils/lib/class-names"
 import {Breakpoint, BreakpointType} from "../Commons/consts-and-types"
-import {getBreakpointClasses, getBreakpointPrefixFunc, getShape} from "../Commons/utils"
+import {forEachBreakpoint, getBreakpointClasses, getBreakpointPrefixFunc, getShape} from "../Commons/utils"
 
 type Cols = "auto" | number
 type ColBreakpoint = BreakpointType<Breakpoint, Cols>
@@ -28,7 +28,7 @@ interface RowProps extends HTMLAttributes<HTMLDivElement> {
 function handleGutters(
     gutters?: GuttersType,
     breakpoint?: Breakpoint
-) {
+): string {
     if (!gutters) {
         return ""
     }
@@ -57,17 +57,10 @@ function handleGutters(
         return gutterClasses.join(" ")
     }
 
-
-    return handleGutterBreakpoints(gutters as GutterBreakpoint)
-}
-
-function handleGutterBreakpoints(breakpoints: GutterBreakpoint) {
-    const classes: string[] = []
-    const keys = Object.keys(breakpoints) as Array<keyof typeof breakpoints>
-
-    keys.forEach(k => classes.push(handleGutters(breakpoints[k], k)))
-
-    return classes.join(" ")
+    return forEachBreakpoint(
+        gutters as GutterBreakpoint,
+        handleGutters
+    )
 }
 
 export default function Row(
