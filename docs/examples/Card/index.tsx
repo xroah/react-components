@@ -39,7 +39,7 @@ export default () => (
                 style={{width: "18rem"}}>
                 <Card.Body>
                     <Card.Title subTitle="Card subtitle">Card Title</Card.Title>
-                    <Card.Text color="warning">
+                    <Card.Text>
                         Some quick example text to build on the card title and make up the bulk of the card's content.
                     </Card.Text>
                     <Card.Link href="#">Card link</Card.Link>
