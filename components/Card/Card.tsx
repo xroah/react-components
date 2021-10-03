@@ -4,23 +4,16 @@ import classNames from "reap-utils/lib/class-names"
 import {
     Alignment,
     alignments,
+    TextColor,
+    textColors,
     ValueOf,
     variants
 } from "../Commons/consts-and-types"
 import {getPrefixFunc, isValidNode} from "../Commons/utils"
 
 const borderColors = [...variants, "white"] as const
-const colors = [
-    ...borderColors,
-    "black",
-    "muted",
-    "white-50",
-    "black-50"
-] as const
 
-export type Color = ValueOf<typeof colors>
-
-export const colorPropType = PropTypes.oneOf(colors)
+export const colorPropType = PropTypes.oneOf(textColors)
 
 const positions = ["top", "bottom"] as const
 const bgs = [...variants, "transparent"] as const
@@ -34,7 +27,7 @@ interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
     img?: React.ReactElement
     imgPosition?: ValueOf<typeof positions>
     bg?: ValueOf<typeof bgs>
-    color?: Color
+    color?: TextColor
     borderColor?: ValueOf<typeof borderColors>
 }
 

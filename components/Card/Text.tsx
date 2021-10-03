@@ -1,9 +1,10 @@
 import * as React from "react"
-import {Color, colorPropType} from "./Card"
+import {colorPropType} from "./Card"
 import classNames from "reap-utils/lib/class-names"
+import {TextColor} from "../Commons/consts-and-types"
 
 interface CardTextProps extends React.HTMLAttributes<HTMLParagraphElement> {
-    color?: Color
+    color?: TextColor
 }
 
 export default function CardText(
