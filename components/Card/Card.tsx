@@ -5,25 +5,22 @@ import {
     Alignment,
     alignments,
     ValueOf,
-    Variant,
     variants
 } from "../Commons/consts-and-types"
 import {getPrefixFunc, isValidNode} from "../Commons/utils"
 
-const otherColors = [
-    "white",
+const borderColors = [...variants, "white"]
+const colors = [
+    ...borderColors,
     "black",
     "muted",
     "white-50",
     "black-50"
 ] as const
 
-export type Color = Variant | (typeof otherColors)[number]
+export type Color = ValueOf<typeof colors>
 
-export const colorPropType = PropTypes.oneOf([
-    ...variants,
-    ...otherColors
-])
+export const colorPropType = PropTypes.oneOf(colors)
 
 const positions = ["top", "bottom"] as const
 const bgs = [...variants, "transparent"] as const
@@ -38,7 +35,7 @@ interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
     imgPosition?: ValueOf<typeof positions>
     bg?: ValueOf<typeof bgs>
     color?: Color
-    borderColor?: Variant
+    borderColor?: ValueOf<typeof borderColors>
 }
 
 export default function Card(
@@ -134,5 +131,5 @@ Card.propTypes = {
     imgPosition: PropTypes.oneOf(positions),
     bg: PropTypes.oneOf(bgs),
     color: colorPropType,
-    borderColor: PropTypes.oneOf(variants),
+    borderColor: PropTypes.oneOf(borderColors),
 }
