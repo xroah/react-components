@@ -2,13 +2,17 @@ import * as React from "react"
 import Card from "./Card"
 import Body from "./Body"
 import Title from "./Title"
-import Text from "./Text"
 import {createComponent} from "../Commons/utils"
 
 const Link = createComponent<React.AnchorHTMLAttributes<HTMLAnchorElement>>({
     tag: "a",
     className: "card-link",
     displayName: "CardLink"
+})
+const Text = createComponent<React.HTMLAttributes<HTMLParagraphElement>>({
+    tag: "p",
+    className: "card-text",
+    displayName: "CardText"
 })
 
 interface CardType {
