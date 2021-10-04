@@ -1,7 +1,15 @@
 import * as React from "react"
-import {element, number, oneOf} from "prop-types"
+import {
+    element,
+    number,
+    oneOf
+} from "prop-types"
 import classNames from "reap-utils/lib/class-names"
-import {TextColor, textColors, ValueOf} from "../Commons/consts-and-types"
+import {
+    TextColor,
+    textColors,
+    ValueOf
+} from "../Commons/consts-and-types"
 
 const fontWeights = [
     "bold",
