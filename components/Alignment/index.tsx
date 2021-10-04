@@ -47,7 +47,7 @@ type SBreakpoints = BreakpointType<Breakpoint, S>
 type C = ValueOf<typeof cAlignments>
 type CBreakpoints = BreakpointType<Breakpoint, C>
 
-interface AlignmentProps extends React.HTMLAttributes<HTMLElement> {
+interface AlignmentProps {
     children: React.ReactElement,
     vertical?: VBreakpoints | V
     horizontal?: HBreakpoints | H
@@ -57,18 +57,15 @@ interface AlignmentProps extends React.HTMLAttributes<HTMLElement> {
 
 export default function Alignment(
     {
-        className,
         children,
         vertical,
         horizontal,
         self,
-        content,
-        ...restProps
+        content
     }: AlignmentProps
 ) {
     const _children = React.Children.only(children)
     const classes = classNames(
-        className,
         children.props.className,
         vertical && getBreakpointClasses("align-items", vertical),
         horizontal && getBreakpointClasses("justify-content", horizontal),
@@ -76,13 +73,7 @@ export default function Alignment(
         content && getBreakpointClasses("align-content", content)
     )
 
-    return React.cloneElement(
-        _children,
-        {
-            className: classes,
-            ...restProps
-        }
-    )
+    return React.cloneElement(_children, {className: classes})
 }
 
 function getType(v: readonly string[]) {
