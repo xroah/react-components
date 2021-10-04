@@ -22,6 +22,11 @@ const fontStyles = [
     "italic",
     "normal"
 ] as const
+const lineHeights = [
+    "sm",
+    "base",
+    "lg"
+] as const
 
 interface CardTextProps {
     children: React.ReactElement
@@ -29,6 +34,7 @@ interface CardTextProps {
     size?: number
     weight?: ValueOf<typeof fontWeights>
     style?: ValueOf<typeof fontStyles>
+    lineHeight?: ValueOf<typeof lineHeights> | 1
 }
 
 export default function CardText(
@@ -37,7 +43,8 @@ export default function CardText(
         color,
         size,
         weight,
-        style
+        style,
+        lineHeight
     }: CardTextProps
 ) {
     const c = React.Children.only(children)
@@ -45,7 +52,8 @@ export default function CardText(
         color && `text-${color}`,
         size && `fs-${size}`,
         weight && `fw-${weight}`,
-        style && `fst-${style}`
+        style && `fst-${style}`,
+        lineHeight && `lh-${lineHeight}`
     )
 
     return React.cloneElement(c, {className: classes})
@@ -56,5 +64,6 @@ CardText.propTypes = {
     color: oneOf(textColors),
     size: number,
     weight: oneOf(fontWeights),
-    style: oneOf(fontStyles)
+    style: oneOf(fontStyles),
+    lineHeight: oneOf(lineHeights)
 }
