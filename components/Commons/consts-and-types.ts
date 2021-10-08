@@ -1,4 +1,4 @@
-export type ValueOf<T extends readonly string[]> = T[number]
+export type ValueOf<T extends readonly any[]> = T[number]
 
 export const variants = <const>[
     "primary",
