@@ -13,8 +13,17 @@ import {getPrefixFunc} from "../Commons/utils"
 
 type BaseProps = Omit<React.ButtonHTMLAttributes<HTMLElement>, "type" | "size">
 
-const btnVariants = [...variants, "link"] as const
-const btnTypes = ["reset", "button", "submit", "checkbox", "radio"] as const
+const btnVariants = [
+    ...variants,
+    "link"
+] as const
+const btnTypes = [
+    "reset",
+    "button",
+    "submit",
+    "checkbox",
+    "radio"
+] as const
 
 let uuid = 0
 
@@ -124,8 +133,7 @@ Button.propTypes = {
     active: PropTypes.bool,
 }
 Button.defaultProps = {
-    variant: "primary",
-    textNoWrap: false,
+    variant: "primary"
 }
 Button.displayName = "Button"
 
