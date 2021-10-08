@@ -1,11 +1,14 @@
 import * as React from "react"
 import {
+    bool,
     element,
     number,
     oneOf
 } from "prop-types"
 import classNames from "reap-utils/lib/class-names"
 import {
+    Alignment,
+    alignments,
     TextColor,
     textColors,
     ValueOf
@@ -27,6 +30,15 @@ const lineHeights = [
     "base",
     "lg"
 ] as const
+const decorations = [
+    "none",
+    "underline",
+    "line-through"
+] as const
+const spaces = [
+    "wrap",
+    "nowrap"
+] as const
 
 interface CardTextProps {
     children: React.ReactElement
@@ -35,6 +47,10 @@ interface CardTextProps {
     weight?: ValueOf<typeof fontWeights>
     style?: ValueOf<typeof fontStyles>
     lineHeight?: ValueOf<typeof lineHeights> | 1
+    alignment?: Alignment
+    decoration?: ValueOf<typeof decorations>
+    space?: ValueOf<typeof spaces>
+    break?: boolean
 }
 
 export default function CardText(
@@ -44,7 +60,11 @@ export default function CardText(
         size,
         weight,
         style,
-        lineHeight
+        lineHeight,
+        alignment,
+        decoration,
+        space,
+        break: b
     }: CardTextProps
 ) {
     const c = React.Children.only(children)
@@ -53,7 +73,11 @@ export default function CardText(
         size && `fs-${size}`,
         weight && `fw-${weight}`,
         style && `fst-${style}`,
-        lineHeight && `lh-${lineHeight}`
+        lineHeight && `lh-${lineHeight}`,
+        alignment && `text-${alignment}`,
+        decoration && `text-${decoration}`,
+        space && `text-${space}`,
+        b && "text-break"
     )
 
     return React.cloneElement(c, {className: classes})
@@ -65,5 +89,9 @@ CardText.propTypes = {
     size: number,
     weight: oneOf(fontWeights),
     style: oneOf(fontStyles),
-    lineHeight: oneOf(lineHeights)
+    lineHeight: oneOf(lineHeights),
+    alignment: oneOf(alignments),
+    decoration: oneOf(decorations),
+    space: oneOf(spaces),
+    break: bool
 }
