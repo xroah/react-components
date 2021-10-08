@@ -40,6 +40,11 @@ const spaces = [
     "wrap",
     "nowrap"
 ] as const
+const transforms = [
+    "lowercase",
+    "uppercase",
+    "capitalize"
+] as const
 
 interface CardTextProps {
     children: React.ReactElement
@@ -52,6 +57,7 @@ interface CardTextProps {
     decoration?: ValueOf<typeof decorations>
     space?: ValueOf<typeof spaces>
     break?: boolean
+    transform?: ValueOf<typeof transforms>
 }
 
 export default function CardText(
@@ -65,7 +71,8 @@ export default function CardText(
         alignment,
         decoration,
         space,
-        break: b
+        break: b,
+        transform
     }: CardTextProps
 ) {
     const c = React.Children.only(children)
@@ -79,7 +86,8 @@ export default function CardText(
         alignment && prefix(alignment),
         decoration && prefix(decoration),
         space && prefix(space),
-        b && prefix("break")
+        b && prefix("break"),
+        transform && prefix(transform)
     )
 
     return React.cloneElement(c, {className: classes})
@@ -95,5 +103,6 @@ CardText.propTypes = {
     alignment: oneOf(alignments),
     decoration: oneOf(decorations),
     space: oneOf(spaces),
-    break: bool
+    break: bool,
+    transforms: oneOf(transforms)
 }
