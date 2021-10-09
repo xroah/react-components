@@ -32,12 +32,20 @@ export type BreakpointType<K extends Breakpoint, V> = {
 
 export type PrefixFunc = (s?: string | number) => string
 
-export const textColors = [
+export const textColors = <const>[
     ...variants,
     "white",
     "black",
     "muted",
     "white-50",
     "black-50"
-] as const
+]
 export type TextColor = ValueOf<typeof textColors>
+
+export const bgColors = <const>[
+    ...variants,
+    "body",
+    "white",
+    "transparent"
+]
+export type BgColor = ValueOf<typeof bgColors>
