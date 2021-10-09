@@ -27,6 +27,8 @@ const fontStyles = [
     "normal"
 ] as const
 const lineHeights = [
+    1,
+    "1",
     "sm",
     "base",
     "lg"
@@ -52,7 +54,7 @@ interface CardTextProps {
     size?: number
     weight?: ValueOf<typeof fontWeights>
     style?: ValueOf<typeof fontStyles>
-    lineHeight?: ValueOf<typeof lineHeights> | 1
+    lineHeight?: ValueOf<typeof lineHeights>
     alignment?: Alignment
     decoration?: ValueOf<typeof decorations>
     space?: ValueOf<typeof spaces>
