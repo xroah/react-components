@@ -84,7 +84,7 @@ export default function CardText(
         style && `fst-${style}`,
         lineHeight && `lh-${lineHeight}`,
         alignment && prefix(alignment),
-        decoration && prefix(decoration),
+        decoration && `${prefix()}-decoration-${decoration}`,
         space && prefix(space),
         b && prefix("break"),
         transform && prefix(transform)
