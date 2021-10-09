@@ -1,5 +1,5 @@
 import * as React from "react"
-import PropTypes from "prop-types"
+import PropTypes, {oneOf} from "prop-types"
 import classNames from "reap-utils/lib/class-names"
 import {
     Alignment,
@@ -12,8 +12,6 @@ import {
 import {getPrefixFunc, isValidNode} from "../Commons/utils"
 
 const borderColors = [...variants, "white"] as const
-
-export const colorPropType = PropTypes.oneOf(textColors)
 
 const positions = ["top", "bottom"] as const
 const bgs = [...variants, "transparent"] as const
@@ -123,6 +121,6 @@ Card.propTypes = {
     img: PropTypes.element,
     imgPosition: PropTypes.oneOf(positions),
     bg: PropTypes.oneOf(bgs),
-    color: colorPropType,
+    color: oneOf(textColors),
     borderColor: PropTypes.oneOf(borderColors),
 }
