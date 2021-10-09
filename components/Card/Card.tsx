@@ -14,18 +14,14 @@ import {getPrefixFunc, isValidNode} from "../Commons/utils"
 const borderColors = [...variants, "white"] as const
 
 const positions = ["top", "bottom"] as const
-const bgs = [...variants, "transparent"] as const
 
 interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
     header?: React.ReactNode
     footer?: React.ReactNode
     headerStyle?: React.CSSProperties
     footerStyle?: React.CSSProperties
-    textAlignment?: Alignment
     img?: React.ReactElement
     imgPosition?: ValueOf<typeof positions>
-    bg?: ValueOf<typeof bgs>
-    color?: TextColor
     borderColor?: ValueOf<typeof borderColors>
 }
 
@@ -35,12 +31,9 @@ export default function Card(
         footer,
         headerStyle = {},
         footerStyle = {},
-        textAlignment,
         img,
         imgPosition,
-        bg,
         borderColor,
-        color,
         children,
         className,
         ...restProps
@@ -51,9 +44,6 @@ export default function Card(
     const classes = classNames(
         className,
         prefix(),
-        textAlignment && `text-${textAlignment}`,
-        bg && `bg-${bg}`,
-        color && `text-${color}`,
         borderColor && `border-${borderColor}`
     )
     const renderChildren = () => {
@@ -117,10 +107,7 @@ Card.propTypes = {
     footer: PropTypes.node,
     headerStyle: PropTypes.object,
     footerStyle: PropTypes.object,
-    textAlignment: PropTypes.oneOf(alignments),
     img: PropTypes.element,
     imgPosition: PropTypes.oneOf(positions),
-    bg: PropTypes.oneOf(bgs),
-    color: oneOf(textColors),
     borderColor: PropTypes.oneOf(borderColors),
 }
