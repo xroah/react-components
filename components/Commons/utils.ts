@@ -120,3 +120,11 @@ export function getShape<T>(v: T) {
 
     return ret
 }
+
+export function getClass(prefix: string, prop?: any) {
+    if (!prop) {
+        return ""
+    }
+
+    return `${prefix}-${prop}`
+}
