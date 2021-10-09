@@ -94,7 +94,7 @@ export default function CardText(
 }
 
 CardText.propTypes = {
-    children: element,
+    children: element.isRequired,
     color: oneOf(textColors),
     size: number,
     weight: oneOf(fontWeights),
