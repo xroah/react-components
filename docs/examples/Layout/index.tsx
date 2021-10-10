@@ -2,7 +2,7 @@ import * as React from "react"
 import Container from "reap-ui/Layout/Container"
 import Col from "reap-ui/Layout/Col"
 import Row from "reap-ui/Layout/Row"
-import Alignment from "reap-ui/Alignment"
+import Alignment from "reap-ui/Utilities/Alignment"
 
 export default () => (
     <div className="layout-example">

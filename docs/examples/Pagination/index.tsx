@@ -1,6 +1,6 @@
 import * as React from "react"
 import Pagination from "reap-ui/Pagination"
-import Alignment from "reap-ui/Alignment"
+import Alignment from "reap-ui/Utilities/Alignment"
 
 const {Item} = Pagination
 
