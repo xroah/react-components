@@ -6,6 +6,7 @@ import {BgColor, bgColors} from "../Commons/consts-and-types"
 interface BgProps {
     variant?: BgColor
     gradient?: boolean
+    className?: string
     children: React.ReactElement
 }
 
@@ -13,11 +14,13 @@ export default function Background(
     {
         variant,
         gradient,
-        children
+        children,
+        className
     }: BgProps
 ) {
     const c = React.Children.only(children)
     const classes = classNames(
+        className,
         variant && `bg-${variant}`,
         gradient && "bg-gradient"
     )

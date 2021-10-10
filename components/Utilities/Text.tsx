@@ -60,6 +60,7 @@ interface CardTextProps {
     space?: ValueOf<typeof spaces>
     break?: boolean
     transform?: ValueOf<typeof transforms>
+    className?: string
 }
 
 export default function CardText(
@@ -74,12 +75,14 @@ export default function CardText(
         decoration,
         space,
         break: b,
-        transform
+        transform,
+        className
     }: CardTextProps
 ) {
     const c = React.Children.only(children)
     const prefix = getPrefixFunc("text")
     const classes = classNames(
+        className,
         color && prefix(color),
         size && `fs-${size}`,
         weight && `fw-${weight}`,
