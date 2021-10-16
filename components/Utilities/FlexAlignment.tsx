@@ -53,6 +53,7 @@ interface AlignmentProps {
     horizontal?: HBreakpoints | H
     self?: SBreakpoints | S
     content?: CBreakpoints | C
+    className?: string
 }
 
 export default function Alignment(
@@ -61,11 +62,13 @@ export default function Alignment(
         vertical,
         horizontal,
         self,
+        className,
         content
     }: AlignmentProps
 ) {
     const _children = React.Children.only(children)
     const classes = classNames(
+        className,
         children.props.className,
         vertical && getBreakpointClasses("align-items", vertical),
         horizontal && getBreakpointClasses("justify-content", horizontal),

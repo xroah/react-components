@@ -83,6 +83,7 @@ export default function CardText(
     const prefix = getPrefixFunc("text")
     const classes = classNames(
         className,
+        c.props.className,
         color && prefix(color),
         size && `fs-${size}`,
         weight && `fw-${weight}`,

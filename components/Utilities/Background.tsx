@@ -21,6 +21,7 @@ export default function Background(
     const c = React.Children.only(children)
     const classes = classNames(
         className,
+        c.props.className,
         variant && `bg-${variant}`,
         gradient && "bg-gradient"
     )
