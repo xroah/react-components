@@ -1,4 +1,4 @@
-import {
+import React, {
     createElement,
     ElementType,
     HTMLAttributes
@@ -127,4 +127,21 @@ export function getClass(prefix: string, prop?: any) {
     }
 
     return `${prefix}-${prop}`
+}
+
+export function cloneWithClass(
+    c: React.ReactElement,
+    compClass?: string,
+    handledClass?: string
+) {
+    return React.cloneElement(
+        c,
+        {
+            className: classNames(
+                c.props.className,
+                compClass,
+                handledClass
+            )
+        }
+    )
 }
