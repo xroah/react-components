@@ -13,7 +13,7 @@ import {
     textColors,
     ValueOf
 } from "../Commons/consts-and-types"
-import {getPrefixFunc} from "../Commons/utils"
+import {cloneWithClass, getPrefixFunc} from "../Commons/utils"
 
 const fontWeights = [
     "bold",
@@ -82,8 +82,6 @@ export default function CardText(
     const c = React.Children.only(children)
     const prefix = getPrefixFunc("text")
     const classes = classNames(
-        className,
-        c.props.className,
         color && prefix(color),
         size && `fs-${size}`,
         weight && `fw-${weight}`,
@@ -96,7 +94,7 @@ export default function CardText(
         transform && prefix(transform)
     )
 
-    return React.cloneElement(c, {className: classes})
+    return cloneWithClass(c, className, classes)
 }
 
 CardText.propTypes = {

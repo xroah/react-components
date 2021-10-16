@@ -2,6 +2,7 @@ import * as React from "react"
 import {bool, oneOf} from "prop-types"
 import classNames from "reap-utils/lib/class-names"
 import {BgColor, bgColors} from "../Commons/consts-and-types"
+import {cloneWithClass} from "../Commons/utils"
 
 interface BgProps {
     variant?: BgColor
@@ -20,13 +21,11 @@ export default function Background(
 ) {
     const c = React.Children.only(children)
     const classes = classNames(
-        className,
-        c.props.className,
         variant && `bg-${variant}`,
         gradient && "bg-gradient"
     )
 
-    return React.cloneElement(c, {className: classes})
+    return cloneWithClass(c, className, classes)
 }
 
 Background.propTypes = {

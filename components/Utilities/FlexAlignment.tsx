@@ -12,7 +12,11 @@ import {
     Breakpoint,
     ValueOf
 } from "../Commons/consts-and-types"
-import {getBreakpointClasses, getShape} from "../Commons/utils"
+import {
+    cloneWithClass,
+    getBreakpointClasses,
+    getShape
+} from "../Commons/utils"
 
 const commons = [
     "between",
@@ -66,17 +70,15 @@ export default function Alignment(
         content
     }: AlignmentProps
 ) {
-    const _children = React.Children.only(children)
+    const c = React.Children.only(children)
     const classes = classNames(
-        className,
-        children.props.className,
         vertical && getBreakpointClasses("align-items", vertical),
         horizontal && getBreakpointClasses("justify-content", horizontal),
         self && getBreakpointClasses("align-self", self),
         content && getBreakpointClasses("align-content", content)
     )
 
-    return React.cloneElement(_children, {className: classes})
+    return cloneWithClass(c, className, classes)
 }
 
 function getType(v: readonly string[]) {
