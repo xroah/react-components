@@ -1,6 +1,7 @@
 import {
     HTMLAttributeAnchorTarget,
-    HTMLAttributeReferrerPolicy
+    HTMLAttributeReferrerPolicy,
+    ReactElement
 } from "react"
 
 export type Booleanish = boolean | "true" | "false"
@@ -15,4 +16,9 @@ export interface AnchorCommonProps {
     target?: HTMLAttributeAnchorTarget | undefined;
     type?: string | undefined;
     referrerPolicy?: HTMLAttributeReferrerPolicy | undefined;
+}
+
+export interface CSSComponentProps {
+    className?: string
+    children: ReactElement
 }
