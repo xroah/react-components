@@ -70,7 +70,7 @@ type BaseValue = string | number | boolean | object
 export function forEachBreakpoint<T extends BaseValue>(
     v: BreakpointType<Breakpoint, T>,
     callback?: (v: T, bp: Breakpoint) => string | undefined
-) {
+): string {
     const keys = Object.keys(v) as Array<keyof typeof v>
     const classes: string[] = []
 
