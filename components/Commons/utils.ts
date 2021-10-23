@@ -102,7 +102,7 @@ export function getBreakpointClasses<T extends BaseValue>(
     if (t === "number" || t === "string") {
         return _prefix(value as any)
     } else if (t === "boolean") {
-        return _prefix()
+        return t ? _prefix() : ""
     }
 
     return forEachBreakpoint(
