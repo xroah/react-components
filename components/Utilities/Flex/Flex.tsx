@@ -62,7 +62,7 @@ export default function Flex(
         const getClass = (t: boolean, bp?: Breakpoint) => {
             const p = getBreakpointPrefixFunc(prefix(), bp)
 
-            return p(t ? prefix(I_FLEX) : prefix(FLEX))
+            return p(t ? I_FLEX : FLEX)
         }
 
         if (t === "undefined") {
