@@ -41,7 +41,7 @@ type Inline = boolean | BreakpointType<Breakpoint, boolean>
 interface FlexProps extends CSSComponentProps {
     inline?: boolean | BreakpointType<Breakpoint, boolean>
     wrap?: Wrap | BreakpointType<Breakpoint, Wrap>
-    direction?: Direction | BreakpointType<Breakpoint, Wrap>
+    direction?: Direction | BreakpointType<Breakpoint, Direction>
 }
 
 export default function Flex(
