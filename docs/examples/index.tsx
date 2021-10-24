@@ -3,6 +3,7 @@ import Alert from "./Alert"
 import Button from "./Button"
 import Badge from "./Badge"
 import Card from "./Card"
+import Flex from "./Flex"
 import Layout from "./Layout"
 import ListGroup from "./ListGroup"
 import Pagination from "./Pagination"
@@ -18,6 +19,7 @@ export default function () {
             <Badge />
             <Button />
             <Card />
+            <Flex />
             <Layout />
             <ListGroup />
             <Pagination />
