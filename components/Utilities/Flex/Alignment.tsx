@@ -11,12 +11,12 @@ import {
     BreakpointType,
     Breakpoint,
     ValueOf
-} from "../Commons/consts-and-types"
+} from "../../Commons/consts-and-types"
 import {
     cloneWithClass,
     getBreakpointClasses,
     getShape
-} from "../Commons/utils"
+} from "../../Commons/utils"
 
 const commons = [
     "between",
