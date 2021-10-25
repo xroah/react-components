@@ -49,3 +49,5 @@ export const bgColors = <const>[
     "transparent"
 ]
 export type BgColor = ValueOf<typeof bgColors>
+
+export const orders = ["first", "last"] as const

@@ -9,11 +9,10 @@ import classNames from "reap-utils/lib/class-names"
 import {
     Breakpoint,
     BreakpointType,
+    orders,
     ValueOf
 } from "../Commons/consts-and-types"
 import {getBreakpointClasses, getShape} from "../Commons/utils"
-
-const orders = ["first", "last"] as const
 
 type Span = "auto" | number | true
 type SpanBreakpoints = BreakpointType<Breakpoint, Span>
