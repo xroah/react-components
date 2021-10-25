@@ -1,6 +1,5 @@
 import * as React from "react"
 import {
-    element,
     oneOf,
     oneOfType,
     shape
@@ -17,6 +16,8 @@ import {
     getBreakpointClasses,
     getShape
 } from "../../Commons/utils"
+import {CSSComponentProps} from "@commons/CommonPropsInterface"
+import {cssCompPropTypes} from "@commons/prop-types"
 
 const commons = [
     "between",
@@ -51,13 +52,11 @@ type SBreakpoints = BreakpointType<Breakpoint, S>
 type C = ValueOf<typeof cAlignments>
 type CBreakpoints = BreakpointType<Breakpoint, C>
 
-interface AlignmentProps {
-    children: React.ReactElement,
+interface AlignmentProps extends CSSComponentProps{
     vertical?: VBreakpoints | V
     horizontal?: HBreakpoints | H
     self?: SBreakpoints | S
     content?: CBreakpoints | C
-    className?: string
 }
 
 export default function Alignment(
@@ -91,7 +90,7 @@ function getType(v: readonly string[]) {
 }
 
 Alignment.propTypes = {
-    children: element.isRequired,
+    ...cssCompPropTypes,
     vertical: getType(vAlignments),
     horizontal: getType(hAlignments),
     self: getType(selfAlignments),

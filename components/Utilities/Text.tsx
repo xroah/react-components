@@ -1,7 +1,6 @@
 import * as React from "react"
 import {
     bool,
-    element,
     number,
     oneOf
 } from "prop-types"
@@ -14,6 +13,8 @@ import {
     ValueOf
 } from "../Commons/consts-and-types"
 import {cloneWithClass, getPrefixFunc} from "../Commons/utils"
+import {CSSComponentProps} from "@commons/CommonPropsInterface"
+import {cssCompPropTypes} from "@commons/prop-types"
 
 const fontWeights = [
     "bold",
@@ -48,8 +49,7 @@ const transforms = [
     "capitalize"
 ] as const
 
-interface CardTextProps {
-    children: React.ReactElement
+interface CardTextProps extends CSSComponentProps {
     color?: TextColor
     size?: number
     weight?: ValueOf<typeof fontWeights>
@@ -60,7 +60,6 @@ interface CardTextProps {
     space?: ValueOf<typeof spaces>
     break?: boolean
     transform?: ValueOf<typeof transforms>
-    className?: string
 }
 
 export default function CardText(
@@ -98,7 +97,7 @@ export default function CardText(
 }
 
 CardText.propTypes = {
-    children: element.isRequired,
+    ...cssCompPropTypes,
     color: oneOf(textColors),
     size: number,
     weight: oneOf(fontWeights),
