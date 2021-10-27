@@ -57,13 +57,14 @@ export function createComponent<T extends HTMLAttributes<HTMLElement>>(
 
 export function getBreakpointPrefixFunc(
     prefix: string,
-    breakpoint?: Breakpoint
+    breakpoint?: Breakpoint,
+    suffix?: string
 ) {
-    return getPrefixFunc(
-        breakpoint && breakpoint !== "xs" ?
-            `${prefix}-${breakpoint}` :
-            prefix
-    )
+    const p = breakpoint && breakpoint !== "xs" ?
+        `${prefix}-${breakpoint}` :
+        prefix
+
+    return getPrefixFunc(suffix ? `${p}-${suffix}` : p)
 }
 
 type BaseValue = string | number | boolean | object
@@ -91,13 +92,14 @@ export function forEachBreakpoint<T extends BaseValue>(
 export function getBreakpointClasses<T extends BaseValue>(
     prefix: string,
     value?: BreakpointType<Breakpoint, T> | T,
-    breakpoint?: Breakpoint
+    breakpoint?: Breakpoint,
+    suffix?: string
 ): string {
     if (!value) {
         return ""
     }
 
-    const _prefix = getBreakpointPrefixFunc(prefix, breakpoint)
+    const _prefix = getBreakpointPrefixFunc(prefix, breakpoint, suffix)
     const t = typeof value
 
     if (t === "number" || t === "string") {
@@ -147,6 +149,6 @@ export function cloneWithClass(
     )
 }
 
-export function onlyChild(child?: ReactElement) {
+export function onlyChild(child: ReactElement) {
     return React.Children.only(child)
 }
