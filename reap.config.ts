@@ -7,7 +7,8 @@ export default {
         entry: "./docs/index.tsx",
         resolve: {
             alias: {
-                "reap-ui": resolve("./components")
+                "reap-ui": resolve("./components"),
+                "@commons": resolve("./components/Commons")
             }
         },
         externals: isDev ? undefined : {
