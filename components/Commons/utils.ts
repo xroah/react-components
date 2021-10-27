@@ -1,7 +1,8 @@
 import React, {
     createElement,
     ElementType,
-    HTMLAttributes
+    HTMLAttributes,
+    ReactElement
 } from "react"
 import classNames from "reap-utils/lib/class-names"
 import {
@@ -144,4 +145,8 @@ export function cloneWithClass(
             )
         }
     )
+}
+
+export function onlyChild(child?: ReactElement) {
+    return React.Children.only(child)
 }
