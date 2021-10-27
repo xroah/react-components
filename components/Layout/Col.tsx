@@ -14,6 +14,7 @@ import {
     orders
 } from "../Commons/consts-and-types"
 import {getBreakpointClasses, getShape} from "../Commons/utils"
+import {orderPropType} from "@commons/prop-types"
 
 type Span = "auto" | number | true
 type SpanBreakpoints = BreakpointType<Breakpoint, Span>
@@ -48,20 +49,13 @@ const spanTypes = [
     oneOf(["auto", true]),
     number
 ]
-const orderTypes = [
-    oneOf(orders),
-    number
-]
 
 Col.propTypes = {
     span: oneOfType([
         ...spanTypes,
         shape(getShape(oneOfType(spanTypes)))
     ]),
-    order: oneOfType([
-        ...orderTypes,
-        shape(getShape(oneOfType(orderTypes)))
-    ]),
+    order: orderPropType,
     offset: oneOfType([
         number,
         shape(getShape(number))
