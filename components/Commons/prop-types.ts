@@ -11,7 +11,7 @@ import {getShape} from "./utils";
 
 export const cssCompPropTypes = {
     className: string,
-    children: element
+    children: element.isRequired
 }
 
 const orderTypes = [
