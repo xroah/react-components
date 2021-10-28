@@ -10,11 +10,11 @@ import {
     Breakpoint,
     BreakpointType,
     Order,
-    OrderBreakpoints,
-    orders
+    OrderBreakpoints
 } from "../Commons/consts-and-types"
 import {getBreakpointClasses, getShape} from "../Commons/utils"
 import {orderPropType} from "@commons/prop-types"
+import FlexItem from "../Utilities/Flex/Item"
 
 type Span = "auto" | number | true
 type SpanBreakpoints = BreakpointType<Breakpoint, Span>
@@ -38,11 +38,14 @@ export default function Col(
     const classes = classNames(
         className,
         getBreakpointClasses("col", span),
-        getBreakpointClasses("order", order),
         getBreakpointClasses("offset", offset)
     )
 
-    return <div className={classes} {...restProps}/>
+    return (
+        <FlexItem order={order}>
+            <div className={classes} {...restProps}/>
+        </FlexItem>
+    )
 }
 
 const spanTypes = [
