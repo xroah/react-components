@@ -1,4 +1,3 @@
-import * as React from "react"
 import {
     bool,
     oneOf,
@@ -17,7 +16,8 @@ import {
     getBreakpointClasses,
     getBreakpointPrefixFunc,
     getPrefixFunc,
-    getShape
+    getShape,
+    onlyChild
 } from "../../Commons/utils"
 import classNames from "reap-utils/lib/class-names"
 import {cssCompPropTypes} from "../../Commons/prop-types"
@@ -53,7 +53,7 @@ export default function Flex(
         direction
     }: FlexProps
 ) {
-    const c = React.Children.only(children)
+    const c = onlyChild(children)
     const FLEX = "flex"
     const handleInline = (inline?: Inline): string => {
         const prefix = getPrefixFunc("d")

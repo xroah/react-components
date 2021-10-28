@@ -1,4 +1,3 @@
-import * as React from "react"
 import {
     bool,
     number,
@@ -12,7 +11,7 @@ import {
     textColors,
     ValueOf
 } from "../Commons/consts-and-types"
-import {cloneWithClass, getPrefixFunc} from "../Commons/utils"
+import {cloneWithClass, getPrefixFunc, onlyChild} from "../Commons/utils"
 import {CSSComponentProps} from "@commons/CommonPropsInterface"
 import {cssCompPropTypes} from "@commons/prop-types"
 
@@ -78,7 +77,7 @@ export default function CardText(
         className
     }: CardTextProps
 ) {
-    const c = React.Children.only(children)
+    const c = onlyChild(children)
     const prefix = getPrefixFunc("text")
     const classes = classNames(
         color && prefix(color),

@@ -1,4 +1,3 @@
-import * as React from "react"
 import {
     oneOf,
     oneOfType,
@@ -14,7 +13,8 @@ import {
 import {
     cloneWithClass,
     getBreakpointClasses,
-    getShape
+    getShape,
+    onlyChild
 } from "../../Commons/utils"
 import {CSSComponentProps} from "@commons/CommonPropsInterface"
 import {cssCompPropTypes} from "@commons/prop-types"
@@ -69,7 +69,7 @@ export default function Alignment(
         content
     }: AlignmentProps
 ) {
-    const c = React.Children.only(children)
+    const c = onlyChild(children)
     const classes = classNames(
         vertical && getBreakpointClasses("align-items", vertical),
         horizontal && getBreakpointClasses("justify-content", horizontal),

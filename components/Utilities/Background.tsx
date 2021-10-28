@@ -1,8 +1,7 @@
-import * as React from "react"
 import {bool, oneOf} from "prop-types"
 import classNames from "reap-utils/lib/class-names"
 import {BgColor, bgColors} from "../Commons/consts-and-types"
-import {cloneWithClass} from "../Commons/utils"
+import {cloneWithClass, onlyChild} from "../Commons/utils"
 import {CSSComponentProps} from "@commons/CommonPropsInterface"
 import {cssCompPropTypes} from "@commons/prop-types"
 
@@ -19,7 +18,7 @@ export default function Background(
         className
     }: BgProps
 ) {
-    const c = React.Children.only(children)
+    const c = onlyChild(children)
     const classes = classNames(
         variant && `bg-${variant}`,
         gradient && "bg-gradient"
