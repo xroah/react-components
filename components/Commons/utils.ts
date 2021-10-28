@@ -13,7 +13,9 @@ import {
 } from "./consts-and-types"
 
 export function getPrefixFunc(prefix: string): PrefixFunc {
-    return (s?: string | number) => s ? `${prefix}-${s}` : prefix
+    return (s?: string | number) => (
+        s || s === 0 ? `${prefix}-${s}` : prefix
+    )
 }
 
 export function isValidNode(node: any) {
@@ -60,7 +62,7 @@ export function getBreakpointPrefixFunc(
     breakpoint?: Breakpoint,
     suffix?: string
 ) {
-    const p = breakpoint && breakpoint !== "xs" ?
+    const p = breakpoint !== undefined && breakpoint !== "xs" ?
         `${prefix}-${breakpoint}` :
         prefix
 
@@ -95,7 +97,7 @@ export function getBreakpointClasses<T extends BaseValue>(
     breakpoint?: Breakpoint,
     suffix?: string
 ): string {
-    if (!value) {
+    if (value === undefined) {
         return ""
     }
 
