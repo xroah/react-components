@@ -43,7 +43,7 @@ export default function FlexItem(
     }: FlexItemProps
 ) {
     const c = onlyChild(children)
-    const PREFIX = "FLEX"
+    const PREFIX = "flex"
     const classes = classNames(
         getBreakpointClasses(PREFIX, fill, undefined, "fill"),
         getBreakpointClasses("order", order),
