@@ -100,19 +100,19 @@ export function getBreakpointClasses<T extends BaseValue>(
     if (value === undefined) {
         return ""
     }
-
+    
     const _prefix = getBreakpointPrefixFunc(prefix, breakpoint, suffix)
     const t = typeof value
 
     if (t === "number" || t === "string") {
         return _prefix(value as any)
     } else if (t === "boolean") {
-        return t ? _prefix() : ""
+        return value ? _prefix() : ""
     }
-
+    
     return forEachBreakpoint(
         value as BreakpointType<Breakpoint, T>,
-        (v, bp) => getBreakpointClasses(prefix, v, bp)
+        (v, bp) => getBreakpointClasses(prefix, v, bp, suffix)
     )
 }
 
