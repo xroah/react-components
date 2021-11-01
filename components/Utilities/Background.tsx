@@ -1,3 +1,4 @@
+import * as React from "react"
 import {bool, oneOf} from "prop-types"
 import classNames from "reap-utils/lib/class-names"
 import {BgColor, bgColors} from "../Commons/consts-and-types"
@@ -8,6 +9,7 @@ import {cssCompPropTypes} from "@commons/prop-types"
 interface BgProps extends CSSComponentProps {
     variant?: BgColor
     gradient?: boolean
+    children: React.ReactElement
 }
 
 export default function Background(

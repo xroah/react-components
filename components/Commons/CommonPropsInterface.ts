@@ -20,5 +20,4 @@ export interface AnchorCommonProps {
 
 export interface CSSComponentProps {
     className?: string
-    children: ReactElement
 }

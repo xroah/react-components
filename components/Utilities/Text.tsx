@@ -1,3 +1,4 @@
+import * as React from "react"
 import {
     bool,
     number,
@@ -59,6 +60,7 @@ interface CardTextProps extends CSSComponentProps {
     space?: ValueOf<typeof spaces>
     break?: boolean
     transform?: ValueOf<typeof transforms>
+    children: React.ReactElement
 }
 
 export default function CardText(
