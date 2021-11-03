@@ -18,7 +18,11 @@ type Type = ValueOf<typeof types>
 export interface FormCheckProps extends BaseProps {
     inline?: boolean
     inputId?: string
-    type: Type
+}
+
+type InternalOnly = {
+    type: Type,
+    switch: boolean
 }
 
 const FormCheck = React.forwardRef(
@@ -32,7 +36,7 @@ const FormCheck = React.forwardRef(
             children,
             switch: s,
             ...restProps
-        }: FormCheckProps & {switch?: boolean},
+        }: FormCheckProps & InternalOnly,
         ref: React.ForwardedRef<HTMLInputElement>
     ) => {
         const prefix = getPrefixFunc("form-check")
@@ -72,6 +76,5 @@ const FormCheck = React.forwardRef(
 
 FormCheck.propTypes = {
     inline: bool,
-    inputId: string,
-    type: oneOf(types).isRequired
+    inputId: string
 }
