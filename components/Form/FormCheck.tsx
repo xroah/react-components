@@ -1,14 +1,24 @@
 import * as React from "react"
 import classNames from "reap-utils/lib/class-names"
 import {getPrefixFunc, isValidNode} from "@commons/utils"
-import {bool, string} from "prop-types"
+import {
+    bool,
+    oneOf,
+    string
+} from "prop-types"
+import {ValueOf} from "@commons/consts-and-types"
 
 let uid = 0
 
-export interface FormCheckProps extends
-    React.InputHTMLAttributes<HTMLInputElement> {
+const types = ["checkbox", "radio"] as const
+
+type BaseProps = Omit<React.InputHTMLAttributes<HTMLInputElement>, "type">
+type Type = ValueOf<typeof types>
+
+export interface FormCheckProps extends BaseProps {
     inline?: boolean
     inputId?: string
+    type: Type
 }
 
 const FormCheck = React.forwardRef(
@@ -39,9 +49,9 @@ const FormCheck = React.forwardRef(
         )
 
         return (
-            <div 
-            id={id} 
-            style={style}>
+            <div
+                id={id}
+                style={style}>
                 <input
                     className={prefix("input")}
                     ref={ref}
@@ -61,5 +71,6 @@ const FormCheck = React.forwardRef(
 
 FormCheck.propTypes = {
     inline: bool,
-    inputId: string
+    inputId: string,
+    type: oneOf(types).isRequired
 }
