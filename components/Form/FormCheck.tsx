@@ -78,3 +78,5 @@ FormCheck.propTypes = {
     inline: bool,
     inputId: string
 }
+
+export default FormCheck
