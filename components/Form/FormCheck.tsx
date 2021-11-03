@@ -51,7 +51,8 @@ const FormCheck = React.forwardRef(
         return (
             <div
                 id={id}
-                style={style}>
+                style={style}
+                className={classes}>
                 <input
                     className={prefix("input")}
                     ref={ref}
