@@ -22,7 +22,7 @@ export interface FormCheckProps extends BaseProps {
 
 type InternalOnly = {
     type: Type,
-    switch: boolean
+    switch?: boolean
 }
 
 const FormCheck = React.forwardRef(
