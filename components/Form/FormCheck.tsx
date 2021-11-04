@@ -74,9 +74,30 @@ const FormCheck = React.forwardRef(
     }
 )
 
+export default function createCheckComponent(
+    type: Type,
+    displayName: string,
+    isSwitch?: boolean
+) {
+    const Component = React.forwardRef(
+        (
+            props: FormCheckProps,
+            ref: React.ForwardedRef<HTMLInputElement>
+        ) => (
+            <FormCheck
+                ref={ref}
+                type={type}
+                switch={isSwitch}
+                {...props} />
+        )
+    )
+
+    Component.displayName = displayName
+
+    return Component
+}
+
 FormCheck.propTypes = {
     inline: bool,
     inputId: string
 }
-
-export default FormCheck
