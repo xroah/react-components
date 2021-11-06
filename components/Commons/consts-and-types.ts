@@ -1,3 +1,5 @@
+import {InputHTMLAttributes} from "react"
+
 export type ValueOf<T extends readonly any[]> = T[number]
 
 export const variants = <const>[
@@ -53,3 +55,7 @@ export type BgColor = ValueOf<typeof bgColors>
 export const orders = ["first", "last"] as const
 export type Order = ValueOf<typeof orders> | number
 export type OrderBreakpoints = BreakpointType<Breakpoint, Order>
+
+export type InputPropsWithoutType = (
+    Omit<InputHTMLAttributes<HTMLInputElement>, "type">
+)

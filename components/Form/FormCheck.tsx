@@ -6,16 +6,15 @@ import {
     oneOf,
     string
 } from "prop-types"
-import {ValueOf} from "@commons/consts-and-types"
+import {ValueOf, InputPropsWithoutType} from "@commons/consts-and-types"
 
 let uid = 0
 
 const types = ["checkbox", "radio"] as const
 
-type BaseProps = Omit<React.InputHTMLAttributes<HTMLInputElement>, "type">
 type Type = ValueOf<typeof types>
 
-export interface FormCheckProps extends BaseProps {
+export interface FormCheckProps extends InputPropsWithoutType {
     inline?: boolean
     inputId?: string
 }
