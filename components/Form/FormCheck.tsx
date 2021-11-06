@@ -1,11 +1,7 @@
 import * as React from "react"
 import classNames from "reap-utils/lib/class-names"
 import {getPrefixFunc, isValidNode} from "@commons/utils"
-import {
-    bool,
-    oneOf,
-    string
-} from "prop-types"
+import {bool, string} from "prop-types"
 import {ValueOf, InputPropsWithoutType} from "@commons/consts-and-types"
 
 let uid = 0
