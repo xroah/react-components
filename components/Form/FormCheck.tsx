@@ -2,15 +2,16 @@ import * as React from "react"
 import classNames from "reap-utils/lib/class-names"
 import {getPrefixFunc, isValidNode} from "@commons/utils"
 import {bool, string} from "prop-types"
-import {ValueOf, InputPropsWithoutType} from "@commons/consts-and-types"
+import {ValueOf} from "@commons/consts-and-types"
 
 let uid = 0
 
 const types = ["checkbox", "radio"] as const
 
 type Type = ValueOf<typeof types>
+type Base = Omit<React.InputHTMLAttributes<HTMLInputElement>, "type">
 
-export interface FormCheckProps extends InputPropsWithoutType {
+export interface FormCheckProps extends Base {
     inline?: boolean
     inputId?: string
 }
