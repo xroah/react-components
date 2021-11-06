@@ -8,9 +8,9 @@ import {
 import {
     Breakpoint,
     BreakpointType,
-    ValueOf
+    ValueOf,
+    CSSComponentProps
 } from "../../Commons/consts-and-types"
-import {CSSComponentProps} from "../../Commons/CommonPropsInterface"
 import {
     cloneWithClass,
     forEachBreakpoint,

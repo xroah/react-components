@@ -1,11 +1,11 @@
 import * as React from "react"
-import {CSSComponentProps} from "@commons/CommonPropsInterface"
 import {
     Breakpoint,
     BreakpointType,
     Order,
     OrderBreakpoints,
-    ValueOf
+    ValueOf,
+    CSSComponentProps
 } from "@commons/consts-and-types"
 import {
     cloneWithClass,

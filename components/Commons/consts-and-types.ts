@@ -55,3 +55,9 @@ export type BgColor = ValueOf<typeof bgColors>
 export const orders = ["first", "last"] as const
 export type Order = ValueOf<typeof orders> | number
 export type OrderBreakpoints = BreakpointType<Breakpoint, Order>
+
+export type Booleanish = boolean | "true" | "false"
+
+export type CSSComponentProps = {
+    className?: string
+}

@@ -10,10 +10,10 @@ import {
     alignments,
     TextColor,
     textColors,
-    ValueOf
+    ValueOf,
+    CSSComponentProps
 } from "../Commons/consts-and-types"
 import {cloneWithClass, getPrefixFunc, onlyChild} from "../Commons/utils"
-import {CSSComponentProps} from "@commons/CommonPropsInterface"
 import {cssCompPropTypes} from "@commons/prop-types"
 
 const fontWeights = [

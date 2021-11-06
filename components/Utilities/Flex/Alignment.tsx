@@ -9,7 +9,8 @@ import {
     alignments,
     BreakpointType,
     Breakpoint,
-    ValueOf
+    ValueOf,
+    CSSComponentProps
 } from "../../Commons/consts-and-types"
 import {
     cloneWithClass,
@@ -17,7 +18,6 @@ import {
     getShape,
     onlyChild
 } from "../../Commons/utils"
-import {CSSComponentProps} from "@commons/CommonPropsInterface"
 import {cssCompPropTypes} from "@commons/prop-types"
 
 const commons = [

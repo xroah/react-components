@@ -1,9 +1,12 @@
 import * as React from "react"
 import {bool, oneOf} from "prop-types"
 import classNames from "reap-utils/lib/class-names"
-import {BgColor, bgColors} from "../Commons/consts-and-types"
+import {
+    BgColor,
+    bgColors,
+    CSSComponentProps
+} from "../Commons/consts-and-types"
 import {cloneWithClass, onlyChild} from "../Commons/utils"
-import {CSSComponentProps} from "@commons/CommonPropsInterface"
 import {cssCompPropTypes} from "@commons/prop-types"
 
 interface BgProps extends CSSComponentProps {
