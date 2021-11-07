@@ -2,6 +2,7 @@ import * as React from "react"
 import warning from "warning"
 import classNames from "reap-utils/lib/class-names"
 import PropTypes from "prop-types"
+import {getPrefixFunc} from "@commons/utils"
 
 interface ListGroupProps extends React.OlHTMLAttributes<HTMLElement> {
     flush?: boolean
@@ -17,10 +18,9 @@ export default function ListGroup({
     tag,
     ...restProps
 }: ListGroupProps) {
-    const PREFIX = "list-group"
-    const prefix = (s: string) => `${PREFIX}-${s}`
+    const prefix = getPrefixFunc("list-group")
     const classes = classNames(
-        PREFIX,
+        prefix(),
         flush && prefix("flush"),
         numbered && prefix("numbered"),
         horizontal && prefix("horizontal")
