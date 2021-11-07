@@ -3,8 +3,7 @@ import warning from "warning"
 import classNames from "reap-utils/lib/class-names"
 import PropTypes from "prop-types"
 
-interface ListGroupProps extends
-    React.OlHTMLAttributes<HTMLOListElement | HTMLUListElement> {
+interface ListGroupProps extends React.OlHTMLAttributes<HTMLElement> {
     flush?: boolean
     numbered?: boolean
     horizontal?: boolean

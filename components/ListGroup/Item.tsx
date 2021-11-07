@@ -4,7 +4,7 @@ import PropTypes from "prop-types"
 import {Variant, variants} from "../Commons/consts-and-types"
 import {getPrefixFunc} from "../Commons/utils"
 
-interface ListGroupItemProps extends React.AllHTMLAttributes<HTMLAnchorElement> {
+interface ListGroupItemProps extends React.AllHTMLAttributes<HTMLElement> {
     active?: boolean
     disabled?: boolean
     variant?: Variant
