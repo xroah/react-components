@@ -16,10 +16,12 @@ export default function ListGroup({
     numbered,
     horizontal,
     tag,
+    className,
     ...restProps
 }: ListGroupProps) {
     const prefix = getPrefixFunc("list-group")
     const classes = classNames(
+        className,
         prefix(),
         flush && prefix("flush"),
         numbered && prefix("numbered"),
