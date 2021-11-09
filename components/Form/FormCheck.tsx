@@ -4,7 +4,7 @@ import {getPrefixFunc, isValidNode} from "@commons/utils"
 import {bool, string} from "prop-types"
 import {ValueOf} from "@commons/consts-and-types"
 
-let uid = 0
+let uuid = 0
 
 const types = ["checkbox", "radio"] as const
 
@@ -38,7 +38,7 @@ const FormCheck = React.forwardRef(
         const prefix = getPrefixFunc("form-check")
         const _id = (
             inputId === undefined ?
-                `form-check-${uid++}` :
+                `form-check-${uuid++}` :
                 inputId
         )
         const classes = classNames(
