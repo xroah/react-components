@@ -11,6 +11,7 @@ import {
     number,
     oneOf
 } from "prop-types"
+import {sizePropType} from "@commons/prop-types"
 
 const inputVariants = [
     "input",
@@ -19,11 +20,11 @@ const inputVariants = [
 
 type Base = Omit<React.InputHTMLAttributes<HTMLInputElement>, "size">
 
-export type SizeProp = {
+export interface SizeProp extends Base {
     size?: Size
 }
 
-interface InputProps extends Base, SizeProp {
+interface InputProps extends SizeProp {
     htmlSize?: number
     variant?: ValueOf<typeof inputVariants>
     plain?: boolean
@@ -58,7 +59,7 @@ export default function Input(
 }
 
 Input.propTypes = {
-    size: oneOf(sizes),
+    size: sizePropType,
     htmlSize: number,
     variant: oneOf(inputVariants),
     plain: bool

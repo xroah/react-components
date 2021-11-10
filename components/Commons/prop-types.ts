@@ -6,7 +6,7 @@ import {
     shape,
     string
 } from "prop-types";
-import {orders} from "./consts-and-types";
+import {orders, sizes} from "./consts-and-types";
 import {getShape} from "./utils";
 
 export const cssCompPropTypes = {
@@ -23,3 +23,5 @@ export const orderPropType = oneOfType([
     ...orderTypes,
     shape(getShape(oneOfType(orderTypes)))
 ])
+
+export const sizePropType = oneOf(sizes)
