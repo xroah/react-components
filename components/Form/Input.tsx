@@ -19,8 +19,11 @@ const inputVariants = [
 
 type Base = Omit<React.InputHTMLAttributes<HTMLInputElement>, "size">
 
-interface InputProps extends Base {
+export type SizeProp = {
     size?: Size
+}
+
+interface InputProps extends Base, SizeProp {
     htmlSize?: number
     variant?: ValueOf<typeof inputVariants>
     plain?: boolean
