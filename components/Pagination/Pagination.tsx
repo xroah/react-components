@@ -1,7 +1,7 @@
 import React from "react"
 import classNames from "reap-utils/lib/class-names"
-import PropTypes from "prop-types"
-import {Size, sizes} from "../Commons/consts-and-types"
+import {Size} from "../Commons/consts-and-types"
+import {sizePropType} from "@commons/prop-types"
 
 type BaseProps = Omit<React.HTMLAttributes<HTMLUListElement>, "size">
 
@@ -31,5 +31,5 @@ export default function Pagination(
 }
 
 Pagination.propTypes = {
-    size: PropTypes.oneOf(sizes)
+    size: sizePropType
 }

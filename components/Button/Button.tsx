@@ -4,11 +4,11 @@ import classNames from "reap-utils/lib/class-names"
 import {
     variants,
     ValueOf,
-    Size,
-    sizes
+    Size
 } from "../Commons/consts-and-types"
 import warning from "warning"
 import {getPrefixFunc} from "../Commons/utils"
+import {sizePropType} from "@commons/prop-types"
 
 type BaseProps = Omit<React.ButtonHTMLAttributes<HTMLElement>, "type" | "size">
 type AnchorProps = Omit<
@@ -130,7 +130,7 @@ Button.propTypes = {
     tag: PropTypes.elementType as any,
     variant: PropTypes.oneOf(btnVariants),
     outline: PropTypes.bool,
-    size: PropTypes.oneOf(sizes),
+    size: sizePropType,
     disabled: PropTypes.bool,
     type: PropTypes.oneOf(btnTypes),
     active: PropTypes.bool,
