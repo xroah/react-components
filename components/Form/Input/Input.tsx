@@ -1,9 +1,5 @@
 import * as React from "react"
-import {
-    Size,
-    sizes,
-    ValueOf
-} from "@commons/consts-and-types"
+import {Size, ValueOf} from "@commons/consts-and-types"
 import classNames from "reap-utils/lib/class-names"
 import {getPrefixFunc} from "@commons/utils"
 import {
