@@ -36,11 +36,8 @@ const FormCheck = React.forwardRef(
         ref: React.ForwardedRef<HTMLInputElement>
     ) => {
         const prefix = getPrefixFunc("form-check")
-        const _id = (
-            inputId === undefined ?
-                `form-check-${uuid++}` :
-                inputId
-        )
+        const _id = inputId === undefined ? prefix(uuid++) : inputId
+
         const classes = classNames(
             className,
             prefix(),
