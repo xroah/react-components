@@ -5,6 +5,7 @@ import Badge from "./Badge"
 import Card from "./Card"
 import Flex from "./Flex"
 import Form from "./Form"
+import Input from "./Input"
 import Layout from "./Layout"
 import ListGroup from "./ListGroup"
 import Pagination from "./Pagination"
@@ -22,6 +23,7 @@ export default function () {
             <Card />
             <Flex />
             <Form />
+            <Input />
             <Layout />
             <ListGroup />
             <Pagination />
