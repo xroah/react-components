@@ -9,7 +9,7 @@ import {
 } from "prop-types"
 import {sizePropType} from "@commons/prop-types"
 
-const inputVariants = [
+const variants = [
     "input",
     "textarea"
 ] as const
@@ -26,44 +26,49 @@ export interface SizeProp extends InputBase, TextareaBase {
 
 interface InputProps extends SizeProp {
     htmlSize?: number
-    variant?: ValueOf<typeof inputVariants>
+    variant?: ValueOf<typeof variants>
     plain?: boolean
 }
 
-export default function Input(
-    {
-        className,
-        size,
-        htmlSize,
-        variant,
-        plain,
-        ...restProps
-    }: InputProps
-) {
-    const prefix = getPrefixFunc("form-control")
-    const classes = classNames(
-        className,
-        prefix(),
-        size && prefix(size),
-        plain && prefix("plaintext")
-    )
-
-    return React.createElement(
-        variant!,
+const Input = React.forwardRef(
+    (
         {
-            size: htmlSize,
-            className: classes,
+            className,
+            size,
+            plain,
+            variant,
+            htmlSize,
             ...restProps
-        }
-    )
-}
+        }: InputProps,
+        ref: React.ForwardedRef<HTMLInputElement>
+    ) => {
+        const prefix = getPrefixFunc("form-control")
+        const classes = classNames(
+            className,
+            prefix(),
+            size && prefix(size),
+            plain && prefix("plaintext")
+        )
+
+        return React.createElement(
+            variant!,
+            {
+                ref,
+                size: htmlSize,
+                className: classes,
+                ...restProps
+            }
+        )
+    })
 
 Input.propTypes = {
     size: sizePropType,
     htmlSize: number,
-    variant: oneOf(inputVariants),
+    variant: oneOf(variants),
     plain: bool
 }
 Input.defaultProps = {
     variant: "input"
 }
+
+export default Input
