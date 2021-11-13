@@ -14,9 +14,13 @@ const inputVariants = [
     "textarea"
 ] as const
 
-type Base = Omit<React.InputHTMLAttributes<HTMLInputElement>, "size">
+type InputBase = Omit<React.InputHTMLAttributes<HTMLInputElement>, "size">
+type TextareaBase = Omit<
+    React.TextareaHTMLAttributes<HTMLTextAreaElement>,
+    keyof React.HTMLAttributes<HTMLTextAreaElement>
+>
 
-export interface SizeProp extends Base {
+export interface SizeProp extends InputBase, TextareaBase {
     size?: Size
 }
 
