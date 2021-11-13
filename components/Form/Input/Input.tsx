@@ -70,5 +70,6 @@ Input.propTypes = {
 Input.defaultProps = {
     variant: "input"
 }
+Input.displayName = "Input"
 
 export default Input
