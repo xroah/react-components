@@ -59,7 +59,8 @@ const Input = React.forwardRef(
                 ...restProps
             }
         )
-    })
+    }
+)
 
 Input.propTypes = {
     size: sizePropType,

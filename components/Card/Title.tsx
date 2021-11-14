@@ -22,7 +22,6 @@ export default function CardTitle(
         subTitleColor && `text-${subTitleColor}`
     )
 
-
     return (
         <div {...restProps}>
             <h5 className="card-title">
