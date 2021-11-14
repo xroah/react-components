@@ -1,6 +1,7 @@
 import * as React from "react"
 import {
     bool,
+    number,
     oneOf,
     oneOfType,
     shape
@@ -40,6 +41,7 @@ type Direction = ValueOf<typeof directions>
 type Inline = boolean | BreakpointType<Breakpoint, boolean>
 
 interface FlexProps extends CSSComponentProps {
+    gap?: number | BreakpointType<Breakpoint, number>
     inline?: boolean | BreakpointType<Breakpoint, boolean>
     wrap?: Wrap | BreakpointType<Breakpoint, Wrap>
     direction?: Direction | BreakpointType<Breakpoint, Direction>
@@ -52,7 +54,8 @@ export default function Flex(
         children,
         inline,
         wrap,
-        direction
+        direction,
+        gap
     }: FlexProps
 ) {
     const c = onlyChild(children)
@@ -83,7 +86,8 @@ export default function Flex(
     const classes = classNames(
         handleInline(inline),
         getBreakpointClasses(FLEX, direction),
-        getBreakpointClasses(FLEX, wrap)
+        getBreakpointClasses(FLEX, wrap),
+        getBreakpointClasses("gap", gap)
     )
 
     return cloneWithClass(c, className, classes)
@@ -105,6 +109,10 @@ Flex.propTypes = {
     directions: oneOfType([
         dType,
         shape(getShape(dType))
+    ]),
+    gap: oneOfType([
+        number,
+        shape(getShape(number))
     ])
 }
 
