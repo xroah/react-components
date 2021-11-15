@@ -9,7 +9,7 @@ const Link = createComponent<React.AnchorHTMLAttributes<HTMLAnchorElement>>({
     className: "card-link",
     displayName: "CardLink"
 })
-const Text = createComponent<React.HTMLAttributes<HTMLParagraphElement>>({
+const Text = createComponent({
     tag: "p",
     className: "card-text",
     displayName: "CardText"
