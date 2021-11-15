@@ -4,10 +4,10 @@ import PropTypes from "prop-types"
 import {
     sizes,
     ValueOf,
-    Variant,
-    variants
+    Variant
 } from "../Commons/consts-and-types"
 import {getPrefixFunc} from "../Commons/utils"
+import {variantPropType} from "@commons/prop-types"
 
 const _sizes = ["xs", ...sizes]
 const animations = ["grow", "wave"] as const
@@ -70,7 +70,7 @@ export default function Placeholder(
 
 Placeholder.propTypes = {
     width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-    variant: PropTypes.oneOf(variants),
+    variant: variantPropType,
     size: PropTypes.oneOf(_sizes),
     animation: PropTypes.oneOf(animations)
 }

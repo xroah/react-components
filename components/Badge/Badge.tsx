@@ -1,11 +1,8 @@
 import * as React from "react"
 import classNames from "reap-utils/lib/class-names"
 import PropTypes from "prop-types"
-import {
-    ValueOf,
-    Variant,
-    variants
-} from "../Commons/consts-and-types"
+import {ValueOf, Variant} from "../Commons/consts-and-types"
+import {variantPropType} from "@commons/prop-types"
 
 const colors = ["light", "dark"] as const
 
@@ -36,7 +33,7 @@ export default function Badge(
 }
 
 Badge.propTypes = {
-    variant: PropTypes.oneOf(variants),
+    variant: variantPropType,
     pill: PropTypes.bool,
     color: PropTypes.oneOf(colors)
 }

@@ -1,8 +1,9 @@
 import * as React from "react"
 import PropTypes from "prop-types"
 import classNames from "reap-utils/lib/class-names"
-import {Variant, variants} from "../Commons/consts-and-types"
+import {Variant} from "../Commons/consts-and-types"
 import {getPrefixFunc} from "../Commons/utils"
+import {variantPropType} from "@commons/prop-types"
 
 interface ProgressProps extends React.HTMLAttributes<HTMLDivElement> {
     value?: number
@@ -78,7 +79,7 @@ Progress.propTypes = {
     striped: PropTypes.bool,
     animated: PropTypes.bool,
     label: PropTypes.bool,
-    variant: PropTypes.oneOf(variants),
+    variant: variantPropType,
     height: PropTypes.number,
 }
 Progress.defaultProps = {

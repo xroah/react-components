@@ -1,11 +1,8 @@
 import * as React from "react"
 import PropTypes from "prop-types"
-import {
-    ValueOf,
-    Variant,
-    variants
-} from "../Commons/consts-and-types"
+import {ValueOf, Variant} from "../Commons/consts-and-types"
 import classNames from "reap-utils/lib/class-names"
+import {variantPropType} from "@commons/prop-types"
 
 const animations = ["border", "grow"] as const
 
@@ -53,7 +50,7 @@ Spinner.defaultProps = {
 }
 Spinner.propTypes = {
     type: PropTypes.oneOf(animations),
-    variant: PropTypes.oneOf(variants),
+    variant: variantPropType,
     size: PropTypes.oneOfType([
         PropTypes.oneOf(["sm"]),
         PropTypes.number,

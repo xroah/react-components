@@ -2,6 +2,7 @@ import * as React from "react"
 import {Variant, variants} from "@commons/consts-and-types"
 import {bool, oneOf} from "prop-types"
 import classNames from "reap-utils/lib/class-names"
+import {variantPropType} from "@commons/prop-types"
 
 interface LinkProps extends React.HTMLAttributes<HTMLAnchorElement> {
     variant?: Variant
@@ -26,6 +27,6 @@ export default function Link(
 }
 
 Link.propTypes = {
-    variant: oneOf(variants),
+    variant: variantPropType,
     stretched: bool
 }

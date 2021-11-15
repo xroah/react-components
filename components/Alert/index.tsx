@@ -1,6 +1,5 @@
 import * as React from "react"
 import {
-    oneOf,
     bool,
     node,
     func
@@ -14,6 +13,7 @@ import NoTransition from "../Commons/NoTransition"
 import omit from "reap-utils/lib/omit"
 import handleFuncProp from "reap-utils/lib/react/handle-func-prop"
 import {createComponent, getPrefixFunc} from "../Commons/utils"
+import {variantPropType} from "@commons/prop-types"
 
 type BtnClickEvt = React.MouseEvent<HTMLButtonElement>
 
@@ -116,7 +116,7 @@ export default function Alert(
 }
 
 Alert.propTypes = {
-    variant: oneOf(variants),
+    variant: variantPropType,
     fade: bool,
     heading: node,
     dismissible: bool,

@@ -1,8 +1,9 @@
 import * as React from "react"
 import classNames from "reap-utils/lib/class-names"
 import PropTypes from "prop-types"
-import {Variant, variants} from "../Commons/consts-and-types"
+import {Variant} from "../Commons/consts-and-types"
 import {getPrefixFunc} from "../Commons/utils"
+import {variantPropType} from "@commons/prop-types"
 
 interface ListGroupItemProps extends React.AllHTMLAttributes<HTMLElement> {
     active?: boolean
@@ -51,7 +52,7 @@ export default function ListGroupItem({
 ListGroupItem.propTypes = {
     active: PropTypes.bool,
     disabled: PropTypes.bool,
-    variant: PropTypes.oneOf(variants),
+    variant: variantPropType,
     action: PropTypes.bool,
     tag: PropTypes.elementType,
 }
