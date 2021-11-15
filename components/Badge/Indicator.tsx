@@ -30,7 +30,9 @@ export default function Indicator(
         "p-0"
     )
 
-    style.width = style.height = size
+    if (size !== undefined) {
+        style.width = style.height = size
+    }
 
     return (
         <Badge
