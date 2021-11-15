@@ -5,7 +5,7 @@ import {
     func
 } from "prop-types"
 import classNames from "reap-utils/lib/class-names"
-import {Variant, variants} from "../Commons/consts-and-types"
+import {WithVariantProp} from "../Commons/consts-and-types"
 import Button from "../Button"
 import isUndef from "reap-utils/lib/is-undef"
 import Fade from "../Commons/Fade"
@@ -17,8 +17,7 @@ import {variantPropType} from "@commons/prop-types"
 
 type BtnClickEvt = React.MouseEvent<HTMLButtonElement>
 
-export interface AlertProps extends React.HTMLAttributes<HTMLDivElement> {
-    variant?: Variant
+export interface AlertProps extends WithVariantProp<HTMLDivElement> {
     fade?: boolean
     dismissible?: boolean
     visible?: boolean

@@ -4,7 +4,7 @@ import PropTypes from "prop-types"
 import {
     sizes,
     ValueOf,
-    Variant
+    WithVariantProp
 } from "../Commons/consts-and-types"
 import {getPrefixFunc} from "../Commons/utils"
 import {variantPropType} from "@commons/prop-types"
@@ -12,9 +12,8 @@ import {variantPropType} from "@commons/prop-types"
 const _sizes = ["xs", ...sizes]
 const animations = ["grow", "wave"] as const
 
-interface PlaceholderProps extends React.HTMLAttributes<HTMLDivElement> {
+interface PlaceholderProps extends WithVariantProp<HTMLDivElement> {
     width?: string | number
-    variant?: Variant
     size?: ValueOf<typeof _sizes>
     animation?: ValueOf<typeof animations>
 }

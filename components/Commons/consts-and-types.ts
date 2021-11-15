@@ -1,4 +1,4 @@
-import {InputHTMLAttributes} from "react"
+import {HTMLAttributes} from "react"
 
 export type ValueOf<T extends readonly any[]> = T[number]
 
@@ -60,4 +60,8 @@ export type Booleanish = boolean | "true" | "false"
 
 export type CSSComponentProps = {
     className?: string
+}
+
+export interface WithVariantProp<T> extends HTMLAttributes<T> {
+    variant?: Variant
 }

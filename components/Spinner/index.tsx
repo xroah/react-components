@@ -1,13 +1,12 @@
 import * as React from "react"
 import PropTypes from "prop-types"
-import {ValueOf, Variant} from "../Commons/consts-and-types"
+import {ValueOf, WithVariantProp} from "../Commons/consts-and-types"
 import classNames from "reap-utils/lib/class-names"
 import {variantPropType} from "@commons/prop-types"
 
 const animations = ["border", "grow"] as const
 
-interface SpinnerProps extends React.HTMLAttributes<HTMLSpanElement> {
-    variant?: Variant
+interface SpinnerProps extends WithVariantProp<HTMLSpanElement> {
     type?: ValueOf<typeof animations>
     size?: "sm" | number | string
 }
