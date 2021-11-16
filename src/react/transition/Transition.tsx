@@ -250,7 +250,11 @@ export default class Transition extends
         const {
             status
         } = this.state
-        const div = <div className="d-none" ref={this.placeholderRef} />
+        const div = (
+            <div
+                style={{display: "none"}}
+                ref={this.placeholderRef} />
+        )
 
         if (status === UNMOUNTED) {
             return null
