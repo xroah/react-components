@@ -106,7 +106,7 @@ export default class Transition extends
             fn,
             timeout
         } = this.next
-        const cb = fn.bind(this)
+        const cb = this.safeCallback(fn.bind(this))
 
         if (!this.props.timeout) {
             return cb()
@@ -114,9 +114,8 @@ export default class Transition extends
 
         this.nextTimer = window.setTimeout(
             () => {
-                this.nextTimer = null
-
-                this.safeCallback(cb)
+                this.clearNext()
+                cb()
             },
             timeout
         )
