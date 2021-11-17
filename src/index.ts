@@ -1,3 +1,5 @@
+export * as reactUtils from "./react"
+export * as domUtils from "./dom"
 export {default as chainFunction} from "./chain-function"
 export {default as isPlainObject} from "./is-plain-object"
 export {default as isUndef} from "./is-undef"
