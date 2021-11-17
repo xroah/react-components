@@ -7,7 +7,7 @@ import {
     WithVariantProp
 } from "../Commons/consts-and-types"
 import {getPrefixFunc} from "../Commons/utils"
-import {variantPropType} from "@commons/prop-types"
+import {variantPropType} from "../Commons/prop-types"
 
 const _sizes = ["xs", ...sizes]
 const animations = ["grow", "wave"] as const

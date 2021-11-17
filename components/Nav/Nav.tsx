@@ -1,5 +1,5 @@
-import {ValueOf} from "@commons/consts-and-types"
-import {getPrefixFunc} from "@commons/utils"
+import {ValueOf} from "../Commons/consts-and-types"
+import {getPrefixFunc} from "../Commons/utils"
 import {bool, oneOf} from "prop-types"
 import * as React from "react"
 import classNames from "reap-utils/lib/class-names"

@@ -3,7 +3,7 @@ import PropTypes from "prop-types"
 import classNames from "reap-utils/lib/class-names"
 import {Variant} from "../Commons/consts-and-types"
 import {getPrefixFunc} from "../Commons/utils"
-import {variantPropType} from "@commons/prop-types"
+import {variantPropType} from "../Commons/prop-types"
 
 interface ProgressProps extends React.HTMLAttributes<HTMLDivElement> {
     value?: number

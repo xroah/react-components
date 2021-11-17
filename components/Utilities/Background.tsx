@@ -7,7 +7,7 @@ import {
     CSSComponentProps
 } from "../Commons/consts-and-types"
 import {cloneWithClass, onlyChild} from "../Commons/utils"
-import {cssCompPropTypes} from "@commons/prop-types"
+import {cssCompPropTypes} from "../Commons/prop-types"
 
 interface BgProps extends CSSComponentProps {
     variant?: BgColor

@@ -1,8 +1,8 @@
 import * as React from "react"
-import {WithVariantProp} from "@commons/consts-and-types"
+import {WithVariantProp} from "../Commons/consts-and-types"
 import {bool} from "prop-types"
 import classNames from "reap-utils/lib/class-names"
-import {variantPropType} from "@commons/prop-types"
+import {variantPropType} from "../Commons/prop-types"
 
 interface LinkProps extends WithVariantProp<HTMLAnchorElement> {
     stretch?: boolean

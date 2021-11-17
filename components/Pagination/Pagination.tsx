@@ -1,7 +1,7 @@
 import React from "react"
 import classNames from "reap-utils/lib/class-names"
 import {Size} from "../Commons/consts-and-types"
-import {sizePropType} from "@commons/prop-types"
+import {sizePropType} from "../Commons/prop-types"
 
 type BaseProps = Omit<React.HTMLAttributes<HTMLUListElement>, "size">
 

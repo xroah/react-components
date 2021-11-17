@@ -1,4 +1,4 @@
-import {createComponent} from "@commons/utils"
+import {createComponent} from "../../Commons/utils"
 import Input from "./Input"
 import Group from "./InputGroup"
 
@@ -8,12 +8,12 @@ const Text = createComponent({
     className: "input-group-text"
 })
 
-interface InputType {
+type InputType = {
     Group: typeof Group
     Text: typeof Text
-}
+} & typeof Input
 
-const _Input = Input as (InputType & typeof Input)
+const _Input = Input as InputType
 
 _Input.Group = Group
 _Input.Text = Text

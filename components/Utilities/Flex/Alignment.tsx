@@ -18,7 +18,7 @@ import {
     getShape,
     onlyChild
 } from "../../Commons/utils"
-import {cssCompPropTypes} from "@commons/prop-types"
+import {cssCompPropTypes} from "../../Commons/prop-types"
 
 const commons = [
     "between",

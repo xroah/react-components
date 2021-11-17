@@ -2,7 +2,7 @@ import * as React from "react"
 import warning from "warning"
 import classNames from "reap-utils/lib/class-names"
 import PropTypes from "prop-types"
-import {getPrefixFunc} from "@commons/utils"
+import {getPrefixFunc} from "../Commons/utils"
 
 interface ListGroupProps extends React.OlHTMLAttributes<HTMLElement> {
     flush?: boolean

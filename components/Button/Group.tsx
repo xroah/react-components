@@ -3,7 +3,7 @@ import classNames from "reap-utils/lib/class-names"
 import PropTypes from "prop-types"
 import {Size} from "../Commons/consts-and-types"
 import {getPrefixFunc} from "../Commons/utils"
-import {sizePropType} from "@commons/prop-types"
+import {sizePropType} from "../Commons/prop-types"
 
 interface GroupProps extends React.HTMLAttributes<HTMLDivElement> {
     size?: Size

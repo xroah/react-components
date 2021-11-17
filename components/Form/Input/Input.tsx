@@ -1,13 +1,13 @@
 import * as React from "react"
-import {Size, ValueOf} from "@commons/consts-and-types"
+import {Size, ValueOf} from "../../Commons/consts-and-types"
 import classNames from "reap-utils/lib/class-names"
-import {getPrefixFunc} from "@commons/utils"
+import {getPrefixFunc} from "../../Commons/utils"
 import {
     bool,
     number,
     oneOf
 } from "prop-types"
-import {sizePropType} from "@commons/prop-types"
+import {sizePropType} from "../../Commons/prop-types"
 
 const variants = [
     "input",
@@ -24,7 +24,7 @@ export interface SizeProp extends InputBase, TextareaBase {
     size?: Size
 }
 
-interface InputProps extends SizeProp {
+export interface InputProps extends SizeProp {
     htmlSize?: number
     variant?: ValueOf<typeof variants>
     plain?: boolean
@@ -40,7 +40,7 @@ const Input = React.forwardRef(
             htmlSize,
             ...restProps
         }: InputProps,
-        ref: React.ForwardedRef<HTMLInputElement>
+        ref: React.ForwardedRef<HTMLInputElement | HTMLTextAreaElement>
     ) => {
         const prefix = getPrefixFunc("form-control")
         const classes = classNames(

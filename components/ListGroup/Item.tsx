@@ -3,7 +3,7 @@ import classNames from "reap-utils/lib/class-names"
 import PropTypes from "prop-types"
 import {Variant} from "../Commons/consts-and-types"
 import {getPrefixFunc} from "../Commons/utils"
-import {variantPropType} from "@commons/prop-types"
+import {variantPropType} from "../Commons/prop-types"
 
 interface ListGroupItemProps extends React.AllHTMLAttributes<HTMLElement> {
     active?: boolean

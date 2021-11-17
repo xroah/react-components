@@ -1,8 +1,8 @@
 import * as React from "react"
 import classNames from "reap-utils/lib/class-names"
 import {SizeProp} from "./Input"
-import {getPrefixFunc} from "@commons/utils"
-import {sizePropType} from "@commons/prop-types"
+import {getPrefixFunc} from "../../Commons/utils"
+import {sizePropType} from "../../Commons/prop-types"
 
 export default function InputGroup(
     {

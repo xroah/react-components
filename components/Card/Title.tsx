@@ -2,7 +2,7 @@ import * as React from "react"
 import PropTypes from "prop-types"
 import classNames from "reap-utils/lib/class-names"
 import {isValidNode} from "../Commons/utils"
-import {TextColor} from "@commons/consts-and-types"
+import {TextColor} from "../Commons/consts-and-types"
 
 interface CardTitleProps extends React.HTMLAttributes<HTMLDivElement> {
     subTitle?: React.ReactNode

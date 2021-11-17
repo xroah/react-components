@@ -8,7 +8,7 @@ import {
 } from "../Commons/consts-and-types"
 import warning from "warning"
 import {getPrefixFunc} from "../Commons/utils"
-import {sizePropType} from "@commons/prop-types"
+import {sizePropType} from "../Commons/prop-types"
 
 type BaseProps = Omit<React.ButtonHTMLAttributes<HTMLElement>, "type" | "size">
 type AnchorProps = Omit<

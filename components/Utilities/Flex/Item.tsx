@@ -6,15 +6,15 @@ import {
     OrderBreakpoints,
     ValueOf,
     CSSComponentProps
-} from "@commons/consts-and-types"
+} from "../../Commons/consts-and-types"
 import {
     cloneWithClass,
     getBreakpointClasses,
     getShape,
     onlyChild
-} from "@commons/utils"
+} from "../../Commons/utils"
 import classNames from "reap-utils/lib/class-names"
-import {cssCompPropTypes, orderPropType} from "@commons/prop-types"
+import {cssCompPropTypes, orderPropType} from "../../Commons/prop-types"
 import {bool, oneOf, oneOfType, shape} from "prop-types"
 
 const grows = [

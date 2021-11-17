@@ -13,7 +13,7 @@ import NoTransition from "../Commons/NoTransition"
 import omit from "reap-utils/lib/omit"
 import handleFuncProp from "reap-utils/lib/react/handle-func-prop"
 import {createComponent, getPrefixFunc} from "../Commons/utils"
-import {variantPropType} from "@commons/prop-types"
+import {variantPropType} from "../Commons/prop-types"
 
 type BtnClickEvt = React.MouseEvent<HTMLButtonElement>
 

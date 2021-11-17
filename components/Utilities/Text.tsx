@@ -14,7 +14,7 @@ import {
     CSSComponentProps
 } from "../Commons/consts-and-types"
 import {cloneWithClass, getPrefixFunc, onlyChild} from "../Commons/utils"
-import {cssCompPropTypes} from "@commons/prop-types"
+import {cssCompPropTypes} from "../Commons/prop-types"
 
 const fontWeights = [
     "bold",

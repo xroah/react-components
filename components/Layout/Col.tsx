@@ -13,7 +13,7 @@ import {
     OrderBreakpoints
 } from "../Commons/consts-and-types"
 import {getBreakpointClasses, getShape} from "../Commons/utils"
-import {orderPropType} from "@commons/prop-types"
+import {orderPropType} from "../Commons/prop-types"
 import FlexItem from "../Utilities/Flex/Item"
 
 type Span = "auto" | number | true
