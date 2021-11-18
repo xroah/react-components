@@ -6,7 +6,6 @@ import {
 } from "prop-types"
 import classNames from "reap-utils/lib/class-names"
 import handleFuncProp from "reap-utils/lib/react/handle-func-prop"
-import reflow from "reap-utils/lib/dom/reflow"
 import Transition from "../Commons/CSSTransition"
 
 type Callback = () => void
@@ -29,7 +28,6 @@ function Collapse(
         onShown,
         onHide,
         onHidden,
-        style,
         children
     }: CollapseProps
 ) {
@@ -37,50 +35,46 @@ function Collapse(
         return <>{children}</>
     }
 
-    const [height, updateHeight] = React.useState<number | undefined>(0)
     const classes = classNames(classNames, "collapse")
-    const [cls, updateClass] = React.useState(classes)
     const showClass = classNames(classes, "show")
     const collapsingClass = classNames(className, "collapsing")
-    const handleEnter = () => {
-        handleFuncProp(onShow)()
-        updateClass(collapsingClass)
-    }
-    const handleEntering = (node?: HTMLElement) => {
+    const updateHeight = (
+        node?: HTMLElement,
+        height?: string
+    ) => {
         if (node) {
-            updateHeight(node.scrollHeight)
+            if (height !== undefined) {
+                node.style.height = height
+            } else {
+                node.style.height = `${node.scrollHeight}px`
+            }
         }
     }
-    const handleEntered = () => {
-        updateHeight(undefined)
+    const handleEnter = () => {
+        handleFuncProp(onShow)()
+    }
+    const handleEntering = (node?: HTMLElement) => {
+        updateHeight(node)
+    }
+    const handleEntered = (node?: HTMLElement) => {
         handleFuncProp(onShown)()
-        updateClass(showClass)
+        updateHeight(node, "")
     }
     const handleExited = () => {
         handleFuncProp(onHidden)()
-        updateClass(collapsingClass)
     }
     const handleExiting = (node?: HTMLElement) => {
-        if (node) {
-            reflow(node)
-        }
-
-        updateHeight(undefined)
-        updateClass(collapsingClass)
+        updateHeight(node, "")
     }
     const handleExit = (node?: HTMLElement) => {
         handleFuncProp(onHide)()
-
-        if (node) {
-            updateHeight(node.scrollHeight)
-        }
-
+        updateHeight(node)
     }
 
     return (
         <Transition
             in={!!open}
-            timeout={350!}
+            timeout={timeout!}
             onEnter={handleEnter}
             onEntering={handleEntering}
             onEntered={handleEntered}
@@ -88,16 +82,30 @@ function Collapse(
             onExiting={handleExiting}
             onExited={handleExited}>
             {
-                React.cloneElement(
-                    children,
-                    {
-                        className: cls,
-                        style: {
-                            ...style,
-                            height
-                        }
+                state => {
+                    let cls
+
+                    switch (state) {
+                        case "enter":
+                        case "entering":
+                        case "exiting":
+                            cls = collapsingClass
+                            break
+                        case "entered":
+                        case "exit":
+                            cls = showClass
+                            break
+                        default:
+                            cls = classes
                     }
-                )
+
+                    return React.cloneElement(
+                        children,
+                        {
+                            className: cls
+                        }
+                    )
+                }
             }
         </Transition>
     )

@@ -97,8 +97,7 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
         if (_in !== prevProps.in) {
             status = _in ? ENTER : EXIT
 
-            this.clearNext()
-            this.switchState(status as stateType)
+            this.switchState(status)
         }
         else if (next) {
             this.performNext()
@@ -250,7 +249,7 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
     }
 
     switchState(status: stateType) {
-        this.setState({status})
+        this.clearNext()
 
         if (status === ENTER) {
             this.setNext(this.enter)
@@ -258,6 +257,8 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
         else if (status === EXIT) {
             this.setNext(this.exit)
         }
+        
+        this.setState({status})
     }
 
     getNode() {
