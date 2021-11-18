@@ -3,6 +3,7 @@ import Alert from "./Alert"
 import Button from "./Button"
 import Badge from "./Badge"
 import Card from "./Card"
+import Collapse from "./Collapse"
 import Flex from "./Flex"
 import Form from "./Form"
 import Input from "./Input"
@@ -22,6 +23,7 @@ export default function () {
             <Badge />
             <Button />
             <Card />
+            <Collapse />
             <Flex />
             <Form />
             <Input />
