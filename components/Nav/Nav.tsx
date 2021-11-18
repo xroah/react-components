@@ -26,6 +26,7 @@ export default function Nav(
     const prefix = getPrefixFunc("nav")
     const classes = classNames(
         className,
+        prefix(),
         variant && prefix(variant),
         fill && prefix("fill"),
         justify && prefix("justified")

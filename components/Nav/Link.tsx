@@ -17,8 +17,9 @@ export default function NavLink(
 ) {
     const classes = classNames(
         className,
+        "nav-link",
         active && "active",
-        disabled && disabled
+        disabled && "disabled"
     )
 
     return <a className={classes} {...restProps}/>

@@ -15,4 +15,7 @@ interface NavType {
 
 const _Nav = Nav as (NavType & typeof Nav)
 
+_Nav.Link = NavLink
+_Nav.Item = Item
+
 export default _Nav
