@@ -11,6 +11,7 @@ const EXITED = "exited"
 const UNMOUNTED = "unmounted"
 
 type stateType = "enter" | "entering" | "entered" | "exit" | "exiting" | "exited"
+type Callback = (node?: HTMLElement) => void
 
 export interface CSSTransitionProps {
     in: boolean
@@ -18,12 +19,12 @@ export interface CSSTransitionProps {
     unmountOnExit?: boolean
     appear?: boolean
     children: ((state: stateType) => React.ReactElement) | React.ReactElement
-    onEnter?: () => void
-    onEntering?: () => void
-    onEntered?: () => void
-    onExit?: () => void
-    onExiting?: () => void
-    onExited?: () => void
+    onEnter?: Callback
+    onEntering?: Callback
+    onEntered?: Callback
+    onExit?: Callback
+    onExiting?: Callback
+    onExited?: Callback
 }
 
 interface Next {
@@ -174,10 +175,10 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
 
     enter() {
         this.setNext(this.entering)
+        handleFuncProp(this.props.onEnter)(this.getNode())
         this.setState({
             status: ENTER
         })
-        handleFuncProp(this.props.onEnter)()
     }
 
     entering() {
@@ -189,25 +190,25 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
         this.setState({
             status: ENTERING
         })
+        handleFuncProp(onEntering)(this.getNode())
         this.setNext(this.entered, timeout)
-        handleFuncProp(onEntering)()
     }
 
     entered() {
         this.clearNext()
+        handleFuncProp(this.props.onEntered)(this.getNode())
         this.setState({
             status: ENTERED
         })
-        handleFuncProp(this.props.onEntered)()
     }
 
 
     exit() {
         this.setNext(this.exiting)
+        handleFuncProp(this.props.onExit)(this.getNode())
         this.setState({
             status: EXIT
         })
-        handleFuncProp(this.props.onExiting)()
     }
 
     exiting() {
@@ -217,10 +218,10 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
         } = this.props
 
         this.setNext(this.exited, timeout)
+        handleFuncProp(onExiting)(this.getNode())
         this.setState({
             status: EXITING
         })
-        handleFuncProp(onExiting)()
     }
 
     exited() {
@@ -238,7 +239,7 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
         this.setState({
             status: EXITED
         })
-        handleFuncProp(onExited)()
+        handleFuncProp(onExited)(this.getNode())
     }
 
     unmount() {
@@ -259,6 +260,16 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
         }
     }
 
+    getNode() {
+        const {current} = this.placeholderRef
+
+        if (current) {
+            return current.nextElementSibling
+        }
+
+        return null
+    }
+
     render() {
         const {
             status
@@ -271,11 +282,11 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
 
         const {
             children,
-            ...otherProps
+            ...restProps
         } = this.props
 
-        omitProps(
-            otherProps,
+        const props = omitProps(
+            restProps,
             [
                 "in",
                 "timeout",
@@ -303,7 +314,7 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
         return (
             <>
                 {div}
-                {React.cloneElement(child, otherProps)}
+                {React.cloneElement(child, props)}
             </>
         )
     }
