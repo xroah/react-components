@@ -8,6 +8,7 @@ import Form from "./Form"
 import Input from "./Input"
 import Layout from "./Layout"
 import ListGroup from "./ListGroup"
+import Nav from "./Nav"
 import Pagination from "./Pagination"
 import Placeholder from "./Placeholder"
 import Progress from "./Progress"
@@ -26,6 +27,7 @@ export default function () {
             <Input />
             <Layout />
             <ListGroup />
+            <Nav />
             <Pagination />
             <Placeholder />
             <Progress />
