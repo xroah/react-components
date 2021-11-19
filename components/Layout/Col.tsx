@@ -56,7 +56,7 @@ const spanTypes = [
 Col.propTypes = {
     span: oneOfType([
         ...spanTypes,
-        shape(getShape(oneOfType(spanTypes)))
+        shape(getShape(spanTypes))
     ]),
     order: orderPropType,
     offset: oneOfType([

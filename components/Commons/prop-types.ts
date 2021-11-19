@@ -25,7 +25,7 @@ const orderTypes = [
 
 export const orderPropType = oneOfType([
     ...orderTypes,
-    shape(getShape(oneOfType(orderTypes)))
+    shape(getShape(orderTypes))
 ])
 
 export const sizePropType = oneOf(sizes)

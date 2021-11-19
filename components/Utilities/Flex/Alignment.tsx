@@ -53,7 +53,7 @@ type SBreakpoints = BreakpointType<Breakpoint, S>
 type C = ValueOf<typeof cAlignments>
 type CBreakpoints = BreakpointType<Breakpoint, C>
 
-interface AlignmentProps extends CSSComponentProps{
+interface AlignmentProps extends CSSComponentProps {
     vertical?: VBreakpoints | V
     horizontal?: HBreakpoints | H
     self?: SBreakpoints | S
@@ -85,11 +85,9 @@ export default function Alignment(
 }
 
 function getType(v: readonly string[]) {
-    const t = oneOf(v)
-
     return oneOfType([
-        t,
-        shape(getShape(t))
+        oneOf(v),
+        shape(getShape(v, false))
     ])
 }
 
