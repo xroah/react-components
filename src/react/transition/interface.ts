@@ -1,5 +1,5 @@
+import * as React from "react"
 import {states, UNMOUNTED} from "./constants"
-
 
 export type stateType = (typeof states)[number]
 export type Callback = (node?: HTMLElement) => void

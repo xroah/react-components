@@ -20,7 +20,7 @@ import Placeholder from "../Placeholder"
 import propTypes from "./propTypes"
 import {getNextNodeByRef} from ".."
 
-export default class CSSTransition extends
+export default class Transition extends
     React.Component<TransitionProps, State> {
     nextTimer: number | null = null
     next: Next | null = null
@@ -100,8 +100,17 @@ export default class CSSTransition extends
     }
 
     setNext(fn: Function, timeout = 20) {
+        let called = false
+        const cb =  () => {
+            if (!called) {
+                called = true
+
+                fn.call(this)
+            }
+        }
+
         this.next = {
-            fn,
+            fn: cb,
             timeout
         }
     }
@@ -112,7 +121,7 @@ export default class CSSTransition extends
         }
 
         const {fn, timeout} = this.next
-        const cb = this.safeCallback(fn.bind(this))
+        const cb = this.safeCallback(fn)
 
         if (!this.props.timeout) {
             return cb()
@@ -183,7 +192,6 @@ export default class CSSTransition extends
             () => this.handleCallback("onEntered")
         )
     }
-
 
     performExit() {
         this.setNext(this.performExiting)
