@@ -1,5 +1,6 @@
 import * as React from "react"
 import CSSTransition from "../../src/react/transition/CSSTransition"
+import {callbacks} from "./fade-demo"
 
 export default () => {
     const [visible, toggle] = React.useState(false)
@@ -11,9 +12,9 @@ export default () => {
                 toggle css
             </button>
             <CSSTransition
-                timeout={300}
                 in={visible}
-                name="slide-fade">
+                name="slide-fade"
+                {...callbacks}>
                 <p style={{color: "red"}}>hello</p>
             </CSSTransition>
         </div >

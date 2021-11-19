@@ -19,6 +19,8 @@ import {
 import Placeholder from "../Placeholder"
 import propTypes from "./propTypes"
 import {getNextNodeByRef} from ".."
+import {isUndef} from "../.."
+import {getTransitionDuration} from "../../dom/get-transition-duration"
 
 export default class Transition extends
     React.Component<TransitionProps, State> {
@@ -99,9 +101,11 @@ export default class Transition extends
         return nextState
     }
 
-    setNext(fn: Function, timeout = 20) {
+    setNext(fn: Function, timeout = 0) {
         let called = false
-        const cb =  () => {
+        const TIME_PADDING = 5
+        const cb = () => {
+            // prevent from calling multiple times
             if (!called) {
                 called = true
 
@@ -110,8 +114,8 @@ export default class Transition extends
         }
 
         this.next = {
-            fn: cb,
-            timeout
+            fn: this.safeCallback(cb),
+            timeout: timeout + TIME_PADDING
         }
     }
 
@@ -120,11 +124,27 @@ export default class Transition extends
             return
         }
 
-        const {fn, timeout} = this.next
-        const cb = this.safeCallback(fn)
+        const {status} = this.state
 
-        if (!this.props.timeout) {
-            return cb()
+        /**
+         * For CSSTransition, the transition property
+         * or class may add when entering or exiting,
+         */
+        if (
+            (status === "entering" || status === "exiting") &&
+            isUndef(this.props.timeout)
+        ) {
+            const timeout = this.getTimeout()
+            
+            if (timeout && timeout !== this.next.timeout) {
+                this.next.timeout = timeout
+            }
+        }
+
+        const {fn, timeout} = this.next
+
+        if (!timeout) {
+            return fn()
         }
 
         this.nextTimer = window.setTimeout(
@@ -132,7 +152,7 @@ export default class Transition extends
                 this.nextTimer = null
 
                 this.clearNext()
-                cb()
+                fn()
             },
             timeout
         )
@@ -166,7 +186,27 @@ export default class Transition extends
     handleCallback(name: string) {
         const cb = handleFuncProp((this.props as any)[name])
 
-        cb(getNextNodeByRef(this.placeholderRef))
+        cb(this.getNode())
+    }
+
+    getNode() {
+        return getNextNodeByRef(this.placeholderRef)
+    }
+
+    getTimeout() {
+        const {timeout} = this.props
+
+        if (isUndef(timeout)) {
+            const node = this.getNode()
+
+            if (node) {
+                return getTransitionDuration(node as HTMLElement)
+            }
+
+            return 0
+        }
+
+        return timeout
     }
 
     performEnter() {
@@ -178,7 +218,7 @@ export default class Transition extends
     }
 
     performEntering() {
-        this.setNext(this.performEntered, this.props.timeout)
+        this.setNext(this.performEntered, this.getTimeout())
         this.setState(
             {status: ENTERING},
             () => this.handleCallback("onEntering")
@@ -202,7 +242,7 @@ export default class Transition extends
     }
 
     performExiting() {
-        this.setNext(this.performExited, this.props.timeout)
+        this.setNext(this.performExited, this.getTimeout())
         this.setState(
             {status: EXITING},
             () => this.handleCallback("onExiting")
@@ -225,6 +265,12 @@ export default class Transition extends
     unmount() {
         this.clearNext()
         this.setState({status: UNMOUNTED})
+    }
+
+    onTransitionEnd = () => {
+        if (this.next) {
+            this.next.fn()
+        }
     }
 
     switchState(status: stateType) {
@@ -266,15 +312,22 @@ export default class Transition extends
                 "onEntered",
                 "onExit",
                 "onExiting",
-                "onExited"
+                "onExited",
+
             ]
         )
 
         if (typeof children === "function") {
+            let child = React.Children.only(children(status))
+            child = React.cloneElement(
+                child,
+                {onTransitionEnd: this.onTransitionEnd}
+            )
+
             return (
                 <>
                     {div}
-                    {children(status)}
+                    {child}
                 </>
             )
         }
