@@ -1,6 +1,6 @@
 import * as React from "react"
 import classNames from "../../class-names"
-import handleFuncProp from "../handle-func-prop"
+import {handleFuncProp} from "../main"
 import {ENTERED, EXITED} from "./constants"
 import {string} from "prop-types"
 import {NoTransitionProps} from "./interface"

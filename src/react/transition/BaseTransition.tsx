@@ -3,7 +3,7 @@ import {
     TransitionProps as Props,
     TransitionState as State
 } from "./interface"
-import handleFuncProp from "../handle-func-prop"
+import {handleFuncProp} from "../main"
 
 export default class BaseTransition<T extends Props, S extends State = {}>
     extends React.Component<T, S> {

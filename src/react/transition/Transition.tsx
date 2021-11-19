@@ -1,6 +1,6 @@
 import * as React from "react"
-import handleFuncProp from "../handle-func-prop"
-import omitProps from "../../omit"
+import {handleFuncProp} from "../main"
+import {omit} from "../../main"
 import {
     ENTER,
     ENTERED,
@@ -20,7 +20,7 @@ import Placeholder from "../Placeholder"
 import propTypes from "./propTypes"
 import {getNextNodeByRef} from ".."
 import {isUndef} from "../.."
-import {getTransitionDuration} from "../../dom/get-transition-duration"
+import {getTransitionDuration} from "../../dom"
 
 export default class Transition extends
     React.Component<TransitionProps, State> {
@@ -135,7 +135,7 @@ export default class Transition extends
             isUndef(this.props.timeout)
         ) {
             const timeout = this.getTimeout()
-            
+
             if (timeout && timeout !== this.next.timeout) {
                 this.next.timeout = timeout
             }
@@ -301,7 +301,7 @@ export default class Transition extends
             ...restProps
         } = this.props
 
-        const props = omitProps(
+        const props = omit(
             restProps,
             [
                 "in",
