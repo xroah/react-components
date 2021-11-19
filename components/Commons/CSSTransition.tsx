@@ -69,7 +69,7 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
             appear,
             in: _in
         } = this.props
-        
+
         if (_in) {
             if (appear) {
                 this.componentDidUpdate({
@@ -130,20 +130,14 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
             return
         }
 
-        const {
-            fn,
-            timeout
-        } = this.next
-        const cb = fn.bind(this)
+        const {fn, timeout} = this.next
+        const cb = this.safeCallback(fn).bind(this)
 
         if (!this.props.timeout) {
             return cb()
         }
 
-        this.nextTimer = window.setTimeout(
-            this.safeCallback(cb),
-            timeout
-        )
+        this.nextTimer = window.setTimeout(cb, timeout)
     }
 
     clearNext() {
