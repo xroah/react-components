@@ -1,3 +1,4 @@
+import {oneOf, oneOfType} from "prop-types"
 import React, {
     createElement,
     ElementType,
@@ -100,7 +101,7 @@ export function getBreakpointClasses<T extends BaseValue>(
     if (value === undefined) {
         return ""
     }
-    
+
     const _prefix = getBreakpointPrefixFunc(prefix, breakpoint, suffix)
     const t = typeof value
 
@@ -109,18 +110,19 @@ export function getBreakpointClasses<T extends BaseValue>(
     } else if (t === "boolean") {
         return value ? _prefix() : ""
     }
-    
+
     return forEachBreakpoint(
         value as BreakpointType<Breakpoint, T>,
         (v, bp) => getBreakpointClasses(prefix, v, bp, suffix)
     )
 }
 
-export function getShape<T>(v: T) {
-    let ret: BreakpointType<Breakpoint, T> = {}
+export function getShape(v: any, type = true) {
+    let ret: BreakpointType<Breakpoint, any> = {}
 
     for (let bp of breakpoints) {
-        ret[bp] = v
+        ret[bp] = Array.isArray(v) ?
+            (type ? oneOfType(v) : oneOf(v)) : v
     }
 
     return ret
