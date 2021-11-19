@@ -1,31 +1,30 @@
 import * as React from "react"
 import handleFuncProp from "../handle-func-prop"
-import omit from "../../omit"
-import {
-    TransitionProps,
-    TransitionState,
-    stateType,
-    Next
-} from "./interface"
+import omitProps from "../../omit"
 import {
     ENTER,
     ENTERED,
     ENTERING,
     EXIT,
-    EXITING,
     EXITED,
+    EXITING,
     UNMOUNTED
 } from "./constants"
+import {
+    Next,
+    State,
+    stateType,
+    TransitionProps
+} from "./interface"
+import Placeholder from "../Placeholder"
 import propTypes from "./propTypes"
-import BaseTransition from "./BaseTransition"
+import {getNextNodeByRef} from ".."
 
-export default class Transition extends
-    BaseTransition<TransitionProps, TransitionState> {
-
+export default class CSSTransition extends
+    React.Component<TransitionProps, State> {
     nextTimer: number | null = null
     next: Next | null = null
     placeholderRef = React.createRef<HTMLDivElement>()
-    state: TransitionState
 
     static propTypes = propTypes
 
@@ -46,8 +45,19 @@ export default class Transition extends
             status = unmountOnExit ? UNMOUNTED : EXITED
         }
 
-        this.state = {
-            status
+        this.state = {status}
+    }
+
+    componentDidMount() {
+        const {appear, in: _in} = this.props
+
+        if (_in) {
+            if (appear) {
+                this.componentDidUpdate({in: false} as TransitionProps)
+            }
+            else {
+                this.handleCallback("onEntered")
+            }
         }
     }
 
@@ -64,7 +74,6 @@ export default class Transition extends
         if (_in !== prevProps.in) {
             status = _in ? ENTER : EXIT
 
-            this.clearNext()
             this.switchState(status)
         }
         else {
@@ -79,7 +88,7 @@ export default class Transition extends
     //in case findDOMNode returns null
     static getDerivedStateFromProps(
         nextProps: TransitionProps,
-        nextState: TransitionState
+        nextState: State
     ) {
         if (nextProps.in && nextState.status === UNMOUNTED) {
             return {
@@ -90,10 +99,10 @@ export default class Transition extends
         return nextState
     }
 
-    setNext(fn: Function, timeout = 0) {
+    setNext(fn: Function, timeout = 20) {
         this.next = {
             fn,
-            timeout: timeout + 20 //ensure transition ended
+            timeout
         }
     }
 
@@ -102,10 +111,7 @@ export default class Transition extends
             return
         }
 
-        const {
-            fn,
-            timeout
-        } = this.next
+        const {fn, timeout} = this.next
         const cb = this.safeCallback(fn.bind(this))
 
         if (!this.props.timeout) {
@@ -114,6 +120,8 @@ export default class Transition extends
 
         this.nextTimer = window.setTimeout(
             () => {
+                this.nextTimer = null
+
                 this.clearNext()
                 cb()
             },
@@ -146,114 +154,89 @@ export default class Transition extends
         return _callback
     }
 
-    enter() {
-        this.setNext(this.entering)
+    handleCallback(name: string) {
+        const cb = handleFuncProp((this.props as any)[name])
+
+        cb(getNextNodeByRef(this.placeholderRef))
+    }
+
+    performEnter() {
+        this.setNext(this.performEntering)
         this.setState(
-            {
-                status: ENTER
-            },
-            () => handleFuncProp(this.props.onEnter)()
+            {status: ENTER},
+            () => this.handleCallback("onEnter")
         )
     }
 
-    entering() {
-        const {
-            timeout,
-            onEntering
-        } = this.props
-
-        this.setNext(this.entered, timeout)
+    performEntering() {
+        this.setNext(this.performEntered, this.props.timeout)
         this.setState(
-            {
-                status: ENTERING
-            },
-            () => handleFuncProp(onEntering)()
+            {status: ENTERING},
+            () => this.handleCallback("onEntering")
         )
     }
 
-    entered() {
+    performEntered() {
         this.clearNext()
         this.setState(
-            {
-                status: ENTERED
-            },
-            () => handleFuncProp(this.props.onEntered)()
+            {status: ENTERED},
+            () => this.handleCallback("onEntered")
         )
     }
 
 
-    exit() {
-        this.setNext(this.exiting)
+    performExit() {
+        this.setNext(this.performExiting)
         this.setState(
-            {
-                status: EXIT
-            },
-            () => handleFuncProp(this.props.onExiting)()
+            {status: EXIT},
+            () => this.handleCallback("onExit")
         )
     }
 
-    exiting() {
-        const {
-            timeout,
-            onExiting
-        } = this.props
-
-        this.setNext(this.exited, timeout)
+    performExiting() {
+        this.setNext(this.performExited, this.props.timeout)
         this.setState(
-            {
-                status: EXITING
-            },
-            () => handleFuncProp(onExiting)()
+            {status: EXITING},
+            () => this.handleCallback("onExiting")
         )
     }
 
-    exited() {
-        const {
-            unmountOnExit,
-            onExited
-        } = this.props
-
-        if (unmountOnExit) {
+    performExited() {
+        if (this.props.unmountOnExit) {
             this.setNext(this.unmount)
         } else {
             this.clearNext()
         }
 
         this.setState(
-            {
-                status: EXITED
-            },
-            () => handleFuncProp(onExited)()
+            {status: EXITED},
+            () => this.handleCallback("onExited")
         )
     }
 
     unmount() {
         this.clearNext()
-        this.setState({
-            status: UNMOUNTED
-        })
+        this.setState({status: UNMOUNTED})
     }
 
     switchState(status: stateType) {
-        this.setState({status})
+        this.clearNext()
 
         if (status === ENTER) {
-            this.setNext(this.enter)
+            this.setNext(this.performEnter)
         }
         else if (status === EXIT) {
-            this.setNext(this.exit)
+            this.setNext(this.performExit)
         }
+
+        this.setState({status})
     }
 
     render() {
         const {
             status
         } = this.state
-        const div = (
-            <div
-                style={{display: "none"}}
-                ref={this.placeholderRef} />
-        )
+        const div = <Placeholder ref={this.placeholderRef} />
 
         if (status === UNMOUNTED) {
             return null
@@ -264,7 +247,7 @@ export default class Transition extends
             ...restProps
         } = this.props
 
-        omit(
+        const props = omitProps(
             restProps,
             [
                 "in",
@@ -283,7 +266,7 @@ export default class Transition extends
             return (
                 <>
                     {div}
-                    {children(status!)}
+                    {children(status)}
                 </>
             )
         }
@@ -293,7 +276,7 @@ export default class Transition extends
         return (
             <>
                 {div}
-                {React.cloneElement(child, restProps)}
+                {React.cloneElement(child, props)}
             </>
         )
     }

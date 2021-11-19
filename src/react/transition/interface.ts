@@ -2,24 +2,31 @@ import {states, UNMOUNTED} from "./constants"
 
 
 export type stateType = (typeof states)[number]
-export type callback = () => void
+export type Callback = (node?: HTMLElement) => void
 
 type ChildrenFunc = (
     state: Exclude<stateType, typeof UNMOUNTED>
 ) => React.ReactElement
 
-export interface TransitionProps {
+type Callbacks<T extends readonly string[]> = {
+    [K in T[number]]?: Callback
+}
+
+const callbacks = [
+    "onEnter",
+    "onEntering",
+    "onEntered",
+    "onExit",
+    "onExiting",
+    "onExited"
+] as const
+
+export interface TransitionProps extends Callbacks<typeof callbacks> {
     in: boolean
     timeout?: number
     unmountOnExit?: boolean
     appear?: boolean
     children: ChildrenFunc | React.ReactElement
-    onEnter?: callback
-    onEntering?: callback
-    onEntered?: callback
-    onExit?: callback
-    onExiting?: callback
-    onExited?: callback
 }
 
 export interface TransitionState {
@@ -44,4 +51,8 @@ export interface CSSTransitionProps extends TransitionProps {
 export interface Next {
     fn: Function
     timeout: number
+}
+
+export interface State {
+    status: stateType | typeof UNMOUNTED
 }
