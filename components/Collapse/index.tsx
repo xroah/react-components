@@ -31,11 +31,19 @@ function Collapse(
         children
     }: CollapseProps
 ) {
+    let c: React.ReactElement
+
     if (!React.isValidElement(children)) {
-        return <>{children}</>
+        c = (
+            <div>
+                {children}
+            </div>
+        )
+    } else {
+        c = children
     }
 
-    const classes = classNames(classNames, "collapse")
+    const classes = classNames(className, "collapse")
     const showClass = classNames(classes, "show")
     const collapsingClass = classNames(className, "collapsing")
     const updateHeight = (
@@ -50,10 +58,8 @@ function Collapse(
             }
         }
     }
-    const handleEnter = () => {
+    const handleEnter = (node?: HTMLElement) => {
         handleFuncProp(onShow)()
-    }
-    const handleEntering = (node?: HTMLElement) => {
         updateHeight(node)
     }
     const handleEntered = (node?: HTMLElement) => {
@@ -76,7 +82,6 @@ function Collapse(
             in={!!open}
             timeout={timeout!}
             onEnter={handleEnter}
-            onEntering={handleEntering}
             onEntered={handleEntered}
             onExit={handleExit}
             onExiting={handleExiting}
@@ -100,9 +105,12 @@ function Collapse(
                     }
 
                     return React.cloneElement(
-                        children,
+                        c,
                         {
-                            className: cls
+                            className: classNames(
+                                c.props.className,
+                                cls
+                            )
                         }
                     )
                 }

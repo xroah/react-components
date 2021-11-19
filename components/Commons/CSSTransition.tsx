@@ -66,11 +66,10 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
 
     componentDidMount() {
         const {
-            onEntered,
             appear,
             in: _in
         } = this.props
-
+        
         if (_in) {
             if (appear) {
                 this.componentDidUpdate({
@@ -78,7 +77,7 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
                 } as CSSTransitionProps)
             }
             else {
-                handleFuncProp(onEntered)()
+                this.handleCallback("onEntered")
             }
         }
     }
@@ -172,92 +171,81 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
         return _callback
     }
 
-    enter() {
-        this.setNext(this.entering)
-        handleFuncProp(this.props.onEnter)(this.getNode())
-        this.setState({
-            status: ENTER
-        })
+    handleCallback(name: string) {
+        const cb = handleFuncProp((this.props as any)[name])
+
+        cb(this.getNode())
     }
 
-    entering() {
-        const {
-            timeout,
-            onEntering
-        } = this.props
-
-        this.setState({
-            status: ENTERING
-        })
-        handleFuncProp(onEntering)(this.getNode())
-        this.setNext(this.entered, timeout)
+    performEnter() {
+        this.setNext(this.performEntering)
+        this.setState(
+            {status: ENTER},
+            () => this.handleCallback("onEnter")
+        )
     }
 
-    entered() {
+    performEntering() {
+        this.setNext(this.performEntered, this.props.timeout)
+        this.setState(
+            {status: ENTERING},
+            () => this.handleCallback("onEntering")
+        )
+    }
+
+    performEntered() {
         this.clearNext()
-        handleFuncProp(this.props.onEntered)(this.getNode())
-        this.setState({
-            status: ENTERED
-        })
+        this.setState(
+            {status: ENTERED},
+            () => this.handleCallback("onEntered")
+        )
     }
 
 
-    exit() {
-        this.setNext(this.exiting)
-        handleFuncProp(this.props.onExit)(this.getNode())
-        this.setState({
-            status: EXIT
-        })
+    performExit() {
+        this.setNext(this.performExiting)
+        this.setState(
+            {status: EXIT},
+            () => this.handleCallback("onExit")
+        )
     }
 
-    exiting() {
-        const {
-            timeout,
-            onExiting
-        } = this.props
-
-        this.setNext(this.exited, timeout)
-        handleFuncProp(onExiting)(this.getNode())
-        this.setState({
-            status: EXITING
-        })
+    performExiting() {
+        this.setNext(this.performExited, this.props.timeout)
+        this.setState(
+            {status: EXITING},
+            () => this.handleCallback("onExiting")
+        )
     }
 
-    exited() {
-        const {
-            unmountOnExit,
-            onExited
-        } = this.props
-
-        if (unmountOnExit) {
+    performExited() {
+        if (this.props.unmountOnExit) {
             this.setNext(this.unmount)
         } else {
             this.clearNext()
         }
 
-        this.setState({
-            status: EXITED
-        })
-        handleFuncProp(onExited)(this.getNode())
+        this.setState(
+            {status: EXITED},
+            () => this.handleCallback("onExited")
+        )
     }
 
     unmount() {
         this.clearNext()
-        this.setState({
-            status: UNMOUNTED
-        })
+        this.setState({status: UNMOUNTED})
     }
 
     switchState(status: stateType) {
         this.clearNext()
 
         if (status === ENTER) {
-            this.setNext(this.enter)
+            this.setNext(this.performEnter)
         }
         else if (status === EXIT) {
-            this.setNext(this.exit)
+            this.setNext(this.performExit)
         }
-        
+
         this.setState({status})
     }
 
@@ -275,7 +263,14 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
         const {
             status
         } = this.state
-        const div = <div className="d-none" ref={this.placeholderRef} />
+        const div = (
+            <div
+                style={{display: "none"}}
+                ref={this.placeholderRef} >
+                A placeholder for find DOM node,
+                due to findDOMNode has been deprecated in StrictMode
+            </div>
+        )
 
         if (status === UNMOUNTED) {
             return null
