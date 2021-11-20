@@ -5,27 +5,30 @@ const cfg: ConfigOptions = {
     port: 9876,
     basePath: "",
     singleRun: true,
-    reporters: ["progress", "coverage"],
+    reporters: ["progress", "karma-typescript", "coverage"],
     browsers: ["Chrome"],
     browserDisconnectTimeout: 0,
     frameworks: ["jasmine", "karma-typescript"],
     concurrency: Infinity,
     colors: true,
     logLevel: LOG_INFO,
-    coverageReporter: {
-        type: "html",
-        dir: "coverage/"
-    },
     files: [
         "src/**/*.ts?(x)",
         "tests/**/*.spec.ts?(x)"
     ],
     exclude: [
-        "**/*.d.ts"
+        "**/*.d.ts",
+        "node_modules"
     ],
     preprocessors: {
         "tests/**/*.ts?(x)": "karma-typescript",
         "src/**/*.ts?(x)": ["karma-typescript", "coverage"]
+    },
+    coverageReporter: {
+        type: "html",
+        dir: "coverage/"
+    },
+    karmaTypescriptConfig: {
     }
 } as ConfigOptions
 

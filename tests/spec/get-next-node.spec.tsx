@@ -1,4 +1,4 @@
-import getNextNodeByRef from "../../src/react/get-next-node-by-ref"
+import {getNextNodeByRef} from "../../src/react/main"
 import Placeholder from "../../src/react/Placeholder"
 import * as React from "react"
 import {render} from "react-dom"

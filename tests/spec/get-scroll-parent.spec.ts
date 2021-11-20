@@ -1,4 +1,4 @@
-import getScrollParent from "../../src/dom/get-scroll-parent"
+import {getScrollParent} from "../../src/dom"
 
 it("Should get scroll parent", () => {
     const html = `
