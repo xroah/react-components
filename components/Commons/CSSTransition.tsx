@@ -131,7 +131,7 @@ export default class CSSTransition extends React.Component<CSSTransitionProps, S
         }
 
         const {fn, timeout} = this.next
-        const cb = this.safeCallback(fn).bind(this)
+        const cb = this.safeCallback(fn.bind(this))
 
         if (!this.props.timeout) {
             return cb()
