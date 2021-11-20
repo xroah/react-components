@@ -8,7 +8,7 @@ import {
     EXITED,
     EXITING
 } from "./constants";
-import PropTypes from "prop-types"
+import {bool, string} from "prop-types"
 
 export default function CSSTransition(props: CSSTransitionProps) {
     const {
@@ -59,8 +59,8 @@ export default function CSSTransition(props: CSSTransitionProps) {
 }
 
 CSSTransition.propTypes = {
-    name: PropTypes.string.isRequired,
-    hiddenOnExited: PropTypes.bool
+    name: string.isRequired,
+    hiddenOnExited: bool
 }
 
 CSSTransition.defaultProps = {

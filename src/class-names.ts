@@ -1,6 +1,6 @@
 import { isPlainObject } from "./main"
 
-export default function classNames(...args: any[]): string {
+function _classNames(...args: any[]): string[] {
     const classes = []
 
     for (const arg of args) {
@@ -13,21 +13,25 @@ export default function classNames(...args: any[]): string {
         if (argType === "string" || argType === "number") {
             classes.push(arg.toString())
         } else if (Array.isArray(arg)) {
-            classes.push(...classNames(...arg))
+            classes.push(..._classNames(...arg))
         } else if (isPlainObject(arg)) {
             Object.keys(arg).forEach(
                 a => {
                     const v = arg[a]
 
                     if (v) {
-                        classes.push(...classNames(a))
+                        classes.push(..._classNames(a))
                     }
                 }
             )
         } else if (argType === "function") {
-            classes.push(...classNames(arg()))
+            classes.push(..._classNames(arg()))
         }
     }
 
-    return classes.join(" ")
+    return classes
+}
+
+export default function classNames(...args: any[]) {
+    return _classNames(args).join(" ")
 }

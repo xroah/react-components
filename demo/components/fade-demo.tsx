@@ -1,4 +1,4 @@
-import React, {useState} from "react"
+import * as React from "react"
 import Fade from "../../src/react/transition/Fade"
 
 export const callbacks = {
@@ -11,7 +11,7 @@ export const callbacks = {
 }
 
 export default function () {
-    const [visible, update] = useState(false)
+    const [visible, update] = React.useState(false)
     const handleClick = () => update(!visible)
 
     return (

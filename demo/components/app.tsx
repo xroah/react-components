@@ -1,4 +1,4 @@
-import React from "react"
+import * as React from "react"
 import FadeDemo from "./fade-demo"
 import CSSDemo from "./css-demo"
 
