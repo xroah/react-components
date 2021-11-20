@@ -1,6 +1,4 @@
 import * as React from "react"
-import {handleFuncProp} from "../main"
-import {omit} from "../../main"
 import {
     ENTER,
     ENTERED,
@@ -18,8 +16,16 @@ import {
 } from "./interface"
 import Placeholder from "../Placeholder"
 import propTypes from "./propTypes"
-import {getNextNodeByRef} from ".."
-import {isUndef} from "../.."
+import {
+    getNextNodeByRef,
+    only,
+    handleFuncProp
+} from "../main"
+import {
+    chainFunction,
+    isUndef,
+    omit
+} from "../../main"
 import {getTransitionDuration} from "../../dom"
 
 export default class Transition extends
@@ -150,8 +156,8 @@ export default class Transition extends
         this.nextTimer = window.setTimeout(
             () => {
                 this.nextTimer = null
+                this.next = null
 
-                this.clearNext()
                 fn()
             },
             timeout
@@ -226,7 +232,6 @@ export default class Transition extends
     }
 
     performEntered() {
-        this.clearNext()
         this.setState(
             {status: ENTERED},
             () => this.handleCallback("onEntered")
@@ -252,8 +257,6 @@ export default class Transition extends
     performExited() {
         if (this.props.unmountOnExit) {
             this.setNext(this.unmount)
-        } else {
-            this.clearNext()
         }
 
         this.setState(
@@ -263,7 +266,6 @@ export default class Transition extends
     }
 
     unmount() {
-        this.clearNext()
         this.setState({status: UNMOUNTED})
     }
 
@@ -288,18 +290,18 @@ export default class Transition extends
 
     render() {
         const {
-            status
-        } = this.state
+            state: {status},
+            props: {
+                children,
+                ...restProps
+            }
+        } = this
         const div = <Placeholder ref={this.placeholderRef} />
+        let child: React.ReactElement
 
         if (status === UNMOUNTED) {
             return null
         }
-
-        const {
-            children,
-            ...restProps
-        } = this.props
 
         const props = omit(
             restProps,
@@ -313,31 +315,30 @@ export default class Transition extends
                 "onExit",
                 "onExiting",
                 "onExited",
-
             ]
         )
 
         if (typeof children === "function") {
-            let child = React.Children.only(children(status))
-            child = React.cloneElement(
-                child,
-                {onTransitionEnd: this.onTransitionEnd}
-            )
-
-            return (
-                <>
-                    {div}
-                    {child}
-                </>
-            )
+            child = only(children(status))
+        } else {
+            child = only(children as React.ReactElement)
         }
 
-        const child = React.Children.only(children) as React.ReactElement
+        child = React.cloneElement(
+            child,
+            {
+                ...props,
+                onTransitionEnd: chainFunction(
+                    child.props.onTransitionEnd,
+                    this.onTransitionEnd
+                )
+            }
+        )
 
         return (
             <>
                 {div}
-                {React.cloneElement(child, props)}
+                {child}
             </>
         )
     }

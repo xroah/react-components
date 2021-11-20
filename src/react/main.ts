@@ -1,3 +1,4 @@
+import * as React from "react"
 import {noop} from "../main"
 
 export function getNextNodeByRef(ref: React.RefObject<HTMLElement>) {
@@ -34,4 +35,8 @@ export function handleFuncProp(prop?: Function) {
     }
 
     return prop
+}
+
+export function only(child: React.ReactElement) {
+    return React.Children.only(child)
 }
