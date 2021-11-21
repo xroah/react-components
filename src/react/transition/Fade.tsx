@@ -9,14 +9,15 @@ import {
 import {bool, string} from "prop-types"
 import {only} from "../main"
 
-export default function Fade(props: FadeProps) {
-    const {
+export default function Fade(
+    {
         transitionClass,
         activeClass,
         children,
         hiddenOnExited,
         ...restProps
-    } = props
+    }: FadeProps
+) {
 
     return (
         <Transition {...restProps}>
@@ -31,7 +32,7 @@ export default function Fade(props: FadeProps) {
                     } else if (state === EXITED && hiddenOnExited) {
                         style.display = "none"
                     }
-                    
+
                     return React.cloneElement(
                         child,
                         {
