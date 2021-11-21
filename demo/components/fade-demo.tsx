@@ -8,6 +8,7 @@ export const callbacks = {
     onExit: () => console.log("exit"),
     onExiting: () => console.log("exiting"),
     onExited: () => console.log("exited"),
+    onTransitionEnd: () => console.log("transitionEnd")
 }
 
 export default function () {

@@ -30,7 +30,7 @@ export default function Fade(props: FadeProps) {
                     } else if (state === EXITED && hiddenOnExited) {
                         style.display = "none"
                     }
-
+                    
                     return React.cloneElement(
                         child,
                         {
@@ -45,7 +45,7 @@ export default function Fade(props: FadeProps) {
 }
 
 Fade.defaultProps = {
-    timeout: 150,
+    timeout: 300,
     activeClass: "show",
     transitionClass: "fade",
     hiddenOnExited: true

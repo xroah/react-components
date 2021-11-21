@@ -15,3 +15,5 @@ export const states = [
     EXITED,
     UNMOUNTED
 ] as const
+
+export const TIME_PADDING = 20

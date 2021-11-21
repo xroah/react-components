@@ -6,6 +6,7 @@ import {
     EXIT,
     EXITED,
     EXITING,
+    TIME_PADDING,
     UNMOUNTED
 } from "./constants"
 import {
@@ -109,7 +110,7 @@ export default class Transition extends
 
     setNext(fn: Function, timeout = 0) {
         let called = false
-        const TIME_PADDING = 5
+        
         const cb = () => {
             // prevent from calling multiple times
             if (!called) {
@@ -143,7 +144,7 @@ export default class Transition extends
             const timeout = this.getTimeout()
 
             if (timeout && timeout !== this.next.timeout) {
-                this.next.timeout = timeout
+                this.next.timeout = timeout + TIME_PADDING
             }
         }
 
@@ -293,6 +294,7 @@ export default class Transition extends
             state: {status},
             props: {
                 children,
+                onTransitionEnd,
                 ...restProps
             }
         } = this
@@ -315,6 +317,7 @@ export default class Transition extends
                 "onExit",
                 "onExiting",
                 "onExited",
+                "unmountOnExit"
             ]
         )
 
@@ -330,11 +333,12 @@ export default class Transition extends
                 ...props,
                 onTransitionEnd: chainFunction(
                     child.props.onTransitionEnd,
+                    onTransitionEnd,
                     this.onTransitionEnd
                 )
             }
         )
-
+        
         return (
             <>
                 {div}

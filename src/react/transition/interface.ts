@@ -27,6 +27,7 @@ export interface TransitionProps extends Callbacks<typeof callbacks> {
     unmountOnExit?: boolean
     appear?: boolean
     children: ChildrenFunc | React.ReactElement
+    onTransitionEnd: (evt: React.TransitionEvent) => void
 }
 
 export interface TransitionState {
