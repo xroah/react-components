@@ -46,19 +46,6 @@ const FormCheck = React.forwardRef(
             inline && prefix("inline"),
             s && "form-switch"
         )
-        const getLabel = (c?: React.ReactNode) => {
-            if (isValidNode(c)) {
-                return (
-                    <label
-                        htmlFor={_id}
-                        className={prefix("label")}>
-                        {c}
-                    </label>
-                )
-            }
-
-            return null
-        }
 
         return (
             <div id={id} className={classes}>
@@ -67,7 +54,16 @@ const FormCheck = React.forwardRef(
                     ref={ref}
                     id={_id}
                     {...restProps} />
-                {getLabel(label)}
+                {
+                    isValidNode(label) && (
+                        <label
+                            htmlFor={_id}
+                            className={prefix("label")}>
+                            {label}
+                        </label>
+                    )
+                }
+                {/* children for feedbacks or something else */}
                 {children}
             </div>
         )

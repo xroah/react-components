@@ -156,3 +156,13 @@ export function cloneWithClass(
 export function onlyChild(child: ReactElement) {
     return React.Children.only(child)
 }
+
+export function capitalize(v: string) {
+    if (v.length === 0) {
+        return v
+    }
+
+    const first = v[0].toUpperCase()
+
+    return `${first}${v.substring(1)}`
+}

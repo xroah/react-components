@@ -18,6 +18,10 @@ interface FormItemProps extends FormCommon,
     wrapper?: FormWrapper
 }
 
+function get<P, C>(prop?: P, ctx?: C): P | C | undefined {
+    return prop === undefined ? ctx : prop
+}
+
 export default function FormItem(
     {
         labelAlign,
@@ -44,14 +48,17 @@ export default function FormItem(
     ) => {
         const LABEL_CLASS = "form-label"
         const colClasses = `col-${LABEL_CLASS}`
-        const _labelAlign = labelAlign === undefined ? ctxLabelAlign : labelAlign
-        const _labelCol = labelCol === undefined ? ctxLabelCol : labelAlign
-        const _labelSize = labelSize === undefined ? ctxLabelSize : labelSize
-        const _itemCol = itemCol === undefined ? ctxItemCol : itemCol
+        const _labelAlign = get(labelAlign, ctxLabelAlign)
+        const _labelCol = get(labelCol, ctxLabelCol)
+        const _labelSize = get(labelSize, ctxLabelSize)
+        const _itemCol = get(itemCol, ctxItemCol)
         const _wrapper = wrapper === undefined ?
-            ctxWrapper === undefined ? "div" : ctxWrapper
-            : wrapper
-        const bpClasses = _labelCol ? getBreakpointClasses("col", _labelCol) : ""
+            ctxWrapper === undefined ?
+                "div" :
+                ctxWrapper :
+            wrapper
+        const bpClasses = _labelCol ?
+            getBreakpointClasses("col", _labelCol) : ""
         const labelClasses = classNames(
             _labelAlign && `text-${_labelAlign}`,
             _labelCol ? `${bpClasses} ${colClasses}` : LABEL_CLASS,
@@ -94,6 +101,8 @@ export default function FormItem(
                 children: el,
                 ...restProps
             }
+            // bootstrap doesn't have any styles of this class,
+            // just for custom styles
             const ITEM_CLASS = "form-item"
             const classes = classNames(className, ITEM_CLASS,)
 
