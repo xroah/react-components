@@ -1,4 +1,4 @@
-import { isPlainObject } from "./main"
+import {isPlainObject} from "./main"
 
 function _classNames(...args: any[]): string[] {
     const classes = []

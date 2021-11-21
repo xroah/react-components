@@ -1,6 +1,6 @@
 import * as React from "react"
 import classNames from "../../class-names"
-import {handleFuncProp} from "../main"
+import {handleFuncProp, only} from "../main"
 import {ENTERED, EXITED} from "./constants"
 import {string} from "prop-types"
 import {NoTransitionProps} from "./interface"
@@ -47,20 +47,23 @@ export default class NoTransition extends BaseTransition<NoTransitionProps> {
             unmountOnExit,
             showClass
         } = this.props
-        const child = React.Children.only(children) as React.ReactElement
+        const child = only(children as React.ReactElement)
 
         if (!_in && unmountOnExit) {
             return null
         }
 
-    if (typeof children === "function") {
+        if (typeof children === "function") {
             return children(_in ? ENTERED : EXITED)
         }
 
         return React.cloneElement(
             child,
             {
-                className: classNames(child.props.className, showClass)
+                className: classNames(
+                    child.props.className,
+                    showClass
+                )
             }
         )
     }

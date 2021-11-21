@@ -1,4 +1,4 @@
-import { isPlainObject } from "./main"
+import {isPlainObject} from "./main"
 
 export interface Options {
     leading?: boolean

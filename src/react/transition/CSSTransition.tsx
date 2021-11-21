@@ -9,6 +9,7 @@ import {
     EXITING
 } from "./constants";
 import {bool, string} from "prop-types"
+import {only} from "../main";
 
 export default function CSSTransition(props: CSSTransitionProps) {
     const {
@@ -22,7 +23,7 @@ export default function CSSTransition(props: CSSTransitionProps) {
         <Transition {...restProps}>
             {
                 state => {
-                    const child = React.Children.only(children) as React.ReactElement
+                    const child = only(children as React.ReactElement) 
                     let style = {...child.props.style}
                     let className = [child.props.className]
 

@@ -7,6 +7,7 @@ import {
     EXITED
 } from "./constants"
 import {bool, string} from "prop-types"
+import {only} from "../main"
 
 export default function Fade(props: FadeProps) {
     const {
@@ -21,7 +22,7 @@ export default function Fade(props: FadeProps) {
         <Transition {...restProps}>
             {
                 state => {
-                    const child = React.Children.only(children) as React.ReactElement
+                    const child = only(children as React.ReactElement)
                     let style = {...child.props.style}
                     let className = [child.props.className, transitionClass]
 
