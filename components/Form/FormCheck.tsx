@@ -25,7 +25,6 @@ const FormCheck = React.forwardRef(
     (
         {
             id,
-            style,
             className,
             inline,
             inputId,
@@ -60,10 +59,7 @@ const FormCheck = React.forwardRef(
         }
 
         return (
-            <div
-                id={id}
-                style={style}
-                className={classes}>
+            <div id={id} className={classes}>
                 <input
                     className={prefix("input")}
                     ref={ref}
