@@ -27,7 +27,6 @@ type GuttersType = number | GuttersObject | GutterBreakpoint
 interface RowProps extends HTMLAttributes<HTMLDivElement> {
     cols?: ColsType
     gutters?: GuttersType
-    tag?: React.ElementType
 }
 
 function handleGutters(
@@ -73,7 +72,6 @@ export default function Row(
         className,
         cols,
         gutters,
-        tag,
         ...restProps
     }: RowProps
 ) {
@@ -84,13 +82,7 @@ export default function Row(
         handleGutters(gutters)
     )
 
-    return React.createElement(
-        tag!,
-        {
-            className: classes,
-            ...restProps
-        }
-    )
+    return <div className={classes} {...restProps} />
 }
 
 const colTypes = [
@@ -114,7 +106,4 @@ Row.propTypes = {
         ...gutterTypes,
         shape(getShape(gutterTypes))
     ])
-}
-Row.defaultProps = {
-    tag: "div"
 }
