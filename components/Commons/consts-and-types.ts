@@ -65,3 +65,6 @@ export type CSSComponentProps = {
 export interface WithVariantProp<T> extends HTMLAttributes<T> {
     variant?: Variant
 }
+
+export type ColSpan = "auto" | number | true
+export type ColSpanBreakpoints = BreakpointType<Breakpoint, ColSpan>

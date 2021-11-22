@@ -9,6 +9,8 @@ import classNames from "reap-utils/lib/class-names"
 import {
     Breakpoint,
     BreakpointType,
+    ColSpan,
+    ColSpanBreakpoints,
     Order,
     OrderBreakpoints
 } from "../Commons/consts-and-types"
@@ -16,12 +18,10 @@ import {getBreakpointClasses, getShape} from "../Commons/utils"
 import {orderPropType} from "../Commons/prop-types"
 import FlexItem from "../Utilities/Flex/Item"
 
-type Span = "auto" | number | true
-type SpanBreakpoints = BreakpointType<Breakpoint, Span>
 type OffsetBreakpoints = BreakpointType<Breakpoint, number>
 
 interface ColProps extends HTMLAttributes<HTMLDivElement> {
-    span: Span | SpanBreakpoints
+    span: ColSpan | ColSpanBreakpoints
     offset?: number | OffsetBreakpoints
     order?: Order | OrderBreakpoints
 }
