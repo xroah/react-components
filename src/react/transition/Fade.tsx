@@ -8,12 +8,13 @@ import {
 } from "./constants"
 import {bool, string} from "prop-types"
 import {only} from "../main"
+import classNames from "../../class-names"
 
 export default function Fade(
     {
-        transitionClass,
-        activeClass,
+        showClass,
         children,
+        name,
         hiddenOnExited,
         ...restProps
     }: FadeProps
@@ -25,10 +26,10 @@ export default function Fade(
                 state => {
                     const child = only(children as React.ReactElement)
                     let style = {...child.props.style}
-                    let className = [child.props.className, transitionClass]
+                    let className = [child.props.className, name]
 
                     if (state === ENTERING || state === ENTERED) {
-                        className.push(activeClass)
+                        className.push(showClass)
                     } else if (state === EXITED && hiddenOnExited) {
                         style.display = "none"
                     }
@@ -36,7 +37,7 @@ export default function Fade(
                     return React.cloneElement(
                         child,
                         {
-                            className: className.join(" "),
+                            className: classNames(className),
                             style
                         }
                     )
@@ -48,13 +49,13 @@ export default function Fade(
 
 Fade.defaultProps = {
     timeout: 300,
-    activeClass: "show",
-    transitionClass: "fade",
+    showClass: "show",
+    name: "fade",
     hiddenOnExited: true
 }
 
 Fade.propTypes = {
     hiddenOnExited: bool,
-    transitionClass: string,
-    activeClass: string
+    name: string,
+    showClass: string
 }
