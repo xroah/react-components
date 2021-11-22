@@ -7,6 +7,7 @@ import {
     string
 } from "prop-types";
 import {
+    alignments,
     orders,
     sizes,
     variants
@@ -28,5 +29,21 @@ export const orderPropType = oneOfType([
     shape(getShape(orderTypes))
 ])
 
+const spanTypes = [
+    oneOf(["auto", true]),
+    number
+]
+export const colSpanPropType = oneOfType([
+        ...spanTypes,
+        shape(getShape(spanTypes))
+    ])
+
 export const sizePropType = oneOf(sizes)
 export const variantPropType = oneOf(variants)
+export const alignmentPropType = oneOf(alignments)
+
+export const formCommPropTypes = {
+    labelAlign: alignmentPropType,
+    labelCol: colSpanPropType,
+    labelSize: sizePropType
+}

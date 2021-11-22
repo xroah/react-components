@@ -68,3 +68,9 @@ export interface WithVariantProp<T> extends HTMLAttributes<T> {
 
 export type ColSpan = "auto" | number | true
 export type ColSpanBreakpoints = BreakpointType<Breakpoint, ColSpan>
+
+export interface FormCommon {
+    labelAlign?: Alignment
+    labelCol?: ColSpan | ColSpanBreakpoints
+    labelSize?: Size
+}
