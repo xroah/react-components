@@ -11,31 +11,37 @@ interface FormProps extends FormCommon,
 
 export const FormContext = React.createContext<FormCommon>({})
 
-export default function Form(
-    {
-        className,
-        validated,
-        labelAlign,
-        labelCol,
-        labelSize,
-        ...restProps
-    }: FormProps
-) {
-    const classes = classNames(
-        className,
-        validated && "was-validated"
-    )
-
-    return (
-        <FormContext.Provider value={{
+const Form = React.forwardRef(
+    (
+        {
+            className,
+            validated,
             labelAlign,
             labelCol,
-            labelSize
-        }}>
-            <form className={classes} {...restProps} />
-        </FormContext.Provider>
-    )
-}
+            labelSize,
+            ...restProps
+        }: FormProps,
+        ref: React.ForwardedRef<HTMLFormElement>
+    ) => {
+        const classes = classNames(
+            className,
+            validated && "was-validated"
+        )
+
+        return (
+            <FormContext.Provider value={{
+                labelAlign,
+                labelCol,
+                labelSize
+            }}>
+                <form
+                    ref={ref}
+                    className={classes}
+                    {...restProps} />
+            </FormContext.Provider>
+        )
+    }
+)
 
 Form.propTypes = {
     validated: bool,

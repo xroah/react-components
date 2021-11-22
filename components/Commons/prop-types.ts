@@ -30,7 +30,8 @@ export const orderPropType = oneOfType([
 ])
 
 const spanTypes = [
-    oneOf(["auto", true]),
+    // typescript may infer 'auto' is a string or true is a boolean
+    oneOf(["auto" as "auto", true as true]),
     number
 ]
 export const colSpanPropType = oneOfType([
