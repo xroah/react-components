@@ -14,6 +14,7 @@ type Base = Omit<React.InputHTMLAttributes<HTMLInputElement>, "type">
 export interface FormCheckProps extends Base {
     inline?: boolean
     inputId?: string
+    label?: string
 }
 
 type InternalOnly = {
@@ -30,6 +31,7 @@ const FormCheck = React.forwardRef(
             inputId,
             children,
             switch: s,
+            label,
             ...restProps
         }: FormCheckProps & InternalOnly,
         ref: React.ForwardedRef<HTMLInputElement>
@@ -50,7 +52,7 @@ const FormCheck = React.forwardRef(
                     <label
                         htmlFor={_id}
                         className={prefix("label")}>
-                        {children}
+                        {c}
                     </label>
                 )
             }
@@ -65,7 +67,8 @@ const FormCheck = React.forwardRef(
                     ref={ref}
                     id={_id}
                     {...restProps} />
-                {getLabel(children)}
+                {getLabel(label)}
+                {children}
             </div>
         )
     }

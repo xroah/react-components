@@ -15,25 +15,7 @@ interface FormItemProps extends FormCommon,
     label?: string
     htmlFor?: string
     help?: React.ReactNode
-    validFeedback?: React.ReactNode
-    invalidFeedback?: React.ReactNode
-    tooltip?: boolean
     wrapper?: FormWrapper
-}
-
-function getFeedback(
-    children: React.ReactNode,
-    valid = true,
-    tooltip = false
-) {
-    const prefix = valid ? "valid" : "invalid"
-    const suffix = tooltip ? "tooltip" : "feedback"
-
-    return (
-        <div className={`${prefix}-${suffix}`}>
-            {children}
-        </div>
-    )
 }
 
 export default function FormItem(
@@ -43,13 +25,11 @@ export default function FormItem(
         labelSize,
         label,
         help,
-        validFeedback,
-        invalidFeedback,
-        tooltip,
         children,
         htmlFor,
         wrapper,
         itemCol,
+        className,
         ...restProps
     }: FormItemProps
 ) {
@@ -85,23 +65,15 @@ export default function FormItem(
                         <div className="form-text">{help}</div>
                     )
                 }
-                {
-                    isValidNode(validFeedback) && (
-                        getFeedback(validFeedback, true, tooltip)
-                    )
-                }
-                {
-                    isValidNode(invalidFeedback) && (
-                        getFeedback(invalidFeedback, false, tooltip)
-                    )
-                }
             </>
         )
         const el = (
             <>
                 {
                     isValidNode(label) && (
-                        <label className={labelClasses}>
+                        <label
+                            htmlFor={htmlFor}
+                            className={labelClasses}>
                             {label}
                         </label>
                     )
@@ -122,11 +94,28 @@ export default function FormItem(
                 children: el,
                 ...restProps
             }
+            const ITEM_CLASS = "form-item"
+            const classes = classNames(className, ITEM_CLASS,)
 
             if (React.isValidElement(_wrapper)) {
-                w = React.cloneElement(_wrapper, props)
+                w = React.cloneElement(
+                    _wrapper,
+                    {
+                        className: classNames(
+                            _wrapper.props.className,
+                            classes
+                        ),
+                        ...props
+                    }
+                )
             } else {
-                w = React.createElement(_wrapper, props)
+                w = React.createElement(
+                    _wrapper,
+                    {
+                        className: classes,
+                        ...props
+                    }
+                )
             }
 
             return w
@@ -136,12 +125,9 @@ export default function FormItem(
     }
 
     return (
-        <>
-            <FormContext.Consumer>
-                {render}
-            </FormContext.Consumer>
-
-        </>
+        <FormContext.Consumer>
+            {render}
+        </FormContext.Consumer>
     )
 }
 
@@ -149,8 +135,6 @@ FormItem.propTypes = {
     label: string,
     htmlFor: string,
     help: node,
-    validFeedback: node,
-    invalidFeedback: node,
     tooltip: bool,
     wrapper: wrapperPropType
 }
