@@ -47,3 +47,5 @@ Form.propTypes = {
     validated: bool,
     ...formCommPropTypes
 }
+
+export default Form
