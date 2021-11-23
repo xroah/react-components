@@ -8,14 +8,16 @@ export default function InputGroup(
     {
         size,
         className,
+        hasValidation,
         ...restProps
-    }: SizeProp
+    }: SizeProp & {hasValidation?: boolean}
 ) {
     const prefix = getPrefixFunc("input-group")
     const classes = classNames(
         className,
         prefix(),
-        size && prefix(size)
+        size && prefix(size),
+        hasValidation && "has-validation"
     )
 
     return <div className={classes} {...restProps} />
