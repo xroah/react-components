@@ -1,7 +1,13 @@
 import * as React from "react"
 import {FormCommon} from "../Commons/consts-and-types"
 import classNames from "reap-utils/lib/class-names"
-import {bool} from "prop-types"
+import {
+    bool,
+    element,
+    elementType,
+    oneOf,
+    oneOfType
+} from "prop-types"
 import {formCommPropTypes} from "../Commons/prop-types"
 
 interface FormProps extends FormCommon,
@@ -10,6 +16,11 @@ interface FormProps extends FormCommon,
 }
 
 export const FormContext = React.createContext<FormCommon>({})
+export const wrapperPropType = oneOfType([
+    elementType,
+    element,
+    oneOf([null])
+])
 
 const Form = React.forwardRef(
     (
@@ -19,6 +30,8 @@ const Form = React.forwardRef(
             labelAlign,
             labelCol,
             labelSize,
+            itemCol,
+            itemWrapper,
             ...restProps
         }: FormProps,
         ref: React.ForwardedRef<HTMLFormElement>
@@ -32,7 +45,9 @@ const Form = React.forwardRef(
             <FormContext.Provider value={{
                 labelAlign,
                 labelCol,
-                labelSize
+                labelSize,
+                itemCol,
+                itemWrapper
             }}>
                 <form
                     ref={ref}

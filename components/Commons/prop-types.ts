@@ -35,9 +35,9 @@ const spanTypes = [
     number
 ]
 export const colSpanPropType = oneOfType([
-        ...spanTypes,
-        shape(getShape(spanTypes))
-    ])
+    ...spanTypes,
+    shape(getShape(spanTypes))
+])
 
 export const sizePropType = oneOf(sizes)
 export const variantPropType = oneOf(variants)
@@ -46,5 +46,6 @@ export const alignmentPropType = oneOf(alignments)
 export const formCommPropTypes = {
     labelAlign: alignmentPropType,
     labelCol: colSpanPropType,
-    labelSize: sizePropType
+    labelSize: sizePropType,
+    itemCol: colSpanPropType
 }
