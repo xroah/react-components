@@ -65,7 +65,7 @@ const FormCheck = React.forwardRef(
                     ref={ref}
                     id={_id}
                     {...restProps} />
-                {getLabel()}
+                {getLabel(children)}
             </div>
         )
     }
