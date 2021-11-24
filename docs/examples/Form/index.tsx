@@ -11,6 +11,7 @@ import Row from "reap-ui/Layout/Row"
 import Col from "reap-ui/Layout/Col"
 import Button from "reap-ui/Button"
 import Validation from "./Validation"
+import Select from "reap-ui/Form/Select"
 
 export default () => (
     <div className="my-3">
@@ -93,10 +94,10 @@ export default () => (
                     wrapper={<Col span={{md: 4}} />}
                     htmlFor="inputState"
                     label="State">
-                    <select id="inputState" className="form-select" >
+                    <Select id="inputState" className="form-select" >
                         <option>Choose</option>
                         <option>...</option>
-                    </select>
+                    </Select>
                 </FormItem>
                 <FormItem
                     wrapper={<Col span={{md: 2}} />}

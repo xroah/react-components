@@ -8,6 +8,7 @@ import Checkbox from "reap-ui/Form/Checkbox"
 import Feedback from "reap-ui/Form/Feedback"
 import Button from "reap-ui/Button"
 import Text from "reap-ui/Utilities/Text"
+import Select from "reap-ui/Form/Select"
 
 export default () => {
     const [validated, update] = React.useState(false)
@@ -72,10 +73,10 @@ export default () => {
                         label="State"
                         htmlFor="validationCustom04"
                         wrapper={<Col span={{md: 3}} />}>
-                        <select className="form-select" required>
+                        <Select className="form-select" required>
                             <option value="">Choose...</option>
                             <option value="...">...</option>
-                        </select>
+                        </Select>
                         <Feedback
                             tooltip={TOOLTIP}
                             invalid="Please select a valid state." />
