@@ -4,28 +4,22 @@ function _classNames(...args: any[]): string[] {
     const classes = []
 
     for (const arg of args) {
-        if (!arg && arg !== 0) {
-            continue
-        }
+        if (arg || arg === 0) {
+            const argType = typeof arg
 
-        const argType = typeof arg
-
-        if (argType === "string" || argType === "number") {
-            classes.push(arg.toString())
-        } else if (Array.isArray(arg)) {
-            classes.push(..._classNames(...arg))
-        } else if (isPlainObject(arg)) {
-            Object.keys(arg).forEach(
-                a => {
-                    const v = arg[a]
-
-                    if (v) {
-                        classes.push(..._classNames(a))
+            if (argType === "string" || argType === "number") {
+                classes.push(arg.toString())
+            } else if (Array.isArray(arg)) {
+                classes.push(..._classNames(...arg))
+            } else if (isPlainObject(arg)) {
+                Object.keys(arg).forEach(a => {
+                    if (arg[a]) {
+                        classes.push(a)
                     }
-                }
-            )
-        } else if (argType === "function") {
-            classes.push(..._classNames(arg()))
+                })
+            } else if (argType === "function") {
+                classes.push(..._classNames(arg()))
+            }
         }
     }
 
