@@ -30,7 +30,7 @@ const Form = React.forwardRef(
             labelAlign,
             labelCol,
             labelSize,
-            itemCol,
+            childrenCol,
             itemWrapper,
             ...restProps
         }: FormProps,
@@ -46,7 +46,7 @@ const Form = React.forwardRef(
                 labelAlign,
                 labelCol,
                 labelSize,
-                itemCol,
+                childrenCol,
                 itemWrapper
             }}>
                 <form

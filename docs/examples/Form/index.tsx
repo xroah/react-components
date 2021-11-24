@@ -117,7 +117,7 @@ export default () => (
         </Text>
         <Form
             labelCol={{sm: 2}}
-            itemCol={{sm: 10}}
+            childrenCol={{sm: 10}}
             labelSize="sm"
             itemWrapper={<Row className="mb-3" />}>
             <FormItem
@@ -139,7 +139,7 @@ export default () => (
             </FormItem>
             <Row>
                 <FormItem
-                    itemCol={false}
+                    childrenCol={false}
                     wrapper={<Col span={{sm: 10}} offset={{sm: 2}} />}>
                     <Checkbox label="Example Checkbox" />
                 </FormItem>

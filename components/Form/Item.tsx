@@ -32,7 +32,7 @@ export default function FormItem(
         children,
         htmlFor,
         wrapper,
-        itemCol,
+        childrenCol,
         className,
         ...restProps
     }: FormItemProps
@@ -42,7 +42,7 @@ export default function FormItem(
             labelAlign: ctxLabelAlign,
             labelCol: ctxLabelCol,
             labelSize: ctxLabelSize,
-            itemCol: ctxItemCol,
+            childrenCol: ctxCCol,
             itemWrapper: ctxWrapper
         }: FormCommon
     ) => {
@@ -51,7 +51,7 @@ export default function FormItem(
         const _labelAlign = get(labelAlign, ctxLabelAlign)
         const _labelCol = get(labelCol, ctxLabelCol)
         const _labelSize = get(labelSize, ctxLabelSize)
-        const _itemCol = get(itemCol, ctxItemCol)
+        const _itemCol = get(childrenCol, ctxCCol)
         const _wrapper = wrapper === undefined ?
             ctxWrapper === undefined ?
                 "div" :

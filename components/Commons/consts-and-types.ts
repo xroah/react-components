@@ -77,6 +77,6 @@ export interface FormCommon {
     labelAlign?: Alignment
     labelCol?: FormCol
     labelSize?: Size
-    itemCol?: FormCol
+    childrenCol?: FormCol
     itemWrapper?: FormWrapper
 }
