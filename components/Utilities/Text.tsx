@@ -13,7 +13,11 @@ import {
     ValueOf,
     CSSComponentProps
 } from "../Commons/consts-and-types"
-import {cloneWithClass, getPrefixFunc, onlyChild} from "../Commons/utils"
+import {
+    cloneWithClass,
+    getPrefixFunc,
+    onlyChild
+} from "../Commons/utils"
 import {cssCompPropTypes} from "../Commons/prop-types"
 
 const fontWeights = [
@@ -60,6 +64,7 @@ interface CardTextProps extends CSSComponentProps {
     space?: ValueOf<typeof spaces>
     break?: boolean
     transform?: ValueOf<typeof transforms>
+    truncate?: boolean
     children: React.ReactElement
 }
 
@@ -76,6 +81,7 @@ export default function CardText(
         space,
         break: b,
         transform,
+        truncate,
         className
     }: CardTextProps
 ) {
@@ -91,7 +97,8 @@ export default function CardText(
         decoration && `${prefix()}-decoration-${decoration}`,
         space && prefix(space),
         b && prefix("break"),
-        transform && prefix(transform)
+        transform && prefix(transform),
+        truncate && prefix("truncate")
     )
 
     return cloneWithClass(c, className, classes)
