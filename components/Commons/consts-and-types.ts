@@ -1,4 +1,4 @@
-import {HTMLAttributes} from "react"
+import React, {HTMLAttributes} from "react"
 
 export type ValueOf<T extends readonly any[]> = T[number]
 
@@ -84,3 +84,5 @@ export interface FormCommon extends SizeProp {
     childrenCol?: FormCol
     itemWrapper?: FormWrapper
 }
+
+export type AProps = React.AnchorHTMLAttributes<HTMLAnchorElement>

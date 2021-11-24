@@ -3,7 +3,9 @@ import React, {
     createElement,
     ElementType,
     HTMLAttributes,
-    ReactElement
+    ReactElement,
+    cloneElement,
+    Children
 } from "react"
 import classNames from "reap-utils/lib/class-names"
 import {
@@ -25,34 +27,71 @@ export function isValidNode(node: any) {
         typeof node !== "boolean"
 }
 
-interface CreateOptions {
+interface HandlerReturnType<T>{
+    className?: string
+    newProps?: Partial<T>
+}
+
+type OmitClass<T> = Omit<T, "className">
+
+interface CreateOptions<T> {
     className?: string
     tag?: ElementType
     displayName?: string
+    render?: (props: T) => ReactElement
+    propsHandler?: (props: OmitClass<T>) => HandlerReturnType<T>
+    propTypes?: object
 }
 
-export function createComponent<T extends HTMLAttributes<HTMLElement>>(
+type DefaultProps = React.HTMLAttributes<HTMLDivElement>
+
+export function createComponent<
+    T extends HTMLAttributes<HTMLElement> = DefaultProps
+>(
     {
-        className,
+        className: creationClass,
         tag = "div",
-        displayName
-    }: CreateOptions,
+        displayName,
+        propTypes,
+        render,
+        propsHandler
+    }: CreateOptions<T>,
 ) {
-    const Component = ({
-        className: c,
-        ...restProps
-    }: T) => {
+    const Component = (props: T) => {
+        if (render) {
+            return render(props)
+        }
+
+        const {
+            className: c,
+            ...restProps
+        } = props
+        let className: string | undefined
+        let newProps: Partial<OmitClass<T>> | undefined = restProps
+
+        if (propsHandler) {
+            ({className, newProps} = propsHandler(restProps))
+        }
+
         return createElement(
             tag,
             {
-                className: classNames(className, c),
-                ...restProps
+                className: classNames(
+                    creationClass,
+                    className,
+                    c
+                ),
+                ...newProps
             }
         )
     }
 
     if (displayName) {
         Component.displayName = displayName
+    }
+
+    if (propTypes) {
+        Component.propTypes = propTypes
     }
 
     return Component
@@ -141,7 +180,7 @@ export function cloneWithClass(
     compClass?: string,
     handledClass?: string
 ) {
-    return React.cloneElement(
+    return cloneElement(
         c,
         {
             className: classNames(
@@ -154,7 +193,7 @@ export function cloneWithClass(
 }
 
 export function onlyChild(child: ReactElement) {
-    return React.Children.only(child)
+    return Children.only(child)
 }
 
 export function capitalize(v: string) {

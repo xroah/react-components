@@ -5,7 +5,7 @@ import {
     func
 } from "prop-types"
 import classNames from "reap-utils/lib/class-names"
-import {WithVariantProp} from "../Commons/consts-and-types"
+import {AProps, WithVariantProp} from "../Commons/consts-and-types"
 import Button from "../Button"
 import isUndef from "reap-utils/lib/is-undef"
 import Fade from "../Commons/Fade"
@@ -127,7 +127,7 @@ Alert.defaultProps = {
     fade: true
 }
 
-Alert.Link = createComponent<React.AnchorHTMLAttributes<HTMLAnchorElement>>({
+Alert.Link = createComponent<AProps>({
     tag: "a",
     displayName: "AlertLink",
     className: "alert-link"
