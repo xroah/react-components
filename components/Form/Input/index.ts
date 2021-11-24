@@ -1,6 +1,6 @@
 import {createComponent} from "../../Commons/utils"
 import Input from "./Input"
-import Group from "./InputGroup"
+import Group from "./Group"
 
 const Text = createComponent({
     tag: "div",

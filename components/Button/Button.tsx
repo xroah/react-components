@@ -4,11 +4,13 @@ import classNames from "reap-utils/lib/class-names"
 import {
     variants,
     ValueOf,
+    SizeProp,
     Size
 } from "../Commons/consts-and-types"
 import warning from "warning"
 import {getPrefixFunc} from "../Commons/utils"
 import {sizePropType} from "../Commons/prop-types"
+import SizeConsumer from "../Commons/SizeConsumer"
 
 type BaseProps = Omit<React.ButtonHTMLAttributes<HTMLElement>, "type" | "size">
 type AnchorProps = Omit<
@@ -30,10 +32,9 @@ const btnTypes = [
 
 let uuid = 0
 
-export interface ButtonProps extends BaseProps, AnchorProps {
+export interface ButtonProps extends SizeProp, BaseProps, AnchorProps {
     variant?: ValueOf<typeof btnVariants>
     outline?: boolean
-    size?: Size
     disabled?: boolean
     active?: boolean
     textNoWrap?: boolean
@@ -59,70 +60,74 @@ const Button = React.forwardRef(
         }: ButtonProps,
         ref: React.Ref<HTMLElement & HTMLInputElement>
     ) => {
-        const prefix = getPrefixFunc("btn")
-        const check = type === "checkbox" || type === "radio"
-        const classes = classNames(
-            className,
-            prefix(),
-            disabled && "disabled",
-            active && "active",
-            size && prefix(size),
-            outline ? prefix(`outline-${variant}`) : prefix(variant),
-            textNoWrap && "text-nowrap"
-        )
-        let _children = children
+        const render = (size?: Size) => {
+            const prefix = getPrefixFunc("btn")
+            const check = type === "checkbox" || type === "radio"
+            const classes = classNames(
+                className,
+                prefix(),
+                disabled && "disabled",
+                active && "active",
+                size && prefix(size),
+                outline ? prefix(`outline-${variant}`) : prefix(variant),
+                textNoWrap && "text-nowrap"
+            )
+            let _children = children
 
-        if (tag === undefined) {
-            if (check) {
-                tag = "input"
-            } else if ("href" in restProps) {
-                tag = "a"
-            } else {
-                tag = "button"
+            if (tag === undefined) {
+                if (check) {
+                    tag = "input"
+                } else if ("href" in restProps) {
+                    tag = "a"
+                } else {
+                    tag = "button"
+                }
             }
-        }
 
-        warning(
-            !(check && tag !== "input"),
-            `Checkbox or radio type should along with 'input' tag,
+            warning(
+                !(check && tag !== "input"),
+                `Checkbox or radio type should along with 'input' tag,
             received '${tag}'`
-        )
+            )
 
-        if (tag === "input") {
-            if (check) {
-                const label = (
-                    <label className={classes} htmlFor={id}>
-                        {_children}
-                    </label>
-                )
+            if (tag === "input") {
+                if (check) {
+                    const label = (
+                        <label className={classes} htmlFor={id}>
+                            {_children}
+                        </label>
+                    )
 
-                return (
-                    <>
-                        <input
-                            id={id}
-                            className={prefix("check")}
-                            ref={ref}
-                            type={type}
-                            {...restProps}
-                        />
-                        {label}
-                    </>
-                )
+                    return (
+                        <>
+                            <input
+                                id={id}
+                                className={prefix("check")}
+                                ref={ref}
+                                type={type}
+                                {...restProps}
+                            />
+                            {label}
+                        </>
+                    )
+                }
+
+                _children = undefined
             }
 
-            _children = undefined
+            return React.createElement(
+                tag!,
+                {
+                    className: classes,
+                    ref,
+                    type,
+                    ...restProps
+                },
+                children
+            )
         }
 
-        return React.createElement(
-            tag!,
-            {
-                className: classes,
-                ref,
-                type,
-                ...restProps
-            },
-            children
-        )
+        return <SizeConsumer size={size} children={render} />
     }
 )
 

@@ -166,3 +166,7 @@ export function capitalize(v: string) {
 
     return `${first}${v.substring(1)}`
 }
+
+export function getProp<P, C>(prop?: P, ctx?: C): P | C | undefined {
+    return prop === undefined ? ctx : prop
+}

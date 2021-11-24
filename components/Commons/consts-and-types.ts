@@ -73,7 +73,11 @@ type FormCol = ColSpan | ColSpanBreakpoints | null
 
 export type FormWrapper =  React.ElementType | React.ReactElement | null
 
-export interface FormCommon {
+export type SizeProp = {
+    size?: Size
+}
+
+export interface FormCommon extends SizeProp {
     labelAlign?: Alignment
     labelCol?: FormCol
     labelSize?: Size

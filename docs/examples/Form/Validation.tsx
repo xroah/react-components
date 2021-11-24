@@ -29,6 +29,7 @@ export default () => {
             <Form
                 ref={formRef}
                 noValidate
+                size="sm"
                 validated={validated}
                 className="my-3 needs-validation">
                 <Row gutters={3}>

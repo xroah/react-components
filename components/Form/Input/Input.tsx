@@ -1,5 +1,5 @@
 import * as React from "react"
-import {Size, ValueOf} from "../../Commons/consts-and-types"
+import {SizeProp, ValueOf} from "../../Commons/consts-and-types"
 import classNames from "reap-utils/lib/class-names"
 import {getPrefixFunc} from "../../Commons/utils"
 import {
@@ -8,6 +8,8 @@ import {
     oneOf
 } from "prop-types"
 import {sizePropType} from "../../Commons/prop-types"
+import {SizeContext} from "../../Commons/contexts"
+import SizeConsumer from "../../Commons/SizeConsumer"
 
 const variants = [
     "input",
@@ -20,11 +22,9 @@ type TextareaBase = Omit<
     keyof React.HTMLAttributes<HTMLTextAreaElement>
 >
 
-export interface SizeProp extends InputBase, TextareaBase {
-    size?: Size
-}
+export type InputCommonProps = SizeProp & InputBase & TextareaBase
 
-export interface InputProps extends SizeProp {
+export interface InputProps extends InputCommonProps {
     htmlSize?: number
     variant?: ValueOf<typeof variants>
     plain?: boolean
@@ -42,22 +42,30 @@ const Input = React.forwardRef(
         }: InputProps,
         ref: React.ForwardedRef<HTMLInputElement | HTMLTextAreaElement>
     ) => {
-        const prefix = getPrefixFunc("form-control")
-        const classes = classNames(
-            className,
-            prefix(),
-            size && prefix(size),
-            plain && prefix("plaintext")
-        )
+        return (
+            <SizeConsumer size={size}>
+                {
+                    size => {
+                        const prefix = getPrefixFunc("form-control")
+                        const classes = classNames(
+                            className,
+                            prefix(),
+                            size && prefix(size),
+                            plain && prefix("plaintext")
+                        )
 
-        return React.createElement(
-            variant!,
-            {
-                ref,
-                size: htmlSize,
-                className: classes,
-                ...restProps
-            }
+                        return React.createElement(
+                            variant!,
+                            {
+                                ref,
+                                size: htmlSize,
+                                className: classes,
+                                ...restProps
+                            }
+                        )
+                    }
+                }
+            </SizeConsumer>
         )
     }
 )

@@ -6,7 +6,11 @@ import {
 } from "prop-types"
 import classNames from "reap-utils/lib/class-names"
 import {FormCommon, FormWrapper} from "../Commons/consts-and-types"
-import {getBreakpointClasses, isValidNode} from "../Commons/utils"
+import {
+    getBreakpointClasses,
+    getProp,
+    isValidNode
+} from "../Commons/utils"
 import {FormContext, wrapperPropType} from "./Form"
 import Col from "../Layout/Col"
 
@@ -16,10 +20,6 @@ interface FormItemProps extends FormCommon,
     htmlFor?: string
     help?: React.ReactNode
     wrapper?: FormWrapper
-}
-
-function get<P, C>(prop?: P, ctx?: C): P | C | undefined {
-    return prop === undefined ? ctx : prop
 }
 
 export default function FormItem(
@@ -48,10 +48,10 @@ export default function FormItem(
     ) => {
         const LABEL_CLASS = "form-label"
         const colClasses = `col-${LABEL_CLASS}`
-        const _labelAlign = get(labelAlign, ctxLabelAlign)
-        const _labelCol = get(labelCol, ctxLabelCol)
-        const _labelSize = get(labelSize, ctxLabelSize)
-        const _itemCol = get(childrenCol, ctxCCol)
+        const _labelAlign = getProp(labelAlign, ctxLabelAlign)
+        const _labelCol = getProp(labelCol, ctxLabelCol)
+        const _labelSize = getProp(labelSize, ctxLabelSize)
+        const _itemCol = getProp(childrenCol, ctxCCol)
         const _wrapper = wrapper === undefined ?
             ctxWrapper === undefined ?
                 "div" :
@@ -133,11 +133,7 @@ export default function FormItem(
         return el
     }
 
-    return (
-        <FormContext.Consumer>
-            {render}
-        </FormContext.Consumer>
-    )
+    return <FormContext.Consumer children={render} />
 }
 
 FormItem.propTypes = {

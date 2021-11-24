@@ -9,6 +9,7 @@ import {
     oneOfType
 } from "prop-types"
 import {formCommPropTypes} from "../Commons/prop-types"
+import {SizeContext} from "../Commons/contexts"
 
 interface FormProps extends FormCommon,
     React.FormHTMLAttributes<HTMLFormElement> {
@@ -32,6 +33,7 @@ const Form = React.forwardRef(
             labelSize,
             childrenCol,
             itemWrapper,
+            size,
             ...restProps
         }: FormProps,
         ref: React.ForwardedRef<HTMLFormElement>
@@ -49,10 +51,12 @@ const Form = React.forwardRef(
                 childrenCol,
                 itemWrapper
             }}>
-                <form
-                    ref={ref}
-                    className={classes}
-                    {...restProps} />
+                <SizeContext.Provider value={{size}}>
+                    <form
+                        ref={ref}
+                        className={classes}
+                        {...restProps} />
+                </SizeContext.Provider>
             </FormContext.Provider>
         )
     }
