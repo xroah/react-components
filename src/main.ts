@@ -1,5 +1,5 @@
 // for avoid cycling reference
-export function chainFunction(...fn: Function[]) {
+export function chainFunction(...fn: any[]) {
     return fn.reduce(
         (acc, cur) => (...args: any[]) => {
             acc.apply(null, args)
@@ -33,7 +33,6 @@ export function omit<T extends object, K extends keyof T>(
             delete obj[prop]
         }
     }
-
 
     return obj
 }
