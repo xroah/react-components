@@ -1,7 +1,7 @@
-import {capitalize} from "../Commons/utils"
+import {capitalize} from "../../Commons/utils"
 import createCheckComponent from "./FormCheck"
 
-const NAME = "radio"
+const NAME = "checkbox"
 
 export default createCheckComponent(
     NAME,
