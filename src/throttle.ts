@@ -13,7 +13,7 @@ export default (fn: Function, delay: number = 100, options: Options = {}) => {
     let timer: any = null
     let previous = 0
     const {trailing, leading} = options
-    const throttled = (...args: any[]) => {
+    const throttled = (...args: unknown[]) => {
         const now = Date.now()
 
         if (!previous && leading === false) {

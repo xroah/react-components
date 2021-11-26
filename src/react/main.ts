@@ -9,14 +9,14 @@ export function getNextNodeByRef(ref: React.RefObject<HTMLElement>) {
     return ref.current.nextElementSibling
 }
 
-export function isValidNode(node: any) {
+export function isValidNode(node: unknown) {
     return node !== null &&
         node !== undefined &&
         typeof node !== "boolean"
 }
 
-export function mergeRef(...refs: React.Ref<any>[]) {
-    return (node: any) => {
+export function mergeRef(...refs: React.Ref<unknown>[]) {
+    return (node: unknown) => {
         refs.forEach((ref: any) => {
             if (ref) {
                 if ("current" in ref) {

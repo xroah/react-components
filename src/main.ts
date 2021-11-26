@@ -1,7 +1,7 @@
 // for avoid cycling reference
 export function chainFunction(...fn: any[]) {
     return fn.reduce(
-        (acc, cur) => (...args: any[]) => {
+        (acc, cur) => (...args: unknown[]) => {
             acc.apply(null, args)
 
             if (typeof cur === "function") {
@@ -12,11 +12,11 @@ export function chainFunction(...fn: any[]) {
     )
 }
 
-export function isPlainObject(obj: any) {
+export function isPlainObject(obj: unknown) {
     return Object.prototype.toString.call(obj) === "[object Object]"
 }
 
-export function isUndef(v: any) {
+export function isUndef(v: unknown) {
     return v === undefined || v === null
 }
 
