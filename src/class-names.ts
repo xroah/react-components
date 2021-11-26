@@ -1,31 +1,34 @@
 import {isPlainObject} from "./main"
 
-function _classNames(...args: any[]): string[] {
-    const classes = []
+export default function classNames(...args: any[]) {
+    const classes: string[] = []
+    const push = (v: string) => {
+        if (v) {
+            classes.push(v)
+        }
+    }
 
     for (const arg of args) {
         if (arg || arg === 0) {
             const argType = typeof arg
 
             if (argType === "string" || argType === "number") {
-                classes.push(arg.toString())
+                push(arg.toString())
             } else if (Array.isArray(arg)) {
-                classes.push(..._classNames(...arg))
+                if (arg.length) {
+                    push(classNames(...arg))
+                }
             } else if (isPlainObject(arg)) {
-                Object.keys(arg).forEach(a => {
-                    if (arg[a]) {
-                        classes.push(a)
+                Object.keys(arg).forEach(key => {
+                    if (arg[key]) {
+                        push(key)
                     }
                 })
             } else if (argType === "function") {
-                classes.push(..._classNames(arg()))
+                push(classNames(arg()))
             }
         }
     }
 
-    return classes
-}
-
-export default function classNames(...args: any[]) {
-    return _classNames(args).join(" ")
+    return classes.join(" ")
 }
