@@ -3,7 +3,7 @@ import classNames from "reap-utils/lib/class-names"
 import PropTypes from "prop-types"
 import {ValueOf, Variant} from "../Commons/consts-and-types"
 import {variantPropType} from "../Commons/prop-types"
-import {createComponent} from "../Commons/utils"
+import createComponent from "../Commons/create-component"
 
 const colors = ["light", "dark"] as const
 
@@ -16,6 +16,7 @@ export interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
 export default createComponent<BadgeProps>({
     className: "badge",
     tag: "span",
+    displayName: "Badge",
     propTypes: {
         variant: variantPropType,
         pill: PropTypes.bool,

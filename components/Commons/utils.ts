@@ -1,12 +1,9 @@
-import {oneOf, oneOfType} from "prop-types"
-import React, {
-    createElement,
-    ElementType,
-    HTMLAttributes,
+import {
     ReactElement,
     cloneElement,
     Children
 } from "react"
+import {oneOf, oneOfType} from "prop-types"
 import classNames from "reap-utils/lib/class-names"
 import {
     PrefixFunc,
@@ -25,88 +22,6 @@ export function isValidNode(node: any) {
     return node !== null &&
         node !== undefined &&
         typeof node !== "boolean"
-}
-
-interface HandlerReturnType<T>{
-    className?: string
-    newProps?: Partial<T>
-}
-
-type OmitClass<T> = Omit<T, "className">
-
-interface CreateOptions<T> {
-    className?: string
-    tag?: ElementType
-    displayName?: string
-    render?: (props: T) => ReactElement
-    propsHandler?: (props: OmitClass<T>) => HandlerReturnType<T>
-    propTypes?: object
-}
-
-type DefaultProps = React.HTMLAttributes<HTMLDivElement>
-
-export function createComponent<
-    T extends HTMLAttributes<HTMLElement> = DefaultProps
->(
-    {
-        className: creationClass,
-        tag = "div",
-        displayName,
-        propTypes,
-        render,
-        propsHandler
-    }: CreateOptions<T>,
-) {
-    const Component = (props: T) => {
-        if (render) {
-            return render(props)
-        }
-
-        const {
-            className: c,
-            ...restProps
-        } = props
-        let className: string | undefined
-        let newProps: Partial<OmitClass<T>> | undefined = restProps
-
-        if (propsHandler) {
-            ({className, newProps} = propsHandler(restProps))
-        }
-
-        return createElement(
-            tag,
-            {
-                className: classNames(
-                    creationClass,
-                    className,
-                    c
-                ),
-                ...newProps
-            }
-        )
-    }
-
-    if (displayName) {
-        Component.displayName = displayName
-    }
-
-    if (propTypes) {
-        Component.propTypes = propTypes
-    }
-
-    return Component
-}
-
-export function getBreakpointPrefixFunc(
-    prefix: string,
-    breakpoint?: Breakpoint,
-    suffix?: string
-) {
-    const p = breakpoint !== undefined && breakpoint !== "xs" ?
-        `${prefix}-${breakpoint}` :
-        prefix
-
-    return getPrefixFunc(suffix ? `${p}-${suffix}` : p)
 }
 
 type BaseValue = string | number | boolean | object
@@ -129,6 +44,18 @@ export function forEachBreakpoint<T extends BaseValue>(
     )
 
     return classes.join(" ")
+}
+
+export function getBreakpointPrefixFunc(
+    prefix: string,
+    breakpoint?: Breakpoint,
+    suffix?: string
+) {
+    const p = breakpoint !== undefined && breakpoint !== "xs" ?
+        `${prefix}-${breakpoint}` :
+        prefix
+
+    return getPrefixFunc(suffix ? `${p}-${suffix}` : p)
 }
 
 export function getBreakpointClasses<T extends BaseValue>(

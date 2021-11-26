@@ -1,6 +1,6 @@
-import { createComponent } from '../Commons/utils';
 import Nav from "./Nav"
 import NavLink from './Link';
+import createComponent from "../Commons/create-component";
 
 const Item = createComponent({
     tag: "div",

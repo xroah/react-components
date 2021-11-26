@@ -1,19 +1,24 @@
 import * as React from "react"
+import createComponent from "../Commons/create-component"
+import {capitalize} from "../Commons/utils"
 
-function Breadcrumb(
-    {
+const CLASS_NAME = "breadcrumb"
+
+export default createComponent<React.HTMLAttributes<HTMLHtmlElement>>({
+    displayName: capitalize(CLASS_NAME),
+    render(
         className,
-        children,
-        ...restProps
-    }: React.HTMLAttributes<HTMLElement>
-) {
-    return (
-        <nav className={className} {...restProps}>
-            <ol className="breadcrumb">
-                {children}
-            </ol>
-        </nav>
-    )
-}
-
-export default Breadcrumb
+        {
+            children,
+            ...restProps
+        }
+    ) {
+        return (
+            <nav className={className} {...restProps}>
+                <ol className="breadcrumb">
+                    {children}
+                </ol>
+            </nav>
+        )
+    }
+})

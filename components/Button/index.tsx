@@ -2,7 +2,7 @@ import Button from "./Button"
 import Toggle from "./Toggle"
 import Group from "./Group"
 import Close from "./Close"
-import {createComponent} from "../Commons/utils"
+import createComponent from "../Commons/create-component"
 
 const Toolbar = createComponent({
     className: "btn-toolbar",

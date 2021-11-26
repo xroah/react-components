@@ -1,39 +1,40 @@
 import * as React from "react"
 import PropTypes from "prop-types"
-import classNames from "reap-utils/lib/class-names"
+import createComponent from "../Commons/create-component"
 
-type BaseProps = React.LiHTMLAttributes<HTMLLIElement>
-
-export interface BreadcrumbItemProps extends BaseProps {
+export interface BreadcrumbItemProps extends
+    React.LiHTMLAttributes<HTMLLIElement> {
     active?: boolean
     href?: string
 }
 
-function BreadcrumbItem(
-    {
-        className,
-        children,
-        href,
+export default createComponent<BreadcrumbItemProps>({
+    className: "breadcrumb-item",
+    propTypes: {
+        active: PropTypes.bool,
+        href: PropTypes.string
+    },
+    propsHandler({
         active,
         ...restProps
-    }: BreadcrumbItemProps
-) {
-    const classes = classNames(
+    }) {
+        return {
+            className: active ? "active" : "",
+            newProps: restProps
+        }
+    },
+    render(
         className,
-        "breadcrumb-item",
-        active && "active"
-    )
-
-    return (
-        <li className={classes} {...restProps}>
-            <a href={href}>{children}</a>
-        </li>
-    )
-}
-
-BreadcrumbItem.propTypes = {
-    active: PropTypes.bool,
-    href: PropTypes.string
-}
-
-export default BreadcrumbItem
+        {
+            href,
+            children,
+            ...restProps
+        }
+    ) {
+        return (
+            <li className={className} {...restProps}>
+                <a href={href}>{children}</a>
+            </li>
+        )
+    }
+})
