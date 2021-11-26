@@ -10,7 +10,7 @@ export default (fn: Function, delay: number = 100, options: Options = {}) => {
         options = {}
     }
 
-    let timer: any = null
+    let timer: number | null = null
     let previous = 0
     const {trailing, leading} = options
     const throttled = (...args: unknown[]) => {
@@ -31,7 +31,7 @@ export default (fn: Function, delay: number = 100, options: Options = {}) => {
             previous = now
             fn.apply(null, args)
         } else if (!timer && trailing !== false) {
-            timer = setTimeout(
+            timer = window.setTimeout(
                 () => {
                     previous = leading === false ? 0 : Date.now()
                     timer = null
