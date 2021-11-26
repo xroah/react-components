@@ -124,7 +124,7 @@ export function onlyChild(child: ReactElement) {
 }
 
 export function capitalize(v: string) {
-    if (v.length === 0) {
+    if (!v.length) {
         return v
     }
 
@@ -135,4 +135,11 @@ export function capitalize(v: string) {
 
 export function getProp<P, C>(prop?: P, ctx?: C): P | C | undefined {
     return prop === undefined ? ctx : prop
+}
+
+export function camelCase(v: string) {
+    return v.
+        split("-").
+        map(s => capitalize(s)).
+        join("")
 }
