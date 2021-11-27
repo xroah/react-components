@@ -2,6 +2,7 @@ import * as React from "react"
 import Alert from "./Alert"
 import Button from "./Button"
 import Badge from "./Badge"
+import Breadcrumb from "./BreadCrumb"
 import Card from "./Card"
 import Collapse from "./Collapse"
 import Flex from "./Flex"
@@ -21,6 +22,7 @@ export default function () {
         <>
             <Alert />
             <Badge />
+            <Breadcrumb />
             <Button />
             <Card />
             <Collapse />
