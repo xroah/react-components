@@ -40,3 +40,24 @@ export function omit<T extends object, K extends keyof T>(
 export function noop() {
     // do nothing
 }
+
+export function capitalize(v: string) {
+    if (!v) {
+        return v
+    }
+
+    let first = v[0].toUpperCase()
+
+    return `${first}${v.substring(1)}`
+}
+
+export function camelCase(v: string, delimiter = "-") {
+    if (!v) {
+        return ""
+    }
+
+    return v.
+        split(delimiter).
+        map(capitalize).
+        join("")
+}
