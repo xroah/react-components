@@ -1,42 +1,30 @@
 import * as React from "react"
-import PropTypes from "prop-types"
-import classNames from "reap-utils/lib/class-names"
-import {getPrefixFunc} from "../Commons/utils"
+import {oneOf, symbol} from "prop-types"
+import {camelCase} from "../Commons/utils"
+import {createForwardRef} from "../Commons/create-component"
 
 type BaseProps = React.ButtonHTMLAttributes<HTMLButtonElement>
 
+const variant = "white"
+const PREFIX = "btn-close"
+
 interface CloseProps extends BaseProps {
-    variant?: "white"
+    variant?: typeof variant
 }
 
-const Close = React.forwardRef(
-    (
-        {
-            className,
-            variant,
-            ...restProps
-        }: CloseProps,
-        ref: React.Ref<HTMLButtonElement>
-    ) => {
-        const prefix = getPrefixFunc("btn-close")
-        const classes = classNames(
-            className,
-            prefix(),
-            variant && prefix(variant)
-        )
-
-        return (
-            <button
-                ref={ref}
-                className={classes}
-                {...restProps} />
-        )
+export default createForwardRef<CloseProps, HTMLButtonElement>({
+    className: PREFIX,
+    displayName: camelCase(PREFIX),
+    propTypes: {
+        variant: oneOf([variant])
+    },
+    propsHandler({
+        variant,
+        ...restProps
+    }) {
+        return {
+            className: variant ? `${PREFIX}-${variant}` : "",
+            newProps: restProps
+        }
     }
-)
-
-Close.propTypes = {
-    variant: PropTypes.oneOf(["white"])
-}
-Close.displayName = "CloseButton"
-
-export default Close
+})

@@ -1,9 +1,12 @@
-import {
+import React, {
     ReactElement,
     ElementType,
     HTMLAttributes,
     createElement,
-    FunctionComponent
+    FunctionComponent,
+    Ref,
+    forwardRef,
+    ForwardRefExoticComponent
 } from "react"
 import classNames from "reap-utils/lib/class-names"
 
@@ -14,66 +17,114 @@ interface HandlerReturnType<T> {
 
 type OmitClass<T> = Omit<T, "className">
 
-interface CreateOptions<T> {
-    className?: string
-    tag?: ElementType
-    displayName?: string
-    propTypes?: object
-    propsHandler?: (props: OmitClass<T>) => HandlerReturnType<T>
-    render?: (c: string, p: Partial<OmitClass<T>>) => ReactElement
+type RenderFunc<T, E> = {
+    (c: string, p: Partial<OmitClass<T>>, ref?: Ref<E>): ReactElement
 }
 
-type Base = HTMLAttributes<HTMLElement>
-type DefaultProps = React.HTMLAttributes<HTMLDivElement>
+/* interface CreateBaseOptions {
+    displayName?: string
+    propTypes?: object
+    defaultProps?: object
+} */
 
-function createComponent<T extends Base = DefaultProps>(
+interface CreateOptions<T, E = HTMLElement> {
+    className?: string
+    tag?: ElementType
+    propsHandler?: (props: OmitClass<T>) => HandlerReturnType<T>
+    render?: RenderFunc<T, E>
+}
+
+type BaseProps = HTMLAttributes<HTMLElement>
+type DefaultProps = React.HTMLAttributes<HTMLDivElement>
+type OptionalProps = "displayName" | "propTypes" | "defaultProps"
+
+function create<T extends BaseProps, E extends HTMLElement>(
     {
         className: creationClass,
         tag = "div",
-        displayName,
-        propTypes,
         propsHandler,
         render
-    }: CreateOptions<T>,
+    }: CreateOptions<T, E>,
+    props: T,
+    ref?: Ref<E>
 ) {
-    const Component: FunctionComponent<T> = (props: T) => {
-        const {
-            className: c,
-            ...restProps
-        } = props
-        let className = ""
-        let newProps: Partial<OmitClass<T>> = restProps
+    const {
+        className: propClass,
+        ...restProps
+    } = props
+    let className = ""
+    let newProps: Partial<OmitClass<T>> = restProps
 
-        if (propsHandler) {
-            ({className, newProps} = propsHandler(restProps))
-        }
+    if (propsHandler) {
+        ({className, newProps} = propsHandler(restProps))
+    }
 
-        className = classNames(
-            creationClass,
+    className = classNames(
+        creationClass,
+        propClass,
+        className
+    )
+
+    if (render) {
+        return render(className, newProps, ref)
+    }
+
+    return createElement(
+        tag,
+        {
             className,
-            c
-        )
-
-        if (render) {
-            return render(className, newProps)
+            ref,
+            ...newProps
         }
+    )
+}
 
-        return createElement(
-            tag,
-            {
-                className,
-                ...newProps
-            }
-        )
+type ComponentAttrs = {
+    displayName?: string,
+    propTypes?: object,
+    defaultProps?: object
+}
+
+function handleComponent<T>(
+    Component: FunctionComponent<T> | ForwardRefExoticComponent<T>,
+    {
+        displayName,
+        propTypes,
+        defaultProps
+    }: ComponentAttrs
+) {
+    Component.displayName = displayName
+    Component.propTypes = propTypes
+    Component.defaultProps = defaultProps
+}
+
+function createComponent<T extends BaseProps = DefaultProps>(
+    options: CreateOptions<T> & Pick<FunctionComponent<T>, OptionalProps>,
+) {
+    let Component: FunctionComponent<T> = (props: T) => {
+        return create(options, props)
     }
 
-    if (displayName) {
-        Component.displayName = displayName
-    }
+    handleComponent(Component, options)
 
-    if (propTypes) {
-        Component.propTypes = propTypes
-    }
+    return Component
+}
+
+
+export function createForwardRef<
+    T extends BaseProps,
+    E extends HTMLElement
+>(
+    options: CreateOptions<T, E> &
+        Pick<ForwardRefExoticComponent<T>, OptionalProps>
+) {
+    const Component = forwardRef(
+        (props: T, ref: Ref<E>) => {
+            return create(options, props, ref)
+        }
+    )
+
+    handleComponent(Component, options)
 
     return Component
 }
