@@ -4,36 +4,29 @@ import PropTypes from "prop-types"
 import {SizeProp} from "../Commons/consts-and-types"
 import {getPrefixFunc} from "../Commons/utils"
 import {sizePropType} from "../Commons/prop-types"
-import SizeConsumer from "../Commons/SizeConsumer"
+import {createSizeElement} from "../Commons/SizeConsumer"
 
 interface GroupProps extends SizeProp,
     React.HTMLAttributes<HTMLDivElement> {
     vertical?: boolean
 }
 
+const prefix = "btn-group"
+
 export default function ButtonGroup(
     {
-        size,
         vertical,
-        className,
         ...restProps
     }: GroupProps
 ) {
-    return (
-        <SizeConsumer size={size}>
-            {
-                size => {
-                    const prefix = getPrefixFunc("btn-group")
-                    const classes = classNames(
-                        className,
-                        size && prefix(size),
-                        vertical ? prefix("vertical") : prefix()
-                    )
-
-                    return <div className={classes} {...restProps} />
-                }
+    return createSizeElement(
+        restProps,
+        {
+            prefixAsClass: false,
+            getClass() {
+                return vertical ? `${prefix}-vertical` : prefix
             }
-        </SizeConsumer>
+        }
     )
 }
 

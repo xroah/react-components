@@ -8,8 +8,7 @@ import {
     oneOf
 } from "prop-types"
 import {sizePropType} from "../../Commons/prop-types"
-import {SizeContext} from "../../Commons/contexts"
-import SizeConsumer from "../../Commons/SizeConsumer"
+import {createSizeElement} from "../../Commons/SizeConsumer"
 
 const variants = [
     "input",
@@ -33,8 +32,6 @@ export interface InputProps extends InputCommonProps {
 const Input = React.forwardRef(
     (
         {
-            className,
-            size,
             plain,
             variant,
             htmlSize,
@@ -42,30 +39,20 @@ const Input = React.forwardRef(
         }: InputProps,
         ref: React.ForwardedRef<HTMLInputElement | HTMLTextAreaElement>
     ) => {
-        return (
-            <SizeConsumer size={size}>
-                {
-                    size => {
-                        const prefix = getPrefixFunc("form-control")
-                        const classes = classNames(
-                            className,
-                            prefix(),
-                            size && prefix(size),
-                            plain && prefix("plaintext")
-                        )
+        const prefix = "form-control"
 
-                        return React.createElement(
-                            variant!,
-                            {
-                                ref,
-                                size: htmlSize,
-                                className: classes,
-                                ...restProps
-                            }
-                        )
-                    }
+        return createSizeElement(
+            {
+                ref,
+                ...restProps
+            },
+            {
+                tag: variant,
+                prefix,
+                getClass() {
+                    return plain ? `${prefix}-plaintext` : ""
                 }
-            </SizeConsumer>
+            }
         )
     }
 )
