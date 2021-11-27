@@ -84,5 +84,3 @@ export interface FormCommon extends SizeProp {
     childrenCol?: FormCol
     itemWrapper?: FormWrapper
 }
-
-export type AProps = React.AnchorHTMLAttributes<HTMLAnchorElement>

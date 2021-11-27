@@ -5,7 +5,7 @@ import {
     func
 } from "prop-types"
 import classNames from "reap-utils/lib/class-names"
-import {AProps, WithVariantProp} from "../Commons/consts-and-types"
+import {WithVariantProp} from "../Commons/consts-and-types"
 import Button from "../Button"
 import isUndef from "reap-utils/lib/is-undef"
 import Fade from "../Commons/Fade"
@@ -28,7 +28,13 @@ export interface AlertProps extends WithVariantProp<HTMLDivElement> {
     onCloseButtonClick?: (evt: BtnClickEvt) => void
 }
 
-export default function Alert(
+interface AlertComponent<T> extends React.FunctionComponent<T> {
+    Link: React.FunctionComponent<
+        React.AnchorHTMLAttributes<HTMLAnchorElement>
+    >
+}
+
+const Alert: AlertComponent<AlertProps> = (
     {
         className,
         variant,
@@ -40,8 +46,8 @@ export default function Alert(
         onClosed,
         onCloseButtonClick,
         ...restProps
-    }: AlertProps
-) {
+    }
+) => {
     const prefix = getPrefixFunc("alert")
     const classes = classNames(
         className,
@@ -128,8 +134,10 @@ Alert.defaultProps = {
     fade: true
 }
 
-Alert.Link = createComponent<AProps>({
+Alert.Link = createComponent({
     tag: "a",
     displayName: "AlertLink",
     className: "alert-link"
 })
+
+export default Alert

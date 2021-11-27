@@ -1,8 +1,9 @@
+import {HTMLAttributes} from "react"
 import Input from "./Input"
 import Group from "./Group"
 import createComponent from "../../Commons/create-component"
 
-const Text = createComponent({
+const Text = createComponent<HTMLAttributes<HTMLDivElement>>({
     tag: "div",
     displayName: "InputGroupText",
     className: "input-group-text"

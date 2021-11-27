@@ -1,16 +1,15 @@
-import * as React from "react"
+import {AnchorHTMLAttributes, HTMLAttributes} from "react"
 import Card from "./Card"
 import Body from "./Body"
 import Title from "./Title"
-import {AProps} from "../Commons/consts-and-types"
 import createComponent from "../Commons/create-component"
 
-const Link = createComponent<AProps>({
+const Link = createComponent<AnchorHTMLAttributes<HTMLAnchorElement>>({
     tag: "a",
     className: "card-link",
     displayName: "CardLink"
 })
-const Text = createComponent<React.HTMLAttributes<HTMLParagraphElement>>({
+const Text = createComponent<HTMLAttributes<HTMLParagraphElement>>({
     tag: "p",
     className: "card-text",
     displayName: "CardText"

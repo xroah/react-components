@@ -21,12 +21,6 @@ type RenderFunc<T, E> = {
     (c: string, p: Partial<OmitClass<T>>, ref?: Ref<E>): ReactElement
 }
 
-/* interface CreateBaseOptions {
-    displayName?: string
-    propTypes?: object
-    defaultProps?: object
-} */
-
 interface CreateOptions<T, E = HTMLElement> {
     className?: string
     tag?: ElementType
@@ -35,7 +29,6 @@ interface CreateOptions<T, E = HTMLElement> {
 }
 
 type BaseProps = HTMLAttributes<HTMLElement>
-type DefaultProps = React.HTMLAttributes<HTMLDivElement>
 type OptionalProps = "displayName" | "propTypes" | "defaultProps"
 
 function create<T extends BaseProps, E extends HTMLElement>(
@@ -98,8 +91,10 @@ function handleComponent<T>(
     Component.defaultProps = defaultProps
 }
 
-function createComponent<T extends BaseProps = DefaultProps>(
-    options: CreateOptions<T> & Pick<FunctionComponent<T>, OptionalProps>,
+function createComponent<
+    T extends BaseProps = React.HTMLAttributes<HTMLDivElement>
+>(
+        options: CreateOptions<T> & Pick<FunctionComponent<T>, OptionalProps>,
 ) {
     let Component: FunctionComponent<T> = (props: T) => {
         return create(options, props)

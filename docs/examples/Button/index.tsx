@@ -7,7 +7,7 @@ export default () => {
         toggle(!active)
     }
     const closeRef = React.useRef<HTMLButtonElement>()
-    console.log(closeRef)
+
     return (
         <>
             <div className="btn-examples">
