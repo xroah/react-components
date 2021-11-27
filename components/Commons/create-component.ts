@@ -29,7 +29,7 @@ interface CreateOptions<T, E = HTMLElement> {
 }
 
 type BaseProps = HTMLAttributes<HTMLElement>
-type OptionalProps = "displayName" | "propTypes" | "defaultProps"
+type OptionalPropNames = "displayName" | "propTypes" | "defaultProps"
 
 function create<T extends BaseProps, E extends HTMLElement>(
     {
@@ -73,9 +73,7 @@ function create<T extends BaseProps, E extends HTMLElement>(
 }
 
 type ComponentAttrs = {
-    displayName?: string,
-    propTypes?: object,
-    defaultProps?: object
+    [k in OptionalPropNames]?: string | object
 }
 
 function handleComponent<T>(
@@ -86,15 +84,15 @@ function handleComponent<T>(
         defaultProps
     }: ComponentAttrs
 ) {
-    Component.displayName = displayName
-    Component.propTypes = propTypes
-    Component.defaultProps = defaultProps
+    Component.displayName = displayName as string
+    Component.propTypes = propTypes as object
+    Component.defaultProps = defaultProps as object
 }
 
 function createComponent<
     T extends BaseProps = React.HTMLAttributes<HTMLDivElement>
 >(
-        options: CreateOptions<T> & Pick<FunctionComponent<T>, OptionalProps>,
+    options: CreateOptions<T> & Pick<FunctionComponent<T>, OptionalPropNames>
 ) {
     let Component: FunctionComponent<T> = (props: T) => {
         return create(options, props)
@@ -111,7 +109,7 @@ export function createForwardRef<
     E extends HTMLElement
 >(
     options: CreateOptions<T, E> &
-        Pick<ForwardRefExoticComponent<T>, OptionalProps>
+        Pick<ForwardRefExoticComponent<T>, OptionalPropNames>
 ) {
     const Component = forwardRef(
         (props: T, ref: Ref<E>) => {
