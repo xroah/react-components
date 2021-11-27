@@ -6,7 +6,8 @@ export default () => {
     const handleClick = () => {
         toggle(!active)
     }
-
+    const closeRef = React.useRef<HTMLButtonElement>()
+    console.log(closeRef)
     return (
         <>
             <div className="btn-examples">
@@ -62,7 +63,7 @@ export default () => {
                 </Button.Group>
             </div>
             <div>
-                <Button.Close disabled />
+                <Button.Close ref={closeRef} disabled />
             </div>
             <div className="bg-dark">
                 <Button.Close variant="white" />
