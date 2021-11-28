@@ -35,15 +35,20 @@ export default class Alignment extends React.Component<AlignmentProps> {
     }
 
     vAlign(targetRect: DOMRect, overlayRect: DOMRect) {
-        const {alignment, placement} = this.props
+        const {
+            alignment,
+            placement,
+            container
+        } = this.props
         const {x, y} = this.handleOffset()
-        let {left, top} = getScrollOffset(this.props.container!)
+        let {left, top} = getScrollOffset(container!)
         left += targetRect.left + x
+        top += targetRect.top
 
         if (placement === "top") {
-            top += targetRect.top - overlayRect.height - y
+            top -= overlayRect.height + y
         } else {
-            top += targetRect.top + targetRect.height + y
+            top += targetRect.height + y
         }
 
         switch (alignment) {
@@ -51,10 +56,44 @@ export default class Alignment extends React.Component<AlignmentProps> {
                 left += (targetRect.width - overlayRect.width) / 2
                 break
             case "end":
-                left += (targetRect.width - overlayRect.width)
+                left += targetRect.width - overlayRect.width
                 break
             default:
             // default start
+        }
+
+        return {
+            left,
+            top
+        }
+    }
+
+    hAlign(targetRect: DOMRect, overlayRect: DOMRect) {
+        const {
+            verticalAlign,
+            placement,
+            container
+        } = this.props
+        const {x, y} = this.handleOffset()
+        let {left, top} = getScrollOffset(container!)
+        top += targetRect.top + y
+        left += targetRect.left
+
+        if (placement === "left") {
+            left -= overlayRect.width + x
+        } else {
+            left += targetRect.width + x
+        }
+
+        switch (verticalAlign) {
+            case "middle":
+                top += (targetRect.height - overlayRect.height) / 2
+                break
+            case "bottom":
+                top += targetRect.height - overlayRect.height
+                break
+            default:
+            // default top  
         }
 
         return {
@@ -86,6 +125,8 @@ export default class Alignment extends React.Component<AlignmentProps> {
 
         if (placement === "top" || placement === "bottom") {
             ({left, top} = this.vAlign(targetRect, overlayRect))
+        } else {
+            ({left, top} = this.hAlign(targetRect, overlayRect))
         }
 
         return {

@@ -1,4 +1,4 @@
-import {actions, aliments, placements} from "./constants"
+import {actions, aliments, placements, verticalAlign} from "./constants"
 
 export type ValueOf<T extends readonly any[]> = T[number]
 
@@ -17,6 +17,7 @@ export type Offset = number | {
 export interface CommonProps {
     alignment?: ValueOf<typeof aliments>
     placement?: ValueOf<typeof placements>
+    verticalAlign?: ValueOf<typeof verticalAlign>
     forceRender?: boolean
     mountNode?: null | string | HTMLElement
     offset?: Offset
