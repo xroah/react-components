@@ -1,47 +1,51 @@
 import * as React from "react"
-import PropTypes from "prop-types"
+import {node, oneOf} from "prop-types"
 import classNames from "reap-utils/lib/class-names"
 import {isValidNode} from "../Commons/utils"
-import {TextColor} from "../Commons/consts-and-types"
+import {TextColor, textColors} from "../Commons/consts-and-types"
+import createComponent from "../Commons/create-component"
 
 interface CardTitleProps extends React.HTMLAttributes<HTMLDivElement> {
     subTitle?: React.ReactNode
     subTitleColor?: TextColor
 }
 
-export default function CardTitle(
-    {
-        subTitle,
-        subTitleColor,
-        children,
-        ...restProps
-    }: CardTitleProps
-) {
-    const subClasses = classNames(
-        "card-subtitle",
-        subTitleColor && `text-${subTitleColor}`
-    )
+export default createComponent<CardTitleProps>({
+    displayName: "CardTitle",
+    propTypes: {
+        subTitle: node,
+        subTitleColor: oneOf(textColors)
+    },
+    defaultProps: {
+        subTitleColor: "muted"
+    },
+    render(
+        className,
+        {
+            subTitleColor,
+            subTitle,
+            children,
+            ...restProps
+        }
+    ) {
+        const subClasses = classNames(
+            "card-subtitle",
+            subTitleColor && `text-${subTitleColor}`
+        )
 
-    return (
-        <div {...restProps}>
-            <h5 className="card-title">
-                {children}
-            </h5>
-            {
-                isValidNode(subTitle) && (
-                    <h6 className={subClasses}>
-                        {subTitle}
-                    </h6>
-                )
-            }
-        </div>
-    )
-}
-
-CardTitle.propTypes = {
-    subTitle: PropTypes.node,
-    subTitleColor: PropTypes.node
-}
-CardTitle.defaultProps = {
-    subTitleColor: "muted"
-}
+        return (
+            <div className={className} {...restProps}>
+                <h5 className="card-title">
+                    {children}
+                </h5>
+                {
+                    isValidNode(subTitle) && (
+                        <h6 className={subClasses}>
+                            {subTitle}
+                        </h6>
+                    )
+                }
+            </div>
+        )
+    }
+})
