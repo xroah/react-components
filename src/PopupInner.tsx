@@ -7,6 +7,8 @@ import {CommonProps} from "./types";
 
 interface InnerProps extends CommonProps {
     getTarget: () => Element | null
+    onMouseEnter?: (evt: React.MouseEvent) => void
+    onMouseLeave?: (evt: React.MouseEvent) => void
 }
 
 interface State {
@@ -85,6 +87,8 @@ export default class PopupInner extends React.Component<InnerProps, State> {
             children,
             mountNode,
             animation,
+            onMouseEnter,
+            onMouseLeave,
             ...restProps
         } = this.props
         const {left, top} = this.state
@@ -109,7 +113,9 @@ export default class PopupInner extends React.Component<InnerProps, State> {
                     top: 0,
                     willChange: "transform",
                     transform: `translate(${left}px, ${top}px)`
-                }}>
+                }}
+                onMouseEnter={onMouseEnter}
+                onMouseLeave={onMouseLeave}>
                 {children}
             </div>
         )

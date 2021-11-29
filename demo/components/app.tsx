@@ -22,6 +22,7 @@ export default () => {
                     offset={{x: 10}}
                     placement="right"
                     verticalAlign="middle"
+                    trigger="hover"
                     overlay={
                         <div className="rounded bg-info p-3 text-white">
                             Overlay content demo
@@ -45,6 +46,7 @@ export default () => {
                     animation={false}
                     offset={{x: 10}}
                     placement="left"
+                    trigger="focus"
                     verticalAlign="bottom"
                     overlay={
                         <div className="rounded bg-info p-3 text-white">
