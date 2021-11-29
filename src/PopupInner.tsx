@@ -3,20 +3,10 @@ import {createPortal} from "react-dom";
 import {noop} from "reap-utils/lib";
 import {Fade, mergeRef} from "reap-utils/lib/react";
 import Alignment from "./Alignment";
-import {CommonProps} from "./types";
+import { InnerProps, InnerState} from "./types";
 
-interface InnerProps extends CommonProps {
-    getTarget: () => Element | null
-    onMouseEnter?: (evt: React.MouseEvent) => void
-    onMouseLeave?: (evt: React.MouseEvent) => void
-}
-
-interface State {
-    left: number
-    top: number
-}
-
-export default class PopupInner extends React.Component<InnerProps, State> {
+export default class PopupInner extends 
+React.Component<InnerProps, InnerState> {
     containerRef = React.createRef<HTMLDivElement>()
     innerRef = React.createRef<HTMLDivElement>()
     alignRef = React.createRef<Alignment>()

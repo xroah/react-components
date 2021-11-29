@@ -26,3 +26,36 @@ export interface CommonProps {
     overlayRef?: React.RefObject<Element>
     animation?: boolean
 }
+
+export interface PopupProps extends CommonProps {
+    children: React.ReactElement
+    overlay?: React.ReactNode
+    trigger?: Trigger | Trigger[]
+}
+
+export interface PopupState {
+    visible: boolean
+    x: number
+    y: number
+    mountNode: null | HTMLElement
+}
+
+export interface AlignmentProps extends CommonProps {
+    getElements: () => ({
+        relatedTarget: null | Element
+        overlay: null | Element
+    })
+    children: React.ReactElement
+    container?: HTMLElement
+}
+
+export interface InnerProps extends CommonProps {
+    getTarget: () => Element | null
+    onMouseEnter?: (evt: React.MouseEvent) => void
+    onMouseLeave?: (evt: React.MouseEvent) => void
+}
+
+export interface InnerState {
+    left: number
+    top: number
+}

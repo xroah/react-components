@@ -1,16 +1,7 @@
 import * as React from "react"
 import {getScrollOffset, reflow} from "reap-utils/lib/dom"
-import {CommonProps} from "./types"
+import {AlignmentProps} from "./types"
 import {getOffset} from "./utils"
-
-interface AlignmentProps extends CommonProps {
-    getElements: () => ({
-        relatedTarget: null | Element
-        overlay: null | Element
-    })
-    children: React.ReactElement
-    container?: HTMLElement
-}
 
 export default class Alignment extends React.Component<AlignmentProps> {
     vAlign(targetRect: DOMRect, overlayRect: DOMRect) {

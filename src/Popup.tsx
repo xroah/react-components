@@ -5,28 +5,13 @@ import {
     Placeholder
 } from "reap-utils/lib/react"
 import {isUndef} from "reap-utils/lib"
-import {CommonProps, ValueOf} from "./types"
-import {actions, OVERLAY_DELAY_TIMEOUT} from "./constants"
+import {PopupProps, PopupState} from "./types"
+import {OVERLAY_DELAY_TIMEOUT} from "./constants"
 import PopupInner from "./PopupInner"
 import {getAction, getDelay} from "./utils"
 
-type Trigger = ValueOf<typeof actions>
-
-interface PopupProps extends CommonProps {
-    children: React.ReactElement
-    overlay?: React.ReactNode
-    trigger?: Trigger | Trigger[]
-}
-
-interface State {
-    visible: boolean
-    x: number
-    y: number
-    mountNode: null | HTMLElement
-}
-
-
-export default class Popup extends React.Component<PopupProps, State> {
+export default class Popup extends
+    React.Component<PopupProps, PopupState> {
     placeholderRef = React.createRef<HTMLDivElement>()
     delayTimer: number | null = null
 
@@ -46,7 +31,10 @@ export default class Popup extends React.Component<PopupProps, State> {
         trigger: "click"
     }
 
-    static getDerivedStateFromProps(nextProps: PopupProps, nextState: State) {
+    static getDerivedStateFromProps(
+        nextProps: PopupProps,
+        nextState: PopupState
+    ) {
         if ("visible" in nextProps) {
             nextState.visible = !!nextProps.visible
         }
