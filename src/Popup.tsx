@@ -2,22 +2,19 @@ import * as React from "react"
 import {
     getNextNodeByRef,
     only,
-    Placeholder,
-    Portal
+    Placeholder
 } from "reap-utils/lib/react"
 import {isUndef} from "reap-utils/lib"
-import {ValueOf} from "./types"
-import {actions, placements} from "./constants"
+import {CommonProps, ValueOf} from "./types"
+import {actions} from "./constants"
+import PopupInner from "./PopupInner"
 
 type Trigger = ValueOf<typeof actions>
 
-interface PopupProps {
-    placement?: ValueOf<typeof placements>
+interface PopupProps extends CommonProps {
     children: React.ReactElement
     overlay?: React.ReactNode
     trigger?: Trigger | Trigger[]
-    visible?: boolean
-    forceRender?: boolean
 }
 
 interface State {
@@ -28,21 +25,20 @@ interface State {
 }
 
 export default class Popup extends React.Component<PopupProps, State> {
-    containerRef = React.createRef<HTMLDivElement>()
-    overlayRef = React.createRef<HTMLDivElement>()
     placeholderRef = React.createRef<HTMLDivElement>()
 
     overlayRendered = false
+    state = {
+        visible: false,
+        x: 0,
+        y: 0,
+        mountNode: null
+    }
 
-    constructor(props: PopupProps) {
-        super(props)
-
-        this.state = {
-            visible: false,
-            x: 0,
-            y: 0,
-            mountNode: null
-        }
+    static defaultProps = {
+        mountNode: "body",
+        placement: "top",
+        animation: true
     }
 
     static getDerivedStateFromProps(nextProps: PopupProps, nextState: State) {
@@ -63,78 +59,19 @@ export default class Popup extends React.Component<PopupProps, State> {
         this.setState(
             {
                 visible: !this.state.visible
-            },
-            () => this.updatePosition()
-        )
-    }
-
-    updatePosition() {
-        const {current: overlay} = this.overlayRef
-
-        if (!overlay || !this.state.visible) {
-            return
-        }
-
-        let el = getNextNodeByRef(this.placeholderRef)
-
-        if (!el) {
-            return
-        }
-
-        console.log(el)
-        console.log(overlay, overlay.offsetHeight, overlay.offsetWidth)
-    }
-
-    renderOverlay() {
-        const {
-            props: {
-                overlay,
-                forceRender
-            },
-            state: {
-                visible
             }
-        } = this
-
-        if (!overlay) {
-            return null
-        }
-
-        if (!visible && !forceRender && !this.overlayRendered) {
-            return null
-        }
-
-        this.overlayRendered = true
-
-        return (
-            <div
-                ref={this.containerRef}
-                style={{
-                    position: "absolute",
-                    left: 0,
-                    top: 0,
-                    width: "100%",
-                    height: 0
-                }}>
-                <div
-                    ref={this.overlayRef}
-                    style={{
-                        display: visible ? undefined : "none",
-                        position: "absolute",
-                        left: 0,
-                        top: 0
-                    }}>
-                    {overlay}
-                </div>
-            </div>
         )
+    }
+
+    getTarget = () => {
+        return getNextNodeByRef(this.placeholderRef)
     }
 
     render() {
         const {
             children,
             overlay,
-            forceRender
+            ...restProps
         } = this.props
         const child = only(children)
 
@@ -144,11 +81,12 @@ export default class Popup extends React.Component<PopupProps, State> {
 
         return (
             <>
-                <Portal
+                <PopupInner
+                    getTarget={this.getTarget}
                     visible={this.state.visible}
-                    forceRender={forceRender}>
-                    {this.renderOverlay()}
-                </Portal>
+                    {...restProps}>
+                    {overlay}
+                </PopupInner>
                 <Placeholder ref={this.placeholderRef} />
                 {
                     React.cloneElement(
