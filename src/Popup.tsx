@@ -9,6 +9,7 @@ import {PopupProps, PopupState} from "./types"
 import {OVERLAY_DELAY_TIMEOUT} from "./constants"
 import PopupInner from "./PopupInner"
 import {getAction, getDelay} from "./utils"
+import {popupPropTypes} from "./prop-types"
 
 export default class Popup extends
     React.Component<PopupProps, PopupState> {
@@ -23,6 +24,7 @@ export default class Popup extends
         mountNode: null
     }
 
+    static propTypes = popupPropTypes
     static defaultProps = {
         mountNode: "body",
         placement: "top",
