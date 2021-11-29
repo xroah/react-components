@@ -1,6 +1,7 @@
 import * as React from "react"
 import {getScrollOffset, reflow} from "reap-utils/lib/dom"
 import {CommonProps} from "./types"
+import {getOffset} from "./utils"
 
 interface AlignmentProps extends CommonProps {
     getElements: () => ({
@@ -12,35 +13,14 @@ interface AlignmentProps extends CommonProps {
 }
 
 export default class Alignment extends React.Component<AlignmentProps> {
-    handleOffset() {
-        let {offset} = this.props
-        let ret = {
-            x: 0,
-            y: 0
-        }
-
-        if (offset) {
-            if (typeof offset === "number") {
-                offset = {
-                    x: offset,
-                    y: offset
-                }
-            }
-
-            ret.x = offset.x || 0
-            ret.y = offset.y || 0
-        }
-
-        return ret
-    }
-
     vAlign(targetRect: DOMRect, overlayRect: DOMRect) {
         const {
             alignment,
             placement,
-            container
+            container,
+            offset
         } = this.props
-        const {x, y} = this.handleOffset()
+        const {x, y} = getOffset(offset)
         let {left, top} = getScrollOffset(container!)
         left += targetRect.left + x
         top += targetRect.top
@@ -72,9 +52,10 @@ export default class Alignment extends React.Component<AlignmentProps> {
         const {
             verticalAlign,
             placement,
-            container
+            container,
+            offset
         } = this.props
-        const {x, y} = this.handleOffset()
+        const {x, y} = getOffset(offset)
         let {left, top} = getScrollOffset(container!)
         top += targetRect.top + y
         left += targetRect.left

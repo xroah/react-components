@@ -8,6 +8,7 @@ import {isUndef} from "reap-utils/lib"
 import {CommonProps, ValueOf} from "./types"
 import {actions} from "./constants"
 import PopupInner from "./PopupInner"
+import {getAction} from "./utils"
 
 type Trigger = ValueOf<typeof actions>
 
@@ -63,7 +64,7 @@ export default class Popup extends React.Component<PopupProps, State> {
     }
 
     handleOverlayMouseEnterOrLeave = (evt: React.MouseEvent) => {
-        if (this.getActions().indexOf("hover") < 0) {
+        if (getAction(this.props.trigger).indexOf("hover") < 0) {
             return
         }
 
@@ -81,11 +82,12 @@ export default class Popup extends React.Component<PopupProps, State> {
             onMouseLeave
         } = child.props
 
-        if (evt.type === "mouseenter" ) {
-           if(typeof onMouseEnter === "function") {
-               onMouseEnter(evt)
-           } 
+        if (evt.type === "mouseenter") {
+            if (typeof onMouseEnter === "function") {
+                onMouseEnter(evt)
+            }
 
+            this.clearDelayTimer()
             this.show()
         } else {
             if (typeof onMouseLeave === "function") {
@@ -127,20 +129,6 @@ export default class Popup extends React.Component<PopupProps, State> {
             this.hide()
         }
     }
-    
-    getActions(): Trigger[] {
-        let {trigger} = this.props
-
-        if (!trigger) {
-            return []
-        }
-
-        if (!Array.isArray(trigger)) {
-            trigger = [trigger]
-        }
-
-        return trigger
-    }
 
     getHandlers() {
         let handlers: React.HTMLAttributes<HTMLElement> = {}
@@ -150,8 +138,8 @@ export default class Popup extends React.Component<PopupProps, State> {
             return
         }
 
-        this.getActions().forEach(t => {
-            switch(t) {
+        getAction(this.props.trigger).forEach(t => {
+            switch (t) {
                 case "click":
                     handlers.onClick = this.handleClick
                     break
