@@ -19,3 +19,4 @@ export const verticalAlign = [
     "middle",
     "bottom"
 ] as const
+export const OVERLAY_DELAY_TIMEOUT = 100

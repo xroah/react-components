@@ -6,9 +6,9 @@ import {
 } from "reap-utils/lib/react"
 import {isUndef} from "reap-utils/lib"
 import {CommonProps, ValueOf} from "./types"
-import {actions} from "./constants"
+import {actions, OVERLAY_DELAY_TIMEOUT} from "./constants"
 import PopupInner from "./PopupInner"
-import {getAction} from "./utils"
+import {getAction, getDelay} from "./utils"
 
 type Trigger = ValueOf<typeof actions>
 
@@ -25,7 +25,6 @@ interface State {
     mountNode: null | HTMLElement
 }
 
-const OVERLAY_DELAY_TIMEOUT = 100
 
 export default class Popup extends React.Component<PopupProps, State> {
     placeholderRef = React.createRef<HTMLDivElement>()
@@ -55,7 +54,11 @@ export default class Popup extends React.Component<PopupProps, State> {
         return nextState
     }
 
-    clearDelayTimer() {
+    componentWillUnmount() {
+        this.clearTimer()
+    }
+
+    clearTimer() {
         if (this.delayTimer !== null) {
             window.clearTimeout(this.delayTimer)
 
@@ -63,14 +66,18 @@ export default class Popup extends React.Component<PopupProps, State> {
         }
     }
 
+    isIncludeHover() {
+        return getAction(this.props.trigger).indexOf("hover") >= 0
+    }
+
     handleOverlayMouseEnterOrLeave = (evt: React.MouseEvent) => {
-        if (getAction(this.props.trigger).indexOf("hover") < 0) {
+        if (!this.isIncludeHover()) {
             return
         }
 
-        if (evt.type === "mouseenter") {
-            this.clearDelayTimer()
-        } else {
+        this.clearTimer()
+
+        if (evt.type === "mouseleave") {
             this.delayHide()
         }
     }
@@ -82,13 +89,14 @@ export default class Popup extends React.Component<PopupProps, State> {
             onMouseLeave
         } = child.props
 
+        this.clearTimer()
+
         if (evt.type === "mouseenter") {
             if (typeof onMouseEnter === "function") {
                 onMouseEnter(evt)
             }
 
-            this.clearDelayTimer()
-            this.show()
+            this.delayShow()
         } else {
             if (typeof onMouseLeave === "function") {
                 onMouseLeave(evt)
@@ -105,7 +113,11 @@ export default class Popup extends React.Component<PopupProps, State> {
             child.props.onClick(evt)
         }
 
-        this.setState({visible: !this.state.visible})
+        if (this.state.visible) {
+            this.delayHide()
+        } else {
+            this.delayShow()
+        }
     }
 
     handleFocusOrBlur = (evt: React.FocusEvent) => {
@@ -120,13 +132,13 @@ export default class Popup extends React.Component<PopupProps, State> {
                 onFocus(evt)
             }
 
-            this.show()
+            this.delayShow()
         } else {
             if (typeof onBlur === "function") {
                 onBlur(evt)
             }
 
-            this.hide()
+            this.delayHide()
         }
     }
 
@@ -172,10 +184,41 @@ export default class Popup extends React.Component<PopupProps, State> {
         this.setState({visible: false})
     }
 
+    delayShow() {
+        const {show} = getDelay(this.props.delay)
+
+        if (show > 0) {
+            this.delayTimer = window.setTimeout(
+                () => this.show(),
+                show
+            )
+
+            return
+        }
+
+        this.show()
+    }
+
     delayHide() {
+        const {hide} = getDelay(this.props.delay)
+        const includeHover = this.isIncludeHover()
+        let timeout: number = hide
+
+        if (!includeHover) {
+            if (!timeout) {
+                this.hide()
+
+                return
+            }
+        }
+
+        if (timeout < OVERLAY_DELAY_TIMEOUT) {
+            timeout = OVERLAY_DELAY_TIMEOUT
+        }
+
         this.delayTimer = window.setTimeout(
             () => this.hide(),
-            OVERLAY_DELAY_TIMEOUT
+            timeout
         )
     }
 

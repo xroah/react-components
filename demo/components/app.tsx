@@ -15,14 +15,14 @@ export default () => {
                             Overlay content demo
                         </div>
                     }>
-                    <button className="btn btn-primary ml-3">Top</button>
+                    <button className="btn btn-primary mx-3">Top</button>
                 </Popup>
                 <Popup
-                    animation={false}
                     offset={{x: 10}}
                     placement="right"
                     verticalAlign="middle"
                     trigger="hover"
+                    delay={200}
                     overlay={
                         <div className="rounded bg-info p-3 text-white">
                             Overlay content demo
@@ -47,6 +47,7 @@ export default () => {
                     offset={{x: 10}}
                     placement="left"
                     trigger="focus"
+                    delay={{show: 500, hide: 300}}
                     verticalAlign="bottom"
                     overlay={
                         <div className="rounded bg-info p-3 text-white">
