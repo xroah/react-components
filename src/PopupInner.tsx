@@ -3,14 +3,15 @@ import {createPortal} from "react-dom";
 import {noop} from "reap-utils/lib";
 import {Fade, mergeRef} from "reap-utils/lib/react";
 import Alignment from "./Alignment";
-import { InnerProps, InnerState} from "./types";
+import {InnerProps, InnerState} from "./types";
 import {getContainer} from "./utils";
 
-export default class PopupInner extends 
-React.Component<InnerProps, InnerState> {
+export default class PopupInner extends
+    React.Component<InnerProps, InnerState> {
     containerRef = React.createRef<HTMLDivElement>()
     innerRef = React.createRef<HTMLDivElement>()
     alignRef = React.createRef<Alignment>()
+    portalContainer = document.createElement("div")
 
     rendered = false
     state = {
@@ -29,6 +30,14 @@ React.Component<InnerProps, InnerState> {
         }
     }
 
+    componentWillUnmount() {
+        const parent = this.portalContainer.parentNode
+
+        if (parent) {
+            parent.removeChild(this.portalContainer)
+        }
+    }
+
     align = () => {
         const {current: ref} = this.alignRef
 
@@ -39,10 +48,23 @@ React.Component<InnerProps, InnerState> {
         }
     }
 
-
     renderPortal(element: React.ReactElement, container?: HTMLElement) {
         if (container) {
-            return createPortal(element, container)
+            const parent = this.portalContainer.parentNode
+            const target = this.props.getTarget()
+
+            if (target && !container.contains(target)) {
+                throw new Error(`
+                    The mountNode does not contain the child,
+                    please try another
+                `)
+            }
+
+            if (!parent || parent !== container) {
+                container.appendChild(this.portalContainer)
+            }
+
+            return createPortal(element, this.portalContainer)
         }
 
         return null

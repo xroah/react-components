@@ -4,10 +4,9 @@ import Popup from "../../src/Popup"
 export default () => {
     return (
         <>
-            <div style={{height: 1000}}></div>
+            <div id="top" style={{height: 1000}}></div>
             <div style={{margin: 100}}>
                 <Popup
-                    animation={false}
                     offset={{y: 10}}
                     alignment="center"
                     overlay={
