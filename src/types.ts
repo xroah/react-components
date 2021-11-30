@@ -1,4 +1,10 @@
-import {actions, aliments, placements, verticalAlign} from "./constants"
+import {
+    actions,
+    aliments,
+    clickArea,
+    placements,
+    verticalAlign
+} from "./constants"
 
 export type ValueOf<T extends readonly any[]> = T[number]
 
@@ -14,6 +20,11 @@ export type Offset = number | {
     y?: number
 }
 
+type ClickArea = ValueOf<typeof clickArea>
+type AutoClose = boolean | ClickArea
+export type AreaString = "toggle" | ClickArea
+type ClickFunc = (v: AreaString) => void
+
 export interface CommonProps {
     alignment?: ValueOf<typeof aliments>
     placement?: ValueOf<typeof placements>
@@ -25,6 +36,9 @@ export interface CommonProps {
     visible?: boolean
     overlayRef?: React.RefObject<Element>
     animation?: boolean
+    autoClose?: AutoClose
+    escClose?: boolean
+    onAutoClose?: ClickFunc
 }
 
 export interface PopupProps extends CommonProps {
@@ -53,6 +67,8 @@ export interface InnerProps extends CommonProps {
     getTarget: () => Element | null
     onMouseEnter?: (evt: React.MouseEvent) => void
     onMouseLeave?: (evt: React.MouseEvent) => void
+    onClick?: ClickFunc
+    onEscKeyDown?: () => void
 }
 
 export interface InnerState {

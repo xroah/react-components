@@ -9,6 +9,7 @@ export default () => {
                 <Popup
                     offset={{y: 10}}
                     alignment="center"
+                    autoClose="outside"
                     overlay={
                         <div className="rounded bg-info p-3 text-white">
                             Overlay content demo

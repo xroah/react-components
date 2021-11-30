@@ -5,18 +5,21 @@ import {
     Placeholder
 } from "reap-utils/lib/react"
 import {isUndef} from "reap-utils/lib"
-import {PopupProps, PopupState} from "./types"
+import {AreaString, PopupProps, PopupState} from "./types"
 import {OVERLAY_DELAY_TIMEOUT} from "./constants"
 import PopupInner from "./PopupInner"
-import {createHandler, getAction, getDelay} from "./utils"
+import {
+    createHandler,
+    getAction,
+    getDelay
+} from "./utils"
 import {popupPropTypes} from "./prop-types"
 
 export default class Popup extends
     React.Component<PopupProps, PopupState> {
-    placeholderRef = React.createRef<HTMLDivElement>()
-    delayTimer: number | null = null
+    private placeholderRef = React.createRef<HTMLDivElement>()
+    private delayTimer: number | null = null
 
-    overlayRendered = false
     state = {
         visible: false,
         x: 0,
@@ -30,7 +33,9 @@ export default class Popup extends
         placement: "top",
         verticalAlign: "top",
         animation: true,
-        trigger: "click"
+        trigger: "click",
+        autoClose: true,
+        escClose: true
     }
 
     static getDerivedStateFromProps(
@@ -84,6 +89,24 @@ export default class Popup extends
         () => !this.state.visible,
         "onClick"
     )
+
+    handleAutoClose = (v: AreaString) => {
+        const {autoClose} = this.props
+
+        if (
+            (autoClose === true && v !== "toggle") ||
+            (autoClose === "inside" && v === "inside") ||
+            (autoClose === "outside" && v === "outside")
+        ) {
+            this.hide()
+        }
+        
+        console.log(v)
+    }
+
+    handleEscKeyDown = () => {
+        this.hide()
+    }
 
     handleFocusOrBlur = createHandler<React.FocusEvent>(
         this,
@@ -202,6 +225,8 @@ export default class Popup extends
                     visible={this.state.visible}
                     onMouseEnter={this.handleOverlayMouseEnterOrLeave}
                     onMouseLeave={this.handleOverlayMouseEnterOrLeave}
+                    onEscKeyDown={this.handleEscKeyDown}
+                    onClick={this.handleAutoClose}
                     {...restProps}>
                     {overlay}
                 </PopupInner>

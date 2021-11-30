@@ -13,6 +13,7 @@ export default class PopupInner extends
     alignRef = React.createRef<Alignment>()
     portalContainer = document.createElement("div")
 
+    listenerAdded = false
     rendered = false
     state = {
         left: 0,
@@ -25,8 +26,15 @@ export default class PopupInner extends
             visible
         } = this.props
 
+        // currently visible
         if (prevProps.visible !== visible && visible && !animation) {
             this.align()
+        }
+
+        if (visible) {
+            this.addListener()
+        } else {
+            this.rmListener()
         }
     }
 
@@ -35,6 +43,67 @@ export default class PopupInner extends
 
         if (parent) {
             parent.removeChild(this.portalContainer)
+        }
+
+        this.rmListener()
+    }
+
+    addListener() {
+        if (this.listenerAdded) {
+            return
+        }
+
+        const {
+            autoClose,
+            escClose
+        } = this.props
+        this.listenerAdded = true
+
+        if (autoClose) {
+            document.addEventListener("click", this.handleDocClick)
+        }
+        if (escClose) {
+            document.addEventListener("keydown", this.handleDocKeyDown)
+        }
+    }
+
+    rmListener() {
+        this.listenerAdded = false
+
+        document.removeEventListener("click", this.handleDocClick)
+        document.removeEventListener("keydown", this.handleDocKeyDown)
+    }
+
+    handleDocClick = (evt: MouseEvent) => {
+        const {
+            relatedTarget,
+            overlay
+        } = this.getElements()
+        const {onClick} = this.props
+        const target = evt.target as HTMLElement
+
+        if (
+            !relatedTarget ||
+            !overlay ||
+            typeof onClick !== "function"
+        ) {
+            return
+        }
+
+        if (target === relatedTarget || relatedTarget.contains(target)) {
+            onClick("toggle")
+        } else if (target === overlay || overlay.contains(target)) {
+            onClick("inside")
+        } else {
+            onClick("outside")
+        }
+    }
+
+    handleDocKeyDown = (evt: KeyboardEvent) => {
+        const {onEscKeyDown} = this.props
+
+        if (evt.key.toLowerCase() === "escape" && onEscKeyDown) {
+            onEscKeyDown()
         }
     }
 
