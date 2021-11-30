@@ -9,7 +9,7 @@ export default () => {
                 <Popup
                     offset={{y: 10}}
                     alignment="center"
-                    autoClose="outside"
+                    autoClose="inside"
                     overlay={
                         <div className="rounded bg-info p-3 text-white">
                             Overlay content demo
@@ -34,6 +34,7 @@ export default () => {
                     animation={false}
                     offset={{y: 10}}
                     placement="bottom"
+                    autoClose={false}
                     alignment="end"
                     overlay={
                         <div className="rounded bg-info p-3 text-white">
@@ -47,6 +48,7 @@ export default () => {
                     offset={{x: 10}}
                     placement="left"
                     trigger="focus"
+                    autoClose="outside"
                     delay={{show: 500, hide: 300}}
                     verticalAlign="bottom"
                     overlay={

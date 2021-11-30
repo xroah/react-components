@@ -8,13 +8,12 @@ import {getContainer} from "./utils";
 
 export default class PopupInner extends
     React.Component<InnerProps, InnerState> {
-    containerRef = React.createRef<HTMLDivElement>()
-    innerRef = React.createRef<HTMLDivElement>()
-    alignRef = React.createRef<Alignment>()
-    portalContainer = document.createElement("div")
+    private innerRef = React.createRef<HTMLDivElement>()
+    private alignRef = React.createRef<Alignment>()
+    private portalContainer = document.createElement("div")
 
-    listenerAdded = false
-    rendered = false
+    private listenerAdded = false
+    private rendered = false
     state = {
         left: 0,
         top: 0
@@ -48,7 +47,7 @@ export default class PopupInner extends
         this.rmListener()
     }
 
-    addListener() {
+    private addListener() {
         if (this.listenerAdded) {
             return
         }
@@ -60,21 +59,22 @@ export default class PopupInner extends
         this.listenerAdded = true
 
         if (autoClose) {
+            if (escClose) {
+                document.addEventListener("keydown", this.handleDocKeyDown)
+            }
+
             document.addEventListener("click", this.handleDocClick)
-        }
-        if (escClose) {
-            document.addEventListener("keydown", this.handleDocKeyDown)
         }
     }
 
-    rmListener() {
+    private rmListener() {
         this.listenerAdded = false
 
         document.removeEventListener("click", this.handleDocClick)
         document.removeEventListener("keydown", this.handleDocKeyDown)
     }
 
-    handleDocClick = (evt: MouseEvent) => {
+    private handleDocClick = (evt: MouseEvent) => {
         const {
             relatedTarget,
             overlay
@@ -99,7 +99,7 @@ export default class PopupInner extends
         }
     }
 
-    handleDocKeyDown = (evt: KeyboardEvent) => {
+    private handleDocKeyDown = (evt: KeyboardEvent) => {
         const {onEscKeyDown} = this.props
 
         if (evt.key.toLowerCase() === "escape" && onEscKeyDown) {
@@ -117,7 +117,10 @@ export default class PopupInner extends
         }
     }
 
-    renderPortal(element: React.ReactElement, container?: HTMLElement) {
+    private renderPortal(
+        element: React.ReactElement,
+        container?: HTMLElement
+    ) {
         if (container) {
             const parent = this.portalContainer.parentNode
             const target = this.props.getTarget()
@@ -139,7 +142,7 @@ export default class PopupInner extends
         return null
     }
 
-    getElements = () => ({
+    private getElements = () => ({
         relatedTarget: this.props.getTarget(),
         overlay: this.innerRef.current
     })
@@ -191,7 +194,6 @@ export default class PopupInner extends
                 container={container}
                 {...restProps}>
                 <div
-                    ref={this.containerRef}
                     style={{
                         position: "absolute",
                         left: 0,

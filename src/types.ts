@@ -38,13 +38,13 @@ export interface CommonProps {
     animation?: boolean
     autoClose?: AutoClose
     escClose?: boolean
+    trigger?: Trigger | Trigger[]
     onAutoClose?: ClickFunc
 }
 
 export interface PopupProps extends CommonProps {
     children: React.ReactElement
     overlay?: React.ReactNode
-    trigger?: Trigger | Trigger[]
 }
 
 export interface PopupState {

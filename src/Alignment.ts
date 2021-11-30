@@ -4,7 +4,7 @@ import {AlignmentProps} from "./types"
 import {getOffset} from "./utils"
 
 export default class Alignment extends React.Component<AlignmentProps> {
-    vAlign(targetRect: DOMRect, overlayRect: DOMRect) {
+    private vAlign(targetRect: DOMRect, overlayRect: DOMRect) {
         const {
             alignment,
             placement,
@@ -39,7 +39,7 @@ export default class Alignment extends React.Component<AlignmentProps> {
         }
     }
 
-    hAlign(targetRect: DOMRect, overlayRect: DOMRect) {
+    private hAlign(targetRect: DOMRect, overlayRect: DOMRect) {
         const {
             verticalAlign,
             placement,

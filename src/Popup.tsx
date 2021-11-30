@@ -1,6 +1,7 @@
 import * as React from "react"
 import {
     getNextNodeByRef,
+    handleFuncProp,
     only,
     Placeholder
 } from "reap-utils/lib/react"
@@ -9,7 +10,6 @@ import {AreaString, PopupProps, PopupState} from "./types"
 import {OVERLAY_DELAY_TIMEOUT} from "./constants"
 import PopupInner from "./PopupInner"
 import {
-    createHandler,
     getAction,
     getDelay
 } from "./utils"
@@ -53,7 +53,7 @@ export default class Popup extends
         this.clearTimer()
     }
 
-    clearTimer() {
+    private clearTimer() {
         if (this.delayTimer !== null) {
             window.clearTimeout(this.delayTimer)
 
@@ -61,11 +61,11 @@ export default class Popup extends
         }
     }
 
-    isIncludeHover() {
+    private isIncludeHover() {
         return getAction(this.props.trigger).indexOf("hover") >= 0
     }
 
-    handleOverlayMouseEnterOrLeave = (evt: React.MouseEvent) => {
+    private handleOverlayMouseEnterOrLeave = (evt: React.MouseEvent) => {
         if (!this.isIncludeHover()) {
             return
         }
@@ -77,17 +77,43 @@ export default class Popup extends
         }
     }
 
-    handleMouseEnterOrLeave = createHandler<React.MouseEvent>(
-        this,
+    private createHandler<T>(
+        condition: (evt: T) => boolean,
+        showHandlerName: string,
+        hideHandlerName?: string
+    ) {
+        return (evt: T) => {
+            const child = this.props.children as React.ReactElement
+
+            this.clearTimer()
+
+            if (condition(evt)) {
+                handleFuncProp(child.props[showHandlerName])(evt)
+                this.delayShow()
+            } else {
+                const name = hideHandlerName || showHandlerName
+
+                handleFuncProp(child.props[name])(evt)
+                this.delayHide()
+            }
+        }
+    }
+
+    private handleMouseEnterOrLeave = this.createHandler<React.MouseEvent>(
         e => e.type === "mouseenter",
         "onMouseEnter",
         "onMouseLeave"
     )
 
-    handleClick = createHandler<React.MouseEvent>(
-        this,
+    private handleClick = this.createHandler<React.MouseEvent>(
         () => !this.state.visible,
         "onClick"
+    )
+
+    private handleFocusOrBlur = this.createHandler<React.FocusEvent>(
+        e => e.type === "focus",
+        "onFocus",
+        "onBlur"
     )
 
     handleAutoClose = (v: AreaString) => {
@@ -100,22 +126,13 @@ export default class Popup extends
         ) {
             this.hide()
         }
-        
-        console.log(v)
     }
 
-    handleEscKeyDown = () => {
+    private handleEscKeyDown = () => {
         this.hide()
     }
 
-    handleFocusOrBlur = createHandler<React.FocusEvent>(
-        this,
-        e => e.type === "focus",
-        "onFocus",
-        "onBlur"
-    )
-
-    getHandlers() {
+    private getHandlers() {
         type Handlers = React.HTMLAttributes<HTMLElement>
         let handlers: Handlers = {}
         const setHandler = (
@@ -151,15 +168,15 @@ export default class Popup extends
         return handlers
     }
 
-    show() {
+    private show() {
         this.setState({visible: true})
     }
 
-    hide() {
+    private hide() {
         this.setState({visible: false})
     }
 
-    delayShow() {
+    private delayShow() {
         if (this.state.visible) {
             return
         }
@@ -176,7 +193,7 @@ export default class Popup extends
         show()
     }
 
-    delayHide() {
+    private delayHide() {
         if (!this.state.visible) {
             return
         }
@@ -202,7 +219,7 @@ export default class Popup extends
         this.delayTimer = window.setTimeout(hide, t)
     }
 
-    getTarget = () => {
+    private getTarget = () => {
         return getNextNodeByRef(this.placeholderRef)
     }
 
