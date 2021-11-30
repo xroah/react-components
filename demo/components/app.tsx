@@ -5,7 +5,7 @@ export default () => {
     return (
         <>
             <div id="top" style={{height: 1000}}></div>
-            <div style={{margin: 100}}>
+            <div>
                 <Popup
                     offset={{y: 10}}
                     alignment="center"
@@ -34,7 +34,7 @@ export default () => {
                     animation={false}
                     offset={{y: 10}}
                     placement="bottom"
-                    autoClose={false}
+                    autoClose="outside"
                     alignment="end"
                     overlay={
                         <div className="rounded bg-info p-3 text-white">
@@ -48,7 +48,6 @@ export default () => {
                     offset={{x: 10}}
                     placement="left"
                     trigger="focus"
-                    autoClose="outside"
                     delay={{show: 500, hide: 300}}
                     verticalAlign="bottom"
                     overlay={

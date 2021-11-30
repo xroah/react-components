@@ -6,13 +6,14 @@ import {
     Placeholder
 } from "reap-utils/lib/react"
 import {isUndef} from "reap-utils/lib"
-import {AreaString, PopupProps, PopupState} from "./types"
+import {
+    AreaString,
+    PopupProps,
+    PopupState
+} from "./types"
 import {OVERLAY_DELAY_TIMEOUT} from "./constants"
 import PopupInner from "./PopupInner"
-import {
-    getAction,
-    getDelay
-} from "./utils"
+import {getAction, getDelay} from "./utils"
 import {popupPropTypes} from "./prop-types"
 
 export default class Popup extends
@@ -77,7 +78,7 @@ export default class Popup extends
         }
     }
 
-    private createHandler<T>(
+    private createHandler<T = MouseEvent>(
         condition: (evt: T) => boolean,
         showHandlerName: string,
         hideHandlerName?: string
@@ -99,13 +100,13 @@ export default class Popup extends
         }
     }
 
-    private handleMouseEnterOrLeave = this.createHandler<React.MouseEvent>(
+    private handleMouseEnterOrLeave = this.createHandler(
         e => e.type === "mouseenter",
         "onMouseEnter",
         "onMouseLeave"
     )
 
-    private handleClick = this.createHandler<React.MouseEvent>(
+    private handleClick = this.createHandler(
         () => !this.state.visible,
         "onClick"
     )

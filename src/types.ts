@@ -24,10 +24,11 @@ type ClickArea = ValueOf<typeof clickArea>
 type AutoClose = boolean | ClickArea
 export type AreaString = "toggle" | ClickArea
 type ClickFunc = (v: AreaString) => void
+type Placement = ValueOf<typeof placements>
 
 export interface CommonProps {
     alignment?: ValueOf<typeof aliments>
-    placement?: ValueOf<typeof placements>
+    placement?: Placement
     verticalAlign?: ValueOf<typeof verticalAlign>
     forceRender?: boolean
     mountNode?: null | string | HTMLElement
@@ -42,9 +43,14 @@ export interface CommonProps {
     onAutoClose?: ClickFunc
 }
 
+interface OnAlignParam extends InnerState {
+    placement:  Placement
+}
+
 export interface PopupProps extends CommonProps {
     children: React.ReactElement
     overlay?: React.ReactNode
+    onAlign?: (v: OnAlignParam) => void
 }
 
 export interface PopupState {
