@@ -1,3 +1,4 @@
+import {handleFuncProp} from "reap-utils/lib/react";
 import {
     Delay,
     Offset,
@@ -72,4 +73,33 @@ export function getContainer(mountNode?: null | string | HTMLElement) {
     }
 
     return container
+}
+
+interface Context extends React.Component {
+    clearTimer: Function
+    delayShow: Function
+    delayHide: Function
+}
+
+export function createHandler<T>(
+    context: Context,
+    condition: (evt: T) => boolean,
+    showHandlerName: string,
+    hideHandlerName?: string
+) {
+    return (evt: T) => {
+        const child = context.props.children as React.ReactElement
+
+        context.clearTimer()
+
+        if (condition(evt)) {
+            handleFuncProp(child.props[showHandlerName])(evt)
+            context.delayShow()
+        } else {
+            const name = hideHandlerName || showHandlerName
+
+            handleFuncProp(child.props[name])(evt)
+            context.delayHide()
+        }
+    }
 }

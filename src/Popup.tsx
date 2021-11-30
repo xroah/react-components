@@ -1,7 +1,6 @@
 import * as React from "react"
 import {
     getNextNodeByRef,
-    handleFuncProp,
     only,
     Placeholder
 } from "reap-utils/lib/react"
@@ -9,7 +8,7 @@ import {isUndef} from "reap-utils/lib"
 import {PopupProps, PopupState} from "./types"
 import {OVERLAY_DELAY_TIMEOUT} from "./constants"
 import PopupInner from "./PopupInner"
-import {getAction, getDelay} from "./utils"
+import {createHandler, getAction, getDelay} from "./utils"
 import {popupPropTypes} from "./prop-types"
 
 export default class Popup extends
@@ -73,43 +72,25 @@ export default class Popup extends
         }
     }
 
-    handleMouseEnterOrLeave = (evt: React.MouseEvent) => {
-        const child = this.props.children as React.ReactElement
+    handleMouseEnterOrLeave = createHandler<React.MouseEvent>(
+        this,
+        e => e.type === "mouseenter",
+        "onMouseEnter",
+        "onMouseLeave"
+    )
 
-        this.clearTimer()
+    handleClick = createHandler<React.MouseEvent>(
+        this,
+        () => !this.state.visible,
+        "onClick"
+    )
 
-        if (evt.type === "mouseenter") {
-            handleFuncProp(child.props.onMouseEnter)(evt)
-            this.delayShow()
-        } else {
-            handleFuncProp(child.props.onMouseLeave)(evt)
-            this.delayHide()
-        }
-    }
-
-    handleClick = (evt: React.MouseEvent<HTMLElement>) => {
-        const child = this.props.children as React.ReactElement
-
-        handleFuncProp(child.props.onClick)(evt)
-
-        if (this.state.visible) {
-            this.delayHide()
-        } else {
-            this.delayShow()
-        }
-    }
-
-    handleFocusOrBlur = (evt: React.FocusEvent) => {
-        const child = this.props.children as React.ReactElement
-
-        if (evt.type === "focus") {
-            handleFuncProp(child.props.onFocus)(evt)
-            this.delayShow()
-        } else {
-            handleFuncProp(child.props.onBlur)(evt)
-            this.delayHide()
-        }
-    }
+    handleFocusOrBlur = createHandler<React.FocusEvent>(
+        this,
+        e => e.type === "focus",
+        "onFocus",
+        "onBlur"
+    )
 
     getHandlers() {
         type Handlers = React.HTMLAttributes<HTMLElement>
@@ -123,11 +104,8 @@ export default class Popup extends
         if (!("visible" in this.props)) {
             const actions = getAction(this.props.trigger)
 
-            for (let t of actions) {
-                switch (t) {
-                    case "click":
-                        setHandler(["onClick"], this.handleClick)
-                        break
+            for (let a of actions) {
+                switch (a) {
                     case "hover":
                         setHandler(
                             ["onMouseEnter", "onMouseLeave"],
@@ -140,6 +118,9 @@ export default class Popup extends
                             this.handleFocusOrBlur
                         )
                         break
+                    default:
+                        // click
+                        setHandler(["onClick"], this.handleClick)
                 }
             }
         }
@@ -160,18 +141,16 @@ export default class Popup extends
             return
         }
 
-        const {show} = getDelay(this.props.delay)
+        const {show: t} = getDelay(this.props.delay)
+        const show = () => this.show()
 
-        if (show > 0) {
-            this.delayTimer = window.setTimeout(
-                () => this.show(),
-                show
-            )
+        if (t > 0) {
+            this.delayTimer = window.setTimeout(show, t)
 
             return
         }
 
-        this.show()
+        show()
     }
 
     delayHide() {
@@ -179,26 +158,25 @@ export default class Popup extends
             return
         }
 
-        const {hide} = getDelay(this.props.delay)
+        let {hide: t} = getDelay(this.props.delay)
         const includeHover = this.isIncludeHover()
-        let timeout: number = hide
+        const hide = () => this.hide()
 
+        // if include hover, the overlay should delay
+        // for interacting with the overlay
         if (!includeHover) {
-            if (!timeout) {
-                this.hide()
+            if (!t) {
+                hide()
 
                 return
             }
         }
 
-        if (timeout < OVERLAY_DELAY_TIMEOUT) {
-            timeout = OVERLAY_DELAY_TIMEOUT
+        if (t < OVERLAY_DELAY_TIMEOUT) {
+            t = OVERLAY_DELAY_TIMEOUT
         }
 
-        this.delayTimer = window.setTimeout(
-            () => this.hide(),
-            timeout
-        )
+        this.delayTimer = window.setTimeout(hide, t)
     }
 
     getTarget = () => {
@@ -228,14 +206,7 @@ export default class Popup extends
                     {overlay}
                 </PopupInner>
                 <Placeholder ref={this.placeholderRef} />
-                {
-                    React.cloneElement(
-                        child,
-                        {
-                            ...this.getHandlers()
-                        }
-                    )
-                }
+                {React.cloneElement(child, {...this.getHandlers()})}
             </>
         )
     }
