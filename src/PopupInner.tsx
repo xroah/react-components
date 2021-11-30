@@ -4,6 +4,7 @@ import {noop} from "reap-utils/lib";
 import {Fade, mergeRef} from "reap-utils/lib/react";
 import Alignment from "./Alignment";
 import { InnerProps, InnerState} from "./types";
+import {getContainer} from "./utils";
 
 export default class PopupInner extends 
 React.Component<InnerProps, InnerState> {
@@ -38,23 +39,6 @@ React.Component<InnerProps, InnerState> {
         }
     }
 
-    getContainer() {
-        const {mountNode} = this.props
-
-        if (!mountNode) {
-            return
-        }
-
-        let container: HTMLElement | undefined
-
-        if (typeof mountNode === "string") {
-            container = document.querySelector(mountNode) as HTMLElement
-        } else if (mountNode.nodeType) {
-            container = mountNode
-        }
-
-        return container
-    }
 
     renderPortal(element: React.ReactElement, container?: HTMLElement) {
         if (container) {
@@ -92,7 +76,7 @@ React.Component<InnerProps, InnerState> {
             return null
         }
 
-        const container = this.getContainer()
+        const container = getContainer(mountNode)
         const _overlay = (
             <div
                 ref={mergeRef(overlayRef, this.innerRef)}

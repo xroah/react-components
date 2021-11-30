@@ -57,3 +57,19 @@ export function getDelay(delay?: Delay) {
 
     return ret
 }
+
+export function getContainer(mountNode?: null | string | HTMLElement) {
+    if (!mountNode) {
+        return
+    }
+
+    let container: HTMLElement | undefined
+
+    if (typeof mountNode === "string") {
+        container = document.querySelector(mountNode) as HTMLElement
+    } else if (mountNode.nodeType) {
+        container = mountNode
+    }
+
+    return container
+}
