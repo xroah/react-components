@@ -1,6 +1,7 @@
 import * as React from "react"
 import {
     getNextNodeByRef,
+    handleFuncProp,
     only,
     Placeholder
 } from "reap-utils/lib/react"
@@ -74,24 +75,14 @@ export default class Popup extends
 
     handleMouseEnterOrLeave = (evt: React.MouseEvent) => {
         const child = this.props.children as React.ReactElement
-        const {
-            onMouseEnter,
-            onMouseLeave
-        } = child.props
 
         this.clearTimer()
 
         if (evt.type === "mouseenter") {
-            if (typeof onMouseEnter === "function") {
-                onMouseEnter(evt)
-            }
-
+            handleFuncProp(child.props.onMouseEnter)(evt)
             this.delayShow()
         } else {
-            if (typeof onMouseLeave === "function") {
-                onMouseLeave(evt)
-            }
-
+            handleFuncProp(child.props.onMouseLeave)(evt)
             this.delayHide()
         }
     }
@@ -99,9 +90,7 @@ export default class Popup extends
     handleClick = (evt: React.MouseEvent<HTMLElement>) => {
         const child = this.props.children as React.ReactElement
 
-        if (typeof child.props.onClick === "function") {
-            child.props.onClick(evt)
-        }
+        handleFuncProp(child.props.onClick)(evt)
 
         if (this.state.visible) {
             this.delayHide()
@@ -112,69 +101,65 @@ export default class Popup extends
 
     handleFocusOrBlur = (evt: React.FocusEvent) => {
         const child = this.props.children as React.ReactElement
-        const {
-            onFocus,
-            onBlur
-        } = child.props
 
         if (evt.type === "focus") {
-            if (typeof onFocus === "function") {
-                onFocus(evt)
-            }
-
+            handleFuncProp(child.props.onFocus)(evt)
             this.delayShow()
         } else {
-            if (typeof onBlur === "function") {
-                onBlur(evt)
-            }
-
+            handleFuncProp(child.props.onBlur)(evt)
             this.delayHide()
         }
     }
 
     getHandlers() {
-        let handlers: React.HTMLAttributes<HTMLElement> = {}
+        type Handlers = React.HTMLAttributes<HTMLElement>
+        let handlers: Handlers = {}
+        const setHandler = (
+            keys: Array<keyof Handlers>,
+            handler: Function
+        ) => keys.forEach(k => handlers[k] = handler)
 
-        // controlled
-        if ("visible" in this.props) {
-            return
-        }
+        // not controlled
+        if (!("visible" in this.props)) {
+            const actions = getAction(this.props.trigger)
 
-        getAction(this.props.trigger).forEach(t => {
-            switch (t) {
-                case "click":
-                    handlers.onClick = this.handleClick
-                    break
-                case "hover":
-                    handlers.onMouseEnter = this.handleMouseEnterOrLeave
-                    handlers.onMouseLeave = this.handleMouseEnterOrLeave
-                    break
-                case "focus":
-                    handlers.onFocus = this.handleFocusOrBlur
-                    handlers.onBlur = this.handleFocusOrBlur
+            for (let t of actions) {
+                switch (t) {
+                    case "click":
+                        setHandler(["onClick"], this.handleClick)
+                        break
+                    case "hover":
+                        setHandler(
+                            ["onMouseEnter", "onMouseLeave"],
+                            this.handleMouseEnterOrLeave
+                        )
+                        break
+                    case "focus":
+                        setHandler(
+                            ["onFocus", "onBlur"],
+                            this.handleFocusOrBlur
+                        )
+                        break
+                }
             }
-        })
+        }
 
         return handlers
     }
 
     show() {
-        if (this.state.visible) {
-            return
-        }
-
         this.setState({visible: true})
     }
 
     hide() {
-        if (!this.state.visible) {
-            return
-        }
-
         this.setState({visible: false})
     }
 
     delayShow() {
+        if (this.state.visible) {
+            return
+        }
+
         const {show} = getDelay(this.props.delay)
 
         if (show > 0) {
@@ -190,6 +175,10 @@ export default class Popup extends
     }
 
     delayHide() {
+        if (!this.state.visible) {
+            return
+        }
+
         const {hide} = getDelay(this.props.delay)
         const includeHover = this.isIncludeHover()
         let timeout: number = hide
