@@ -11,7 +11,7 @@ import {
     PopupProps,
     PopupState
 } from "./types"
-import {OVERLAY_DELAY_TIMEOUT} from "./constants"
+import {OVERLAY_DELAY_TIMEOUT, placements} from "./constants"
 import PopupInner from "./PopupInner"
 import {getAction, getDelay} from "./utils"
 import {popupPropTypes} from "./prop-types"
@@ -36,7 +36,9 @@ export default class Popup extends
         animation: true,
         trigger: "click",
         autoClose: true,
-        escClose: true
+        escClose: true,
+        fallbackPlacements: [...placements],
+        flip: true
     }
 
     static getDerivedStateFromProps(

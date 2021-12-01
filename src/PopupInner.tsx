@@ -107,9 +107,21 @@ export default class PopupInner extends
         const {current: ref} = this.alignRef
 
         if (ref) {
-            const {left, top} = ref.align()
+            const ret = ref.align()
 
-            this.setState({left, top})
+            this.setState(
+                {
+                    left: ret.left,
+                    top: ret.top
+                },
+                () => {
+                    const {onAlign} = this.props
+
+                    if (onAlign) {
+                        onAlign(ret)
+                    }
+                }
+            )
         }
     }
 

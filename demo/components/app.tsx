@@ -26,8 +26,8 @@ export default () => {
                     alignment="center"
                     autoClose="inside"
                     overlay={
-                        <div className="rounded bg-info p-3 text-white">
-                            Overlay content demo
+                        <div className="rounded bg-info text-white">
+                            <div style={{margin: 10}}>Overlay content demo</div>
                         </div>
                     } {...callbacks}>
                     <button className="btn btn-primary mx-3">Top</button>

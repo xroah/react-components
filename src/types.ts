@@ -23,13 +23,17 @@ export type Offset = number | {
 type ClickArea = ValueOf<typeof clickArea>
 type AutoClose = boolean | ClickArea
 export type AreaString = "esc" | "toggle" | ClickArea
+export type Placement = ValueOf<typeof placements>
 type ClickFunc = (v: AreaString) => void
-type Placement = ValueOf<typeof placements>
 type Cb = () => void
 
-export interface CommonProps {
-    alignment?: ValueOf<typeof aliments>
+interface PlacementProps {
     placement?: Placement
+}
+
+export interface CommonProps extends PlacementProps{
+    alignment?: ValueOf<typeof aliments>
+    fallbackPlacements?: Placement[]
     verticalAlign?: ValueOf<typeof verticalAlign>
     forceRender?: boolean
     mountNode?: null | string | HTMLElement
@@ -41,20 +45,21 @@ export interface CommonProps {
     autoClose?: AutoClose
     escClose?: boolean
     trigger?: Trigger | Trigger[]
+    flip?: boolean
     onShow?: Cb
     onShown?: Cb
     onHide?: Cb
     onHidden?: Cb
+    onAlign?: (v: OnAlignParam) => void
 }
 
-interface OnAlignParam extends InnerState {
-    placement:  Placement
+interface OnAlignParam extends InnerState, PlacementProps {
+    newPlacement?: Placement
 }
 
 export interface PopupProps extends CommonProps {
     children: React.ReactElement
     overlay?: React.ReactNode
-    onAlign?: (v: OnAlignParam) => void
 }
 
 export interface PopupState {

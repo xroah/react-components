@@ -1,33 +1,77 @@
 import * as React from "react"
-import {getScrollOffset, reflow} from "reap-utils/lib/dom"
-import {AlignmentProps} from "./types"
+import {
+    getScrollOffset,
+    getScrollParent,
+    reflow
+} from "reap-utils/lib/dom"
+import {AlignmentProps, Placement, } from "./types"
 import {getOffset} from "./utils"
 
 export default class Alignment extends React.Component<AlignmentProps> {
-    private vAlign(targetRect: DOMRect, overlayRect: DOMRect) {
+    /**
+     * 
+     * @param tRect target dom rect
+     * @param oRect overlay dom rect
+     * @returns spare space
+     */
+    private getSpareSpace(tRect: DOMRect, oRect: DOMRect) {
+        let c = this.props.container!
+        let cRect = {
+            left: 0,
+            top: 0,
+            right: 0,
+            bottom: 0,
+            width: window.innerWidth,
+            height: window.innerHeight
+        }
+        const {x, y} = getOffset()
+
+        if (c !== document.body) {
+            const scrollContainer = getScrollParent(c)
+
+            // the specified container in scroll container
+            if (scrollContainer !== c && scrollContainer.contains(c)) {
+                const rect = scrollContainer.getBoundingClientRect()
+
+                cRect = {...rect}
+            }
+        }
+
+        return {
+            top: tRect.top - oRect.height - cRect.top - y,
+            right: cRect.width - oRect.width - tRect.right - x,
+            bottom: cRect.height - tRect.bottom - oRect.height - y,
+            left: tRect.left - oRect.width - x
+        }
+    }
+
+    private vAlign(
+        tRect: DOMRect,
+        oRect: DOMRect,
+        placement: Placement
+    ) {
         const {
             alignment,
-            placement,
             container,
             offset
         } = this.props
         const {x, y} = getOffset(offset)
         let {left, top} = getScrollOffset(container!)
-        left += targetRect.left + x
-        top += targetRect.top
+        left += tRect.left + x
+        top += tRect.top
 
         if (placement === "top") {
-            top -= overlayRect.height + y
+            top -= oRect.height + y
         } else {
-            top += targetRect.height + y
+            top += tRect.height + y
         }
 
         switch (alignment) {
             case "center":
-                left += (targetRect.width - overlayRect.width) / 2
+                left += (tRect.width - oRect.width) / 2
                 break
             case "end":
-                left += targetRect.width - overlayRect.width
+                left += tRect.width - oRect.width
                 break
             default:
             // default start
@@ -39,30 +83,33 @@ export default class Alignment extends React.Component<AlignmentProps> {
         }
     }
 
-    private hAlign(targetRect: DOMRect, overlayRect: DOMRect) {
+    private hAlign(
+        tRect: DOMRect,
+        oRect: DOMRect,
+        placement: Placement
+    ) {
         const {
             verticalAlign,
-            placement,
             container,
             offset
         } = this.props
         const {x, y} = getOffset(offset)
         let {left, top} = getScrollOffset(container!)
-        top += targetRect.top + y
-        left += targetRect.left
+        top += tRect.top + y
+        left += tRect.left
 
         if (placement === "left") {
-            left -= overlayRect.width + x
+            left -= oRect.width + x
         } else {
-            left += targetRect.width + x
+            left += tRect.width + x
         }
 
         switch (verticalAlign) {
             case "middle":
-                top += (targetRect.height - overlayRect.height) / 2
+                top += (tRect.height - oRect.height) / 2
                 break
             case "bottom":
-                top += targetRect.height - overlayRect.height
+                top += tRect.height - oRect.height
                 break
             default:
             // default top  
@@ -76,17 +123,32 @@ export default class Alignment extends React.Component<AlignmentProps> {
 
     align() {
         const {
+            placement,
+            container,
+            fallbackPlacements: fallback,
+            flip,
+            getElements,
+        } = this.props
+        const {
             relatedTarget,
             overlay
-        } = this.props.getElements()
-        const {placement, container} = this.props
+        } = getElements()
+        let newPlacement = placement
         let ret = {
             left: 0,
             top: 0
         }
 
-        if (!relatedTarget || !overlay || !container || !placement) {
-            return ret
+        if (
+            !relatedTarget ||
+            !overlay ||
+            !container ||
+            !newPlacement
+        ) {
+            return {
+                ...ret,
+                placement
+            }
         }
 
         reflow(overlay as HTMLElement)
@@ -95,14 +157,35 @@ export default class Alignment extends React.Component<AlignmentProps> {
         const overlayRect = overlay.getBoundingClientRect()
         const vSet = new Set(["top", "bottom"])
         const hSet = new Set(["left", "right"])
+        const spareSpace = this.getSpareSpace(targetRect, overlayRect)
 
-        if (vSet.has(placement)) {
-            ret = this.vAlign(targetRect, overlayRect)
-        } else if (hSet.has(placement)){
-            ret = this.hAlign(targetRect, overlayRect)
+        // no enough space and fallback to other placements
+        if (
+            flip &&
+            spareSpace[newPlacement] < 0 &&
+            fallback &&
+            fallback.length
+        ) {
+            for (let f of fallback) {
+                if (f !== newPlacement && spareSpace[f] >= 0) {
+                    newPlacement = f
+
+                    break
+                }
+            }
         }
 
-        return ret
+        if (vSet.has(newPlacement)) {
+            ret = this.vAlign(targetRect, overlayRect, newPlacement)
+        } else if (hSet.has(newPlacement)) {
+            ret = this.hAlign(targetRect, overlayRect, newPlacement)
+        }
+
+        return {
+            ...ret,
+            placement,
+            newPlacement
+        }
     }
 
     render() {
