@@ -22,11 +22,7 @@ import {
     only,
     handleFuncProp
 } from "../main"
-import {
-    chainFunction,
-    isUndef,
-    omit
-} from "../../main"
+import {isUndef, chainFunction} from "../../main"
 import {getTransitionDuration} from "../../dom"
 
 export default class Transition extends
@@ -249,7 +245,9 @@ export default class Transition extends
         this.setState({status: UNMOUNTED})
     }
 
-    onTransitionEnd = () => {
+    handleTransitionEnd = (evt: React.TransitionEvent) => {
+        handleFuncProp(this.props.onTransitionEnd)(evt)
+
         if (this.next) {
             this.next.fn()
         }
@@ -274,11 +272,7 @@ export default class Transition extends
     render() {
         const {
             state: {status},
-            props: {
-                children,
-                onTransitionEnd,
-                ...restProps
-            }
+            props: {children}
         } = this
         const div = <Placeholder ref={this.placeholderRef} />
         let child: React.ReactElement
@@ -287,37 +281,21 @@ export default class Transition extends
             return null
         }
 
-        const props = omit(
-            restProps,
-            [
-                "in",
-                "timeout",
-                "appear",
-                "onEnter",
-                "onEntering",
-                "onEntered",
-                "onExit",
-                "onExiting",
-                "onExited",
-                "unmountOnExit"
-            ]
-        )
-
         if (typeof children === "function") {
             child = only(children(status))
         } else {
             child = only(children as React.ReactElement)
         }
 
+        const {onTransitionEnd: end} = child.props
+
         child = React.cloneElement(
             child,
             {
-                ...props,
-                onTransitionEnd: chainFunction(
-                    child.props.onTransitionEnd,
-                    onTransitionEnd,
-                    this.onTransitionEnd
-                )
+                onTransitionEnd: end ? chainFunction(
+                    end,
+                    this.handleTransitionEnd
+                ) : this.handleTransitionEnd
             }
         )
 
