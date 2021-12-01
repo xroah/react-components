@@ -48,7 +48,6 @@ export default function Fade(
 }
 
 Fade.defaultProps = {
-    timeout: 300,
     showClass: "show",
     name: "fade",
     hiddenOnExited: true

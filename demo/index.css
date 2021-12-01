@@ -6,7 +6,7 @@
 
 .fade {
     background-color: #0d6efd;
-    transition: opacity 0.3s linear;
+    transition: opacity 0.5s linear;
 }
 
 .fade:not(.show) {
