@@ -109,10 +109,13 @@ export default class Transition extends
             }
         }
 
+        // the setTimeout callback may have not been called,
+        // if user operate rapidly in a short period of time
         this.clearNext()
 
         this.next = {
             fn: this.safeCallback(cb),
+            // ensure transitionEnd handler called before setTimeout
             timeout: timeout + TIME_PADDING
         }
     }
@@ -250,6 +253,7 @@ export default class Transition extends
 
         if (this.next) {
             this.next.fn()
+            this.clearNext()
         }
     }
 
