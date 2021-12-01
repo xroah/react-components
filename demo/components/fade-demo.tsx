@@ -2,13 +2,13 @@ import * as React from "react"
 import Fade from "../../src/react/transition/Fade"
 
 export const callbacks = {
-    onEnter: () => console.log("onenter"),
-    onEntering: () => console.log("entering"),
-    onEntered: () => console.log("entered"),
-    onExit: () => console.log("exit"),
-    onExiting: () => console.log("exiting"),
-    onExited: () => console.log("exited"),
-    onTransitionEnd: (e: any) => console.log("transitionEnd", e)
+    onEnter: () => console.log("onEnter called"),
+    onEntering: () => console.log("onEntering called"),
+    onEntered: () => console.log("onEntered called"),
+    onExit: () => console.log("onExit called"),
+    onExiting: () => console.log("onExiting called"),
+    onExited: () => console.log("onExited called"),
+    onTransitionEnd: (e: any) => console.log("onTransitionEnd", e.propertyName)
 }
 
 export default function () {
@@ -22,6 +22,7 @@ export default function () {
             <Fade
                 in={visible}
                 {...callbacks}
+                timeout={300}
                 unmountOnExit>
                 <div className="div" style={{lineHeight: 2}}>
                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat, labore maiores expedita at magnam perspiciatis consequuntur architecto voluptas quo quos eum repellendus repellat rerum officia accusamus odio nesciunt consectetur. Dignissimos.

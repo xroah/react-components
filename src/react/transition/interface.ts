@@ -1,11 +1,11 @@
 import * as React from "react"
 import {states, UNMOUNTED} from "./constants"
 
-export type stateType = (typeof states)[number]
+export type StateType = (typeof states)[number]
 export type Callback = (node?: HTMLElement) => void
 
 type ChildrenFunc = (
-    state: Exclude<stateType, typeof UNMOUNTED>
+    state: Exclude<StateType, typeof UNMOUNTED>
 ) => React.ReactElement
 
 type Callbacks<T extends readonly string[]> = {
@@ -31,7 +31,7 @@ export interface TransitionProps extends Callbacks<typeof callbacks> {
 }
 
 export interface TransitionState {
-    status?: stateType
+    status?: StateType
 }
 
 export interface NoTransitionProps extends TransitionProps {
@@ -55,5 +55,5 @@ export interface Next {
 }
 
 export interface State {
-    status: stateType | typeof UNMOUNTED
+    status: StateType
 }

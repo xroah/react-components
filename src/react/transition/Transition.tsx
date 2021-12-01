@@ -12,7 +12,7 @@ import {
 import {
     Next,
     State,
-    stateType,
+    StateType,
     TransitionProps
 } from "./interface"
 import Placeholder from "../Placeholder"
@@ -45,7 +45,7 @@ export default class Transition extends
             unmountOnExit,
             appear
         } = props
-        let status: stateType
+        let status: StateType
 
         if (_in) {
             status = appear ? EXITED : ENTERED
@@ -72,12 +72,8 @@ export default class Transition extends
 
     componentDidUpdate(prevProps: TransitionProps) {
         let {
-            props: {
-                in: _in
-            },
-            state: {
-                status
-            }
+            props: {in: _in},
+            state: {status}
         } = this
 
         if (_in !== prevProps.in) {
@@ -100,9 +96,7 @@ export default class Transition extends
         nextState: State
     ) {
         if (nextProps.in && nextState.status === UNMOUNTED) {
-            return {
-                status: EXITED
-            }
+            return {status: EXITED}
         }
 
         return nextState
@@ -110,7 +104,6 @@ export default class Transition extends
 
     setNext(fn: Function, timeout = 0) {
         let called = false
-        
         const cb = () => {
             // prevent from calling multiple times
             if (!called) {
@@ -119,6 +112,8 @@ export default class Transition extends
                 fn.call(this)
             }
         }
+
+        this.clearNext()
 
         this.next = {
             fn: this.safeCallback(cb),
@@ -216,14 +211,6 @@ export default class Transition extends
         return timeout
     }
 
-    performEnter() {
-        this.setNext(this.performEntering)
-        this.setState(
-            {status: ENTER},
-            () => this.handleCallback("onEnter")
-        )
-    }
-
     performEntering() {
         this.setNext(this.performEntered, this.getTimeout())
         this.setState(
@@ -236,14 +223,6 @@ export default class Transition extends
         this.setState(
             {status: ENTERED},
             () => this.handleCallback("onEntered")
-        )
-    }
-
-    performExit() {
-        this.setNext(this.performExiting)
-        this.setState(
-            {status: EXIT},
-            () => this.handleCallback("onExit")
         )
     }
 
@@ -276,17 +255,20 @@ export default class Transition extends
         }
     }
 
-    switchState(status: stateType) {
-        this.clearNext()
-
+    switchState(status: StateType) {
         if (status === ENTER) {
-            this.setNext(this.performEnter)
+            this.setNext(this.performEntering)
+            this.setState(
+                {status: ENTER},
+                () => this.handleCallback("onEnter")
+            )
+        } else if (status === EXIT) {
+            this.setNext(this.performExiting)
+            this.setState(
+                {status: EXIT},
+                () => this.handleCallback("onExit")
+            )
         }
-        else if (status === EXIT) {
-            this.setNext(this.performExit)
-        }
-
-        this.setState({status})
     }
 
     render() {
@@ -338,7 +320,7 @@ export default class Transition extends
                 )
             }
         )
-        
+
         return (
             <>
                 {div}
