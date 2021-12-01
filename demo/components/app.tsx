@@ -1,6 +1,21 @@
 import * as React from "react"
 import Popup from "../../src/Popup"
 
+const callbacks = {
+    onShow() {
+        console.log("onShow called")
+    },
+    onShown() {
+        console.log("onShown called")
+    },
+    onHide() {
+        console.log("onHide called")
+    },
+    onHidden() {
+        console.log("onHidden called")
+    }
+}
+
 export default () => {
     return (
         <>
@@ -14,7 +29,7 @@ export default () => {
                         <div className="rounded bg-info p-3 text-white">
                             Overlay content demo
                         </div>
-                    }>
+                    } {...callbacks}>
                     <button className="btn btn-primary mx-3">Top</button>
                 </Popup>
                 <Popup
@@ -27,7 +42,7 @@ export default () => {
                         <div className="rounded bg-info p-3 text-white">
                             Overlay content demo
                         </div>
-                    }>
+                    } {...callbacks}>
                     <button className="btn btn-primary mx-3">Right</button>
                 </Popup>
                 <Popup
@@ -40,7 +55,7 @@ export default () => {
                         <div className="rounded bg-info p-3 text-white">
                             Overlay content demo
                         </div>
-                    }>
+                    } {...callbacks}>
                     <button className="btn btn-primary mx-3">Bottom</button>
                 </Popup>
                 <Popup
@@ -54,7 +69,7 @@ export default () => {
                         <div className="rounded bg-info p-3 text-white">
                             Overlay content demo
                         </div>
-                    }>
+                    } {...callbacks}>
                     <button className="btn btn-primary mx-3">Left</button>
                 </Popup>
             </div>

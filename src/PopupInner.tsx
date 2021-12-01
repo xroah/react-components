@@ -151,6 +151,8 @@ export default class PopupInner extends
             children,
             mountNode,
             animation,
+            onShown,
+            onHidden,
             onMouseEnter,
             onMouseLeave,
             ...restProps
@@ -203,7 +205,9 @@ export default class PopupInner extends
                                 hiddenOnExited
                                 appear
                                 in={!!visible}
-                                onEntering={this.align}>
+                                onEntering={this.align}
+                                onEntered={onShown}
+                                onExited={onHidden}>
                                 {_overlay}
                             </Fade>
                         ) : _overlay

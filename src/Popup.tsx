@@ -167,11 +167,39 @@ export default class Popup extends
     }
 
     private show() {
-        this.setState({visible: true})
+        if (this.state.visible) {
+            return
+        }
+
+        const {animation, onShow} = this.props
+
+        handleFuncProp(onShow)()
+        this.setState(
+            {visible: true},
+            () => {
+                if (!animation) {
+                    this.onShown()
+                }
+            }
+        )
     }
 
     private hide() {
-        this.setState({visible: false})
+        if (!this.state.visible) {
+            return
+        }
+
+        const {animation, onHide} = this.props
+
+        handleFuncProp(onHide)()
+        this.setState(
+            {visible: false},
+            () => {
+                if (!animation) {
+                    this.onHidden()
+                }
+            }
+        )
     }
 
     private delayShow() {
@@ -221,6 +249,14 @@ export default class Popup extends
         return getNextNodeByRef(this.placeholderRef)
     }
 
+    private onShown = () => {
+        handleFuncProp(this.props.onShown)()
+    }
+
+    private onHidden = () => {
+        handleFuncProp(this.props.onHidden)()
+    }
+
     render() {
         const {
             children,
@@ -241,6 +277,8 @@ export default class Popup extends
                     onMouseEnter={this.handleOverlayMouseEnterOrLeave}
                     onMouseLeave={this.handleOverlayMouseEnterOrLeave}
                     onClose={this.handleClose}
+                    onShown={this.onShown}
+                    onHidden={this.onHidden}
                     {...restProps}>
                     {overlay}
                 </PopupInner>

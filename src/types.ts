@@ -25,6 +25,7 @@ type AutoClose = boolean | ClickArea
 export type AreaString = "esc" | "toggle" | ClickArea
 type ClickFunc = (v: AreaString) => void
 type Placement = ValueOf<typeof placements>
+type Cb = () => void
 
 export interface CommonProps {
     alignment?: ValueOf<typeof aliments>
@@ -40,6 +41,10 @@ export interface CommonProps {
     autoClose?: AutoClose
     escClose?: boolean
     trigger?: Trigger | Trigger[]
+    onShow?: Cb
+    onShown?: Cb
+    onHide?: Cb
+    onHidden?: Cb
 }
 
 interface OnAlignParam extends InnerState {
