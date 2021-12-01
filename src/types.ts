@@ -22,7 +22,7 @@ export type Offset = number | {
 
 type ClickArea = ValueOf<typeof clickArea>
 type AutoClose = boolean | ClickArea
-export type AreaString = "toggle" | ClickArea
+export type AreaString = "esc" | "toggle" | ClickArea
 type ClickFunc = (v: AreaString) => void
 type Placement = ValueOf<typeof placements>
 
@@ -40,7 +40,6 @@ export interface CommonProps {
     autoClose?: AutoClose
     escClose?: boolean
     trigger?: Trigger | Trigger[]
-    onAutoClose?: ClickFunc
 }
 
 interface OnAlignParam extends InnerState {
@@ -73,8 +72,7 @@ export interface InnerProps extends CommonProps {
     getTarget: () => Element | null
     onMouseEnter?: (evt: React.MouseEvent) => void
     onMouseLeave?: (evt: React.MouseEvent) => void
-    onClick?: ClickFunc
-    onEscKeyDown?: () => void
+    onClose?: ClickFunc
 }
 
 export interface InnerState {

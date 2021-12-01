@@ -79,31 +79,27 @@ export default class PopupInner extends
             relatedTarget,
             overlay
         } = this.getElements()
-        const {onClick} = this.props
+        const {onClose} = this.props
         const target = evt.target as HTMLElement
 
-        if (
-            !relatedTarget ||
-            !overlay ||
-            typeof onClick !== "function"
-        ) {
+        if (!relatedTarget || !overlay || !onClose) {
             return
         }
 
         if (target === relatedTarget || relatedTarget.contains(target)) {
-            onClick("toggle")
+            onClose("toggle")
         } else if (target === overlay || overlay.contains(target)) {
-            onClick("inside")
+            onClose("inside")
         } else {
-            onClick("outside")
+            onClose("outside")
         }
     }
 
     private handleDocKeyDown = (evt: KeyboardEvent) => {
-        const {onEscKeyDown} = this.props
+        const {onClose} = this.props
 
-        if (evt.key.toLowerCase() === "escape" && onEscKeyDown) {
-            onEscKeyDown()
+        if (evt.key.toLowerCase() === "escape" && onClose) {
+            onClose("esc")
         }
     }
 

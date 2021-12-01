@@ -117,20 +117,17 @@ export default class Popup extends
         "onBlur"
     )
 
-    handleAutoClose = (v: AreaString) => {
+    handleClose = (v: AreaString) => {
         const {autoClose} = this.props
 
         if (
             (autoClose === true && v !== "toggle") ||
             (autoClose === "inside" && v === "inside") ||
-            (autoClose === "outside" && v === "outside")
+            (autoClose === "outside" && v === "outside") ||
+            v === "esc"
         ) {
             this.hide()
         }
-    }
-
-    private handleEscKeyDown = () => {
-        this.hide()
     }
 
     private getHandlers() {
@@ -243,8 +240,7 @@ export default class Popup extends
                     visible={this.state.visible}
                     onMouseEnter={this.handleOverlayMouseEnterOrLeave}
                     onMouseLeave={this.handleOverlayMouseEnterOrLeave}
-                    onEscKeyDown={this.handleEscKeyDown}
-                    onClick={this.handleAutoClose}
+                    onClose={this.handleClose}
                     {...restProps}>
                     {overlay}
                 </PopupInner>

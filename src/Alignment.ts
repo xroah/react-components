@@ -80,31 +80,29 @@ export default class Alignment extends React.Component<AlignmentProps> {
             overlay
         } = this.props.getElements()
         const {placement, container} = this.props
-        let left = 0
-        let top = 0
+        let ret = {
+            left: 0,
+            top: 0
+        }
 
-        if (!relatedTarget || !overlay || !container) {
-            return {
-                left,
-                top
-            }
+        if (!relatedTarget || !overlay || !container || !placement) {
+            return ret
         }
 
         reflow(overlay as HTMLElement)
 
         const targetRect = relatedTarget.getBoundingClientRect()
         const overlayRect = overlay.getBoundingClientRect()
+        const vSet = new Set(["top", "bottom"])
+        const hSet = new Set(["left", "right"])
 
-        if (placement === "top" || placement === "bottom") {
-            ({left, top} = this.vAlign(targetRect, overlayRect))
-        } else {
-            ({left, top} = this.hAlign(targetRect, overlayRect))
+        if (vSet.has(placement)) {
+            ret = this.vAlign(targetRect, overlayRect)
+        } else if (hSet.has(placement)){
+            ret = this.hAlign(targetRect, overlayRect)
         }
 
-        return {
-            left,
-            top
-        }
+        return ret
     }
 
     render() {
