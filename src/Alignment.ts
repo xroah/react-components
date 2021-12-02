@@ -1,10 +1,6 @@
 import * as React from "react"
-import {
-    getScrollOffset,
-    getScrollParent,
-    reflow
-} from "reap-utils/lib/dom"
-import {AlignmentProps, Placement, } from "./types"
+import {getScrollParent, reflow} from "reap-utils/lib/dom"
+import {AlignmentProps, Placement} from "./types"
 import {getOffset} from "./utils"
 
 export default class Alignment extends React.Component<AlignmentProps> {
@@ -45,20 +41,24 @@ export default class Alignment extends React.Component<AlignmentProps> {
         }
     }
 
+    /**
+     * 
+     * @param cRect container dom rect
+     * @param tRect target dom rect
+     * @param oRect  overlay dom rect
+     * @param placement real placement
+     * @returns left and top
+     */
     private vAlign(
+        cRect: DOMRect,
         tRect: DOMRect,
         oRect: DOMRect,
         placement: Placement
     ) {
-        const {
-            alignment,
-            container,
-            offset
-        } = this.props
+        const {alignment, offset} = this.props
         const {x, y} = getOffset(offset)
-        let {left, top} = getScrollOffset(container!)
-        left += tRect.left + x
-        top += tRect.top
+        let left = tRect.left - cRect.left + x
+        let top = tRect.top - cRect.top
 
         if (placement === "top") {
             top -= oRect.height + y
@@ -84,19 +84,15 @@ export default class Alignment extends React.Component<AlignmentProps> {
     }
 
     private hAlign(
+        cRect: DOMRect,
         tRect: DOMRect,
         oRect: DOMRect,
         placement: Placement
     ) {
-        const {
-            verticalAlign,
-            container,
-            offset
-        } = this.props
+        const {verticalAlign, offset} = this.props
         const {x, y} = getOffset(offset)
-        let {left, top} = getScrollOffset(container!)
-        top += tRect.top + y
-        left += tRect.left
+        let top = tRect.top - cRect.top + y
+        let left = tRect.left - cRect.left
 
         if (placement === "left") {
             left -= oRect.width + x
@@ -153,11 +149,14 @@ export default class Alignment extends React.Component<AlignmentProps> {
 
         reflow(overlay as HTMLElement)
 
-        const targetRect = relatedTarget.getBoundingClientRect()
-        const overlayRect = overlay.getBoundingClientRect()
+        const tRect = relatedTarget.getBoundingClientRect()
+        const oRect = overlay.getBoundingClientRect()
+        const cRect = container.getBoundingClientRect()
+        const boundary = getScrollParent(container)
+        const bRect = boundary.getBoundingClientRect()
         const vSet = new Set(["top", "bottom"])
         const hSet = new Set(["left", "right"])
-        const spareSpace = this.getSpareSpace(targetRect, overlayRect)
+        const spareSpace = this.getSpareSpace(tRect, oRect)
 
         // no enough space and fallback to other placements
         if (
@@ -167,18 +166,23 @@ export default class Alignment extends React.Component<AlignmentProps> {
             fallback.length
         ) {
             for (let f of fallback) {
-                if (f !== newPlacement && spareSpace[f] >= 0) {
-                    newPlacement = f
+                if (f !== newPlacement) {
+                    if (
+                        (hSet.has(f) && bRect.height >= oRect.height) ||
+                        (vSet.has(f) && bRect.width >= oRect.width)
+                    ) {
+                        newPlacement = f
 
-                    break
+                        break
+                    }
                 }
             }
         }
 
         if (vSet.has(newPlacement)) {
-            ret = this.vAlign(targetRect, overlayRect, newPlacement)
+            ret = this.vAlign(cRect, tRect, oRect, newPlacement)
         } else if (hSet.has(newPlacement)) {
-            ret = this.hAlign(targetRect, overlayRect, newPlacement)
+            ret = this.hAlign(cRect, tRect, oRect, newPlacement)
         }
 
         return {
