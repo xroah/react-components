@@ -3,12 +3,13 @@ import classNames from "../../class-names"
 import {handleFuncProp, only} from "../main"
 import {ENTERED, EXITED} from "./constants"
 import {string} from "prop-types"
-import {NoTransitionProps} from "./interface"
+import {NoTransitionProps, State} from "./interface"
 import propTypes from "./propTypes"
 import BaseTransition from "./BaseTransition"
 
 //compatible with Transition
-export default class NoTransition extends BaseTransition<NoTransitionProps> {
+export default class NoTransition extends
+    BaseTransition<NoTransitionProps, State> {
     static propTypes = {
         ...propTypes,
         showClass: string

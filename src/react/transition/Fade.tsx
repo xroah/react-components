@@ -19,7 +19,6 @@ export default function Fade(
         ...restProps
     }: FadeProps
 ) {
-
     return (
         <Transition {...restProps}>
             {

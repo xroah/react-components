@@ -30,10 +30,6 @@ export interface TransitionProps extends Callbacks<typeof callbacks> {
     onTransitionEnd?: (evt: React.TransitionEvent) => void
 }
 
-export interface TransitionState {
-    status?: StateType
-}
-
 export interface NoTransitionProps extends TransitionProps {
     showClass?: string
 }
