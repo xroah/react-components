@@ -29,6 +29,9 @@ const cfg: ConfigOptions = {
         dir: "coverage/"
     },
     karmaTypescriptConfig: {
+        compilerOptions: {
+            esModuleInterop: true
+        }
     }
 } as ConfigOptions
 
