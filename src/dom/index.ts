@@ -59,14 +59,20 @@ export function getScrollOffset(el: HTMLElement) {
     }
 }
 
-export function getScrollParent(
-    el: HTMLElement,
-    until: HTMLElement = document.body
-) {
-    let parent: HTMLElement = el
+export function getScrollParent(el: HTMLElement) {
+    let parent = el.parentElement
     let ret: HTMLElement | null = null
+    const {
+        body,
+        documentElement,
+        scrollingElement
+    } = document
 
-    while ((parent = parent.parentNode as HTMLElement) && until !== parent) {
+    if (el === body || el === documentElement) {
+        return <HTMLElement>scrollingElement
+    }
+
+    while (parent && parent !== scrollingElement) {
         const style = getComputedStyle(parent)
         const overflow = style.getPropertyValue("overflow")
         const overflowX = style.getPropertyValue("overflow-x")
@@ -81,10 +87,12 @@ export function getScrollParent(
 
             break
         }
+
+        parent = parent.parentElement
     }
 
     if (!ret) {
-        ret = until
+        ret = <HTMLElement>scrollingElement
     }
 
     return ret
