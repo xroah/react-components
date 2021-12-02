@@ -73,3 +73,20 @@ export function getContainer(mountNode?: null | string | HTMLElement) {
 
     return container
 }
+
+export function isElementVisible(
+    el: HTMLElement,
+    container: HTMLElement = document.body
+) {
+    const elRect = el.getBoundingClientRect()
+    const containerRect = container.getBoundingClientRect()
+
+    return (
+        // invisible within viewport
+        elRect.bottom <= 0 ||
+        elRect.top >= window.innerHeight ||
+        // invisible within container
+        elRect.bottom <= containerRect.top ||
+        elRect.top >= containerRect.top
+    )
+}
