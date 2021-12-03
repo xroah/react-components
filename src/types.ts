@@ -89,3 +89,12 @@ export interface InnerState {
     left: number
     top: number
 }
+
+export interface AlignRet {
+    left: number
+    top: number
+    boundary?: HTMLElement
+    placement?: Placement
+    newPlacement?: Placement
+    needFlip?: boolean
+}

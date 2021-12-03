@@ -1,7 +1,7 @@
 import * as React from "react"
 import {createPortal} from "react-dom";
 import {noop} from "reap-utils/lib";
-import {Fade, mergeRef} from "reap-utils/lib/react";
+import {Fade, handleFuncProp, mergeRef} from "reap-utils/lib/react";
 import Alignment from "./Alignment";
 import {InnerProps, InnerState} from "./types";
 import {getContainer} from "./utils";
@@ -107,7 +107,11 @@ export default class PopupInner extends
         const {current: ref} = this.alignRef
 
         if (ref) {
-            const ret = ref.align()
+            const {
+                needFlip,
+                boundary,
+                ...ret
+            } = ref.align()
 
             this.setState(
                 {
@@ -115,10 +119,26 @@ export default class PopupInner extends
                     top: ret.top
                 },
                 () => {
-                    const {onAlign} = this.props
+                    const onAlign = () => handleFuncProp(this.props.onAlign)(ret)
 
-                    if (onAlign) {
-                        onAlign(ret)
+                    if (
+                        needFlip !== undefined && (
+                            // original placement has enough space 
+                            !needFlip ||
+                            // flipped
+                            ret.placement !== ret.newPlacement
+                        )
+                    ) {
+                        const newPos = ref.adjust(
+                            boundary!,
+                            ret.newPlacement!,
+                            ret.left,
+                            ret.top
+                        )
+
+                        this.setState(newPos, onAlign)
+                    } else {
+                        onAlign()
                     }
                 }
             )

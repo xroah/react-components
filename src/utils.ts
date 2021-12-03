@@ -73,3 +73,29 @@ export function getContainer(mountNode?: null | string | HTMLElement) {
 
     return container
 }
+
+export function getWindowScrollBar() {
+    const div = document.createElement("div")
+    const ret = {
+        x: 0,
+        y: 0
+    }
+    div.style.cssText = `
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        margin: auto;
+        z-index: -9999
+    `
+
+    document.body.appendChild(div)
+
+    ret.x = window.innerWidth - div.clientWidth
+    ret.y = window.innerHeight - div.clientHeight
+
+    // document.body.removeChild(div)
+
+    return ret
+}
