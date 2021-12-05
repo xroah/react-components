@@ -74,11 +74,11 @@ export function getContainer(mountNode?: null | string | HTMLElement) {
     return container
 }
 
-export function getWindowScrollBar() {
+export function getWindowSize() {
     const div = document.createElement("div")
     const ret = {
-        x: 0,
-        y: 0
+        width: 0,
+        height: 0
     }
     div.style.cssText = `
         position: fixed;
@@ -92,8 +92,8 @@ export function getWindowScrollBar() {
 
     document.body.appendChild(div)
 
-    ret.x = window.innerWidth - div.clientWidth
-    ret.y = window.innerHeight - div.clientHeight
+    ret.width = div.offsetWidth
+    ret.height = div.offsetHeight
 
     // document.body.removeChild(div)
 

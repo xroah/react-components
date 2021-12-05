@@ -9,7 +9,7 @@ import {
     AlignRet,
     Placement
 } from "./types"
-import {getOffset, getWindowScrollBar} from "./utils"
+import {getOffset, getWindowSize} from "./utils"
 
 export default class Alignment extends React.Component<AlignmentProps> {
     /**
@@ -24,16 +24,14 @@ export default class Alignment extends React.Component<AlignmentProps> {
         boundary: HTMLElement
     ) {
         const {x, y} = getOffset()
-        const {x: wx, y: wy} = getWindowScrollBar()
-        const w = window.innerWidth - wx
-        const h = window.innerHeight - wy
+        const {width: ww, height: wh} = getWindowSize()
         const ret = {
             left: tRect.left - oRect.width - x,
             top: tRect.top - oRect.height - y,
-            right: w - tRect.right - oRect.width - x,
-            bottom: h - tRect.bottom - oRect.height - y,
-            width: w,
-            height: h
+            right: ww - tRect.right - oRect.width - x,
+            bottom: wh - tRect.bottom - oRect.height - y,
+            width: ww,
+            height: wh
         }
 
         if (boundary !== document.scrollingElement) {
@@ -155,26 +153,23 @@ export default class Alignment extends React.Component<AlignmentProps> {
         top = 0
     ) {
         const {overlay} = this.props.getElements()
-        const bRect = boundary.getBoundingClientRect()
         const oRect = overlay!.getBoundingClientRect()
         const vSet = new Set(["top", "bottom"])
         const hSet = new Set(["left", "right"])
-        const {x: wx, y: wy} = getWindowScrollBar()
-        const w = window.innerWidth - wx
-        const h = window.innerHeight - wy
+        const {width: ww, height: wh} = getWindowSize()
 
         if (boundary === document.scrollingElement) {
             if (vSet.has(placement)) {
                 if (oRect.left < 0) {
                     left += Math.abs(oRect.left)
-                } else if (oRect.right > w) {
-                    left -= Math.abs(oRect.right - w)
+                } else if (oRect.right > ww) {
+                    left -= Math.abs(oRect.right - ww)
                 }
             } else if (hSet.has(placement)) {
                 if (oRect.top < 0) {
                     top += Math.abs(oRect.top)
-                } else if (oRect.top > h) {
-                    top -= Math.abs(oRect.top - h)
+                } else if (oRect.top > wh) {
+                    top -= Math.abs(oRect.top - wh)
                 }
             }
         } else {
