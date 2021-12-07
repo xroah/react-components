@@ -100,9 +100,9 @@ export function getViewportSize() {
     return ret
 }
 
-export function hasScrollbar(el: HTMLElement) {
+export function getScrollbarSize(el: HTMLElement) {
     return {
-        h: el.clientWidth < el.offsetWidth,
-        v: el.clientHeight < el.offsetHeight
+        h: el.offsetWidth - el.clientWidth,
+        v: el.offsetHeight - el.clientHeight
     }
 }
