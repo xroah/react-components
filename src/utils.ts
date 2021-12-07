@@ -74,7 +74,7 @@ export function getContainer(mountNode?: null | string | HTMLElement) {
     return container
 }
 
-export function getWindowSize() {
+export function getViewportSize() {
     const div = document.createElement("div")
     const ret = {
         width: 0,
@@ -98,4 +98,11 @@ export function getWindowSize() {
     // document.body.removeChild(div)
 
     return ret
+}
+
+export function hasScrollbar(el: HTMLElement) {
+    return {
+        h: el.clientWidth < el.offsetWidth,
+        v: el.clientHeight < el.offsetHeight
+    }
 }

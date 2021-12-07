@@ -9,7 +9,7 @@ import {
     AlignRet,
     Placement
 } from "./types"
-import {getOffset, getWindowSize} from "./utils"
+import {getOffset, getViewportSize} from "./utils"
 
 export default class Alignment extends React.Component<AlignmentProps> {
     /**
@@ -24,7 +24,7 @@ export default class Alignment extends React.Component<AlignmentProps> {
         boundary: HTMLElement
     ) {
         const {x, y} = getOffset()
-        const {width: ww, height: wh} = getWindowSize()
+        const {width: ww, height: wh} = getViewportSize()
         const ret = {
             left: tRect.left - oRect.width - x,
             top: tRect.top - oRect.height - y,
@@ -156,7 +156,7 @@ export default class Alignment extends React.Component<AlignmentProps> {
         const oRect = overlay!.getBoundingClientRect()
         const vSet = new Set(["top", "bottom"])
         const hSet = new Set(["left", "right"])
-        const {width: ww, height: wh} = getWindowSize()
+        const {width: ww, height: wh} = getViewportSize()
 
         if (boundary === document.scrollingElement) {
             if (vSet.has(placement)) {
