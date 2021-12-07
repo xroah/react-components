@@ -9,7 +9,7 @@ import {
     AlignRet,
     Placement
 } from "./types"
-import {getOffset, getViewportSize} from "./utils"
+import {getOffset, getScrollbarSize, getViewportSize} from "./utils"
 
 export default class Alignment extends React.Component<AlignmentProps> {
     /**
@@ -36,30 +36,42 @@ export default class Alignment extends React.Component<AlignmentProps> {
 
         if (boundary !== document.scrollingElement) {
             const bRect = boundary.getBoundingClientRect()
+            const styles = getComputedStyle(boundary)
+            const borderTop = parseFloat(styles.borderTopWidth)
+            const borderRight = parseFloat(styles.borderRightWidth)
+            const borderBottom = parseFloat(styles.borderBottomWidth)
+            const borderLeft = parseFloat(styles.borderLeftWidth)
+            const scrollbar = getScrollbarSize(boundary)
 
             // top in viewport
-            if (bRect.top > 0) {
-                ret.top -= bRect.top
-                ret.height -= bRect.top
+            if (bRect.top < 0 && bRect.top + borderTop > 0) {
+                ret.top -= bRect.top + borderTop
+                ret.height -= bRect.top + borderTop
+            } else if (bRect.top > 0) {
+                ret.top -= bRect.top - borderTop
+                ret.height -= bRect.top - borderTop
             }
 
             // bottom in viewport
-            if (bRect.bottom < window.innerHeight) {
-                const bottomDistance = window.innerHeight - bRect.bottom
+            if (bRect.bottom < wh - scrollbar.v - borderBottom) {
+                const bottomDistance = wh - bRect.bottom - scrollbar.v - borderBottom
 
                 ret.bottom -= bottomDistance
                 ret.height -= bottomDistance
             }
 
             // left in viewport
-            if (bRect.left > 0) {
+            if (bRect.left < 0 && bRect.left + borderLeft > 0) {
+                ret.left -= bRect.left + borderLeft
+                ret.width -= bRect.left + borderLeft
+            } else if (bRect.left > 0) {
                 ret.left -= bRect.left
                 ret.width -= bRect.left
             }
 
             // right in viewport
-            if (bRect.right < window.innerWidth) {
-                const rightDistance = window.innerWidth - bRect.right
+            if (bRect.right < ww - scrollbar.h - borderRight) {
+                const rightDistance = ww - bRect.right - scrollbar.h - borderRight
 
                 ret.right -= rightDistance
                 ret.width -= rightDistance
