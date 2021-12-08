@@ -102,7 +102,37 @@ export function getViewportSize() {
 
 export function getScrollbarSize(el: HTMLElement) {
     return {
-        h: el.offsetWidth - el.clientWidth,
-        v: el.offsetHeight - el.clientHeight
+        v: el.offsetWidth - el.clientWidth,
+        h: el.offsetHeight - el.clientHeight
+    }
+}
+
+export function getBorderSize(el: HTMLElement) {
+    const styles = getComputedStyle(el)
+
+    return {
+        borderTop: parseFloat(styles.borderTopWidth),
+        borderRight: parseFloat(styles.borderRightWidth),
+        borderBottom: parseFloat(styles.borderBottomWidth),
+        borderLeft: parseFloat(styles.borderLeftWidth)
+    }
+}
+
+// getBoundingClientRect and exclude borders and scrollbars
+export function getRealBoundary(el: HTMLElement) {
+    const {h, v} = getScrollbarSize(el)
+    const {
+        borderTop,
+        borderRight,
+        borderBottom,
+        borderLeft
+    } = getBorderSize(el)
+    const rect = el.getBoundingClientRect()
+
+    return {
+        top: rect.top + borderTop,
+        right: rect.right - v - borderRight,
+        bottom: rect.bottom - h - borderBottom,
+        left: rect.left + borderLeft
     }
 }

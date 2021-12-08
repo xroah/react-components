@@ -9,9 +9,11 @@ import {
     AlignRet,
     Placement
 } from "./types"
-import {getOffset, getScrollbarSize, getViewportSize} from "./utils"
+import {getOffset, getRealBoundary} from "./utils"
 
 export default class Alignment extends React.Component<AlignmentProps> {
+    html = document.scrollingElement!
+
     /**
      * 
      * @param tRect target dom rect
@@ -24,7 +26,8 @@ export default class Alignment extends React.Component<AlignmentProps> {
         boundary: HTMLElement
     ) {
         const {x, y} = getOffset()
-        const {width: ww, height: wh} = getViewportSize()
+        const ww = this.html.clientWidth
+        const wh = this.html.clientHeight
         const ret = {
             left: tRect.left - oRect.width - x,
             top: tRect.top - oRect.height - y,
@@ -34,47 +37,36 @@ export default class Alignment extends React.Component<AlignmentProps> {
             height: wh
         }
 
-        if (boundary !== document.scrollingElement) {
-            const bRect = boundary.getBoundingClientRect()
-            const styles = getComputedStyle(boundary)
-            const borderTop = parseFloat(styles.borderTopWidth)
-            const borderRight = parseFloat(styles.borderRightWidth)
-            const borderBottom = parseFloat(styles.borderBottomWidth)
-            const borderLeft = parseFloat(styles.borderLeftWidth)
-            const scrollbar = getScrollbarSize(boundary)
+        if (boundary !== this.html) {
+            const {
+                top,
+                right,
+                bottom,
+                left
+            } = getRealBoundary(boundary)
 
             // top in viewport
-            if (bRect.top < 0 && bRect.top + borderTop > 0) {
-                ret.top -= bRect.top + borderTop
-                ret.height -= bRect.top + borderTop
-            } else if (bRect.top > 0) {
-                ret.top -= bRect.top - borderTop
-                ret.height -= bRect.top - borderTop
+            if (top > 0) {
+                ret.top -= top
+                ret.height -= top
             }
 
             // bottom in viewport
-            if (bRect.bottom < wh - scrollbar.v - borderBottom) {
-                const bottomDistance = wh - bRect.bottom - scrollbar.v - borderBottom
-
-                ret.bottom -= bottomDistance
-                ret.height -= bottomDistance
+            if (bottom < wh) {
+                ret.bottom -= bottom - tRect.bottom
+                ret.height -= wh - bottom
             }
 
             // left in viewport
-            if (bRect.left < 0 && bRect.left + borderLeft > 0) {
-                ret.left -= bRect.left + borderLeft
-                ret.width -= bRect.left + borderLeft
-            } else if (bRect.left > 0) {
-                ret.left -= bRect.left
-                ret.width -= bRect.left
+            if (left > 0) {
+                ret.left -= left
+                ret.width -= left
             }
 
             // right in viewport
-            if (bRect.right < ww - scrollbar.h - borderRight) {
-                const rightDistance = ww - bRect.right - scrollbar.h - borderRight
-
-                ret.right -= rightDistance
-                ret.width -= rightDistance
+            if (right < ww) {
+                ret.right -= right - tRect.right
+                ret.width -= ww - right
             }
         }
 
@@ -168,24 +160,33 @@ export default class Alignment extends React.Component<AlignmentProps> {
         const oRect = overlay!.getBoundingClientRect()
         const vSet = new Set(["top", "bottom"])
         const hSet = new Set(["left", "right"])
-        const {width: ww, height: wh} = getViewportSize()
+        const ww = this.html.clientWidth
+        const wh = this.html.clientHeight
+        let bRect = {
+            top: 0,
+            right: ww,
+            bottom: wh,
+            left: 0
+        }
 
-        if (boundary === document.scrollingElement) {
-            if (vSet.has(placement)) {
-                if (oRect.left < 0) {
-                    left += Math.abs(oRect.left)
-                } else if (oRect.right > ww) {
-                    left -= Math.abs(oRect.right - ww)
-                }
-            } else if (hSet.has(placement)) {
-                if (oRect.top < 0) {
-                    top += Math.abs(oRect.top)
-                } else if (oRect.top > wh) {
-                    top -= Math.abs(oRect.top - wh)
-                }
+        if (boundary !== this.html) {
+            bRect = {
+                ...getRealBoundary(boundary)
             }
-        } else {
+        }
 
+        if (vSet.has(placement)) {
+            if (oRect.left < bRect.left) {
+                left += Math.abs(oRect.left - bRect.left)
+            } else if (oRect.right > bRect.right) {
+                left -= Math.abs(oRect.right - bRect.right)
+            }
+        } else if (hSet.has(placement)) {
+            if (oRect.top < bRect.top) {
+                top += Math.abs(oRect.top - bRect.top)
+            } else if (oRect.bottom > bRect.bottom) {
+                top -= Math.abs(oRect.bottom - bRect.bottom)
+            }
         }
 
         return {
