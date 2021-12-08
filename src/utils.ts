@@ -95,7 +95,7 @@ export function getViewportSize() {
     ret.width = div.offsetWidth
     ret.height = div.offsetHeight
 
-    // document.body.removeChild(div)
+    document.body.removeChild(div)
 
     return ret
 }
