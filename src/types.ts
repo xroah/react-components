@@ -75,7 +75,7 @@ export interface AlignmentProps extends CommonProps {
         overlay: null | Element
     })
     children: React.ReactElement
-    container?: HTMLElement
+    getContainer: () => HTMLElement | null
 }
 
 export interface InnerProps extends CommonProps {

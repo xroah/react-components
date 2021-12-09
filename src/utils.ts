@@ -60,10 +60,10 @@ export function getDelay(delay?: Delay) {
 
 export function getContainer(mountNode?: null | string | HTMLElement) {
     if (!mountNode) {
-        return
+        return null
     }
 
-    let container: HTMLElement | undefined
+    let container: HTMLElement | null = null
 
     if (typeof mountNode === "string") {
         container = document.querySelector(mountNode) as HTMLElement

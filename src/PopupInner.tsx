@@ -147,7 +147,7 @@ export default class PopupInner extends
 
     private renderPortal(
         element: React.ReactElement,
-        container?: HTMLElement
+        container?: HTMLElement | null
     ) {
         if (container) {
             const parent = this.portalContainer.parentNode
@@ -175,6 +175,22 @@ export default class PopupInner extends
         overlay: this.innerRef.current
     })
 
+    private getContainer = () => {
+        const {mountNode, getTarget} = this.props
+
+        if (mountNode === null) {
+            const target = getTarget()
+
+            if (target) {
+                return target.parentElement
+            }
+
+            return null
+        }
+
+        return getContainer(mountNode)
+    }
+
     render() {
         const {
             forceRender,
@@ -200,7 +216,6 @@ export default class PopupInner extends
             return null
         }
 
-        const container = getContainer(mountNode)
         const _overlay = (
             <div
                 ref={mergeRef(overlayRef, this.innerRef)}
@@ -221,7 +236,7 @@ export default class PopupInner extends
             <Alignment
                 ref={this.alignRef}
                 getElements={this.getElements}
-                container={container}
+                getContainer={this.getContainer}
                 {...restProps}>
                 <div
                     style={{
@@ -252,7 +267,7 @@ export default class PopupInner extends
         return (
             mountNode === null ?
                 element :
-                this.renderPortal(element, container)
+                this.renderPortal(element, getContainer(mountNode))
         )
     }
 }

@@ -198,7 +198,7 @@ export default class Alignment extends React.Component<AlignmentProps> {
     align(): AlignRet {
         const {
             placement,
-            container,
+            getContainer,
             fallbackPlacements: fallback,
             flip,
             getElements,
@@ -207,6 +207,7 @@ export default class Alignment extends React.Component<AlignmentProps> {
             relatedTarget,
             overlay
         } = getElements()
+        const container = getContainer()
         let newPlacement = placement
         let ret = {
             left: 0,
