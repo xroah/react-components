@@ -1,5 +1,5 @@
 import * as React from "react"
-import Popup from "../../src/Popup"
+import Popup from "../../src/Popup/Popup"
 
 const callbacks = {
     onShow() {
@@ -22,12 +22,13 @@ const callbacks = {
 export default () => {
     return (
         <>
-            <div id="top" style={{height: 1000}}></div>
+            <div style={{height: 300}}></div>
             <div>
                 <Popup
                     offset={{y: 10}}
                     alignment="center"
                     autoClose="inside"
+                    defaultVisible
                     overlay={
                         <div className="rounded bg-info text-white">
                             <div style={{margin: 10}}>Overlay content demo</div>
@@ -76,7 +77,6 @@ export default () => {
                     <button className="btn btn-primary mx-3">Left</button>
                 </Popup>
             </div>
-            <div style={{height: 300}}></div>
         </>
     )
 }

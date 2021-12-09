@@ -21,13 +21,6 @@ export default class Popup extends
     private placeholderRef = React.createRef<HTMLDivElement>()
     private delayTimer: number | null = null
 
-    state = {
-        visible: false,
-        x: 0,
-        y: 0,
-        mountNode: null
-    }
-
     static propTypes = popupPropTypes
     static defaultProps = {
         mountNode: "body",
@@ -39,6 +32,18 @@ export default class Popup extends
         escClose: true,
         fallbackPlacements: [...placements],
         flip: true
+    }
+
+    constructor(props: PopupProps) {
+        super(props)
+
+        const {visible, defaultVisible} = props
+        this.state = {
+            visible: visible || defaultVisible || false,
+            x: 0,
+            y: 0,
+            mountNode: null
+        }
     }
 
     static getDerivedStateFromProps(

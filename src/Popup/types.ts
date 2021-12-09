@@ -1,3 +1,4 @@
+import {Events, ValueOf} from "../Commons/common-types"
 import {
     actions,
     aliments,
@@ -5,8 +6,6 @@ import {
     placements,
     verticalAlign
 } from "./constants"
-
-export type ValueOf<T extends readonly any[]> = T[number]
 
 export type Trigger = ValueOf<typeof actions>
 
@@ -25,13 +24,12 @@ type AutoClose = boolean | ClickArea
 export type AreaString = "esc" | "toggle" | ClickArea
 export type Placement = ValueOf<typeof placements>
 type ClickFunc = (v: AreaString) => void
-type Cb = () => void
 
 interface PlacementProps {
     placement?: Placement
 }
 
-export interface CommonProps extends PlacementProps{
+export interface CommonProps extends PlacementProps, Events{
     alignment?: ValueOf<typeof aliments>
     fallbackPlacements?: Placement[] | Placement
     verticalAlign?: ValueOf<typeof verticalAlign>
@@ -40,16 +38,13 @@ export interface CommonProps extends PlacementProps{
     offset?: Offset
     delay?: Delay
     visible?: boolean
+    defaultVisible?: boolean
     overlayRef?: React.RefObject<Element>
     animation?: boolean
     autoClose?: AutoClose
     escClose?: boolean
     trigger?: Trigger | Trigger[]
     flip?: boolean
-    onShow?: Cb
-    onShown?: Cb
-    onHide?: Cb
-    onHidden?: Cb
     onAlign?: (v: OnAlignParam) => void
 }
 
