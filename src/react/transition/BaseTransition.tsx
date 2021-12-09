@@ -1,7 +1,6 @@
 import * as React from "react"
 import {TransitionProps as Props, State} from "./interface"
-import {handleFuncProp} from "../main"
-import {getNextNodeByRef} from ".."
+import {handleFuncProp, getNextNodeByRef} from "../main"
 
 export default class BaseTransition<T extends Props, S extends State>
     extends React.Component<T, S> {
