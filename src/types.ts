@@ -53,6 +53,23 @@ export interface CommonProps extends PlacementProps{
     onAlign?: (v: OnAlignParam) => void
 }
 
+export interface InnerProps extends CommonProps {
+    getTarget: () => Element | null
+    onMouseEnter?: (evt: React.MouseEvent) => void
+    onMouseLeave?: (evt: React.MouseEvent) => void
+    onClose?: ClickFunc
+}
+
+export interface InnerState {
+    left: number
+    top: number
+}
+
+export interface AlignRet extends OnAlignParam, PlacementProps {
+    boundary?: HTMLElement
+    needFlip?: boolean
+}
+
 interface OnAlignParam extends InnerState, PlacementProps {
     newPlacement?: Placement
 }
@@ -76,25 +93,4 @@ export interface AlignmentProps extends CommonProps {
     })
     children: React.ReactElement
     getContainer: () => HTMLElement | null
-}
-
-export interface InnerProps extends CommonProps {
-    getTarget: () => Element | null
-    onMouseEnter?: (evt: React.MouseEvent) => void
-    onMouseLeave?: (evt: React.MouseEvent) => void
-    onClose?: ClickFunc
-}
-
-export interface InnerState {
-    left: number
-    top: number
-}
-
-export interface AlignRet {
-    left: number
-    top: number
-    boundary?: HTMLElement
-    placement?: Placement
-    newPlacement?: Placement
-    needFlip?: boolean
 }
