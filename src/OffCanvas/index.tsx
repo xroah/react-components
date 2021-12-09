@@ -2,6 +2,7 @@ import * as React from "react"
 import {classNames, omit} from "reap-utils/lib"
 import {handleFuncProp, Transition} from "reap-utils/lib/react"
 import {Events, ValueOf} from "../Commons/common-types"
+import Backdrop from "../Commons/backdrop"
 
 const placements = [
     "start",
@@ -11,7 +12,7 @@ const placements = [
 ] as const
 
 type BaseProps = React.HTMLAttributes<HTMLDivElement> & Events
-type CloseFuncParam = "btn" | "esc"
+type CloseFuncParam = "btn" | "esc" | "backdrop"
 
 interface OffCanvasProps extends Omit<BaseProps, "title"> {
     keyboard?: boolean
@@ -88,6 +89,10 @@ export default class OffCanvas extends React.Component<OffCanvasProps, State> {
         }
     }
 
+    handleClickBackdrop = () => {
+        this.onClose("backdrop")
+    }
+
     renderHeader(
         title?: React.ReactNode,
         showClose?: boolean
@@ -145,6 +150,8 @@ export default class OffCanvas extends React.Component<OffCanvasProps, State> {
             visible,
             placement,
             showClose,
+            backdrop,
+            scroll,
             style = {},
             children,
             ...restProps
@@ -158,9 +165,7 @@ export default class OffCanvas extends React.Component<OffCanvasProps, State> {
         const props = omit(
             restProps,
             [
-                "scroll",
                 "keyboard",
-                "backdrop",
                 "onShow",
                 "onShown",
                 "onHidden",
@@ -186,13 +191,23 @@ export default class OffCanvas extends React.Component<OffCanvasProps, State> {
                         }
 
                         return (
-                            <div
-                                className={className}
-                                style={style}
-                                {...props}>
-                                {this.renderHeader(title, showClose)}
-                                <div className={`${PREFIX}-body`}>{children}</div>
-                            </div>
+                            <>
+                                <div
+                                    className={className}
+                                    style={style}
+                                    {...props}>
+                                    {this.renderHeader(title, showClose)}
+                                    <div className={`${PREFIX}-body`}>{children}</div>
+                                </div>
+                                {
+                                    backdrop && (
+                                        <Backdrop
+                                            visible={visible}
+                                            onClick={this.handleClickBackdrop}
+                                            className={`${PREFIX}-backdrop`} />
+                                    )
+                                }
+                            </>
                         )
                     }
                 }
