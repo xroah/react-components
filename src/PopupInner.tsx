@@ -119,7 +119,7 @@ export default class PopupInner extends
                     top: ret.top
                 },
                 () => {
-                    const onAlign = () => handleFuncProp(this.props.onAlign)(ret)
+                    const onAlign = handleFuncProp(this.props.onAlign)
 
                     if (
                         needFlip !== undefined && (
@@ -136,9 +136,15 @@ export default class PopupInner extends
                             ret.top
                         )
 
-                        this.setState(newPos, onAlign)
+                        this.setState(
+                            newPos,
+                            () => onAlign({
+                                ...ret,
+                                ...newPos
+                            })
+                        )
                     } else {
-                        onAlign()
+                        onAlign(ret)
                     }
                 }
             )

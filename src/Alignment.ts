@@ -195,11 +195,24 @@ export default class Alignment extends React.Component<AlignmentProps> {
         }
     }
 
+    handleFallback() {
+        const {fallbackPlacements} = this.props
+
+        if (!fallbackPlacements) {
+            return []
+        }
+
+        if (!Array.isArray(fallbackPlacements)) {
+            return [fallbackPlacements]
+        }
+
+        return fallbackPlacements
+    }
+
     align(): AlignRet {
         const {
             placement,
             getContainer,
-            fallbackPlacements: fallback,
             flip,
             getElements,
         } = this.props
@@ -236,9 +249,10 @@ export default class Alignment extends React.Component<AlignmentProps> {
         const hSet = new Set(["left", "right"])
         const space = this.getSpareSpace(tRect, oRect, boundary)
         const needFlip = flip && space[newPlacement] < 0
+        const fallbacks = this.handleFallback()
         // no enough space and fallback to other placements
-        if (needFlip && fallback && fallback.length) {
-            for (let f of fallback) {
+        if (needFlip && fallbacks.length) {
+            for (let f of fallbacks) {
                 if (f !== newPlacement && space[f] >= 0) {
                     if (
                         (hSet.has(f) && space.height >= oRect.height) ||

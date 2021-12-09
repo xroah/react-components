@@ -33,7 +33,7 @@ interface PlacementProps {
 
 export interface CommonProps extends PlacementProps{
     alignment?: ValueOf<typeof aliments>
-    fallbackPlacements?: Placement[]
+    fallbackPlacements?: Placement[] | Placement
     verticalAlign?: ValueOf<typeof verticalAlign>
     forceRender?: boolean
     mountNode?: null | string | HTMLElement

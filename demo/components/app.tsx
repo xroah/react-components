@@ -13,6 +13,9 @@ const callbacks = {
     },
     onHidden() {
         console.log("onHidden called")
+    },
+    onAlign(ret: any) {
+        console.log(ret)
     }
 }
 
