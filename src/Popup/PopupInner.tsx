@@ -1,7 +1,11 @@
 import * as React from "react"
 import {createPortal} from "react-dom";
 import {noop} from "reap-utils/lib";
-import {Fade, handleFuncProp, mergeRef} from "reap-utils/lib/react";
+import {
+    Fade,
+    handleFuncProp,
+    mergeRef
+} from "reap-utils/lib/react";
 import Alignment from "./Alignment";
 import {InnerProps, InnerState} from "./types";
 import {getContainer} from "./utils";
