@@ -1,6 +1,7 @@
 import * as React from "react"
 import Popup from "./Popup"
 import OffCanvas from "./OffCanvas"
+import Modal from "./Modal"
 
 export default () => (
     <>
@@ -9,6 +10,8 @@ export default () => (
         <Popup />
         <div className="my-3 text-danger fs-3">OffCanvas</div>
         <OffCanvas />
+        <div className="my-3 text-danger fs-3">Modal</div>
+        <Modal />
         <div style={{height: 300}}></div>
     </>
 )
