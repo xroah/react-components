@@ -22,7 +22,6 @@ const callbacks = {
 export default () => {
     return (
         <>
-            <div style={{height: 300}}></div>
             <div>
                 <Popup
                     offset={{y: 10}}

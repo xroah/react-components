@@ -3,6 +3,7 @@ import {classNames, omit} from "reap-utils/lib"
 import {handleFuncProp, Transition} from "reap-utils/lib/react"
 import {Events, ValueOf} from "../Commons/common-types"
 import Backdrop from "../Commons/Backdrop"
+import scrollbar from "../Commons/scrollbar"
 
 const placements = [
     "start",
@@ -26,7 +27,8 @@ interface OffCanvasProps extends Omit<BaseProps, "title"> {
 }
 
 interface State {
-    visibility: "visible" | "hidden"
+    visibility: "visible" | "hidden",
+    instance: OffCanvas
 }
 
 export default class OffCanvas extends React.Component<OffCanvasProps, State> {
@@ -34,41 +36,19 @@ export default class OffCanvas extends React.Component<OffCanvasProps, State> {
         placement: "start",
         keyboard: true,
         backdrop: true,
-        showClose: true
+        showClose: true,
+        scroll: false
     }
+
+    elementRef = React.createRef<HTMLDivElement>()
 
     constructor(props: OffCanvasProps) {
         super(props)
 
         this.state = {
-            visibility: props.visible ? "visible" : "hidden"
+            visibility: props.visible ? "visible" : "hidden",
+            instance: this
         }
-    }
-
-    componentDidUpdate(prevProps: OffCanvasProps) {
-        const {visible, keyboard} = this.props
-
-        if (prevProps.visible !== visible) {
-            if (visible) {
-                if (keyboard) {
-                    this.addEvent()
-                }
-            } else {
-                this.removeEvent()
-            }
-        }
-    }
-
-    componentWillUnmount() {
-        this.removeEvent()
-    }
-
-    addEvent() {
-        document.addEventListener("keydown", this.handleKeyDown)
-    }
-
-    removeEvent() {
-        document.removeEventListener("keydown", this.handleKeyDown)
     }
 
     onClose(type: CloseFuncParam) {
@@ -83,7 +63,7 @@ export default class OffCanvas extends React.Component<OffCanvasProps, State> {
         this.onClose("btn")
     }
 
-    handleKeyDown = (evt: KeyboardEvent) => {
+    handleKeyDown = (evt: React.KeyboardEvent) => {
         if (evt.key.toLowerCase() === "escape") {
             this.onClose("esc")
         }
@@ -91,6 +71,39 @@ export default class OffCanvas extends React.Component<OffCanvasProps, State> {
 
     handleClickBackdrop = () => {
         this.onClose("backdrop")
+    }
+
+    handleEnter = () => {
+        this.setState({
+            visibility: "visible"
+        })
+
+        if (!this.props.scroll) {
+            scrollbar.hide()
+        }
+
+        handleFuncProp(this.props.onShow)()
+    }
+
+    handleEntered = () => {
+        handleFuncProp(this.props.onShown)()
+        this.elementRef.current?.focus()
+    }
+
+    handleExit = () => {
+        handleFuncProp(this.props.onHide)()
+    }
+
+    handleExited = () => {
+        this.setState({
+            visibility: "hidden"
+        })
+
+        handleFuncProp(this.props.onHidden)
+
+        if (!this.props.scroll) {
+            scrollbar.reset()
+        }
     }
 
     renderHeader(
@@ -117,30 +130,6 @@ export default class OffCanvas extends React.Component<OffCanvasProps, State> {
                 }
             </div>
         )
-    }
-
-    handleEnter = () => {
-        this.setState({
-            visibility: "visible"
-        })
-
-        handleFuncProp(this.props.onShow)()
-    }
-
-    handleEntered = () => {
-        handleFuncProp(this.props.onShown)()
-    }
-
-    handleExit = () => {
-        handleFuncProp(this.props.onHide)()
-    }
-
-    handleExited = () => {
-        this.setState({
-            visibility: "hidden"
-        })
-
-        handleFuncProp(this.props.onHidden)
     }
 
     render() {
@@ -195,6 +184,9 @@ export default class OffCanvas extends React.Component<OffCanvasProps, State> {
                                 <div
                                     className={className}
                                     style={style}
+                                    ref={this.elementRef}
+                                    tabIndex={-1}
+                                    onKeyDown={this.handleKeyDown}
                                     {...props}>
                                     {this.renderHeader(title, showClose)}
                                     <div className={`${PREFIX}-body`}>{children}</div>

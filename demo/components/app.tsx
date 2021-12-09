@@ -4,9 +4,11 @@ import OffCanvas from "./OffCanvas"
 
 export default () => (
     <>
+        <div style={{height: 1000}}></div>
         <div className="my-3 text-danger fs-3">Popup</div>
         <Popup />
         <div className="my-3 text-danger fs-3">OffCanvas</div>
         <OffCanvas />
+        <div style={{height: 300}}></div>
     </>
 )
