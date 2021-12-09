@@ -15,21 +15,16 @@ import {
     StateType,
     TransitionProps
 } from "./interface"
-import Placeholder from "../Placeholder"
 import propTypes from "./propTypes"
-import {
-    getNextNodeByRef,
-    only,
-    handleFuncProp
-} from "../main"
+import {only, handleFuncProp} from "../main"
 import {isUndef, chainFunction} from "../../main"
 import {getTransitionDuration} from "../../dom"
-
+import BaseTransition from "./BaseTransition"
+console.log(BaseTransition)
 export default class Transition extends
-    React.Component<TransitionProps, State> {
+    BaseTransition<TransitionProps, State> {
     nextTimer: number | null = null
     next: Next | null = null
-    placeholderRef = React.createRef<HTMLDivElement>()
 
     static propTypes = propTypes
 
@@ -51,19 +46,6 @@ export default class Transition extends
         }
 
         this.state = {status}
-    }
-
-    componentDidMount() {
-        const {appear, in: _in} = this.props
-
-        if (_in) {
-            if (appear) {
-                this.componentDidUpdate({in: false} as TransitionProps)
-            }
-            else {
-                this.handleCallback("onEntered")
-            }
-        }
     }
 
     componentDidUpdate(prevProps: TransitionProps) {
@@ -190,10 +172,6 @@ export default class Transition extends
         cb(this.getNode())
     }
 
-    getNode() {
-        return getNextNodeByRef(this.placeholderRef)
-    }
-
     getTimeout() {
         const {timeout} = this.props
 
@@ -278,7 +256,6 @@ export default class Transition extends
             state: {status},
             props: {children}
         } = this
-        const div = <Placeholder ref={this.placeholderRef} />
         let child: React.ReactElement
 
         if (status === UNMOUNTED) {
@@ -303,12 +280,7 @@ export default class Transition extends
             }
         )
 
-        return (
-            <>
-                {div}
-                {child}
-            </>
-        )
+        return this.renderChildren(child)
     }
 
 }

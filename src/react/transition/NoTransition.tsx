@@ -1,8 +1,6 @@
-import * as React from "react"
-import classNames from "../../class-names"
+import {cloneElement} from "react"
 import {handleFuncProp, only} from "../main"
 import {ENTERED, EXITED} from "./constants"
-import {string} from "prop-types"
 import {NoTransitionProps, State} from "./interface"
 import propTypes from "./propTypes"
 import BaseTransition from "./BaseTransition"
@@ -11,8 +9,14 @@ import BaseTransition from "./BaseTransition"
 export default class NoTransition extends
     BaseTransition<NoTransitionProps, State> {
     static propTypes = {
-        ...propTypes,
-        showClass: string
+        ...propTypes
+    }
+    static defaultProps = {
+        hiddenOnExited: true
+    }
+
+    constructor(props: NoTransitionProps) {
+        super(props)
     }
 
     componentDidUpdate(prevProps: NoTransitionProps) {
@@ -30,14 +34,16 @@ export default class NoTransition extends
             return
         }
 
+        const node = this.getNode()
+
         if (_in) {
-            handleFuncProp(onEnter)()
-            handleFuncProp(onEntering)()
-            handleFuncProp(onEntered)()
+            handleFuncProp(onEnter)(node)
+            handleFuncProp(onEntering)(node)
+            handleFuncProp(onEntered)(node)
         } else {
-            handleFuncProp(onExit)()
-            handleFuncProp(onExiting)()
-            handleFuncProp(onExited)()
+            handleFuncProp(onExit)(node)
+            handleFuncProp(onExiting)(node)
+            handleFuncProp(onExited)(node)
         }
     }
 
@@ -46,8 +52,9 @@ export default class NoTransition extends
             children,
             in: _in,
             unmountOnExit,
-            showClass
+            hiddenOnExited,
         } = this.props
+        const style: React.CSSProperties = {}
         const child = only(children as React.ReactElement)
 
         if (!_in && unmountOnExit) {
@@ -55,18 +62,15 @@ export default class NoTransition extends
         }
 
         if (typeof children === "function") {
-            return children(_in ? ENTERED : EXITED)
+            return this.renderChildren(children(_in ? ENTERED : EXITED))
         }
 
-        return React.cloneElement(
-            child,
-            {
-                className: classNames(
-                    child.props.className,
-                    showClass
-                )
-            }
-        )
-    }
+        if (hiddenOnExited && !_in) {
+            style.display = "none"
+        } else {
+            style.display = ""
+        }
 
+        return this.renderChildren(cloneElement(child, {style}))
+    }
 }
