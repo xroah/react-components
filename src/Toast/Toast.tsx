@@ -19,6 +19,7 @@ interface ToastProps extends BaseProps, Events {
     fade?: boolean
     autoHide?: boolean
     delay?: number
+    unmountOnExit?: boolean
     onClose?: Cb
 }
 
@@ -35,6 +36,7 @@ export default function Toast(
         style,
         autoHide,
         delay,
+        unmountOnExit,
         onShow,
         onShown,
         onHidden,
@@ -54,6 +56,7 @@ export default function Toast(
     const fadeProps = {
         in: !!visible,
         appear: true,
+        unmountOnExit,
         onEnter: () => handleFuncProp(onShow)(),
         onEntered: () => handleFuncProp(onShown)(),
         onExit: () => handleFuncProp(onHide)(),
@@ -63,6 +66,7 @@ export default function Toast(
         <div className={`${PREFIX}-header`}>
             {icon}
             <strong className="me-auto">{title}</strong>
+            {extra && <small>{extra}</small>}
             {showClose && <CloseBtn onClick={handleCloseClick} />}
         </div>
     ) : null
@@ -77,6 +81,32 @@ export default function Toast(
             {header}
             <div className={`${PREFIX}-body`}>{children}</div>
         </div>
+    )
+    let timer: number | null = null
+    const clearTimer = () => {
+        if (timer !== null) {
+            clearTimeout(timer)
+
+            timer = null
+        }
+    }
+
+    React.useEffect(
+        () => {
+            if (autoHide) {
+                timer = window.setTimeout(
+                    () => {
+                        handleFuncProp(onClose)()
+
+                        timer = null
+                    },
+                    delay
+                )
+            }
+
+            return clearTimer
+        },
+        [visible]
     )
 
     return fade ?
