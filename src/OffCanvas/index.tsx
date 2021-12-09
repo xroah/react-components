@@ -2,7 +2,7 @@ import * as React from "react"
 import {classNames, omit} from "reap-utils/lib"
 import {handleFuncProp, Transition} from "reap-utils/lib/react"
 import {Events, ValueOf} from "../Commons/common-types"
-import Backdrop from "../Commons/backdrop"
+import Backdrop from "../Commons/Backdrop"
 
 const placements = [
     "start",
