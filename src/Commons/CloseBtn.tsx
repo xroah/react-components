@@ -7,7 +7,11 @@ export default function CloseBtn(
         ...restProps
     }: React.ButtonHTMLAttributes<HTMLButtonElement>
 ) {
-    return <button
-        className={classNames(className, "btn-close")}
-        {...restProps} />
+    return (
+        <button
+            type="button"
+            aria-label="close"
+            className={classNames(className, "btn-close")}
+            {...restProps} />
+    )
 }
