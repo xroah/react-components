@@ -1,19 +1,29 @@
 import * as React from "react"
 import {render, unmountComponentAtNode} from "react-dom"
-import {classNames} from "reap-utils/lib"
-import {Fade, handleFuncProp} from "reap-utils/lib/react"
+import {classNames, omit} from "reap-utils/lib"
+import {
+    Fade,
+    handleFuncProp,
+    NoTransition
+} from "reap-utils/lib/react"
+import {executeAfterTransition} from "reap-utils/lib/dom"
 import Backdrop from "../Commons/Backdrop"
+import {CloseFuncParam} from "../Commons/common-types"
+import scrollbar from "../Commons/scrollbar"
 import {ModalProps, ModalState} from "./types"
 
 export default class Modal extends React.Component<ModalProps, ModalState> {
     container: HTMLElement | null = null
     modalRef = React.createRef<HTMLDivElement>()
+    dialogRef = React.createRef<HTMLDivElement>()
+    prevFocus: HTMLElement | null = null
 
-    static defaultProps = {
+    static defaultProps: ModalProps = {
         showClose: true,
         backdrop: true,
-        tabIndex: -1,
-        focus: true
+        focus: true,
+        fade: true,
+        keyboard: true
     }
 
     constructor(props: ModalProps) {
@@ -28,20 +38,40 @@ export default class Modal extends React.Component<ModalProps, ModalState> {
         handleFuncProp(this.props.onClose)()
     }
 
-    handleEnter = () => {
-        this.setState({
-            display: "block"
-        })
-        this.renderBackdrop(true)
-    }
-
-    handleEntered = () => {
+    focus() {
         if (this.props.focus) {
             this.modalRef.current?.focus()
         }
     }
 
+    handleEnter = () => {
+        this.setState(
+            {display: "block"},
+            () => {
+                // if no fade, call focus within handleEntered
+                // may not work
+                if (!this.props.fade) {
+                    this.focus()
+                }
+            }
+        )
+        this.renderBackdrop(true)
+        scrollbar.hide()
+        handleFuncProp(this.props.onShow)()
+
+        this.prevFocus = document.activeElement as HTMLElement
+    }
+
+    handleEntered = () => {
+        if (this.props.fade) {
+            this.focus()
+        }
+
+        handleFuncProp(this.props.onShown)()
+    }
+
     handleExit = () => {
+        handleFuncProp(this.props.onHide)()
     }
 
     handleExited = () => {
@@ -49,6 +79,68 @@ export default class Modal extends React.Component<ModalProps, ModalState> {
             display: "none"
         })
         this.renderBackdrop(false)
+        scrollbar.reset()
+        handleFuncProp(this.props.onHidden)
+
+        if (this.prevFocus) {
+            this.prevFocus.focus()
+
+            this.prevFocus = null
+        }
+    }
+
+    onClose(type: CloseFuncParam) {
+        const {onClose} = this.props
+
+        if (onClose) {
+            onClose(type)
+        }
+    }
+
+    handleKeyDown = (evt: React.KeyboardEvent) => {
+        if (evt.key.toLowerCase() === "escape") {
+            if (this.props.keyboard) {
+                this.onClose("esc")
+            } else {
+                this.handleStatic()
+            }
+        }
+
+        evt.stopPropagation()
+        evt.preventDefault()
+    }
+
+    handleStatic() {
+        const CLASS = "modal-static"
+        const modal = this.modalRef.current
+
+        if (!modal) {
+            return
+        }
+
+        if (!modal.classList.contains(CLASS)) {
+            executeAfterTransition(
+                modal,
+                () => modal.classList.remove(CLASS)
+            )
+
+            modal.classList.add(CLASS)
+        }
+    }
+
+    handleClickBackdrop = (evt: React.MouseEvent) => {
+        const {backdrop} = this.props
+        const inBackdrop = evt.target === evt.currentTarget
+
+        if (backdrop) {
+            if (inBackdrop) {
+                if (backdrop === "static") {
+                    this.handleStatic()
+                } else {
+                    this.onClose("backdrop")
+                }
+            }
+        }
     }
 
     removeBackdrop = () => {
@@ -77,6 +169,7 @@ export default class Modal extends React.Component<ModalProps, ModalState> {
             <Backdrop
                 className="modal-backdrop"
                 onExited={this.removeBackdrop}
+                onClick={this.handleClickBackdrop}
                 visible={visible} />,
             this.container
         )
@@ -114,11 +207,7 @@ export default class Modal extends React.Component<ModalProps, ModalState> {
             el = footer
         }
 
-        if (!el) {
-            return null
-        }
-
-        return <div className={`${prefix}-footer`}>{el}</div>
+        return el ? <div className={`${prefix}-footer`}>{el}</div> : null
 
     }
 
@@ -134,6 +223,9 @@ export default class Modal extends React.Component<ModalProps, ModalState> {
             fullscreen,
             children,
             showClose,
+            fade,
+            tabIndex,
+            focus,
             style = {},
             ...restProps
         } = this.props
@@ -162,34 +254,56 @@ export default class Modal extends React.Component<ModalProps, ModalState> {
         const closeBtn = showClose ? (
             <button className="btn-close" onClick={this.handleClose} />
         ) : null
+        const fadeProps = {
+            in: !!visible,
+            onEnter: this.handleEnter,
+            onEntered: this.handleEntered,
+            onExit: this.handleExit,
+            onExited: this.handleExited,
+            hiddenOnExited: false
+        }
         style.display = this.state.display
-
-        return (
-            <Fade
-                in={!!visible}
-                onEnter={this.handleEnter}
-                onExit={this.handleExit}
-                onExited={this.handleExited}
-                hiddenOnExited={false}>
-                <div
-                    className={classes}
-                    style={style}
-                    ref={this.modalRef}
-                    {...restProps}>
-                    <div className={dialogClasses}>
-                        <div className={`${PREFIX}-content`}>
-                            <div className={`${PREFIX}-header`}>
-                                {titleEl}
-                                {closeBtn}
-                            </div>
-                            <div className={`${PREFIX}-body`}>
-                                {children}
-                            </div>
-                            {this.renderFooter(PREFIX)}
+        const props = omit(
+            restProps,
+            [
+                "onOk",
+                "onClose",
+                "onShow",
+                "onShown",
+                "onHidden",
+                "onHide",
+                "okText",
+                "cancelText",
+                "keyboard",
+                "backdrop",
+            ]
+        )
+        const child = (
+            <div
+                className={classes}
+                style={style}
+                tabIndex={(tabIndex === undefined && focus) ? -1 : tabIndex}
+                ref={this.modalRef}
+                onClick={this.handleClickBackdrop}
+                onKeyDown={this.handleKeyDown}
+                {...props}>
+                <div className={dialogClasses} ref={this.dialogRef}>
+                    <div className={`${PREFIX}-content`}>
+                        <div className={`${PREFIX}-header`}>
+                            {titleEl}
+                            {closeBtn}
                         </div>
+                        <div className={`${PREFIX}-body`}>
+                            {children}
+                        </div>
+                        {this.renderFooter(PREFIX)}
                     </div>
                 </div>
-            </Fade>
+            </div>
         )
+
+        return fade ?
+            <Fade {...fadeProps}>{child}</Fade> :
+            <NoTransition {...fadeProps}>{child}</NoTransition>
     }
 }
