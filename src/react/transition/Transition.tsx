@@ -20,7 +20,7 @@ import {only, handleFuncProp} from "../main"
 import {isUndef, chainFunction} from "../../main"
 import {getTransitionDuration} from "../../dom"
 import BaseTransition from "./BaseTransition"
-console.log(BaseTransition)
+
 export default class Transition extends
     BaseTransition<TransitionProps, State> {
     nextTimer: number | null = null
@@ -68,7 +68,7 @@ export default class Transition extends
         this.clearNext()
     }
 
-    //in case findDOMNode returns null
+    //in case getNode returns null
     static getDerivedStateFromProps(
         nextProps: TransitionProps,
         nextState: State
@@ -109,10 +109,8 @@ export default class Transition extends
 
         const {status} = this.state
 
-        /**
-         * For CSSTransition, the transition property
-         * or class may add when entering or exiting,
-         */
+        // For CSSTransition, the transition property
+        // or class may add when entering or exiting
         if (
             (status === "entering" || status === "exiting") &&
             isUndef(this.props.timeout)
@@ -229,7 +227,8 @@ export default class Transition extends
     handleTransitionEnd = (evt: React.TransitionEvent) => {
         handleFuncProp(this.props.onTransitionEnd)(evt)
 
-        if (this.next) {
+        // transition end can bubble
+        if (this.next && evt.target === this.getNode()) {
             this.next.fn()
             this.clearNext()
         }
