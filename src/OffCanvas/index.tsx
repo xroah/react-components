@@ -9,6 +9,7 @@ import {
 } from "../Commons/common-types"
 import Backdrop from "../Commons/Backdrop"
 import scrollbar from "../Commons/scrollbar"
+import CloseBtn from "../Commons/CloseBtn"
 
 const placements = [
     "start",
@@ -91,7 +92,10 @@ export default class OffCanvas extends React.Component<OffCanvasProps, State> {
 
     handleEntered = () => {
         handleFuncProp(this.props.onShown)()
-        this.elementRef.current?.focus()
+
+        if (!this.props.scroll) {
+            this.elementRef.current?.focus()
+        }
     }
 
     handleExit = () => {
@@ -102,7 +106,6 @@ export default class OffCanvas extends React.Component<OffCanvasProps, State> {
         this.setState({
             visibility: "hidden"
         })
-
         handleFuncProp(this.props.onHidden)
 
         if (!this.props.scroll) {
@@ -120,15 +123,11 @@ export default class OffCanvas extends React.Component<OffCanvasProps, State> {
 
         return (
             <div className="offcanvas-header">
-                {
-                    title && (
-                        <h5 className="offcanvas-title">{title}</h5>
-                    )
-                }
+                {title && <h5 className="offcanvas-title">{title}</h5>}
                 {
                     showClose && (
-                        <button
-                            className="text-reset btn-close"
+                        <CloseBtn
+                            className="text-reset"
                             onClick={this.handleClose} />
                     )
                 }
@@ -150,11 +149,6 @@ export default class OffCanvas extends React.Component<OffCanvasProps, State> {
             ...restProps
         } = this.props
         const PREFIX = "offcanvas"
-        const classes = classNames(
-            className,
-            PREFIX,
-            placement && `${PREFIX}-${placement}`
-        )
         const props = omit(
             restProps,
             [
@@ -165,7 +159,6 @@ export default class OffCanvas extends React.Component<OffCanvasProps, State> {
                 "onHide"
             ]
         )
-
         style.visibility = this.state.visibility
 
         return (
@@ -178,15 +171,19 @@ export default class OffCanvas extends React.Component<OffCanvasProps, State> {
                     onExited={this.handleExited}>
                     {
                         state => {
-                            let className = classes
+                            let classes = classNames(
+                                className,
+                                PREFIX,
+                                placement && `${PREFIX}-${placement}`
+                            )
 
                             if (state === "entering" || state === "entered") {
-                                className = `${classes} show`
+                                classes = `${classes} show`
                             }
 
                             return (
                                 <div
-                                    className={className}
+                                    className={classes}
                                     style={style}
                                     ref={this.elementRef}
                                     tabIndex={-1}

@@ -10,6 +10,7 @@ import {CloseFuncParam} from "../Commons/common-types"
 import scrollbar from "../Commons/scrollbar"
 import {ModalProps, ModalState} from "./types"
 import ModalBackdrop from "./ModalBackdrop"
+import CloseBtn from "../Commons/CloseBtn"
 
 export default class Modal extends React.Component<ModalProps, ModalState> {
     modalRef = React.createRef<HTMLDivElement>()
@@ -196,11 +197,8 @@ export default class Modal extends React.Component<ModalProps, ModalState> {
                     `${FULLSCREEN_PREFIX}-${fullscreen}-down` :
                     FULLSCREEN_PREFIX : ""
         )
-        const closeBtn = showClose ? (
-            <button
-                className="btn-close"
-                onClick={this.handleCloseClick} />
-        ) : null
+        const closeBtn = showClose ?
+            <CloseBtn onClick={this.handleCloseClick} /> : null
 
         return (
             <div className={dialogClasses}>
