@@ -1,7 +1,13 @@
-import * as React from "react"
+import {
+    RefObject,
+    Ref,
+    Children,
+    ReactElement
+} from "react"
+import {isFragment} from "react-is"
 import {noop} from "../main"
 
-export function getNextNodeByRef(ref: React.RefObject<HTMLElement>) {
+export function getNextNodeByRef(ref: RefObject<HTMLElement>) {
     if (!ref.current) {
         return null
     }
@@ -15,7 +21,7 @@ export function isValidNode(node: unknown) {
         typeof node !== "boolean"
 }
 
-export function mergeRef(...refs: React.Ref<unknown>[]) {
+export function mergeRef(...refs: Ref<unknown>[]) {
     return (node: unknown) => {
         refs.forEach((ref: any) => {
             if (ref) {
@@ -37,6 +43,14 @@ export function handleFuncProp(prop?: Function) {
     return prop
 }
 
-export function only(child: React.ReactElement) {
-    return React.Children.only(child)
+export function only(child: ReactElement, acceptFragment = false) {
+    const c = Children.only(child)
+
+    if (!acceptFragment) {
+        if (isFragment(c)) {
+            throw new Error("The children can not be a fragment")
+        }
+    }
+
+    return c
 }
