@@ -165,22 +165,22 @@ export default class OffCanvas extends React.Component<OffCanvasProps, State> {
         style.visibility = this.state.visibility
 
         return (
-            <Transition
-                in={!!visible}
-                onEnter={this.handleEnter}
-                onEntered={this.handleEntered}
-                onExit={this.handleExit}
-                onExited={this.handleExited}>
-                {
-                    state => {
-                        let className = classes
+            <>
+                <Transition
+                    in={!!visible}
+                    onEnter={this.handleEnter}
+                    onEntered={this.handleEntered}
+                    onExit={this.handleExit}
+                    onExited={this.handleExited}>
+                    {
+                        state => {
+                            let className = classes
 
-                        if (state === "entering" || state === "entered") {
-                            className = `${classes} show`
-                        }
+                            if (state === "entering" || state === "entered") {
+                                className = `${classes} show`
+                            }
 
-                        return (
-                            <>
+                            return (
                                 <div
                                     className={className}
                                     style={style}
@@ -191,19 +191,19 @@ export default class OffCanvas extends React.Component<OffCanvasProps, State> {
                                     {this.renderHeader(title, showClose)}
                                     <div className={`${PREFIX}-body`}>{children}</div>
                                 </div>
-                                {
-                                    backdrop && (
-                                        <Backdrop
-                                            visible={visible}
-                                            onClick={this.handleClickBackdrop}
-                                            className={`${PREFIX}-backdrop`} />
-                                    )
-                                }
-                            </>
-                        )
+                            )
+                        }
                     }
+                </Transition>
+                {
+                    backdrop && (
+                        <Backdrop
+                            visible={visible}
+                            onClick={this.handleClickBackdrop}
+                            className={`${PREFIX}-backdrop`} />
+                    )
                 }
-            </Transition>
+            </>
         )
     }
 }
