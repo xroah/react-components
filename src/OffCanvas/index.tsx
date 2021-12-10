@@ -1,7 +1,12 @@
 import * as React from "react"
 import {classNames, omit} from "reap-utils/lib"
 import {handleFuncProp, Transition} from "reap-utils/lib/react"
-import {Events, ValueOf} from "../Commons/common-types"
+import {
+    CloseFunc,
+    CloseFuncParam,
+    Events,
+    ValueOf
+} from "../Commons/common-types"
 import Backdrop from "../Commons/Backdrop"
 import scrollbar from "../Commons/scrollbar"
 
@@ -13,7 +18,6 @@ const placements = [
 ] as const
 
 type BaseProps = React.HTMLAttributes<HTMLDivElement> & Events
-type CloseFuncParam = "btn" | "esc" | "backdrop"
 
 interface OffCanvasProps extends Omit<BaseProps, "title"> {
     keyboard?: boolean
@@ -23,7 +27,7 @@ interface OffCanvasProps extends Omit<BaseProps, "title"> {
     visible?: boolean
     showClose?: boolean
     title?: React.ReactNode
-    onClose?: (type: CloseFuncParam) => void
+    onClose?: CloseFunc
 }
 
 interface State {

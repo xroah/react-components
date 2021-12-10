@@ -8,3 +8,6 @@ export type Events = {
     onHide?: Cb
     onHidden?: Cb
 }
+
+export type CloseFuncParam = "btn" | "esc" | "backdrop"
+export type CloseFunc = (v: CloseFuncParam) => void
