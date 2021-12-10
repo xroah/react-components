@@ -54,8 +54,8 @@ export default class NoTransition extends
             unmountOnExit,
             hiddenOnExited,
         } = this.props
-        const style: React.CSSProperties = {}
         const child = only(children as React.ReactElement)
+        const style: React.CSSProperties = child.props.style || {}
 
         if (!_in && unmountOnExit) {
             return null
@@ -67,8 +67,6 @@ export default class NoTransition extends
 
         if (hiddenOnExited && !_in) {
             style.display = "none"
-        } else {
-            style.display = ""
         }
 
         return this.renderChildren(cloneElement(child, {style}))
