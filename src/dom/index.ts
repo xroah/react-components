@@ -113,3 +113,44 @@ export function getTransitionDuration(el?: HTMLElement): number {
 
     return (delay + duration) * 1000
 }
+
+export function executeAfterTransition(
+    el: HTMLElement,
+    callback: Function,
+    transition = true
+) {
+    if (!transition) {
+        return callback()
+    }
+
+    let called = false
+    let timer: number | null = null
+    const timeout = getTransitionDuration(el) + 20
+    const fn = () => {
+        if (called) {
+            return
+        }
+
+        called = true
+
+        callback()
+        cancel()
+    }
+    const cancel = () => {
+        el.removeEventListener("transitionend", fn)
+
+        if (timer !== null) {
+            clearTimeout(timer)
+
+            timer = null
+        }
+
+        called = true
+    }
+
+    timer = window.setTimeout(fn, timeout)
+
+    el.addEventListener("transitionend", fn)
+
+    return cancel
+}
