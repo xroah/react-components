@@ -1,6 +1,7 @@
 import * as React from "react"
 import {TransitionProps as Props, State} from "./interface"
 import {handleFuncProp, getNextNodeByRef} from "../main"
+import Placeholder from "../Placeholder"
 
 export default class BaseTransition<T extends Props, S extends State>
     extends React.Component<T, S> {
@@ -35,7 +36,7 @@ export default class BaseTransition<T extends Props, S extends State>
     }
 
     renderPlaceholder(): React.ReactElement | null {
-        return <div ref={this.placeholderRef} />
+        return <Placeholder ref={this.placeholderRef} />
     }
 
     renderChildren(child: React.ReactNode) {
