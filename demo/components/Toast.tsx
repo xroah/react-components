@@ -1,5 +1,5 @@
 import * as React from "react"
-import Toast from "../../src/Toast/Toast"
+import Toast from "../../src/Toast"
 
 export default () => {
     const [visible, update] = React.useState(false)

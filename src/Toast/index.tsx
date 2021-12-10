@@ -10,7 +10,7 @@ import {Cb, Events} from "../Commons/common-types"
 
 type BaseProps = Omit<React.HTMLAttributes<HTMLDivElement>, "title">
 
-interface ToastProps extends BaseProps, Events {
+export interface ToastProps extends BaseProps, Events {
     visible?: boolean
     icon?: React.ReactNode
     title?: React.ReactNode
