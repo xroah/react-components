@@ -1,5 +1,4 @@
 import * as React from "react"
-import {render, unmountComponentAtNode} from "react-dom"
 import {classNames, omit} from "reap-utils/lib"
 import {
     Fade,
@@ -7,15 +6,13 @@ import {
     NoTransition
 } from "reap-utils/lib/react"
 import {executeAfterTransition} from "reap-utils/lib/dom"
-import Backdrop from "../Commons/Backdrop"
 import {CloseFuncParam} from "../Commons/common-types"
 import scrollbar from "../Commons/scrollbar"
 import {ModalProps, ModalState} from "./types"
+import ModalBackdrop from "./ModalBackdrop"
 
 export default class Modal extends React.Component<ModalProps, ModalState> {
-    container: HTMLElement | null = null
     modalRef = React.createRef<HTMLDivElement>()
-    dialogRef = React.createRef<HTMLDivElement>()
     prevFocus: HTMLElement | null = null
 
     static defaultProps: ModalProps = {
@@ -34,17 +31,21 @@ export default class Modal extends React.Component<ModalProps, ModalState> {
         }
     }
 
-    handleClose = () => {
-        handleFuncProp(this.props.onClose)()
-    }
-
     focus() {
         if (this.props.focus) {
             this.modalRef.current?.focus()
         }
     }
 
+    setBackdropVisible(visible: boolean) {
+        if (this.props.backdrop) {
+            this.setState({backdropVisible: visible})
+        }
+    }
+
     handleEnter = () => {
+        this.prevFocus = document.activeElement as HTMLElement
+
         this.setState(
             {display: "block"},
             () => {
@@ -55,11 +56,9 @@ export default class Modal extends React.Component<ModalProps, ModalState> {
                 }
             }
         )
-        this.renderBackdrop(true)
         scrollbar.hide()
+        this.setBackdropVisible(true)
         handleFuncProp(this.props.onShow)()
-
-        this.prevFocus = document.activeElement as HTMLElement
     }
 
     handleEntered = () => {
@@ -75,18 +74,16 @@ export default class Modal extends React.Component<ModalProps, ModalState> {
     }
 
     handleExited = () => {
-        this.setState({
-            display: "none"
-        })
-        this.renderBackdrop(false)
-        scrollbar.reset()
-        handleFuncProp(this.props.onHidden)
-
         if (this.prevFocus) {
             this.prevFocus.focus()
 
             this.prevFocus = null
         }
+
+        this.setState({display: "none"})
+        scrollbar.reset()
+        this.setBackdropVisible(false)
+        handleFuncProp(this.props.onHidden)
     }
 
     onClose(type: CloseFuncParam) {
@@ -95,6 +92,10 @@ export default class Modal extends React.Component<ModalProps, ModalState> {
         if (onClose) {
             onClose(type)
         }
+    }
+
+    handleCloseClick = () => {
+        this.onClose("btn")
     }
 
     handleKeyDown = (evt: React.KeyboardEvent) => {
@@ -114,17 +115,13 @@ export default class Modal extends React.Component<ModalProps, ModalState> {
         const CLASS = "modal-static"
         const modal = this.modalRef.current
 
-        if (!modal) {
-            return
-        }
+        if (modal) {
+            if (!modal.classList.contains(CLASS)) {
+                const remove = () => modal.classList.remove(CLASS)
 
-        if (!modal.classList.contains(CLASS)) {
-            executeAfterTransition(
-                modal,
-                () => modal.classList.remove(CLASS)
-            )
-
-            modal.classList.add(CLASS)
+                modal.classList.add(CLASS)
+                executeAfterTransition(modal, remove)
+            }
         }
     }
 
@@ -132,47 +129,17 @@ export default class Modal extends React.Component<ModalProps, ModalState> {
         const {backdrop} = this.props
         const inBackdrop = evt.target === evt.currentTarget
 
-        if (backdrop) {
-            if (inBackdrop) {
-                if (backdrop === "static") {
-                    this.handleStatic()
-                } else {
-                    this.onClose("backdrop")
-                }
-            }
-        }
-    }
-
-    removeBackdrop = () => {
-        if (this.container) {
-            unmountComponentAtNode(this.container)
-            document.body.removeChild(this.container)
-
-            this.container = null
-        }
-    }
-
-    renderBackdrop(visible: boolean) {
-        const {backdrop} = this.props
-
         if (!backdrop) {
             return
         }
 
-        if (!this.container) {
-            this.container = document.createElement("div")
-
-            document.body.appendChild(this.container)
+        if (inBackdrop) {
+            if (backdrop === "static") {
+                this.handleStatic()
+            } else {
+                this.onClose("backdrop")
+            }
         }
-
-        render(
-            <Backdrop
-                className="modal-backdrop"
-                onExited={this.removeBackdrop}
-                onClick={this.handleClickBackdrop}
-                visible={visible} />,
-            this.container
-        )
     }
 
     renderFooter(prefix: string) {
@@ -186,19 +153,16 @@ export default class Modal extends React.Component<ModalProps, ModalState> {
         let el: React.ReactNode = null
 
         if (footer === undefined) {
-            const handleOk = () => handleFuncProp(onOk)()
-            const handleCancel = () => handleFuncProp(onCancel)()
-
             el = (
                 <>
                     <button
                         className="btn btn-secondary"
-                        onClick={handleCancel}>
+                        onClick={onOk}>
                         {cancelText}
                     </button>
                     <button
                         className="btn btn-primary"
-                        onClick={handleOk}>
+                        onClick={onCancel}>
                         {okText}
                     </button>
                 </>
@@ -208,52 +172,65 @@ export default class Modal extends React.Component<ModalProps, ModalState> {
         }
 
         return el ? <div className={`${prefix}-footer`}>{el}</div> : null
-
     }
 
-    render() {
+    renderDialog(prefix: string) {
         const {
-            visible,
-            title,
-            footer,
-            className,
             verticalCenter,
             scrollable,
             size,
             fullscreen,
-            children,
+            title,
             showClose,
-            fade,
-            tabIndex,
-            focus,
-            style = {},
-            ...restProps
+            children
         } = this.props
-        const PREFIX = "modal"
-        const DIALOG_PREFIX = `${PREFIX}-dialog`
-        const FULLSCREEN_PREFIX = `${PREFIX}-fullscreen`
-        const classes = classNames(
-            className,
-            PREFIX
-        )
+        const DIALOG_PREFIX = `${prefix}-dialog`
+        const FULLSCREEN_PREFIX = `${prefix}-fullscreen`
         const dialogClasses = classNames(
             DIALOG_PREFIX,
             verticalCenter && `${DIALOG_PREFIX}-centered`,
             scrollable && `${DIALOG_PREFIX}-scrollable`,
-            size && `${PREFIX}-${size}`,
+            size && `${prefix}-${size}`,
             fullscreen ?
                 fullscreen !== true ?
                     `${FULLSCREEN_PREFIX}-${fullscreen}-down` :
                     FULLSCREEN_PREFIX : ""
         )
-        const titleEl = title ? (
-            <h5 className={`${PREFIX}-title`}>
-                {title}
-            </h5>
-        ) : null
         const closeBtn = showClose ? (
-            <button className="btn-close" onClick={this.handleClose} />
+            <button
+                className="btn-close"
+                onClick={this.handleCloseClick} />
         ) : null
+
+        return (
+            <div className={dialogClasses}>
+                <div className={`${prefix}-content`}>
+                    <div className={`${prefix}-header`}>
+                        <h5 className={`${prefix}-title`}>{title}</h5>
+                        {closeBtn}
+                    </div>
+                    <div className={`${prefix}-body`}>{children}</div>
+                    {this.renderFooter(prefix)}
+                </div>
+            </div>
+        )
+    }
+
+    render() {
+        const {
+            visible,
+            footer,
+            className,
+            fade,
+            tabIndex,
+            backdrop,
+            focus,
+            style = {},
+            ...restProps
+        } = this.props
+        const {display, backdropVisible} = this.state
+        const PREFIX = "modal"
+        const classes = classNames(className, PREFIX)
         const fadeProps = {
             in: !!visible,
             onEnter: this.handleEnter,
@@ -262,7 +239,6 @@ export default class Modal extends React.Component<ModalProps, ModalState> {
             onExited: this.handleExited,
             hiddenOnExited: false
         }
-        style.display = this.state.display
         const props = omit(
             restProps,
             [
@@ -275,35 +251,39 @@ export default class Modal extends React.Component<ModalProps, ModalState> {
                 "okText",
                 "cancelText",
                 "keyboard",
-                "backdrop",
+                "verticalCenter",
+                "scrollable",
+                "size",
+                "fullscreen",
+                "title",
+                "children",
+                "showClose"
             ]
-        )
+        ) as any
         const child = (
             <div
+                style={{
+                    ...style,
+                    display
+                }}
                 className={classes}
-                style={style}
                 tabIndex={(tabIndex === undefined && focus) ? -1 : tabIndex}
                 ref={this.modalRef}
                 onClick={this.handleClickBackdrop}
                 onKeyDown={this.handleKeyDown}
                 {...props}>
-                <div className={dialogClasses} ref={this.dialogRef}>
-                    <div className={`${PREFIX}-content`}>
-                        <div className={`${PREFIX}-header`}>
-                            {titleEl}
-                            {closeBtn}
-                        </div>
-                        <div className={`${PREFIX}-body`}>
-                            {children}
-                        </div>
-                        {this.renderFooter(PREFIX)}
-                    </div>
-                </div>
+                {this.renderDialog(PREFIX)}
             </div>
         )
-
-        return fade ?
+        const el = fade ?
             <Fade {...fadeProps}>{child}</Fade> :
             <NoTransition {...fadeProps}>{child}</NoTransition>
+
+        return (
+            <>
+                {el}
+                {backdrop && <ModalBackdrop visible={backdropVisible} />}
+            </>
+        )
     }
 }

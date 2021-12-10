@@ -43,4 +43,9 @@ export interface ModalProps extends Omit<BaseProps, "title"> {
 
 export interface ModalState {
     display: "block" | "none"
+    backdropVisible?: boolean
+}
+
+export interface ModalBackdropProps {
+    visible?: boolean
 }
