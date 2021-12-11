@@ -4,6 +4,7 @@ import OffCanvas from "./OffCanvas"
 import Modal from "./Modal"
 import Toast from "./Toast"
 import Notification from "./Notification"
+import Message from "./Message"
 
 export default () => (
     <>
@@ -18,6 +19,8 @@ export default () => (
         <Toast />
         <div className="my-3 text-danger fs-3">Notification</div>
         <Notification />
+        <div className="my-3 text-danger fs-3">Message</div>
+        <Message />
         <div style={{height: 300}}></div>
     </>
 )

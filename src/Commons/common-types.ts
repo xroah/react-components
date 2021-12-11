@@ -16,6 +16,11 @@ export interface VisibleProps {
     visible?: boolean
 }
 
+export interface ClosableProps {
+    closable?: boolean
+    onClose?: Cb
+}
+
 export interface AutoHideProps {
     autoHide?: boolean
     delay?: number
