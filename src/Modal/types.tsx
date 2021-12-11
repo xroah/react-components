@@ -1,7 +1,7 @@
 import {HTMLAttributes, ReactNode} from "react"
 import {
     Cb,
-    CloseFunc,
+    ClosableProps,
     Events,
     ValueOf,
     VisibleProps
@@ -20,7 +20,8 @@ export const sizes = [
     "xl"
 ] as const
 
-type BaseProps = HTMLAttributes<HTMLDivElement> & Events & VisibleProps
+type BaseProps = HTMLAttributes<HTMLDivElement> &
+    Events & VisibleProps & ClosableProps
 
 export interface ModalProps extends Omit<BaseProps, "title"> {
     backdrop?: boolean | "static"
@@ -32,13 +33,11 @@ export interface ModalProps extends Omit<BaseProps, "title"> {
     title?: ReactNode
     okText?: ReactNode
     cancelText?: ReactNode
-    showClose?: boolean
     footer?: ReactNode
     size?: ValueOf<typeof sizes>
     fade?: boolean
     onOk?: Cb
     onCancel?: Cb
-    onClose?: CloseFunc
 }
 
 export interface ModalState {

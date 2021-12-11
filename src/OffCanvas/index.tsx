@@ -2,8 +2,7 @@ import * as React from "react"
 import {classNames, omit} from "reap-utils/lib"
 import {handleFuncProp, Transition} from "reap-utils/lib/react"
 import {
-    CloseFunc,
-    CloseFuncParam,
+    ClosableProps,
     Events,
     ValueOf,
     VisibleProps
@@ -20,16 +19,14 @@ const placements = [
 ] as const
 
 type BaseProps = React.HTMLAttributes<HTMLDivElement> &
-    Events & VisibleProps
+    Events & VisibleProps & ClosableProps
 
 interface OffCanvasProps extends Omit<BaseProps, "title"> {
     keyboard?: boolean
     scroll?: boolean
     backdrop?: boolean
     placement?: ValueOf<typeof placements>
-    showClose?: boolean
     title?: React.ReactNode
-    onClose?: CloseFunc
 }
 
 interface State {
@@ -42,7 +39,7 @@ class OffCanvas extends React.Component<OffCanvasProps, State> {
         placement: "start",
         keyboard: true,
         backdrop: true,
-        showClose: true,
+        closable: true,
         scroll: false
     }
 
@@ -57,26 +54,14 @@ class OffCanvas extends React.Component<OffCanvasProps, State> {
         }
     }
 
-    onClose(type: CloseFuncParam) {
-        const {onClose} = this.props
-
-        if (onClose) {
-            onClose(type)
-        }
-    }
-
     handleClose = () => {
-        this.onClose("btn")
+        handleFuncProp(this.props.onClose)()
     }
 
     handleKeyDown = (evt: React.KeyboardEvent) => {
         if (evt.key.toLowerCase() === "escape") {
-            this.onClose("esc")
+            this.handleClose()
         }
-    }
-
-    handleClickBackdrop = () => {
-        this.onClose("backdrop")
     }
 
     handleEnter = () => {
@@ -115,18 +100,19 @@ class OffCanvas extends React.Component<OffCanvasProps, State> {
     }
 
     renderHeader(
+        prefix: string,
         title?: React.ReactNode,
-        showClose?: boolean
+        closable?: boolean
     ) {
-        if (!title && !showClose) {
+        if (!title && !closable) {
             return null
         }
 
         return (
-            <div className="offcanvas-header">
-                {title && <h5 className="offcanvas-title">{title}</h5>}
+            <div className={`${prefix}-header`}>
+                <h5 className={`${prefix}-title`}>{title}</h5>
                 {
-                    showClose && (
+                    closable && (
                         <CloseBtn
                             className="text-reset"
                             onClick={this.handleClose} />
@@ -142,7 +128,7 @@ class OffCanvas extends React.Component<OffCanvasProps, State> {
             title,
             visible,
             placement,
-            showClose,
+            closable,
             backdrop,
             scroll,
             style = {},
@@ -160,6 +146,7 @@ class OffCanvas extends React.Component<OffCanvasProps, State> {
                 "onHide"
             ]
         )
+        const header = this.renderHeader(PREFIX, title, closable)
         style.visibility = this.state.visibility
 
         return (
@@ -178,7 +165,10 @@ class OffCanvas extends React.Component<OffCanvasProps, State> {
                                 placement && `${PREFIX}-${placement}`
                             )
 
-                            if (state === "entering" || state === "entered") {
+                            if (
+                                state === "entering" ||
+                                state === "entered"
+                            ) {
                                 classes = `${classes} show`
                             }
 
@@ -190,8 +180,10 @@ class OffCanvas extends React.Component<OffCanvasProps, State> {
                                     tabIndex={-1}
                                     onKeyDown={this.handleKeyDown}
                                     {...props}>
-                                    {this.renderHeader(title, showClose)}
-                                    <div className={`${PREFIX}-body`}>{children}</div>
+                                    {header}
+                                    <div className={`${PREFIX}-body`}>
+                                        {children}
+                                    </div>
                                 </div>
                             )
                         }
@@ -201,7 +193,7 @@ class OffCanvas extends React.Component<OffCanvasProps, State> {
                     backdrop && (
                         <Backdrop
                             visible={visible}
-                            onClick={this.handleClickBackdrop}
+                            onClick={this.handleClose}
                             className={`${PREFIX}-backdrop`} />
                     )
                 }

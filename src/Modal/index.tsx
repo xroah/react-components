@@ -6,7 +6,6 @@ import {
     NoTransition
 } from "reap-utils/lib/react"
 import {executeAfterTransition} from "reap-utils/lib/dom"
-import {CloseFuncParam} from "../Commons/common-types"
 import scrollbar from "../Commons/scrollbar"
 import {ModalProps, ModalState} from "./types"
 import ModalBackdrop from "./ModalBackdrop"
@@ -17,7 +16,7 @@ class Modal extends React.Component<ModalProps, ModalState> {
     prevFocus: HTMLElement | null = null
 
     static defaultProps: ModalProps = {
-        showClose: true,
+        closable: true,
         backdrop: true,
         focus: true,
         fade: true,
@@ -87,25 +86,21 @@ class Modal extends React.Component<ModalProps, ModalState> {
         handleFuncProp(this.props.onHidden)
     }
 
-    onClose(type: CloseFuncParam) {
-        const {onClose} = this.props
-
-        if (onClose) {
-            onClose(type)
-        }
+    handleClose = () => {
+        handleFuncProp(this.props.onClose)()
     }
 
-    handleCloseClick = () => {
-        this.onClose("btn")
+    close(condition?: boolean) {
+        if (condition) {
+            this.handleClose()
+        } else {
+            this.handleStatic()
+        }
     }
 
     handleKeyDown = (evt: React.KeyboardEvent) => {
         if (evt.key.toLowerCase() === "escape") {
-            if (this.props.keyboard) {
-                this.onClose("esc")
-            } else {
-                this.handleStatic()
-            }
+            this.close(this.props.keyboard)
         }
 
         evt.stopPropagation()
@@ -135,11 +130,7 @@ class Modal extends React.Component<ModalProps, ModalState> {
         }
 
         if (inBackdrop) {
-            if (backdrop === "static") {
-                this.handleStatic()
-            } else {
-                this.onClose("backdrop")
-            }
+            this.close(backdrop !== "static")
         }
     }
 
@@ -172,7 +163,11 @@ class Modal extends React.Component<ModalProps, ModalState> {
             el = footer
         }
 
-        return el ? <div className={`${prefix}-footer`}>{el}</div> : null
+        return el ? (
+            <div className={`${prefix}-footer`}>
+                {el}
+            </div>
+        ) : null
     }
 
     renderDialog(prefix: string) {
@@ -182,7 +177,7 @@ class Modal extends React.Component<ModalProps, ModalState> {
             size,
             fullscreen,
             title,
-            showClose,
+            closable,
             children
         } = this.props
         const DIALOG_PREFIX = `${prefix}-dialog`
@@ -197,17 +192,22 @@ class Modal extends React.Component<ModalProps, ModalState> {
                     `${FULLSCREEN_PREFIX}-${fullscreen}-down` :
                     FULLSCREEN_PREFIX : ""
         )
-        const closeBtn = showClose ?
-            <CloseBtn onClick={this.handleCloseClick} /> : null
+        const closeBtn = closable ? (
+            <CloseBtn onClick={this.handleClose} />
+        ) : null
 
         return (
             <div className={dialogClasses}>
                 <div className={`${prefix}-content`}>
                     <div className={`${prefix}-header`}>
-                        <h5 className={`${prefix}-title`}>{title}</h5>
+                        <h5 className={`${prefix}-title`}>
+                            {title}
+                        </h5>
                         {closeBtn}
                     </div>
-                    <div className={`${prefix}-body`}>{children}</div>
+                    <div className={`${prefix}-body`}>
+                        {children}
+                    </div>
                     {this.renderFooter(prefix)}
                 </div>
             </div>
@@ -255,7 +255,7 @@ class Modal extends React.Component<ModalProps, ModalState> {
                 "fullscreen",
                 "title",
                 "children",
-                "showClose"
+                "closable"
             ]
         ) as any
         const child = (

@@ -8,21 +8,20 @@ import {
 import CloseBtn from "../Commons/CloseBtn"
 import {
     AutoHideProps,
-    Cb,
+    ClosableProps,
     CommonTransitionProps,
     Events
 } from "../Commons/common-types"
 
-type BaseProps = Omit<React.HTMLAttributes<HTMLDivElement>, "title">
-
-export interface ToastProps extends
-    BaseProps, CommonTransitionProps, Events, AutoHideProps {
+type BaseProps = Omit<React.HTMLAttributes<HTMLDivElement>, "title"> &
+    CommonTransitionProps & Events & ClosableProps & AutoHideProps
+export interface ToastProps extends BaseProps {
     icon?: React.ReactNode
     title?: React.ReactNode
     extra?: React.ReactNode
-    showClose?: boolean
     fade?: boolean
-    onClose?: Cb
+    // for Notification only
+    __noAnim__?: boolean
 }
 
 export default function Toast(
@@ -31,7 +30,7 @@ export default function Toast(
         icon,
         title,
         extra,
-        showClose,
+        closable,
         className,
         fade,
         children,
@@ -40,6 +39,7 @@ export default function Toast(
         delay,
         unmountOnExit,
         hideOnExit,
+        __noAnim__,
         onShow,
         onShown,
         onHidden,
@@ -66,12 +66,12 @@ export default function Toast(
         onExit: () => handleFuncProp(onHide)(),
         onExited: () => handleFuncProp(onHidden)()
     }
-    let header = icon || title || showClose ? (
+    let header = icon || title || closable ? (
         <div className={`${PREFIX}-header`}>
             {icon}
             <strong className="me-auto">{title}</strong>
             {extra && <small>{extra}</small>}
-            {showClose && <CloseBtn onClick={handleCloseClick} />}
+            {closable && <CloseBtn onClick={handleCloseClick} />}
         </div>
     ) : null
     const child = (
@@ -113,13 +113,17 @@ export default function Toast(
         [visible]
     )
 
+    if (__noAnim__) {
+        return child
+    }
+
     return fade ?
         <Fade {...fadeProps}>{child}</Fade> :
         <NoTransition {...fadeProps}>{child}</NoTransition>
 }
 
 Toast.defaultProps = {
-    showClose: true,
+    closable: true,
     fade: true,
     autoHide: true,
     delay: 5000

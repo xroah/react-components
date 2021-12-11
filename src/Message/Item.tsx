@@ -89,7 +89,7 @@ export default function MessageItem(
                         marginBottom: 0,
                         padding: ".5rem",
                         ...style,
-                        transition: "opacity .3s, margin .3s",
+                        transition: "opacity .3s, margin-top .3s",
                         transform: "translateY(-110%)",
                         opacity: 0
                     }

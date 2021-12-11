@@ -1,12 +1,10 @@
 import * as React from "react";
-import {render, unmountComponentAtNode} from "react-dom";
-import {omit} from "reap-utils/lib";
+import {render} from "react-dom";
 import {Transition} from "reap-utils/lib/react";
 import warning from "warning";
 import {ValueOf} from "../Commons/common-types";
+import Info from "../Commons/Info";
 import Toast, {ToastProps} from "../Toast";
-
-let zIndex = 2000
 
 const placements = [
     "topRight",
@@ -27,34 +25,21 @@ const placementClassMap = new Map<Placement, string[]>([
     ["bottomLeft", ["bottom-0", "start-0"]],
     ["topLeft", ["top-0", "start-0"]]
 ])
-const placementContainerMap = new Map<Placement, HTMLElement | null>([
-    ["topRight", null],
-    ["bottomRight", null],
-    ["bottomLeft", null],
-    ["topLeft", null]
-])
+const placementContainerMap = new Map<Placement, HTMLElement | null>([])
 
-export default class Notification {
-    container: HTMLElement | null = null
-    placement: Placement | undefined
-    msg: React.ReactNode = null
-    props: ToastProps = {}
-    visible = false
-    umountOnExit = true
-    zIndex = zIndex++
+export default class Notification extends Info<Options> {
+    placement: Placement | null = null
 
     constructor(
         msg: React.ReactNode,
         {
-            unmountOnExit = true,
             placement = "bottomRight",
             ...restProps
         }: Options = {}
     ) {
-        this.msg = msg
-        this.umountOnExit = unmountOnExit
+        super(msg, restProps)
+
         this.placement = placement
-        this.props = omit(restProps, "onClose")
     }
 
     open() {
@@ -70,7 +55,7 @@ export default class Notification {
                 `
             )
 
-            return
+            return this
         }
 
         const className = placementClassMap.get(placement)
@@ -78,7 +63,6 @@ export default class Notification {
 
         if (!container) {
             container = document.createElement("div")
-            container.style.overflow = "hidden"
 
             container.classList.add("position-fixed", ...className!)
             document.body.appendChild(container)
@@ -86,85 +70,98 @@ export default class Notification {
             placementContainerMap.set(placement, container)
         }
 
-        if (!this.container) {
-            this.container = document.createElement("div")
+        this.parent = container
 
-            container.appendChild(this.container)
-        }
+        // prepend if placement is bottom
+        this.mount(/bottom/i.test(placement))
 
-        this._renderToast(true)
-
-        return this
+        return super.open()
     }
 
-    close = () => {
-        if (this.visible) {
-            this._renderToast(false)
-        }
-    }
-
-    destroy = () => {
-        if (!this.container || !this.placement) {
+    destroy(): undefined {
+        if (!this.placement) {
             return
         }
 
-        const container = placementContainerMap.get(this.placement)
-
-        if (container) {
-            unmountComponentAtNode(this.container)
-            container.removeChild(this.container)
-
-            this.container = null
-            this.placement = undefined
+        if (super.destroy()) {
+            placementContainerMap.set(this.placement, null)
         }
+
+        this.placement = null
     }
 
-    private _renderToast(visible: boolean) {
+    render(visible: boolean) {
         const {
             placement,
             container,
-            props
+            props: {
+                style,
+                onShow,
+                onShown,
+                onHide,
+                onHidden,
+                onClose,
+                ...restProps
+            }
         } = this
-        
+
         if (!container) {
             return
         }
 
-        this.visible = visible
-
+        super.render(visible)
         render(
             <Transition
                 in={visible}
                 unmountOnExit
                 appear
-                onExited={this.destroy}>
+                onEnter={onShow}
+                onEntered={onShown}
+                onExit={onHide}
+                onExited={this.handleExited}>
                 {
                     status => {
-                        const left = /left/i.test(placement!)
-                        const right = /right/i.test(placement!)
-                        const {
-                            style = {},
-                            ...restProps
-                        } = props
-                        style.transition = "transform .3s"
-                        style.zIndex = this.zIndex
-
-                        if (left) {
-                            style.transform = "translateX(-110%)"
-                        } else if (right) {
-                            style.transform = "translateX(110%)"
+                        const newStyle = {
+                            margin: "1rem",
+                            ...style,
+                            transition: `
+                                transform .3s,
+                                margin .3s,
+                                opacity .3s
+                            `,
+                            zIndex: 2000
                         }
 
-                        if (status === "entering" || status === "entered") {
-                            style.transform = "none"
+                        if (
+                            status === "entering" ||
+                            status === "entered"
+                        ) {
+                            newStyle.transform = "none"
+                        } else if (status === "enter") {
+                            const isLeft = /left/i.test(placement!)
+                            newStyle.transform = `
+                                translateX(${isLeft ? "-" : ""}110%)
+                            `
+                        } else if (
+                            status === "exit" ||
+                            status === "exiting"
+                        ) {
+                            const DIS = "-5rem"
+
+                            if (/top/i.test(placement!)) {
+                                newStyle.marginTop = DIS
+                            } else {
+                                newStyle.marginBottom = DIS
+                            }
+                            newStyle.opacity = 0
                         }
 
                         return (
                             <Toast
-                                className="m-3"
+                                __noAnim__
                                 visible={visible}
                                 fade={false}
-                                style={style}
+                                style={newStyle}
                                 hideOnExit={false}
                                 onClose={this.close}
                                 {...restProps}>
