@@ -6,6 +6,8 @@ import warning from "warning";
 import {ValueOf} from "../Commons/common-types";
 import Toast, {ToastProps} from "../Toast";
 
+let zIndex = 2000
+
 const placements = [
     "topRight",
     "bottomRight",
@@ -39,6 +41,7 @@ export default class Notification {
     props: ToastProps = {}
     visible = false
     umountOnExit = true
+    zIndex = zIndex++
 
     constructor(
         msg: React.ReactNode,
@@ -144,6 +147,7 @@ export default class Notification {
                             ...restProps
                         } = props
                         style.transition = "transform .3s"
+                        style.zIndex = this.zIndex
 
                         if (left) {
                             style.transform = "translateX(-110%)"
