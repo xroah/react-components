@@ -3,29 +3,44 @@ import {createPortal} from "react-dom"
 import Backdrop from "../Commons/Backdrop"
 import {ModalBackdropProps} from "./types"
 
-export default function ModalBackdrop(
-    {visible}: ModalBackdropProps
-) {
-    let container: HTMLElement | null = null
-    const removeBackdrop = () => {
-        if (container) {
-            document.body.removeChild(container)
+class ModalBackdrop extends React.Component<ModalBackdropProps> {
+    container: HTMLElement | null = null
+    rendered = false
 
-            container = null
+    componentWillUnmount() {
+        this.removeBackdrop()
+    }
+
+    removeBackdrop = () => {
+        if (this.container) {
+            document.body.removeChild(this.container)
+
+            this.container = null
         }
     }
 
-    if (!container) {
-        container = document.createElement("div")
+    render() {
+        const {visible} = this.props
 
-        document.body.appendChild(container)
+        if (!this.rendered && !visible) {
+            return null
+        }
+
+        if (!this.container) {
+            this.container = document.createElement("div")
+            this.rendered = true
+
+            document.body.appendChild(this.container)
+        }
+
+        return createPortal(
+            <Backdrop
+                className="modal-backdrop"
+                onExited={this.removeBackdrop}
+                visible={visible} />,
+            this.container
+        )
     }
-
-    return createPortal(
-        <Backdrop
-            className="modal-backdrop"
-            onExited={removeBackdrop}
-            visible={visible} />,
-        container
-    )
 }
+
+export default ModalBackdrop
