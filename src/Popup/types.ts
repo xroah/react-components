@@ -1,4 +1,4 @@
-import {Events, ValueOf} from "../Commons/common-types"
+import {Events, ValueOf, VisibleProps} from "../Commons/common-types"
 import {
     actions,
     aliments,
@@ -69,13 +69,12 @@ interface OnAlignParam extends InnerState, PlacementProps {
     newPlacement?: Placement
 }
 
-export interface PopupProps extends CommonProps {
+export interface PopupProps extends CommonProps, VisibleProps {
     children: React.ReactElement
     overlay?: React.ReactNode
 }
 
 export interface PopupState {
-    visible: boolean
     x: number
     y: number
     mountNode: null | HTMLElement

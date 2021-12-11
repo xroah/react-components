@@ -5,7 +5,8 @@ import {
     CloseFunc,
     CloseFuncParam,
     Events,
-    ValueOf
+    ValueOf,
+    VisibleProps
 } from "../Commons/common-types"
 import Backdrop from "../Commons/Backdrop"
 import scrollbar from "../Commons/scrollbar"
@@ -18,14 +19,14 @@ const placements = [
     "bottom"
 ] as const
 
-type BaseProps = React.HTMLAttributes<HTMLDivElement> & Events
+type BaseProps = React.HTMLAttributes<HTMLDivElement> &
+    Events & VisibleProps
 
 interface OffCanvasProps extends Omit<BaseProps, "title"> {
     keyboard?: boolean
     scroll?: boolean
     backdrop?: boolean
     placement?: ValueOf<typeof placements>
-    visible?: boolean
     showClose?: boolean
     title?: React.ReactNode
     onClose?: CloseFunc

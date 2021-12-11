@@ -6,19 +6,22 @@ import {
     NoTransition
 } from "reap-utils/lib/react"
 import CloseBtn from "../Commons/CloseBtn"
-import {Cb, CommonTransitionProps, Events} from "../Commons/common-types"
+import {
+    AutoHideProps,
+    Cb,
+    CommonTransitionProps,
+    Events
+} from "../Commons/common-types"
 
 type BaseProps = Omit<React.HTMLAttributes<HTMLDivElement>, "title">
 
 export interface ToastProps extends
-    BaseProps, Events, CommonTransitionProps {
+    BaseProps, CommonTransitionProps, Events, AutoHideProps {
     icon?: React.ReactNode
     title?: React.ReactNode
     extra?: React.ReactNode
     showClose?: boolean
     fade?: boolean
-    autoHide?: boolean
-    delay?: number
     onClose?: Cb
 }
 

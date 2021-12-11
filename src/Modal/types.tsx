@@ -3,7 +3,8 @@ import {
     Cb,
     CloseFunc,
     Events,
-    ValueOf
+    ValueOf,
+    VisibleProps
 } from "../Commons/common-types"
 
 export const breakpoints = [
@@ -19,7 +20,7 @@ export const sizes = [
     "xl"
 ] as const
 
-type BaseProps = HTMLAttributes<HTMLDivElement> & Events
+type BaseProps = HTMLAttributes<HTMLDivElement> & Events & VisibleProps
 
 export interface ModalProps extends Omit<BaseProps, "title"> {
     backdrop?: boolean | "static"
@@ -34,7 +35,6 @@ export interface ModalProps extends Omit<BaseProps, "title"> {
     showClose?: boolean
     footer?: ReactNode
     size?: ValueOf<typeof sizes>
-    visible?: boolean
     fade?: boolean
     onOk?: Cb
     onCancel?: Cb
