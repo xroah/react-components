@@ -230,7 +230,6 @@ export default class Transition extends
         // transition end can bubble
         if (this.next && evt.target === this.getNode()) {
             this.next.fn()
-            this.clearNext()
         }
     }
 
