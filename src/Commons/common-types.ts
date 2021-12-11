@@ -11,3 +11,9 @@ export type Events = {
 
 export type CloseFuncParam = "btn" | "esc" | "backdrop"
 export type CloseFunc = (v: CloseFuncParam) => void
+
+export interface CommonTransitionProps {
+    visible?: boolean
+    unmountOnExit?: boolean
+    hideOnExit?: boolean
+}

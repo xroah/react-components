@@ -6,12 +6,12 @@ import {
     NoTransition
 } from "reap-utils/lib/react"
 import CloseBtn from "../Commons/CloseBtn"
-import {Cb, Events} from "../Commons/common-types"
+import {Cb, CommonTransitionProps, Events} from "../Commons/common-types"
 
 type BaseProps = Omit<React.HTMLAttributes<HTMLDivElement>, "title">
 
-export interface ToastProps extends BaseProps, Events {
-    visible?: boolean
+export interface ToastProps extends
+    BaseProps, Events, CommonTransitionProps {
     icon?: React.ReactNode
     title?: React.ReactNode
     extra?: React.ReactNode
@@ -19,7 +19,6 @@ export interface ToastProps extends BaseProps, Events {
     fade?: boolean
     autoHide?: boolean
     delay?: number
-    unmountOnExit?: boolean
     onClose?: Cb
 }
 
@@ -37,6 +36,7 @@ export default function Toast(
         autoHide,
         delay,
         unmountOnExit,
+        hideOnExit,
         onShow,
         onShown,
         onHidden,
@@ -57,6 +57,7 @@ export default function Toast(
         in: !!visible,
         appear: true,
         unmountOnExit,
+        hideOnExit,
         onEnter: () => handleFuncProp(onShow)(),
         onEntered: () => handleFuncProp(onShown)(),
         onExit: () => handleFuncProp(onHide)(),
