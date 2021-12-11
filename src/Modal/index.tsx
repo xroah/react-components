@@ -12,7 +12,7 @@ import {ModalProps, ModalState} from "./types"
 import ModalBackdrop from "./ModalBackdrop"
 import CloseBtn from "../Commons/CloseBtn"
 
-export default class Modal extends React.Component<ModalProps, ModalState> {
+class Modal extends React.Component<ModalProps, ModalState> {
     modalRef = React.createRef<HTMLDivElement>()
     prevFocus: HTMLElement | null = null
 
@@ -285,3 +285,5 @@ export default class Modal extends React.Component<ModalProps, ModalState> {
         )
     }
 }
+
+export default Modal

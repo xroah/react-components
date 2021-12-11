@@ -36,7 +36,7 @@ interface State {
     instance: OffCanvas
 }
 
-export default class OffCanvas extends React.Component<OffCanvasProps, State> {
+class OffCanvas extends React.Component<OffCanvasProps, State> {
     static defaultProps: OffCanvasProps = {
         placement: "start",
         keyboard: true,
@@ -208,3 +208,5 @@ export default class OffCanvas extends React.Component<OffCanvasProps, State> {
         )
     }
 }
+
+export default OffCanvas

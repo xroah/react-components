@@ -16,8 +16,7 @@ import PopupInner from "./PopupInner"
 import {getAction, getDelay} from "./utils"
 import {popupPropTypes} from "./prop-types"
 
-export default class Popup extends
-    React.Component<PopupProps, PopupState> {
+class Popup extends React.Component<PopupProps, PopupState> {
     private placeholderRef = React.createRef<HTMLDivElement>()
     private delayTimer: number | null = null
 
@@ -295,3 +294,5 @@ export default class Popup extends
         )
     }
 }
+
+export default Popup

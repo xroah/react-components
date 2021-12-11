@@ -74,32 +74,6 @@ export function getContainer(mountNode?: null | string | HTMLElement) {
     return container
 }
 
-export function getViewportSize() {
-    const div = document.createElement("div")
-    const ret = {
-        width: 0,
-        height: 0
-    }
-    div.style.cssText = `
-        position: fixed;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 0;
-        margin: auto;
-        z-index: -9999
-    `
-
-    document.body.appendChild(div)
-
-    ret.width = div.offsetWidth
-    ret.height = div.offsetHeight
-
-    document.body.removeChild(div)
-
-    return ret
-}
-
 export function getScrollbarSize(el: HTMLElement) {
     return {
         v: el.offsetWidth - el.clientWidth,
