@@ -15,7 +15,7 @@ export default function CSSTransition(props: CSSTransitionProps) {
     const {
         name,
         children,
-        hiddenOnExited,
+        hideOnExit,
         ...restProps
     } = props
 
@@ -41,7 +41,7 @@ export default function CSSTransition(props: CSSTransitionProps) {
                             className.push(`${name}-exit-active`)
                             break
                         case EXITED:
-                            if (hiddenOnExited) {
+                            if (hideOnExit) {
                                 style.display = "none"
                             }
                     }
@@ -61,9 +61,9 @@ export default function CSSTransition(props: CSSTransitionProps) {
 
 CSSTransition.propTypes = {
     name: string.isRequired,
-    hiddenOnExited: bool
+    hideOnExit: bool
 }
 
 CSSTransition.defaultProps = {
-    hiddenOnExited: true
+    hideOnExit: true
 }

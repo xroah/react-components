@@ -12,7 +12,7 @@ export default class NoTransition extends
         ...propTypes
     }
     static defaultProps = {
-        hiddenOnExited: true
+        hideOnExit: true
     }
 
     constructor(props: NoTransitionProps) {
@@ -52,7 +52,7 @@ export default class NoTransition extends
             children,
             in: _in,
             unmountOnExit,
-            hiddenOnExited,
+            hideOnExit
         } = this.props
         const child = only(children as React.ReactElement)
         const style: React.CSSProperties = {...child.props.style}
@@ -65,7 +65,7 @@ export default class NoTransition extends
             return this.renderChildren(children(_in ? ENTERED : EXITED))
         }
 
-        if (hiddenOnExited && !_in) {
+        if (hideOnExit && !_in) {
             style.display = "none"
         }
 

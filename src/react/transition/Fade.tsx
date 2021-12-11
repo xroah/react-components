@@ -15,7 +15,7 @@ export default function Fade(
         showClass,
         children,
         name,
-        hiddenOnExited,
+        hideOnExit,
         ...restProps
     }: FadeProps
 ) {
@@ -29,7 +29,7 @@ export default function Fade(
 
                     if (state === ENTERING || state === ENTERED) {
                         className.push(showClass)
-                    } else if (state === EXITED && hiddenOnExited) {
+                    } else if (state === EXITED && hideOnExit) {
                         style.display = "none"
                     }
 
@@ -49,11 +49,11 @@ export default function Fade(
 Fade.defaultProps = {
     showClass: "show",
     name: "fade",
-    hiddenOnExited: true
+    hideOnExit: true
 }
 
 Fade.propTypes = {
-    hiddenOnExited: bool,
+    hideOnExit: bool,
     name: string,
     showClass: string
 }

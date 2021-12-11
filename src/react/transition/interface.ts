@@ -31,7 +31,7 @@ export interface TransitionProps extends Callbacks<typeof callbacks> {
 }
 
 export interface NoTransitionProps extends TransitionProps {
-    hiddenOnExited?: boolean
+    hideOnExit?: boolean
 }
 
 export interface FadeProps extends TransitionProps, NoTransitionProps {
@@ -39,9 +39,8 @@ export interface FadeProps extends TransitionProps, NoTransitionProps {
     showClass?: string
 }
 
-export interface CSSTransitionProps extends TransitionProps {
+export interface CSSTransitionProps extends NoTransitionProps {
     name: string
-    hiddenOnExited?: boolean
 }
 
 export interface Next {
