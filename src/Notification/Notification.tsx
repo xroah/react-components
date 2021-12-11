@@ -2,6 +2,7 @@ import * as React from "react";
 import {render, unmountComponentAtNode} from "react-dom";
 import {omit} from "reap-utils/lib";
 import {Transition} from "reap-utils/lib/react";
+import warning from "warning";
 import {ValueOf} from "../Commons/common-types";
 import Toast, {ToastProps} from "../Toast";
 
@@ -12,7 +13,7 @@ const placements = [
     "topLeft"
 ] as const
 
-type Placement = ValueOf<typeof placements>
+export type Placement = ValueOf<typeof placements>
 
 export interface Options extends ToastProps {
     placement?: Placement
@@ -37,8 +38,9 @@ export default class Notification {
     msg: React.ReactNode = null
     props: ToastProps = {}
     visible = false
+    umountOnExit = true
 
-    open(
+    constructor(
         msg: React.ReactNode,
         {
             unmountOnExit = true,
@@ -46,18 +48,36 @@ export default class Notification {
             ...restProps
         }: Options = {}
     ) {
-        const className = placementClassMap.get(placement)
-        let container = placementContainerMap.get(placement)
+        this.msg = msg
+        this.umountOnExit = unmountOnExit
+        this.placement = placement
+        this.props = omit(restProps, "onClose")
+    }
 
-        if (!className) {
+    open() {
+        const placement = this.placement!
+        const valid = placement || placements.indexOf(placement) >= 0
+
+        if (!valid) {
+            warning(
+                !valid,
+                `
+                    The placement can be ${placements.join(" or ")},
+                    received ${placement}
+                `
+            )
+
             return
         }
+
+        const className = placementClassMap.get(placement)
+        let container = placementContainerMap.get(placement)
 
         if (!container) {
             container = document.createElement("div")
             container.style.overflow = "hidden"
 
-            container.classList.add("position-fixed", ...className)
+            container.classList.add("position-fixed", ...className!)
             document.body.appendChild(container)
 
             placementContainerMap.set(placement, container)
@@ -69,18 +89,14 @@ export default class Notification {
             container.appendChild(this.container)
         }
 
-        this.placement = placement
-        this.msg = msg
-        this.props = omit(restProps, "onClose")
-
-        this.renderToast(true)
+        this._renderToast(true)
 
         return this
     }
 
     close = () => {
         if (this.visible) {
-            this.renderToast(false)
+            this._renderToast(false)
         }
     }
 
@@ -100,13 +116,13 @@ export default class Notification {
         }
     }
 
-    renderToast(visible: boolean) {
+    private _renderToast(visible: boolean) {
         const {
             placement,
             container,
             props
         } = this
-
+        
         if (!container) {
             return
         }
@@ -127,7 +143,7 @@ export default class Notification {
                             style = {},
                             ...restProps
                         } = props
-                        style.transition = "transform .15s"
+                        style.transition = "transform .3s"
 
                         if (left) {
                             style.transform = "translateX(-110%)"
