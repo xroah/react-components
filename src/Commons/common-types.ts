@@ -1,6 +1,8 @@
 export type ValueOf<T extends readonly any[]> = T[number]
 
 export type Cb = () => void
+export type CloseFuncParam = "close" | "esc" | "backdrop" | "auto"
+export type CloseFunc = (type?: CloseFuncParam) => void
 
 export type Events = {
     onShow?: Cb
@@ -15,7 +17,7 @@ export interface VisibleProps {
 
 export interface ClosableProps {
     closable?: boolean
-    onClose?: Cb
+    onClose?: CloseFunc
 }
 
 export interface AutoHideProps {

@@ -3,7 +3,7 @@ import * as React from "react"
 import {classNames} from "reap-utils/lib"
 import {handleFuncProp} from "reap-utils/lib/react"
 import CloseBtn from "../Commons/CloseBtn"
-import {AutoHideProps, ClosableProps, VisibleProps} from "../Commons/common-types"
+import {AutoHideProps, ClosableProps, CloseFuncParam, VisibleProps} from "../Commons/common-types"
 
 type BaseProps = Omit<React.HTMLAttributes<HTMLDivElement>, "title"> &
     ClosableProps & AutoHideProps & VisibleProps
@@ -40,18 +40,18 @@ export default function ToastInner(
         className,
         PREFIX
     )
+    const handleClose = (type?: CloseFuncParam) => {
+        handleFuncProp(onClose)(type)
+    }
     let header = icon || title || closable ? (
         <div className={`${PREFIX}-header`}>
             {icon}
             <strong className="me-auto">{title}</strong>
             {extra && <small>{extra}</small>}
-            {closable && <CloseBtn onClick={onClose} />}
+            {closable && <CloseBtn onClose={handleClose} />}
         </div>
     ) : null
     let timer: number | null = null
-    const handleClose = () => {
-        handleFuncProp(onClose)()
-    }
     const clearTimer = () => {
         if (timer !== null) {
             clearTimeout(timer)
@@ -65,7 +65,7 @@ export default function ToastInner(
             if (autoHide) {
                 timer = window.setTimeout(
                     () => {
-                        handleClose()
+                        handleClose("auto")
 
                         timer = null
                     },

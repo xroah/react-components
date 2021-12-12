@@ -5,6 +5,7 @@ import CloseBtn from "../Commons/CloseBtn"
 import {
     AutoHideProps,
     ClosableProps,
+    CloseFuncParam,
     Events,
     ValueOf,
     VisibleProps
@@ -59,12 +60,15 @@ export default function MessageItem(
             timer = null
         }
     }
+    const handleClose = (type?: CloseFuncParam) => {
+        handleFuncProp(onClose)(type)
+    }
 
     React.useEffect(
         () => {
             if (autoHide) {
                 timer = window.setTimeout(
-                    () => handleFuncProp(onClose)(),
+                    () => handleClose("auto"),
                     delay
                 )
             }
@@ -113,7 +117,7 @@ export default function MessageItem(
                             ref={ref}
                             {...restProps}>
                             {children}
-                            {closable && <CloseBtn onClick={onClose} />}
+                            {closable && <CloseBtn onClose={handleClose} />}
                         </div>
                     )
                 }

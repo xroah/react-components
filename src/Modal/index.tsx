@@ -10,6 +10,7 @@ import scrollbar from "../Commons/scrollbar"
 import {ModalProps, ModalState} from "./types"
 import ModalBackdrop from "./ModalBackdrop"
 import CloseBtn from "../Commons/CloseBtn"
+import {CloseFuncParam} from "../Commons/common-types"
 
 class Modal extends React.Component<ModalProps, ModalState> {
     modalRef = React.createRef<HTMLDivElement>()
@@ -86,13 +87,13 @@ class Modal extends React.Component<ModalProps, ModalState> {
         handleFuncProp(this.props.onHidden)
     }
 
-    handleClose = () => {
-        handleFuncProp(this.props.onClose)()
+    handleClose = (type?: CloseFuncParam) => {
+        handleFuncProp(this.props.onClose)(type)
     }
 
-    close(condition?: boolean) {
+    close(condition?: boolean, type?: CloseFuncParam) {
         if (condition) {
-            this.handleClose()
+            this.handleClose(type)
         } else {
             this.handleStatic()
         }
@@ -100,7 +101,7 @@ class Modal extends React.Component<ModalProps, ModalState> {
 
     handleKeyDown = (evt: React.KeyboardEvent) => {
         if (evt.key.toLowerCase() === "escape") {
-            this.close(this.props.keyboard)
+            this.close(this.props.keyboard, "esc")
         }
 
         evt.stopPropagation()
@@ -130,7 +131,7 @@ class Modal extends React.Component<ModalProps, ModalState> {
         }
 
         if (inBackdrop) {
-            this.close(backdrop !== "static")
+            this.close(backdrop !== "static", "backdrop")
         }
     }
 
@@ -193,7 +194,7 @@ class Modal extends React.Component<ModalProps, ModalState> {
                     FULLSCREEN_PREFIX : ""
         )
         const closeBtn = closable ? (
-            <CloseBtn onClick={this.handleClose} />
+            <CloseBtn onClose={this.handleClose} />
         ) : null
 
         return (

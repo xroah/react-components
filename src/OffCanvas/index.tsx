@@ -3,6 +3,7 @@ import {classNames, omit} from "reap-utils/lib"
 import {handleFuncProp, Transition} from "reap-utils/lib/react"
 import {
     ClosableProps,
+    CloseFuncParam,
     Events,
     ValueOf,
     VisibleProps
@@ -54,13 +55,17 @@ class OffCanvas extends React.Component<OffCanvasProps, State> {
         }
     }
 
-    handleClose = () => {
-        handleFuncProp(this.props.onClose)()
+    handleClose = (type?: CloseFuncParam) => {
+        handleFuncProp(this.props.onClose)(type)
+    }
+
+    handleClickBackdrop = () => {
+        this.handleClose("backdrop")
     }
 
     handleKeyDown = (evt: React.KeyboardEvent) => {
         if (evt.key.toLowerCase() === "escape") {
-            this.handleClose()
+            this.handleClose("esc")
         }
     }
 
@@ -115,7 +120,7 @@ class OffCanvas extends React.Component<OffCanvasProps, State> {
                     closable && (
                         <CloseBtn
                             className="text-reset"
-                            onClick={this.handleClose} />
+                            onClose={this.handleClose} />
                     )
                 }
             </div>
@@ -194,7 +199,7 @@ class OffCanvas extends React.Component<OffCanvasProps, State> {
                     backdrop && (
                         <Backdrop
                             visible={visible}
-                            onClick={this.handleClose}
+                            onClick={this.handleClickBackdrop}
                             className={`${PREFIX}-backdrop`} />
                     )
                 }
