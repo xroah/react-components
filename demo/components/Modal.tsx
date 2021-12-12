@@ -27,6 +27,7 @@ export default () => {
                 visible={visible}
                 onClose={hide}
                 onOk={hide}
+                fade={false}
                 backdrop="static"
                 onCancel={hide}>
                 Lorem, ipsum dolor sit amet consectetur adipisicing elit. Expedita reprehenderit nihil earum laudantium, eum dicta natus provident sequi ex animi aliquam ea hic eaque deleniti neque, non, consequuntur distinctio aspernatur.
