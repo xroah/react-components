@@ -3,7 +3,7 @@ import {render} from "react-dom"
 import Info from "../Commons/Info"
 import MessageItem, {MessageItemProps} from "./Item"
 
-let container: HTMLElement | null = null
+let parent: HTMLElement | null = null
 
 export default class Message extends Info<MessageItemProps> {
     open() {
@@ -11,8 +11,8 @@ export default class Message extends Info<MessageItemProps> {
             return this
         }
 
-        if (!container) {
-            container = this.createParent(
+        if (!parent) {
+            parent = this.createParent(
                 el => {
                     el.style.cssText = `
                         position: fixed;
@@ -30,18 +30,14 @@ export default class Message extends Info<MessageItemProps> {
             )
         }
 
-        this.mount()
+        this.mount(parent)
 
         return super.open()
     }
 
-    destroy(): undefined {
-        if (!container) {
-            return
-        }
-
+    destroy() {
         if (super.destroy()) {
-            container = null
+            parent = null
         }
     }
 

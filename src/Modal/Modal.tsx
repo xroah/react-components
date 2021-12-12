@@ -233,6 +233,7 @@ class Modal extends React.Component<ModalProps, ModalState> {
         const fadeProps = {
             in: !!visible,
             nodeRef: this.modalRef,
+            appear: true,
             onEnter: this.handleEnter,
             onEntered: this.handleEntered,
             onExit: this.handleExit,

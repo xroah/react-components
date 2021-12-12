@@ -17,26 +17,23 @@ export default class Info<P extends Events & ClosableProps> {
     }
 
     createParent(cb?: (el: HTMLElement) => void) {
-        let {parent} = this
+        const parent = document.createElement("div")
 
-        if (!parent) {
-            parent = this.parent = document.createElement("div")
-
-            if (cb) {
-                cb(parent)
-            }
-
-            document.body.appendChild(parent)
+        if (cb) {
+            cb(parent)
         }
+
+        document.body.appendChild(parent)
 
         return parent
     }
 
-    mount(prepend = false) {
-        if (this.container || !this.parent) {
+    mount(parent: HTMLElement, prepend = false) {
+        if (this.container) {
             return
         }
 
+        this.parent = parent
         this.container = document.createElement("div")
 
         if (prepend) {
@@ -73,7 +70,7 @@ export default class Info<P extends Events & ClosableProps> {
         }
     }
 
-    destroy() {
+    destroy(): void | true {
         if (!this.container || !this.parent) {
             return
         }

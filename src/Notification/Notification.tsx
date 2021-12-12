@@ -44,9 +44,14 @@ export default class Notification extends Info<Options> {
         this.placement = placement
     }
 
+    isPlacementValid() {
+        return this.placement &&
+            placements.indexOf(this.placement) >= 0
+    }
+
     open() {
         const placement = this.placement!
-        const valid = placement || placements.indexOf(placement) >= 0
+        const valid = this.isPlacementValid()
 
         if (!valid) {
             warning(
@@ -61,32 +66,32 @@ export default class Notification extends Info<Options> {
         }
 
         const className = placementClassMap.get(placement)
-        let container = placementContainerMap.get(placement)
+        let parent = placementContainerMap.get(placement)
 
-        if (!container) {
-            container = this.createParent(
+        if (!parent) {
+            parent = this.createParent(
                 el => {
                     className!.push("position-fixed")
                     el.classList.add(...className!)
                 }
             )
 
-            placementContainerMap.set(placement, container)
+            placementContainerMap.set(placement, parent)
         }
 
         // prepend if placement is bottom
-        this.mount(/bottom/i.test(placement))
+        this.mount(parent, /bottom/i.test(placement))
 
         return super.open()
     }
 
-    destroy(): undefined {
-        if (!this.placement) {
+    destroy() {
+        if (!this.isPlacementValid()) {
             return
         }
 
         if (super.destroy()) {
-            placementContainerMap.set(this.placement, null)
+            placementContainerMap.set(this.placement!, null)
         }
 
         this.placement = null
