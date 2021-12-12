@@ -5,7 +5,6 @@ import {ModalBackdropProps} from "./types"
 
 class ModalBackdrop extends React.Component<ModalBackdropProps> {
     container: HTMLElement | null = null
-    rendered = false
 
     componentWillUnmount() {
         this.removeBackdrop()
@@ -22,14 +21,12 @@ class ModalBackdrop extends React.Component<ModalBackdropProps> {
     render() {
         const {visible} = this.props
 
-        if (!this.rendered && !visible) {
+        if (!this.container && !visible) {
             return null
         }
 
         if (!this.container) {
             this.container = document.createElement("div")
-            this.rendered = true
-
             document.body.appendChild(this.container)
         }
 
