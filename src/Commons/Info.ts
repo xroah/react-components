@@ -16,6 +16,22 @@ export default class Info<P extends Events & ClosableProps> {
         this.props = props
     }
 
+    createParent(cb?: (el: HTMLElement) => void) {
+        let {parent} = this
+
+        if (!parent) {
+            parent = this.parent = document.createElement("div")
+
+            if (cb) {
+                cb(parent)
+            }
+
+            document.body.appendChild(parent)
+        }
+
+        return parent
+    }
+
     mount(prepend = false) {
         if (this.container || !this.parent) {
             return

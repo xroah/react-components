@@ -64,15 +64,15 @@ export default class Notification extends Info<Options> {
         let container = placementContainerMap.get(placement)
 
         if (!container) {
-            container = document.createElement("div")
-
-            container.classList.add("position-fixed", ...className!)
-            document.body.appendChild(container)
+            container = this.createParent(
+                el => {
+                    className!.push("position-fixed")
+                    el.classList.add(...className!)
+                }
+            )
 
             placementContainerMap.set(placement, container)
         }
-
-        this.parent = container
 
         // prepend if placement is bottom
         this.mount(/bottom/i.test(placement))
@@ -85,11 +85,11 @@ export default class Notification extends Info<Options> {
             return
         }
 
-        /* if (super.destroy()) {
+        if (super.destroy()) {
             placementContainerMap.set(this.placement, null)
         }
 
-        this.placement = null */
+        this.placement = null
     }
 
     render(visible: boolean) {

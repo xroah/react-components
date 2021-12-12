@@ -12,24 +12,24 @@ export default class Message extends Info<MessageItemProps> {
         }
 
         if (!container) {
-            container = document.createElement("div")
-            container.style.cssText = `
-                position: fixed;
-                left: 0;
-                top: 0;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                overflow: hidden;
-                width: 100%;
-                pointer-events: none;
-                z-index: 2000;
-            `
-            document.body.appendChild(container)
+            container = this.createParent(
+                el => {
+                    el.style.cssText = `
+                        position: fixed;
+                        left: 0;
+                        top: 0;
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        overflow: hidden;
+                        width: 100%;
+                        pointer-events: none;
+                        z-index: 2000;
+                    `
+                }
+            )
         }
 
-        this.parent = container
-        
         this.mount()
 
         return super.open()
