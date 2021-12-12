@@ -21,7 +21,9 @@ class Modal extends React.Component<ModalProps, ModalState> {
         backdrop: true,
         focus: true,
         fade: true,
-        keyboard: true
+        keyboard: true,
+        showOk: true,
+        showCancel: true
     }
 
     constructor(props: ModalProps) {
@@ -84,7 +86,7 @@ class Modal extends React.Component<ModalProps, ModalState> {
         this.setState({display: "none"})
         scrollbar.reset()
         this.setBackdropVisible(false)
-        handleFuncProp(this.props.onHidden)
+        handleFuncProp(this.props.onHidden)()
     }
 
     handleClose = (type?: CloseFuncParam) => {
@@ -140,24 +142,34 @@ class Modal extends React.Component<ModalProps, ModalState> {
             footer,
             okText = "确定",
             cancelText = "取消",
+            showCancel,
+            showOk,
             onOk,
             onCancel
         } = this.props
         let el: React.ReactNode = null
 
-        if (footer === undefined) {
+        if (footer === undefined && (showOk || showCancel)) {
             el = (
                 <>
-                    <button
-                        className="btn btn-secondary"
-                        onClick={onOk}>
-                        {cancelText}
-                    </button>
-                    <button
-                        className="btn btn-primary"
-                        onClick={onCancel}>
-                        {okText}
-                    </button>
+                    {
+                        showCancel && (
+                            <button
+                                className="btn btn-secondary"
+                                onClick={onCancel}>
+                                {cancelText}
+                            </button>
+                        )
+                    }
+                    {
+                        showOk && (
+                            <button
+                                className="btn btn-primary"
+                                onClick={onOk}>
+                                {okText}
+                            </button>
+                        )
+                    }
                 </>
             )
         } else if (footer) {
@@ -225,6 +237,7 @@ class Modal extends React.Component<ModalProps, ModalState> {
             backdrop,
             focus,
             style = {},
+            unmountOnExit,
             ...restProps
         } = this.props
         const {display, backdropVisible} = this.state
@@ -238,7 +251,8 @@ class Modal extends React.Component<ModalProps, ModalState> {
             onEntered: this.handleEntered,
             onExit: this.handleExit,
             onExited: this.handleExited,
-            hiddenOnExited: false
+            hiddenOnExited: false,
+            unmountOnExit
         }
         const props = omit(
             restProps,
@@ -258,7 +272,9 @@ class Modal extends React.Component<ModalProps, ModalState> {
                 "fullscreen",
                 "title",
                 "children",
-                "closable"
+                "closable",
+                "showCancel",
+                "showOk"
             ]
         ) as any
         const child = (

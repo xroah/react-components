@@ -74,7 +74,6 @@ export default class Info<P extends Events & ClosableProps> {
         if (!this.container || !this.parent) {
             return
         }
-
         unmountComponentAtNode(this.container)
         this.parent.removeChild(this.container)
 

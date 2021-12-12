@@ -36,6 +36,9 @@ export interface ModalProps extends Omit<BaseProps, "title"> {
     footer?: ReactNode
     size?: ValueOf<typeof sizes>
     fade?: boolean
+    showCancel?: boolean
+    showOk?: boolean
+    unmountOnExit?: boolean
     onOk?: Cb
     onCancel?: Cb
 }

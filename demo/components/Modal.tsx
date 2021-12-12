@@ -1,15 +1,26 @@
 import * as React from "react"
-import Modal from "../../src/Modal"
+import Modal, {alert} from "../../src/Modal"
 
 export default () => {
     const [visible, update] = React.useState(false)
     const handleClick = () => update(!visible)
-    const hide = () => update(false)
+    const hide = (arg?: any) => {
+        update(false)
+        console.log(arg)
+    }
+    const showAlert = () => {
+        alert("哈哈哈哈哈哈哈哈哈")
+    }
 
     return (
         <>
             <button className="btn btn-primary" onClick={handleClick}>
                 Show modal
+            </button>
+            <button
+                className="btn btn-danger ms-3"
+                onClick={showAlert}>
+                Show alert 
             </button>
             <Modal
                 title="Modal title"
