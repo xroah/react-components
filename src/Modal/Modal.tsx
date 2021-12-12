@@ -238,6 +238,8 @@ class Modal extends React.Component<ModalProps, ModalState> {
             focus,
             style = {},
             unmountOnExit,
+            mountBackdropToBody,
+            onBackdropHidden,
             ...restProps
         } = this.props
         const {display, backdropVisible} = this.state
@@ -299,7 +301,14 @@ class Modal extends React.Component<ModalProps, ModalState> {
         return (
             <>
                 {el}
-                {backdrop && <ModalBackdrop visible={backdropVisible} />}
+                {
+                    backdrop && (
+                        <ModalBackdrop
+                            mountToBody={mountBackdropToBody}
+                            onExited={onBackdropHidden}
+                            visible={backdropVisible} />
+                    )
+                }
             </>
         )
     }

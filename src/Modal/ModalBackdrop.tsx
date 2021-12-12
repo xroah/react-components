@@ -1,5 +1,6 @@
 import * as React from "react"
 import {createPortal} from "react-dom"
+import {handleFuncProp} from "reap-utils/lib/react"
 import Backdrop from "../Commons/Backdrop"
 import {ModalBackdropProps} from "./types"
 
@@ -16,10 +17,23 @@ class ModalBackdrop extends React.Component<ModalBackdropProps> {
 
             this.container = null
         }
+
+        handleFuncProp(this.props.onExited)()
     }
 
     render() {
-        const {visible} = this.props
+        const {visible, mountToBody} = this.props
+        const el = (
+            <Backdrop
+                className="modal-backdrop"
+                unmountOnExit
+                onExited={this.removeBackdrop}
+                visible={visible} />
+        )
+
+        if (!mountToBody) {
+            return el
+        }
 
         if (!this.container && !visible) {
             return null
@@ -30,13 +44,7 @@ class ModalBackdrop extends React.Component<ModalBackdropProps> {
             document.body.appendChild(this.container)
         }
 
-        return createPortal(
-            <Backdrop
-                className="modal-backdrop"
-                onExited={this.removeBackdrop}
-                visible={visible} />,
-            this.container
-        )
+        return createPortal(el, this.container)
     }
 }
 

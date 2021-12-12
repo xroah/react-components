@@ -4,11 +4,11 @@ import {handleFuncProp} from "reap-utils/lib/react";
 import {CloseFuncParam} from "../Commons/common-types";
 import Info from "../Commons/Info"
 import Modal from "./Modal";
-import {ModalProps} from "./types";
+import {ModalCommonProps} from "./types";
 
 let parent: HTMLElement | null = null
 
-interface Options extends ModalProps {
+interface Options extends ModalCommonProps {
     type: "alert" | "confirm" | "prompt"
 }
 
@@ -49,32 +49,40 @@ export default class Dialog extends Info<Options> {
             onCancel,
             onOk,
             onClose,
+            onShow,
+            onShown,
+            onHide,
             onHidden,
-            visible: useless,
-            unmountOnExit,
-            children,
+            backdrop = true,
             type,
             title = "提示",
-            ...restProps
+            className
         } = this.props
+        // if backdrop is not false, destroy after backdrop has hidden
+        onHidden = backdrop ? onHidden : this.handleExited as any
         onCancel = this.handleCancel
         onOk = this.handleOk
         onClose = this.handleClose
+        const props = {
+            unmountOnExit: true,
+            visible,
+            className,
+            backdrop,
+            onOk,
+            onClose,
+            onCancel,
+            onShown,
+            onShow,
+            onHidden,
+            onHide,
+            onBackdropHidden: () => this.destroy(),
+            showCancel: type !== "alert",
+            title
+        }
 
         super.render(visible)
         render(
-            <Modal
-                unmountOnExit
-                visible={visible}
-                onOk={onOk}
-                onCancel={onCancel}
-                onClose={onClose}
-                onHidden={this.handleExited as any}
-                showCancel={type !== "alert"}
-                title={title}
-                {...restProps}>
-                {this.msg || children}
-            </Modal>,
+            <Modal {...props}>{this.msg}</Modal>,
             this.container
         )
     }

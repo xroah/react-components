@@ -1,9 +1,15 @@
 import * as React from "react"
 import {Fade, NoTransition} from "reap-utils/lib/react"
-import {Cb} from "./common-types"
+import {
+    Cb,
+    CommonTransitionProps,
+    DivProps,
+    VisibleProps
+} from "./common-types"
 
-interface BackdropProps extends React.HTMLAttributes<HTMLDivElement> {
-    visible?: boolean
+type BaseProps = DivProps & CommonTransitionProps & VisibleProps
+
+export interface BackdropProps extends BaseProps {
     fade?: boolean
     onExited?: Cb
     onEntered?: Cb
@@ -16,6 +22,7 @@ export default function Backdrop(
         onExited,
         onEntered,
         fade = true,
+        unmountOnExit,
         ...restProps
     }: BackdropProps
 ) {
@@ -29,6 +36,7 @@ export default function Backdrop(
     const fadeProps = {
         in: !!visible,
         nodeRef: ref,
+        unmountOnExit,
         onEntered,
         onExited
     }

@@ -29,3 +29,5 @@ export interface CommonTransitionProps {
     unmountOnExit?: boolean
     hideOnExit?: boolean
 }
+
+export type DivProps = React.HTMLAttributes<HTMLDivElement>

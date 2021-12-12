@@ -1,4 +1,5 @@
 import {HTMLAttributes, ReactNode} from "react"
+import {BackdropProps} from "../Commons/Backdrop"
 import {
     Cb,
     ClosableProps,
@@ -19,28 +20,33 @@ export const sizes = [
     "lg",
     "xl"
 ] as const
-
-type BaseProps = HTMLAttributes<HTMLDivElement> &
-    Events & VisibleProps & ClosableProps
-
-export interface ModalProps extends Omit<BaseProps, "title"> {
+export interface ModalCommonProps extends Events, ClosableProps {
     backdrop?: boolean | "static"
     keyboard?: boolean
-    focus?: boolean
-    scrollable?: boolean
     verticalCenter?: boolean
-    fullscreen?: boolean | ValueOf<typeof breakpoints>
     title?: ReactNode
     okText?: ReactNode
     cancelText?: ReactNode
+    className?: string
+    onOk?: Cb
+    onCancel?: Cb
+}
+
+type BaseProps = Omit<HTMLAttributes<HTMLDivElement>, "title"> &
+    VisibleProps & ModalCommonProps
+
+export interface ModalProps extends BaseProps {
+    focus?: boolean
+    scrollable?: boolean
+    fullscreen?: boolean | ValueOf<typeof breakpoints>
     footer?: ReactNode
     size?: ValueOf<typeof sizes>
     fade?: boolean
     showCancel?: boolean
     showOk?: boolean
     unmountOnExit?: boolean
-    onOk?: Cb
-    onCancel?: Cb
+    mountBackdropToBody?: boolean
+    onBackdropHidden?: Cb
 }
 
 export interface ModalState {
@@ -48,6 +54,6 @@ export interface ModalState {
     backdropVisible?: boolean
 }
 
-export interface ModalBackdropProps {
-    visible?: boolean
+export interface ModalBackdropProps extends BackdropProps {
+    mountToBody?: boolean
 }
