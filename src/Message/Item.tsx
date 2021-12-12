@@ -45,6 +45,7 @@ export default function MessageItem(
     }: MessageItemProps & VisibleProps
 ) {
     let timer: number | null = null
+    const ref = React.useRef<HTMLDivElement>(null)
     const PREFIX = "alert"
     const classes = classNames(
         className,
@@ -77,6 +78,7 @@ export default function MessageItem(
         <Transition
             unmountOnExit
             appear
+            nodeRef={ref}
             in={!!visible}
             onEnter={onShow}
             onEntered={onShown}
@@ -108,6 +110,7 @@ export default function MessageItem(
                         <div
                             style={newStyle}
                             className={classes}
+                            ref={ref}
                             {...restProps}>
                             {children}
                             {closable && <CloseBtn onClick={onClose} />}

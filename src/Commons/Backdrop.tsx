@@ -19,9 +19,16 @@ export default function Backdrop(
         ...restProps
     }: BackdropProps
 ) {
-    const child = <div className={className} {...restProps} />
+    const ref = React.useRef<HTMLDivElement>(null)
+    const child = (
+        <div
+            ref={ref}
+            className={className}
+            {...restProps} />
+    )
     const fadeProps = {
         in: !!visible,
+        nodeRef: ref,
         onEntered,
         onExited
     }

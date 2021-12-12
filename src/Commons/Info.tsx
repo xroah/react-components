@@ -17,33 +17,36 @@ export default class Info<P extends Events & ClosableProps> {
     }
 
     mount(prepend = false) {
-        if (!this.container) {
-            this.container = document.createElement("div")
+        if (this.container || !this.parent) {
+            return
+        }
 
-            if (this.parent) {
-                if (prepend) {
-                    // @ts-ignore
-                    if (this.parent.prepend) {
-                        return this.parent.prepend(this.container)
-                    } else {
-                        const first = this.parent.firstElementChild
+        this.container = document.createElement("div")
 
-                        if (first) {
-                            return this.parent.insertBefore(
-                                this.container,
-                                first
-                            )
-                        }
-                    }
+        if (prepend) {
+            // @ts-ignore
+            if (this.parent.prepend) {
+                this.parent.prepend(this.container)
+
+                return
+            } else {
+                const first = this.parent.firstElementChild
+
+                if (first) {
+                    this.parent.insertBefore(this.container, first)
+
+                    return
                 }
-
-                this.parent.appendChild(this.container)
             }
         }
+
+        this.parent.appendChild(this.container)
     }
 
     open() {
-        this.render(true)
+        if (!this.visible) {
+            this.render(true)
+        }
 
         return this
     }

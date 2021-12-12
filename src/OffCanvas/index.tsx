@@ -153,6 +153,7 @@ class OffCanvas extends React.Component<OffCanvasProps, State> {
             <>
                 <Transition
                     in={!!visible}
+                    nodeRef={this.elementRef}
                     onEnter={this.handleEnter}
                     onEntered={this.handleEntered}
                     onExit={this.handleExit}

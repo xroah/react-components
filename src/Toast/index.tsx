@@ -1,27 +1,15 @@
 import * as React from "react"
-import {classNames} from "reap-utils/lib"
-import {
-    Fade,
-    handleFuncProp,
-    NoTransition
-} from "reap-utils/lib/react"
-import CloseBtn from "../Commons/CloseBtn"
+import {Fade, NoTransition} from "reap-utils/lib/react"
 import {
     AutoHideProps,
-    ClosableProps,
     CommonTransitionProps,
-    Events
+    Events,
 } from "../Commons/common-types"
+import ToastInner, {ToastInnerProps} from "./Inner"
 
-type BaseProps = Omit<React.HTMLAttributes<HTMLDivElement>, "title"> &
-    CommonTransitionProps & Events & ClosableProps & AutoHideProps
-export interface ToastProps extends BaseProps {
-    icon?: React.ReactNode
-    title?: React.ReactNode
-    extra?: React.ReactNode
+type BaseProps = CommonTransitionProps & Events & AutoHideProps
+export interface ToastProps extends BaseProps, ToastInnerProps {
     fade?: boolean
-    // for Notification only
-    __noAnim__?: boolean
 }
 
 export default function Toast(
@@ -31,15 +19,10 @@ export default function Toast(
         title,
         extra,
         closable,
-        className,
         fade,
         children,
-        style,
-        autoHide,
-        delay,
         unmountOnExit,
         hideOnExit,
-        __noAnim__,
         onShow,
         onShown,
         onHidden,
@@ -48,74 +31,29 @@ export default function Toast(
         ...restProps
     }: ToastProps
 ) {
-    const PREFIX = "toast"
-    const classes = classNames(
-        className,
-        PREFIX
-    )
-    const handleCloseClick = () => {
-        handleFuncProp(onClose)()
-    }
+    const ref = React.useRef<HTMLDivElement>(null)
     const fadeProps = {
         in: !!visible,
         appear: true,
         unmountOnExit,
         hideOnExit,
-        onEnter: () => handleFuncProp(onShow)(),
-        onEntered: () => handleFuncProp(onShown)(),
-        onExit: () => handleFuncProp(onHide)(),
-        onExited: () => handleFuncProp(onHidden)()
+        nodeRef: ref,
+        onEnter: onShow,
+        onEntered: onShown,
+        onExit: onHide,
+        onExited: onHidden
     }
-    let header = icon || title || closable ? (
-        <div className={`${PREFIX}-header`}>
-            {icon}
-            <strong className="me-auto">{title}</strong>
-            {extra && <small>{extra}</small>}
-            {closable && <CloseBtn onClick={handleCloseClick} />}
-        </div>
-    ) : null
     const child = (
-        <div
-            className={classes}
-            style={{
-                ...style,
-                display: "block"
-            }}
-            {...restProps}>
-            {header}
-            <div className={`${PREFIX}-body`}>{children}</div>
-        </div>
+        <ToastInner
+            visible={visible}
+            icon={icon}
+            title={title}
+            extra={extra}
+            closable={closable}
+            nodeRef={ref}
+            onClose={onClose}
+            {...restProps} />
     )
-    let timer: number | null = null
-    const clearTimer = () => {
-        if (timer !== null) {
-            clearTimeout(timer)
-
-            timer = null
-        }
-    }
-
-    React.useEffect(
-        () => {
-            if (autoHide) {
-                timer = window.setTimeout(
-                    () => {
-                        handleFuncProp(onClose)()
-
-                        timer = null
-                    },
-                    delay
-                )
-            }
-
-            return clearTimer
-        },
-        [visible]
-    )
-
-    if (__noAnim__) {
-        return child
-    }
 
     return fade ?
         <Fade {...fadeProps}>{child}</Fade> :
@@ -123,8 +61,5 @@ export default function Toast(
 }
 
 Toast.defaultProps = {
-    closable: true,
-    fade: true,
-    autoHide: true,
-    delay: 5000
+    fade: true
 }

@@ -55,7 +55,8 @@ export default class Message extends Info<MessageItemProps> {
             <MessageItem
                 visible={visible}
                 onClose={this.close}
-                onHidden={this.handleExited as any}
+                // @ts-ignore
+                onHidden={this.handleExited}
                 {...this.getProps()}>
                 {this.msg}
             </MessageItem>,

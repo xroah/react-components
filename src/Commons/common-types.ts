@@ -23,7 +23,7 @@ export interface AutoHideProps {
     delay?: number
 }
 
-export interface CommonTransitionProps extends VisibleProps {
+export interface CommonTransitionProps {
     unmountOnExit?: boolean
     hideOnExit?: boolean
 }

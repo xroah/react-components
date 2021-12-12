@@ -1,4 +1,8 @@
-import {Events, ValueOf, VisibleProps} from "../Commons/common-types"
+import {
+    Events,
+    ValueOf,
+    VisibleProps
+} from "../Commons/common-types"
 import {
     actions,
     aliments,
@@ -29,7 +33,7 @@ interface PlacementProps {
     placement?: Placement
 }
 
-export interface CommonProps extends PlacementProps, Events{
+export interface CommonProps extends PlacementProps, Events {
     alignment?: ValueOf<typeof aliments>
     fallbackPlacements?: Placement[] | Placement
     verticalAlign?: ValueOf<typeof verticalAlign>
@@ -74,7 +78,7 @@ export interface PopupProps extends CommonProps, VisibleProps {
     overlay?: React.ReactNode
 }
 
-export interface PopupState {
+export interface PopupState extends VisibleProps {
     x: number
     y: number
     mountNode: null | HTMLElement

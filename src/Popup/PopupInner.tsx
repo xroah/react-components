@@ -259,9 +259,10 @@ export default class PopupInner extends
                     {
                         animation ? (
                             <Fade
-                                hiddenOnExited
+                                hideOnExit
                                 appear
                                 in={!!visible}
+                                nodeRef={this.innerRef}
                                 onEntering={this.align}
                                 onEntered={onShown}
                                 onExited={onHidden}>

@@ -4,7 +4,8 @@ import {Transition} from "reap-utils/lib/react";
 import warning from "warning";
 import {ValueOf} from "../Commons/common-types";
 import Info from "../Commons/Info";
-import Toast, {ToastProps} from "../Toast";
+import {ToastProps} from "../Toast";
+import ToastInner from "../Toast/Inner";
 
 const placements = [
     "topRight",
@@ -29,6 +30,7 @@ const placementContainerMap = new Map<Placement, HTMLElement | null>([])
 
 export default class Notification extends Info<Options> {
     placement: Placement | null = null
+    toastRef = React.createRef<HTMLDivElement>()
 
     constructor(
         msg: React.ReactNode,
@@ -83,11 +85,11 @@ export default class Notification extends Info<Options> {
             return
         }
 
-        if (super.destroy()) {
+        /* if (super.destroy()) {
             placementContainerMap.set(this.placement, null)
         }
 
-        this.placement = null
+        this.placement = null */
     }
 
     render(visible: boolean) {
@@ -115,14 +117,27 @@ export default class Notification extends Info<Options> {
                 in={visible}
                 unmountOnExit
                 appear
+                nodeRef={this.toastRef}
                 onEnter={onShow}
                 onEntered={onShown}
                 onExit={onHide}
                 onExited={this.handleExited}>
                 {
                     status => {
+                        const MARGIN = "1rem"
                         const newStyle = {
-                            margin: "1rem",
+                            /**
+                             * Removing a style property during rerender (marginTop)
+                             * when a conflicting property is set (margin)
+                             * can lead to styling bugs.
+                             * To avoid this, don't mix shorthand and non-shorthand 
+                             * properties for the same value; 
+                             * instead, replace the shorthand with separate values.
+                             */
+                            marginTop: MARGIN,
+                            marginRight: MARGIN,
+                            marginBottom: MARGIN,
+                            marginLeft: MARGIN,
                             ...style,
                             transition: `
                                 transform .3s,
@@ -146,7 +161,7 @@ export default class Notification extends Info<Options> {
                             status === "exit" ||
                             status === "exiting"
                         ) {
-                            const DIS = "-5rem"
+                            const DIS = "-10rem"
 
                             if (/top/i.test(placement!)) {
                                 newStyle.marginTop = DIS
@@ -157,16 +172,14 @@ export default class Notification extends Info<Options> {
                         }
 
                         return (
-                            <Toast
-                                __noAnim__
+                            <ToastInner
                                 visible={visible}
-                                fade={false}
+                                nodeRef={this.toastRef}
                                 style={newStyle}
-                                hideOnExit={false}
                                 onClose={this.close}
                                 {...restProps}>
                                 {this.msg}
-                            </Toast>
+                            </ToastInner>
                         )
                     }
                 }
