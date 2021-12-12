@@ -31,11 +31,21 @@ export default class BaseTransition<T extends Props, S extends State>
         }
     }
 
-    getNode(): Element | null {
+    getNode() {
+        const {nodeRef} = this.props
+
+        if (nodeRef) {
+            return nodeRef.current
+        }
+
         return getNextNodeByRef(this.placeholderRef)
     }
 
     renderPlaceholder(): React.ReactElement | null {
+        if (this.props.nodeRef) {
+            return null
+        }
+
         return <Placeholder ref={this.placeholderRef} />
     }
 

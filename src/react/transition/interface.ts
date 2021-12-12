@@ -26,6 +26,7 @@ export interface TransitionProps extends Callbacks<typeof callbacks> {
     timeout?: number
     unmountOnExit?: boolean
     appear?: boolean
+    nodeRef?: React.RefObject<HTMLElement>
     children: ChildrenFunc | React.ReactElement
     onTransitionEnd?: (evt: React.TransitionEvent) => void
 }
