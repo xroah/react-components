@@ -225,11 +225,17 @@ export default class Transition extends
     }
 
     handleTransitionEnd = (evt: React.TransitionEvent) => {
-        handleFuncProp(this.props.onTransitionEnd)(evt)
+        const {onTransitionEnd, unmountOnExit} = this.props
+
+        handleFuncProp(onTransitionEnd)(evt)
 
         // transition end can bubble
         if (this.next && evt.target === this.getNode()) {
             this.next.fn()
+
+            if (!unmountOnExit) {
+                this.clearNext()
+            }
         }
     }
 
