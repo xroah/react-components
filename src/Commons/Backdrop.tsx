@@ -1,4 +1,5 @@
 import * as React from "react"
+import {classNames} from "reap-utils/lib"
 import {Fade, NoTransition} from "reap-utils/lib/react"
 import {
     Cb,
@@ -27,10 +28,14 @@ export default function Backdrop(
     }: BackdropProps
 ) {
     const ref = React.useRef<HTMLDivElement>(null)
+    const classes = classNames(
+        className,
+        !fade && "show"
+    )
     const child = (
         <div
             ref={ref}
-            className={className}
+            className={classes}
             {...restProps} />
     )
     const fadeProps = {

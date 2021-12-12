@@ -22,13 +22,18 @@ class ModalBackdrop extends React.Component<ModalBackdropProps> {
     }
 
     render() {
-        const {visible, mountToBody} = this.props
+        const {
+            visible,
+            mountToBody,
+            ...restProps
+        } = this.props
         const el = (
             <Backdrop
                 className="modal-backdrop"
                 unmountOnExit
                 onExited={this.removeBackdrop}
-                visible={visible} />
+                visible={visible}
+                {...restProps} />
         )
 
         if (!mountToBody) {
