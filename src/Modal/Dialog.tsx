@@ -2,7 +2,7 @@ import * as React from "react"
 import {render} from "react-dom";
 import {handleFuncProp} from "reap-utils/lib/react";
 import {CloseFuncParam} from "../Commons/common-types";
-import Info from "../Commons/Info"
+import Info from "../Commons/Layer"
 import Modal from "./Modal";
 import {ModalCommonProps} from "./types";
 

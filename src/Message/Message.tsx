@@ -1,6 +1,6 @@
 import * as React from "react"
 import {render} from "react-dom"
-import Info from "../Commons/Info"
+import Info from "../Commons/Layer"
 import MessageItem, {MessageItemProps} from "./Item"
 
 let parent: HTMLElement | null = null

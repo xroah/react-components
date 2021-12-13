@@ -3,7 +3,7 @@ import {render} from "react-dom";
 import {Transition} from "reap-utils/lib/react";
 import warning from "warning";
 import {ValueOf} from "../Commons/common-types";
-import Info from "../Commons/Info";
+import Info from "../Commons/Layer";
 import {ToastProps} from "../Toast";
 import ToastInner from "../Toast/Inner";
 
