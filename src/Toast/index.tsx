@@ -20,7 +20,6 @@ export default function Toast(
         extra,
         closable,
         fade,
-        children,
         unmountOnExit,
         hideOnExit,
         onShow,
@@ -61,5 +60,6 @@ export default function Toast(
 }
 
 Toast.defaultProps = {
-    fade: true
+    fade: true,
+    hideOnExit: true
 }

@@ -83,8 +83,8 @@ export default function ToastInner(
             className={classes}
             ref={nodeRef}
             style={{
-                ...style,
-                display: "block"
+                display: "block",
+                ...style
             }}
             {...restProps}>
             {header}
