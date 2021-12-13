@@ -81,3 +81,9 @@ export interface DialogOptions extends Base {
 export interface DialogProps extends DialogOptions {
     type: DialogType
 }
+
+
+export interface ModalDialogProps extends ModalProps {
+    prefix: string
+    footer?: React.ReactNode
+}

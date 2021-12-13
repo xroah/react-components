@@ -44,15 +44,13 @@ const Input = React.forwardRef(
         }
 
         return (
-            <>
-                <input
-                    type={type}
-                    defaultValue={defaultValue}
-                    className={classes}
-                    onKeyDown={handleKeyDown}
-                    ref={ref}
-                    {...restProps} />
-            </>
+            <input
+                type={type}
+                defaultValue={defaultValue}
+                className={classes}
+                onKeyDown={handleKeyDown}
+                ref={ref}
+                {...restProps} />
         )
     }
 )

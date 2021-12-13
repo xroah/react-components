@@ -2,12 +2,7 @@ import * as React from "react"
 import {classNames} from "reap-utils/lib";
 import Button from "../Commons/Button";
 import CloseBtn from "../Commons/CloseBtn";
-import {ModalProps} from "./types";
-
-interface ModalDialogProps extends ModalProps {
-    prefix: string
-    footer?: React.ReactNode
-}
+import {ModalDialogProps} from "./types";
 
 export default function ModalDialog(
     {
