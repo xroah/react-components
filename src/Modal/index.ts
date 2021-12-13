@@ -3,14 +3,15 @@ import Dialog,
 {
     DialogOptions,
     DialogProps,
-    DialogType
+    DialogType,
+    OkFunc
 } from "./Dialog"
 import Modal from "./Modal"
 
 function factory(type: DialogType) {
     return (
         msg: ReactNode,
-        onOk?: ((v?: any) => void) | DialogOptions,
+        onOk?: OkFunc | DialogOptions,
         options?: DialogOptions
     ) => {
         let newOptions: DialogProps = {

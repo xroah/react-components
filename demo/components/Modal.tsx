@@ -23,9 +23,17 @@ export default () => {
     }
     const showPrompt = () => {
         prompt(
-            "请输入：",
-            function onOk() {
-                console.log("输入：", arguments[0])
+            "请输入电话号码",
+            function onOk(v, input) {
+                if (!/^\d+$/.test(v)) {
+                    console.log("error")
+                    
+                    if (input) {
+                        input.focus()
+                    }
+
+                    return false
+                }
             }
         )
     }

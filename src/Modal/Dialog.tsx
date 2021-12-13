@@ -1,6 +1,6 @@
 import * as React from "react"
 import {render} from "react-dom";
-import {chainFunction} from "reap-utils/lib";
+import {chainFunction, noop} from "reap-utils/lib";
 import {handleFuncProp} from "reap-utils/lib/react";
 import Button from "../Commons/Button";
 import {
@@ -20,12 +20,16 @@ export type DialogType = "alert" | "confirm" | "prompt"
 
 type Base = Omit<ModalCommonProps, "onOk" | "onCancel">
 
+export interface OkFunc {
+    (value?: string, input?: HTMLElement | null): void | false
+}
+
 export interface DialogOptions extends Base {
     inputType?: React.HTMLInputTypeAttribute
     inputDefaultValue?: string
     inputSize?: Size
     buttonSize?: Size
-    onOk?: (value?: string) => void
+    onOk?: OkFunc
     onCancel?: Cb
 }
 
@@ -49,14 +53,20 @@ export default class Dialog extends Layer<DialogProps> {
 
     handleOk = () => {
         const {current: input} = this.inputRef
+        let {onOk} = this.props
         let value: string | undefined
+
+        if (typeof onOk !== "function") {
+            onOk = noop
+        }
 
         if (input) {
             value = input.value
         }
 
-        this.close()
-        handleFuncProp(this.props.onOk)(value)
+        if (onOk(value, input) !== false) {
+            this.close()
+        }
     }
 
     handleShown = () => {
@@ -110,7 +120,7 @@ export default class Dialog extends Layer<DialogProps> {
 
         return (
             <Input
-                className="mt-2"
+                className="mt-3"
                 type={inputType}
                 defaultValue={inputDefaultValue}
                 size={inputSize}
