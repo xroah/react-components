@@ -8,7 +8,7 @@ import {
 import {executeAfterTransition} from "reap-utils/lib/dom"
 import scrollbar from "../Commons/scrollbar"
 import {ModalProps, ModalState} from "./types"
-import ModalBackdrop from "./ModalBackdrop"
+import Backdrop from "../Commons/Backdrop"
 import {CloseFuncParam} from "../Commons/common-types"
 import ModalDialog from "./ModalDialog"
 import {modalDefaultProps} from "./default-props"
@@ -217,11 +217,13 @@ class Modal extends React.Component<ModalProps, ModalState> {
                 {el}
                 {
                     backdrop && (
-                        <ModalBackdrop
+                        <Backdrop
+                            className={`${PREFIX}-backdrop`}
                             fade={fade}
+                            visible={backdropVisible}
+                            unmountOnExit={unmountOnExit}
                             mountToBody={mountBackdropToBody}
-                            onExited={onBackdropHidden}
-                            visible={backdropVisible} />
+                            onHidden={onBackdropHidden} />
                     )
                 }
             </>

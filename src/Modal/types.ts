@@ -1,5 +1,4 @@
 import {HTMLAttributes, ReactNode} from "react"
-import {BackdropProps} from "../Commons/Backdrop"
 import {
     Cb,
     ClosableProps,
@@ -52,8 +51,4 @@ export interface ModalProps extends BaseProps {
 export interface ModalState {
     display: "block" | "none"
     backdropVisible?: boolean
-}
-
-export interface ModalBackdropProps extends BackdropProps {
-    mountToBody?: boolean
 }
