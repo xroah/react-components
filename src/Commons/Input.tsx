@@ -11,7 +11,6 @@ export interface InputProps extends Base {
 
 interface Callbacks {
     onOk?: (evt: React.KeyboardEvent) => void
-    onCancel?: (evt: React.KeyboardEvent) => void
 }
 
 const Input = React.forwardRef(
@@ -22,7 +21,6 @@ const Input = React.forwardRef(
             defaultValue,
             className,
             onOk,
-            onCancel,
             ...restProps
         }: InputProps & Callbacks,
         ref: React.ForwardedRef<HTMLInputElement>
@@ -38,14 +36,14 @@ const Input = React.forwardRef(
 
             if (key === "enter") {
                 handleFuncProp(onOk)(evt)
-            } else if (key === "escape") {
-                handleFuncProp(onCancel)(evt)
+                evt.preventDefault()
             }
         }
 
         return (
             <input
                 type={type}
+                
                 defaultValue={defaultValue}
                 className={classes}
                 onKeyDown={handleKeyDown}

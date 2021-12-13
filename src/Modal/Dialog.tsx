@@ -99,8 +99,7 @@ export default class Dialog extends Layer<DialogProps> {
 
         const props = {
             ...input,
-            onOk: this.handleOk,
-            onCancel: this.handleCancel
+            onOk: this.handleOk
         }
 
         return (
