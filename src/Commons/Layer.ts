@@ -4,7 +4,7 @@ import {omit} from "reap-utils/lib"
 import {handleFuncProp} from "reap-utils/lib/react"
 import {ClosableProps, Events} from "./common-types"
 
-export default class Info<P extends Events & ClosableProps> {
+export default class Layer<P extends Events & ClosableProps> {
     visible = false
     props: P
     msg: React.ReactNode = null

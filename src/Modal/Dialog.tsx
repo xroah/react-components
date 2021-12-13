@@ -1,18 +1,37 @@
 import * as React from "react"
 import {render} from "react-dom";
+import {chainFunction} from "reap-utils/lib";
 import {handleFuncProp} from "reap-utils/lib/react";
 import {CloseFuncParam} from "../Commons/common-types";
-import Info from "../Commons/Layer"
+import Layer from "../Commons/Layer"
 import Modal from "./Modal";
 import {ModalCommonProps} from "./types";
 
 let parent: HTMLElement | null = null
 
-interface Options extends ModalCommonProps {
-    type: "alert" | "confirm" | "prompt"
+export type DialogType = "alert" | "confirm" | "prompt"
+
+export interface DialogOptions extends ModalCommonProps {
+    type: DialogType
 }
 
-export default class Dialog extends Info<Options> {
+export default class Dialog extends Layer<DialogOptions> {
+
+    handleClose = (type?: CloseFuncParam) => {
+        handleFuncProp(this.props.onClose)(type)
+        this.close()
+    }
+
+    handleCancel = chainFunction(
+        this.props.onCancel,
+        this.close
+    )
+
+    handleOk = chainFunction(
+        this.props.onOk,
+        this.close
+    )
+
     open() {
         if (!parent) {
             parent = this.createParent()
@@ -21,21 +40,6 @@ export default class Dialog extends Info<Options> {
         this.mount(parent)
 
         return super.open()
-    }
-
-    handleClose = (type?: CloseFuncParam) => {
-        handleFuncProp(this.props.onClose)(type)
-        this.close()
-    }
-
-    handleCancel = () => {
-        handleFuncProp(this.props.onCancel)()
-        this.close()
-    }
-
-    handleOk = () => {
-        handleFuncProp(this.props.onOk)()
-        this.close()
     }
 
     destroy() {
@@ -56,6 +60,7 @@ export default class Dialog extends Info<Options> {
             backdrop = true,
             type,
             title = "提示",
+            fade,
             className
         } = this.props
         // if backdrop is not false, destroy after backdrop has hidden
@@ -68,6 +73,9 @@ export default class Dialog extends Info<Options> {
             visible,
             className,
             backdrop,
+            showCancel: type !== "alert",
+            title,
+            fade,
             onOk,
             onClose,
             onCancel,
@@ -75,9 +83,7 @@ export default class Dialog extends Info<Options> {
             onShow,
             onHidden,
             onHide,
-            onBackdropHidden: () => this.destroy(),
-            showCancel: type !== "alert",
-            title
+            onBackdropHidden: () => this.destroy()
         }
 
         super.render(visible)

@@ -1,4 +1,8 @@
-import {HTMLAttributes, ReactNode} from "react"
+import {
+    HTMLAttributes,
+    MouseEvent,
+    ReactNode
+} from "react"
 import {
     Cb,
     ClosableProps,
@@ -19,6 +23,9 @@ export const sizes = [
     "lg",
     "xl"
 ] as const
+
+export type ClickCb = (evt: MouseEvent) => void
+
 export interface ModalCommonProps extends Events, ClosableProps {
     backdrop?: boolean | "static"
     keyboard?: boolean
@@ -27,8 +34,9 @@ export interface ModalCommonProps extends Events, ClosableProps {
     okText?: ReactNode
     cancelText?: ReactNode
     className?: string
-    onOk?: Cb
-    onCancel?: Cb
+    fade?: boolean
+    onOk?: ClickCb
+    onCancel?: ClickCb
 }
 
 type BaseProps = Omit<HTMLAttributes<HTMLDivElement>, "title"> &
@@ -40,7 +48,6 @@ export interface ModalProps extends BaseProps {
     fullscreen?: boolean | ValueOf<typeof breakpoints>
     footer?: ReactNode
     size?: ValueOf<typeof sizes>
-    fade?: boolean
     showCancel?: boolean
     showOk?: boolean
     unmountOnExit?: boolean
