@@ -100,7 +100,6 @@ class Modal extends React.Component<ModalProps, ModalState> {
         }
 
         evt.stopPropagation()
-        evt.preventDefault()
     }
 
     handleStatic() {
@@ -133,7 +132,6 @@ class Modal extends React.Component<ModalProps, ModalState> {
     render() {
         const {
             visible,
-            footer,
             className,
             fade,
             tabIndex,
@@ -187,8 +185,7 @@ class Modal extends React.Component<ModalProps, ModalState> {
                 "title",
                 "children",
                 "closable",
-                "showCancel",
-                "showOk"
+                "footer"
             ]
         ) as any
         const child = (
@@ -221,7 +218,7 @@ class Modal extends React.Component<ModalProps, ModalState> {
                             className={`${PREFIX}-backdrop`}
                             fade={fade}
                             visible={backdropVisible}
-                            unmountOnExit={unmountOnExit}
+                            unmountOnExit
                             mountToBody={mountBackdropToBody}
                             onHidden={onBackdropHidden} />
                     )

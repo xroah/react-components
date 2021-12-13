@@ -1,10 +1,18 @@
 import * as React from "react"
 import {render} from "react-dom";
+import {chainFunction} from "reap-utils/lib";
 import {handleFuncProp} from "reap-utils/lib/react";
-import {Cb} from "../Commons/common-types";
+import Button from "../Commons/Button";
+import {
+    Cb,
+    CloseFuncParam,
+    Size
+} from "../Commons/common-types";
+import Input from "../Commons/Input";
 import Layer from "../Commons/Layer"
+import {modalDefaultProps} from "./default-props";
 import Modal from "./Modal";
-import {ModalCommonProps} from "./types";
+import {ModalCommonProps, ModalProps} from "./types";
 
 let parent: HTMLElement | null = null
 
@@ -13,6 +21,10 @@ export type DialogType = "alert" | "confirm" | "prompt"
 type Base = Omit<ModalCommonProps, "onOk" | "onCancel">
 
 export interface DialogOptions extends Base {
+    inputType?: React.HTMLInputTypeAttribute
+    inputDefaultValue?: string
+    inputSize?: Size
+    buttonSize?: Size
     onOk?: (value?: string) => void
     onCancel?: Cb
 }
@@ -22,23 +34,51 @@ export interface DialogProps extends DialogOptions {
 }
 
 export default class Dialog extends Layer<DialogProps> {
-    createCallback(
-        name: "onClose" | "onOk" | "onCancel",
-        noArg = true
-    ) {
-        return (arg?: any) => {
-            const cb = handleFuncProp(this.props[name])
+    inputRef = React.createRef<HTMLInputElement>()
+    okRef = React.createRef<HTMLButtonElement>()
 
-            cb(noArg ? undefined : arg)
-            this.close()
+    handleClose = (type?: CloseFuncParam) => {
+        this.close()
+        handleFuncProp(this.props.onClose)(type)
+    }
+
+    handleCancel = () => {
+        this.close()
+        handleFuncProp(this.props.onCancel)()
+    }
+
+    handleOk = () => {
+        const {current: input} = this.inputRef
+        let value: string | undefined
+
+        if (input) {
+            value = input.value
+        }
+
+        this.close()
+        handleFuncProp(this.props.onOk)(value)
+    }
+
+    handleShown = () => {
+        const {current: input} = this.inputRef
+        const {current: ok} = this.okRef
+        let el: HTMLElement | null = null
+
+        if (this.props.type === "prompt") {
+            el = input
+        } else {
+            el = ok
+        }
+
+        if (el) {
+            el.focus()
         }
     }
 
-    handleClose = this.createCallback("onOk", false)
-
-    handleCancel = this.createCallback("onCancel")
-
-    handleOk = this.createCallback("onOk")
+    onShown = chainFunction(
+        this.handleShown,
+        this.props.onShown
+    )
 
     open() {
         if (!parent) {
@@ -56,14 +96,65 @@ export default class Dialog extends Layer<DialogProps> {
         }
     }
 
+    renderInput() {
+        const {
+            type,
+            inputDefaultValue,
+            inputSize,
+            inputType
+        } = this.props
+
+        if (type !== "prompt") {
+            return null
+        }
+
+        return (
+            <Input
+                className="mt-2"
+                type={inputType}
+                defaultValue={inputDefaultValue}
+                size={inputSize}
+                ref={this.inputRef}
+                onOk={this.handleOk}
+                onCancel={this.handleCancel} />
+        )
+    }
+
+    renderFooter() {
+        const {
+            type,
+            buttonSize,
+            okText = modalDefaultProps.okText,
+            cancelText = modalDefaultProps.cancelText
+        } = this.props
+        const cancelBtn = (
+            <Button
+                size={buttonSize}
+                variant="secondary"
+                onClick={this.handleCancel}>
+                {cancelText}
+            </Button>
+        )
+
+        return (
+            <>
+                {type !== "alert" && cancelBtn}
+                <Button
+                    size={buttonSize}
+                    ref={this.okRef}
+                    onClick={this.handleOk}>
+                    {okText}
+                </Button>
+            </>
+        )
+    }
+
     render(visible: boolean) {
         let {
             onShow,
-            onShown,
             onHide,
             onHidden,
             backdrop = true,
-            type,
             title = "提示",
             fade,
             size,
@@ -71,19 +162,21 @@ export default class Dialog extends Layer<DialogProps> {
         } = this.props
         // if backdrop is not false, destroy after backdrop has hidden
         onHidden = backdrop ? onHidden : this.handleExited as any
-        const props = {
+        const props: ModalProps = {
             unmountOnExit: true,
             visible,
             className,
             backdrop,
-            showCancel: type !== "alert",
             title,
             fade,
             size,
+            focus: false,
+            mountBackdropToBody: false,
+            footer: this.renderFooter(),
             onOk: this.handleOk,
             onClose: this.handleClose,
             onCancel: this.handleCancel,
-            onShown,
+            onShown: this.onShown,
             onShow,
             onHidden,
             onHide,
@@ -92,7 +185,10 @@ export default class Dialog extends Layer<DialogProps> {
 
         super.render(visible)
         render(
-            <Modal {...props}>{this.msg}</Modal>,
+            <Modal {...props}>
+                {this.msg}
+                {this.renderInput()}
+            </Modal>,
             this.container
         )
     }

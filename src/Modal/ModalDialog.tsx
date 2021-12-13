@@ -1,5 +1,6 @@
 import * as React from "react"
 import {classNames} from "reap-utils/lib";
+import Button from "../Commons/Button";
 import CloseBtn from "../Commons/CloseBtn";
 import {ModalProps} from "./types";
 
@@ -21,8 +22,6 @@ export default function ModalDialog(
         footer,
         okText,
         cancelText,
-        showCancel,
-        showOk,
         onOk,
         onCancel,
         onClose
@@ -42,27 +41,15 @@ export default function ModalDialog(
     )
     let footerEl: React.ReactNode = null
 
-    if (footer === undefined && (showOk || showCancel)) {
+    if (footer === undefined) {
         footerEl = (
             <>
-                {
-                    showCancel && (
-                        <button
-                            className="btn btn-secondary"
-                            onClick={onCancel}>
-                            {cancelText}
-                        </button>
-                    )
-                }
-                {
-                    showOk && (
-                        <button
-                            className="btn btn-primary"
-                            onClick={onOk}>
-                            {okText}
-                        </button>
-                    )
-                }
+                <Button variant="secondary" onClick={onCancel}>
+                    {cancelText}
+                </Button>
+                <Button variant="primary" onClick={onOk}>
+                    {okText}
+                </Button>
             </>
         )
     } else if (footer) {

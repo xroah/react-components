@@ -1,5 +1,4 @@
 import {ReactNode} from "react"
-import {Cb} from "../Commons/common-types"
 import Dialog,
 {
     DialogOptions,
@@ -11,7 +10,7 @@ import Modal from "./Modal"
 function factory(type: DialogType) {
     return (
         msg: ReactNode,
-        onOk?: Cb | DialogOptions,
+        onOk?: ((v?: any) => void) | DialogOptions,
         options?: DialogOptions
     ) => {
         let newOptions: DialogProps = {
@@ -19,14 +18,16 @@ function factory(type: DialogType) {
             type
         }
 
-        if (typeof onOk === "object") {
-            // merge and override properties of onOk
-            newOptions = {
-                ...onOk,
-                ...newOptions
+        if (onOk) {
+            if (typeof onOk === "object") {
+                // merge and override properties of onOk
+                newOptions = {
+                    ...onOk,
+                    ...newOptions
+                }
+            } else if (typeof onOk === "function") {
+                newOptions.onOk = onOk
             }
-        } else if (typeof onOk === "function") {
-            newOptions.onOk = onOk
         }
 
         new Dialog(msg, newOptions).open()

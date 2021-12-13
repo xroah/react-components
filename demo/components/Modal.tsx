@@ -1,5 +1,5 @@
 import * as React from "react"
-import Modal, {alert} from "../../src/Modal"
+import Modal, {alert, confirm, prompt} from "../../src/Modal"
 
 export default () => {
     const [visible, update] = React.useState(false)
@@ -9,7 +9,38 @@ export default () => {
         console.log(arg)
     }
     const showAlert = () => {
-        alert("哈哈哈哈哈哈哈哈哈")
+        alert(
+            "哈哈哈哈哈哈哈哈哈",
+            function () {
+                console.log("onOk", arguments)
+            },
+            {
+                onClose() {
+                    console.log("onClose", arguments)
+                }
+            }
+        )
+    }
+    const showPrompt = () => {
+        prompt(
+            "请输入：",
+            function onOk() {
+                console.log("输入：", arguments[0])
+            }
+        )
+    }
+    const showConfirm = () => {
+        confirm(
+            "嘿嘿嘿嘿嘿嘿嘿嘿嘿成功！",
+            function onOk() {
+                console.log("confirm", arguments)
+            },
+            {
+                onClose() {
+                    console.log("confirm close:", arguments)
+                }
+            }
+        )
     }
 
     return (
@@ -20,7 +51,17 @@ export default () => {
             <button
                 className="btn btn-danger ms-3"
                 onClick={showAlert}>
-                Show alert 
+                Show alert
+            </button>
+            <button
+                className="btn btn-success ms-3"
+                onClick={showConfirm}>
+                Show confirm
+            </button>
+            <button
+                className="btn btn-info ms-3"
+                onClick={showPrompt}>
+                Show prompt
             </button>
             <Modal
                 title="Modal title"

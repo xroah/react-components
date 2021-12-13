@@ -48,8 +48,6 @@ export interface ModalProps extends BaseProps {
     scrollable?: boolean
     fullscreen?: boolean | ValueOf<typeof breakpoints>
     footer?: ReactNode
-    showCancel?: boolean
-    showOk?: boolean
     unmountOnExit?: boolean
     mountBackdropToBody?: boolean
     onBackdropHidden?: Cb

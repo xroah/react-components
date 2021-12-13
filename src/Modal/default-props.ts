@@ -6,8 +6,7 @@ export const modalDefaultProps: ModalProps = {
     focus: true,
     fade: true,
     keyboard: true,
-    showOk: true,
-    showCancel: true,
     okText: "确定",
-    cancelText: "取消"
+    cancelText: "取消",
+    mountBackdropToBody: true
 }

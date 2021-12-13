@@ -31,3 +31,5 @@ export interface CommonTransitionProps {
 }
 
 export type DivProps = React.HTMLAttributes<HTMLDivElement>
+
+export type Size = "sm" | "lg"
