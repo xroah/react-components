@@ -10,8 +10,6 @@ import {modalDefaultProps} from "./default-props";
 import Modal from "./Modal";
 import {DialogProps, ModalProps} from "./types";
 
-let parent: HTMLElement | null = null
-
 export default class Dialog extends Layer<DialogProps> {
     inputRef = React.createRef<HTMLInputElement>()
     okRef = React.createRef<HTMLButtonElement>()
@@ -82,19 +80,9 @@ export default class Dialog extends Layer<DialogProps> {
     )
 
     open() {
-        if (!parent) {
-            parent = this.createParent()
-        }
-
-        this.mount(parent)
+        this.createParent()
 
         return super.open()
-    }
-
-    destroy() {
-        if (super.destroy()) {
-            parent = null
-        }
     }
 
     renderInput() {

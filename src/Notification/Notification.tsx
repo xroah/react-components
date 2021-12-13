@@ -70,6 +70,7 @@ export default class Notification extends Info<Options> {
 
         if (!parent) {
             parent = this.createParent(
+                false,
                 el => {
                     className!.push("position-fixed")
                     el.classList.add(...className!)
@@ -106,6 +107,7 @@ export default class Notification extends Info<Options> {
                 onShow,
                 onShown,
                 onHide,
+                // @ts-ignore: unused
                 onHidden,
                 onClose,
                 ...restProps

@@ -4,6 +4,8 @@ import {omit} from "reap-utils/lib"
 import {handleFuncProp} from "reap-utils/lib/react"
 import {ClosableProps, Events} from "./common-types"
 
+let parentContainer: HTMLElement | null = null
+
 export default class Layer<P extends Events & ClosableProps> {
     visible = false
     props: P
@@ -16,14 +18,30 @@ export default class Layer<P extends Events & ClosableProps> {
         this.props = props
     }
 
-    createParent(cb?: (el: HTMLElement) => void) {
+    createParent(
+        useParent = true,
+        cb?: (el: HTMLElement) => void
+    ) {
         const parent = document.createElement("div")
+        const append = () => document.body.appendChild(parent)
 
         if (cb) {
             cb(parent)
         }
 
-        document.body.appendChild(parent)
+        if (useParent) {
+            if (!parentContainer) {
+                parentContainer = parent
+
+                append()
+            }
+
+            this.mount(parentContainer)
+
+            return parentContainer
+        }
+
+        append()
 
         return parent
     }
@@ -33,27 +51,27 @@ export default class Layer<P extends Events & ClosableProps> {
             return
         }
 
-        this.parent = parent
         this.container = document.createElement("div")
+        this.parent = parent
 
         if (prepend) {
             // @ts-ignore
-            if (this.parent.prepend) {
-                this.parent.prepend(this.container)
+            if (parent.prepend) {
+                parent.prepend(this.container)
 
                 return
             } else {
-                const first = this.parent.firstElementChild
+                const first = parent.firstElementChild
 
                 if (first) {
-                    this.parent.insertBefore(this.container, first)
+                    parent.insertBefore(this.container, first)
 
                     return
                 }
             }
         }
 
-        this.parent.appendChild(this.container)
+        parent.appendChild(this.container)
     }
 
     open() {
@@ -74,13 +92,18 @@ export default class Layer<P extends Events & ClosableProps> {
         if (!this.container || !this.parent) {
             return
         }
+
         unmountComponentAtNode(this.container)
         this.parent.removeChild(this.container)
-
+        
         if (!this.parent.childElementCount) {
             document.body.removeChild(this.parent)
 
             this.parent = null
+
+            if (this.parent = parentContainer) {
+                parentContainer = null
+            }
 
             return true
         }
