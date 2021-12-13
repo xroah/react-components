@@ -1,15 +1,20 @@
 import {ReactNode} from "react"
-import Dialog, {DialogOptions, DialogType} from "./Dialog"
+import {Cb} from "../Commons/common-types"
+import Dialog,
+{
+    DialogOptions,
+    DialogProps,
+    DialogType
+} from "./Dialog"
 import Modal from "./Modal"
-import {ClickCb, ModalCommonProps} from "./types"
 
 function factory(type: DialogType) {
     return (
         msg: ReactNode,
-        onOk?: ClickCb | ModalCommonProps,
-        options: ModalCommonProps = {}
+        onOk?: Cb | DialogOptions,
+        options?: DialogOptions
     ) => {
-        let newOptions: DialogOptions = {
+        let newOptions: DialogProps = {
             ...options,
             type
         }
@@ -24,7 +29,7 @@ function factory(type: DialogType) {
             newOptions.onOk = onOk
         }
 
-        new Dialog(msg, newOptions)
+        new Dialog(msg, newOptions).open()
     }
 }
 

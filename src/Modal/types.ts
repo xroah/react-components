@@ -35,6 +35,7 @@ export interface ModalCommonProps extends Events, ClosableProps {
     cancelText?: ReactNode
     className?: string
     fade?: boolean
+    size?: ValueOf<typeof sizes>
     onOk?: ClickCb
     onCancel?: ClickCb
 }
@@ -47,7 +48,6 @@ export interface ModalProps extends BaseProps {
     scrollable?: boolean
     fullscreen?: boolean | ValueOf<typeof breakpoints>
     footer?: ReactNode
-    size?: ValueOf<typeof sizes>
     showCancel?: boolean
     showOk?: boolean
     unmountOnExit?: boolean
