@@ -3,11 +3,13 @@ import {classNames} from "reap-utils/lib"
 import {handleFuncProp} from "reap-utils/lib/react"
 import {Size} from "./common-types"
 
-interface InputProps {
-    size?: Size
-    type?: React.HTMLInputTypeAttribute
-    defaultValue?: string
-    className?: string
+type Base = React.InputHTMLAttributes<HTMLInputElement>
+
+export interface InputProps extends Base {
+    htmlSize?: Size
+}
+
+interface Callbacks {
     onOk?: (evt: React.KeyboardEvent) => void
     onCancel?: (evt: React.KeyboardEvent) => void
 }
@@ -15,20 +17,21 @@ interface InputProps {
 const Input = React.forwardRef(
     (
         {
-            size,
+            htmlSize,
             type,
             defaultValue,
             className,
             onOk,
-            onCancel
-        }: InputProps,
+            onCancel,
+            ...restProps
+        }: InputProps & Callbacks,
         ref: React.ForwardedRef<HTMLInputElement>
     ) => {
         const PREFIX = "form-control"
         const classes = classNames(
             className,
             PREFIX,
-            size && `${PREFIX}-size`
+            htmlSize && `${PREFIX}-size`
         )
         const handleKeyDown = (evt: React.KeyboardEvent) => {
             const key = evt.key.toLowerCase()
@@ -41,12 +44,15 @@ const Input = React.forwardRef(
         }
 
         return (
-            <input
-                type={type}
-                defaultValue={defaultValue}
-                className={classes}
-                onKeyDown={handleKeyDown}
-                ref={ref} />
+            <>
+                <input
+                    type={type}
+                    defaultValue={defaultValue}
+                    className={classes}
+                    onKeyDown={handleKeyDown}
+                    ref={ref}
+                    {...restProps} />
+            </>
         )
     }
 )

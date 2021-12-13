@@ -26,7 +26,7 @@ export default () => {
             "请输入电话号码",
             function onOk(v, input) {
                 if (!/^\d+$/.test(v)) {
-                    console.log("error")
+                    console.log("error", v)
                     
                     if (input) {
                         input.focus()
@@ -34,6 +34,17 @@ export default () => {
 
                     return false
                 }
+
+                console.log("输入:", v)
+            },
+            {
+                input: {
+                    required: true,
+                    maxLength: 15,
+                    minLength: 5
+                },
+                errorMessage: "输入错误",
+                validation: true
             }
         )
     }

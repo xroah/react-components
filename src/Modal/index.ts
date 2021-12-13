@@ -1,11 +1,11 @@
 import {ReactNode} from "react"
-import Dialog,
-{
+import {
     DialogOptions,
     DialogProps,
     DialogType,
     OkFunc
-} from "./Dialog"
+} from "./types"
+import Dialog from "./Dialog"
 import Modal from "./Modal"
 
 function factory(type: DialogType) {

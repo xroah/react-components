@@ -3,43 +3,19 @@ import {render} from "react-dom";
 import {chainFunction, noop} from "reap-utils/lib";
 import {handleFuncProp} from "reap-utils/lib/react";
 import Button from "../Commons/Button";
-import {
-    Cb,
-    CloseFuncParam,
-    Size
-} from "../Commons/common-types";
+import {CloseFuncParam} from "../Commons/common-types";
 import Input from "../Commons/Input";
 import Layer from "../Commons/Layer"
 import {modalDefaultProps} from "./default-props";
 import Modal from "./Modal";
-import {ModalCommonProps, ModalProps} from "./types";
+import {DialogProps, ModalProps} from "./types";
 
 let parent: HTMLElement | null = null
-
-export type DialogType = "alert" | "confirm" | "prompt"
-
-type Base = Omit<ModalCommonProps, "onOk" | "onCancel">
-
-export interface OkFunc {
-    (value?: string, input?: HTMLElement | null): void | false
-}
-
-export interface DialogOptions extends Base {
-    inputType?: React.HTMLInputTypeAttribute
-    inputDefaultValue?: string
-    inputSize?: Size
-    buttonSize?: Size
-    onOk?: OkFunc
-    onCancel?: Cb
-}
-
-export interface DialogProps extends DialogOptions {
-    type: DialogType
-}
 
 export default class Dialog extends Layer<DialogProps> {
     inputRef = React.createRef<HTMLInputElement>()
     okRef = React.createRef<HTMLButtonElement>()
+    formRef = React.createRef<HTMLFormElement>()
 
     handleClose = (type?: CloseFuncParam) => {
         this.close()
@@ -53,11 +29,26 @@ export default class Dialog extends Layer<DialogProps> {
 
     handleOk = () => {
         const {current: input} = this.inputRef
-        let {onOk} = this.props
+        const {current: form} = this.formRef
+        let {onOk, validation} = this.props
         let value: string | undefined
 
         if (typeof onOk !== "function") {
             onOk = noop
+        }
+
+        if (validation && form) {
+            const valid = form.checkValidity()
+
+            form.classList.add("was-validated")
+
+            if (!valid) {
+                if (input) {
+                    input.focus()
+                }
+
+                return
+            }
         }
 
         if (input) {
@@ -109,24 +100,38 @@ export default class Dialog extends Layer<DialogProps> {
     renderInput() {
         const {
             type,
-            inputDefaultValue,
-            inputSize,
-            inputType
+            input,
+            errorMessage,
+            validation
         } = this.props
 
         if (type !== "prompt") {
             return null
         }
 
+        const props = {
+            ...input,
+            onOk: this.handleOk,
+            onCancel: this.handleCancel
+        }
+
         return (
-            <Input
-                className="mt-3"
-                type={inputType}
-                defaultValue={inputDefaultValue}
-                size={inputSize}
-                ref={this.inputRef}
-                onOk={this.handleOk}
-                onCancel={this.handleCancel} />
+            <form
+                ref={this.formRef}
+                className={validation ? "needs-validation" : undefined}
+                noValidate>
+                <Input
+                    className="mt-3"
+                    ref={this.inputRef}
+                    {...props} />
+                {
+                    errorMessage && (
+                        <div className="invalid-feedback">
+                            {errorMessage}
+                        </div>
+                    )
+                }
+            </form>
         )
     }
 

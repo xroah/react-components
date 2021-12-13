@@ -7,9 +7,11 @@ import {
     Cb,
     ClosableProps,
     Events,
+    Size,
     ValueOf,
     VisibleProps
 } from "../Commons/common-types"
+import {InputProps} from "../Commons/Input"
 
 export const breakpoints = [
     "sm",
@@ -56,4 +58,26 @@ export interface ModalProps extends BaseProps {
 export interface ModalState {
     display: "block" | "none"
     backdropVisible?: boolean
+}
+
+
+type Base = Omit<ModalCommonProps, "onOk" | "onCancel">
+
+export type DialogType = "alert" | "confirm" | "prompt"
+export interface OkFunc {
+    (value?: string, input?: HTMLElement | null): void | false
+}
+
+export interface DialogOptions extends Base {
+    input?: InputProps
+    buttonSize?: Size
+    onOk?: OkFunc
+    onCancel?: Cb
+    // only for prompt
+    errorMessage?: ReactNode
+    validation?: boolean
+}
+
+export interface DialogProps extends DialogOptions {
+    type: DialogType
 }
