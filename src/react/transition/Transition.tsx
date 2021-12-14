@@ -11,7 +11,6 @@ import {
 } from "./constants"
 import {
     Next,
-    State,
     StateType,
     TransitionProps
 } from "./interface"
@@ -21,63 +20,24 @@ import {isUndef, chainFunction} from "../../main"
 import {getTransitionDuration} from "../../dom"
 import BaseTransition from "./BaseTransition"
 
-export default class Transition extends
-    BaseTransition<TransitionProps, State> {
+class Transition extends BaseTransition<TransitionProps> {
     nextTimer: number | null = null
     next: Next | null = null
 
     static propTypes = propTypes
 
-    constructor(props: TransitionProps) {
-        super(props)
-
-        const {
-            in: _in,
-            unmountOnExit,
-            appear
-        } = props
-        let status: StateType
-
-        if (_in) {
-            status = appear ? EXITED : ENTERED
-        }
-        else {
-            status = unmountOnExit ? UNMOUNTED : EXITED
-        }
-
-        this.state = {status}
-    }
-
     componentDidUpdate(prevProps: TransitionProps) {
-        let {
-            props: {in: _in},
-            state: {status}
-        } = this
+        let {in: _in} = this.props
 
         if (_in !== prevProps.in) {
-            status = _in ? ENTER : EXIT
-
-            this.switchState(status)
-        }
-        else {
+            this.switchState(_in ? ENTER : EXIT)
+        } else {
             this.performNext()
         }
     }
 
     componentWillUnmount() {
         this.clearNext()
-    }
-
-    //in case getNode returns null
-    static getDerivedStateFromProps(
-        nextProps: TransitionProps,
-        nextState: State
-    ) {
-        if (nextProps.in && nextState.status === UNMOUNTED) {
-            return {status: EXITED}
-        }
-
-        return nextState
     }
 
     setNext(fn: Function, timeout = 0) {
@@ -288,3 +248,5 @@ export default class Transition extends
     }
 
 }
+
+export default Transition

@@ -1,11 +1,47 @@
 import * as React from "react"
-import {TransitionProps as Props, State} from "./interface"
+import {TransitionProps as Props, State, StateType} from "./interface"
 import {handleFuncProp, getNextNodeByRef} from "../main"
 import Placeholder from "../Placeholder"
+import {
+    ENTERED,
+    EXITED,
+    UNMOUNTED
+} from "./constants"
 
-export default class BaseTransition<T extends Props, S extends State>
-    extends React.Component<T, S> {
+export default class BaseTransition<P extends Props>
+    extends React.Component<P, State> {
     protected placeholderRef = React.createRef<HTMLDivElement>()
+
+    constructor(props: P) {
+        super(props)
+
+        const {
+            in: _in,
+            unmountOnExit,
+            appear
+        } = props
+        let status: StateType
+
+        if (_in) {
+            status = appear ? EXITED : ENTERED
+        } else {
+            status = unmountOnExit ? UNMOUNTED : EXITED
+        }
+
+        this.state = {status}
+    }
+
+    //in case getNode returns null
+    static getDerivedStateFromProps(
+        nextProps: Props,
+        nextState: State
+    ) {
+        if (nextProps.in && nextState.status === UNMOUNTED) {
+            return {status: EXITED}
+        }
+
+        return nextState
+    }
 
     componentDidMount() {
         const {
@@ -18,14 +54,14 @@ export default class BaseTransition<T extends Props, S extends State>
             if (appear) {
                 this.componentDidUpdate({
                     in: false
-                } as T)
+                } as P)
             } else {
                 handleFuncProp(onEntered)(this.getNode())
             }
         }
     }
 
-    componentDidUpdate(props: T) {
+    componentDidUpdate(props: P) {
         if (props.in) {
             // do nothing
         }
