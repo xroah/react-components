@@ -87,6 +87,7 @@ class Popup extends React.Component<PopupProps, PopupState> {
     private createHandler<T = MouseEvent>(
         condition: (evt: T) => boolean,
         showHandlerName: string,
+        // hide handler name may same as show(like onClick)
         hideHandlerName?: string
     ) {
         return (evt: T) => {

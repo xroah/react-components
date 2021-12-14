@@ -23,7 +23,6 @@ export default class Message extends Info<MessageItemProps> {
                 pointer-events: none;
                 z-index: 2000;
             `
-
         )
 
         return super.open()
