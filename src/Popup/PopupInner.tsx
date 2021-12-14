@@ -8,6 +8,7 @@ import {
     NoTransition
 } from "reap-utils/lib/react";
 import {FadeProps} from "reap-utils/lib/react/transition/interface";
+import {getEventCallbacks} from "../Commons/utils";
 import Alignment from "./Alignment";
 import {InnerProps, InnerState} from "./types";
 import {getContainer} from "./utils";
@@ -101,7 +102,7 @@ export default class PopupInner extends
 
     align = () => {
         const {current: ref} = this.alignRef
-        
+
         if (ref) {
             const {
                 needFlip,
@@ -237,10 +238,7 @@ export default class PopupInner extends
             children: _overlay,
             nodeRef: this.innerRef,
             onEntering: this.align,
-            onEnter: onShow,
-            onEntered: onShown,
-            onExit: onHide,
-            onExited: onHidden
+            ...getEventCallbacks(this)
         }
         const element = (
             <Alignment

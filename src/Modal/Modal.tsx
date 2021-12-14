@@ -1,5 +1,5 @@
 import * as React from "react"
-import {chainFunction, classNames, omit} from "reap-utils/lib"
+import {classNames, omit} from "reap-utils/lib"
 import {
     Fade,
     handleFuncProp,
@@ -12,6 +12,7 @@ import Backdrop from "../Commons/Backdrop"
 import {CloseFuncParam} from "../Commons/common-types"
 import ModalDialog from "./ModalDialog"
 import {modalDefaultProps} from "./default-props"
+import {getEventCallbacks} from "../Commons/utils"
 
 class Modal extends React.Component<ModalProps, ModalState> {
     modalRef = React.createRef<HTMLDivElement>()
@@ -132,10 +133,6 @@ class Modal extends React.Component<ModalProps, ModalState> {
             unmountOnExit,
             mountBackdropToBody,
             onBackdropHidden,
-            onShown,
-            onShow,
-            onHidden,
-            onHide,
             ...restProps
         } = this.props
         const {display, backdropVisible} = this.state
@@ -145,12 +142,9 @@ class Modal extends React.Component<ModalProps, ModalState> {
             in: !!visible,
             nodeRef: this.modalRef,
             appear: true,
-            onEnter: chainFunction(this.handleEnter, onShow),
-            onEntered: chainFunction(this.handleEntered, onShown),
-            onExit: onHide,
-            onExited: chainFunction(this.handleExited, onHidden),
             hiddenOnExited: false,
-            unmountOnExit
+            unmountOnExit,
+            ...getEventCallbacks(this)
         }
         const dialogProps = {
             ...restProps
@@ -173,7 +167,11 @@ class Modal extends React.Component<ModalProps, ModalState> {
                 "title",
                 "children",
                 "closable",
-                "footer"
+                "footer",
+                "onShown",
+                "onShow",
+                "onHidden",
+                "onHide",
             ]
         ) as any
         const child = (

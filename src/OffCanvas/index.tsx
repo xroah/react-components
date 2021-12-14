@@ -11,6 +11,7 @@ import {
 import Backdrop from "../Commons/Backdrop"
 import scrollbar from "../Commons/scrollbar"
 import CloseBtn from "../Commons/CloseBtn"
+import {getEventCallbacks} from "../Commons/utils"
 
 const placements = [
     "start",
@@ -77,27 +78,18 @@ class OffCanvas extends React.Component<OffCanvasProps, State> {
         if (!this.props.scroll) {
             scrollbar.hide()
         }
-
-        handleFuncProp(this.props.onShow)()
     }
 
     handleEntered = () => {
-        handleFuncProp(this.props.onShown)()
-
         if (!this.props.scroll) {
             this.elementRef.current?.focus()
         }
-    }
-
-    handleExit = () => {
-        handleFuncProp(this.props.onHide)()
     }
 
     handleExited = () => {
         this.setState({
             visibility: "hidden"
         })
-        handleFuncProp(this.props.onHidden)
 
         if (!this.props.scroll) {
             scrollbar.reset()
@@ -145,10 +137,10 @@ class OffCanvas extends React.Component<OffCanvasProps, State> {
             restProps,
             [
                 "keyboard",
-                "onShow",
-                "onShown",
                 "onHidden",
-                "onHide"
+                "onHide",
+                "onShow",
+                "onShown"
             ]
         )
         const header = this.renderHeader(PREFIX, title, closable)
@@ -159,10 +151,7 @@ class OffCanvas extends React.Component<OffCanvasProps, State> {
                 <Transition
                     in={!!visible}
                     nodeRef={this.elementRef}
-                    onEnter={this.handleEnter}
-                    onEntered={this.handleEntered}
-                    onExit={this.handleExit}
-                    onExited={this.handleExited}>
+                    {...getEventCallbacks(this)}>
                     {
                         state => {
                             let classes = classNames(
