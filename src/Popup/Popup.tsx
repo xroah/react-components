@@ -178,17 +178,7 @@ class Popup extends React.Component<PopupProps, PopupState> {
             return
         }
 
-        const {animation, onShow} = this.props
-
-        handleFuncProp(onShow)()
-        this.setState(
-            {visible: true},
-            () => {
-                if (!animation) {
-                    this.onShown()
-                }
-            }
-        )
+        this.setState({visible: true})
     }
 
     private hide() {
@@ -196,17 +186,7 @@ class Popup extends React.Component<PopupProps, PopupState> {
             return
         }
 
-        const {animation, onHide} = this.props
-
-        handleFuncProp(onHide)()
-        this.setState(
-            {visible: false},
-            () => {
-                if (!animation) {
-                    this.onHidden()
-                }
-            }
-        )
+        this.setState({visible: false})
     }
 
     private delayShow() {
@@ -256,14 +236,6 @@ class Popup extends React.Component<PopupProps, PopupState> {
         return getNextNodeByRef(this.placeholderRef)
     }
 
-    private onShown = () => {
-        handleFuncProp(this.props.onShown)()
-    }
-
-    private onHidden = () => {
-        handleFuncProp(this.props.onHidden)()
-    }
-
     render() {
         const {
             children,
@@ -275,7 +247,7 @@ class Popup extends React.Component<PopupProps, PopupState> {
         if (isUndef(overlay)) {
             return child
         }
-
+        
         return (
             <>
                 <PopupInner
@@ -284,8 +256,6 @@ class Popup extends React.Component<PopupProps, PopupState> {
                     onMouseEnter={this.handleOverlayMouseEnterOrLeave}
                     onMouseLeave={this.handleOverlayMouseEnterOrLeave}
                     onClose={this.handleClose}
-                    onShown={this.onShown}
-                    onHidden={this.onHidden}
                     {...restProps}>
                     {overlay}
                 </PopupInner>

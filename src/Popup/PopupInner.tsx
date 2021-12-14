@@ -4,8 +4,10 @@ import {noop} from "reap-utils/lib";
 import {
     Fade,
     handleFuncProp,
-    mergeRef
+    mergeRef,
+    NoTransition
 } from "reap-utils/lib/react";
+import {FadeProps} from "reap-utils/lib/react/transition/interface";
 import Alignment from "./Alignment";
 import {InnerProps, InnerState} from "./types";
 import {getContainer} from "./utils";
@@ -23,18 +25,8 @@ export default class PopupInner extends
         top: 0
     }
 
-    componentDidUpdate(prevProps: InnerProps) {
-        const {
-            animation,
-            visible
-        } = this.props
-
-        // currently visible
-        if (prevProps.visible !== visible && visible && !animation) {
-            this.align()
-        }
-
-        if (visible) {
+    componentDidUpdate() {
+        if (this.props.visible) {
             this.addListener()
         } else {
             this.rmListener()
@@ -109,7 +101,7 @@ export default class PopupInner extends
 
     align = () => {
         const {current: ref} = this.alignRef
-
+        
         if (ref) {
             const {
                 needFlip,
@@ -209,18 +201,15 @@ export default class PopupInner extends
             children,
             mountNode,
             animation,
+            onShow,
             onShown,
+            onHide,
             onHidden,
             onMouseEnter,
             onMouseLeave,
             ...restProps
         } = this.props
         const {left, top} = this.state
-        let display: "none" | undefined
-
-        if (!animation && !visible) {
-            display = "none"
-        }
 
         if (!visible && !forceRender && !this.rendered) {
             return null
@@ -231,7 +220,6 @@ export default class PopupInner extends
                 ref={mergeRef(overlayRef, this.innerRef)}
                 style={{
                     position: "absolute",
-                    display,
                     left: 0,
                     top: 0,
                     willChange: "transform",
@@ -242,6 +230,18 @@ export default class PopupInner extends
                 {children}
             </div>
         )
+        const fadeProps: FadeProps = {
+            hideOnExit: true,
+            appear: true,
+            in: !!visible,
+            children: _overlay,
+            nodeRef: this.innerRef,
+            onEntering: this.align,
+            onEnter: onShow,
+            onEntered: onShown,
+            onExit: onHide,
+            onExited: onHidden
+        }
         const element = (
             <Alignment
                 ref={this.alignRef}
@@ -257,22 +257,14 @@ export default class PopupInner extends
                         height: 0
                     }}>
                     {
-                        animation ? (
-                            <Fade
-                                hideOnExit
-                                appear
-                                in={!!visible}
-                                nodeRef={this.innerRef}
-                                onEntering={this.align}
-                                onEntered={onShown}
-                                onExited={onHidden}>
-                                {_overlay}
-                            </Fade>
-                        ) : _overlay
+                        animation ?
+                            <Fade {...fadeProps} /> :
+                            <NoTransition {...fadeProps} />
                     }
                 </div>
             </Alignment>
         )
+
         this.rendered = true
 
         return (
