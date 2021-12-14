@@ -107,9 +107,6 @@ export default class Notification extends Info<Options> {
                 onShow,
                 onShown,
                 onHide,
-                // @ts-ignore: unused
-                onHidden,
-                onClose,
                 ...restProps
             }
         } = this
@@ -128,7 +125,7 @@ export default class Notification extends Info<Options> {
                 onEnter={onShow}
                 onEntered={onShown}
                 onExit={onHide}
-                onExited={this.handleExited}>
+                onExited={this.onHidden}>
                 {
                     status => {
                         const MARGIN = "1rem"
@@ -184,7 +181,7 @@ export default class Notification extends Info<Options> {
                                 nodeRef={this.toastRef}
                                 style={newStyle}
                                 onClose={this.close}
-                                {...restProps}>
+                                {...this.getProps(restProps)}>
                                 {this.msg}
                             </ToastInner>
                         )

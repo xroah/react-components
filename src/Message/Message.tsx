@@ -29,14 +29,23 @@ export default class Message extends Info<MessageItemProps> {
     }
 
     render(visible: boolean) {
+        const {
+            onShow,
+            onShown,
+            onHide,
+            ...restProps
+        } = this.props
+
         super.render(visible)
         render(
             <MessageItem
                 visible={visible}
                 onClose={this.close}
-                // @ts-ignore
-                onHidden={this.handleExited}
-                {...this.getProps()}>
+                onShow={onShow}
+                onShown={onShown}
+                onHide={onHide}
+                onHidden={this.onHidden}
+                {...this.getProps(restProps)}>
                 {this.msg}
             </MessageItem>,
             this.container

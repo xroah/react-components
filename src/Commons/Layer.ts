@@ -1,14 +1,13 @@
 import * as React from "react"
 import {unmountComponentAtNode} from "react-dom"
-import {omit} from "reap-utils/lib"
-import {handleFuncProp} from "reap-utils/lib/react"
+import {chainFunction, omit} from "reap-utils/lib"
 import {ClosableProps, Events} from "./common-types"
 
 let parentContainer: HTMLElement | null = null
 
 export default class Layer<P extends Events & ClosableProps> {
     visible = false
-    props: P
+    props: P = {} as any
     msg: React.ReactNode = null
     container: HTMLElement | null = null
     parent: HTMLElement | null = null
@@ -95,7 +94,7 @@ export default class Layer<P extends Events & ClosableProps> {
 
         unmountComponentAtNode(this.container)
         this.parent.removeChild(this.container)
-        
+
         if (!this.parent.childElementCount) {
             document.body.removeChild(this.parent)
 
@@ -111,13 +110,17 @@ export default class Layer<P extends Events & ClosableProps> {
         this.container = null
     }
 
-    handleExited = (arg: any) => {
+    handleExited = () => {
         this.destroy()
-        handleFuncProp(this.props.onHidden)(arg)
     }
 
-    getProps() {
-        return omit(this.props, ["onClose", "onHidden"])
+    onHidden = chainFunction(
+        this.handleExited,
+        this.props.onHidden
+    )
+
+    getProps(props: P = this.props) {
+        return omit(props, ["onClose", "onHidden"])
     }
 
     protected render(visible: boolean) {

@@ -74,11 +74,6 @@ export default class Dialog extends Layer<DialogProps> {
         }
     }
 
-    onShown = chainFunction(
-        this.handleShown,
-        this.props.onShown
-    )
-
     open() {
         this.createParent()
 
@@ -154,6 +149,7 @@ export default class Dialog extends Layer<DialogProps> {
     render(visible: boolean) {
         let {
             onShow,
+            onShown,
             onHide,
             onHidden,
             backdrop = true,
@@ -163,7 +159,8 @@ export default class Dialog extends Layer<DialogProps> {
             className
         } = this.props
         // if backdrop is not false, destroy after backdrop has hidden
-        onHidden = backdrop ? onHidden : this.handleExited as any
+        onHidden = backdrop ? onHidden : this.onHidden
+        onShown = chainFunction(this.handleShown, onShown)
         const props: ModalProps = {
             unmountOnExit: true,
             visible,
@@ -178,7 +175,7 @@ export default class Dialog extends Layer<DialogProps> {
             onOk: this.handleOk,
             onClose: this.handleClose,
             onCancel: this.handleCancel,
-            onShown: this.onShown,
+            onShown,
             onShow,
             onHidden,
             onHide,

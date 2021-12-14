@@ -1,5 +1,5 @@
 import * as React from "react"
-import {classNames, omit} from "reap-utils/lib"
+import {chainFunction, classNames, omit} from "reap-utils/lib"
 import {
     Fade,
     handleFuncProp,
@@ -54,19 +54,12 @@ class Modal extends React.Component<ModalProps, ModalState> {
         )
         scrollbar.hide()
         this.setBackdropVisible(true)
-        handleFuncProp(this.props.onShow)()
     }
 
     handleEntered = () => {
         if (this.props.fade) {
             this.focus()
         }
-
-        handleFuncProp(this.props.onShown)()
-    }
-
-    handleExit = () => {
-        handleFuncProp(this.props.onHide)()
     }
 
     handleExited = () => {
@@ -79,7 +72,6 @@ class Modal extends React.Component<ModalProps, ModalState> {
         this.setState({display: "none"})
         scrollbar.reset()
         this.setBackdropVisible(false)
-        handleFuncProp(this.props.onHidden)()
     }
 
     handleClose = (type?: CloseFuncParam) => {
@@ -140,6 +132,10 @@ class Modal extends React.Component<ModalProps, ModalState> {
             unmountOnExit,
             mountBackdropToBody,
             onBackdropHidden,
+            onShown,
+            onShow,
+            onHidden,
+            onHide,
             ...restProps
         } = this.props
         const {display, backdropVisible} = this.state
@@ -149,10 +145,10 @@ class Modal extends React.Component<ModalProps, ModalState> {
             in: !!visible,
             nodeRef: this.modalRef,
             appear: true,
-            onEnter: this.handleEnter,
-            onEntered: this.handleEntered,
-            onExit: this.handleExit,
-            onExited: this.handleExited,
+            onEnter: chainFunction(this.handleEnter, onShow),
+            onEntered: chainFunction(this.handleEntered, onShown),
+            onExit: onHide,
+            onExited: chainFunction(this.handleExited, onHidden),
             hiddenOnExited: false,
             unmountOnExit
         }
@@ -163,18 +159,10 @@ class Modal extends React.Component<ModalProps, ModalState> {
             restProps,
             [
                 "onClose",
-                "onShow",
-                "onShown",
-                "onHidden",
-                "onHide",
                 "keyboard",
                 "focus",
                 "onOk",
                 "onClose",
-                "onShow",
-                "onShown",
-                "onHidden",
-                "onHide",
                 "okText",
                 "cancelText",
                 "keyboard",

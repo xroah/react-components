@@ -2,20 +2,19 @@ import * as React from "react"
 import {createPortal} from "react-dom"
 import {chainFunction, classNames} from "reap-utils/lib"
 import {Fade, NoTransition} from "reap-utils/lib/react"
+import {FadeProps} from "reap-utils/lib/react/transition/interface"
 import {
-    Cb,
     CommonTransitionProps,
     DivProps,
+    Events,
     VisibleProps
 } from "./common-types"
 
-type BaseProps = DivProps & CommonTransitionProps & VisibleProps
+type BaseProps = DivProps & CommonTransitionProps & VisibleProps & Events
 
 export interface BackdropProps extends BaseProps {
     fade?: boolean
     mountToBody?: boolean
-    onHidden?: Cb
-    onShown?: Cb
 }
 
 class Backdrop extends React.Component<BackdropProps> {
@@ -51,7 +50,6 @@ class Backdrop extends React.Component<BackdropProps> {
             fade,
             unmountOnExit,
             onShown,
-            // @ts-ignore: unused
             onHidden,
             ...restProps
         } = this.props
@@ -65,16 +63,17 @@ class Backdrop extends React.Component<BackdropProps> {
                 className={classes}
                 {...restProps} />
         )
-        const fadeProps = {
+        const fadeProps: FadeProps = {
             in: !!visible,
             nodeRef: this.ref,
             unmountOnExit,
+            children: child,
             onEntered: onShown,
             onExited: this.onHidden
         }
         const el = fade ?
-            <Fade {...fadeProps}>{child}</Fade> :
-            <NoTransition {...fadeProps}>{child}</NoTransition>
+            <Fade {...fadeProps} /> :
+            <NoTransition {...fadeProps} />
 
         if (!mountToBody) {
             return el
