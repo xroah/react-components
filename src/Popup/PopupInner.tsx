@@ -13,11 +13,12 @@ import Alignment from "./Alignment";
 import {InnerProps, InnerState} from "./types";
 import {getContainer} from "./utils";
 
+let portalContainer = document.createElement("div")
+
 export default class PopupInner extends
     React.Component<InnerProps, InnerState> {
     private innerRef = React.createRef<HTMLDivElement>()
     private alignRef = React.createRef<Alignment>()
-    private portalContainer = document.createElement("div")
 
     private listenerAdded = false
     private rendered = false
@@ -35,10 +36,10 @@ export default class PopupInner extends
     }
 
     componentWillUnmount() {
-        const parent = this.portalContainer.parentNode
+        const parent = portalContainer.parentNode
 
-        if (parent) {
-            parent.removeChild(this.portalContainer)
+        if (parent && !portalContainer.childElementCount) {
+            parent.removeChild(portalContainer)
         }
 
         this.rmListener()
@@ -153,7 +154,7 @@ export default class PopupInner extends
         container?: HTMLElement | null
     ) {
         if (container) {
-            const parent = this.portalContainer.parentNode
+            const parent = portalContainer.parentNode
             const target = this.props.getTarget()
 
             if (target && !container.contains(target)) {
@@ -163,11 +164,11 @@ export default class PopupInner extends
                 `)
             }
 
-            if (!parent || parent !== container) {
-                container.appendChild(this.portalContainer)
+            if (!parent) {
+                container.appendChild(portalContainer)
             }
 
-            return createPortal(element, this.portalContainer)
+            return createPortal(element, portalContainer)
         }
 
         return null
