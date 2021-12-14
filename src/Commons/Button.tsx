@@ -1,8 +1,8 @@
 import * as React from "react"
 import {classNames} from "reap-utils/lib"
-import {Size} from "./common-types"
+import {ButtonBaseProps, Size} from "./common-types"
 
-interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+interface ButtonProps extends ButtonBaseProps {
     variant?: "primary" | "secondary"
     size?: Size
 }

@@ -1,13 +1,13 @@
 import * as React from "react"
 import {classNames} from "reap-utils/lib"
-import {ClosableProps} from "./common-types"
+import {ButtonBaseProps, ClosableProps} from "./common-types"
 
 export default function CloseBtn(
     {
         className,
         onClose,
         ...restProps
-    }: React.ButtonHTMLAttributes<HTMLButtonElement> & ClosableProps
+    }: ButtonBaseProps & ClosableProps
 ) {
     const handleClick = () => {
         if (onClose) {

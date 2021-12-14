@@ -1,3 +1,5 @@
+import {ButtonHTMLAttributes, HTMLAttributes} from "react"
+
 export type ValueOf<T extends readonly any[]> = T[number]
 
 export type Cb = (node?: HTMLElement | null) => void
@@ -30,6 +32,8 @@ export interface CommonTransitionProps {
     hideOnExit?: boolean
 }
 
-export type DivProps = React.HTMLAttributes<HTMLDivElement>
+export type DivProps = HTMLAttributes<HTMLDivElement>
 
 export type Size = "sm" | "lg"
+
+export type ButtonBaseProps = ButtonHTMLAttributes<HTMLButtonElement>
