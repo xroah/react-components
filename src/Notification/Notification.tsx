@@ -69,14 +69,10 @@ export default class Notification extends Info<Options> {
         let parent = placementContainerMap.get(placement)
 
         if (!parent) {
-            parent = this.createParent(
-                false,
-                el => {
-                    className!.push("position-fixed")
-                    el.classList.add(...className!)
-                }
-            )
+            parent = this.createParent(false)
 
+            className!.push("position-fixed")
+            parent.classList.add(...className!)
             placementContainerMap.set(placement, parent)
         }
 

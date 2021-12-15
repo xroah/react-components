@@ -154,7 +154,7 @@ export default class Dialog extends Layer<DialogProps> {
             onHidden,
             backdrop = true,
             title = "提示",
-            fade,
+            animation,
             size,
             className
         } = this.props
@@ -167,7 +167,7 @@ export default class Dialog extends Layer<DialogProps> {
             className,
             backdrop,
             title,
-            fade,
+            animation,
             size,
             focus: false,
             mountBackdropToBody: false,

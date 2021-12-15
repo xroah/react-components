@@ -3,27 +3,29 @@ import {render} from "react-dom"
 import Info from "../Commons/Layer"
 import MessageItem, {MessageItemProps} from "./Item"
 
+let parent: HTMLElement | null = null
+
 export default class Message extends Info<MessageItemProps> {
     open() {
-        if (this.visible) {
-            return this
+        if (!parent || !parent.parentElement) {
+            parent = this.createParent(false)
         }
 
-        this.createParent(
-            true,
-            el => el.style.cssText = `
-                position: fixed;
-                left: 0;
-                top: 0;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                overflow: hidden;
-                width: 100%;
-                pointer-events: none;
-                z-index: 2000;
-            `
-        )
+        const styles = `
+            position: fixed;
+            left: 0;
+            top: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow: hidden;
+            width: 100%;
+            pointer-events: none;
+            z-index: 2000;        
+        `
+        parent.style.cssText = styles
+
+        this.mount(parent)
 
         return super.open()
     }

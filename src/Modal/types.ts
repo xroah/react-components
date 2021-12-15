@@ -42,9 +42,8 @@ export interface ModalCommonProps extends Events, ClosableProps, AnimProps {
     onCancel?: ClickCb
 }
 
-type ModalBaseProps = ModalCommonProps & VisibleProps & DivProps
-
-export interface ModalProps extends ModalBaseProps {
+export interface ModalProps extends
+    ModalCommonProps, VisibleProps, Omit<DivProps, "title"> {
     focus?: boolean
     scrollable?: boolean
     fullscreen?: boolean | ValueOf<typeof breakpoints>

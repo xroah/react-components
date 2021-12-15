@@ -17,16 +17,13 @@ export default class Layer<P extends Events & ClosableProps> {
         this.props = props
     }
 
-    createParent(
-        useParent = true,
-        cb?: (el: HTMLElement) => void
-    ) {
+    createParent(useParent = true) {
+        if (this.parent) {
+            return this.parent
+        }
+
         const parent = document.createElement("div")
         const append = () => document.body.appendChild(parent)
-
-        if (cb) {
-            cb(parent)
-        }
 
         if (useParent) {
             if (!parentContainer) {

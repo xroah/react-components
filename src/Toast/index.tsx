@@ -60,6 +60,6 @@ export default function Toast(
 }
 
 Toast.defaultProps = {
-    fade: true,
+    animation: true,
     hideOnExit: true
 }
