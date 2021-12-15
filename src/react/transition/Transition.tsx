@@ -27,7 +27,7 @@ class Transition extends BaseTransition<TransitionProps> {
         this.clearNext()
     }
 
-    setNext(fn: Function, timeout = 0) {
+    private setNext(fn: Function, timeout = 0) {
         let called = false
         const cb = () => {
             // prevent from calling multiple times
@@ -49,7 +49,7 @@ class Transition extends BaseTransition<TransitionProps> {
         }
     }
 
-    performNext() {
+    protected performNext() {
         if (!this.next) {
             return
         }
@@ -86,7 +86,7 @@ class Transition extends BaseTransition<TransitionProps> {
         )
     }
 
-    clearNext() {
+    private clearNext() {
         this.next = null
 
         if (this.nextTimer !== null) {
@@ -96,7 +96,7 @@ class Transition extends BaseTransition<TransitionProps> {
         }
     }
 
-    safeCallback(callback: Function) {
+    private safeCallback(callback: Function) {
         const _callback = () => {
             const {current} = this.placeholderRef
             //node may removed(unmounted) 
@@ -111,13 +111,13 @@ class Transition extends BaseTransition<TransitionProps> {
         return _callback
     }
 
-    handleCallback(name: string) {
+    private handleCallback(name: string) {
         const cb = handleFuncProp((this.props as any)[name])
 
         cb(this.getNode())
     }
 
-    getTimeout() {
+    private getTimeout() {
         const {timeout} = this.props
 
         if (isUndef(timeout)) {
@@ -133,7 +133,7 @@ class Transition extends BaseTransition<TransitionProps> {
         return timeout
     }
 
-    performEntering() {
+    private performEntering() {
         this.setNext(this.performEntered, this.getTimeout())
         this.setState(
             {status: ENTERING},
@@ -141,14 +141,14 @@ class Transition extends BaseTransition<TransitionProps> {
         )
     }
 
-    performEntered() {
+    private performEntered() {
         this.setState(
             {status: ENTERED},
             () => this.handleCallback("onEntered")
         )
     }
 
-    performExiting() {
+    private performExiting() {
         this.setNext(this.performExited, this.getTimeout())
         this.setState(
             {status: EXITING},
@@ -156,7 +156,7 @@ class Transition extends BaseTransition<TransitionProps> {
         )
     }
 
-    performExited() {
+    private performExited() {
         if (this.props.unmountOnExit) {
             this.setNext(this.unmount)
         }
@@ -167,11 +167,11 @@ class Transition extends BaseTransition<TransitionProps> {
         )
     }
 
-    unmount() {
+    private unmount() {
         this.setState({status: UNMOUNTED})
     }
 
-    handleTransitionEnd = (evt: React.TransitionEvent) => {
+    private handleTransitionEnd = (evt: React.TransitionEvent) => {
         const {onTransitionEnd, unmountOnExit} = this.props
 
         handleFuncProp(onTransitionEnd)(evt)
@@ -186,7 +186,7 @@ class Transition extends BaseTransition<TransitionProps> {
         }
     }
 
-    switchState(status: StateType) {
+    protected switchState(status: StateType) {
         if (status === ENTER) {
             this.setNext(this.performEntering)
             this.setState(
