@@ -55,21 +55,20 @@ class Transition extends BaseTransition<TransitionProps> {
         }
 
         const {status} = this.state
+        let {fn, timeout} = this.next
 
         // For CSSTransition, the transition property
         // or class may add when entering or exiting
         if (
             (status === "entering" || status === "exiting") &&
-            isUndef(this.props.timeout)
+            isUndef(this.props.timeout) && timeout <= TIME_PADDING
         ) {
-            const timeout = this.getTimeout()
+            const newTimeout = this.getTimeout()
 
-            if (timeout && timeout !== this.next.timeout) {
-                this.next.timeout = timeout + TIME_PADDING
+            if (newTimeout && timeout !== newTimeout) {
+                timeout = newTimeout + TIME_PADDING
             }
         }
-
-        const {fn, timeout} = this.next
 
         if (!timeout) {
             return fn()
