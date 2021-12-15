@@ -1,16 +1,15 @@
 import * as React from "react"
 import {Fade, NoTransition} from "reap-utils/lib/react"
 import {
+    AnimProps,
     AutoHideProps,
     CommonTransitionProps,
     Events,
 } from "../Commons/common-types"
 import ToastInner, {ToastInnerProps} from "./Inner"
 
-type BaseProps = CommonTransitionProps & Events & AutoHideProps
-export interface ToastProps extends BaseProps, ToastInnerProps {
-    fade?: boolean
-}
+export type ToastProps = CommonTransitionProps & ToastInnerProps &
+    Events & AutoHideProps & AnimProps
 
 export default function Toast(
     {
@@ -19,7 +18,7 @@ export default function Toast(
         title,
         extra,
         closable,
-        fade,
+        animation,
         unmountOnExit,
         hideOnExit,
         onShow,
@@ -31,17 +30,6 @@ export default function Toast(
     }: ToastProps
 ) {
     const ref = React.useRef<HTMLDivElement>(null)
-    const fadeProps = {
-        in: !!visible,
-        appear: true,
-        unmountOnExit,
-        hideOnExit,
-        nodeRef: ref,
-        onEnter: onShow,
-        onEntered: onShown,
-        onExit: onHide,
-        onExited: onHidden
-    }
     const child = (
         <ToastInner
             visible={visible}
@@ -53,10 +41,22 @@ export default function Toast(
             onClose={onClose}
             {...restProps} />
     )
+    const fadeProps = {
+        in: !!visible,
+        appear: true,
+        unmountOnExit,
+        hideOnExit,
+        nodeRef: ref,
+        children: child,
+        onEnter: onShow,
+        onEntered: onShown,
+        onExit: onHide,
+        onExited: onHidden
+    }
 
-    return fade ?
-        <Fade {...fadeProps}>{child}</Fade> :
-        <NoTransition {...fadeProps}>{child}</NoTransition>
+    return animation ?
+        <Fade {...fadeProps} /> :
+        <NoTransition {...fadeProps} />
 }
 
 Toast.defaultProps = {

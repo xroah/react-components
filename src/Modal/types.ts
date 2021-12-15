@@ -1,11 +1,12 @@
 import {
-    HTMLAttributes,
-    MouseEvent,
+    MouseEvent as ReactMouseEvent,
     ReactNode
 } from "react"
 import {
+    AnimProps,
     Cb,
     ClosableProps,
+    DivProps,
     Events,
     Size,
     ValueOf,
@@ -26,9 +27,9 @@ export const sizes = [
     "xl"
 ] as const
 
-export type ClickCb = (evt: MouseEvent) => void
+export type ClickCb = (evt: ReactMouseEvent) => void
 
-export interface ModalCommonProps extends Events, ClosableProps {
+export interface ModalCommonProps extends Events, ClosableProps, AnimProps {
     backdrop?: boolean | "static"
     keyboard?: boolean
     verticalCenter?: boolean
@@ -36,16 +37,14 @@ export interface ModalCommonProps extends Events, ClosableProps {
     okText?: ReactNode
     cancelText?: ReactNode
     className?: string
-    fade?: boolean
     size?: ValueOf<typeof sizes>
     onOk?: ClickCb
     onCancel?: ClickCb
 }
 
-type BaseProps = Omit<HTMLAttributes<HTMLDivElement>, "title"> &
-    VisibleProps & ModalCommonProps
+type ModalBaseProps = ModalCommonProps & VisibleProps & DivProps
 
-export interface ModalProps extends BaseProps {
+export interface ModalProps extends ModalBaseProps {
     focus?: boolean
     scrollable?: boolean
     fullscreen?: boolean | ValueOf<typeof breakpoints>
@@ -60,15 +59,13 @@ export interface ModalState {
     backdropVisible?: boolean
 }
 
-
-type Base = Omit<ModalCommonProps, "onOk" | "onCancel">
-
 export type DialogType = "alert" | "confirm" | "prompt"
 export interface OkFunc {
     (value?: string, input?: HTMLElement | null): void | false
 }
 
-export interface DialogOptions extends Base {
+export interface DialogOptions extends
+    Omit<ModalCommonProps, "onOk" | "onCancel"> {
     input?: InputProps
     buttonSize?: Size
     onOk?: OkFunc

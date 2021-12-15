@@ -17,6 +17,10 @@ export interface VisibleProps {
     visible?: boolean
 }
 
+export interface AnimProps {
+    animation?: boolean
+}
+
 export interface ClosableProps {
     closable?: boolean
     onClose?: CloseFunc

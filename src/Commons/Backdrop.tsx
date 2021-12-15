@@ -4,16 +4,17 @@ import {chainFunction, classNames} from "reap-utils/lib"
 import {Fade, NoTransition} from "reap-utils/lib/react"
 import {FadeProps} from "reap-utils/lib/react/transition/interface"
 import {
+    AnimProps,
     CommonTransitionProps,
     DivProps,
     Events,
     VisibleProps
 } from "./common-types"
 
-type BaseProps = DivProps & CommonTransitionProps & VisibleProps & Events
+type BaseProps = DivProps & CommonTransitionProps &
+    VisibleProps & Events & AnimProps
 
 export interface BackdropProps extends BaseProps {
-    fade?: boolean
     mountToBody?: boolean
 }
 
@@ -35,7 +36,7 @@ class Backdrop extends React.Component<BackdropProps> {
     )
 
     static defaultProps: BackdropProps = {
-        fade: true
+        animation: true
     }
 
     componentWillUnmount() {
@@ -47,7 +48,7 @@ class Backdrop extends React.Component<BackdropProps> {
             visible,
             mountToBody,
             className,
-            fade,
+            animation,
             unmountOnExit,
             onShown,
             onHidden,
@@ -55,7 +56,9 @@ class Backdrop extends React.Component<BackdropProps> {
         } = this.props
         const classes = classNames(
             className,
-            !fade && "show"
+            // if has no show class, modal or offcanvas backdrop,
+            // background color will be black rather than translucent
+            !animation && "show"
         )
         const child = (
             <div
@@ -71,7 +74,7 @@ class Backdrop extends React.Component<BackdropProps> {
             onEntered: onShown,
             onExited: this.onHidden
         }
-        const el = fade ?
+        const el = animation ?
             <Fade {...fadeProps} /> :
             <NoTransition {...fadeProps} />
 

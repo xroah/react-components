@@ -43,24 +43,13 @@ class Modal extends React.Component<ModalProps, ModalState> {
     handleEnter = () => {
         this.prevFocus = document.activeElement as HTMLElement
 
-        this.setState(
-            {display: "block"},
-            () => {
-                // if no fade, call focus within handleEntered
-                // may not work
-                if (!this.props.fade) {
-                    this.focus()
-                }
-            }
-        )
+        this.setState({display: "block"})
         scrollbar.hide()
         this.setBackdropVisible(true)
     }
 
     handleEntered = () => {
-        if (this.props.fade) {
-            this.focus()
-        }
+        this.focus()
     }
 
     handleExited = () => {
@@ -126,7 +115,7 @@ class Modal extends React.Component<ModalProps, ModalState> {
         const {
             visible,
             className,
-            fade,
+            animation,
             tabIndex,
             backdrop,
             style = {},
@@ -138,14 +127,6 @@ class Modal extends React.Component<ModalProps, ModalState> {
         const {display, backdropVisible} = this.state
         const PREFIX = "modal"
         const classes = classNames(className, PREFIX)
-        const fadeProps = {
-            in: !!visible,
-            nodeRef: this.modalRef,
-            appear: true,
-            hiddenOnExited: false,
-            unmountOnExit,
-            ...getEventCallbacks(this)
-        }
         const dialogProps = {
             ...restProps
         }
@@ -159,7 +140,6 @@ class Modal extends React.Component<ModalProps, ModalState> {
                 "onClose",
                 "okText",
                 "cancelText",
-                "keyboard",
                 "verticalCenter",
                 "scrollable",
                 "size",
@@ -191,9 +171,18 @@ class Modal extends React.Component<ModalProps, ModalState> {
                     {...dialogProps} />
             </div>
         )
-        const el = fade ?
-            <Fade {...fadeProps}>{child}</Fade> :
-            <NoTransition {...fadeProps}>{child}</NoTransition>
+        const fadeProps = {
+            in: !!visible,
+            nodeRef: this.modalRef,
+            appear: true,
+            hiddenOnExited: false,
+            unmountOnExit,
+            children: child,
+            ...getEventCallbacks(this)
+        }
+        const el = animation ?
+            <Fade {...fadeProps} /> :
+            <NoTransition {...fadeProps} />
 
         return (
             <>
@@ -202,7 +191,7 @@ class Modal extends React.Component<ModalProps, ModalState> {
                     backdrop && (
                         <Backdrop
                             className={`${PREFIX}-backdrop`}
-                            fade={fade}
+                            animation={animation}
                             visible={backdropVisible}
                             unmountOnExit
                             mountToBody={mountBackdropToBody}

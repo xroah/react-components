@@ -4,6 +4,7 @@ import {handleFuncProp, Transition} from "reap-utils/lib/react"
 import {
     ClosableProps,
     CloseFuncParam,
+    DivProps,
     Events,
     ValueOf,
     VisibleProps
@@ -20,8 +21,7 @@ const placements = [
     "bottom"
 ] as const
 
-type BaseProps = React.HTMLAttributes<HTMLDivElement> &
-    Events & VisibleProps & ClosableProps
+type BaseProps = DivProps & Events & VisibleProps & ClosableProps
 
 interface OffCanvasProps extends Omit<BaseProps, "title"> {
     keyboard?: boolean
