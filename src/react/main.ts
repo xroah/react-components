@@ -35,21 +35,19 @@ export function mergeRef(...refs: Ref<unknown>[]) {
     }
 }
 
-export function handleFuncProp(prop?: Function) {
-    if (typeof prop !== "function") {
+export function handleFuncProp(func?: Function) {
+    if (typeof func !== "function") {
         return noop
     }
 
-    return prop
+    return func
 }
 
 export function only(child: ReactElement, acceptFragment = false) {
     const c = Children.only(child)
 
-    if (!acceptFragment) {
-        if (isFragment(c)) {
-            throw new Error("The children can not be a fragment")
-        }
+    if (!acceptFragment && isFragment(c)) {
+        throw new Error("The children can not be a fragment")
     }
 
     return c
