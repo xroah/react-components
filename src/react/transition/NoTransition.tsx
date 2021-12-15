@@ -22,15 +22,7 @@ class NoTransition extends BaseTransition<NoTransitionProps> {
         hideOnExit: true
     }
 
-    componentDidUpdate(prevProps: NoTransitionProps) {
-        const {in: _in} = this.props
-
-        if (prevProps.in !== _in) {
-            this.switchState(_in ? ENTER : EXIT)
-        }
-    }
-
-    private switchState(status: typeof ENTER | typeof EXIT) {
+    protected switchState(status: typeof ENTER | typeof EXIT) {
         const node = this.getNode()
         const {
             onEnter,

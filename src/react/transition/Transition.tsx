@@ -14,7 +14,6 @@ import {
     StateType,
     TransitionProps
 } from "./interface"
-import propTypes from "./propTypes"
 import {only, handleFuncProp} from "../main"
 import {isUndef, chainFunction} from "../../main"
 import {getTransitionDuration} from "../../dom"
@@ -23,18 +22,6 @@ import BaseTransition from "./BaseTransition"
 class Transition extends BaseTransition<TransitionProps> {
     nextTimer: number | null = null
     next: Next | null = null
-
-    static propTypes = propTypes
-
-    componentDidUpdate(prevProps: TransitionProps) {
-        let {in: _in} = this.props
-
-        if (_in !== prevProps.in) {
-            this.switchState(_in ? ENTER : EXIT)
-        } else {
-            this.performNext()
-        }
-    }
 
     componentWillUnmount() {
         this.clearNext()

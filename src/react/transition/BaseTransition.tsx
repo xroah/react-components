@@ -3,7 +3,9 @@ import {TransitionProps as Props, State, StateType} from "./interface"
 import {handleFuncProp, getNextNodeByRef} from "../main"
 import Placeholder from "../Placeholder"
 import {
+    ENTER,
     ENTERED,
+    EXIT,
     EXITED,
     UNMOUNTED
 } from "./constants"
@@ -61,13 +63,26 @@ export default class BaseTransition<P extends Props>
         }
     }
 
-    componentDidUpdate(props: P) {
-        if (props.in) {
-            // do nothing
+    componentDidUpdate(prevProps: P) {
+        let {in: _in} = this.props
+
+        if (_in !== prevProps.in) {
+            this.switchState(_in ? ENTER : EXIT)
+        } else {
+            this.performNext()
         }
     }
 
-    getNode() {
+    protected performNext() {
+        // do nothing
+    }
+
+    // @ts-ignore
+    protected switchState(status: typeof ENTER | typeof EXIT) {
+        // do nothing
+    }
+
+    protected getNode() {
         const {nodeRef} = this.props
 
         if (nodeRef) {
@@ -77,7 +92,7 @@ export default class BaseTransition<P extends Props>
         return getNextNodeByRef(this.placeholderRef)
     }
 
-    renderPlaceholder(): React.ReactElement | null {
+    protected renderPlaceholder(): React.ReactElement | null {
         if (this.props.nodeRef) {
             return null
         }
@@ -85,7 +100,7 @@ export default class BaseTransition<P extends Props>
         return <Placeholder ref={this.placeholderRef} />
     }
 
-    renderChildren(child: React.ReactNode) {
+    protected renderChildren(child: React.ReactNode) {
         return (
             <>
                 {this.renderPlaceholder()}
