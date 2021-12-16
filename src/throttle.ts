@@ -5,13 +5,18 @@ export interface Options {
     trailing?: boolean
 }
 
-export default (fn: Function, delay: number = 100, options: Options = {}) => {
+export default (
+    fn: Function,
+    delay: number = 100,
+    options: Options = {}
+) => {
     if (!isPlainObject(options)) {
         options = {}
     }
 
     let timer: number | null = null
     let previous = 0
+    let result: any
     const {trailing, leading} = options
     const throttled = (...args: unknown[]) => {
         const now = Date.now()
@@ -29,17 +34,22 @@ export default (fn: Function, delay: number = 100, options: Options = {}) => {
             }
 
             previous = now
-            fn.apply(null, args)
-        } else if (!timer && trailing !== false) {
+            result = fn(args)
+        } else if (!timer) {
             timer = window.setTimeout(
                 () => {
                     previous = leading === false ? 0 : Date.now()
                     timer = null
-                    fn.apply(null, args)
+
+                    if (trailing !== false) {
+                        result = fn.apply(args)
+                    }
                 },
                 remaining
             )
         }
+
+        return result
     }
 
     return throttled
