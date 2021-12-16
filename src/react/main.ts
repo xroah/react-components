@@ -35,7 +35,7 @@ export function mergeRef(...refs: Ref<unknown>[]) {
     }
 }
 
-export function handleFuncProp(func?: Function) {
+export function getFunction(func?: Function) {
     if (typeof func !== "function") {
         return noop
     }
