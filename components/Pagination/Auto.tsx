@@ -1,6 +1,11 @@
 import * as React from "react"
 import Pagination, {PaginationProps} from "./Pagination"
 import Item from "./Item"
+import {
+    func,
+    node,
+    number
+} from "prop-types"
 
 interface AutoProps extends PaginationProps {
     current?: number
@@ -27,6 +32,16 @@ class AutoPagination extends React.Component<AutoProps, State> {
         pageSize: 10,
         prevText: "«",
         nextText: "»"
+    }
+
+    static propTypes = {
+        current: number,
+        defaultCurrent: number,
+        total: number,
+        pageSize: number,
+        prevText: node,
+        nextText: node,
+        onPageChange: func
     }
 
     constructor(props: AutoProps) {
@@ -78,8 +93,6 @@ class AutoPagination extends React.Component<AutoProps, State> {
     }
 
     to(page: number) {
-
-
         if (this.state.current === page) {
             return
         }
