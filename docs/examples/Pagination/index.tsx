@@ -60,5 +60,16 @@ export default () => (
                 </Pagination>
             </Alignment>
         </div>
+        <div className="mb2">
+            <Pagination.Auto 
+            onPageChange={
+                page => {
+                    console.log(page)
+                }
+            }
+            total={157}>
+
+            </Pagination.Auto>
+        </div>
     </>
 )

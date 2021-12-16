@@ -5,7 +5,7 @@ import {sizePropType} from "../Commons/prop-types"
 
 type BaseProps = Omit<React.HTMLAttributes<HTMLUListElement>, "size">
 
-interface PaginationProps extends BaseProps {
+export interface PaginationProps extends BaseProps {
     size?: Size
 }
 
