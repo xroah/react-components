@@ -146,7 +146,7 @@ class AutoPagination extends React.Component<AutoProps, State> {
 
     renderPageItems() {
         const {current, totalPages} = this.state
-        let items: Array<JSX.Element | null> = []
+        const items: Array<JSX.Element | null> = []
 
         if (totalPages <= VISIBLE_PAGES) {
             for (let i = 0; i < totalPages; i++) {
@@ -191,7 +191,7 @@ class AutoPagination extends React.Component<AutoProps, State> {
             items.push(this.getItem(i))
         }
 
-        items = [
+        return [
             first,
             prevEllipsis,
             ...items,
@@ -199,7 +199,6 @@ class AutoPagination extends React.Component<AutoProps, State> {
             last
         ]
 
-        return items
     }
 
     render() {

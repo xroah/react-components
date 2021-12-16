@@ -1,12 +1,8 @@
 import * as React from "react"
-import PropTypes, {oneOf} from "prop-types"
+import PropTypes from "prop-types"
 import classNames from "reap-utils/lib/class-names"
 import {
-    Alignment,
-    alignments,
     DivAttrs,
-    TextColor,
-    textColors,
     ValueOf,
     variants
 } from "../Commons/consts-and-types"

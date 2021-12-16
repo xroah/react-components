@@ -1,5 +1,6 @@
 import * as React from "react"
 import {SizeProp} from "../../Commons/consts-and-types"
+import {sizePropType} from "../../Commons/prop-types"
 import {createSizeElement} from "../../Commons/SizeConsumer"
 
 export default function Select(
@@ -12,4 +13,8 @@ export default function Select(
             prefix: "form-select"
         }
     )
+}
+
+Select.propTypes = {
+    size: sizePropType
 }

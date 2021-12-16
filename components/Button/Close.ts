@@ -1,5 +1,4 @@
-import * as React from "react"
-import {oneOf, symbol} from "prop-types"
+import {oneOf} from "prop-types"
 import {camelCase} from "../Commons/utils"
 import {createForwardRef} from "../Commons/create-component"
 import {ButtonAttrs} from "../Commons/consts-and-types"

@@ -6,7 +6,11 @@ import {
     shape
 } from "prop-types"
 import classNames from "reap-utils/lib/class-names"
-import {Breakpoint, BreakpointType, DivAttrs} from "../Commons/consts-and-types"
+import {
+    Breakpoint,
+    BreakpointType,
+    DivAttrs
+} from "../Commons/consts-and-types"
 import {
     forEachBreakpoint,
     getBreakpointClasses,

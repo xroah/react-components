@@ -32,7 +32,9 @@ export default function Feedback(
 
                         if (isValidNode(msg)) {
                             return (
-                                <div className={`${prefix}-${suffix}`} {...restProps}>
+                                <div
+                                    className={`${prefix}-${suffix}`}
+                                    {...restProps}>
                                     {msg}
                                 </div>
                             )

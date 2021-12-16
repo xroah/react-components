@@ -1,4 +1,4 @@
-import {AnchorHTMLAttributes, HTMLAttributes} from "react"
+import {HTMLAttributes} from "react"
 import Card from "./Card"
 import Body from "./Body"
 import Title from "./Title"
