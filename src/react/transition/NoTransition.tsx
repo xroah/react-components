@@ -1,5 +1,5 @@
 import {cloneElement} from "react"
-import {handleFuncProp, only} from "../main"
+import {getFunction, only} from "../main"
 import {
     ENTER,
     ENTERED,
@@ -38,16 +38,16 @@ class NoTransition extends BaseTransition<NoTransitionProps> {
             this.setState(
                 {status: ENTERING},
                 () => {
-                    handleFuncProp(onEntering)(node)
+                    getFunction(onEntering)(node)
 
                     this.setState(
                         {status: ENTERED},
-                        () => handleFuncProp(onEntered)(node)
+                        () => getFunction(onEntered)(node)
                     )
                 }
             )
 
-            handleFuncProp(onEnter)()
+            getFunction(onEnter)()
 
             return
         }
@@ -55,12 +55,12 @@ class NoTransition extends BaseTransition<NoTransitionProps> {
         this.setState(
             {status: EXITING},
             () => {
-                handleFuncProp(onExiting)(node)
+                getFunction(onExiting)(node)
 
                 this.setState(
                     {status: EXITED},
                     () => {
-                        handleFuncProp(onExited)(node)
+                        getFunction(onExited)(node)
 
                         if (unmountOnExit) {
                             this.setState({
@@ -72,7 +72,7 @@ class NoTransition extends BaseTransition<NoTransitionProps> {
             }
         )
 
-        handleFuncProp(onExit)(node)
+        getFunction(onExit)(node)
     }
 
     render() {

@@ -14,7 +14,7 @@ import {
     StateType,
     TransitionProps
 } from "./interface"
-import {only, handleFuncProp} from "../main"
+import {only, getFunction} from "../main"
 import {isUndef, chainFunction} from "../../main"
 import {getTransitionDuration} from "../../dom"
 import BaseTransition from "./BaseTransition"
@@ -110,8 +110,8 @@ class Transition extends BaseTransition<TransitionProps> {
         return _callback
     }
 
-    private handleCallback(name: string) {
-        const cb = handleFuncProp((this.props as any)[name])
+    private handleCallback(name: keyof typeof this.props) {
+        const cb = getFunction(this.props[name] as any)
 
         cb(this.getNode())
     }
@@ -173,7 +173,7 @@ class Transition extends BaseTransition<TransitionProps> {
     private handleTransitionEnd = (evt: React.TransitionEvent) => {
         const {onTransitionEnd, unmountOnExit} = this.props
 
-        handleFuncProp(onTransitionEnd)(evt)
+        getFunction(onTransitionEnd)(evt)
 
         // transition end can bubble
         if (this.next && evt.target === this.getNode()) {

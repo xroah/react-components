@@ -1,6 +1,10 @@
 import * as React from "react"
-import {TransitionProps as Props, State, StateType} from "./interface"
-import {handleFuncProp, getNextNodeByRef} from "../main"
+import {
+    TransitionProps as Props,
+    State,
+    StateType
+} from "./interface"
+import {getFunction, getNextNodeByRef} from "../main"
 import Placeholder from "../Placeholder"
 import {
     ENTER,
@@ -58,7 +62,7 @@ export default class BaseTransition<P extends Props>
                     in: false
                 } as P)
             } else {
-                handleFuncProp(onEntered)(this.getNode())
+                getFunction(onEntered)(this.getNode())
             }
         }
     }
