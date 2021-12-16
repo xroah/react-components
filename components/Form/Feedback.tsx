@@ -1,7 +1,7 @@
 import {bool, string} from "prop-types"
 import * as React from "react"
-import classNames from "reap-utils/lib/class-names"
 import {isValidNode} from "../Commons/utils"
+import {FormContext} from "./Form"
 
 interface FeedbackProps extends React.HTMLAttributes<HTMLDivElement> {
     valid?: string
@@ -18,25 +18,38 @@ export default function Feedback(
         ...restProps
     }: FeedbackProps
 ) {
-    const getEl = (msg?: string, tooltip?: boolean, prefix = "valid") => {
-        const suffix = tooltip ? "tooltip" : "feedback"
-
-        if (isValidNode(msg)) {
-            return (
-                <div className={`${prefix}-${suffix}`} {...restProps}>
-                    {msg}
-                </div>
-            )
-        }
-
-        return null
-    }
-
     return (
-        <>
-            {getEl(valid, tooltip)}
-            {getEl(invalid, tooltip, "invalid")}
-        </>
+        <FormContext.Consumer>
+            {
+                ({feedbackTooltip: ctxTooltip}) => {
+                    const getEl = (
+                        msg?: string,
+                        tooltip?: boolean,
+                        prefix = "valid"
+                    ) => {
+                        const suffix = tooltip ? "tooltip" : "feedback"
+
+                        if (isValidNode(msg)) {
+                            return (
+                                <div className={`${prefix}-${suffix}`} {...restProps}>
+                                    {msg}
+                                </div>
+                            )
+                        }
+
+                        return null
+                    }
+                    const _tooltip = tooltip || ctxTooltip
+
+                    return (
+                        <>
+                            {getEl(valid, _tooltip)}
+                            {getEl(invalid, _tooltip, "invalid")}
+                        </>
+                    )
+                }
+            }
+        </FormContext.Consumer>
     )
 }
 

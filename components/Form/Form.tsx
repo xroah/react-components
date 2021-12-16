@@ -14,9 +14,10 @@ import {SizeContext} from "../Commons/contexts"
 interface FormProps extends FormCommon,
     React.FormHTMLAttributes<HTMLFormElement> {
     validated?: boolean
+    feedbackTooltip?: boolean
 }
 
-export const FormContext = React.createContext<FormCommon>({})
+export const FormContext = React.createContext<FormProps>({})
 export const wrapperPropType = oneOfType([
     elementType,
     element,
@@ -33,6 +34,7 @@ const Form = React.forwardRef(
             labelSize,
             childrenCol,
             itemWrapper,
+            feedbackTooltip,
             size,
             ...restProps
         }: FormProps,
@@ -49,6 +51,7 @@ const Form = React.forwardRef(
                 labelCol,
                 labelSize,
                 childrenCol,
+                feedbackTooltip,
                 itemWrapper
             }}>
                 <SizeContext.Provider value={{size}}>
