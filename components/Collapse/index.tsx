@@ -7,10 +7,11 @@ import {
 import classNames from "reap-utils/lib/class-names"
 import handleFuncProp from "reap-utils/lib/react/handle-func-prop"
 import Transition from "../Commons/CSSTransition"
+import {DivAttrs} from "../Commons/consts-and-types"
 
 type Callback = () => void
 
-interface CollapseProps extends React.HTMLAttributes<HTMLDivElement> {
+interface CollapseProps extends DivAttrs {
     open?: boolean
     timeout?: number
     onShow?: Callback

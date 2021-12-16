@@ -1,4 +1,9 @@
-import React, {HTMLAttributes} from "react"
+import {
+    AnchorHTMLAttributes,
+    ButtonHTMLAttributes,
+    HTMLAttributes,
+    InputHTMLAttributes
+} from "react"
 
 export type ValueOf<T extends readonly any[]> = T[number]
 
@@ -72,3 +77,8 @@ export type ColSpanBreakpoints = BreakpointType<Breakpoint, ColSpan>
 export type SizeProp = {
     size?: Size
 }
+
+export type DivAttrs = HTMLAttributes<HTMLDivElement>
+export type AnchorAttrs = AnchorHTMLAttributes<HTMLAnchorElement>
+export type ButtonAttrs = ButtonHTMLAttributes<HTMLButtonElement>
+export type InputAttrs = InputHTMLAttributes<HTMLInputElement>

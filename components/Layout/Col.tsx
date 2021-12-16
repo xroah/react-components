@@ -1,4 +1,4 @@
-import React, {HTMLAttributes} from "react"
+import * as React from "react"
 import {
     number,
     oneOfType,
@@ -10,6 +10,7 @@ import {
     BreakpointType,
     ColSpan,
     ColSpanBreakpoints,
+    DivAttrs,
     Order,
     OrderBreakpoints
 } from "../Commons/consts-and-types"
@@ -19,7 +20,7 @@ import FlexItem from "../Utilities/Flex/Item"
 
 type OffsetBreakpoints = BreakpointType<Breakpoint, number>
 
-interface ColProps extends HTMLAttributes<HTMLDivElement> {
+interface ColProps extends DivAttrs {
     span: ColSpan | ColSpanBreakpoints
     offset?: number | OffsetBreakpoints
     order?: Order | OrderBreakpoints

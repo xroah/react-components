@@ -2,13 +2,12 @@ import * as React from "react"
 import {oneOf, symbol} from "prop-types"
 import {camelCase} from "../Commons/utils"
 import {createForwardRef} from "../Commons/create-component"
-
-type BaseProps = React.ButtonHTMLAttributes<HTMLButtonElement>
+import {ButtonAttrs} from "../Commons/consts-and-types"
 
 const variant = "white"
 const PREFIX = "btn-close"
 
-interface CloseProps extends BaseProps {
+interface CloseProps extends ButtonAttrs {
     variant?: typeof variant
 }
 

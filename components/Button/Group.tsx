@@ -1,13 +1,12 @@
 import * as React from "react"
 import classNames from "reap-utils/lib/class-names"
 import PropTypes from "prop-types"
-import {SizeProp} from "../Commons/consts-and-types"
+import {DivAttrs, SizeProp} from "../Commons/consts-and-types"
 import {getPrefixFunc} from "../Commons/utils"
 import {sizePropType} from "../Commons/prop-types"
 import {createSizeElement} from "../Commons/SizeConsumer"
 
-interface GroupProps extends SizeProp,
-    React.HTMLAttributes<HTMLDivElement> {
+interface GroupProps extends SizeProp, DivAttrs {
     vertical?: boolean
 }
 

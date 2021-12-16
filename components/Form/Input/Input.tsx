@@ -1,5 +1,5 @@
 import * as React from "react"
-import {SizeProp, ValueOf} from "../../Commons/consts-and-types"
+import {InputAttrs, SizeProp, ValueOf} from "../../Commons/consts-and-types"
 import classNames from "reap-utils/lib/class-names"
 import {getPrefixFunc} from "../../Commons/utils"
 import {
@@ -15,7 +15,7 @@ const variants = [
     "textarea"
 ] as const
 
-type InputBase = Omit<React.InputHTMLAttributes<HTMLInputElement>, "size">
+type InputBase = Omit<InputAttrs, "size">
 type TextareaBase = Omit<
     React.TextareaHTMLAttributes<HTMLTextAreaElement>,
     keyof React.HTMLAttributes<HTMLTextAreaElement>

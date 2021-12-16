@@ -3,7 +3,7 @@ import Input from "./Input"
 import Group from "./Group"
 import createComponent from "../../Commons/create-component"
 
-const Text = createComponent<HTMLAttributes<HTMLDivElement>>({
+const Text = createComponent({
     tag: "div",
     displayName: "InputGroupText",
     className: "input-group-text"

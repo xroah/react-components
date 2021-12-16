@@ -1,11 +1,12 @@
 import {element, string} from "prop-types"
 import * as React from "react"
 import classNames from "reap-utils/lib/class-names"
+import {DivAttrs} from "../Commons/consts-and-types"
 import {onlyChild} from "../Commons/utils"
 
 let uuid = 0
 
-interface FloatingProps extends React.HTMLAttributes<HTMLElement> {
+interface FloatingProps extends DivAttrs {
     label: string
     htmlFor?: string
     children: React.ReactElement

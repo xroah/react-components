@@ -5,7 +5,7 @@ import {
     func
 } from "prop-types"
 import classNames from "reap-utils/lib/class-names"
-import {WithVariantProp} from "../Commons/consts-and-types"
+import {AnchorAttrs, WithVariantProp} from "../Commons/consts-and-types"
 import Button from "../Button"
 import isUndef from "reap-utils/lib/is-undef"
 import Fade from "../Commons/Fade"
@@ -29,9 +29,7 @@ export interface AlertProps extends WithVariantProp<HTMLDivElement> {
 }
 
 interface AlertComponent<T> extends React.FunctionComponent<T> {
-    Link: React.FunctionComponent<
-        React.AnchorHTMLAttributes<HTMLAnchorElement>
-    >
+    Link: React.FunctionComponent<AnchorAttrs>
 }
 
 const Alert: AlertComponent<AlertProps> = (

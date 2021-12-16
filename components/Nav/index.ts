@@ -1,9 +1,8 @@
-import {HTMLAttributes} from "react"
 import Nav from "./Nav"
 import NavLink from './Link';
 import createComponent from "../Commons/create-component";
 
-const Item = createComponent<HTMLAttributes<HTMLDivElement>>({
+const Item = createComponent({
     tag: "div",
     displayName: "NavItem",
     className: "nav-item"

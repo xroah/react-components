@@ -2,8 +2,9 @@ import * as React from "react"
 import PropTypes from "prop-types"
 import classNames from "reap-utils/lib/class-names"
 import createComponent from "../Commons/create-component"
+import {DivAttrs} from "../Commons/consts-and-types"
 
-interface CardBodyProps extends React.HTMLAttributes<HTMLDivElement> {
+interface CardBodyProps extends DivAttrs {
     overlay?: boolean
 }
 

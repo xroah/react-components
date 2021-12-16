@@ -1,8 +1,9 @@
 import {bool} from "prop-types"
 import * as React from "react"
 import classNames from "reap-utils/lib/class-names"
+import {AnchorAttrs} from "../Commons/consts-and-types"
 
-interface NavLinkProps extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
+interface NavLinkProps extends AnchorAttrs {
     active?: boolean
     disabled?: boolean
 }

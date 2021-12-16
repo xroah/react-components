@@ -1,10 +1,10 @@
 import * as React from "react"
 import {bool, oneOf} from "prop-types"
-import {breakpoints, Breakpoint} from "../Commons/consts-and-types"
+import {breakpoints, Breakpoint, DivAttrs} from "../Commons/consts-and-types"
 import classNames from "reap-utils/lib/class-names"
 import {getBreakpointPrefixFunc, getPrefixFunc} from "../Commons/utils"
 
-interface ContainerProps extends React.HTMLAttributes<HTMLDivElement> {
+interface ContainerProps extends DivAttrs {
     fluid?: boolean
     breakpoint?: Breakpoint
 }

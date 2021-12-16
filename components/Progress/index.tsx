@@ -1,11 +1,11 @@
 import * as React from "react"
 import PropTypes from "prop-types"
 import classNames from "reap-utils/lib/class-names"
-import {Variant} from "../Commons/consts-and-types"
+import {DivAttrs, Variant} from "../Commons/consts-and-types"
 import {getPrefixFunc} from "../Commons/utils"
 import {variantPropType} from "../Commons/prop-types"
 
-interface ProgressProps extends React.HTMLAttributes<HTMLDivElement> {
+interface ProgressProps extends DivAttrs {
     value?: number
     striped?: boolean
     animated?: boolean

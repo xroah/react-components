@@ -1,9 +1,10 @@
 import {bool, string} from "prop-types"
 import * as React from "react"
+import {DivAttrs} from "../Commons/consts-and-types"
 import {isValidNode} from "../Commons/utils"
 import {FormContext} from "./Form"
 
-interface FeedbackProps extends React.HTMLAttributes<HTMLDivElement> {
+interface FeedbackProps extends DivAttrs {
     valid?: string
     invalid?: string
     tooltip?: boolean

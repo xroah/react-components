@@ -4,6 +4,7 @@ import classNames from "reap-utils/lib/class-names"
 import {
     Alignment,
     alignments,
+    DivAttrs,
     TextColor,
     textColors,
     ValueOf,
@@ -15,7 +16,7 @@ const borderColors = [...variants, "white"] as const
 
 const positions = ["top", "bottom"] as const
 
-interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
+interface CardProps extends DivAttrs {
     header?: React.ReactNode
     footer?: React.ReactNode
     headerStyle?: React.CSSProperties

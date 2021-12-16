@@ -2,10 +2,10 @@ import * as React from "react"
 import {node, oneOf} from "prop-types"
 import classNames from "reap-utils/lib/class-names"
 import {isValidNode} from "../Commons/utils"
-import {TextColor, textColors} from "../Commons/consts-and-types"
+import {DivAttrs, TextColor, textColors} from "../Commons/consts-and-types"
 import createComponent from "../Commons/create-component"
 
-interface CardTitleProps extends React.HTMLAttributes<HTMLDivElement> {
+interface CardTitleProps extends DivAttrs {
     subTitle?: React.ReactNode
     subTitleColor?: TextColor
 }

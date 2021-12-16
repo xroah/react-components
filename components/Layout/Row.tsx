@@ -1,4 +1,4 @@
-import React, {HTMLAttributes} from "react"
+import * as React from "react"
 import {
     number,
     oneOf,
@@ -6,7 +6,7 @@ import {
     shape
 } from "prop-types"
 import classNames from "reap-utils/lib/class-names"
-import {Breakpoint, BreakpointType} from "../Commons/consts-and-types"
+import {Breakpoint, BreakpointType, DivAttrs} from "../Commons/consts-and-types"
 import {
     forEachBreakpoint,
     getBreakpointClasses,
@@ -24,7 +24,7 @@ type GuttersObject = {
 type ColsType = Cols | ColBreakpoint
 type GuttersType = number | GuttersObject | GutterBreakpoint
 
-interface RowProps extends HTMLAttributes<HTMLDivElement> {
+interface RowProps extends DivAttrs {
     cols?: ColsType
     gutters?: GuttersType
 }

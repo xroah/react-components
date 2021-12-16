@@ -2,6 +2,7 @@ import * as React from "react"
 import classNames from "reap-utils/lib/class-names"
 import PropTypes from "prop-types"
 import {
+    DivAttrs,
     sizes,
     ValueOf,
     WithVariantProp
@@ -44,7 +45,7 @@ export default function Placeholder(
     }
 
     if (animation) {
-        const Wrapper = (props: React.HTMLAttributes<HTMLDivElement>) => (
+        const Wrapper = (props: DivAttrs) => (
             <div
                 className={prefix(animation)}
                 style={style}

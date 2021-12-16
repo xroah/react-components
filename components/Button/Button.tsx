@@ -5,18 +5,13 @@ import {
     variants,
     ValueOf,
     SizeProp,
-    Size
+    Size,
+    AnchorAttrs
 } from "../Commons/consts-and-types"
 import warning from "warning"
 import {getPrefixFunc} from "../Commons/utils"
 import {sizePropType} from "../Commons/prop-types"
 import SizeConsumer from "../Commons/SizeConsumer"
-
-type BaseProps = Omit<React.ButtonHTMLAttributes<HTMLElement>, "type" | "size">
-type AnchorProps = Omit<
-    React.AnchorHTMLAttributes<HTMLAnchorElement>,
-    keyof React.HTMLAttributes<HTMLAnchorElement>
->
 
 const btnVariants = [
     ...variants,
@@ -32,7 +27,16 @@ const btnTypes = [
 
 let uuid = 0
 
-export interface ButtonProps extends SizeProp, BaseProps, AnchorProps {
+type AnchorProps = Omit<
+    AnchorAttrs,
+    keyof React.HTMLAttributes<HTMLAnchorElement>
+>
+type BaseProps = Omit<
+    React.ButtonHTMLAttributes<HTMLElement>,
+    "type" | "size"
+> & AnchorProps & SizeProp
+
+export interface ButtonProps extends BaseProps {
     variant?: ValueOf<typeof btnVariants>
     outline?: boolean
     disabled?: boolean

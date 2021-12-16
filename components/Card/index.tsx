@@ -3,8 +3,9 @@ import Card from "./Card"
 import Body from "./Body"
 import Title from "./Title"
 import createComponent from "../Commons/create-component"
+import {AnchorAttrs} from "../Commons/consts-and-types"
 
-const Link = createComponent<AnchorHTMLAttributes<HTMLAnchorElement>>({
+const Link = createComponent<AnchorAttrs>({
     tag: "a",
     className: "card-link",
     displayName: "CardLink"

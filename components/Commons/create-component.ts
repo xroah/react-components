@@ -9,6 +9,7 @@ import React, {
     ForwardRefExoticComponent
 } from "react"
 import classNames from "reap-utils/lib/class-names"
+import {DivAttrs} from "./consts-and-types"
 
 interface HandlerReturnType<T> {
     className: string
@@ -89,10 +90,9 @@ function handleComponent<T>(
     Component.defaultProps = defaultProps as object
 }
 
-function createComponent<
-    T extends BaseProps = React.HTMLAttributes<HTMLDivElement>
->(
-    options: CreateOptions<T> & Pick<FunctionComponent<T>, OptionalPropNames>
+function createComponent<T extends BaseProps = DivAttrs>(
+    options: CreateOptions<T> &
+        Pick<FunctionComponent<T>, OptionalPropNames>
 ) {
     let Component: FunctionComponent<T> = (props: T) => {
         return create(options, props)
