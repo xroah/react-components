@@ -69,18 +69,6 @@ export interface WithVariantProp<T> extends HTMLAttributes<T> {
 export type ColSpan = "auto" | number | boolean
 export type ColSpanBreakpoints = BreakpointType<Breakpoint, ColSpan>
 
-type FormCol = ColSpan | ColSpanBreakpoints | null
-
-export type FormWrapper =  React.ElementType | React.ReactElement | null
-
 export type SizeProp = {
     size?: Size
-}
-
-export interface FormCommon extends SizeProp {
-    labelAlign?: Alignment
-    labelCol?: FormCol
-    labelSize?: Size
-    childrenCol?: FormCol
-    itemWrapper?: FormWrapper
 }

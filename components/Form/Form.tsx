@@ -1,5 +1,4 @@
 import * as React from "react"
-import {FormCommon} from "../Commons/consts-and-types"
 import classNames from "reap-utils/lib/class-names"
 import {
     bool,
@@ -10,12 +9,7 @@ import {
 } from "prop-types"
 import {formCommPropTypes} from "../Commons/prop-types"
 import {SizeContext} from "../Commons/contexts"
-
-interface FormProps extends FormCommon,
-    React.FormHTMLAttributes<HTMLFormElement> {
-    validated?: boolean
-    feedbackTooltip?: boolean
-}
+import {FormProps} from "./types"
 
 export const FormContext = React.createContext<FormProps>({})
 export const wrapperPropType = oneOfType([

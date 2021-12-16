@@ -5,7 +5,6 @@ import {
     string
 } from "prop-types"
 import classNames from "reap-utils/lib/class-names"
-import {FormCommon, FormWrapper} from "../Commons/consts-and-types"
 import {
     getBreakpointClasses,
     getProp,
@@ -13,14 +12,7 @@ import {
 } from "../Commons/utils"
 import {FormContext, wrapperPropType} from "./Form"
 import Col from "../Layout/Col"
-
-interface FormItemProps extends FormCommon,
-    React.HTMLAttributes<HTMLElement> {
-    label?: string
-    htmlFor?: string
-    help?: React.ReactNode
-    wrapper?: FormWrapper
-}
+import {FormCommon, FormItemProps} from "./types"
 
 export default function FormItem(
     {
