@@ -14,6 +14,14 @@ interface Props extends SizeProp {
     children: (size?: Size) => React.ReactElement | null
 }
 
+interface Options {
+    tag?: React.ElementType
+    getClass?: (size?: Size) => string
+    prefix?: string,
+    prefixAsClass?: boolean
+    prefixSize?: boolean
+}
+
 export default function SizeConsumer({size, children}: Props) {
     return (
         <SizeContext.Consumer>
@@ -22,14 +30,6 @@ export default function SizeConsumer({size, children}: Props) {
             }
         </SizeContext.Consumer>
     )
-}
-
-interface Options {
-    tag?: React.ElementType
-    getClass?: (size?: Size) => string
-    prefix?: string,
-    prefixAsClass?: boolean
-    prefixSize?: boolean
 }
 
 export function createSizeElement<T extends BaseProps>(

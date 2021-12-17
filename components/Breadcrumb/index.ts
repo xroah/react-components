@@ -1,5 +1,5 @@
 import Breadcrumb from "./Breadcrumb"
-import Item from "./BreadCrumbItem"
+import Item from "./Item"
 
 type BreadCrumbType = typeof Breadcrumb & {Item: typeof Item}
 
