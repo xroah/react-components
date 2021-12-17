@@ -18,6 +18,13 @@ export default (
     let previous = 0
     let result: any
     const {trailing, leading} = options
+    const clear = () => {
+        if (timer !== null) {
+            window.clearTimeout(timer)
+
+            timer = null
+        }
+    }
     const throttled = (...args: unknown[]) => {
         const now = Date.now()
 
@@ -28,10 +35,7 @@ export default (
         const remaining = delay - (now - previous)
 
         if (remaining <= 0) {
-            if (timer) {
-                clearTimeout(timer)
-                timer = null
-            }
+            clear()
 
             previous = now
             result = fn(args)
@@ -50,6 +54,12 @@ export default (
         }
 
         return result
+    }
+
+    throttled.cancel = () => {
+        previous = 0
+
+        clear()
     }
 
     return throttled
