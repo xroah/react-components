@@ -154,3 +154,37 @@ export function executeAfterTransition(
 
     return cancel
 }
+
+export function append(parent: HTMLElement, child: HTMLElement) {
+    if (parent.append) {
+        parent.append(child)
+        
+        return
+    }
+
+    parent.appendChild(child)
+}
+
+export function prepend(parent: HTMLElement, child: HTMLElement) {
+    if (parent.prepend) {
+        parent.prepend(child)
+
+        return
+    }
+
+    parent.insertAdjacentElement("afterbegin", child)
+}
+
+export function remove(child: HTMLElement) {
+    if (child.remove) {
+        child.remove()
+
+        return
+    }
+
+    const parent = child.parentElement
+
+    if (parent) {
+        parent.removeChild(child)
+    }
+}
