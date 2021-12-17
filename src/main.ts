@@ -58,6 +58,13 @@ export function camelCase(v: string, delimiter = "-") {
 
     return v.
         split(delimiter).
-        map(capitalize).
+        map((s, i) => {
+            // capitalize except first
+            if (i > 0) {
+                return capitalize(s)
+            }
+
+            return s
+        }).
         join("")
 }
