@@ -18,7 +18,8 @@ it("Should string be correct", () => {
 })
 
 it("Should array be correct", () => {
-    expect(classNames(CLS1, [CLS2, CLS3, ""])).toBe(`${CLS1} ${CLS2} ${CLS3}`)
+    expect(classNames(CLS1, [CLS2, CLS3, ""]))
+        .toBe(`${CLS1} ${CLS2} ${CLS3}`)
 })
 
 it("Should object be correct", () => {

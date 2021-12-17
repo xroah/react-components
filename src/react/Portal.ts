@@ -1,4 +1,4 @@
-import * as React from "react"
+import {Component} from "react"
 import {createPortal} from "react-dom"
 
 export interface PortalProps {
@@ -12,7 +12,7 @@ interface PortalState {
     _this: Portal
 }
 
-export default class Portal extends React.Component<PortalProps, PortalState> {
+class Portal extends Component<PortalProps, PortalState> {
     private container: HTMLElement | null = null
 
     static defaultProps = {
@@ -29,7 +29,10 @@ export default class Portal extends React.Component<PortalProps, PortalState> {
         }
     }
 
-    static getDerivedStateFromProps(props: PortalProps, state: PortalState) {
+    static getDerivedStateFromProps(
+        props: PortalProps,
+        state: PortalState
+    ) {
         const {
             prevProps,
             _this
@@ -108,9 +111,9 @@ export default class Portal extends React.Component<PortalProps, PortalState> {
         this.mount()
 
         return this.container ?
-            createPortal(
-                children,
-                this.container as HTMLElement
-            ) : children
+            createPortal(children, this.container) :
+            children
     }
 }
+
+export default Portal
