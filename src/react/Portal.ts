@@ -8,7 +8,6 @@ export interface PortalProps {
 }
 
 interface PortalState {
-    prevProps?: PortalProps
     _this: Portal
 }
 
@@ -34,8 +33,10 @@ class Portal extends Component<PortalProps, PortalState> {
         state: PortalState
     ) {
         const {
-            prevProps,
-            _this
+            _this,
+            _this: {
+                props: prevProps
+            }
         } = state
 
         if (prevProps) {
@@ -44,9 +45,7 @@ class Portal extends Component<PortalProps, PortalState> {
             }
         }
 
-        return {
-            prevProps: props
-        }
+        return {_this}
     }
 
     componentWillUnmount() {
@@ -87,9 +86,20 @@ class Portal extends Component<PortalProps, PortalState> {
     }
 
     unmount() {
-        if (this.container) {
-            const parent = this.container.parentNode
-            parent && parent.removeChild(this.container)
+        const {container: c} = this
+
+        if (c) {
+            if (c.remove) {
+                c.remove()
+            } else {
+                const parent = c.parentNode
+
+                if (parent) {
+                    parent.removeChild(c)
+                }
+
+            }
+
         }
 
         this.container = null
