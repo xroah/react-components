@@ -1,5 +1,5 @@
-import {element, string} from "prop-types"
 import * as React from "react"
+import {element, string} from "prop-types"
 import classNames from "reap-utils/lib/class-names"
 import {DivAttrs} from "../Commons/consts-and-types"
 import {onlyChild} from "../Commons/utils"

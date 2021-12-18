@@ -1,8 +1,9 @@
 import * as React from "react"
 import classNames from "reap-utils/lib/class-names"
 import PropTypes from "prop-types"
+import {AnchorAttrs} from "../Commons/consts-and-types"
 
-interface ItemProps extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
+interface ItemProps extends AnchorAttrs {
     active?: boolean
     disabled?: boolean
 }

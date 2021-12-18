@@ -1,7 +1,9 @@
 import * as React from "react"
-import {InputAttrs, SizeProp, ValueOf} from "../../Commons/consts-and-types"
-import classNames from "reap-utils/lib/class-names"
-import {getPrefixFunc} from "../../Commons/utils"
+import {
+    InputAttrs,
+    SizeProp,
+    ValueOf
+} from "../../Commons/consts-and-types"
 import {
     bool,
     number,

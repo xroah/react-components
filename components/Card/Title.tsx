@@ -2,7 +2,11 @@ import * as React from "react"
 import {node, oneOf} from "prop-types"
 import classNames from "reap-utils/lib/class-names"
 import {isValidNode} from "../Commons/utils"
-import {DivAttrs, TextColor, textColors} from "../Commons/consts-and-types"
+import {
+    DivAttrs,
+    TextColor,
+    textColors
+} from "../Commons/consts-and-types"
 import createComponent from "../Commons/create-component"
 
 interface CardTitleProps extends DivAttrs {
