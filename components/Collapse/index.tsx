@@ -8,6 +8,7 @@ import classNames from "reap-utils/lib/class-names"
 import {getFunction} from "reap-utils/lib/react"
 import {Transition} from "reap-utils/lib/react"
 import {DivAttrs} from "../Commons/consts-and-types"
+import {chainFunction} from "reap-utils"
 
 type Callback = () => void
 
@@ -59,24 +60,21 @@ function Collapse(
             }
         }
     }
-    const handleEnter = (node?: HTMLElement) => {
-        getFunction(onShow)()
-        updateHeight(node)
-    }
-    const handleEntered = (node?: HTMLElement) => {
-        getFunction(onShown)()
-        updateHeight(node, "")
-    }
-    const handleExited = () => {
-        getFunction(onHidden)()
-    }
+    const handleEnter = chainFunction(
+        updateHeight,
+        onShow
+    )
+    const handleEntered = chainFunction(
+        (node?: HTMLElement) => updateHeight(node, ""),
+        onShown
+    )
     const handleExiting = (node?: HTMLElement) => {
         updateHeight(node, "")
     }
-    const handleExit = (node?: HTMLElement) => {
-        getFunction(onHide)()
-        updateHeight(node)
-    }
+    const handleExit = chainFunction(
+        updateHeight,
+        onHide
+    )
 
     return (
         <Transition
@@ -86,7 +84,7 @@ function Collapse(
             onEntered={handleEntered}
             onExit={handleExit}
             onExiting={handleExiting}
-            onExited={handleExited}>
+            onExited={onHidden}>
             {
                 state => {
                     let cls
