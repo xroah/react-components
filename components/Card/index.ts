@@ -2,7 +2,7 @@ import {HTMLAttributes} from "react"
 import Card from "./Card"
 import Body from "./Body"
 import Title from "./Title"
-import createComponent from "../Commons/create-component"
+import {createComponent} from "reap-utils/lib/react"
 import {AnchorAttrs} from "../Commons/consts-and-types"
 
 const Link = createComponent<AnchorAttrs>({

@@ -5,8 +5,8 @@ import {
     number
 } from "prop-types"
 import classNames from "reap-utils/lib/class-names"
-import handleFuncProp from "reap-utils/lib/react/handle-func-prop"
-import Transition from "../Commons/CSSTransition"
+import {getFunction} from "reap-utils/lib/react"
+import {Transition} from "reap-utils/lib/react"
 import {DivAttrs} from "../Commons/consts-and-types"
 
 type Callback = () => void
@@ -60,21 +60,21 @@ function Collapse(
         }
     }
     const handleEnter = (node?: HTMLElement) => {
-        handleFuncProp(onShow)()
+        getFunction(onShow)()
         updateHeight(node)
     }
     const handleEntered = (node?: HTMLElement) => {
-        handleFuncProp(onShown)()
+        getFunction(onShown)()
         updateHeight(node, "")
     }
     const handleExited = () => {
-        handleFuncProp(onHidden)()
+        getFunction(onHidden)()
     }
     const handleExiting = (node?: HTMLElement) => {
         updateHeight(node, "")
     }
     const handleExit = (node?: HTMLElement) => {
-        handleFuncProp(onHide)()
+        getFunction(onHide)()
         updateHeight(node)
     }
 

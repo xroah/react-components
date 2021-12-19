@@ -1,7 +1,7 @@
 import {HTMLAttributes} from "react"
 import Input from "./Input"
 import Group from "./Group"
-import createComponent from "../../Commons/create-component"
+import {createComponent} from "reap-utils/lib/react"
 
 const Text = createComponent({
     tag: "div",

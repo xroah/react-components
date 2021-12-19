@@ -3,7 +3,7 @@ import Button from "./Button"
 import Toggle from "./Toggle"
 import Group from "./Group"
 import Close from "./Close"
-import createComponent from "../Commons/create-component"
+import {createComponent} from "reap-utils/lib/react"
 
 const Toolbar = createComponent<HTMLAttributes<HTMLDivElement>>({
     className: "btn-toolbar",

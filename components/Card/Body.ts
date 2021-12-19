@@ -1,5 +1,5 @@
 import PropTypes from "prop-types"
-import createComponent from "../Commons/create-component"
+import {createComponent} from "reap-utils/lib/react"
 import {DivAttrs} from "../Commons/consts-and-types"
 
 interface CardBodyProps extends DivAttrs {

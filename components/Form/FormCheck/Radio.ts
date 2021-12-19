@@ -1,4 +1,4 @@
-import {capitalize} from "../../Commons/utils"
+import {capitalize} from "reap-utils/lib"
 import createCheckComponent from "./FormCheck"
 
 const NAME = "radio"

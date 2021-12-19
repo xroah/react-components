@@ -3,7 +3,7 @@ import classNames from "reap-utils/lib/class-names"
 import PropTypes from "prop-types"
 import {ValueOf, Variant} from "../Commons/consts-and-types"
 import {variantPropType} from "../Commons/prop-types"
-import createComponent from "../Commons/create-component"
+import {createComponent} from "reap-utils/lib/react"
 
 const colors = ["light", "dark"] as const
 

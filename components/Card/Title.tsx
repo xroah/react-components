@@ -7,7 +7,7 @@ import {
     TextColor,
     textColors
 } from "../Commons/consts-and-types"
-import createComponent from "../Commons/create-component"
+import {createComponent} from "reap-utils/lib/react"
 
 interface CardTitleProps extends DivAttrs {
     subTitle?: React.ReactNode

@@ -7,14 +7,16 @@ import {
 import classNames from "reap-utils/lib/class-names"
 import {AnchorAttrs, WithVariantProp} from "../Commons/consts-and-types"
 import Button from "../Button"
-import isUndef from "reap-utils/lib/is-undef"
-import Fade from "../Commons/Fade"
-import NoTransition from "../Commons/NoTransition"
-import omit from "reap-utils/lib/omit"
-import handleFuncProp from "reap-utils/lib/react/handle-func-prop"
+import {isUndef} from "reap-utils/lib"
+import {
+    Fade,
+    NoTransition,
+    createComponent
+} from "reap-utils/lib/react"
+import {omit} from "reap-utils/lib"
+import {getFunction} from "reap-utils/lib/react"
 import {getPrefixFunc} from "../Commons/utils"
 import {variantPropType} from "../Commons/prop-types"
-import createComponent from "../Commons/create-component"
 
 type BtnClickEvt = React.MouseEvent<HTMLButtonElement>
 
@@ -65,10 +67,10 @@ const Alert: AlertComponent<AlertProps> = (
         }
     }
     const handleExited = () => {
-        handleFuncProp(onClosed)()
+        getFunction(onClosed)()
     }
     const handleExit = () => {
-        handleFuncProp(onClose)()
+        getFunction(onClose)()
     }
     const getElement = (closeBtn?: React.ReactNode) => {
         const props = {...restProps}
@@ -113,10 +115,9 @@ const Alert: AlertComponent<AlertProps> = (
         children: getElement(closeBtn)
     }
 
-    return React.createElement(
-        fade ? Fade : NoTransition,
-        transitionProps
-    )
+    return fade ?
+        <Fade {...transitionProps} /> :
+        <NoTransition {...transitionProps} />
 }
 
 Alert.propTypes = {

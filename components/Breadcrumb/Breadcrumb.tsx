@@ -1,6 +1,6 @@
 import * as React from "react"
-import createComponent from "../Commons/create-component"
-import {capitalize} from "../Commons/utils"
+import {createComponent} from "reap-utils/lib/react"
+import {capitalize} from "reap-utils/lib"
 
 const CLASS_NAME = "breadcrumb"
 
