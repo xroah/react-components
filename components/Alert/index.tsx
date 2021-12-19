@@ -13,8 +13,6 @@ import {
     NoTransition,
     createComponent
 } from "reap-utils/lib/react"
-import {omit} from "reap-utils/lib"
-import {getFunction} from "reap-utils/lib/react"
 import {getPrefixFunc} from "../Commons/utils"
 import {variantPropType} from "../Commons/prop-types"
 
@@ -23,11 +21,9 @@ type BtnClickEvt = React.MouseEvent<HTMLButtonElement>
 export interface AlertProps extends WithVariantProp<HTMLDivElement> {
     fade?: boolean
     dismissible?: boolean
-    visible?: boolean
     heading?: string | React.ReactNode
-    onClose?: Function
-    onClosed?: Function
-    onCloseButtonClick?: (evt: BtnClickEvt) => void
+    onClose?: () => void
+    onClosed?: () => void
 }
 
 interface AlertComponent<T> extends React.FunctionComponent<T> {
@@ -44,7 +40,6 @@ const Alert: AlertComponent<AlertProps> = (
         heading,
         onClose,
         onClosed,
-        onCloseButtonClick,
         ...restProps
     }
 ) => {
@@ -55,30 +50,13 @@ const Alert: AlertComponent<AlertProps> = (
         variant && prefix(variant),
         dismissible && prefix("dismissible")
     )
-    const controlled = "visible" in restProps
-    const [_visible, updateVisible] = React.useState(true)
-    const handleClick = (evt: BtnClickEvt) => {
-        if (!controlled) {
-            updateVisible(!_visible)
-        }
-
-        if (typeof onCloseButtonClick === "function") {
-            onCloseButtonClick(evt)
-        }
-    }
-    const handleExited = () => {
-        getFunction(onClosed)()
-    }
-    const handleExit = () => {
-        getFunction(onClose)()
-    }
     const getElement = (closeBtn?: React.ReactNode) => {
         const props = {...restProps}
 
         return (
             <div
                 className={classes}
-                {...omit(props, "visible")}>
+                {...props}>
                 {
                     !isUndef(heading) && (
                         <h4 className={prefix("heading")}>
@@ -91,27 +69,26 @@ const Alert: AlertComponent<AlertProps> = (
             </div>
         )
     }
-    let closeBtn: React.ReactNode
 
-    if (dismissible) {
-        closeBtn = (
-            <Button
-                variant="link"
-                type="button"
-                className="btn-close"
-                onClick={handleClick} />
-        )
-    }
-
-    if (!controlled && !dismissible) {
+    if (!dismissible) {
         return getElement()
     }
 
+    const [visible, updateVisible] = React.useState(true)
+    const handleClick = () => updateVisible(false)
+    const closeBtn = (
+        <Button
+            variant="link"
+            type="button"
+            className="btn-close"
+            onClick={handleClick} />
+    )
+
     const transitionProps = {
-        in: controlled ? !!restProps.visible : _visible,
+        in: visible,
         unmountOnExit: true,
-        onExit: handleExit,
-        onExited: handleExited,
+        onExit: onClose,
+        onExited: onClosed,
         children: getElement(closeBtn)
     }
 
@@ -125,7 +102,6 @@ Alert.propTypes = {
     fade: bool,
     heading: node,
     dismissible: bool,
-    visible: bool,
     onClose: func,
     onClosed: func
 }
