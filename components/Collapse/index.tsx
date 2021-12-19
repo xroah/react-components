@@ -1,12 +1,7 @@
 import * as React from "react"
-import {
-    bool,
-    func,
-    number
-} from "prop-types"
+import {bool, func} from "prop-types"
 import classNames from "reap-utils/lib/class-names"
-import {getFunction} from "reap-utils/lib/react"
-import {Transition} from "reap-utils/lib/react"
+import {only, Transition} from "reap-utils/lib/react"
 import {DivAttrs} from "../Commons/consts-and-types"
 import {chainFunction} from "reap-utils"
 
@@ -14,37 +9,29 @@ type Callback = () => void
 
 interface CollapseProps extends DivAttrs {
     open?: boolean
-    timeout?: number
     onShow?: Callback
     onShown?: Callback
     onHide?: Callback
     onHidden?: Callback
 }
 
-function Collapse(
+const Collapse: React.FunctionComponent<CollapseProps> = (
     {
         className,
         open,
-        timeout,
         onShow,
         onShown,
         onHide,
         onHidden,
-        children
-    }: CollapseProps
-) {
-    let c: React.ReactElement
-
-    if (!React.isValidElement(children)) {
-        c = (
-            <div>
-                {children}
-            </div>
-        )
-    } else {
-        c = children
+        children,
+        ...restProps
+    }
+) => {
+    if (!children) {
+        return null
     }
 
+    let c: React.ReactElement = only(children)
     const classes = classNames(className, "collapse")
     const showClass = classNames(classes, "show")
     const collapsingClass = classNames(className, "collapsing")
@@ -79,7 +66,6 @@ function Collapse(
     return (
         <Transition
             in={!!open}
-            timeout={timeout!}
             onEnter={handleEnter}
             onEntered={handleEntered}
             onExit={handleExit}
@@ -109,7 +95,8 @@ function Collapse(
                             className: classNames(
                                 c.props.className,
                                 cls
-                            )
+                            ),
+                            ...restProps
                         }
                     )
                 }
@@ -120,14 +107,10 @@ function Collapse(
 
 Collapse.propTypes = {
     open: bool,
-    timeout: number,
     onShow: func,
     onShown: func,
     onHide: func,
     onHidden: func
-}
-Collapse.defaultProps = {
-    timeout: 300
 }
 
 export default Collapse
