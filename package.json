@@ -2,6 +2,7 @@
   "name": "reap-utils",
   "version": "2.0.0",
   "description": "",
+  "main": "./lib/index.js",
   "scripts": {
     "test": "ts-node tests/index",
     "build": "reap-scripts rm lib es && reap-scripts tsc --lib --es -d",
