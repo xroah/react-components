@@ -14,8 +14,7 @@ import {
     UNMOUNTED
 } from "./constants"
 
-export default class BaseTransition<P extends Props>
-    extends React.Component<P, State> {
+class BaseTransition<P extends Props> extends React.Component<P, State> {
     protected placeholderRef = React.createRef<HTMLDivElement>()
 
     constructor(props: P) {
@@ -113,3 +112,5 @@ export default class BaseTransition<P extends Props>
         )
     }
 }
+
+export default BaseTransition
