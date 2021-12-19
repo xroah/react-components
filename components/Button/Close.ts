@@ -1,5 +1,5 @@
 import {oneOf} from "prop-types"
-import {camelCase} from "reap-utils/lib"
+import {camelCase, capitalize} from "reap-utils/lib"
 import {createForwardRef} from "reap-utils/lib/react/create-component"
 import {ButtonAttrs} from "../Commons/consts-and-types"
 
@@ -12,7 +12,7 @@ interface CloseProps extends ButtonAttrs {
 
 export default createForwardRef<CloseProps, HTMLButtonElement>({
     className: PREFIX,
-    displayName: camelCase(PREFIX),
+    displayName: capitalize(camelCase(PREFIX)),
     propTypes: {
         variant: oneOf([variant])
     },

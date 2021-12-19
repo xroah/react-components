@@ -4,8 +4,9 @@ import Toggle from "./Toggle"
 import Group from "./Group"
 import Close from "./Close"
 import {createComponent} from "reap-utils/lib/react"
+import {DivAttrs} from "../Commons/consts-and-types"
 
-const Toolbar = createComponent<HTMLAttributes<HTMLDivElement>>({
+const Toolbar = createComponent<DivAttrs>({
     className: "btn-toolbar",
     tag: "div",
     displayName: "ButtonToolbar"

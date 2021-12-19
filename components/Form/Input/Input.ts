@@ -1,4 +1,8 @@
-import * as React from "react"
+import {
+    TextareaHTMLAttributes,
+    HTMLAttributes,
+    forwardRef
+} from "react"
 import {
     InputAttrs,
     SizeProp,
@@ -19,8 +23,8 @@ const variants = [
 
 type InputBase = Omit<InputAttrs, "size">
 type TextareaBase = Omit<
-    React.TextareaHTMLAttributes<HTMLTextAreaElement>,
-    keyof React.HTMLAttributes<HTMLTextAreaElement>
+    TextareaHTMLAttributes<HTMLTextAreaElement>,
+    keyof HTMLAttributes<HTMLTextAreaElement>
 >
 
 export type InputCommonProps = SizeProp & InputBase & TextareaBase
@@ -31,7 +35,7 @@ export interface InputProps extends InputCommonProps {
     plain?: boolean
 }
 
-const Input = React.forwardRef(
+const Input = forwardRef(
     (
         {
             plain,

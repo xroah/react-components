@@ -1,10 +1,10 @@
-import * as React from "react"
+import {SelectHTMLAttributes} from "react"
 import {SizeProp} from "../../Commons/consts-and-types"
 import {sizePropType} from "../../Commons/prop-types"
 import {createSizeElement} from "../../Commons/SizeConsumer"
 
 export default function Select(
-    props: SizeProp & React.SelectHTMLAttributes<HTMLSelectElement>
+    props: SizeProp & SelectHTMLAttributes<HTMLSelectElement>
 ) {
     return createSizeElement(
         props,

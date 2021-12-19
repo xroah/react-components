@@ -2,7 +2,7 @@ import * as React from "react"
 import PropTypes from "prop-types"
 import {createComponent} from "reap-utils/lib/react"
 
-export interface BreadcrumbItemProps extends
+interface BreadcrumbItemProps extends
     React.LiHTMLAttributes<HTMLLIElement> {
     active?: boolean
     href?: string
