@@ -1,4 +1,5 @@
 import * as React from "react"
+import Accordion from "./Accordion"
 import Alert from "./Alert"
 import Button from "./Button"
 import Badge from "./Badge"
@@ -20,6 +21,7 @@ import Text from "./Text"
 export default function () {
     return (
         <>
+            <Accordion />
             <Alert />
             <Badge />
             <Breadcrumb />
