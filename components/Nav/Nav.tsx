@@ -8,25 +8,30 @@ const variants = ["pills", "tabs"] as const
 
 type Variant = ValueOf<typeof variants>
 
-interface NavProps extends React.HTMLAttributes<HTMLElement> {
+export interface NavProps {
     variant?: Variant
     fill?: boolean
     justify?: boolean
+    vertical?: boolean
 }
 
-export default function Nav(
+type Props = NavProps & React.HTMLAttributes<HTMLElement>
+
+const Nav: React.FunctionComponent<Props> = (
     {
         className,
         variant,
         fill,
         justify,
+        vertical,
         ...restProps
-    }: NavProps
-) {
+    }
+) => {
     const prefix = getPrefixFunc("nav")
     const classes = classNames(
         className,
         prefix(),
+        vertical && "flex-column",
         variant && prefix(variant),
         fill && prefix("fill"),
         justify && prefix("justified")
@@ -40,3 +45,5 @@ Nav.propTypes = {
     fill: bool,
     justify: bool
 }
+
+export default Nav
