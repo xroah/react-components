@@ -1,6 +1,6 @@
 import * as React from "react"
 import {func, node} from "prop-types"
-import {classNames} from "reap-utils"
+import classNames from "reap-utils/lib/class-names"
 import Collapse from "../Collapse"
 import {DivAttrs} from "../Commons/consts-and-types"
 import {getPrefixFunc} from "../Commons/utils"

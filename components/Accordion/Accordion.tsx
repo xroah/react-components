@@ -1,5 +1,10 @@
 import * as React from "react"
-import {chainFunction, classNames, isUndef, omit} from "reap-utils";
+import {
+    chainFunction,
+    classNames,
+    isUndef,
+    omit
+} from "reap-utils/lib";
 import {DivAttrs} from "../Commons/consts-and-types";
 import Item, {PREFIX} from "./Item"
 import Context from "./context"

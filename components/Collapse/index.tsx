@@ -3,7 +3,7 @@ import {bool, func} from "prop-types"
 import classNames from "reap-utils/lib/class-names"
 import {only, Transition} from "reap-utils/lib/react"
 import {DivAttrs} from "../Commons/consts-and-types"
-import {chainFunction} from "reap-utils"
+import {chainFunction} from "reap-utils/lib"
 
 type Callback = () => void
 
