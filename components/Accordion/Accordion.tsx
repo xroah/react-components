@@ -5,11 +5,10 @@ import {
     isUndef,
     omit
 } from "reap-utils/lib";
-import {DivAttrs} from "../Commons/consts-and-types";
+import {DivAttrs} from "../Commons/consts-and-types"
 import Item, {PREFIX} from "./Item"
 import Context from "./context"
-
-let uid = 0
+import PropTypes from "prop-types"
 
 type Open = React.Key | React.Key[]
 
@@ -40,19 +39,28 @@ function getOpen(open?: Open): Set<React.Key> {
     return new Set(open)
 }
 
+const openType = PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+    PropTypes.arrayOf(PropTypes.number),
+    PropTypes.arrayOf(PropTypes.string)
+])
+
 class Accordion extends React.Component<AccordionProps, State> {
+    static propTypes = {
+        flush: PropTypes.bool,
+        open: openType,
+        defaultOpen: openType,
+        alwaysOpen: PropTypes.bool,
+        onChange: PropTypes.func
+    }
+
     constructor(props: AccordionProps) {
         super(props)
 
         this.state = {
             open: getOpen(this.props.defaultOpen)
         }
-    }
-
-    mounted = false
-
-    componentDidMount() {
-        this.mounted = true
     }
 
     static getDerivedStateFromProps(
