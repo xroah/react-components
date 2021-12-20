@@ -2,6 +2,7 @@ import {
     RefObject,
     Ref,
     Children,
+    ReactNode,
     ReactElement
 } from "react"
 import {isFragment} from "react-is"
@@ -43,12 +44,12 @@ export function getFunction(func?: Function) {
     return func
 }
 
-export function only(child: ReactElement, acceptFragment = false) {
+export function only(child: ReactNode, acceptFragment = false) {
     const c = Children.only(child)
 
     if (!acceptFragment && isFragment(c)) {
         throw new Error("The children can not be a fragment")
     }
 
-    return c
+    return <ReactElement>c
 }
