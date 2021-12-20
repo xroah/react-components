@@ -73,14 +73,13 @@ class Accordion extends React.Component<AccordionProps, State> {
         }
 
         const {alwaysOpen, onChange} = this.props
-        let {open} = this.state
+        const {open} = this.state
+        let newOpen = new Set<React.Key>()
         key = String(key)
 
         if (!alwaysOpen) {
-            if (open.has(key)) {
-                open = new Set()
-            } else {
-                open = new Set([key])
+            if (!open.has(key)) {
+                newOpen.add(key)
             }
         } else {
             if (open.has(key)) {
@@ -88,10 +87,14 @@ class Accordion extends React.Component<AccordionProps, State> {
             } else {
                 open.add(key)
             }
+
+            newOpen = new Set(open)
         }
 
         this.setState(
-            {open},
+            {
+                open: newOpen
+            },
             () => {
                 if (onChange) {
                     onChange(Array.from(open) as string[])
