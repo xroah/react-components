@@ -1,6 +1,6 @@
 import * as React from "react"
 import {classNames} from "reap-utils/lib"
-import {handleFuncProp} from "reap-utils/lib/react"
+import {getFunction} from "reap-utils/lib/react"
 import {Size} from "./common-types"
 
 type Base = React.InputHTMLAttributes<HTMLInputElement>
@@ -35,7 +35,7 @@ const Input = React.forwardRef(
             const key = evt.key.toLowerCase()
 
             if (key === "enter") {
-                handleFuncProp(onOk)(evt)
+                getFunction(onOk)(evt)
                 evt.preventDefault()
             }
         }

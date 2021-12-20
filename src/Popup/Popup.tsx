@@ -1,7 +1,7 @@
 import * as React from "react"
 import {
     getNextNodeByRef,
-    handleFuncProp,
+    getFunction,
     only,
     Placeholder
 } from "reap-utils/lib/react"
@@ -96,12 +96,12 @@ class Popup extends React.Component<PopupProps, PopupState> {
             this.clearTimer()
 
             if (condition(evt)) {
-                handleFuncProp(child.props[showHandlerName])(evt)
+                getFunction(child.props[showHandlerName])(evt)
                 this.delayShow()
             } else {
                 const name = hideHandlerName || showHandlerName
 
-                handleFuncProp(child.props[name])(evt)
+                getFunction(child.props[name])(evt)
                 this.delayHide()
             }
         }

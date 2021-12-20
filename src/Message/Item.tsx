@@ -1,6 +1,6 @@
 import * as React from "react"
 import {classNames} from "reap-utils/lib"
-import {handleFuncProp, Transition} from "reap-utils/lib/react"
+import {getFunction, Transition} from "reap-utils/lib/react"
 import CloseBtn from "../Commons/CloseBtn"
 import {
     AutoHideProps,
@@ -61,7 +61,7 @@ export default function MessageItem(
         }
     }
     const handleClose = (type?: CloseFuncParam) => {
-        handleFuncProp(onClose)(type)
+        getFunction(onClose)(type)
     }
 
     React.useEffect(

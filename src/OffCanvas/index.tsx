@@ -1,6 +1,6 @@
 import * as React from "react"
 import {classNames, omit} from "reap-utils/lib"
-import {handleFuncProp, Transition} from "reap-utils/lib/react"
+import {getFunction, Transition} from "reap-utils/lib/react"
 import {
     ClosableProps,
     CloseFuncParam,
@@ -57,7 +57,7 @@ class OffCanvas extends React.Component<OffCanvasProps, State> {
     }
 
     handleClose = (type?: CloseFuncParam) => {
-        handleFuncProp(this.props.onClose)(type)
+        getFunction(this.props.onClose)(type)
     }
 
     handleClickBackdrop = () => {

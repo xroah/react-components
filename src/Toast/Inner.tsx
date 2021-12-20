@@ -1,7 +1,7 @@
 
 import * as React from "react"
 import {classNames} from "reap-utils/lib"
-import {handleFuncProp} from "reap-utils/lib/react"
+import {getFunction} from "reap-utils/lib/react"
 import CloseBtn from "../Commons/CloseBtn"
 import {AutoHideProps, ClosableProps, CloseFuncParam, VisibleProps} from "../Commons/common-types"
 
@@ -41,7 +41,7 @@ export default function ToastInner(
         PREFIX
     )
     const handleClose = (type?: CloseFuncParam) => {
-        handleFuncProp(onClose)(type)
+        getFunction(onClose)(type)
     }
     let header = icon || title || closable ? (
         <div className={`${PREFIX}-header`}>

@@ -1,7 +1,7 @@
 import * as React from "react"
 import {render} from "react-dom";
 import {chainFunction, noop} from "reap-utils/lib";
-import {handleFuncProp} from "reap-utils/lib/react";
+import {getFunction} from "reap-utils/lib/react";
 import Button from "../Commons/Button";
 import {CloseFuncParam} from "../Commons/common-types";
 import Input from "../Commons/Input";
@@ -17,12 +17,12 @@ export default class Dialog extends Layer<DialogProps> {
 
     handleClose = (type?: CloseFuncParam) => {
         this.close()
-        handleFuncProp(this.props.onClose)(type)
+        getFunction(this.props.onClose)(type)
     }
 
     handleCancel = () => {
         this.close()
-        handleFuncProp(this.props.onCancel)()
+        getFunction(this.props.onCancel)()
     }
 
     handleOk = () => {

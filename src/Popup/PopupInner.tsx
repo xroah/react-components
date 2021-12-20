@@ -3,7 +3,7 @@ import {createPortal} from "react-dom";
 import {noop} from "reap-utils/lib";
 import {
     Fade,
-    handleFuncProp,
+    getFunction,
     mergeRef,
     NoTransition
 } from "reap-utils/lib/react";
@@ -117,7 +117,7 @@ export default class PopupInner extends
                     top: ret.top
                 },
                 () => {
-                    const onAlign = handleFuncProp(this.props.onAlign)
+                    const onAlign = getFunction(this.props.onAlign)
 
                     if (
                         needFlip !== undefined && (

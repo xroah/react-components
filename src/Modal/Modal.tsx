@@ -2,7 +2,7 @@ import * as React from "react"
 import {classNames, omit} from "reap-utils/lib"
 import {
     Fade,
-    handleFuncProp,
+    getFunction,
     NoTransition
 } from "reap-utils/lib/react"
 import {executeAfterTransition} from "reap-utils/lib/dom"
@@ -65,7 +65,7 @@ class Modal extends React.Component<ModalProps, ModalState> {
     }
 
     handleClose = (type?: CloseFuncParam) => {
-        handleFuncProp(this.props.onClose)(type)
+        getFunction(this.props.onClose)(type)
     }
 
     close(condition?: boolean, type?: CloseFuncParam) {
