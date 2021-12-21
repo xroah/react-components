@@ -1,5 +1,5 @@
 import * as React from "react"
-import {classNames, isUndef} from "reap-utils/lib"
+import {chainFunction, classNames, isUndef} from "reap-utils/lib"
 import {isValidNode} from "../Commons/utils"
 import Nav, {NavProps} from "../Nav/Nav"
 import Pane from "./Pane"
@@ -19,10 +19,20 @@ interface MapCallback {
     (c: React.ReactElement, key: string): React.ReactNode | void
 }
 
+/**
+ * if just call setState{active: key}, multiple tabs may visible,
+ * and use this key for triggering previous tab hide,
+ * after previous has hidden switch next tab to active
+ */
+const TRANSITION_KEY = "REAP_UI_TAB_TRANSITION_KEY"
+
 class Tab extends React.Component<TabProps, State> {
     static defaultProps: TabProps = {
         variant: "tabs"
     }
+
+    prevKey = ""
+    afterHidden: Function | null = null
 
     constructor(props: TabProps) {
         super(props)
@@ -50,7 +60,7 @@ class Tab extends React.Component<TabProps, State> {
         }
 
         if (active) {
-            this.setState({active})
+            this.switchTab(active)
         }
     }
 
@@ -75,9 +85,23 @@ class Tab extends React.Component<TabProps, State> {
         )
     }
 
+    switchTab(k: string) {
+        this.setState({active: this.prevKey = k})
+    }
+
     handleTitleClick = (k?: string) => {
-        if (k && k !== this.state.active) {
-            this.setState({active: k})
+        const {active} = this.state
+
+        if (active !== TRANSITION_KEY && k && k !== active) {
+            const fn = () => this.switchTab(k)
+            
+            if (!this.prevKey) {
+                fn()
+            } else {
+                this.afterHidden = fn
+
+                this.setState({active: TRANSITION_KEY})
+            }
         }
     }
 
@@ -90,6 +114,14 @@ class Tab extends React.Component<TabProps, State> {
         }
 
         return nextState
+    }
+
+    handleTabHidden = () => {
+        if (this.afterHidden) {
+            this.afterHidden()
+
+            this.afterHidden = null
+        }
     }
 
     render() {
@@ -112,32 +144,33 @@ class Tab extends React.Component<TabProps, State> {
         let tabs: React.ReactElement[] = []
         let panes = this.map(
             (c, k) => {
-                if (c.type === Pane) {
-                    const title = c.props.title
+                let {
+                    title,
+                    onHidden
+                } = c.props
+                onHidden = chainFunction(onHidden, this.handleTabHidden)
 
-                    if (isValidNode(title)) {
-                        tabs.push(
-                            <Title
-                                onClick={this.handleTitleClick}
-                                key={k}
-                                __active_key__={active}
-                                __key__={k}>
-                                {title}
-                            </Title>
-                        )
-                    }
-
-                    return React.cloneElement(
-                        c,
-                        {
-                            __key__: k,
-                            __active_key__: active,
-                            __anim__: animation
-                        }
+                if (isValidNode(title)) {
+                    tabs.push(
+                        <Title
+                            onClick={this.handleTitleClick}
+                            key={k}
+                            __active_key__={active}
+                            __key__={k}>
+                            {title}
+                        </Title>
                     )
                 }
 
-                return c
+                return React.cloneElement(
+                    c,
+                    {
+                        __key__: k,
+                        __active_key__: active,
+                        __anim__: animation,
+                        onHidden
+                    }
+                )
             }
         )
 

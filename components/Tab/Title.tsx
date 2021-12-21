@@ -1,5 +1,4 @@
 import * as React from "react"
-import {NavProps} from "../Nav/Nav";
 import Nav from "../Nav"
 import {Internal} from "./types";
 
@@ -17,7 +16,7 @@ const Title: React.FunctionComponent<TitleProps> = (
         children
     }
 ) => {
-    const handleClick = (evt: React.MouseEvent<HTMLElement>) => {
+    const handleClick = () => {
         if (onClick) {
             onClick(__key__)
         }
