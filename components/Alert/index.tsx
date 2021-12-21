@@ -11,7 +11,8 @@ import {isUndef} from "reap-utils/lib"
 import {
     Fade,
     NoTransition,
-    createComponent
+    createComponent,
+    isValidNode
 } from "reap-utils/lib/react"
 import {getPrefixFunc} from "../Commons/utils"
 import {variantPropType} from "../Commons/prop-types"
@@ -58,7 +59,7 @@ const Alert: AlertComponent<AlertProps> = (
                 className={classes}
                 {...props}>
                 {
-                    !isUndef(heading) && (
+                    !isUndef(heading) && isValidNode(heading) && (
                         <h4 className={prefix("heading")}>
                             {heading}
                         </h4>
