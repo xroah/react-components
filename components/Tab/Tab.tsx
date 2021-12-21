@@ -1,6 +1,6 @@
 import * as React from "react"
 import {chainFunction, classNames, isUndef} from "reap-utils/lib"
-import {isValidNode} from "../Commons/utils"
+import {isValidNode, map} from "../Commons/utils"
 import Nav, {NavProps} from "../Nav/Nav"
 import Pane from "./Pane"
 import Title from "./Title"
@@ -16,7 +16,7 @@ interface State {
 }
 
 interface MapCallback {
-    (c: React.ReactElement, key: string): React.ReactNode | void
+    (c: React.ReactElement, key: string): React.ReactNode
 }
 
 /**
@@ -65,22 +65,14 @@ class Tab extends React.Component<TabProps, State> {
     }
 
     map(callback: MapCallback) {
-        const {children} = this.props
-
-        return React.Children.map(
-            children,
+        return map(
+            this.props.children,
             (c, i) => {
-                if (React.isValidElement(c) && c.type === Pane) {
-                    let key = String(i)
-
-                    if (!isUndef(c.key)) {
-                        key = String(c.key)
-                    }
+                if (c.type === Pane) {
+                    let key = String(isUndef(c.key) ? i : c.key)
 
                     return callback(c, key)
                 }
-
-                return c
             }
         )
     }

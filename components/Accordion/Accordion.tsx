@@ -9,6 +9,7 @@ import {DivAttrs} from "../Commons/consts-and-types"
 import Item, {PREFIX} from "./Item"
 import Context from "./context"
 import PropTypes from "prop-types"
+import {map} from "../Commons/utils";
 
 type Open = React.Key | React.Key[]
 
@@ -112,26 +113,23 @@ class Accordion extends React.Component<AccordionProps, State> {
     }
 
     renderItem() {
-        return React.Children.map(
+        return map(
             this.props.children,
             (c, i) => {
-                if (React.isValidElement(c)) {
-                    if (c.type === Item) {
-                        const {onHeaderClick} = c.props
-                        const key = isUndef(c.key) ?
-                            String(i) : String(c.key)
+                if (c.type === Item) {
+                    const {onHeaderClick} = c.props
+                    const key = String(isUndef(c.key) ? i : c.key)
 
-                        return React.cloneElement(
-                            c,
-                            {
-                                __key__: key,
-                                onHeaderClick: chainFunction(
-                                    this.onItemHeaderClick,
-                                    onHeaderClick
-                                )
-                            }
-                        )
-                    }
+                    return React.cloneElement(
+                        c,
+                        {
+                            __key__: key,
+                            onHeaderClick: chainFunction(
+                                this.onItemHeaderClick,
+                                onHeaderClick
+                            )
+                        }
+                    )
                 }
 
                 return c

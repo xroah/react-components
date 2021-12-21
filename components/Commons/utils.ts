@@ -1,7 +1,9 @@
 import {
     ReactElement,
     cloneElement,
-    Children
+    Children,
+    ReactNode,
+    isValidElement
 } from "react"
 import {oneOf, oneOfType} from "prop-types"
 import classNames from "reap-utils/lib/class-names"
@@ -103,7 +105,7 @@ export function getClass(prefix: string, prop?: any) {
 }
 
 export function cloneWithClass(
-    c: React.ReactElement,
+    c: ReactElement,
     compClass?: string,
     handledClass?: string
 ) {
@@ -121,5 +123,23 @@ export function cloneWithClass(
 
 export function getProp<P, C>(prop?: P, ctx?: C): P | C | undefined {
     return prop === undefined ? ctx : prop
+}
+
+type Callback = (c: ReactElement, i: number) => ReactNode
+
+export function map(
+    children: ReactNode,
+    callback?: Callback
+) {
+    return Children.map(
+        children,
+        (c, i) => {
+            if (isValidElement(c) && callback) {
+                return callback(c, i)
+            }
+
+            return c
+        }
+    )
 }
 
