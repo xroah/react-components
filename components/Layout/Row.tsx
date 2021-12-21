@@ -15,7 +15,7 @@ import {
     forEachBreakpoint,
     getBreakpointClasses,
     getBreakpointPrefixFunc,
-    getShape
+    getBreakpointShape
 } from "../Commons/utils"
 
 type Cols = "auto" | number
@@ -104,10 +104,10 @@ const gutterTypes = [
 Row.propTypes = {
     cols: oneOfType([
         ...colTypes,
-        shape(getShape(colTypes))
+        shape(getBreakpointShape(colTypes))
     ]),
     gutters: oneOfType([
         ...gutterTypes,
-        shape(getShape(gutterTypes))
+        shape(getBreakpointShape(gutterTypes))
     ])
 }

@@ -83,12 +83,12 @@ export function getBreakpointClasses<T extends BaseValue>(
     )
 }
 
-export function getShape(v: any, type = true) {
+export function getBreakpointShape(v: any, type = true) {
     let ret: BreakpointType<Breakpoint, any> = {}
 
     for (let bp of breakpoints) {
         ret[bp] = Array.isArray(v) ?
-            (type ? oneOfType(v) : oneOf(v)) : v
+            type ? oneOfType(v) : oneOf(v) : v
     }
 
     return ret
@@ -119,10 +119,7 @@ export function cloneWithClass(
     )
 }
 
-export function onlyChild(child: ReactElement) {
-    return Children.only(child)
-}
-
 export function getProp<P, C>(prop?: P, ctx?: C): P | C | undefined {
     return prop === undefined ? ctx : prop
 }
+

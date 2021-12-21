@@ -6,8 +6,9 @@ import {
     bgColors,
     CSSComponentProps
 } from "../Commons/consts-and-types"
-import {cloneWithClass, onlyChild} from "../Commons/utils"
+import {cloneWithClass} from "../Commons/utils"
 import {cssCompPropTypes} from "../Commons/prop-types"
+import {only} from "reap-utils/lib/react"
 
 interface BgProps extends CSSComponentProps {
     variant?: BgColor
@@ -23,7 +24,7 @@ export default function Background(
         className
     }: BgProps
 ) {
-    const c = onlyChild(children)
+    const c = only(children)
     const classes = classNames(
         variant && `bg-${variant}`,
         gradient && "bg-gradient"

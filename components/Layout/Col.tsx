@@ -14,7 +14,7 @@ import {
     Order,
     OrderBreakpoints
 } from "../Commons/consts-and-types"
-import {getBreakpointClasses, getShape} from "../Commons/utils"
+import {getBreakpointClasses, getBreakpointShape} from "../Commons/utils"
 import {colSpanPropType, orderPropType} from "../Commons/prop-types"
 import FlexItem from "../Utilities/Flex/Item"
 
@@ -55,7 +55,7 @@ Col.propTypes = {
     order: orderPropType,
     offset: oneOfType([
         number,
-        shape(getShape(number))
+        shape(getBreakpointShape(number))
     ])
 }
 Col.defaultProps = {

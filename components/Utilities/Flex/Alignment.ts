@@ -15,10 +15,10 @@ import {
 import {
     cloneWithClass,
     getBreakpointClasses,
-    getShape,
-    onlyChild
+    getBreakpointShape
 } from "../../Commons/utils"
 import {cssCompPropTypes} from "../../Commons/prop-types"
+import {only} from "reap-utils/lib/react"
 
 const commons = [
     "between",
@@ -73,7 +73,7 @@ export default function Alignment(
         content
     }: AlignmentProps
 ) {
-    const c = onlyChild(children)
+    const c = only(children)
     const classes = classNames(
         vertical && getBreakpointClasses("align-items", vertical),
         horizontal && getBreakpointClasses("justify-content", horizontal),
@@ -87,7 +87,7 @@ export default function Alignment(
 function getType(v: readonly string[]) {
     return oneOfType([
         oneOf(v),
-        shape(getShape(v, false))
+        shape(getBreakpointShape(v, false))
     ])
 }
 

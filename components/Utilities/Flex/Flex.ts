@@ -18,11 +18,11 @@ import {
     getBreakpointClasses,
     getBreakpointPrefixFunc,
     getPrefixFunc,
-    getShape,
-    onlyChild
+    getBreakpointShape
 } from "../../Commons/utils"
 import classNames from "reap-utils/lib/class-names"
 import {cssCompPropTypes} from "../../Commons/prop-types"
+import {only} from "reap-utils/lib/react"
 
 const directions = [
     "row",
@@ -58,7 +58,7 @@ export default function Flex(
         gap
     }: FlexProps
 ) {
-    const c = onlyChild(children)
+    const c = only(children)
     const FLEX = "flex"
     const handleInline = (inline?: Inline): string => {
         const prefix = getPrefixFunc("d")
@@ -100,19 +100,19 @@ Flex.propTypes = {
     ...cssCompPropTypes,
     inline: oneOfType([
         bool,
-        shape(getShape(bool))
+        shape(getBreakpointShape(bool))
     ]),
     wrap: oneOfType([
         wrapType,
-        shape(getShape(wrapType))
+        shape(getBreakpointShape(wrapType))
     ]),
     directions: oneOfType([
         dType,
-        shape(getShape(dType))
+        shape(getBreakpointShape(dType))
     ]),
     gap: oneOfType([
         number,
-        shape(getShape(number))
+        shape(getBreakpointShape(number))
     ])
 }
 

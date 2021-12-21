@@ -10,12 +10,12 @@ import {
 import {
     cloneWithClass,
     getBreakpointClasses,
-    getShape,
-    onlyChild
+    getBreakpointShape
 } from "../../Commons/utils"
 import classNames from "reap-utils/lib/class-names"
 import {cssCompPropTypes, orderPropType} from "../../Commons/prop-types"
 import {bool, oneOf, oneOfType, shape} from "prop-types"
+import {only} from "reap-utils/lib/react"
 
 const grows = [
     0,
@@ -44,7 +44,7 @@ export default function FlexItem(
         shrink
     }: FlexItemProps
 ) {
-    const c = onlyChild(children)
+    const c = only(children)
     const PREFIX = "flex"
     const classes = classNames(
         getBreakpointClasses(PREFIX, fill, undefined, "fill"),
@@ -59,14 +59,14 @@ export default function FlexItem(
 const growType = oneOf(grows)
 const growPropType = oneOfType([
     growType,
-    shape(getShape(growType))
+    shape(getBreakpointShape(growType))
 ])
 
 FlexItem.propTypes = {
     ...cssCompPropTypes,
     fill: oneOfType([
         bool,
-        shape(getShape(bool))
+        shape(getBreakpointShape(bool))
     ]),
     order: orderPropType,
     grow: growPropType,

@@ -2,7 +2,7 @@ import * as React from "react"
 import {element, string} from "prop-types"
 import classNames from "reap-utils/lib/class-names"
 import {DivAttrs} from "../Commons/consts-and-types"
-import {onlyChild} from "../Commons/utils"
+import {only} from "reap-utils/lib/react"
 
 let uuid = 0
 
@@ -26,7 +26,7 @@ function Floating(
         className,
         "form-floating"
     )
-    const c = onlyChild(children)
+    const c = only(children)
     let id: string = `${PREFIX}${uuid++}`
 
     if (htmlFor) {

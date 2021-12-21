@@ -12,7 +12,7 @@ import {
     sizes,
     variants
 } from "./consts-and-types";
-import {getShape} from "./utils";
+import {getBreakpointShape} from "./utils";
 
 export const cssCompPropTypes = {
     className: string,
@@ -26,7 +26,7 @@ const orderTypes = [
 
 export const orderPropType = oneOfType([
     ...orderTypes,
-    shape(getShape(orderTypes))
+    shape(getBreakpointShape(orderTypes))
 ])
 
 const spanTypes = [
@@ -36,7 +36,7 @@ const spanTypes = [
 ]
 export const colSpanPropType = oneOfType([
     ...spanTypes,
-    shape(getShape(spanTypes))
+    shape(getBreakpointShape(spanTypes))
 ])
 
 export const sizePropType = oneOf(sizes)

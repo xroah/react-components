@@ -13,12 +13,9 @@ import {
     ValueOf,
     CSSComponentProps
 } from "../Commons/consts-and-types"
-import {
-    cloneWithClass,
-    getPrefixFunc,
-    onlyChild
-} from "../Commons/utils"
+import {cloneWithClass, getPrefixFunc} from "../Commons/utils"
 import {cssCompPropTypes} from "../Commons/prop-types"
+import {only} from "reap-utils/lib/react"
 
 const fontWeights = [
     "bold",
@@ -85,7 +82,7 @@ export default function CardText(
         className
     }: CardTextProps
 ) {
-    const c = onlyChild(children)
+    const c = only(children)
     const prefix = getPrefixFunc("text")
     const classes = classNames(
         color && prefix(color),
