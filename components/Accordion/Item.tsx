@@ -6,10 +6,6 @@ import {DivAttrs} from "../Commons/consts-and-types"
 import {getPrefixFunc} from "../Commons/utils"
 import Context from "./context"
 
-let uid = 0
-
-type Cb = (key: React.Key) => void
-
 interface ClickFunc {
     (key: React.Key, evt: React.MouseEvent<HTMLElement>): void
 }
@@ -29,7 +25,7 @@ const AccordionItem: React.FunctionComponent<AccordionItemProps> = (
         title,
         onHeaderClick,
         children,
-        __key__ = String(uid++),
+        __key__,
         ...restProps
     }
 ) => {
@@ -48,7 +44,7 @@ const AccordionItem: React.FunctionComponent<AccordionItemProps> = (
         <Context.Consumer>
             {
                 active => {
-                    const open = active.has(__key__)
+                    const open = active.has(__key__!)
                     const btnClasses = classNames(
                         prefix("button"),
                         !open && "collapsed"

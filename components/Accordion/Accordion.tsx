@@ -114,12 +114,12 @@ class Accordion extends React.Component<AccordionProps, State> {
     renderItem() {
         return React.Children.map(
             this.props.children,
-            c => {
+            (c, i) => {
                 if (React.isValidElement(c)) {
                     if (c.type === Item) {
                         const {onHeaderClick} = c.props
                         const key = isUndef(c.key) ?
-                            undefined : String(c.key)
+                            String(i) : String(c.key)
 
                         return React.cloneElement(
                             c,
