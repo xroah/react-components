@@ -1,11 +1,6 @@
 import * as React from "react"
 import Nav from "../Nav"
-import {Internal} from "./types";
-
-interface TitleProps extends Internal {
-    onClick?: (k?: string) => void
-    disabledKey?: React.Key
-}
+import {EType, TitleProps} from "./types";
 
 const Title: React.FunctionComponent<TitleProps> = (
     {
@@ -16,9 +11,9 @@ const Title: React.FunctionComponent<TitleProps> = (
         children
     }
 ) => {
-    const handleClick = () => {
+    const handleClick = (evt: EType) => {
         if (onClick) {
-            onClick(__key__)
+            onClick(__key__!, evt)
         }
     }
 

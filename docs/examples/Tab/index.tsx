@@ -2,7 +2,7 @@ import * as React from "react"
 import Tab from "reap-ui/Tab"
 
 export default () => (
-    <Tab animation>
+    <Tab animation onChange={k => console.log(k)}>
         <Tab.Pane title="Home" key="home">
             Home: Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui, accusantium consectetur. Quibusdam, ea distinctio libero maiores, neque aut et sequi facilis dicta qui esse, blanditiis dolores debitis suscipit quidem vitae.
         </Tab.Pane>

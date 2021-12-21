@@ -1,23 +1,24 @@
 import * as React from "react"
-import {chainFunction, classNames, isUndef} from "reap-utils/lib"
+import PropTypes from "prop-types"
+import {
+    chainFunction,
+    classNames,
+    isUndef,
+    omit
+} from "reap-utils/lib"
+import {getFunction} from "reap-utils/lib/react"
+import {DivAttrs} from "../Commons/consts-and-types"
 import {isValidNode, map} from "../Commons/utils"
-import Nav, {NavProps} from "../Nav/Nav"
+import Nav from "../Nav/Nav"
 import Pane from "./Pane"
 import Title from "./Title"
+import {
+    EType,
+    MapCallback,
+    TabProps,
+    TabState
+} from "./types"
 
-interface TabProps extends NavProps {
-    animation?: boolean
-    activeKey?: React.Key
-    defaultActiveKey?: React.Key
-}
-
-interface State {
-    active?: string
-}
-
-interface MapCallback {
-    (c: React.ReactElement, key: string): React.ReactNode
-}
 
 /**
  * if just call setState{active: key}, multiple tabs may visible,
@@ -26,9 +27,21 @@ interface MapCallback {
  */
 const TRANSITION_KEY = "REAP_UI_TAB_TRANSITION_KEY"
 
-class Tab extends React.Component<TabProps, State> {
+const keyType = PropTypes.oneOfType([
+    PropTypes.number,
+    PropTypes.string
+])
+
+class Tab extends React.Component<TabProps, TabState> {
     static defaultProps: TabProps = {
         variant: "tabs"
+    }
+    static propTypes = {
+        animation: PropTypes.bool,
+        activeKey: keyType,
+        defaultActiveKey: keyType,
+        onTitleClick: PropTypes.func,
+        onChange: PropTypes.func
     }
 
     prevKey = ""
@@ -37,31 +50,29 @@ class Tab extends React.Component<TabProps, State> {
     constructor(props: TabProps) {
         super(props)
 
+        const {defaultActiveKey: a} = props
         this.state = {
-            active: ""
+            active: isUndef(a) ? "" : String(a)
         }
     }
 
     componentDidMount() {
         let {active} = this.state
-        let {defaultActiveKey} = this.props
-
-        if (!isUndef(defaultActiveKey)) {
-            active = String(defaultActiveKey)
-        } else {
-            this.map(
-                // @ts-ignore: 'c' is declared but its value is never read
-                (c, k) => {
-                    if (k && !active) {
-                        active = k
-                    }
-                }
-            )
-        }
 
         if (active) {
-            this.switchTab(active)
+            return
         }
+
+        this.map(
+            // @ts-ignore
+            (c, k) => {
+                if (k && !active) {
+                    active = k
+                }
+            }
+        )
+
+        this.switchTab(active)
     }
 
     map(callback: MapCallback) {
@@ -78,15 +89,20 @@ class Tab extends React.Component<TabProps, State> {
     }
 
     switchTab(k: string) {
+        if (!k) {
+            return
+        }
+
         this.setState({active: this.prevKey = k})
+        getFunction(this.props.onChange)(k)
     }
 
-    handleTitleClick = (k?: string) => {
+    handleTitleClick = (k: string, evt: EType) => {
         const {active} = this.state
 
-        if (active !== TRANSITION_KEY && k && k !== active) {
+        if (active !== TRANSITION_KEY && k !== active) {
             const fn = () => this.switchTab(k)
-            
+
             if (!this.prevKey) {
                 fn()
             } else {
@@ -95,11 +111,13 @@ class Tab extends React.Component<TabProps, State> {
                 this.setState({active: TRANSITION_KEY})
             }
         }
+
+        getFunction(this.props.onTitleClick)(k, evt)
     }
 
     static getDerivedStateFromProps(
         nextProps: TabProps,
-        nextState: State
+        nextState: TabState
     ) {
         if ("activeKey" in nextProps) {
             nextState.active = String(nextProps.activeKey)
@@ -118,8 +136,6 @@ class Tab extends React.Component<TabProps, State> {
 
     render() {
         const {
-            // @ts-ignore: unused
-            children,
             animation,
             justify,
             variant,
@@ -165,11 +181,19 @@ class Tab extends React.Component<TabProps, State> {
                 )
             }
         )
+        const props = omit(
+            restProps,
+            [
+                "onChange",
+                "onTitleClick",
+                "children"
+            ]
+        ) as DivAttrs
 
         return (
-            <div className={classes} {...restProps}>
+            <div className={classes} {...props}>
                 {
-                    tabs.length && (
+                    tabs.length ? (
                         <Nav
                             vertical={vertical}
                             variant={variant}
@@ -177,7 +201,7 @@ class Tab extends React.Component<TabProps, State> {
                             fill={fill}>
                             {tabs}
                         </Nav>
-                    )
+                    ) : null
                 }
                 <div className="tab-content">
                     {panes}
