@@ -8,16 +8,14 @@ const variants = ["pills", "tabs"] as const
 
 type Variant = ValueOf<typeof variants>
 
-export interface NavProps {
+export interface NavProps extends React.HTMLAttributes<HTMLElement>{
     variant?: Variant
     fill?: boolean
     justify?: boolean
     vertical?: boolean
 }
 
-type Props = NavProps & React.HTMLAttributes<HTMLElement>
-
-const Nav: React.FunctionComponent<Props> = (
+const Nav: React.FunctionComponent<NavProps> = (
     {
         className,
         variant,

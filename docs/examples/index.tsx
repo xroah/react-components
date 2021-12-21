@@ -16,6 +16,7 @@ import Pagination from "./Pagination"
 import Placeholder from "./Placeholder"
 import Progress from "./Progress"
 import Spinner from "./Spinner"
+import Tab from "./Tab"
 import Text from "./Text"
 
 export default function () {
@@ -38,6 +39,7 @@ export default function () {
             <Placeholder />
             <Progress />
             <Spinner />
+            <Tab />
             <Text />
         </>
     )

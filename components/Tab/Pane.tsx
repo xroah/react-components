@@ -3,17 +3,15 @@ import classNames from "reap-utils/lib/class-names"
 import {Fade, NoTransition} from "reap-utils/lib/react"
 import {FadeProps} from "reap-utils/lib/react/transition/interface"
 import {DivAttrs} from "../Commons/consts-and-types"
-
-let uid = 0
+import {Internal} from "./types"
 
 type Base = Omit<DivAttrs, "title">
 
-interface PaneProps extends Base {
+interface PaneProps extends Base, Internal {
     title?: React.ReactNode
+    disabled?: boolean
     // for internal only
-    __key__?: React.Key
     __anim__?: boolean
-    __active_key__?: React.Key
 }
 
 const Pane: React.FunctionComponent<PaneProps> = (
@@ -23,7 +21,7 @@ const Pane: React.FunctionComponent<PaneProps> = (
         className,
         style = {},
         children,
-        __key__ = String(uid++),
+        __key__,
         __anim__,
         __active_key__,
         ...restProps
@@ -31,6 +29,7 @@ const Pane: React.FunctionComponent<PaneProps> = (
 ) => {
     style.display = "block"
     const classes = classNames(className, "tab-pane")
+    const ref = React.useRef(null)
     const child = (
         <div
             className={classes}
@@ -42,7 +41,8 @@ const Pane: React.FunctionComponent<PaneProps> = (
     const transitionProps: FadeProps = {
         in: __active_key__ === __key__,
         children: child,
-        hideOnExit: true
+        hideOnExit: true,
+        nodeRef: ref
     }
 
     return __anim__ ?
