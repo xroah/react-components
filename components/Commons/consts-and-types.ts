@@ -87,3 +87,6 @@ export interface StatusProps {
     active?: boolean
     disabled?: boolean
 }
+
+export const ACTIVE_CLASS = "active"
+export const DISABLED_CLASS = "disabled"
