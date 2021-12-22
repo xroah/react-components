@@ -40,7 +40,11 @@ const Pane: React.FunctionComponent<PaneProps> = (
     style.display = "block"
     const getFunc = (fn?: Function) =>
         () => getFunction(fn)(__key__)
-    const classes = classNames(className, "tab-pane")
+    const classes = classNames(
+        className,
+        "tab-pane",
+        __active_key__ === __key__ && "active"
+    )
     const ref = React.useRef(null)
     const child = (
         <div

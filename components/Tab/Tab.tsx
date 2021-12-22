@@ -44,7 +44,7 @@ class Tab extends React.Component<TabProps, TabState> {
         onChange: PropTypes.func
     }
 
-    prevKey = ""
+    ref = React.createRef<HTMLDivElement>()
     afterHidden: Function | null = null
 
     constructor(props: TabProps) {
@@ -87,13 +87,21 @@ class Tab extends React.Component<TabProps, TabState> {
             }
         )
     }
+    
+    getActiveElement() {
+        const {current: el} = this.ref
+
+        if (el) {
+            return el.querySelector(".active")
+        }
+    }
 
     switchTab(k: string) {
         if (!k) {
             return
         }
 
-        this.setState({active: this.prevKey = k})
+        this.setState({active: k})
         getFunction(this.props.onChange)(k)
     }
 
@@ -102,8 +110,9 @@ class Tab extends React.Component<TabProps, TabState> {
 
         if (active !== TRANSITION_KEY && k !== active) {
             const fn = () => this.switchTab(k)
+            const active = this.getActiveElement()
 
-            if (!this.prevKey) {
+            if (!active || getComputedStyle(active).display === "none") {
                 fn()
             } else {
                 this.afterHidden = fn
@@ -147,6 +156,7 @@ class Tab extends React.Component<TabProps, TabState> {
         const {active} = this.state
         const classes = classNames(
             className,
+            "tabs",
             vertical && "d-flex align-items-start"
         )
         let tabs: React.ReactElement[] = []
@@ -203,7 +213,7 @@ class Tab extends React.Component<TabProps, TabState> {
                         </Nav>
                     ) : null
                 }
-                <div className="tab-content">
+                <div className="tab-content" ref={this.ref}>
                     {panes}
                 </div>
             </div>
