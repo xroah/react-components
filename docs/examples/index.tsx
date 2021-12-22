@@ -5,6 +5,7 @@ import Button from "./Button"
 import Badge from "./Badge"
 import Breadcrumb from "./BreadCrumb"
 import Card from "./Card"
+import Carousel from "./Carousel"
 import Collapse from "./Collapse"
 import Flex from "./Flex"
 import Form from "./Form"
@@ -28,6 +29,7 @@ export default function () {
             <Breadcrumb />
             <Button />
             <Card />
+            <Carousel />
             <Collapse />
             <Flex />
             <Form />
