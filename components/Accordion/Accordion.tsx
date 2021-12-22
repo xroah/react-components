@@ -105,7 +105,7 @@ class Accordion extends React.Component<AccordionProps, State> {
             },
             () => {
                 if (onChange) {
-                    onChange(Array.from(open) as string[])
+                    onChange([...newOpen] as string[])
                 }
             }
         )
