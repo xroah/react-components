@@ -4,17 +4,17 @@ import classNames from "reap-utils/lib/class-names"
 import Collapse from "../Collapse"
 import {DivAttrs} from "../Commons/consts-and-types"
 import {getPrefixFunc} from "../Commons/utils"
-import Context from "./context"
 
 interface ClickFunc {
-    (key: React.Key, evt: React.MouseEvent<HTMLElement>): void
+    (key: string, evt: React.MouseEvent<HTMLElement>): void
 }
 
 interface AccordionItemProps extends Omit<DivAttrs, "title"> {
     title?: React.ReactNode
     onHeaderClick?: ClickFunc
     // for internal only
-    __key__?: React.Key
+    __key__?: string
+    __open__?: boolean
 }
 
 export const PREFIX = "accordion"
@@ -23,9 +23,10 @@ const AccordionItem: React.FunctionComponent<AccordionItemProps> = (
     {
         className,
         title,
-        onHeaderClick,
         children,
+        onHeaderClick,
         __key__,
+        __open__,
         ...restProps
     }
 ) => {
@@ -39,37 +40,28 @@ const AccordionItem: React.FunctionComponent<AccordionItemProps> = (
             onHeaderClick(__key__!, evt)
         }
     }
+    const btnClasses = classNames(
+        prefix("button"),
+        !__open__ && "collapsed"
+    )
 
     return (
-        <Context.Consumer>
-            {
-                active => {
-                    const open = active.has(__key__!)
-                    const btnClasses = classNames(
-                        prefix("button"),
-                        !open && "collapsed"
-                    )
-                    return (
-                        <div className={classes} {...restProps}>
-                            <h2
-                                className={prefix("header")}
-                                onClick={handleClick}>
-                                <button className={btnClasses}>
-                                    {title}
-                                </button>
-                            </h2>
-                            <Collapse open={open}>
-                                <div className={prefix("collapse")}>
-                                    <div className={prefix("body")}>
-                                        {children}
-                                    </div>
-                                </div>
-                            </Collapse>
-                        </div>
-                    )
-                }
-            }
-        </Context.Consumer>
+        <div className={classes} {...restProps}>
+            <h2
+                className={prefix("header")}
+                onClick={handleClick}>
+                <button className={btnClasses}>
+                    {title}
+                </button>
+            </h2>
+            <Collapse open={__open__}>
+                <div className={prefix("collapse")}>
+                    <div className={prefix("body")}>
+                        {children}
+                    </div>
+                </div>
+            </Collapse>
+        </div>
     )
 }
 

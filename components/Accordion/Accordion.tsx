@@ -7,7 +7,6 @@ import {
 } from "reap-utils/lib";
 import {DivAttrs} from "../Commons/consts-and-types"
 import Item, {PREFIX} from "./Item"
-import Context from "./context"
 import PropTypes from "prop-types"
 import {map} from "../Commons/utils";
 
@@ -113,6 +112,8 @@ class Accordion extends React.Component<AccordionProps, State> {
     }
 
     renderItem() {
+        const {open} = this.state
+
         return map(
             this.props.children,
             (c, i) => {
@@ -124,6 +125,7 @@ class Accordion extends React.Component<AccordionProps, State> {
                         c,
                         {
                             __key__: key,
+                            __open__: open.has(key),
                             onHeaderClick: chainFunction(
                                 this.onItemHeaderClick,
                                 onHeaderClick
@@ -160,12 +162,10 @@ class Accordion extends React.Component<AccordionProps, State> {
         )
 
         return (
-            <Context.Provider value={this.state.open}>
-                {/* @ts-ignore: Types of property 'onChange' are incompatible. */}
-                <div className={classes} {...props}>
-                    {this.renderItem()}
-                </div>
-            </Context.Provider>
+            // @ts-ignore: Types of property 'onChange' are incompatible.
+            <div className={classes} {...props}>
+                {this.renderItem()}
+            </div>
         )
     }
 }
