@@ -82,8 +82,6 @@ class NoTransition extends BaseTransition<NoTransitionProps> {
             hideOnExit
         } = this.props
         const {status} = this.state
-        const child = only(children as React.ReactElement)
-        const style: React.CSSProperties = {...child.props.style}
 
         if (status === UNMOUNTED) {
             return null
@@ -92,6 +90,9 @@ class NoTransition extends BaseTransition<NoTransitionProps> {
         if (typeof children === "function") {
             return this.renderChildren(children(status))
         }
+
+        const child = only(children as React.ReactElement)
+        const style: React.CSSProperties = {...child.props.style}
 
         if (hideOnExit && !_in) {
             style.display = "none"
