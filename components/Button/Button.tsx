@@ -6,7 +6,8 @@ import {
     ValueOf,
     SizeProp,
     Size,
-    AnchorAttrs
+    AnchorAttrs,
+    StatusProps
 } from "../Commons/consts-and-types"
 import warning from "warning"
 import {getPrefixFunc} from "../Commons/utils"
@@ -36,11 +37,9 @@ type BaseProps = Omit<
     "type" | "size"
 > & AnchorProps & SizeProp
 
-export interface ButtonProps extends BaseProps {
+export interface ButtonProps extends BaseProps, StatusProps {
     variant?: ValueOf<typeof btnVariants>
     outline?: boolean
-    disabled?: boolean
-    active?: boolean
     textNoWrap?: boolean
     tag?: React.ElementType
     type?: ValueOf<typeof btnTypes>

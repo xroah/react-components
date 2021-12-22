@@ -1,9 +1,12 @@
 import * as React from "react"
 import PropTypes from "prop-types"
 import {createComponent} from "reap-utils/lib/react"
+import {StatusProps} from "../Commons/consts-and-types"
 
-interface BreadcrumbItemProps extends
-    React.LiHTMLAttributes<HTMLLIElement> {
+type BaseProps = React.LiHTMLAttributes<HTMLLIElement> &
+    Omit<StatusProps, "disabled">
+
+interface BreadcrumbItemProps extends BaseProps {
     active?: boolean
     href?: string
 }

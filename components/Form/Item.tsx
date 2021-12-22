@@ -5,14 +5,11 @@ import {
     string
 } from "prop-types"
 import classNames from "reap-utils/lib/class-names"
-import {
-    getBreakpointClasses,
-    getProp,
-    isValidNode
-} from "../Commons/utils"
+import {getBreakpointClasses, getProp} from "../Commons/utils"
 import {FormContext, wrapperPropType} from "./Form"
 import Col from "../Layout/Col"
 import {FormCommon, FormItemProps} from "./types"
+import {isValidNode} from "reap-utils/lib/react"
 
 export default function FormItem(
     {

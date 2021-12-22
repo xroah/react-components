@@ -1,7 +1,11 @@
 import * as React from "react"
 import {omit} from "reap-utils/lib"
 import classNames from "reap-utils/lib/class-names"
-import {Fade, getFunction, NoTransition} from "reap-utils/lib/react"
+import {
+    Fade,
+    getFunction,
+    NoTransition
+} from "reap-utils/lib/react"
 import {FadeProps} from "reap-utils/lib/react/transition/interface"
 import {PaneProps} from "./types"
 

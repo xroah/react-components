@@ -6,9 +6,9 @@ import {
     isUndef,
     omit
 } from "reap-utils/lib"
-import {getFunction} from "reap-utils/lib/react"
+import {getFunction, isValidNode} from "reap-utils/lib/react"
 import {DivAttrs} from "../Commons/consts-and-types"
-import {isValidNode, map} from "../Commons/utils"
+import {map} from "../Commons/utils"
 import Nav from "../Nav/Nav"
 import Pane from "./Pane"
 import Title from "./Title"
@@ -84,6 +84,8 @@ class Tab extends React.Component<TabProps, TabState> {
 
                     return callback(c, key)
                 }
+
+                return c
             }
         )
     }

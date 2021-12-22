@@ -1,8 +1,9 @@
 import * as React from "react"
 import classNames from "reap-utils/lib/class-names"
-import {getPrefixFunc, isValidNode} from "../../Commons/utils"
+import {getPrefixFunc} from "../../Commons/utils"
 import {bool, string} from "prop-types"
 import {InputAttrs, ValueOf} from "../../Commons/consts-and-types"
+import {isValidNode} from "reap-utils/lib/react"
 
 let uuid = 0
 

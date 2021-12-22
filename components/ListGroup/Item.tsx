@@ -1,13 +1,13 @@
 import * as React from "react"
 import classNames from "reap-utils/lib/class-names"
 import PropTypes from "prop-types"
-import {Variant} from "../Commons/consts-and-types"
+import {StatusProps, Variant} from "../Commons/consts-and-types"
 import {getPrefixFunc} from "../Commons/utils"
 import {variantPropType} from "../Commons/prop-types"
 
-interface ListGroupItemProps extends React.AllHTMLAttributes<HTMLElement> {
-    active?: boolean
-    disabled?: boolean
+type BaseProps = React.AllHTMLAttributes<HTMLElement> & StatusProps
+
+interface ListGroupItemProps extends BaseProps {
     variant?: Variant
     actionable?: boolean
     tag?: React.ElementType

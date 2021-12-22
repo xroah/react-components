@@ -1,12 +1,7 @@
 import * as React from "react"
 import classNames from "reap-utils/lib/class-names"
 import PropTypes from "prop-types"
-import {AnchorAttrs} from "../Commons/consts-and-types"
-
-interface ItemProps extends AnchorAttrs {
-    active?: boolean
-    disabled?: boolean
-}
+import {AnchorAttrs, StatusProps} from "../Commons/consts-and-types"
 
 export default function PaginationItem(
     {
@@ -17,7 +12,7 @@ export default function PaginationItem(
         href,
         children,
         ...restProps
-    }: ItemProps
+    }: StatusProps & AnchorAttrs
 ) {
     const classes = classNames(
         className,

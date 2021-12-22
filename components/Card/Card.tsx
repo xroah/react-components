@@ -6,7 +6,8 @@ import {
     ValueOf,
     variants
 } from "../Commons/consts-and-types"
-import {getPrefixFunc, isValidNode} from "../Commons/utils"
+import {getPrefixFunc} from "../Commons/utils"
+import {isValidNode} from "reap-utils/lib/react"
 
 const borderColors = [...variants, "white"] as const
 

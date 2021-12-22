@@ -20,12 +20,6 @@ export function getPrefixFunc(prefix: string): PrefixFunc {
     )
 }
 
-export function isValidNode(node: any) {
-    return node !== null &&
-        node !== undefined &&
-        typeof node !== "boolean"
-}
-
 type BaseValue = string | number | boolean | object
 
 export function forEachBreakpoint<T extends BaseValue>(

@@ -159,10 +159,9 @@ class Accordion extends React.Component<AccordionProps, State> {
                 "children",
                 "onChange"
             ]
-        )
+        ) as DivAttrs
 
         return (
-            // @ts-ignore: Types of property 'onChange' are incompatible.
             <div className={classes} {...props}>
                 {this.renderItem()}
             </div>
