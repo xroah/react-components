@@ -1,31 +1,11 @@
 import * as React from "react"
 import {isUndef} from "reap-utils/lib"
 import classNames from "reap-utils/lib/class-names"
-import {DivAttrs, ValueOf} from "../Commons/consts-and-types"
 import {getPrefixFunc, map} from "../Commons/utils"
 import CarouselItem, {PREFIX} from "./Item"
 import Indicator from "./Indicator"
-
-const variants = ["light", "dark"] as const
-
-interface CarouselProps extends DivAttrs {
-    keyboard?: boolean
-    pause?: boolean | "hover"
-    ride?: boolean | "carousel"
-    wrap?: boolean
-    touch?: boolean
-    interval?: number
-    controls?: boolean
-    indicators?: boolean
-    fade?: boolean
-    variant?: ValueOf<typeof variants>
-    onSlide?: () => void
-    onSlid?: () => void
-}
-
-interface CarouselState {
-    activeIndex: number
-}
+import CarouselContext from "./context"
+import {CarouselProps, CarouselState, Direction} from "./types"
 
 class Carousel extends React.Component<CarouselProps, CarouselState> {
     constructor(props: CarouselProps) {
@@ -37,15 +17,57 @@ class Carousel extends React.Component<CarouselProps, CarouselState> {
     }
 
     handleIndicatorClick = (i: number) => {
-        this.to(i)
-    }
-
-    to(i: number) {
         const {activeIndex} = this.state
 
-        if (activeIndex === i) {
+        this.to(i, activeIndex > i ? "next" : "prev")
+    }
+
+    getTotal() {
+        const {children} = this.props
+
+        return React.Children.count(children)
+    }
+
+    prev = () => {
+        let {activeIndex} = this.state
+
+        if (activeIndex === 0) {
+            activeIndex = this.getTotal() - 1
+        } else {
+            activeIndex--
+        }
+
+        this.to(activeIndex, "prev")
+    }
+
+    next = () => {
+        let {activeIndex} = this.state
+        const total = this.getTotal()
+
+        if (activeIndex === total - 1) {
+            activeIndex = 0
+        } else {
+            activeIndex++
+        }
+
+        this.to(activeIndex, "next")
+    }
+
+    to(i: number, dir: Direction = "next") {
+        const {activeIndex} = this.state
+
+        if (
+            activeIndex === i ||
+            i < 0 ||
+            i >= this.getTotal()
+        ) {
             return
         }
+
+        this.setState({
+            nextIndex: i,
+            dir
+        })
     }
 
     render() {
@@ -67,10 +89,16 @@ class Carousel extends React.Component<CarouselProps, CarouselState> {
         )
         const ctrlEl = controls ? (
             <>
-                <button className={ctrlPrefix("prev")} type="button">
+                <button
+                    className={ctrlPrefix("prev")}
+                    type="button"
+                    onClick={this.prev}>
                     <span className={ctrlPrefix("prev-icon")} />
                 </button>
-                <button className={ctrlPrefix("next")} type="button" >
+                <button
+                    className={ctrlPrefix("next")}
+                    type="button"
+                    onClick={this.next} >
                     <span className={ctrlPrefix("next-icon")} />
                 </button>
             </>
@@ -93,6 +121,7 @@ class Carousel extends React.Component<CarouselProps, CarouselState> {
                         <Indicator
                             key={k}
                             index={i}
+                            active={this.state.activeIndex === i}
                             onClick={this.handleIndicatorClick} />
                     )
                 }
@@ -118,7 +147,9 @@ class Carousel extends React.Component<CarouselProps, CarouselState> {
             <div className={classes}>
                 {indicatorWrapper}
                 <div className={prefix("inner")}>
-                    {childrenEl}
+                    <CarouselContext.Provider value={{...this.state}}>
+                        {childrenEl}
+                    </CarouselContext.Provider>
                 </div>
                 {ctrlEl}
             </div>
