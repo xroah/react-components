@@ -1,39 +1,22 @@
 import * as React from "react"
+import {omit} from "reap-utils/lib"
 import classNames from "reap-utils/lib/class-names"
 import {Fade, getFunction, NoTransition} from "reap-utils/lib/react"
 import {FadeProps} from "reap-utils/lib/react/transition/interface"
-import {DivAttrs} from "../Commons/consts-and-types"
-import {Internal} from "./types"
-
-type Base = Omit<DivAttrs, "title">
-
-type Callback = (k?: string) => void
-
-interface PaneProps extends Base, Internal {
-    title?: React.ReactNode // for Title component
-    disabled?: boolean
-    onShow?: Callback
-    onShown?: Callback
-    onHide?: Callback
-    onHidden?: Callback
-    // for internal only
-    __anim__?: boolean
-}
+import {PaneProps} from "./types"
 
 const Pane: React.FunctionComponent<PaneProps> = (
     {
-        // @ts-ignore: unused
-        title,
         className,
         style = {},
+        children,
+        __anim__,
+        __key__,
+        __active__,
         onShow,
         onShown,
         onHide,
         onHidden,
-        children,
-        __key__,
-        __anim__,
-        __active_key__,
         ...restProps
     }
 ) => {
@@ -43,19 +26,20 @@ const Pane: React.FunctionComponent<PaneProps> = (
     const classes = classNames(
         className,
         "tab-pane",
-        __active_key__ === __key__ && "active"
+        __active__ && "active"
     )
     const ref = React.useRef(null)
     const child = (
+        // @ts-ignore: Types of property 'title' are incompatible
         <div
             className={classes}
             style={style}
-            {...restProps}>
+            {...omit(restProps, ["disabled", "title"])}>
             {children}
         </div>
     )
     const transitionProps: FadeProps = {
-        in: __active_key__ === __key__,
+        in: !!__active__,
         children: child,
         hideOnExit: true,
         nodeRef: ref,

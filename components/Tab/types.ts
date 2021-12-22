@@ -1,10 +1,5 @@
+import {DivAttrs, StatusProps} from "../Commons/consts-and-types";
 import {NavProps} from "../Nav/Nav";
-
-export interface Internal {
-    __key__?: string
-    __active_key__?: string
-}
-
 
 export interface TabProps extends Omit<NavProps, "onChange"> {
     animation?: boolean
@@ -24,7 +19,23 @@ export interface MapCallback {
 
 export type EType = React.MouseEvent<HTMLAnchorElement>
 
-export interface TitleProps extends Internal {
+export interface TitleProps extends StatusProps {
     onClick?: (k: string, e: EType) => void
-    disabledKey?: React.Key
+    itemKey: string
+}
+
+type Base = Omit<DivAttrs, "title">
+
+type Callback = (k?: string) => void
+
+export interface PaneProps extends Base, Omit<StatusProps, "active"> {
+    title?: React.ReactNode // for Title component
+    onShow?: Callback
+    onShown?: Callback
+    onHide?: Callback
+    onHidden?: Callback
+    // for internal only
+    __key__?: boolean
+    __anim__?: boolean
+    __active__?: boolean
 }

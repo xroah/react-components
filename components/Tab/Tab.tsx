@@ -164,8 +164,10 @@ class Tab extends React.Component<TabProps, TabState> {
             (c, k) => {
                 let {
                     title,
-                    onHidden
+                    onHidden,
+                    disabled
                 } = c.props
+                const _active = active === k
                 onHidden = chainFunction(onHidden, this.handleTabHidden)
 
                 if (isValidNode(title)) {
@@ -173,8 +175,9 @@ class Tab extends React.Component<TabProps, TabState> {
                         <Title
                             onClick={this.handleTitleClick}
                             key={k}
-                            __active_key__={active}
-                            __key__={k}>
+                            itemKey={k}
+                            disabled={disabled}
+                            active={_active}>
                             {title}
                         </Title>
                     )
@@ -184,7 +187,7 @@ class Tab extends React.Component<TabProps, TabState> {
                     c,
                     {
                         __key__: k,
-                        __active_key__: active,
+                        __active__: _active,
                         __anim__: animation,
                         onHidden
                     }

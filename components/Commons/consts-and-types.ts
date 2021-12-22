@@ -82,3 +82,8 @@ export type DivAttrs = HTMLAttributes<HTMLDivElement>
 export type AnchorAttrs = AnchorHTMLAttributes<HTMLAnchorElement>
 export type ButtonAttrs = ButtonHTMLAttributes<HTMLButtonElement>
 export type InputAttrs = InputHTMLAttributes<HTMLInputElement>
+
+export interface StatusProps {
+    active?: boolean
+    disabled?: boolean
+}

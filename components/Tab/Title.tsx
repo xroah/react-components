@@ -5,15 +5,14 @@ import {EType, TitleProps} from "./types";
 const Title: React.FunctionComponent<TitleProps> = (
     {
         onClick,
-        __key__,
-        __active_key__,
-        disabledKey,
-        children
+        itemKey,
+        children,
+        ...restProps
     }
 ) => {
     const handleClick = (evt: EType) => {
         if (onClick) {
-            onClick(__key__!, evt)
+            onClick(itemKey, evt)
         }
     }
 
@@ -22,8 +21,7 @@ const Title: React.FunctionComponent<TitleProps> = (
             <Nav.Link
                 onClick={handleClick}
                 tag="button"
-                disabled={disabledKey === __key__}
-                active={__active_key__ === __key__}>
+                {...restProps}>
                 {children}
             </Nav.Link>
         </Nav.Item>
