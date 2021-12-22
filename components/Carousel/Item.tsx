@@ -8,6 +8,8 @@ interface CarouselItemProps extends DivAttrs {
     caption?: React.ReactNode
     captionClass?: string
     interval?: number
+    // internal only
+    __index__?: number
 }
 
 export const PREFIX = "carousel"
@@ -18,6 +20,7 @@ const CarouselItem: React.FunctionComponent<CarouselItemProps> = (
         caption,
         captionClass,
         children,
+        __index__,
         ...restProps
     }
 ) => {

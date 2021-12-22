@@ -28,8 +28,24 @@ interface CarouselState {
 }
 
 class Carousel extends React.Component<CarouselProps, CarouselState> {
+    constructor(props: CarouselProps) {
+        super(props)
+
+        this.state = {
+            activeIndex: 0
+        }
+    }
+
     handleIndicatorClick = (i: number) => {
-        console.log(i)
+        this.to(i)
+    }
+
+    to(i: number) {
+        const {activeIndex} = this.state
+
+        if (activeIndex === i) {
+            return
+        }
     }
 
     render() {
@@ -59,28 +75,39 @@ class Carousel extends React.Component<CarouselProps, CarouselState> {
                 </button>
             </>
         ) : null
-        let indicatorEl: React.ReactElement | undefined
+        let indicatorWrapper: React.ReactElement | null = null
+        let indicatorEls: React.ReactElement[] = []
+        let childrenEl = map(
+            children,
+            (c, i) => {
+                if (c.type !== CarouselItem) {
+                    throw new TypeError(
+                        "The children of Carousel should be Carousel.Item"
+                    )
+                }
+
+                const k = String(isUndef(c.key) ? i : c.key)
+
+                if (indicators) {
+                    indicatorEls.push(
+                        <Indicator
+                            key={k}
+                            index={i}
+                            onClick={this.handleIndicatorClick} />
+                    )
+                }
+
+                return React.cloneElement(
+                    c,
+                    {
+                        __index__: i
+                    }
+                )
+            }
+        )
 
         if (indicators) {
-            let index = 0
-            const indicatorEls = map(
-                children,
-                (c, i) => {
-                    if (c.type === CarouselItem) {
-                        const k = String(isUndef(c.key) ? i : c.key)
-
-                        return (
-                            <Indicator
-                                key={k}
-                                index={index++}
-                                onClick={this.handleIndicatorClick} />
-                        )
-                    }
-
-                    return null
-                }
-            )
-            indicatorEl = (
+            indicatorWrapper = (
                 <div className={prefix("indicators")}>
                     {indicatorEls}
                 </div>
@@ -89,9 +116,9 @@ class Carousel extends React.Component<CarouselProps, CarouselState> {
 
         return (
             <div className={classes}>
-                {indicatorEl}
+                {indicatorWrapper}
                 <div className={prefix("inner")}>
-                    {children}
+                    {childrenEl}
                 </div>
                 {ctrlEl}
             </div>
