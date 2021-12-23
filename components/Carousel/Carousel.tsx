@@ -65,7 +65,7 @@ class Carousel extends React.Component<CarouselProps, CarouselState> {
         }
 
         this.setState({
-            nextIndex: i,
+            activeIndex: i,
             dir
         })
     }
@@ -78,6 +78,7 @@ class Carousel extends React.Component<CarouselProps, CarouselState> {
             indicators,
             children,
             variant,
+            slide,
         } = this.props
         const prefix = getPrefixFunc(PREFIX)
         const ctrlPrefix = getPrefixFunc(prefix("control"))
@@ -147,7 +148,7 @@ class Carousel extends React.Component<CarouselProps, CarouselState> {
             <div className={classes}>
                 {indicatorWrapper}
                 <div className={prefix("inner")}>
-                    <CarouselContext.Provider value={{...this.state}}>
+                    <CarouselContext.Provider value={{...this.state, slide}}>
                         {childrenEl}
                     </CarouselContext.Provider>
                 </div>

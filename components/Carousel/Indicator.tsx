@@ -1,5 +1,5 @@
 import * as React from "react"
-import {classNames} from "reap-utils"
+import classNames from "reap-utils/lib/class-names"
 import {IndicatorProps} from "./types"
 
 export default React.forwardRef(

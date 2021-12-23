@@ -3,7 +3,7 @@ import {omit} from "reap-utils/lib"
 import classNames from "reap-utils/lib/class-names"
 import {isValidNode} from "reap-utils/lib/react"
 import CarouselContext from "./context"
-import {CarouselItemProps, CarouselState} from "./types"
+import {CarouselItemProps, CarouselState, ContextObject} from "./types"
 
 export const PREFIX = "carousel"
 export const ITEM_PREFIX = `${PREFIX}-item`
@@ -36,15 +36,19 @@ const CarouselItem: React.FunctionComponent<CarouselItemProps> = (
     const render = (
         {
             activeIndex,
-            nextIndex,
+            slide,
             dir
-        }: CarouselState
+        }: ContextObject
     ) => {
         let classes = classNames(
             className,
             ITEM_PREFIX,
             activeIndex === __index__ && "active"
         )
+
+        if (slide) {
+            return null
+        }
 
         return (
             <div

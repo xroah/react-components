@@ -1,6 +1,6 @@
 import {createContext} from "react"
-import {CarouselState} from "./types"
+import {ContextObject} from "./types"
 
-export default createContext<CarouselState>({
+export default createContext<ContextObject>({
     activeIndex: 0
 })
