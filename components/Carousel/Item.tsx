@@ -4,7 +4,11 @@ import classNames from "reap-utils/lib/class-names"
 import {isValidNode, Transition} from "reap-utils/lib/react"
 import {StateType} from "reap-utils/lib/react/transition/interface"
 import CarouselContext from "./context"
-import {CarouselItemProps, ContextObject} from "./types"
+import {
+    CarouselItemProps,
+    ContextObject,
+    Direction
+} from "./types"
 
 export const PREFIX = "carousel"
 export const ITEM_PREFIX = `${PREFIX}-item`
@@ -13,6 +17,50 @@ const START_CLASS = `${ITEM_PREFIX}-start`
 const END_CLASS = `${ITEM_PREFIX}-end`
 const NEXT_CLASS = `${ITEM_PREFIX}-next`
 const PREV_CLASS = `${ITEM_PREFIX}-prev`
+const ACTIVE_CLASS = "active"
+
+const getTransitionRenderer = (
+    el: React.ReactElement,
+    classes: string,
+    dir?: Direction,
+) => {
+    return (status: StateType) => {
+        let dirClass = ""
+        let orderClass = ""
+        let newClasses = ""
+
+        if (dir === "prev") {
+            dirClass = PREV_CLASS
+            orderClass = END_CLASS
+        } else if (dir === "next") {
+            dirClass = NEXT_CLASS
+            orderClass = START_CLASS
+        }
+
+        switch (status) {
+            case "enter":
+                newClasses = dirClass
+                break
+            case "entering":
+                newClasses = `${orderClass} ${dirClass}`
+                break
+            // @ts-ignore: fall through
+            case "entered":
+            case "exit":
+                newClasses = ACTIVE_CLASS
+                break
+            case "exiting":
+                newClasses = `${ACTIVE_CLASS} ${orderClass}`
+        }
+
+        return React.cloneElement(
+            el,
+            {
+                className: `${classes} ${newClasses}`
+            }
+        )
+    }
+}
 
 const CarouselItem: React.FunctionComponent<CarouselItemProps> = (
     {
@@ -25,17 +73,6 @@ const CarouselItem: React.FunctionComponent<CarouselItemProps> = (
     }
 ) => {
     const ref = React.useRef<HTMLDivElement>(null)
-    const ACTIVE_CLASS = "active"
-    const captionEl = isValidNode(caption) ? (
-        <div className={
-            classNames(
-                captionClass,
-                `${PREFIX}-caption`
-            )
-        }>
-            {caption}
-        </div>
-    ) : null
     const render = (
         {
             activeIndex,
@@ -43,12 +80,22 @@ const CarouselItem: React.FunctionComponent<CarouselItemProps> = (
             dir
         }: ContextObject
     ) => {
-        let classes = classNames(
+        const classes = classNames(
             className,
             ITEM_PREFIX,
             !slide && activeIndex === __index__ && ACTIVE_CLASS
         )
-        let el = (
+        const captionEl = isValidNode(caption) ? (
+            <div className={
+                classNames(
+                    captionClass,
+                    `${PREFIX}-caption`
+                )
+            }>
+                {caption}
+            </div>
+        ) : null
+        const el = (
             <div
                 className={classes}
                 ref={ref}
@@ -59,50 +106,11 @@ const CarouselItem: React.FunctionComponent<CarouselItemProps> = (
         )
 
         if (slide) {
-            const renderTransition = (
-                status: StateType
-            ) => {
-                let dirClass = ""
-                let orderClass = ""
-                let newClasses = ""
-
-                if (dir === "prev") {
-                    dirClass = PREV_CLASS
-                    orderClass = END_CLASS
-                } else if (dir === "next") {
-                    dirClass = NEXT_CLASS
-                    orderClass = START_CLASS
-                }
-
-                switch (status) {
-                    case "enter":
-                        newClasses = dirClass
-                        break
-                    case "entering":
-                        newClasses = `${orderClass} ${dirClass}`
-                        break
-                    // @ts-ignore: fall through
-                    case "entered":
-                    case "exit":
-                        newClasses = ACTIVE_CLASS
-                        break
-                    case "exiting":
-                        newClasses = `${ACTIVE_CLASS} ${orderClass}`
-                }
-
-                return React.cloneElement(
-                    el,
-                    {
-                        className: `${classes} ${newClasses}`
-                    }
-                )
-            }
-
             return (
                 <Transition
                     nodeRef={ref}
                     in={__index__ === activeIndex}>
-                    {renderTransition}
+                    {getTransitionRenderer(el, classes, dir)}
                 </Transition>
             )
         }
