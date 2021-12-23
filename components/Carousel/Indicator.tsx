@@ -27,7 +27,7 @@ export default React.forwardRef(
             <button
                 className={classes}
                 type="button"
-                data-bs-target
+                data-bs-target // bootstrap need this for css
                 ref={ref}
                 onClick={handleClick}
                 {...restProps} />

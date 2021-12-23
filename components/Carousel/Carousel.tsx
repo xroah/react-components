@@ -12,6 +12,8 @@ import {
 } from "./types"
 
 class Carousel extends React.Component<CarouselProps, CarouselState> {
+    sliding = false
+
     constructor(props: CarouselProps) {
         super(props)
 
@@ -21,9 +23,7 @@ class Carousel extends React.Component<CarouselProps, CarouselState> {
     }
 
     handleIndicatorClick = (i: number) => {
-        const {activeIndex} = this.state
-
-        this.to(i, activeIndex > i ? "next" : "prev")
+        this.to(i)
     }
 
     getTotal() {
@@ -41,7 +41,7 @@ class Carousel extends React.Component<CarouselProps, CarouselState> {
             activeIndex--
         }
 
-        this.to(activeIndex, "prev")
+        this.to(activeIndex)
     }
 
     next = () => {
@@ -54,16 +54,13 @@ class Carousel extends React.Component<CarouselProps, CarouselState> {
             activeIndex++
         }
 
-        this.to(activeIndex, "next")
+        this.slide(activeIndex, "next")
     }
 
-    to(i: number, dir: Direction = "next") {
-        const {activeIndex} = this.state
-
+    slide(i: number, dir: Direction) {
         if (
-            activeIndex === i ||
-            i < 0 ||
-            i >= this.getTotal()
+            i === this.state.activeIndex ||
+            this.sliding
         ) {
             return
         }
@@ -72,6 +69,32 @@ class Carousel extends React.Component<CarouselProps, CarouselState> {
             activeIndex: i,
             dir
         })
+    }
+
+    // for indicators
+    to(i: number) {
+        const {activeIndex} = this.state
+
+        if (
+            i < 0 ||
+            i >= this.getTotal()
+        ) {
+            return
+        }
+
+        this.slide(i, activeIndex < i ? "next" : "prev")
+    }
+
+    handleEnter = () => {
+        this.sliding = true
+
+        this.props.onSlide?.(this.state.activeIndex)
+    }
+
+    handleEntered = () => {
+        this.sliding = false
+
+        this.props.onSlid?.(this.state.activeIndex)
     }
 
     render() {
@@ -134,7 +157,9 @@ class Carousel extends React.Component<CarouselProps, CarouselState> {
                 return React.cloneElement(
                     c,
                     {
-                        __index__: i
+                        __index__: i,
+                        __onEnter__: this.handleEnter,
+                        __onEntered__: this.handleEntered
                     }
                 )
             }

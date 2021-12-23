@@ -1,8 +1,13 @@
 import * as React from "react"
 import {omit} from "reap-utils/lib"
 import classNames from "reap-utils/lib/class-names"
-import {isValidNode, Transition} from "reap-utils/lib/react"
+import {
+    isValidNode,
+    NoTransition,
+    Transition
+} from "reap-utils/lib/react"
 import {StateType} from "reap-utils/lib/react/transition/interface"
+import {ACTIVE_CLASS} from "../Commons/consts-and-types"
 import CarouselContext from "./context"
 import {
     CarouselItemProps,
@@ -17,7 +22,6 @@ const START_CLASS = `${ITEM_PREFIX}-start`
 const END_CLASS = `${ITEM_PREFIX}-end`
 const NEXT_CLASS = `${ITEM_PREFIX}-next`
 const PREV_CLASS = `${ITEM_PREFIX}-prev`
-const ACTIVE_CLASS = "active"
 
 const getTransitionRenderer = (
     el: React.ReactElement,
@@ -69,6 +73,8 @@ const CarouselItem: React.FunctionComponent<CarouselItemProps> = (
         captionClass,
         children,
         __index__,
+        __onEnter__,
+        __onEntered__,
         ...restProps
     }
 ) => {
@@ -104,18 +110,17 @@ const CarouselItem: React.FunctionComponent<CarouselItemProps> = (
                 {captionEl}
             </div>
         )
-
-        if (slide) {
-            return (
-                <Transition
-                    nodeRef={ref}
-                    in={__index__ === activeIndex}>
-                    {getTransitionRenderer(el, classes, dir)}
-                </Transition>
-            )
+        const transitionProps = {
+            in: __index__ === activeIndex,
+            nodeRef: ref,
+            children: getTransitionRenderer(el, classes, dir),
+            onEnter: __onEnter__,
+            onEntered: __onEntered__
         }
 
-        return el
+        return slide ?
+            <Transition {...transitionProps} /> :
+            <NoTransition {...transitionProps} />
     }
 
     return (

@@ -19,8 +19,8 @@ export interface CarouselProps extends DivAttrs, SlideProps {
     indicators?: boolean
     fade?: boolean
     variant?: "dark"
-    onSlide?: () => void
-    onSlid?: () => void
+    onSlide?: (i: number) => void
+    onSlid?: (i: number) => void
 }
 
 export type Direction = "prev" | "next"
@@ -36,6 +36,8 @@ export interface CarouselItemProps extends DivAttrs {
     interval?: number
     // internal only
     __index__?: number
+    __onEnter__?: () => void
+    __onEntered__?: () => void
 }
 
 type BaseProps = Omit<ButtonAttrs, "onClick"> &
