@@ -5,7 +5,11 @@ import {getPrefixFunc, map} from "../Commons/utils"
 import CarouselItem, {PREFIX} from "./Item"
 import Indicator from "./Indicator"
 import CarouselContext from "./context"
-import {CarouselProps, CarouselState, Direction} from "./types"
+import {
+    CarouselProps,
+    CarouselState,
+    Direction
+} from "./types"
 
 class Carousel extends React.Component<CarouselProps, CarouselState> {
     constructor(props: CarouselProps) {
