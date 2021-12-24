@@ -1,5 +1,6 @@
 import * as React from "react"
 import classNames from "reap-utils/lib/class-names"
+import {ACTIVE_CLASS} from "../Commons/consts-and-types"
 import {IndicatorProps} from "./types"
 
 export default React.forwardRef(
@@ -15,7 +16,7 @@ export default React.forwardRef(
     ) => {
         const classes = classNames(
             classNames,
-            active && "active"
+            active && ACTIVE_CLASS
         )
         const handleClick = () => {
             if (onClick) {

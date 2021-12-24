@@ -2,7 +2,7 @@ import * as React from "react"
 import {isUndef, omit} from "reap-utils/lib"
 import classNames from "reap-utils/lib/class-names"
 import {getPrefixFunc, map} from "../Commons/utils"
-import CarouselItem, {PREFIX} from "./Item"
+import CarouselItem from "./Item"
 import Indicator from "./Indicator"
 import CarouselContext from "./context"
 import {
@@ -11,6 +11,7 @@ import {
     Direction
 } from "./types"
 import ControlBtn from "./ControlBtn"
+import {PREFIX} from "./constants"
 
 class Carousel extends React.Component<CarouselProps, CarouselState> {
     sliding = false
@@ -128,7 +129,7 @@ class Carousel extends React.Component<CarouselProps, CarouselState> {
     handleKeydown = (evt: React.KeyboardEvent) => {
         const key = evt.key.toLowerCase()
 
-        switch(key) {
+        switch (key) {
             case "arrowleft":
                 this.prev()
                 break
@@ -136,7 +137,7 @@ class Carousel extends React.Component<CarouselProps, CarouselState> {
                 this.next()
                 break
             default:
-                // do nothing
+            // do nothing
         }
     }
 
@@ -193,7 +194,6 @@ class Carousel extends React.Component<CarouselProps, CarouselState> {
 
     renderChildren(
         children: React.ReactNode,
-        prefix: string,
         indicators?: boolean
     ) {
         const indicatorEls: React.ReactElement[] = []
@@ -232,7 +232,7 @@ class Carousel extends React.Component<CarouselProps, CarouselState> {
 
         if (indicatorEls.length) {
             indicatorWrapper = (
-                <div className={`${prefix}-indicators`}>
+                <div className={`${PREFIX}-indicators`}>
                     {indicatorEls}
                 </div>
             )
@@ -263,7 +263,7 @@ class Carousel extends React.Component<CarouselProps, CarouselState> {
             fade && prefix("fade"),
             variant === "dark" && prefix("dark")
         )
-        const children = this.renderChildren(c, PREFIX, indicators)
+        const children = this.renderChildren(c, indicators)
         const props = omit(
             restProps,
             [

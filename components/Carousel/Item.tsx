@@ -8,20 +8,20 @@ import {
 } from "reap-utils/lib/react"
 import {StateType} from "reap-utils/lib/react/transition/interface"
 import {ACTIVE_CLASS} from "../Commons/consts-and-types"
+import {
+    END_CLASS,
+    ITEM_PREFIX,
+    NEXT_CLASS,
+    PREFIX,
+    PREV_CLASS,
+    START_CLASS
+} from "./constants"
 import CarouselContext from "./context"
 import {
     CarouselItemProps,
     ContextObject,
     Direction
 } from "./types"
-
-export const PREFIX = "carousel"
-export const ITEM_PREFIX = `${PREFIX}-item`
-
-const START_CLASS = `${ITEM_PREFIX}-start`
-const END_CLASS = `${ITEM_PREFIX}-end`
-const NEXT_CLASS = `${ITEM_PREFIX}-next`
-const PREV_CLASS = `${ITEM_PREFIX}-prev`
 
 const getTransitionRenderer = (
     el: React.ReactElement,
