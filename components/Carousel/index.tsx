@@ -12,27 +12,20 @@ import {
 } from "./types"
 import ControlBtn from "./ControlBtn"
 import {PREFIX} from "./constants"
+import {DivAttrs} from "../Commons/consts-and-types"
+import {defaultProps, propsTypes} from "./props"
 
 class Carousel extends React.Component<CarouselProps, CarouselState> {
     sliding = false
     queue: Function[] = []
     timer: number | null = null
-
-    static defaultProps: CarouselProps = {
-        slide: true,
-        keyboard: true,
-        wrap: true,
-        interval: 5000,
-        pause: "hover"
+    state = {
+        activeIndex: 0
     }
 
-    constructor(props: CarouselProps) {
-        super(props)
-
-        this.state = {
-            activeIndex: 0
-        }
-    }
+    static Item = CarouselItem
+    static defaultProps = defaultProps
+    static propTypes  = propsTypes
 
     componentDidMount() {
         if (!this.props.ride) {
@@ -49,6 +42,7 @@ class Carousel extends React.Component<CarouselProps, CarouselState> {
 
         return React.Children.count(children)
     }
+
     prev = () => {
         if (this.queue.length) {
             return
@@ -73,9 +67,8 @@ class Carousel extends React.Component<CarouselProps, CarouselState> {
         }
 
         let {activeIndex} = this.state
-        const total = this.getTotal()
 
-        if (activeIndex === total - 1) {
+        if (activeIndex === this.getTotal() - 1) {
             if (this.props.wrap) {
                 activeIndex = 0
             }
@@ -115,7 +108,7 @@ class Carousel extends React.Component<CarouselProps, CarouselState> {
         }
 
         this.pause()
-        
+
         const currentChild = children[activeIndex]
         this.timer = window.setTimeout(
             this.nextWhenVisible,
@@ -124,9 +117,7 @@ class Carousel extends React.Component<CarouselProps, CarouselState> {
     }
 
     handleKeydown = (evt: React.KeyboardEvent) => {
-        const key = evt.key.toLowerCase()
-
-        switch (key) {
+        switch (evt.key.toLowerCase()) {
             case "arrowleft":
                 this.prev()
                 break
@@ -140,9 +131,7 @@ class Carousel extends React.Component<CarouselProps, CarouselState> {
 
     slide(i: number, dir: Direction) {
         if (i === this.state.activeIndex) {
-            this.cycle()
-
-            return
+            return this.cycle()
         }
 
         if (!this.sliding) {
@@ -181,9 +170,7 @@ class Carousel extends React.Component<CarouselProps, CarouselState> {
         this.props.onSlid?.(this.state.activeIndex)
 
         if (this.queue.length) {
-            const fn = this.queue.shift()
-
-            setTimeout(fn!, 20)
+            setTimeout(this.queue.shift()!, 20)
         } else {
             this.cycle()
         }
@@ -192,25 +179,47 @@ class Carousel extends React.Component<CarouselProps, CarouselState> {
     getTabIndex() {
         const {tabIndex, keyboard} = this.props
 
-        if (tabIndex === undefined && keyboard) {
-            return -1
-        }
-
-        return tabIndex
+        return tabIndex === undefined && keyboard ? -1 : tabIndex
     }
 
-    renderChildren(
-        children: React.ReactNode,
-        indicators?: boolean
-    ) {
+    cloneItem(c: React.ReactElement, i: number) {
+        return React.cloneElement(
+            c,
+            {
+                __index__: i,
+                __onEnter__: this.handleEnter,
+                __onEntered__: this.handleEntered
+            }
+        )
+    }
+
+    getEventCallbacks() {
+        const {keyboard, pause} = this.props
+        const props: DivAttrs = {}
+
+        if (pause === "hover") {
+            props.onMouseEnter = this.pause
+            props.onMouseLeave = this.cycle
+        }
+
+        if (keyboard) {
+            props.onKeyDown = this.handleKeydown
+        }
+
+        return props
+    }
+
+    renderChildren() {
+        const {children, indicators} = this.props
         const indicatorEls: React.ReactElement[] = []
         let indicatorWrapper: React.ReactElement | undefined
         let childrenEl = map(
             children,
             (c, i) => {
-                if (c.type !== CarouselItem) {
+                // @ts-ignore: 'Item' does not exist on type 'Function'
+                if (c.type !== this.constructor.Item) {
                     throw new TypeError(
-                        "The children of the Carousel must be Carousel.Item"
+                        "The children of the Carousel must be CarouselItem"
                     )
                 }
 
@@ -226,14 +235,7 @@ class Carousel extends React.Component<CarouselProps, CarouselState> {
                     )
                 }
 
-                return React.cloneElement(
-                    c,
-                    {
-                        __index__: i,
-                        __onEnter__: this.handleEnter,
-                        __onEntered__: this.handleEntered
-                    }
-                )
+                return this.cloneItem(c, i)
             }
         )
 
@@ -248,30 +250,24 @@ class Carousel extends React.Component<CarouselProps, CarouselState> {
         return [childrenEl, indicatorWrapper]
     }
 
-    render() {
-        const {
-            className,
-            fade,
-            controls,
-            indicators,
-            children: c,
-            variant,
-            keyboard,
-            slide,
-            pause,
-            ...restProps
-        } = this.props
-        const prefix = getPrefixFunc(PREFIX)
-        const ctrlPrefix = getPrefixFunc(prefix("control"))
-        const classes = classNames(
-            className,
-            prefix(),
-            fade && prefix("fade"),
-            variant === "dark" && prefix("dark")
-        )
-        const children = this.renderChildren(c, indicators)
-        const props = omit(
-            restProps,
+    renderControls() {
+        const ctrlPrefix = `${PREFIX}-control`
+
+        return this.props.controls ? (
+            <>
+                <ControlBtn
+                    onClick={this.prev}
+                    prefix={`${ctrlPrefix}-prev`} />
+                <ControlBtn
+                    onClick={this.next}
+                    prefix={`${ctrlPrefix}-next`} />
+            </>
+        ) : null
+    }
+
+    omitProps(props: Partial<CarouselProps>) {
+        return omit(
+            props,
             [
                 "interval",
                 "wrap",
@@ -279,24 +275,42 @@ class Carousel extends React.Component<CarouselProps, CarouselState> {
                 "ride",
                 "onSlide",
                 "onSlid",
-                "tabIndex"
+                "tabIndex",
+                "keyboard",
+                "pause",
+                "children",
+                "indicators",
+                "controls"
             ]
         )
+    }
 
-        if (pause === "hover") {
-            props.onMouseEnter = this.pause
-            props.onMouseLeave = this.cycle
-        }
-
-        if (keyboard) {
-            props.onKeyDown = this.handleKeydown
+    render() {
+        const {
+            className,
+            fade,
+            variant,
+            slide,
+            ...restProps
+        } = this.props
+        const prefix = getPrefixFunc(PREFIX)
+        const classes = classNames(
+            className,
+            prefix(),
+            fade && prefix("fade"),
+            variant === "dark" && prefix("dark")
+        )
+        const children = this.renderChildren()
+        const newProps = {
+            ...this.omitProps(restProps),
+            ...this.getEventCallbacks()
         }
 
         return (
             <div
                 tabIndex={this.getTabIndex()}
                 className={classes}
-                {...props}>
+                {...newProps}>
                 {children[1]}
                 <div className={prefix("inner")}>
                     <CarouselContext.Provider
@@ -304,18 +318,7 @@ class Carousel extends React.Component<CarouselProps, CarouselState> {
                         {children[0]}
                     </CarouselContext.Provider>
                 </div>
-                {
-                    controls ? (
-                        <>
-                            <ControlBtn
-                                onClick={this.prev}
-                                prefix={ctrlPrefix("prev")} />
-                            <ControlBtn
-                                onClick={this.next}
-                                prefix={ctrlPrefix("next")} />
-                        </>
-                    ) : null
-                }
+                {this.renderControls()}
             </div>
         )
     }

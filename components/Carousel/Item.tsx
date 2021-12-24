@@ -17,6 +17,7 @@ import {
     START_CLASS
 } from "./constants"
 import CarouselContext from "./context"
+import {itemPropsTypes} from "./props"
 import {
     CarouselItemProps,
     ContextObject,
@@ -139,5 +140,7 @@ const CarouselItem: React.FunctionComponent<CarouselItemProps> = (
         </CarouselContext.Consumer>
     )
 }
+
+CarouselItem.propTypes = itemPropsTypes
 
 export default CarouselItem
