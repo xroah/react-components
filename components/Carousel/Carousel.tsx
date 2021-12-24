@@ -189,6 +189,16 @@ class Carousel extends React.Component<CarouselProps, CarouselState> {
         }
     }
 
+    getTabIndex() {
+        const {tabIndex, keyboard} = this.props
+
+        if (tabIndex === undefined && keyboard) {
+            return -1
+        }
+
+        return tabIndex
+    }
+
     renderChildren(
         children: React.ReactNode,
         indicators?: boolean
@@ -240,7 +250,6 @@ class Carousel extends React.Component<CarouselProps, CarouselState> {
 
     render() {
         const {
-            tabIndex,
             className,
             fade,
             controls,
@@ -269,7 +278,8 @@ class Carousel extends React.Component<CarouselProps, CarouselState> {
                 "touch",
                 "ride",
                 "onSlide",
-                "onSlid"
+                "onSlid",
+                "tabIndex"
             ]
         )
 
@@ -284,7 +294,7 @@ class Carousel extends React.Component<CarouselProps, CarouselState> {
 
         return (
             <div
-                tabIndex={keyboard && isUndef(tabIndex) ? -1 : tabIndex}
+                tabIndex={this.getTabIndex()}
                 className={classes}
                 {...props}>
                 {children[1]}

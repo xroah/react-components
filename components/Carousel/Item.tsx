@@ -66,6 +66,26 @@ const getTransitionRenderer = (
     }
 }
 
+export function getCaption(
+    caption?: React.ReactNode,
+    captionClass?: string
+) {
+    if (!isValidNode(caption)) {
+        return null
+    }
+
+    return (
+        <div className={
+            classNames(
+                captionClass,
+                `${PREFIX}-caption`
+            )
+        }>
+            {caption}
+        </div>
+    )
+}
+
 const CarouselItem: React.FunctionComponent<CarouselItemProps> = (
     {
         className,
@@ -91,23 +111,13 @@ const CarouselItem: React.FunctionComponent<CarouselItemProps> = (
             ITEM_PREFIX,
             !slide && activeIndex === __index__ && ACTIVE_CLASS
         )
-        const captionEl = isValidNode(caption) ? (
-            <div className={
-                classNames(
-                    captionClass,
-                    `${PREFIX}-caption`
-                )
-            }>
-                {caption}
-            </div>
-        ) : null
         const el = (
             <div
                 className={classes}
                 ref={ref}
                 {...omit(restProps, "interval")}>
                 {children}
-                {captionEl}
+                {getCaption(caption, captionClass)}
             </div>
         )
         const transitionProps = {

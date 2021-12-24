@@ -8,13 +8,16 @@ export interface SlideProps {
     slide?: boolean
 }
 
-export interface CarouselProps extends DivAttrs, SlideProps {
+export interface IntervalProps {
+    interval?: number
+}
+
+export interface CarouselProps extends DivAttrs, SlideProps, IntervalProps {
     keyboard?: boolean
     pause?: false | "hover"
     ride?: boolean | "carousel"
     wrap?: boolean
     touch?: boolean
-    interval?: number
     controls?: boolean
     indicators?: boolean
     fade?: boolean
@@ -30,10 +33,9 @@ export interface CarouselState {
     dir?: Direction
 }
 
-export interface CarouselItemProps extends DivAttrs {
+export interface CarouselItemProps extends DivAttrs, IntervalProps {
     caption?: React.ReactNode
     captionClass?: string
-    interval?: number
     // internal only
     __index__?: number
     __onEnter__?: () => void
