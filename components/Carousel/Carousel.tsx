@@ -49,22 +49,6 @@ class Carousel extends React.Component<CarouselProps, CarouselState> {
 
         return React.Children.count(children)
     }
-
-    getNext() {
-        let {activeIndex} = this.state
-        const total = this.getTotal()
-
-        if (activeIndex === total - 1) {
-            if (this.props.wrap) {
-                activeIndex = 0
-            }
-        } else {
-            activeIndex++
-        }
-
-        return activeIndex
-    }
-
     prev = () => {
         if (this.queue.length) {
             return
@@ -88,7 +72,18 @@ class Carousel extends React.Component<CarouselProps, CarouselState> {
             return
         }
 
-        this.slide(this.getNext(), "next")
+        let {activeIndex} = this.state
+        const total = this.getTotal()
+
+        if (activeIndex === total - 1) {
+            if (this.props.wrap) {
+                activeIndex = 0
+            }
+        } else {
+            activeIndex++
+        }
+
+        this.slide(activeIndex, "next")
     }
 
     nextWhenVisible = () => {
@@ -109,21 +104,23 @@ class Carousel extends React.Component<CarouselProps, CarouselState> {
 
     cycle = () => {
         const {children, interval} = this.props
+        const {activeIndex} = this.state
 
-        if (!Array.isArray(children) || !interval) {
+        if (
+            !Array.isArray(children) ||
+            !interval ||
+            interval < 0
+        ) {
             return
         }
 
-        const nextChild = children[this.getNext()]
-
         this.pause()
-
-        if (nextChild) {
-            this.timer = window.setTimeout(
-                this.nextWhenVisible,
-                nextChild.props.interval || interval
-            )
-        }
+        
+        const currentChild = children[activeIndex]
+        this.timer = window.setTimeout(
+            this.nextWhenVisible,
+            currentChild.props.interval || interval
+        )
     }
 
     handleKeydown = (evt: React.KeyboardEvent) => {
