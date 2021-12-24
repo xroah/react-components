@@ -13,6 +13,7 @@ import {
 
 class Carousel extends React.Component<CarouselProps, CarouselState> {
     sliding = false
+    queue: Function[] = []
 
     constructor(props: CarouselProps) {
         super(props)
@@ -33,6 +34,10 @@ class Carousel extends React.Component<CarouselProps, CarouselState> {
     }
 
     prev = () => {
+        if (this.queue.length) {
+            return
+        }
+
         let {activeIndex} = this.state
 
         if (activeIndex === 0) {
@@ -45,6 +50,10 @@ class Carousel extends React.Component<CarouselProps, CarouselState> {
     }
 
     next = () => {
+        if (this.queue.length) {
+            return
+        }
+
         let {activeIndex} = this.state
         const total = this.getTotal()
 
@@ -82,6 +91,14 @@ class Carousel extends React.Component<CarouselProps, CarouselState> {
             return
         }
 
+        if (this.sliding) {
+            this.queue.push(
+                () => this.to(i)
+            )
+
+            return
+        }
+
         this.slide(i, activeIndex < i ? "next" : "prev")
     }
 
@@ -92,9 +109,14 @@ class Carousel extends React.Component<CarouselProps, CarouselState> {
     }
 
     handleEntered = () => {
+        const fn = this.queue.shift()
         this.sliding = false
 
         this.props.onSlid?.(this.state.activeIndex)
+
+        if (fn) {
+            setTimeout(fn, 20)
+        }
     }
 
     render() {
