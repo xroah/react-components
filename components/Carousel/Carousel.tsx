@@ -10,14 +10,22 @@ import {
     CarouselState,
     Direction
 } from "./types"
+import ControlBtn from "./ControlBtn"
 
 class Carousel extends React.Component<CarouselProps, CarouselState> {
     sliding = false
     queue: Function[] = []
 
+    static defaultProps: CarouselProps = {
+        slide: true,
+        keyboard: true,
+        wrap: true,
+        interval: 5000
+    }
+
     constructor(props: CarouselProps) {
         super(props)
-
+        
         this.state = {
             activeIndex: 0
         }
@@ -84,19 +92,12 @@ class Carousel extends React.Component<CarouselProps, CarouselState> {
     to(i: number) {
         const {activeIndex} = this.state
 
-        if (
-            i < 0 ||
-            i >= this.getTotal()
-        ) {
+        if (i < 0 || i >= this.getTotal()) {
             return
         }
 
         if (this.sliding) {
-            this.queue.push(
-                () => this.to(i)
-            )
-
-            return
+            return this.queue.push(() => this.to(i))
         }
 
         this.slide(i, activeIndex < i ? "next" : "prev")
@@ -109,52 +110,24 @@ class Carousel extends React.Component<CarouselProps, CarouselState> {
     }
 
     handleEntered = () => {
-        const fn = this.queue.shift()
         this.sliding = false
 
         this.props.onSlid?.(this.state.activeIndex)
 
-        if (fn) {
-            setTimeout(fn, 20)
+        if (this.queue.length) {
+            const fn = this.queue.shift()
+
+            setTimeout(fn!, 20)
         }
     }
 
-    render() {
-        const {
-            className,
-            fade,
-            controls,
-            indicators,
-            children,
-            variant,
-            slide,
-        } = this.props
-        const prefix = getPrefixFunc(PREFIX)
-        const ctrlPrefix = getPrefixFunc(prefix("control"))
-        const classes = classNames(
-            className,
-            prefix(),
-            fade && prefix("fade"),
-            variant === "dark" && prefix("dark")
-        )
-        const ctrlEl = controls ? (
-            <>
-                <button
-                    className={ctrlPrefix("prev")}
-                    type="button"
-                    onClick={this.prev}>
-                    <span className={ctrlPrefix("prev-icon")} />
-                </button>
-                <button
-                    className={ctrlPrefix("next")}
-                    type="button"
-                    onClick={this.next} >
-                    <span className={ctrlPrefix("next-icon")} />
-                </button>
-            </>
-        ) : null
-        let indicatorWrapper: React.ReactElement | null = null
-        let indicatorEls: React.ReactElement[] = []
+    renderChildren(
+        children: React.ReactNode,
+        prefix: string,
+        indicators?: boolean
+    ) {
+        const indicatorEls: React.ReactElement[] = []
+        let indicatorWrapper: React.ReactElement | undefined
         let childrenEl = map(
             children,
             (c, i) => {
@@ -187,23 +160,62 @@ class Carousel extends React.Component<CarouselProps, CarouselState> {
             }
         )
 
-        if (indicators) {
+        if (indicatorEls.length) {
             indicatorWrapper = (
-                <div className={prefix("indicators")}>
+                <div className={`${prefix}-indicators`}>
                     {indicatorEls}
                 </div>
             )
         }
 
+        return [childrenEl, indicatorWrapper]
+    }
+
+    render() {
+        const {
+            tabIndex,
+            className,
+            fade,
+            controls,
+            indicators,
+            children: c,
+            variant,
+            keyboard,
+            slide,
+        } = this.props
+        const prefix = getPrefixFunc(PREFIX)
+        const ctrlPrefix = getPrefixFunc(prefix("control"))
+        const classes = classNames(
+            className,
+            prefix(),
+            fade && prefix("fade"),
+            variant === "dark" && prefix("dark")
+        )
+        const children = this.renderChildren(c, PREFIX, indicators)
+
         return (
-            <div className={classes}>
-                {indicatorWrapper}
+            <div
+                tabIndex={keyboard && isUndef(tabIndex) ? -1 : tabIndex}
+                className={classes}>
+                {children[1]}
                 <div className={prefix("inner")}>
-                    <CarouselContext.Provider value={{...this.state, slide}}>
-                        {childrenEl}
+                    <CarouselContext.Provider
+                        value={{...this.state, slide}}>
+                        {children[0]}
                     </CarouselContext.Provider>
                 </div>
-                {ctrlEl}
+                {
+                    controls ? (
+                        <>
+                            <ControlBtn
+                                onClick={this.prev}
+                                prefix={ctrlPrefix("prev")} />
+                            <ControlBtn
+                                onClick={this.next}
+                                prefix={ctrlPrefix("next")} />
+                        </>
+                    ) : null
+                }
             </div>
         )
     }

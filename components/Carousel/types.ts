@@ -49,3 +49,7 @@ export interface IndicatorProps extends BaseProps {
 }
 
 export type ContextObject = CarouselState & SlideProps
+
+export interface ControlBtnProps extends ButtonAttrs {
+    prefix: string
+}
