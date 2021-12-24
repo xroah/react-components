@@ -25,7 +25,7 @@ class Carousel extends React.Component<CarouselProps, CarouselState> {
 
     static Item = CarouselItem
     static defaultProps = defaultProps
-    static propTypes  = propsTypes
+    static propTypes = propsTypes
 
     componentDidMount() {
         if (!this.props.ride) {
@@ -280,7 +280,9 @@ class Carousel extends React.Component<CarouselProps, CarouselState> {
                 "pause",
                 "children",
                 "indicators",
-                "controls"
+                "controls",
+                "slide",
+                "fade"
             ]
         )
     }
@@ -297,6 +299,7 @@ class Carousel extends React.Component<CarouselProps, CarouselState> {
         const classes = classNames(
             className,
             prefix(),
+            slide && "slide",
             fade && prefix("fade"),
             variant === "dark" && prefix("dark")
         )

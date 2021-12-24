@@ -1,3 +1,4 @@
+import {ReactNode} from "react";
 import {
     ButtonAttrs,
     DivAttrs,
@@ -31,6 +32,7 @@ export type Direction = "prev" | "next"
 export interface CarouselState {
     activeIndex: number
     dir?: Direction
+    next?: ReactNode
 }
 
 export interface CarouselItemProps extends DivAttrs, IntervalProps {
