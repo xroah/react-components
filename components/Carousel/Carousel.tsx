@@ -41,7 +41,7 @@ class Carousel extends React.Component<CarouselProps, CarouselState> {
             activeIndex--
         }
 
-        this.to(activeIndex)
+        this.slide(activeIndex, "prev")
     }
 
     next = () => {
