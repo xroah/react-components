@@ -1,5 +1,5 @@
 import * as React from "react"
-import {isUndef} from "reap-utils/lib"
+import {isUndef, omit} from "reap-utils/lib"
 import classNames from "reap-utils/lib/class-names"
 import {getPrefixFunc, map} from "../Commons/utils"
 import CarouselItem, {PREFIX} from "./Item"
@@ -15,19 +15,27 @@ import ControlBtn from "./ControlBtn"
 class Carousel extends React.Component<CarouselProps, CarouselState> {
     sliding = false
     queue: Function[] = []
+    timer: number | null = null
 
     static defaultProps: CarouselProps = {
         slide: true,
         keyboard: true,
         wrap: true,
-        interval: 5000
+        interval: 5000,
+        pause: "hover"
     }
 
     constructor(props: CarouselProps) {
         super(props)
-        
+
         this.state = {
             activeIndex: 0
+        }
+    }
+
+    componentDidMount() {
+        if (!this.props.ride) {
+            this.cycle()
         }
     }
 
@@ -41,6 +49,21 @@ class Carousel extends React.Component<CarouselProps, CarouselState> {
         return React.Children.count(children)
     }
 
+    getNext() {
+        let {activeIndex} = this.state
+        const total = this.getTotal()
+
+        if (activeIndex === total - 1) {
+            if (this.props.wrap) {
+                activeIndex = 0
+            }
+        } else {
+            activeIndex++
+        }
+
+        return activeIndex
+    }
+
     prev = () => {
         if (this.queue.length) {
             return
@@ -49,7 +72,9 @@ class Carousel extends React.Component<CarouselProps, CarouselState> {
         let {activeIndex} = this.state
 
         if (activeIndex === 0) {
-            activeIndex = this.getTotal() - 1
+            if (this.props.wrap) {
+                activeIndex = this.getTotal() - 1
+            }
         } else {
             activeIndex--
         }
@@ -62,30 +87,73 @@ class Carousel extends React.Component<CarouselProps, CarouselState> {
             return
         }
 
-        let {activeIndex} = this.state
-        const total = this.getTotal()
-
-        if (activeIndex === total - 1) {
-            activeIndex = 0
-        } else {
-            activeIndex++
-        }
-
-        this.slide(activeIndex, "next")
+        this.slide(this.getNext(), "next")
     }
 
-    slide(i: number, dir: Direction) {
-        if (
-            i === this.state.activeIndex ||
-            this.sliding
-        ) {
+    nextWhenVisible = () => {
+        if (document.hidden) {
+            this.cycle()
+        } else {
+            this.next()
+        }
+    }
+
+    pause = () => {
+        if (this.timer !== null) {
+            window.clearTimeout(this.timer)
+
+            this.timer = null
+        }
+    }
+
+    cycle = () => {
+        const {children, interval} = this.props
+
+        if (!Array.isArray(children) || !interval) {
             return
         }
 
-        this.setState({
-            activeIndex: i,
-            dir
-        })
+        const nextChild = children[this.getNext()]
+
+        this.pause()
+
+        if (nextChild) {
+            this.timer = window.setTimeout(
+                this.nextWhenVisible,
+                nextChild.props.interval || interval
+            )
+        }
+    }
+
+    handleKeydown = (evt: React.KeyboardEvent) => {
+        const key = evt.key.toLowerCase()
+
+        switch(key) {
+            case "arrowleft":
+                this.prev()
+                break
+            case "arrowright":
+                this.next()
+                break
+            default:
+                // do nothing
+        }
+    }
+
+    slide(i: number, dir: Direction) {
+        if (i === this.state.activeIndex) {
+            this.cycle()
+
+            return
+        }
+
+        if (!this.sliding) {
+            this.pause()
+            this.setState({
+                activeIndex: i,
+                dir
+            })
+        }
     }
 
     // for indicators
@@ -118,6 +186,8 @@ class Carousel extends React.Component<CarouselProps, CarouselState> {
             const fn = this.queue.shift()
 
             setTimeout(fn!, 20)
+        } else {
+            this.cycle()
         }
     }
 
@@ -133,7 +203,7 @@ class Carousel extends React.Component<CarouselProps, CarouselState> {
             (c, i) => {
                 if (c.type !== CarouselItem) {
                     throw new TypeError(
-                        "The children of Carousel should be Carousel.Item"
+                        "The children of the Carousel must be Carousel.Item"
                     )
                 }
 
@@ -182,6 +252,8 @@ class Carousel extends React.Component<CarouselProps, CarouselState> {
             variant,
             keyboard,
             slide,
+            pause,
+            ...restProps
         } = this.props
         const prefix = getPrefixFunc(PREFIX)
         const ctrlPrefix = getPrefixFunc(prefix("control"))
@@ -192,11 +264,32 @@ class Carousel extends React.Component<CarouselProps, CarouselState> {
             variant === "dark" && prefix("dark")
         )
         const children = this.renderChildren(c, PREFIX, indicators)
+        const props = omit(
+            restProps,
+            [
+                "interval",
+                "wrap",
+                "touch",
+                "ride",
+                "onSlide",
+                "onSlid"
+            ]
+        )
+
+        if (pause === "hover") {
+            props.onMouseEnter = this.pause
+            props.onMouseLeave = this.cycle
+        }
+
+        if (keyboard) {
+            props.onKeyDown = this.handleKeydown
+        }
 
         return (
             <div
                 tabIndex={keyboard && isUndef(tabIndex) ? -1 : tabIndex}
-                className={classes}>
+                className={classes}
+                {...props}>
                 {children[1]}
                 <div className={prefix("inner")}>
                     <CarouselContext.Provider

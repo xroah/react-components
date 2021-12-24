@@ -10,7 +10,7 @@ export interface SlideProps {
 
 export interface CarouselProps extends DivAttrs, SlideProps {
     keyboard?: boolean
-    pause?: boolean | "hover"
+    pause?: false | "hover"
     ride?: boolean | "carousel"
     wrap?: boolean
     touch?: boolean
