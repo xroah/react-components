@@ -67,17 +67,7 @@ class AnotherCarousel extends Carousel {
         }
     }
 
-    slide(i: number, dir: Direction) {
-        if (i === this.state.activeIndex) {
-            return this.cycle()
-        }
-
-        const {current: inner} = this.innerRef
-
-        if (this.sliding || !inner) {
-            return
-        }
-
+    performSlide(i: number, dir: Direction) {
         const total = this.getTotal()
         const update = (distance: number) => {
             this.toggleTransitionStyle()
@@ -85,16 +75,24 @@ class AnotherCarousel extends Carousel {
             this.startTransition()
         }
 
-        super.slide(i, dir)
-
+        /**
+         * current is last and next is first,
+         * append the first item as last,  translate after update
+         */
         if (dir === "next" && i === 0) {
             this.setState(
                 {next: this.cloneNode(i)},
                 () => update(-total * 100)
             )
         } else if (dir === "prev" && i === total - 1) {
+            /**
+             * current is first and prev is last,
+             * prepend the last item as first,
+             * current transform is 0%, so the item is visible already,
+             * translate -100% and then translate 0% to perform the transition
+             */
             this.updateTransform(-100)
-            reflow(inner)
+            reflow(this.innerRef.current!)
             this.setState(
                 {next: this.cloneNode(i)},
                 () => update(0)
@@ -104,20 +102,28 @@ class AnotherCarousel extends Carousel {
         }
     }
 
+    slide(i: number, dir: Direction) {
+        if (this.innerRef.current) {
+            super.slide(
+                i,
+                dir,
+                () => this.performSlide(i, dir)
+            )
+        }
+    }
+
     startTransition() {
-        this.sliding = true
         this.transitionTimer = window.setTimeout(
             this.handleTransitionEnd,
             DURATION + DURATION_PADDING
         )
 
-        this.props.onSlide?.(this.state.activeIndex)
+        this.handleEnter()
     }
 
     handleTransitionEnd = () => {
         const {dir, activeIndex: i} = this.state
         const total = this.getTotal()
-        this.sliding = false
 
         if (this.transitionTimer) {
             window.clearTimeout(this.transitionTimer)
@@ -125,12 +131,14 @@ class AnotherCarousel extends Carousel {
             this.transitionTimer = null
         }
 
+        // remove transition
         this.toggleTransitionStyle(false)
 
         if (
             (dir === "prev" && i === total - 1) ||
             (dir === "next" && i === 0)
         ) {
+            // remove next element and translate to correction position
             this.setState(
                 {next: null},
                 () => {
