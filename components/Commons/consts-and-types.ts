@@ -2,7 +2,8 @@ import {
     AnchorHTMLAttributes,
     ButtonHTMLAttributes,
     HTMLAttributes,
-    InputHTMLAttributes
+    InputHTMLAttributes,
+    ReactElement
 } from "react"
 
 export type ValueOf<T extends readonly any[]> = T[number]
@@ -65,6 +66,9 @@ export type Booleanish = boolean | "true" | "false"
 
 export type CSSComponentProps = {
     className?: string
+    // for error hint of typescript
+    // if children extend from super may not cause an error
+    children: ReactElement
 }
 
 export interface WithVariantProp<T> extends HTMLAttributes<T> {
@@ -90,3 +94,7 @@ export interface StatusProps {
 
 export const ACTIVE_CLASS = "active"
 export const DISABLED_CLASS = "disabled"
+
+export interface ChildrenProps {
+    children: ReactElement
+}

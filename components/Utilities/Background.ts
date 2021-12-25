@@ -13,7 +13,6 @@ import {only} from "reap-utils/lib/react"
 interface BgProps extends CSSComponentProps {
     variant?: BgColor
     gradient?: boolean
-    children: React.ReactElement
 }
 
 export default function Background(

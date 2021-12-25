@@ -58,9 +58,6 @@ interface AlignmentProps extends CSSComponentProps {
     horizontal?: HBreakpoints | H
     self?: SBreakpoints | S
     content?: CBreakpoints | C
-    // for error hint of typescript
-    // if children extend from super may not cause an error
-    children: React.ReactElement
 }
 
 export default function Alignment(

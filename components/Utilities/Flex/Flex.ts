@@ -45,7 +45,6 @@ interface FlexProps extends CSSComponentProps {
     inline?: boolean | BreakpointType<Breakpoint, boolean>
     wrap?: Wrap | BreakpointType<Breakpoint, Wrap>
     direction?: Direction | BreakpointType<Breakpoint, Direction>
-    children: React.ReactElement
 }
 
 export default function Flex(

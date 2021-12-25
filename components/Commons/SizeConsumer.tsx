@@ -1,14 +1,10 @@
 import * as React from "react"
 import classNames from "reap-utils/lib/class-names";
-import {
-    CSSComponentProps,
-    Size,
-    SizeProp
-} from "./consts-and-types";
+import {Size, SizeProp} from "./consts-and-types";
 import {SizeContext} from "./contexts";
 import {getProp} from "./utils";
 
-type BaseProps = SizeProp & CSSComponentProps
+type BaseProps = SizeProp & {className: string}
 
 interface Props extends SizeProp {
     children: (size?: Size) => React.ReactElement | null

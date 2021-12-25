@@ -31,7 +31,6 @@ interface FlexItemProps extends CSSComponentProps {
     order?: Order | OrderBreakpoints
     grow?: GrowProp
     shrink?: GrowProp
-    children: React.ReactElement
 }
 
 export default function FlexItem(

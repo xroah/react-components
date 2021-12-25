@@ -62,7 +62,6 @@ interface CardTextProps extends CSSComponentProps {
     break?: boolean
     transform?: ValueOf<typeof transforms>
     truncate?: boolean
-    children: React.ReactElement
 }
 
 export default function CardText(

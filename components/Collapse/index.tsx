@@ -7,7 +7,7 @@ import {chainFunction} from "reap-utils/lib"
 
 type Callback = () => void
 
-interface CollapseProps extends DivAttrs {
+export interface CollapseProps extends DivAttrs {
     open?: boolean
     onShow?: Callback
     onShown?: Callback
