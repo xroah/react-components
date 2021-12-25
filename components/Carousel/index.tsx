@@ -129,17 +129,20 @@ class Carousel extends React.Component<CarouselProps, CarouselState> {
         }
     }
 
-    slide(i: number, dir: Direction) {
+    slide(i: number, dir: Direction, cb?: () => void) {
         if (i === this.state.activeIndex) {
             return this.cycle()
         }
 
         if (!this.sliding) {
             this.pause()
-            this.setState({
-                activeIndex: i,
-                dir
-            })
+            this.setState(
+                {
+                    activeIndex: i,
+                    dir
+                },
+                cb
+            )
         }
     }
 

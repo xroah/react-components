@@ -44,8 +44,7 @@ export interface CarouselItemProps extends DivAttrs, IntervalProps {
     __onEntered__?: () => void
 }
 
-type BaseProps = Omit<ButtonAttrs, "onClick"> &
-    Omit<StatusProps, "disabled">
+type BaseProps = Omit<ButtonAttrs, "onClick"> & Omit<StatusProps, "disabled">
 
 export interface IndicatorProps extends BaseProps {
     index: number
