@@ -7,6 +7,7 @@ import {
 
 export type ValueOf<T extends readonly any[]> = T[number]
 
+export const lightDark = ["light", "dark"] as const
 export const variants = <const>[
     "primary",
     "secondary",
@@ -14,8 +15,7 @@ export const variants = <const>[
     "danger",
     "warning",
     "info",
-    "light",
-    "dark"
+    ...lightDark
 ]
 export type Variant = ValueOf<typeof variants>
 

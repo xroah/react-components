@@ -6,7 +6,7 @@ import {AnchorAttrs, ButtonAttrs} from "../Commons/consts-and-types"
 interface NavLinkProps extends AnchorAttrs {
     active?: boolean
     disabled?: boolean
-    tag: "a" | "button"
+    tag?: "a" | "button"
 }
 
 const NavLink: React.FunctionComponent<NavLinkProps> = (
@@ -31,7 +31,7 @@ const NavLink: React.FunctionComponent<NavLinkProps> = (
     }
 
     return React.createElement(
-        tag,
+        tag!,
         {
             className: classes,
             ...restProps,

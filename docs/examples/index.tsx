@@ -13,6 +13,7 @@ import Input from "./Input"
 import Layout from "./Layout"
 import ListGroup from "./ListGroup"
 import Nav from "./Nav"
+import Navbar from "./Navbar"
 import Pagination from "./Pagination"
 import Placeholder from "./Placeholder"
 import Progress from "./Progress"
@@ -37,6 +38,7 @@ export default function () {
             <Layout />
             <ListGroup />
             <Nav />
+            <Navbar />
             <Pagination />
             <Placeholder />
             <Progress />

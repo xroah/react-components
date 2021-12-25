@@ -13,6 +13,8 @@ export interface NavProps extends React.HTMLAttributes<HTMLElement>{
     fill?: boolean
     justify?: boolean
     vertical?: boolean
+    navbar?: boolean
+    scroll?: boolean  // valid when navbar is true
 }
 
 const Nav: React.FunctionComponent<NavProps> = (
@@ -22,13 +24,17 @@ const Nav: React.FunctionComponent<NavProps> = (
         fill,
         justify,
         vertical,
+        navbar,
+        scroll,
         ...restProps
     }
 ) => {
     const prefix = getPrefixFunc("nav")
+    const NAVBAR_PREFIX = "navbar-nav"
     const classes = classNames(
         className,
-        prefix(),
+        navbar ? NAVBAR_PREFIX : prefix(),
+        navbar && scroll && `${NAVBAR_PREFIX}-scroll`,
         vertical && "flex-column",
         variant && prefix(variant),
         fill && prefix("fill"),
@@ -41,7 +47,9 @@ const Nav: React.FunctionComponent<NavProps> = (
 Nav.propTypes = {
     variant: oneOf(variants),
     fill: bool,
-    justify: bool
+    justify: bool,
+    navbar: bool,
+    scroll: bool
 }
 
 export default Nav
