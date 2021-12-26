@@ -1,22 +1,26 @@
-import React, {
+import {
     ReactElement,
     ElementType,
     HTMLAttributes,
     createElement,
     FunctionComponent,
-    Ref,
     forwardRef,
-    ForwardRefExoticComponent
+    ForwardRefExoticComponent,
+    ForwardedRef
 } from "react"
 import classNames from "../class-names"
 
 type OmitClass<T> = Omit<T, "className">
 
 type RenderFunc<T, E> = {
-    (c: string, p: Partial<OmitClass<T>>, ref?: Ref<E>): ReactElement
+    (
+        c: string,
+        p: Partial<OmitClass<T>>,
+        ref?: ForwardedRef<E>
+    ): ReactElement
 }
 
-type DivProps = React.HTMLAttributes<HTMLDivElement>
+type DivProps = HTMLAttributes<HTMLDivElement>
 type BaseProps = HTMLAttributes<HTMLElement>
 type OptionalPropNames = "displayName" | "propTypes" | "defaultProps"
 type ComponentAttrs = {
@@ -44,7 +48,7 @@ function create<T extends BaseProps, E extends HTMLElement>(
         render
     }: CreateOptions<T, E>,
     props: T,
-    ref?: Ref<E>
+    ref?: ForwardedRef<E>
 ) {
     const {
         className: propClass,
@@ -106,7 +110,7 @@ function createForwardRef<T extends BaseProps, E extends HTMLElement>(
     options: CreateOptions<T, E> & ForwardOpts<T>
 ) {
     const Component = forwardRef(
-        (props: T, ref: Ref<E>) => create(options, props, ref)
+        (props: T, ref: ForwardedRef<E>) => create(options, props, ref)
     )
 
     handleComponent(Component, options)
