@@ -8,7 +8,7 @@ import {
 import {DivAttrs} from "../Commons/consts-and-types"
 import Item, {PREFIX} from "./Item"
 import PropTypes from "prop-types"
-import {map} from "../Commons/utils";
+import {map} from "../Commons/utils"
 
 type Open = React.Key | React.Key[]
 
@@ -54,6 +54,7 @@ class Accordion extends React.Component<AccordionProps, State> {
         alwaysOpen: PropTypes.bool,
         onChange: PropTypes.func
     }
+    static Item = Item
 
     constructor(props: AccordionProps) {
         super(props)
