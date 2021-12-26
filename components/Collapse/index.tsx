@@ -5,9 +5,10 @@ import {only, Transition} from "reap-utils/lib/react"
 import {DivAttrs} from "../Commons/consts-and-types"
 import {chainFunction} from "reap-utils/lib"
 
-type Callback = () => void
+type Callback = (node?: HTMLElement) => void
 
 export interface CollapseProps extends DivAttrs {
+    children: React.ReactElement
     open?: boolean
     onShow?: Callback
     onShown?: Callback
@@ -43,24 +44,39 @@ const Collapse: React.FunctionComponent<CollapseProps> = (
             if (height !== undefined) {
                 node.style.height = height
             } else {
-                node.style.height = `${node.scrollHeight}px`
+                /**
+                 * The real height may be not a integer
+                 * like 108.55 and the scrollHeight would be 109,
+                 * and may be show a line(about 1px)  
+                 */
+                const height = node.scrollHeight - 1
+                node.style.height = `${height}px`
             }
         }
     }
-    const handleEnter = chainFunction(
-        updateHeight,
-        onShow
+    const handleEnter = React.useCallback(
+        chainFunction(
+            updateHeight,
+            onShow
+        ),
+        [onShow]
     )
-    const handleEntered = chainFunction(
-        (node?: HTMLElement) => updateHeight(node, ""),
-        onShown
+    const handleEntered = React.useCallback(
+        chainFunction(
+            (node?: HTMLElement) => updateHeight(node, ""),
+            onShown
+        ),
+        [onShown]
     )
     const handleExiting = (node?: HTMLElement) => {
         updateHeight(node, "")
     }
-    const handleExit = chainFunction(
-        updateHeight,
-        onHide
+    const handleExit = React.useCallback(
+        chainFunction(
+            updateHeight,
+            onHide
+        ),
+        [onHide]
     )
 
     return (
