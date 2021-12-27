@@ -13,15 +13,17 @@ interface ListGroupItemProps extends BaseProps {
     tag?: React.ElementType
 }
 
-export default function ListGroupItem({
-    active,
-    disabled,
-    variant,
-    actionable,
-    tag,
-    className,
-    ...restProps
-}: ListGroupItemProps) {
+export default function ListGroupItem(
+    {
+        active,
+        disabled,
+        variant,
+        actionable,
+        tag,
+        className,
+        ...restProps
+    }: ListGroupItemProps
+) {
     const prefix = getPrefixFunc("list-group-item")
     const classes = classNames(
         className,

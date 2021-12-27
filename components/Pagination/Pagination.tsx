@@ -1,5 +1,5 @@
 import React from "react"
-import classNames from "reap-utils/lib/class-names"
+import {createComponent} from "reap-utils/lib/react"
 import {Size} from "../Commons/consts-and-types"
 import {sizePropType} from "../Commons/prop-types"
 
@@ -9,27 +9,19 @@ export interface PaginationProps extends BaseProps {
     size?: Size
 }
 
-export default function Pagination(
-    {
+export default createComponent<PaginationProps>({
+    tag: "ul",
+    className: "pagination",
+    propTypes: {
+        size: sizePropType
+    },
+    propsHandler({
         size,
-        className,
-        children,
         ...restProps
-    }: PaginationProps
-) {
-    const classes = classNames(
-        className,
-        "pagination",
-        size && `pagination-${size}`
-    )
-
-    return (
-        <ul className={classes} {...restProps}>
-            {children}
-        </ul>
-    )
-}
-
-Pagination.propTypes = {
-    size: sizePropType
-}
+    }) {
+        return {
+            className: size ? `pagination-${size}` : "",
+            newProps: restProps
+        }
+    }
+})

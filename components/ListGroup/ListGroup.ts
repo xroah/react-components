@@ -11,14 +11,16 @@ interface ListGroupProps extends React.OlHTMLAttributes<HTMLElement> {
     tag?: React.ElementType
 }
 
-export default function ListGroup({
-    flush,
-    numbered,
-    horizontal,
-    tag,
-    className,
-    ...restProps
-}: ListGroupProps) {
+export default function ListGroup(
+    {
+        flush,
+        numbered,
+        horizontal,
+        tag,
+        className,
+        ...restProps
+    }: ListGroupProps
+) {
     const prefix = getPrefixFunc("list-group")
     const classes = classNames(
         className,
