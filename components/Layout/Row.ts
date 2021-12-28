@@ -1,10 +1,4 @@
-import * as React from "react"
-import {
-    number,
-    oneOf,
-    oneOfType,
-    shape
-} from "prop-types"
+import PropTypes from "prop-types"
 import classNames from "reap-utils/lib/class-names"
 import {
     Breakpoint,
@@ -17,8 +11,10 @@ import {
     getBreakpointPrefixFunc,
     getBreakpointShape
 } from "../Commons/utils"
+import {createComponent} from "reap-utils/lib/react"
 
-type Cols = "auto" | number
+type Auto = "auto"
+type Cols = Auto | number
 type ColBreakpoint = BreakpointType<Breakpoint, Cols>
 type GutterBreakpoint = BreakpointType<Breakpoint, number | GuttersObject>
 type GuttersObject = {
@@ -71,43 +67,44 @@ function handleGutters(
     )
 }
 
-export default function Row(
-    {
-        className,
-        cols,
-        gutters,
-        ...restProps
-    }: RowProps
-) {
-    const classes = classNames(
-        className,
-        "row",
-        getBreakpointClasses("row-cols", cols),
-        handleGutters(gutters)
-    )
-
-    return <div className={classes} {...restProps} />
-}
-
 const colTypes = [
-    oneOf(["auto"]),
-    number
+    PropTypes.oneOf(["auto"] as Auto[]),
+    PropTypes.number
 ]
 const gutterTypes = [
-    number,
-    shape({
-        x: number,
-        y: number
+    PropTypes.number,
+    PropTypes.shape<any>({
+        x: PropTypes.number,
+        y: PropTypes.number
     })
 ]
 
-Row.propTypes = {
-    cols: oneOfType([
-        ...colTypes,
-        shape(getBreakpointShape(colTypes))
-    ]),
-    gutters: oneOfType([
-        ...gutterTypes,
-        shape(getBreakpointShape(gutterTypes))
-    ])
-}
+export default createComponent<RowProps>({
+    tag: "div",
+    propTypes: {
+        cols: PropTypes.oneOfType([
+            ...colTypes,
+            PropTypes.shape(getBreakpointShape(colTypes))
+        ]),
+        gutters: PropTypes.oneOfType([
+            ...gutterTypes,
+            PropTypes.shape(getBreakpointShape(gutterTypes))
+        ])
+    },
+    propsHandler(
+        {
+            cols,
+            gutters,
+            ...restProps
+        }
+    ) {
+        return {
+            className: classNames(
+                "row",
+                getBreakpointClasses("row-cols", cols),
+                handleGutters(gutters)
+            ),
+            newProps: restProps
+        }
+    }
+})

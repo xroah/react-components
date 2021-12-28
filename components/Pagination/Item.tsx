@@ -23,7 +23,6 @@ export default createComponent<PaginationItemProps>({
     }) {
         return {
             className: classNames(
-                "page-item",
                 active && "active",
                 disabled && "disabled"
             ),

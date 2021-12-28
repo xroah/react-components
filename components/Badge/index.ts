@@ -1,26 +1,31 @@
 import {HTMLAttributes} from "react"
 import classNames from "reap-utils/lib/class-names"
 import PropTypes from "prop-types"
-import {ValueOf, Variant} from "../Commons/consts-and-types"
+import {
+    lightDark,
+    ValueOf,
+    Variant
+} from "../Commons/consts-and-types"
 import {variantPropType} from "../Commons/prop-types"
 import {createComponent} from "reap-utils/lib/react"
-
-const colors = ["light", "dark"] as const
+import {capitalize} from "reap-utils/lib"
 
 interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {
     variant?: Variant
     pill?: boolean
-    textColor?: ValueOf<typeof colors>
+    textColor?: ValueOf<typeof lightDark>
 }
 
+const CLASS_NAME = "badge"
+
 export default createComponent<BadgeProps>({
-    className: "badge",
+    className: CLASS_NAME,
     tag: "span",
-    displayName: "Badge",
+    displayName: capitalize(CLASS_NAME),
     propTypes: {
         variant: variantPropType,
         pill: PropTypes.bool,
-        color: PropTypes.oneOf(colors)
+        color: PropTypes.oneOf(lightDark)
     },
     propsHandler({
         variant,
