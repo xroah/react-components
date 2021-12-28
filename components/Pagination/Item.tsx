@@ -19,9 +19,6 @@ export default createComponent<PaginationItemProps>({
     propsHandler({
         active,
         disabled,
-        style,
-        href,
-        children,
         ...restProps
     }) {
         return {
