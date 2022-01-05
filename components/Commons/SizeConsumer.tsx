@@ -21,9 +21,7 @@ interface Options {
 export default function SizeConsumer({size, children}: Props) {
     return (
         <SizeContext.Consumer>
-            {
-                ({size: ctxSize}) => children(getProp(size, ctxSize))
-            }
+            {({size: ctxSize}) => children(getProp(size, ctxSize))}
         </SizeContext.Consumer>
     )
 }
@@ -43,6 +41,7 @@ export function createSizeElement<T extends BaseProps>(
         className,
         ...restProps
     } = props
+    
     return (
         <SizeConsumer size={size}>
             {

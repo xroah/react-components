@@ -1,9 +1,5 @@
 import * as React from "react"
-import {
-    bool,
-    node,
-    func
-} from "prop-types"
+import PropTypes from "prop-types"
 import classNames from "reap-utils/lib/class-names"
 import {AnchorAttrs, WithVariantProp} from "../Commons/consts-and-types"
 import Button from "../Button"
@@ -100,11 +96,11 @@ const Alert: AlertComponent<AlertProps> = (
 
 Alert.propTypes = {
     variant: variantPropType,
-    fade: bool,
-    heading: node,
-    dismissible: bool,
-    onClose: func,
-    onClosed: func
+    fade: PropTypes.bool,
+    heading: PropTypes.node,
+    dismissible: PropTypes.bool,
+    onClose: PropTypes.func,
+    onClosed: PropTypes.func
 }
 Alert.defaultProps = {
     fade: true
