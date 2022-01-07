@@ -3,28 +3,32 @@ import {bool, func} from "prop-types"
 import classNames from "reap-utils/lib/class-names"
 import {only, Transition} from "reap-utils/lib/react"
 import {DivAttrs} from "../Commons/consts-and-types"
-import {chainFunction} from "reap-utils/lib"
+import {capitalize, chainFunction} from "reap-utils/lib"
 
 type Callback = (node?: HTMLElement) => void
 
 export interface CollapseProps extends DivAttrs {
     children: React.ReactElement
     open?: boolean
+    horizontal?: boolean
     onShow?: Callback
     onShown?: Callback
     onHide?: Callback
     onHidden?: Callback
 }
 
+type ScrollSize = "scrollWidth" | "scrollHeight"
+
 const Collapse: React.FunctionComponent<CollapseProps> = (
     {
         className,
         open,
+        children,
+        horizontal,
         onShow,
         onShown,
         onHide,
         onHidden,
-        children,
         ...restProps
     }
 ) => {
@@ -33,47 +37,60 @@ const Collapse: React.FunctionComponent<CollapseProps> = (
     }
 
     let c: React.ReactElement = only(children)
-    const classes = classNames(className, "collapse")
+    const PREFIX = "collapse"
+    const hCls = horizontal ? `${PREFIX}-horizontal` : ""
+    const classes = classNames(
+        className,
+        PREFIX,
+        hCls
+    )
     const showClass = classNames(classes, "show")
-    const collapsingClass = classNames(className, "collapsing")
-    const updateHeight = (
+    const collapsingClass = classNames(
+        className,
+        hCls,
+        "collapsing"
+    )
+    const updateSize = (
         node?: HTMLElement,
-        height?: string
+        size?: string
     ) => {
+        const dimension = horizontal ? "width" : "height"
+        const sizeProp = `scroll${capitalize(dimension)}` as ScrollSize
+        
         if (node) {
-            if (height !== undefined) {
-                node.style.height = height
+            if (size !== undefined) {
+                node.style[dimension] = size
             } else {
                 /**
-                 * The real height may be not a integer
-                 * like 108.55 and the scrollHeight would be 109,
+                 * The real height/width may be not a integer
+                 * like 108.55 and the scrollHeight/scrollWidth would be 109,
                  * and may be show a line(about 1px)  
                  */
-                const height = node.scrollHeight - 1
-                node.style.height = `${height}px`
+                const size = node[sizeProp] - 1
+                node.style[dimension] = `${size}px`
             }
         }
     }
     const handleEnter = React.useCallback(
         chainFunction(
-            updateHeight,
+            updateSize,
             onShow
         ),
         [onShow]
     )
     const handleEntered = React.useCallback(
         chainFunction(
-            (node?: HTMLElement) => updateHeight(node, ""),
+            (node?: HTMLElement) => updateSize(node, ""),
             onShown
         ),
         [onShown]
     )
     const handleExiting = (node?: HTMLElement) => {
-        updateHeight(node, "")
+        updateSize(node, "")
     }
     const handleExit = React.useCallback(
         chainFunction(
-            updateHeight,
+            updateSize,
             onHide
         ),
         [onHide]
