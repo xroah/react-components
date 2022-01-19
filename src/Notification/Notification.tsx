@@ -3,7 +3,7 @@ import {render} from "react-dom";
 import {Transition} from "reap-utils/lib/react";
 import warning from "warning";
 import {ValueOf} from "../Commons/common-types";
-import Info from "../Commons/Layer";
+import Layer from "../Commons/Layer";
 import {ToastProps} from "../Toast";
 import ToastInner from "../Toast/Inner";
 
@@ -28,7 +28,7 @@ const placementClassMap = new Map<Placement, string[]>([
 ])
 const placementContainerMap = new Map<Placement, HTMLElement | null>([])
 
-export default class Notification extends Info<Options> {
+export default class Notification extends Layer<Options> {
     placement: Placement | null = null
     toastRef = React.createRef<HTMLDivElement>()
 

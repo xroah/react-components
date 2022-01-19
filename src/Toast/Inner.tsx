@@ -3,7 +3,12 @@ import * as React from "react"
 import {classNames} from "reap-utils/lib"
 import {getFunction} from "reap-utils/lib/react"
 import CloseBtn from "../Commons/CloseBtn"
-import {AutoHideProps, ClosableProps, CloseFuncParam, VisibleProps} from "../Commons/common-types"
+import {
+    AutoHideProps,
+    ClosableProps,
+    CloseFuncParam,
+    VisibleProps
+} from "../Commons/common-types"
 
 type BaseProps = Omit<React.HTMLAttributes<HTMLDivElement>, "title"> &
     ClosableProps & AutoHideProps & VisibleProps

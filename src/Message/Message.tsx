@@ -1,11 +1,11 @@
 import * as React from "react"
 import {render} from "react-dom"
-import Info from "../Commons/Layer"
+import Layer from "../Commons/Layer"
 import MessageItem, {MessageItemProps} from "./Item"
 
 let parent: HTMLElement | null = null
 
-export default class Message extends Info<MessageItemProps> {
+export default class Message extends Layer<MessageItemProps> {
     open() {
         if (!parent || !parent.parentElement) {
             parent = this.createParent(false)
