@@ -14,10 +14,6 @@ export type ToastProps = CommonTransitionProps & ToastInnerProps &
 export default function Toast(
     {
         visible,
-        icon,
-        title,
-        extra,
-        closable,
         animation,
         unmountOnExit,
         hideOnExit,
@@ -33,10 +29,6 @@ export default function Toast(
     const child = (
         <ToastInner
             visible={visible}
-            icon={icon}
-            title={title}
-            extra={extra}
-            closable={closable}
             nodeRef={ref}
             onClose={onClose}
             {...restProps} />
