@@ -60,9 +60,12 @@ export default function MessageItem(
             timer = null
         }
     }
-    const handleClose = (type?: CloseFuncParam) => {
-        getFunction(onClose)(type)
-    }
+    const handleClose = React.useCallback(
+        (type?: CloseFuncParam) => {
+            getFunction(onClose)(type)
+        },
+        [onClose]
+    )
 
     React.useEffect(
         () => {
