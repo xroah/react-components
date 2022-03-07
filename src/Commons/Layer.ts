@@ -6,7 +6,9 @@ import {ClosableProps, Events} from "./common-types"
 export default class Layer<P extends Events & ClosableProps> {
     visible = false
     container: HTMLElement
+
     static parent: HTMLElement | null = null
+    static body = document.body
 
     constructor(
         protected msg: React.ReactNode = null,
@@ -15,7 +17,6 @@ export default class Layer<P extends Events & ClosableProps> {
         this.msg = msg
         this.props = props
         this.container = document.createElement("div")
-        console.log(this)
     }
 
     static createParent() {
@@ -25,9 +26,32 @@ export default class Layer<P extends Events & ClosableProps> {
 
         const parent = this.parent = document.createElement("div")
 
-        document.body.appendChild(parent)
+        this.body.appendChild(parent)
 
         return parent
+    }
+
+    static destroy(container: HTMLElement | null) {
+        const parent = container?.parentElement
+
+        if (!container || !parent) {
+            return false
+        }
+
+        unmountComponentAtNode(container)
+        parent.removeChild(container)
+
+        if (!parent.childElementCount) {
+            this.body.removeChild(parent)
+
+            if (parent === this.parent) {
+                this.parent = null
+            }
+
+            return true
+        }
+
+        return false
     }
 
     mount(
@@ -73,29 +97,8 @@ export default class Layer<P extends Events & ClosableProps> {
         }
     }
 
-    static destroy(container: HTMLElement | null) {
-        const parent = container?.parentElement
-
-        if (!container || !parent) {
-            return false
-        }
-
-        unmountComponentAtNode(container)
-        parent.removeChild(container)
-
-        if (!parent.childElementCount) {
-            document.body.removeChild(parent)
-
-            this.parent = null
-
-            return true
-        }
-
-        return false
-    }
-
     onExited = () => {
-        Layer.destroy(this.container)
+        (this.constructor as any).destroy(this.container)
     }
 
     onHidden = () => {

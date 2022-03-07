@@ -99,7 +99,6 @@ export default function MessageItem(
                         padding: ".5rem",
                         ...style,
                         transition: "opacity .3s, margin-top .3s",
-                        transform: "translateY(-110%)",
                         opacity: 0
                     }
 
@@ -107,7 +106,6 @@ export default function MessageItem(
                         status === "entering" ||
                         status === "entered"
                     ) {
-                        newStyle.transform = "none"
                         newStyle.opacity = .9
                     } else {
                         newStyle.marginTop = "-3rem"

@@ -66,11 +66,11 @@ export default class Notification extends Layer<Options> {
 
         const className = placementClassMap.get(placement)
         let parent = placementContainerMap.get(placement)
-
+console.log(parent)
         if (!parent) {
             parent = document.createElement("div")
 
-            document.body.appendChild(parent)
+            Notification.body.appendChild(parent)
             className!.push("position-fixed")
             parent.classList.add(...className!)
             placementContainerMap.set(placement, parent)
@@ -86,11 +86,9 @@ export default class Notification extends Layer<Options> {
         return super.open()
     }
 
-    destroy() {
-        if (!this.isPlacementValid()) {
-            return
-        }
+    onExited = () => this.destroy()
 
+    destroy() {
         if (Notification.destroy(this.container)) {
             placementContainerMap.set(this.placement!, null)
         }

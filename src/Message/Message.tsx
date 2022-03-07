@@ -12,7 +12,7 @@ export default class Message extends Layer<MessageItemProps> {
             parent = Message.createParent()
         }
 
-        const styles = `
+        parent.style.cssText = `
             position: fixed;
             left: 0;
             top: 0;
@@ -24,7 +24,6 @@ export default class Message extends Layer<MessageItemProps> {
             pointer-events: none;
             z-index: 2000;        
         `
-        parent.style.cssText = styles
 
         this.mount(parent, this.container)
 
