@@ -1,6 +1,6 @@
 import * as React from "react"
 import {createPortal} from "react-dom"
-import {chainFunction, classNames} from "reap-utils/lib"
+import {classNames} from "reap-utils/lib"
 import {Fade, NoTransition} from "reap-utils/lib/react"
 import {FadeProps} from "reap-utils/lib/react/transition/interface"
 import {
@@ -21,22 +21,21 @@ export interface BackdropProps extends BaseProps {
 class Backdrop extends React.Component<BackdropProps> {
     container: HTMLElement | null = null
     ref = React.createRef<HTMLDivElement>()
+    onHidden = () => {
+        this.removeBackdrop()
+        this.props.onHidden?.()
+    }
 
-    removeBackdrop = () => {
+    static defaultProps: BackdropProps = {
+        animation: true
+    }
+
+    removeBackdrop() {
         if (this.container) {
             document.body.removeChild(this.container)
 
             this.container = null
         }
-    }
-
-    onHidden = chainFunction(
-        this.removeBackdrop,
-        this.props.onHidden
-    )
-
-    static defaultProps: BackdropProps = {
-        animation: true
     }
 
     componentWillUnmount() {
@@ -82,12 +81,13 @@ class Backdrop extends React.Component<BackdropProps> {
             return el
         }
 
-        if (!this.container && !visible) {
-            return null
-        }
-
         if (!this.container) {
+            if (!visible) {
+                return null
+            }
+
             this.container = document.createElement("div")
+
             document.body.appendChild(this.container)
         }
 
