@@ -1,7 +1,6 @@
 import * as React from "react"
 import {render} from "react-dom";
 import {chainFunction, noop} from "reap-utils/lib";
-import {getFunction} from "reap-utils/lib/react";
 import Button from "../Commons/Button";
 import {CloseFuncParam} from "../Commons/common-types";
 import Input from "../Commons/Input";
@@ -17,12 +16,12 @@ export default class Dialog extends Layer<DialogProps> {
 
     handleClose = (type?: CloseFuncParam) => {
         this.close()
-        getFunction(this.props.onClose)(type)
+        this.props.onClose?.(type)
     }
 
     handleCancel = () => {
         this.close()
-        getFunction(this.props.onCancel)()
+        this.props.onCancel?.()
     }
 
     handleOk = () => {
@@ -75,7 +74,7 @@ export default class Dialog extends Layer<DialogProps> {
     }
 
     open() {
-        this.createParent()
+        this.mount(Dialog.createParent(), this.container)
 
         return super.open()
     }
@@ -179,7 +178,7 @@ export default class Dialog extends Layer<DialogProps> {
             onShow,
             onHidden,
             onHide,
-            onBackdropHidden: () => this.destroy()
+            onBackdropHidden: () => Dialog.destroy(this.container)
         }
 
         super.render(visible)

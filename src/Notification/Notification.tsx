@@ -29,7 +29,7 @@ const placementClassMap = new Map<Placement, string[]>([
 const placementContainerMap = new Map<Placement, HTMLElement | null>([])
 
 export default class Notification extends Layer<Options> {
-    placement: Placement | null = null
+    placement: Placement
     toastRef = React.createRef<HTMLDivElement>()
 
     constructor(
@@ -45,8 +45,7 @@ export default class Notification extends Layer<Options> {
     }
 
     isPlacementValid() {
-        return this.placement &&
-            placements.indexOf(this.placement) >= 0
+        return this.placement && placementClassMap.has(this.placement)
     }
 
     open() {
@@ -69,15 +68,20 @@ export default class Notification extends Layer<Options> {
         let parent = placementContainerMap.get(placement)
 
         if (!parent) {
-            parent = this.createParent(false)
+            parent = document.createElement("div")
 
+            document.body.appendChild(parent)
             className!.push("position-fixed")
             parent.classList.add(...className!)
             placementContainerMap.set(placement, parent)
         }
 
         // prepend if placement is bottom
-        this.mount(parent, /bottom/i.test(placement))
+        this.mount(
+            parent,
+            this.container,
+            /bottom/i.test(placement)
+        )
 
         return super.open()
     }
@@ -87,11 +91,9 @@ export default class Notification extends Layer<Options> {
             return
         }
 
-        if (super.destroy()) {
+        if (Notification.destroy(this.container)) {
             placementContainerMap.set(this.placement!, null)
         }
-
-        this.placement = null
     }
 
     render(visible: boolean) {

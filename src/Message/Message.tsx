@@ -3,12 +3,13 @@ import {render} from "react-dom"
 import Layer from "../Commons/Layer"
 import MessageItem, {MessageItemProps} from "./Item"
 
-let parent: HTMLElement | null = null
 
 export default class Message extends Layer<MessageItemProps> {
     open() {
-        if (!parent || !parent.parentElement) {
-            parent = this.createParent(false)
+        let parent = Message.parent
+
+        if (!parent) {
+            parent = Message.createParent()
         }
 
         const styles = `
@@ -25,7 +26,7 @@ export default class Message extends Layer<MessageItemProps> {
         `
         parent.style.cssText = styles
 
-        this.mount(parent)
+        this.mount(parent, this.container)
 
         return super.open()
     }

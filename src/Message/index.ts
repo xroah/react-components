@@ -2,20 +2,21 @@ import {ReactNode} from "react";
 import {MessageItemProps, Variant} from "./Item";
 import Message from "./Message";
 
-function open(msg: ReactNode, options?: MessageItemProps) {
+function open(msg: ReactNode, options: MessageItemProps = {}) {
     return new Message(msg, options).open()
 }
 
 function factory(variant: Variant) {
-    return (msg: ReactNode, options?: MessageItemProps) => {
-        open(
-            msg,
-            {
-                ...options,
-                variant
-            }
-        )
-    }
+    return (
+        msg: ReactNode,
+        options?: Omit<MessageItemProps, "variant">
+    ) => open(
+        msg,
+        {
+            ...options,
+            variant
+        }
+    )
 }
 
 export default {

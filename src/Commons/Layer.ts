@@ -1,73 +1,62 @@
 import * as React from "react"
 import {unmountComponentAtNode} from "react-dom"
-import {chainFunction, omit} from "reap-utils/lib"
+import {omit} from "reap-utils/lib"
 import {ClosableProps, Events} from "./common-types"
-
-let parentContainer: HTMLElement | null = null
 
 export default class Layer<P extends Events & ClosableProps> {
     visible = false
-    props: P = {} as any
-    msg: React.ReactNode = null
-    container: HTMLElement | null = null
-    parent: HTMLElement | null = null
+    container: HTMLElement
+    static parent: HTMLElement | null = null
 
-    constructor(msg: React.ReactNode, props: P = {} as any) {
+    constructor(
+        protected msg: React.ReactNode = null,
+        protected props: P
+    ) {
         this.msg = msg
         this.props = props
+        this.container = document.createElement("div")
+        console.log(this)
     }
 
-    createParent(useParent = true) {
+    static createParent() {
         if (this.parent) {
             return this.parent
         }
 
-        const parent = document.createElement("div")
-        const append = () => document.body.appendChild(parent)
+        const parent = this.parent = document.createElement("div")
 
-        if (useParent) {
-            if (!parentContainer) {
-                parentContainer = parent
-
-                append()
-            }
-
-            this.mount(parentContainer)
-
-            return parentContainer
-        }
-
-        append()
+        document.body.appendChild(parent)
 
         return parent
     }
 
-    mount(parent: HTMLElement, prepend = false) {
-        if (this.container) {
+    mount(
+        parent: HTMLElement,
+        container: HTMLElement,
+        prepend = false
+    ) {
+        if (container.parentNode) {
             return
         }
-
-        this.container = document.createElement("div")
-        this.parent = parent
 
         if (prepend) {
             // @ts-ignore
             if (parent.prepend) {
-                parent.prepend(this.container)
+                parent.prepend(container)
 
                 return
             } else {
                 const first = parent.firstElementChild
 
                 if (first) {
-                    parent.insertBefore(this.container, first)
+                    parent.insertBefore(container, first)
 
                     return
                 }
             }
         }
 
-        parent.appendChild(this.container)
+        parent.appendChild(container)
     }
 
     open() {
@@ -84,37 +73,35 @@ export default class Layer<P extends Events & ClosableProps> {
         }
     }
 
-    destroy(): void | true {
-        if (!this.container || !this.parent) {
-            return
+    static destroy(container: HTMLElement | null) {
+        const parent = container?.parentElement
+
+        if (!container || !parent) {
+            return false
         }
 
-        unmountComponentAtNode(this.container)
-        this.parent.removeChild(this.container)
+        unmountComponentAtNode(container)
+        parent.removeChild(container)
 
-        if (!this.parent.childElementCount) {
-            document.body.removeChild(this.parent)
+        if (!parent.childElementCount) {
+            document.body.removeChild(parent)
 
             this.parent = null
-
-            if (this.parent = parentContainer) {
-                parentContainer = null
-            }
 
             return true
         }
 
-        this.container = null
+        return false
     }
 
-    handleExited = () => {
-        this.destroy()
+    onExited = () => {
+        Layer.destroy(this.container)
     }
 
-    onHidden = chainFunction(
-        this.handleExited,
-        this.props.onHidden
-    )
+    onHidden = () => {
+        this.onExited()
+        this.props.onHidden?.()
+    }
 
     getProps(props: P = this.props) {
         return omit(props, ["onClose", "onHidden"])
