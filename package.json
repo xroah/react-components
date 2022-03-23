@@ -30,7 +30,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.17.2",
-    "@floating-ui/dom": "^0.3.1",
+    "@floating-ui/dom": "^0.4.1",
     "prop-types": "^15.8.1",
     "reap-utils": "^2.0.1",
     "warning": "^4.0.3"
