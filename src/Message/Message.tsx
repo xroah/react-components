@@ -1,5 +1,4 @@
 import * as React from "react"
-import {render} from "react-dom"
 import Layer from "../Commons/Layer"
 import MessageItem, {MessageItemProps} from "./Item"
 
@@ -39,7 +38,7 @@ export default class Message extends Layer<MessageItemProps> {
         } = this.props
 
         super.render(visible)
-        render(
+        this.root.render(
             <MessageItem
                 visible={visible}
                 onClose={this.close}
@@ -49,8 +48,7 @@ export default class Message extends Layer<MessageItemProps> {
                 onHidden={this.onHidden}
                 {...this.getProps(restProps)}>
                 {this.msg}
-            </MessageItem>,
-            this.container
+            </MessageItem>
         )
     }
 }

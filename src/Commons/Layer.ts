@@ -1,11 +1,18 @@
 import * as React from "react"
-import {unmountComponentAtNode} from "react-dom"
+import {Root, createRoot} from "react-dom/client"
 import {omit} from "reap-utils/lib"
 import {ClosableProps, Events} from "./common-types"
 
+export interface RootObject {
+    root: Root
+    container: HTMLElement
+}
+
 export default class Layer<P extends Events & ClosableProps> {
     visible = false
+    root: Root
     container: HTMLElement
+    rootObject: RootObject
 
     static parent: HTMLElement | null = null
     static body = document.body
@@ -16,7 +23,12 @@ export default class Layer<P extends Events & ClosableProps> {
     ) {
         this.msg = msg
         this.props = props
-        this.container = document.createElement("div")
+        const container = this.container = document.createElement("div")
+        const root = this.root = createRoot(this.container)
+        this.rootObject = {
+            root,
+            container
+        }
     }
 
     static createParent() {
@@ -31,14 +43,14 @@ export default class Layer<P extends Events & ClosableProps> {
         return parent
     }
 
-    static destroy(container: HTMLElement | null) {
-        const parent = container?.parentElement
+    static destroy({root, container}: RootObject) {
+        const parent = container.parentElement
 
-        if (!container || !parent) {
+        if (!parent) {
             return false
         }
 
-        unmountComponentAtNode(container)
+        setTimeout(() => root.unmount())
         parent.removeChild(container)
 
         if (!parent.childElementCount) {
@@ -56,7 +68,7 @@ export default class Layer<P extends Events & ClosableProps> {
 
     mount(
         parent: HTMLElement,
-        container: HTMLElement,
+        container: HTMLElement, 
         prepend = false
     ) {
         if (container.parentNode) {
@@ -98,7 +110,7 @@ export default class Layer<P extends Events & ClosableProps> {
     }
 
     onExited = () => {
-        (this.constructor as any).destroy(this.container)
+        (this.constructor as typeof Layer).destroy(this.rootObject)
     }
 
     onHidden = () => {

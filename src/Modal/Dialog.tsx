@@ -1,5 +1,4 @@
 import * as React from "react"
-import {render} from "react-dom";
 import {chainFunction, noop} from "reap-utils/lib";
 import Button from "../Commons/Button";
 import {CloseFuncParam} from "../Commons/common-types";
@@ -178,16 +177,15 @@ export default class Dialog extends Layer<DialogProps> {
             onShow,
             onHidden,
             onHide,
-            onBackdropHidden: () => Dialog.destroy(this.container)
+            onBackdropHidden: () => Dialog.destroy(this.rootObject)
         }
 
         super.render(visible)
-        render(
+        this.root.render(
             <Modal {...props}>
                 {this.msg}
                 {this.renderInput()}
-            </Modal>,
-            this.container
+            </Modal>
         )
     }
 }

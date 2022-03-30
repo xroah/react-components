@@ -1,5 +1,4 @@
 import * as React from "react";
-import {render} from "react-dom";
 import {Transition} from "reap-utils/lib/react";
 import warning from "warning";
 import {ValueOf} from "../Commons/common-types";
@@ -26,7 +25,7 @@ const placementClassMap = new Map<Placement, string[]>([
     ["bottomLeft", ["bottom-0", "start-0"]],
     ["topLeft", ["top-0", "start-0"]]
 ])
-const placementContainerMap = new Map<Placement, HTMLElement | null>([])
+const placementParentMap = new Map<Placement, HTMLElement | null>()
 
 export default class Notification extends Layer<Options> {
     placement: Placement
@@ -65,15 +64,15 @@ export default class Notification extends Layer<Options> {
         }
 
         const className = placementClassMap.get(placement)
-        let parent = placementContainerMap.get(placement)
-console.log(parent)
+        let parent = placementParentMap.get(placement)
+
         if (!parent) {
             parent = document.createElement("div")
 
             Notification.body.appendChild(parent)
             className!.push("position-fixed")
             parent.classList.add(...className!)
-            placementContainerMap.set(placement, parent)
+            placementParentMap.set(placement, parent)
         }
 
         // prepend if placement is bottom
@@ -89,8 +88,8 @@ console.log(parent)
     onExited = () => this.destroy()
 
     destroy() {
-        if (Notification.destroy(this.container)) {
-            placementContainerMap.set(this.placement!, null)
+        if (Notification.destroy(this.rootObject)) {
+            placementParentMap.set(this.placement!, null)
         }
     }
 
@@ -112,7 +111,7 @@ console.log(parent)
         }
 
         super.render(visible)
-        render(
+        this.root.render(
             <Transition
                 in={visible}
                 unmountOnExit
@@ -183,8 +182,7 @@ console.log(parent)
                         )
                     }
                 }
-            </Transition>,
-            this.container
+            </Transition>
         )
     }
 }
