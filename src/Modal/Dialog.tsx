@@ -157,7 +157,7 @@ export default class Dialog extends Layer<DialogProps> {
             className
         } = this.props
         // if backdrop is not false, destroy after backdrop has hidden
-        onHidden = backdrop ? onHidden : this.onHidden
+        onHidden = chainFunction(this.onHidden, onHidden)
         onShown = chainFunction(this.handleShown, onShown)
         const props: ModalProps = {
             unmountOnExit: true,
@@ -176,8 +176,7 @@ export default class Dialog extends Layer<DialogProps> {
             onShown,
             onShow,
             onHidden,
-            onHide,
-            onBackdropHidden: () => Dialog.destroy(this.rootObject)
+            onHide
         }
 
         super.render(visible)
