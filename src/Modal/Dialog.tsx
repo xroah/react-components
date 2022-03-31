@@ -73,9 +73,7 @@ export default class Dialog extends Layer<DialogProps> {
     }
 
     open() {
-        this.mount(Dialog.createParent(), this.container)
-
-        return super.open()
+        return super.open(Dialog.createParent())
     }
 
     renderInput() {

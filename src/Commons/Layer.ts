@@ -66,11 +66,9 @@ export default class Layer<P extends Events & ClosableProps> {
         return false
     }
 
-    mount(
-        parent: HTMLElement,
-        container: HTMLElement, 
-        prepend = false
-    ) {
+    mount(parent: HTMLElement, prepend = false) {
+        const {container} = this
+
         if (container.parentNode) {
             return
         }
@@ -95,7 +93,11 @@ export default class Layer<P extends Events & ClosableProps> {
         parent.appendChild(container)
     }
 
-    open() {
+    open(parent?: HTMLElement, prepend?: boolean) {
+        if (parent) {
+            this.mount(parent, prepend)
+        }
+
         if (!this.visible) {
             this.render(true)
         }

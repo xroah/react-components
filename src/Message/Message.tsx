@@ -24,9 +24,7 @@ export default class Message extends Layer<MessageItemProps> {
             z-index: 2000;        
         `
 
-        this.mount(parent, this.container)
-
-        return super.open()
+        return super.open(parent)
     }
 
     render(visible: boolean) {

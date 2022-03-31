@@ -76,13 +76,7 @@ export default class Notification extends Layer<Options> {
         }
 
         // prepend if placement is bottom
-        this.mount(
-            parent,
-            this.container,
-            /bottom/i.test(placement)
-        )
-
-        return super.open()
+        return super.open(parent, /bottom/i.test(placement))
     }
 
     onExited = () => this.destroy()
