@@ -1,10 +1,6 @@
 import * as React from "react"
 import {classNames, omit} from "reap-utils/lib"
-import {
-    Fade,
-    getFunction,
-    NoTransition
-} from "reap-utils/lib/react"
+import {Fade, NoTransition} from "reap-utils/lib/react"
 import {executeAfterTransition} from "reap-utils/lib/dom"
 import scrollbar from "../Commons/scrollbar"
 import {ModalProps, ModalState} from "./types"
@@ -64,13 +60,9 @@ class Modal extends React.Component<ModalProps, ModalState> {
         this.setBackdropVisible(false)
     }
 
-    handleClose = (type?: CloseFuncParam) => {
-        getFunction(this.props.onClose)(type)
-    }
-
     close(condition?: boolean, type?: CloseFuncParam) {
         if (condition) {
-            this.handleClose(type)
+            this.props.onClose?.(type)
         } else {
             this.handleStatic()
         }
@@ -122,6 +114,7 @@ class Modal extends React.Component<ModalProps, ModalState> {
             unmountOnExit,
             mountBackdropToBody,
             onBackdropHidden,
+            onClose,
             ...restProps
         } = this.props
         const {display, backdropVisible} = this.state
@@ -133,11 +126,9 @@ class Modal extends React.Component<ModalProps, ModalState> {
         const props = omit(
             restProps,
             [
-                "onClose",
                 "keyboard",
                 "focus",
                 "onOk",
-                "onClose",
                 "okText",
                 "cancelText",
                 "verticalCenter",
@@ -167,7 +158,7 @@ class Modal extends React.Component<ModalProps, ModalState> {
                 {...props}>
                 <ModalDialog
                     prefix={PREFIX}
-                    onClose={this.handleClose}
+                    onClose={onClose}
                     {...dialogProps} />
             </div>
         )

@@ -1,11 +1,10 @@
 import * as React from "react"
 import {classNames} from "reap-utils/lib"
-import {getFunction, Transition} from "reap-utils/lib/react"
+import {Transition} from "reap-utils/lib/react"
 import CloseBtn from "../Commons/CloseBtn"
 import {
     AutoHideProps,
     ClosableProps,
-    CloseFuncParam,
     Events,
     ValueOf,
     VisibleProps
@@ -60,18 +59,12 @@ export default function MessageItem(
             timer = null
         }
     }
-    const handleClose = React.useCallback(
-        (type?: CloseFuncParam) => {
-            getFunction(onClose)(type)
-        },
-        [onClose]
-    )
 
     React.useEffect(
         () => {
             if (autoHide) {
                 timer = window.setTimeout(
-                    () => handleClose("auto"),
+                    () => onClose?.("auto"),
                     delay
                 )
             }
@@ -118,7 +111,7 @@ export default function MessageItem(
                             ref={ref}
                             {...restProps}>
                             {children}
-                            {closable && <CloseBtn onClose={handleClose} />}
+                            {closable && <CloseBtn onClose={onClose} />}
                         </div>
                     )
                 }

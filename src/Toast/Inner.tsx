@@ -1,12 +1,10 @@
 
 import * as React from "react"
 import {classNames} from "reap-utils/lib"
-import {getFunction} from "reap-utils/lib/react"
 import CloseBtn from "../Commons/CloseBtn"
 import {
     AutoHideProps,
     ClosableProps,
-    CloseFuncParam,
     VisibleProps
 } from "../Commons/common-types"
 
@@ -45,15 +43,12 @@ export default function ToastInner(
         className,
         PREFIX
     )
-    const handleClose = (type?: CloseFuncParam) => {
-        getFunction(onClose)(type)
-    }
     let header = icon || title || closable ? (
         <div className={`${PREFIX}-header`}>
             {icon}
             <strong className="me-auto">{title}</strong>
             {extra && <small>{extra}</small>}
-            {closable && <CloseBtn onClose={handleClose} />}
+            {closable && <CloseBtn onClose={onClose} />}
         </div>
     ) : null
     let timer: number | null = null
@@ -70,7 +65,7 @@ export default function ToastInner(
             if (autoHide) {
                 timer = window.setTimeout(
                     () => {
-                        handleClose("auto")
+                        onClose?.("auto")
 
                         timer = null
                     },
