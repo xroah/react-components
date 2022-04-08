@@ -5,11 +5,13 @@ import Toast from "./Toast"
 import Notification from "./Notification"
 import Message from "./Message"
 import Popup from "./Popup"
+import Dropdown from "./Dropdown"
 
 export default () => (
     <>
         <div style={{height: 1000}}></div>
         <Popup />
+        <Dropdown/>
         <div className="my-3 text-danger fs-3">OffCanvas</div>
         <OffCanvas />
         <div className="my-3 text-danger fs-3">Modal</div>

@@ -1,7 +1,6 @@
 import * as React from "react"
 import {
     Fade,
-    getNextNodeByRef,
     NoTransition,
     only
 } from "reap-utils/lib/react"
@@ -49,16 +48,6 @@ class Popup extends React.Component<PopupProps, State> {
         this.state = {
             style: {}
         }
-    }
-
-    getChild() {
-        const {nodeRef} = this.props
-
-        if (!nodeRef) {
-            return getNextNodeByRef(this.ref) as HTMLElement
-        }
-
-        return nodeRef.current
     }
 
     compute(node?: HTMLElement) {
