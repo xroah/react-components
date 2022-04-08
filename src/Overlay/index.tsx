@@ -14,7 +14,7 @@ import {
 } from "@floating-ui/dom"
 import {TransitionProps} from "reap-utils/lib/react/transition/interface"
 
-interface PopupProps {
+interface OverlayProps {
     nodeRef?: React.RefObject<HTMLElement>
     placement?: Placement
     trigger?: Trigger
@@ -33,7 +33,7 @@ interface State {
     style?: React.CSSProperties
 }
 
-class Popup extends React.Component<PopupProps, State> {
+class Overlay extends React.Component<OverlayProps, State> {
     ref = React.createRef<HTMLDivElement>()
 
     static defaultProps = {
@@ -42,7 +42,7 @@ class Popup extends React.Component<PopupProps, State> {
         placement: "bottom"
     }
 
-    constructor(props: PopupProps) {
+    constructor(props: OverlayProps) {
         super(props)
 
         this.state = {
@@ -141,4 +141,4 @@ class Popup extends React.Component<PopupProps, State> {
     }
 }
 
-export default Popup
+export default Overlay

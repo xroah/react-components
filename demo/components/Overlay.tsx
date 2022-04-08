@@ -1,5 +1,5 @@
 import * as React from "react"
-import Popup from "../../src/Popup"
+import Popup from "../../src/Overlay"
 
 export default () => {
     const btnRef = React.useRef<HTMLButtonElement>(null)
