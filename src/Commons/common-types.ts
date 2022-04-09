@@ -38,6 +38,7 @@ export interface CommonTransitionProps {
 }
 
 export type DivProps = HTMLAttributes<HTMLDivElement>
+export type ElProps = HTMLAttributes<HTMLElement>
 
 export type Size = "sm" | "lg"
 

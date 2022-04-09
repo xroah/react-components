@@ -4,28 +4,35 @@ import {
     NoTransition,
     only
 } from "reap-utils/lib/react"
-import {Placement, Trigger} from "../Commons/common-types"
+import {Events, Placement} from "../Commons/common-types"
 import {
     computePosition,
     flip,
     shift,
-    offset,
-    arrow
+    offset as offsetMiddleware,
+    arrow as arrowMiddleware,
+    Alignment
 } from "@floating-ui/dom"
 import {TransitionProps} from "reap-utils/lib/react/transition/interface"
+import {Middleware} from "@floating-ui/core"
+import {getContainer, handleOffset} from "../Commons/utils"
+import {createPortal} from "react-dom"
 
-interface OverlayProps {
-    nodeRef?: React.RefObject<HTMLElement>
+export interface OverlayCommonProps extends Events {
     placement?: Placement
-    trigger?: Trigger
-    visible?: boolean
     children: React.ReactElement
-    container?: string | HTMLElement | Node
-    targetRef?: React.RefObject<HTMLElement>
-    auto?: boolean
+    container?: string | HTMLElement
     fade?: boolean
     offset?: number | number[]
-    arrow?: HTMLElement
+    arrow?: React.RefObject<HTMLElement>
+    alignment?: Alignment
+}
+
+export interface OverlayProps extends OverlayCommonProps {
+    auto?: boolean
+    visible?: boolean
+    targetRef?: React.RefObject<HTMLElement>
+    nodeRef?: React.RefObject<HTMLElement>
     unmountOnExit?: boolean
 }
 
@@ -34,7 +41,7 @@ interface State {
 }
 
 class Overlay extends React.Component<OverlayProps, State> {
-    ref = React.createRef<HTMLDivElement>()
+    private _parent: HTMLElement | null = null
 
     static defaultProps = {
         fade: true,
@@ -51,7 +58,12 @@ class Overlay extends React.Component<OverlayProps, State> {
     }
 
     compute(node?: HTMLElement) {
-        const {targetRef} = this.props
+        const {
+            targetRef,
+            arrow,
+            offset = 0,
+            placement
+        } = this.props
 
         if (
             !targetRef ||
@@ -61,32 +73,26 @@ class Overlay extends React.Component<OverlayProps, State> {
             return Promise.resolve({x: 0, y: 0})
         }
 
+        const middleware: Middleware[] = [
+            flip(),
+            shift(),
+            offsetMiddleware(handleOffset(offset, placement))
+        ]
+
+        if (arrow && arrow.current) {
+            middleware.push(
+                arrowMiddleware({element: arrow.current})
+            )
+        }
+
         return computePosition(
             targetRef.current,
             node,
             {
                 placement: this.props.placement as any,
-                middleware: [
-                    flip(),
-                    shift(),
-                    offset(this.handleOffset())
-                ]
+                middleware
             }
         )
-    }
-    
-    handleOffset() {
-        let {offset = 0, placement} = this.props
-        const isH = placement === "left" || placement === "right"
-
-        if (!Array.isArray(offset)) {
-            offset = [offset, offset]
-        }
-
-        return {
-            mainAxis: isH ? offset[0] : offset[1],
-            crossAxis: isH ? offset[1] : offset[0]
-        }
     }
 
     handleEntering = (node?: HTMLElement) => {
@@ -99,20 +105,52 @@ class Overlay extends React.Component<OverlayProps, State> {
         })
     }
 
+    handleExited = (node?: HTMLElement) => {
+        const {_parent: p} = this
+
+        if (this.props.unmountOnExit && p) {
+            p.parentNode?.removeChild(p)
+        }
+
+        this.props.onHidden?.(node)
+    }
+
+    renderChildren(child: React.ReactElement) {
+        const container = getContainer(this.props.container)
+
+        if (container) {
+            if (!this._parent) {
+                this._parent = document.createElement("div")
+
+                container.appendChild(this._parent)
+            }
+
+            return createPortal(child, this._parent)
+        }
+
+        return child
+    }
+
     render() {
         const {
             nodeRef,
             children,
             visible,
             auto,
-            unmountOnExit,
             fade,
+            onShow,
+            onShown,
+            onHide,
         } = this.props
         const child = only(children)
         const {style: stateStyle} = this.state
         const transitionProps: TransitionProps = {
             in: !!visible,
+            onEnter: onShow,
             onEntering: this.handleEntering,
+            onEntered: onShown,
+            onExit: onHide,
+            onExited: this.handleExited,
             children: React.cloneElement(
                 child,
                 {
@@ -122,11 +160,12 @@ class Overlay extends React.Component<OverlayProps, State> {
                     }
                 }),
             nodeRef,
-            unmountOnExit
+            appear: true
         }
+        let c: React.ReactElement = child
 
         if (auto) {
-            return (
+            c = (
                 <>
                     {
                         fade ?
@@ -137,7 +176,7 @@ class Overlay extends React.Component<OverlayProps, State> {
             )
         }
 
-        return child
+        return this.renderChildren(c)
     }
 }
 
