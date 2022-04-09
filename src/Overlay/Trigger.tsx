@@ -8,7 +8,7 @@ import {ElProps, Trigger as TriggerType} from "../Commons/common-types"
 import {handleActions} from "../Commons/utils"
 import Overlay, {OverlayCommonProps} from "./Overlay"
 
-interface TriggerProps extends OverlayCommonProps {
+export interface TriggerProps extends OverlayCommonProps {
     overlayRef?: React.RefObject<HTMLElement>
     nodeRef?: React.RefObject<HTMLElement>
     action?: TriggerType | TriggerType[]

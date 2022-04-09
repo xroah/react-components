@@ -4,7 +4,7 @@ import {
     NoTransition,
     only
 } from "reap-utils/lib/react"
-import {Events, Placement} from "../Commons/common-types"
+import {Events} from "../Commons/common-types"
 import {
     computePosition,
     flip,
@@ -14,25 +14,25 @@ import {
     Alignment
 } from "@floating-ui/dom"
 import {TransitionProps} from "reap-utils/lib/react/transition/interface"
-import {Middleware} from "@floating-ui/core"
+import {Middleware, Side} from "@floating-ui/core"
 import {getContainer, handleOffset} from "../Commons/utils"
 import {createPortal} from "react-dom"
 
 export interface OverlayCommonProps extends Events {
-    placement?: Placement
+    placement?: Side
     children: React.ReactElement
     container?: string | HTMLElement
     fade?: boolean
     offset?: number | number[]
     arrow?: React.RefObject<HTMLElement>
     alignment?: Alignment
+    onClickOutside?: (evt: MouseEvent) => void
+    visible?: boolean
 }
 
 export interface OverlayProps extends OverlayCommonProps {
     auto?: boolean
-    visible?: boolean
     targetRef?: React.RefObject<HTMLElement>
-    nodeRef?: React.RefObject<HTMLElement>
     unmountOnExit?: boolean
 }
 
@@ -41,6 +41,7 @@ interface State {
 }
 
 class Overlay extends React.Component<OverlayProps, State> {
+    private _ref = React.createRef<HTMLDivElement>()
     private _parent: HTMLElement | null = null
 
     static defaultProps = {
@@ -53,22 +54,26 @@ class Overlay extends React.Component<OverlayProps, State> {
         super(props)
 
         this.state = {
-            style: {}
+            style: {
+            }
         }
     }
 
-    compute(node?: HTMLElement) {
+    compute() {
         const {
             targetRef,
             arrow,
             offset = 0,
-            placement
+            placement,
+            alignment
         } = this.props
+        const {_ref} = this
 
         if (
             !targetRef ||
             !targetRef.current ||
-            !node
+            !_ref ||
+            !_ref.current
         ) {
             return Promise.resolve({x: 0, y: 0})
         }
@@ -87,16 +92,20 @@ class Overlay extends React.Component<OverlayProps, State> {
 
         return computePosition(
             targetRef.current,
-            node,
+            _ref.current,
             {
-                placement: this.props.placement as any,
+                placement: (
+                    alignment ?
+                        `${placement}-${alignment}`
+                        : placement
+                ) as any,
                 middleware
             }
         )
     }
 
-    handleEntering = (node?: HTMLElement) => {
-        this.compute(node).then(({x, y}) => {
+    update = () => {
+        this.compute().then(({x, y}) => {
             this.setState({
                 style: {
                     transform: `translate3d(${x}px, ${y}px, 0)`
@@ -133,7 +142,6 @@ class Overlay extends React.Component<OverlayProps, State> {
 
     render() {
         const {
-            nodeRef,
             children,
             visible,
             auto,
@@ -143,23 +151,30 @@ class Overlay extends React.Component<OverlayProps, State> {
             onHide,
         } = this.props
         const child = only(children)
-        const {style: stateStyle} = this.state
+        const {style} = this.state
+        const newChildren = (
+            <div
+                ref={this._ref}
+                tabIndex={-1}
+                style={{
+                    ...style,
+                    position: "absolute",
+                    left: 0,
+                    top: 0,
+                    outline: "none"
+                }}>
+                {child}
+            </div>
+        )
         const transitionProps: TransitionProps = {
             in: !!visible,
             onEnter: onShow,
-            onEntering: this.handleEntering,
+            onEntering: this.update,
             onEntered: onShown,
             onExit: onHide,
             onExited: this.handleExited,
-            children: React.cloneElement(
-                child,
-                {
-                    style: {
-                        ...child.props.style,
-                        ...stateStyle
-                    }
-                }),
-            nodeRef,
+            children: newChildren,
+            nodeRef: this._ref,
             appear: true
         }
         let c: React.ReactElement = child
