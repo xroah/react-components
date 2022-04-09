@@ -1,5 +1,4 @@
 import {ButtonHTMLAttributes, HTMLAttributes} from "react"
-import {placements} from "./constants"
 
 export type ValueOf<T extends readonly any[]> = T[number]
 
@@ -43,7 +42,5 @@ export type ElProps = HTMLAttributes<HTMLElement>
 export type Size = "sm" | "lg"
 
 export type ButtonBaseProps = ButtonHTMLAttributes<HTMLButtonElement>
-
-export type Placement = ValueOf<typeof placements>
 
 export type Trigger = "hover" | "focus" | "click"

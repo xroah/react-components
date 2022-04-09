@@ -4,13 +4,11 @@ import Modal from "./Modal"
 import Toast from "./Toast"
 import Notification from "./Notification"
 import Message from "./Message"
-import Overlay from "./Overlay"
 import Dropdown from "./Dropdown"
 
 export default () => (
     <>
         <div style={{height: 1000}}></div>
-        <Overlay />
         <Dropdown/>
         <div className="my-3 text-danger fs-3">OffCanvas</div>
         <OffCanvas />
