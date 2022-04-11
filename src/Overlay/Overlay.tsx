@@ -59,6 +59,41 @@ class Overlay extends React.Component<OverlayProps, State> {
         }
     }
 
+    componentDidUpdate({visible: prevVisible}: OverlayProps) {
+        const {visible} = this.props
+
+        if (visible !== prevVisible) {
+            
+        }
+    }
+
+    addDocListener() {
+        document.addEventListener(
+            "click",
+            this.handleDocClick
+        )
+    }
+
+    removeDocListener() {
+        document.removeEventListener(
+            "click",
+            this.handleDocClick
+        )
+    }
+
+    handleDocClick = (evt: MouseEvent) => {
+        const {target} = evt
+        const {current: el} = this._ref
+
+        if (!el) {
+            return
+        }
+
+        if (el !== target && !el.contains(target as HTMLElement)) {
+            this.props.onClickOutside?.(evt)
+        }
+    }
+
     compute() {
         const {
             targetRef,
