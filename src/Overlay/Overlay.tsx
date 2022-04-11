@@ -4,7 +4,7 @@ import {
     NoTransition,
     only
 } from "reap-utils/lib/react"
-import {Events} from "../Commons/common-types"
+import {DivProps, Events} from "../Commons/common-types"
 import {
     computePosition,
     flip,
@@ -17,6 +17,9 @@ import {TransitionProps} from "reap-utils/lib/react/transition/interface"
 import {Middleware, Side} from "@floating-ui/core"
 import {getContainer, handleOffset} from "../Commons/utils"
 import {createPortal} from "react-dom"
+import {omit} from "reap-utils"
+
+type BaseProps = Omit<DivProps, "children">
 
 export interface OverlayCommonProps extends Events {
     placement?: Side
@@ -30,7 +33,7 @@ export interface OverlayCommonProps extends Events {
     visible?: boolean
 }
 
-export interface OverlayProps extends OverlayCommonProps {
+export interface OverlayProps extends OverlayCommonProps, BaseProps {
     auto?: boolean
     targetRef?: React.RefObject<HTMLElement>
     unmountOnExit?: boolean
@@ -184,20 +187,39 @@ class Overlay extends React.Component<OverlayProps, State> {
             onShow,
             onShown,
             onHide,
+            style: propsStyle,
+            unmountOnExit,
+            ...restProps
         } = this.props
         const child = only(children)
         const {style} = this.state
+
+        omit(
+            restProps,
+            [
+                "onHidden",
+                "arrow",
+                "placement",
+                "container",
+                "offset",
+                "alignment",
+                "onClickOutside",
+                "targetRef"
+            ]
+        )
+
         const newChildren = (
             <div
                 ref={this._ref}
                 tabIndex={-1}
                 style={{
+                    ...propsStyle,
                     ...style,
                     position: "absolute",
                     left: 0,
                     top: 0,
                     outline: "none"
-                }}>
+                }} {...restProps}>
                 {child}
             </div>
         )
@@ -210,7 +232,8 @@ class Overlay extends React.Component<OverlayProps, State> {
             onExited: this.handleExited,
             children: newChildren,
             nodeRef: this._ref,
-            appear: true
+            appear: true,
+            unmountOnExit
         }
         let c: React.ReactElement = child
 
