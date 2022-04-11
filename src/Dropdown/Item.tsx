@@ -17,6 +17,7 @@ const DropdownItem = React.forwardRef<E, ItemProps>(
             active,
             disabled,
             className,
+            onClick,
             ...restProps
         },
         ref

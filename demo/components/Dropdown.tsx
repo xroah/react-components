@@ -1,10 +1,9 @@
 import * as React from "react"
 import Dropdown from "../../src/Dropdown"
-import Trigger from "../../src/Overlay/Trigger"
 
 export default () => (
     <div>
-        <Trigger
+        <Dropdown
             fade={false}
             alignment="end"
             overlay={
@@ -19,7 +18,7 @@ export default () => (
                 </Dropdown.Menu>
             }>
             <button style={{width: 300}}>trigger</button>
-        </Trigger>
+        </Dropdown>
 
     </div>
 )

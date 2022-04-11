@@ -1,6 +1,7 @@
 import Menu from "./Menu"
 import Divider from "./Divider"
 import Item from "./Item"
+import Dropdown from "./Dropdown"
 
 interface DropdownType {
     Menu: typeof Menu
@@ -8,10 +9,10 @@ interface DropdownType {
     Item: typeof Item
 }
 
-const Dropdown: DropdownType = {
-    Menu,
-    Divider,
-    Item
-}
+const _Dropdown = Dropdown as DropdownType & typeof Dropdown
 
-export default Dropdown
+_Dropdown.Menu = Menu
+_Dropdown.Divider = Divider
+_Dropdown.Item = Item
+
+export default _Dropdown
