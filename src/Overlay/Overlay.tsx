@@ -1,6 +1,7 @@
 import * as React from "react"
 import {
     Fade,
+    mergeRef,
     NoTransition,
     only
 } from "reap-utils/lib/react"
@@ -31,6 +32,7 @@ export interface OverlayCommonProps extends Events {
     alignment?: Alignment
     onClickOutside?: (evt: MouseEvent) => void
     visible?: boolean
+    overlayRef?: React.Ref<HTMLElement>
 }
 
 export interface OverlayProps extends OverlayCommonProps, BaseProps {
@@ -191,6 +193,7 @@ class Overlay extends React.Component<OverlayProps, State> {
             visible,
             auto,
             fade,
+            overlayRef,
             onShow,
             onShown,
             onHide,
@@ -200,6 +203,8 @@ class Overlay extends React.Component<OverlayProps, State> {
         } = this.props
         const child = only(children)
         const {style} = this.state
+        const ref = overlayRef ?
+            mergeRef(this._ref, overlayRef) : this._ref
 
         omit(
             restProps,
@@ -217,7 +222,7 @@ class Overlay extends React.Component<OverlayProps, State> {
 
         const newChildren = (
             <div
-                ref={this._ref}
+                ref={ref}
                 tabIndex={-1}
                 style={{
                     ...propsStyle,

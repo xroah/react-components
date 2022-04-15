@@ -1,8 +1,8 @@
 import * as React from "react"
 import {omit} from "reap-utils"
-import Trigger, {TriggerProps} from "../Overlay/Trigger"
+import Trigger, {TriggerCommonProps} from "../Overlay/Trigger"
 
-interface DropdownProps extends TriggerProps {
+interface DropdownProps extends TriggerCommonProps {
     autoClose?: boolean | "inside" | "outside"
 }
 
@@ -19,6 +19,7 @@ const Dropdown: React.FunctionComponent<DropdownProps> = (
     }
 ) => {
     const ref = React.useRef<Trigger>(null)
+    const overlayRef = React.useRef<HTMLElement>(null)
     const close = React.useCallback(
         () => ref.current?.hide(),
         []
@@ -41,7 +42,7 @@ const Dropdown: React.FunctionComponent<DropdownProps> = (
         [
             "fade",
             "onClickOutside",
-            "closeOnClickOutside"
+            "overlayRef"
         ]
     )
 
@@ -49,6 +50,7 @@ const Dropdown: React.FunctionComponent<DropdownProps> = (
         <DropdownContext.Provider value={ctx}>
             <Trigger
                 ref={ref}
+                overlayRef={overlayRef}
                 fade={false}
                 closeOnClickOutside={autoClose && autoClose !== "inside"}
                 {...restProps} />
