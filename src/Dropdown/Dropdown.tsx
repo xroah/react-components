@@ -1,19 +1,63 @@
 import * as React from "react"
+import {omit} from "reap-utils"
 import Trigger, {TriggerProps} from "../Overlay/Trigger"
 
 interface DropdownProps extends TriggerProps {
     autoClose?: boolean | "inside" | "outside"
 }
 
-function Dropdown(
+type ContextValue = {
+    close?: (() => void) | null
+}
+
+export const DropdownContext = React.createContext<ContextValue>({})
+
+const Dropdown: React.FunctionComponent<DropdownProps> = (
     {
         autoClose,
         ...restProps
-    }: DropdownProps
-) {
-    delete restProps.fade
+    }
+) => {
+    const ref = React.useRef<Trigger>(null)
+    const close = React.useCallback(
+        () => ref.current?.hide(),
+        []
+    )
+    const ctx = React.useMemo(
+        () => {
+            const value: ContextValue = {close: null}
 
-    return <Trigger fade={false} {...restProps}/>
+            if (autoClose && autoClose !== "outside") {
+                value.close = close
+            }
+
+            return value
+        },
+        [autoClose]
+    )
+
+    omit(
+        restProps,
+        [
+            "fade",
+            "onClickOutside",
+            "closeOnClickOutside"
+        ]
+    )
+
+    return (
+        <DropdownContext.Provider value={ctx}>
+            <Trigger
+                ref={ref}
+                fade={false}
+                closeOnClickOutside={autoClose && autoClose !== "inside"}
+                {...restProps} />
+        </DropdownContext.Provider>
+    )
+}
+
+Dropdown.defaultProps = {
+    autoClose: true
 }
 
 export default Dropdown

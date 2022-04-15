@@ -14,6 +14,7 @@ export interface TriggerProps extends OverlayCommonProps {
     action?: TriggerType | TriggerType[]
     overlay: React.ReactElement
     unmountOnOverlayExit?: boolean
+    closeOnClickOutside?: boolean
 }
 
 interface State {
@@ -22,7 +23,8 @@ interface State {
 
 class Trigger extends React.Component<TriggerProps, State> {
     static defaultProps = {
-        action: "click"
+        action: "click",
+        closeOnClickOutside: true
     }
 
     private _placeholderRef = React.createRef<HTMLDivElement>()
@@ -117,6 +119,26 @@ class Trigger extends React.Component<TriggerProps, State> {
         return ret
     }
 
+    private _handleClickOutside = (evt: MouseEvent) => {
+        const {target} = evt
+        const {nodeRef, closeOnClickOutside} = this.props
+
+        if (!closeOnClickOutside) {
+            return
+        }
+
+        const ref = nodeRef ? nodeRef : this._childRef
+        let childEl: HTMLElement | null = ref.current
+
+        if (
+            childEl &&
+            target !== childEl &&
+            !childEl.contains(target as HTMLElement)
+        ) {
+            this.hide()
+        }
+    }
+
     toggle() {
         this.setState({
             visible: !this.state.visible
@@ -152,7 +174,14 @@ class Trigger extends React.Component<TriggerProps, State> {
             }
         )
 
-        omit(restProps, ["visible", "action"])
+        omit(
+            restProps,
+            [
+                "visible",
+                "action",
+                "closeOnClickOutside"
+            ]
+        )
 
         return (
             <>
@@ -162,6 +191,7 @@ class Trigger extends React.Component<TriggerProps, State> {
                     targetRef={nodeRef ? nodeRef : this._childRef}
                     visible={!!this.state.visible}
                     unmountOnExit={unmountOnOverlayExit}
+                    onClickOutside={this._handleClickOutside}
                     {...restProps}>
                     {overlay}
                 </Overlay>

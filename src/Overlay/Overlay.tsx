@@ -50,7 +50,7 @@ class Overlay extends React.Component<OverlayProps, State> {
     static defaultProps = {
         fade: true,
         auto: true,
-        placement: "bottom"
+        placement: "bottom",
     }
 
     constructor(props: OverlayProps) {
@@ -66,7 +66,11 @@ class Overlay extends React.Component<OverlayProps, State> {
         const {visible} = this.props
 
         if (visible !== prevVisible) {
-            
+            if (visible) {
+                this.addDocListener()
+            } else {
+                this.removeDocListener()
+            }
         }
     }
 
@@ -92,7 +96,10 @@ class Overlay extends React.Component<OverlayProps, State> {
             return
         }
 
-        if (el !== target && !el.contains(target as HTMLElement)) {
+        if (
+            el !== target &&
+            !el.contains(target as HTMLElement)
+        ) {
             this.props.onClickOutside?.(evt)
         }
     }
