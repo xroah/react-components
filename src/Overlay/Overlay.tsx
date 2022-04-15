@@ -8,6 +8,7 @@ import {
 import {DivProps, Events} from "../Commons/common-types"
 import {
     computePosition,
+    autoUpdate,
     flip,
     shift,
     offset as offsetMiddleware,
@@ -33,11 +34,12 @@ export interface OverlayCommonProps extends Events {
     onClickOutside?: (evt: MouseEvent) => void
     visible?: boolean
     overlayRef?: React.Ref<HTMLElement>
+    autoUpdatePosition?: boolean
 }
 
 export interface OverlayProps extends OverlayCommonProps, BaseProps {
+    targetRef: React.RefObject<HTMLElement>
     auto?: boolean
-    targetRef?: React.RefObject<HTMLElement>
     unmountOnExit?: boolean
 }
 
@@ -48,10 +50,12 @@ interface State {
 class Overlay extends React.Component<OverlayProps, State> {
     private _ref = React.createRef<HTMLDivElement>()
     private _parent: HTMLElement | null = null
+    private _cleanupAutoUpdate: Function | null = null
 
     static defaultProps = {
         fade: true,
         auto: true,
+        autoUpdatePosition: true,
         placement: "bottom",
     }
 
@@ -65,13 +69,35 @@ class Overlay extends React.Component<OverlayProps, State> {
     }
 
     componentDidUpdate({visible: prevVisible}: OverlayProps) {
-        const {visible} = this.props
+        const {
+            visible,
+            autoUpdatePosition,
+            targetRef
+        } = this.props
 
         if (visible !== prevVisible) {
             if (visible) {
                 this.addDocListener()
+                
+                if (
+                    autoUpdatePosition &&
+                    targetRef.current &&
+                    this._ref.current
+                ) {
+                    this._cleanupAutoUpdate = autoUpdate(
+                        targetRef.current,
+                        this._ref.current,
+                        this.update.bind(this)
+                    )
+                }
             } else {
                 this.removeDocListener()
+
+                if (this._cleanupAutoUpdate) {
+                    this._cleanupAutoUpdate()
+
+                    this._cleanupAutoUpdate = null
+                }
             }
         }
     }
@@ -117,7 +143,6 @@ class Overlay extends React.Component<OverlayProps, State> {
         const {_ref} = this
 
         if (
-            !targetRef ||
             !targetRef.current ||
             !_ref ||
             !_ref.current
@@ -152,6 +177,10 @@ class Overlay extends React.Component<OverlayProps, State> {
     }
 
     update = () => {
+        if (!this.props.visible) {
+            return
+        }
+
         this.compute().then(({x, y}) => {
             this.setState({
                 style: {
@@ -216,7 +245,8 @@ class Overlay extends React.Component<OverlayProps, State> {
                 "offset",
                 "alignment",
                 "onClickOutside",
-                "targetRef"
+                "targetRef",
+                "autoUpdatePosition"
             ]
         )
 

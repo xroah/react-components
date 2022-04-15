@@ -54,46 +54,54 @@ class Trigger extends React.Component<TriggerProps, State> {
         return nextState
     }
 
+    componentDidMount() {
+        this._updateRef()
+    }
+
     componentDidUpdate() {
+        this._updateRef()
+    }
+
+    private _updateRef() {
         if (this.props.nodeRef) {
             return
         }
 
         const node = getNextNodeByRef(this._placeholderRef)
 
-        if (node) {
+        if (node && node !== this._childRef.current) {
             (this._childRef as any).current = node
         }
     }
 
-    private getChildCallback(
+    private _getChildCallback(
         key: keyof React.HTMLAttributes<HTMLElement>
     ) {
         return this.props.children.props[key]
     }
 
     private _handleClick = (evt: React.MouseEvent) => {
-        this.getChildCallback("onClick")?.(evt)
+        this._getChildCallback("onClick")?.(evt)
         this.toggle()
     }
 
     private _handleFocus = (evt: React.FocusEvent) => {
-        this.getChildCallback("onFocus")?.(evt)
+        this._getChildCallback("onFocus")?.(evt)
         this.show()
     }
 
     private _handleBlur = (evt: React.FocusEvent) => {
-        this.getChildCallback("onBlur")?.(evt)
+        this._getChildCallback("onBlur")?.(evt)
         this.hide()
     }
 
     private _handleMouseEnter = (evt: React.MouseEvent) => {
-        this.getChildCallback("onMouseEnter")?.(evt)
+        this._getChildCallback("onMouseEnter")?.(evt)
         this.show()
     }
 
     private _handleMouseLeave = (evt: React.MouseEvent) => {
-        this.getChildCallback("onMouseLeave")?.(evt)
+        this._getChildCallback("onMouseLeave")?.(evt)
         this.hide()
     }
 
