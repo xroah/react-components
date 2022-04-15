@@ -61,49 +61,56 @@ class Trigger extends React.Component<TriggerProps, State> {
         }
     }
 
-    private _getCallbacks() {
-        const {children, action} = this.props
-        const {
-            onClick: cOnClick,
-            onFocus: cOnFocus,
-            onBlur: cOnBlur,
-            onMouseEnter: cOnMouseEnter,
-            onMouseLeave: cOnMouseLeave
-        } = (children as React.ReactElement).props
-        const onClick = (evt: React.MouseEvent) => {
-            cOnClick?.(evt)
-            this.toggle()
-            console.log("ccc")
-        }
-        const onFocus = (evt: React.FocusEvent) => {
-            cOnFocus?.(evt)
-            this.show()
-        }
-        const onBlur = (evt: React.FocusEvent) => {
-            cOnBlur?.(evt)
-            this.hide()
-        }
-        const onMouseEnter = (evt: React.MouseEvent) => {
-            cOnMouseEnter?.(evt)
-            this.show()
-        }
-        const onMouseLeave = (evt: React.MouseEvent) => {
-            cOnMouseLeave?.(evt)
-            this.hide()
-        }
-        const listeners: ElProps = {
-            onClick,
-            onMouseEnter,
-            onMouseLeave,
-            onFocus,
-            onBlur
-        }
-        const ret: ElProps = {}
-        const actions = handleActions(action)
+    private getChildCallback(
+        key: keyof React.HTMLAttributes<HTMLElement>
+    ) {
+        return this.props.children.props[key]
+    }
 
-        for (let a of actions) {
-            if (listeners.hasOwnProperty(a)) {
-                ret[a] = listeners[a]
+    private _handleClick = (evt: React.MouseEvent) => {
+        this.getChildCallback("onClick")?.(evt)
+        this.toggle()
+    }
+
+    private _handleFocus = (evt: React.FocusEvent) => {
+        this.getChildCallback("onFocus")?.(evt)
+        this.show()
+    }
+
+    private _handleBlur = (evt: React.FocusEvent) => {
+        this.getChildCallback("onBlur")?.(evt)
+        this.hide()
+    }
+
+    private _handleMouseEnter = (evt: React.MouseEvent) => {
+        this.getChildCallback("onMouseEnter")?.(evt)
+        this.show()
+    }
+
+    private _handleMouseLeave = (evt: React.MouseEvent) => {
+        this.getChildCallback("onMouseLeave")?.(evt)
+        this.hide()
+    }
+
+    private _getCallbacks() {
+        const ret: ElProps = {}
+
+        // not controlled
+        if (!("visible" in this.props)) {
+            const {action} = this.props
+            const listeners: ElProps = {
+                onClick: this._handleClick,
+                onMouseEnter: this._handleMouseEnter,
+                onMouseLeave: this._handleMouseLeave,
+                onFocus: this._handleFocus,
+                onBlur: this._handleBlur
+            }
+            const actions = handleActions(action)
+
+            for (let a of actions) {
+                if (listeners.hasOwnProperty(a)) {
+                    ret[a] = listeners[a]
+                }
             }
         }
 

@@ -5,12 +5,6 @@ interface DropdownProps extends TriggerProps {
     autoClose?: boolean | "inside" | "outside"
 }
 
-type ContextValue = {
-    close?: (() => void) | null
-}
-
-export const DropdownContext = React.createContext<ContextValue>({})
-
 function Dropdown(
     {
         autoClose,
