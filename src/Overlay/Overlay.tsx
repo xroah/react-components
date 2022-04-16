@@ -19,7 +19,7 @@ import {TransitionProps} from "reap-utils/lib/react/transition/interface"
 import {Middleware, Side} from "@floating-ui/core"
 import {getContainer, handleOffset} from "../Commons/utils"
 import {createPortal} from "react-dom"
-import {omit} from "reap-utils"
+import {omit, throttle} from "reap-utils"
 
 type BaseProps = Omit<DivProps, "children">
 
@@ -63,41 +63,19 @@ class Overlay extends React.Component<OverlayProps, State> {
         super(props)
 
         this.state = {
-            style: {
-            }
+            style: {}
         }
     }
 
     componentDidUpdate({visible: prevVisible}: OverlayProps) {
-        const {
-            visible,
-            autoUpdatePosition,
-            targetRef
-        } = this.props
+        const {visible} = this.props
 
         if (visible !== prevVisible) {
             if (visible) {
                 this.addDocListener()
-                
-                if (
-                    autoUpdatePosition &&
-                    targetRef.current &&
-                    this._ref.current
-                ) {
-                    this._cleanupAutoUpdate = autoUpdate(
-                        targetRef.current,
-                        this._ref.current,
-                        this.update.bind(this)
-                    )
-                }
             } else {
+                this.cleanupAutoUpdate()
                 this.removeDocListener()
-
-                if (this._cleanupAutoUpdate) {
-                    this._cleanupAutoUpdate()
-
-                    this._cleanupAutoUpdate = null
-                }
             }
         }
     }
@@ -142,11 +120,7 @@ class Overlay extends React.Component<OverlayProps, State> {
         } = this.props
         const {_ref} = this
 
-        if (
-            !targetRef.current ||
-            !_ref ||
-            !_ref.current
-        ) {
+        if (!targetRef.current || !_ref.current) {
             return Promise.resolve({x: 0, y: 0})
         }
 
@@ -157,9 +131,7 @@ class Overlay extends React.Component<OverlayProps, State> {
         ]
 
         if (arrow && arrow.current) {
-            middleware.push(
-                arrowMiddleware({element: arrow.current})
-            )
+            middleware.push(arrowMiddleware({element: arrow.current}))
         }
 
         return computePosition(
@@ -167,13 +139,35 @@ class Overlay extends React.Component<OverlayProps, State> {
             _ref.current,
             {
                 placement: (
-                    alignment ?
-                        `${placement}-${alignment}`
-                        : placement
+                    alignment ? `${placement}-${alignment}` : placement
                 ) as any,
                 middleware
             }
         )
+    }
+
+    autoUpdate = () => {
+        const {autoUpdatePosition, targetRef} = this.props
+
+        if (
+            autoUpdatePosition &&
+            targetRef.current &&
+            this._ref.current
+        ) {
+            this._cleanupAutoUpdate = autoUpdate(
+                targetRef.current,
+                this._ref.current,
+                throttle(this.update, 200)
+            )
+        }
+    }
+
+    cleanupAutoUpdate() {
+        if (this._cleanupAutoUpdate) {
+            this._cleanupAutoUpdate()
+
+            this._cleanupAutoUpdate = null
+        }
     }
 
     update = () => {
@@ -261,14 +255,15 @@ class Overlay extends React.Component<OverlayProps, State> {
                     left: 0,
                     top: 0,
                     outline: "none"
-                }} {...restProps}>
+                }}
+                {...restProps}>
                 {child}
             </div>
         )
         const transitionProps: TransitionProps = {
             in: !!visible,
             onEnter: onShow,
-            onEntering: this.update,
+            onEntering: this.autoUpdate,
             onEntered: onShown,
             onExit: onHide,
             onExited: this.handleExited,
