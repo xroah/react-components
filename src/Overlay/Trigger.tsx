@@ -7,13 +7,18 @@ import {
 } from "reap-utils/lib/react"
 import {ElProps, Trigger as TriggerType} from "../Commons/common-types"
 import {handleActions} from "../Commons/utils"
-import Overlay, {OverlayCommonProps} from "./Overlay"
+import Overlay,
+{
+    KeyDownCallback,
+    OverlayCommonProps
+} from "./Overlay"
 
 export interface TriggerCommonProps extends OverlayCommonProps {
     nodeRef?: React.RefObject<HTMLElement>
     action?: TriggerType | TriggerType[]
     overlay: React.ReactElement
     unmountOnOverlayExit?: boolean
+    onTargetKeyDown?: KeyDownCallback
 }
 
 interface TriggerProps extends TriggerCommonProps {

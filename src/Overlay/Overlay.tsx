@@ -21,7 +21,11 @@ import {getContainer, handleOffset} from "../Commons/utils"
 import {createPortal} from "react-dom"
 import {omit, throttle} from "reap-utils"
 
-type BaseProps = Omit<DivProps, "children">
+type BaseProps = Omit<DivProps, "children" | "onKeyDown">
+
+export interface  KeyDownCallback {
+    (evt: React.KeyboardEvent<HTMLElement>): void
+}
 
 export interface OverlayCommonProps extends Events {
     placement?: Side
@@ -35,6 +39,7 @@ export interface OverlayCommonProps extends Events {
     visible?: boolean
     overlayRef?: React.Ref<HTMLElement>
     autoUpdatePosition?: boolean
+    onKeyDown?: KeyDownCallback
 }
 
 export interface OverlayProps extends OverlayCommonProps, BaseProps {
