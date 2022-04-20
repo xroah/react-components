@@ -5,7 +5,6 @@ import {
     NoTransition,
     only
 } from "reap-utils/lib/react"
-import {DivProps, Events} from "../Commons/common-types"
 import {
     computePosition,
     autoUpdate,
@@ -13,46 +12,15 @@ import {
     shift,
     offset as offsetMiddleware,
     arrow as arrowMiddleware,
-    Alignment
 } from "@floating-ui/dom"
 import {TransitionProps} from "reap-utils/lib/react/transition/interface"
-import {Middleware, Side} from "@floating-ui/core"
+import {Middleware} from "@floating-ui/core"
 import {getContainer, handleOffset} from "../Commons/utils"
 import {createPortal} from "react-dom"
 import {omit, throttle} from "reap-utils"
+import {OverlayProps, OverlayState} from "./types"
 
-type BaseProps = Omit<DivProps, "children" | "onKeyDown">
-
-export interface  KeyDownCallback {
-    (evt: React.KeyboardEvent<HTMLElement>): void
-}
-
-export interface OverlayCommonProps extends Events {
-    placement?: Side
-    children: React.ReactElement
-    container?: string | HTMLElement
-    fade?: boolean
-    offset?: number | number[]
-    arrow?: React.RefObject<HTMLElement>
-    alignment?: Alignment
-    onClickOutside?: (evt: MouseEvent) => void
-    visible?: boolean
-    overlayRef?: React.Ref<HTMLElement>
-    autoUpdatePosition?: boolean
-    onKeyDown?: KeyDownCallback
-}
-
-export interface OverlayProps extends OverlayCommonProps, BaseProps {
-    targetRef: React.RefObject<HTMLElement>
-    auto?: boolean
-    unmountOnExit?: boolean
-}
-
-interface State {
-    style?: React.CSSProperties
-}
-
-class Overlay extends React.Component<OverlayProps, State> {
+class Overlay extends React.Component<OverlayProps, OverlayState> {
     private _ref = React.createRef<HTMLDivElement>()
     private _parent: HTMLElement | null = null
     private _cleanupAutoUpdate: Function | null = null

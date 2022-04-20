@@ -5,31 +5,12 @@ import {
     only,
     Placeholder
 } from "reap-utils/lib/react"
-import {ElProps, Trigger as TriggerType} from "../Commons/common-types"
+import {ElProps} from "../Commons/common-types"
 import {handleActions} from "../Commons/utils"
-import Overlay,
-{
-    KeyDownCallback,
-    OverlayCommonProps
-} from "./Overlay"
+import {TriggerProps, TriggerState} from "./types"
+import Overlay from "./Overlay"
 
-export interface TriggerCommonProps extends OverlayCommonProps {
-    nodeRef?: React.RefObject<HTMLElement>
-    action?: TriggerType | TriggerType[]
-    overlay: React.ReactElement
-    unmountOnOverlayExit?: boolean
-    onTargetKeyDown?: KeyDownCallback
-}
-
-interface TriggerProps extends TriggerCommonProps {
-    closeOnClickOutside?: boolean
-}
-
-interface State {
-    visible: Boolean
-}
-
-class Trigger extends React.Component<TriggerProps, State> {
+class Trigger extends React.Component<TriggerProps, TriggerState> {
     static defaultProps = {
         action: "click",
         closeOnClickOutside: true
@@ -48,7 +29,7 @@ class Trigger extends React.Component<TriggerProps, State> {
 
     static getDerivedStateFromProps(
         nextProps: TriggerProps,
-        nextState: State
+        nextState: TriggerState
     ) {
         if ("visible" in nextProps) {
             return {

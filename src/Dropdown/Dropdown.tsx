@@ -1,6 +1,7 @@
 import * as React from "react"
 import {omit} from "reap-utils"
-import Trigger, {TriggerCommonProps} from "../Overlay/Trigger"
+import Trigger from "../Overlay/Trigger"
+import {TriggerCommonProps} from "../Overlay/types"
 
 interface DropdownProps extends TriggerCommonProps {
     autoClose?: boolean | "inside" | "outside"
