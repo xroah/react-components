@@ -136,6 +136,14 @@ class Trigger extends React.Component<TriggerProps, TriggerState> {
         }
     }
 
+    private _handleKeyDown = (evt: React.KeyboardEvent<HTMLElement>) => {
+        const {onTargetKeyDown} = this.props
+        const c = this.props.children as React.ReactElement
+        
+        c.props.onKeyDown?.(evt)
+        onTargetKeyDown?.(evt)
+    }
+
     toggle() {
         this.setState({
             visible: !this.state.visible
@@ -167,6 +175,7 @@ class Trigger extends React.Component<TriggerProps, TriggerState> {
         const c = React.cloneElement(
             child,
             {
+                onKeyDown: this._handleKeyDown,
                 ...this._getCallbacks()
             }
         )
@@ -176,7 +185,8 @@ class Trigger extends React.Component<TriggerProps, TriggerState> {
             [
                 "visible",
                 "action",
-                "closeOnClickOutside"
+                "closeOnClickOutside",
+                "onTargetKeyDown"
             ]
         )
 
