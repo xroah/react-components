@@ -139,7 +139,7 @@ class Trigger extends React.Component<TriggerProps, TriggerState> {
     private _handleKeyDown = (evt: React.KeyboardEvent<HTMLElement>) => {
         const {onTargetKeyDown, children} = this.props
         const c = children as React.ReactElement
-        
+
         c.props.onKeyDown?.(evt)
         onTargetKeyDown?.(evt)
     }
@@ -150,24 +150,20 @@ class Trigger extends React.Component<TriggerProps, TriggerState> {
         })
     }
 
-    show() {
+    show(callback?: () => void) {
         if (this.state.visible) {
-            return
+            return callback?.()
         }
 
-        this.setState({
-            visible: true
-        })
+        this.setState({visible: true}, callback)
     }
 
-    hide() {
+    hide(callback?: () => void) {
         if (!this.state.visible) {
-            return
+            return callback?.()
         }
 
-        this.setState({
-            visible: false
-        })
+        this.setState({visible: false}, callback)
     }
 
     render() {

@@ -25,10 +25,6 @@ const Dropdown: React.FunctionComponent<DropdownProps> = (
         () => ref.current?.hide(),
         []
     )
-    const show = React.useCallback(
-        () => ref.current?.show(),
-        []
-    )
     const ctx = React.useMemo(
         () => {
             const value: ContextValue = {close: null}
@@ -115,8 +111,7 @@ const Dropdown: React.FunctionComponent<DropdownProps> = (
                 if (key === ESC_KEY) {
                     close()
                 } else {
-                    show()
-                    selectMenu(key === DOWN_KEY)
+                    ref.current?.show(() => selectMenu(key === DOWN_KEY))
                 }
 
                 evt.preventDefault()
