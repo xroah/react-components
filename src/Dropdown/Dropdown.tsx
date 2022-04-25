@@ -71,7 +71,7 @@ const Dropdown: React.FunctionComponent<DropdownProps> = (
                 nextActive = next ? list[0] : list[len - 1]
             } else {
                 activeIndex += next ? 1 : -1
-                activeIndex = (activeIndex + len) % len
+                activeIndex = Math.max(0, Math.min(activeIndex, len - 1))
                 nextActive = list[activeIndex]
             }
 
