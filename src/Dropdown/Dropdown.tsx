@@ -3,7 +3,7 @@ import {omit} from "reap-utils"
 import Trigger from "../Overlay/Trigger"
 import {TriggerCommonProps} from "../Overlay/types"
 
-interface DropdownProps extends TriggerCommonProps {
+export interface DropdownProps extends TriggerCommonProps {
     autoClose?: boolean | "inside" | "outside"
 }
 
@@ -16,11 +16,27 @@ export const DropdownContext = React.createContext<ContextValue>({})
 const Dropdown: React.FunctionComponent<DropdownProps> = (
     {
         autoClose,
+        alignment,
+        placement,
         ...restProps
     }
 ) => {
     const ref = React.useRef<Trigger>(null)
     const overlayRef = React.useRef<HTMLElement>(null)
+    const newAlignment = React.useMemo(
+        () => {
+            if (!alignment) {
+                if (placement === "left" || placement === "right") {
+                    return "start"
+                }
+                
+                return "end"
+            }
+
+            return alignment
+        },
+        [placement, alignment]
+    )
     const close = React.useCallback(
         () => ref.current?.hide(),
         []
@@ -139,6 +155,8 @@ const Dropdown: React.FunctionComponent<DropdownProps> = (
                 closeOnClickOutside={autoClose && autoClose !== "inside"}
                 onTargetKeyDown={handleKeyDown}
                 onKeyDown={handleKeyDown}
+                placement={placement}
+                alignment={newAlignment}
                 {...restProps} />
         </DropdownContext.Provider>
     )
