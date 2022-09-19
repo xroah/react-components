@@ -1,8 +1,6 @@
 /node_modules
-/dist
 /lib
 /es
-/docs-dist
 /.idea
 /.history
 /coverage

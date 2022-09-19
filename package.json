@@ -1,74 +1,42 @@
 {
-    "name": "reap-ui",
-    "version": "2.0.0",
-    "description": "Bootstrap components built with react",
-    "main": "lib/index.js",
-    "scripts": {
-        "test": "reap-scripts test",
-        "coverage": "reap-scripts test --coverage",
-        "lib": "reap-scripts tsc --lib --es -d",
-        "rollup": "reap-scripts build -r",
-        "build:doc": "reap-scripts build -o docs-dist",
-        "build": "reap-scripts rm lib es dist && npm run lib && npm run rollup",
-        "start": "reap-scripts start",
-        "lint:fix": "reap-scripts lint components/ --fix",
-        "doc:fix": "reap-scripts lint docs/ --fix"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/xroah/reap-ui.git"
-    },
-    "keywords": [
-        "reap",
-        "react",
-        "bootstrap",
-        "ui",
-        "component",
-        "js"
-    ],
-    "author": "xroah",
-    "license": "MIT",
-    "bugs": {
-        "url": "https://github.com/xroah/reap-ui/issues"
-    },
-    "homepage": "https://reap-ui.github.io",
-    "devDependencies": {
-        "@testing-library/jest-dom": "^5.16.4",
-        "@testing-library/react": "^13.1.1",
-        "@types/jest": "^27.4.1",
-        "@types/prop-types": "^15.7.5",
-        "@types/react": "^18.0.5",
-        "@types/react-dom": "^18.0.1",
-        "@types/react-redux": "^7.1.24",
-        "@types/react-router-dom": "^5.3.3",
-        "@types/react-syntax-highlighter": "^13.5.2",
-        "@types/sinon": "^10.0.11",
-        "@types/warning": "^3.0.0",
-        "bootstrap": "^5.1.3",
-        "prismjs": "^1.27.0",
-        "raw-loader": "^4.0.2",
-        "react": "^18.0.0",
-        "react-dom": "^18.0.0",
-        "react-redux": "^7.2.8",
-        "react-router-dom": "^6.3.0",
-        "react-syntax-highlighter": "^15.5.0",
-        "redux": "^4.1.2",
-        "sinon": "^13.0.2"
-    },
-    "dependencies": {
-        "@babel/runtime": "^7.17.9",
-        "prop-types": "^15.8.1",
-        "reap-utils": "^2.0.1",
-        "warning": "^4.0.3"
-    },
-    "files": [
-        "dist",
-        "lib",
-        "es"
-    ],
-    "jest": {
-        "setupFilesAfterEnv": [
-            "<rootDir>/tests/setupTests.ts"
-        ]
-    }
+  "name": "reap-overlay",
+  "version": "1.0.0",
+  "description": "",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "reap-scripts test --coverage",
+    "build": "reap-scripts rm lib es && reap-scripts tsc --lib --es -d",
+    "start": "reap-scripts start --index demo/index.html -e demo/index.tsx -o"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/reap-ui/reap-overlay.git"
+  },
+  "author": "xroah",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/reap-ui/reap-overlay/issues"
+  },
+  "homepage": "https://github.com/reap-ui/reap-overlay#readme",
+  "devDependencies": {
+    "@types/jest": "^27.4.1",
+    "@types/prop-types": "^15.7.5",
+    "@types/react": "^18.0.5",
+    "@types/react-dom": "^18.0.1",
+    "@types/warning": "^3.0.0",
+    "bootstrap": "^5.1.3",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.17.9",
+    "@floating-ui/dom": "^0.4.4",
+    "prop-types": "^15.8.1",
+    "reap-utils": "^2.0.1",
+    "warning": "^4.0.3"
+  },
+  "files": [
+    "lib",
+    "es"
+  ]
 }

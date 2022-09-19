@@ -1,5 +1,2 @@
-# reap-ui
-Bootstrap components built with React.
-
-# Docs
-See [Documentation](https://reap-ui.github.io).
+# react-layers
+React layers based on Bootstrap and floating-ui
