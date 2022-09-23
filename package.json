@@ -4,33 +4,35 @@
   "description": "",
   "main": "lib/index.js",
   "scripts": {
-    "test": "reap-scripts test --coverage",
-    "build": "reap-scripts rm lib es && reap-scripts tsc --lib --es -d",
-    "start": "reap-scripts start --index demo/index.html -e demo/index.tsx -o"
+    "test": "",
+    "build": "",
+    "start": "vite serve"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/reap-ui/reap-overlay.git"
+    "url": "git+https://github.com/xroah/react-layers.git"
   },
   "author": "xroah",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/reap-ui/reap-overlay/issues"
+    "url": "https://github.com/xroah/react-layers/issues"
   },
-  "homepage": "https://github.com/reap-ui/reap-overlay#readme",
+  "homepage": "https://github.com/xroah/react-layers#readme",
   "devDependencies": {
-    "@types/jest": "^29.0.3",
     "@types/prop-types": "^15.7.5",
     "@types/react": "^18.0.20",
     "@types/react-dom": "^18.0.6",
     "@types/warning": "^3.0.0",
+    "@vitejs/plugin-react": "^2.0.1",
     "bootstrap": "^5.2.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^6.4.0"
+    "react-router-dom": "^6.4.0",
+    "sass": "^1.58.3",
+    "typescript": "^4.8.1-rc",
+    "vite": "^3.0.8"
   },
   "dependencies": {
-    "@babel/runtime": "^7.19.0",
     "@floating-ui/dom": "^1.0.1",
     "prop-types": "^15.8.1",
     "react-transition-group": "^4.4.5",
