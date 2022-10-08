@@ -1,15 +1,11 @@
 import * as React from "react"
-import { render } from "react-dom"
-import Examples from "./examples"
+import { createRoot } from "react-dom/client"
+import App from "./app"
+
 import "bootstrap/dist/css/bootstrap.css"
 import "./styles/index.scss"
 
-const section = document.createElement("section")
+const appEl = document.getElementById("app")
+const root = createRoot(appEl)
 
-section.id = "root"
-document.body.append(section)
-
-render(
-    <Examples/>,
-    section
-)
+root.render(<App />)
