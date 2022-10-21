@@ -1,6 +1,7 @@
+import { HTMLAttributes } from "react"
 import { sizes, variants } from "./constants"
 
-export type OneOf<T extends ReadonlyArray<unknown>> = T[number] 
+export type OneOf<T extends ReadonlyArray<unknown>> = T[number]
 
 export interface ToggleEvents {
     onShow?: VoidFunction
@@ -9,7 +10,8 @@ export interface ToggleEvents {
     onHidden?: VoidFunction
 }
 
-export interface ButtonProps {
+export interface ButtonProps extends
+    HTMLAttributes<HTMLButtonElement> {
     variant?: OneOf<typeof variants>
     size?: OneOf<typeof sizes>
     disabled?: boolean
