@@ -1,12 +1,12 @@
 import { HTMLAttributes, ReactNode } from "react"
 import { modalSizes } from "../commons/constants"
-import { OneOf, ToggleEvents } from "../commons/types"
+import {
+    DivProps,
+    OneOf,
+    ToggleEvents
+} from "../commons/types"
 
-export interface ModalProps extends
-    ToggleEvents, HTMLAttributes<HTMLElement> {
-    visible?: boolean
-    transition?: boolean
-    backdrop?: boolean | "static"
+export interface DialogProps extends DivProps {
     contentScrollable?: boolean
     closable?: boolean
     title?: string
@@ -14,7 +14,15 @@ export interface ModalProps extends
     center?: boolean
     header?: ReactNode
     footer?: ReactNode
+    okText?: string
+    cancelText?: string
     onOk?: VoidFunction
     onCancel?: VoidFunction
     onClose?: VoidFunction
+}
+
+export interface ModalProps extends ToggleEvents, DialogProps {
+    visible?: boolean
+    transition?: boolean
+    backdrop?: boolean | "static"
 }

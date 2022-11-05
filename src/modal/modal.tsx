@@ -2,10 +2,9 @@ import React, { CSSProperties } from "react"
 import { Transition } from "react-transition-group"
 import classNames from "classnames"
 import { ModalProps } from "./types"
-import CloseBtn from "../commons/close-btn"
-import Button from "../commons/button"
 import Backdrop from "../commons/backdrop"
 import { getZIndex } from "../commons/utils"
+import Dialog from "./dialog"
 
 export default function modal(
     {
@@ -21,6 +20,8 @@ export default function modal(
         footer,
         onOk,
         onClose,
+        okText,
+        cancelText,
         onCancel,
         onShow,
         onShown,
@@ -33,54 +34,13 @@ export default function modal(
     }: ModalProps
 ) {
     const modalRef = React.useRef<HTMLDivElement>(null)
-    const dialogRef = React.useRef<HTMLDivElement>(null)
-    const DIALOG_PREFIX = "modal-dialog"
     const classes = classNames(
         className,
         "modal",
         "fade"
     )
-    const dialogClasses = classNames(
-        DIALOG_PREFIX,
-        contentScrollable && `${DIALOG_PREFIX}-scrollable`,
-        center && `${DIALOG_PREFIX}-centered`,
-        size && `modal-${size}`
-    )
     const [zIndex] = React.useState(getZIndex())
-    const dialog = (
-        <div className={dialogClasses} ref={dialogRef}>
-            <div className="modal-content">
-                {
-                    header ? header : (
-                        <div className="modal-header">
-                            <h5 className="modal-title">
-                                {title}
-                            </h5>
-                            {closable && <CloseBtn onClick={onClose} />}
-                        </div>
-                    )
-                }
-                <div className="modal-body">
-                    {children}
-                </div>
-                {
-                    footer ? footer : (
-                        <div className="modal-footer">
-                            <Button
-                                type="button"
-                                variant="secondary"
-                                onClick={onCancel}>
-                                Close
-                            </Button>
-                            <Button type="button" onClick={onOk}>
-                                ok
-                            </Button>
-                        </div>
-                    )
-                }
-            </div>
-        </div>
-    )
+
     const [
         modalStyle,
         updateStyle
@@ -133,7 +93,21 @@ export default function modal(
                     ref={modalRef}
                     style={modalStyle}
                     {...restProps}>
-                    {dialog}
+                    <Dialog
+                        size={size}
+                        center={center}
+                        onOk={onOk}
+                        onCancel={onCancel}
+                        okText={okText}
+                        cancelText={cancelText}
+                        closable={closable}
+                        title={title}
+                        header={header}
+                        footer={footer}
+                        onClose={onClose}
+                        contentScrollable={contentScrollable} >
+                        {children}
+                    </Dialog>
                 </div>
             </Transition>
             {
