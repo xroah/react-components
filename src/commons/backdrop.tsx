@@ -1,8 +1,17 @@
 import React from "react"
 import { Transition } from "react-transition-group"
+import classNames from "classnames"
+
+interface BackdropProps {
+    visible: boolean
+    zIndex?: number
+}
 
 export default function Backdrop(
-    { visible }: { visible: boolean }
+    {
+        visible,
+        zIndex
+    }: BackdropProps
 ) {
     const nodeRef = React.useRef<HTMLDivElement>(null)
 
@@ -20,8 +29,11 @@ export default function Backdrop(
                     if (state === "entering" || state === "entered") {
                         classes += " show"
                     }
-                    
-                    return <div ref={nodeRef} className={classes} />
+
+                    return <div
+                        ref={nodeRef}
+                        className={classes}
+                        style={{ zIndex }} />
                 }
             }
         </Transition>

@@ -1,9 +1,10 @@
-import * as React from "react"
+import React from "react"
+import ModalExample from "./examples/modal"
 
 export default function App() {
     return (
         <div>
-            docs
+            <ModalExample />
         </div>
     )
 }
