@@ -38,7 +38,7 @@ export default function modal(
     const classes = classNames(
         className,
         "modal",
-        "fade"
+        transition && "fade"
     )
     const [zIndex] = React.useState(getZIndex())
 
@@ -112,7 +112,8 @@ export default function modal(
     const _backdrop = backdrop ? (
         <Backdrop
             visible={!!visible}
-            zIndex={zIndex} />
+            zIndex={zIndex}
+            transition={transition} />
     ) : null
 
     return (

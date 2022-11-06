@@ -17,7 +17,6 @@ class NOTransition extends React.Component<NOTransitionProps> {
             onExit,
             onExiting,
             onExited,
-            visible,
             in: _in
         } = this.props
 

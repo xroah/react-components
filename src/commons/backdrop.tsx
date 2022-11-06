@@ -5,15 +5,31 @@ import classNames from "classnames"
 interface BackdropProps {
     visible: boolean
     zIndex?: number
+    transition?: boolean
 }
 
 export default function Backdrop(
     {
         visible,
-        zIndex
+        zIndex,
+        transition = true
     }: BackdropProps
 ) {
     const nodeRef = React.useRef<HTMLDivElement>(null)
+    const CLASS = "r-backdrop"
+
+    if (!transition) {
+        const classes = classNames(
+            CLASS,
+            visible && "show"
+        )
+
+        if (!visible) {
+            return null
+        }
+
+        return <div className={classes} style={{ zIndex }} />
+    }
 
     return (
         <Transition
@@ -24,16 +40,18 @@ export default function Backdrop(
             timeout={150}>
             {
                 state => {
-                    let classes = "bs-backdrop fade"
+                    let classes = `${CLASS} fade`
 
                     if (state === "entering" || state === "entered") {
                         classes += " show"
                     }
 
-                    return <div
-                        ref={nodeRef}
-                        className={classes}
-                        style={{ zIndex }} />
+                    return (
+                        <div
+                            ref={nodeRef}
+                            className={classes}
+                            style={{ zIndex }} />
+                    )
                 }
             }
         </Transition>
