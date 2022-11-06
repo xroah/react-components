@@ -24,6 +24,7 @@ export default function ModalExample() {
             <Modal
                 visible={visible}
                 title="Modal"
+                transition={false}
                 onClose={handleClose}
                 onOk={handleOk}
                 onCancel={handleCancel}>
