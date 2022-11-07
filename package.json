@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/xroah/react-layers#readme",
   "devDependencies": {
+    "@types/node": "^18.14.6",
     "@types/prop-types": "^15.7.5",
     "@types/react": "^18.0.20",
     "@types/react-dom": "^18.0.6",
