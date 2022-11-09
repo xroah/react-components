@@ -31,6 +31,9 @@ export default function modal(
         className,
         children,
         style,
+        tabIndex = -1,
+        keyboard = true,
+        onKeyDown,
         ...restProps
     }: ModalProps
 ) {
@@ -41,7 +44,6 @@ export default function modal(
         transition && "fade"
     )
     const [zIndex] = React.useState(getZIndex())
-
     const [
         modalStyle,
         updateStyle
@@ -66,6 +68,13 @@ export default function modal(
             modalEl.classList.add("show")
         }
     }
+    const handleEntered = () => {
+        // if no transition, may not focus
+        Promise.resolve().then(
+            () => modalRef.current?.focus()
+        )
+        onShown?.()
+    }
     const handleExit = () => {
         modalRef.current?.classList.remove("show")
         onHide?.()
@@ -78,11 +87,19 @@ export default function modal(
 
         onHidden?.()
     }
+    const handleKeyDown = (ev: React.KeyboardEvent<HTMLDivElement>) => {
+        if (keyboard && ev.key.toLowerCase() === "escape") {
+            onClose?.("keyboard")
+        }
+        
+        onKeyDown?.(ev)
+    }
+    const handleClickClose = () => onClose?.("close")
     const transitionProps = {
         in: visible,
         onEnter: handleEnter,
         onEntering: handleEntering,
-        onEntered: onShown,
+        onEntered: handleEntered,
         onExit: handleExit,
         onExited: handleExited
     }
@@ -91,6 +108,8 @@ export default function modal(
             className={classes}
             ref={modalRef}
             style={modalStyle}
+            tabIndex={tabIndex}
+            onKeyDown={handleKeyDown}
             {...restProps}>
             <Dialog
                 size={size}
@@ -103,7 +122,7 @@ export default function modal(
                 title={title}
                 header={header}
                 footer={footer}
-                onClose={onClose}
+                onClose={handleClickClose}
                 contentScrollable={contentScrollable} >
                 {children}
             </Dialog>

@@ -12,3 +12,9 @@ export const variants = [
     "light",
     "dark"
 ] as const
+
+export const modalCloseTypes = [
+    "keyboard",
+    "close",
+    "backdrop"
+] as const
