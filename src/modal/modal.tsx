@@ -34,6 +34,7 @@ export default function modal(
         tabIndex = -1,
         keyboard = true,
         onKeyDown,
+        onClick,
         ...restProps
     }: ModalProps
 ) {
@@ -91,7 +92,7 @@ export default function modal(
         if (keyboard && ev.key.toLowerCase() === "escape") {
             onClose?.("keyboard")
         }
-        
+
         onKeyDown?.(ev)
     }
     const handleClickClose = () => onClose?.("close")
@@ -103,6 +104,17 @@ export default function modal(
         onExit: handleExit,
         onExited: handleExited
     }
+    const handleClick = (ev: React.MouseEvent<HTMLDivElement>) => {
+        if (backdrop && backdrop !== "static") {
+            const target = ev.target as HTMLElement
+
+            if (target === modalRef.current) {
+                onClose?.("backdrop")
+            }
+        }
+
+        onClick?.(ev)
+    }
     const dialog = (
         <div
             className={classes}
@@ -110,6 +122,7 @@ export default function modal(
             style={modalStyle}
             tabIndex={tabIndex}
             onKeyDown={handleKeyDown}
+            onClick={handleClick}
             {...restProps}>
             <Dialog
                 size={size}

@@ -1,7 +1,6 @@
 import React from "react"
 import Modal from "../../src/modal/modal"
 import Button from "../../src/commons/button"
-import Backdrop from "../../src/commons/backdrop"
 
 export default function ModalExample() {
     const [visible, toggle] = React.useState(false)
@@ -36,7 +35,8 @@ export default function ModalExample() {
             <Modal
                 visible={visible}
                 title="Modal"
-                transition={false}
+                // backdrop={false}
+                // transition={false}
                 onClose={handleClose}
                 onOk={handleOk}
                 onCancel={handleCancel}

@@ -21,11 +21,12 @@ export interface DialogProps extends DivProps {
     cancelText?: string
     onOk?: VoidFunction
     onCancel?: VoidFunction
-    onClose?: (type?: CloseType) => unknown
+    onClose?: VoidFunction
 }
 
 export interface ModalProps extends ToggleEvents, DialogProps {
     visible?: boolean
     transition?: boolean
     backdrop?: boolean | "static"
+    onClose?: (type?: CloseType) => unknown
 }
