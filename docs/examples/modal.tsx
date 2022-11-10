@@ -37,6 +37,8 @@ export default function ModalExample() {
                 title="Modal"
                 // backdrop={false}
                 // transition={false}
+                size="lg"
+                fullscreen="md"
                 onClose={handleClose}
                 onOk={handleOk}
                 onCancel={handleCancel}

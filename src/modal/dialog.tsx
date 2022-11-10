@@ -18,16 +18,23 @@ export default function Dialog(
         onCancel,
         cancelText = "取消",
         okText = "确定",
+        fullscreen,
         children
     }: DialogProps
 ) {
     const dialogRef = React.useRef<HTMLDivElement>(null)
     const DIALOG_PREFIX = "modal-dialog"
+    const FULLSCREEN_CLASS = "modal-fullscreen"
     const classes = classnames(
         DIALOG_PREFIX,
         contentScrollable && `${DIALOG_PREFIX}-scrollable`,
         center && `${DIALOG_PREFIX}-centered`,
-        size && `modal-${size}`
+        size && `modal-${size}`,
+        fullscreen ?
+            fullscreen === true ?
+                FULLSCREEN_CLASS :
+                `${FULLSCREEN_CLASS}-${fullscreen}-down` :
+            ""
     )
     const _header = (
         header === null ? null :

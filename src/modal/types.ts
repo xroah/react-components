@@ -1,5 +1,9 @@
-import { HTMLAttributes, ReactNode } from "react"
-import { modalCloseTypes, modalSizes } from "../commons/constants"
+import { ReactNode } from "react"
+import {
+    breakpoints,
+    modalCloseTypes,
+    modalSizes
+} from "../commons/constants"
 import {
     DivProps,
     OneOf,
@@ -17,6 +21,7 @@ export interface DialogProps extends DivProps {
     header?: ReactNode
     footer?: ReactNode
     keyboard?: boolean
+    fullscreen?: boolean | OneOf<typeof breakpoints>
     okText?: string
     cancelText?: string
     onOk?: VoidFunction

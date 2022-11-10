@@ -18,3 +18,11 @@ export const modalCloseTypes = [
     "close",
     "backdrop"
 ] as const
+
+export const breakpoints = [
+    "sm",
+    "md",
+    "lg",
+    "xl",
+    "xxl"
+] as const

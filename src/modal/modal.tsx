@@ -35,6 +35,7 @@ export default function modal(
         keyboard = true,
         onKeyDown,
         onClick,
+        fullscreen,
         ...restProps
     }: ModalProps
 ) {
@@ -136,7 +137,8 @@ export default function modal(
                 header={header}
                 footer={footer}
                 onClose={handleClickClose}
-                contentScrollable={contentScrollable} >
+                contentScrollable={contentScrollable}
+                fullscreen={fullscreen} >
                 {children}
             </Dialog>
         </div>
