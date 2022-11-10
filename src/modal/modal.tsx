@@ -1,13 +1,23 @@
-import React, { CSSProperties } from "react"
+import React, { CSSProperties, FunctionComponent } from "react"
 import { Transition } from "react-transition-group"
 import classNames from "classnames"
+import {
+    bool,
+    string,
+    oneOf,
+    node,
+    func,
+    oneOfType
+} from "prop-types"
 import { ModalProps } from "./types"
 import Backdrop from "../commons/backdrop"
 import { getZIndex } from "../commons/utils"
 import Dialog from "./dialog"
 import NOTransition from "../commons/no-transition"
+import { breakpoints, sizes } from "../commons/constants"
+import { toggleEventTypes } from "../commons/prop-types"
 
-export default function modal(
+const Modal: FunctionComponent<ModalProps> = function Modal(
     {
         visible,
         transition = true,
@@ -37,7 +47,7 @@ export default function modal(
         onClick,
         fullscreen,
         ...restProps
-    }: ModalProps
+    }
 ) {
     const modalRef = React.useRef<HTMLDivElement>(null)
     const classes = classNames(
@@ -170,3 +180,29 @@ export default function modal(
         </>
     )
 }
+
+Modal.propTypes = {
+    contentScrollable: bool,
+    closable: bool,
+    title: string,
+    size: oneOf(sizes),
+    center: bool,
+    header: node,
+    footer: node,
+    keyboard: bool,
+    fullscreen: oneOfType([
+        bool,
+        oneOf(breakpoints)
+    ]),
+    okText: string,
+    cancelText: string,
+    onOk: func,
+    onCancel: func,
+    onClose: func,
+    visible: bool,
+    transition: bool,
+    backdrop: oneOfType([bool, oneOf(["static"] as const)]),
+    ...toggleEventTypes
+}
+
+export default Modal
