@@ -35,7 +35,7 @@ export default function ModalExample() {
             <Modal
                 visible={visible}
                 title="Modal"
-                // backdrop={false}
+                backdrop={"static"}
                 // transition={false}
                 size="lg"
                 fullscreen="md"

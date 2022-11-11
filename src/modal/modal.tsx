@@ -17,6 +17,8 @@ import NOTransition from "../commons/no-transition"
 import { breakpoints, sizes } from "../commons/constants"
 import { toggleEventTypes } from "../commons/prop-types"
 
+const bodyStyleStack: CSSProperties[] = []
+
 const Modal: FunctionComponent<ModalProps> = function Modal(
     {
         visible,
@@ -64,11 +66,21 @@ const Modal: FunctionComponent<ModalProps> = function Modal(
         zIndex: zIndex + 1
     })
     const handleEnter = () => {
+        const body = document.body
+        const paddingRight = window.innerWidth - body.offsetWidth
+
+        bodyStyleStack.push({
+            paddingRight: body.style.paddingRight,
+            overflow: body.style.overflow
+        })
+
+        body.style.overflow = "hidden"
+        body.style.paddingRight = paddingRight + "px"
+
         updateStyle({
             ...modalStyle,
             display: "block"
         })
-
         onShow?.()
     }
     const handleEntering = () => {
@@ -92,6 +104,14 @@ const Modal: FunctionComponent<ModalProps> = function Modal(
         onHide?.()
     }
     const handleExited = () => {
+        const body = document.body
+        const bodyStyle = bodyStyleStack.pop()
+
+        if (bodyStyle) {
+            body.style.overflow = bodyStyle.overflow as string
+            body.style.paddingRight = bodyStyle.paddingRight as string
+        } 
+
         updateStyle({
             ...modalStyle,
             display: "none"
