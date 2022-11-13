@@ -1,8 +1,9 @@
 import React from "react"
 import { Transition } from "react-transition-group"
 import classNames from "classnames"
+import { DivProps } from "./types"
 
-interface BackdropProps {
+interface BackdropProps extends DivProps {
     visible: boolean
     zIndex?: number
     transition?: boolean
@@ -12,7 +13,9 @@ export default function Backdrop(
     {
         visible,
         zIndex,
-        transition = true
+        transition = true,
+        style,
+        ...restProps
     }: BackdropProps
 ) {
     const nodeRef = React.useRef<HTMLDivElement>(null)
@@ -50,7 +53,7 @@ export default function Backdrop(
                         <div
                             ref={nodeRef}
                             className={classes}
-                            style={{ zIndex }} />
+                            style={{ ...style, zIndex }} />
                     )
                 }
             }
