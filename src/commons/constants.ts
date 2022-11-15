@@ -26,3 +26,10 @@ export const breakpoints = [
     "xl",
     "xxl"
 ] as const
+
+export const OffCanvasPlacements = [
+    "start",
+    "top",
+    "bottom",
+    "end"
+] as const
