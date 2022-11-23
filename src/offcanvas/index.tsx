@@ -1,23 +1,16 @@
 import React, { FunctionComponent } from "react"
 import classNames from "classnames"
 import { OffCanvasPlacements } from "../commons/constants"
-import { DivProps, OneOf, ToggleEvents } from "../commons/types"
+import { LayerProps, OneOf } from "../commons/types"
 import { Transition, TransitionStatus } from "react-transition-group"
-import { CloseType } from "../modal/types"
 import CloseBtn from "../commons/close-btn"
 import { getZIndex } from "../commons/utils"
 import Backdrop from "../commons/backdrop"
 
-interface OffCanvasProps extends DivProps, ToggleEvents {
-    visible?: boolean
-    closable?: boolean
-    onClose?: (type?: CloseType) => unknown
+interface OffCanvasProps extends LayerProps {
     header?: React.ReactNode
-    title?: string
     placement?: OneOf<typeof OffCanvasPlacements>
-    backdrop?: boolean | "static"
     scroll?: boolean
-    keyboard?: boolean
 }
 
 const OffCanvas: FunctionComponent<OffCanvasProps> = ({
@@ -33,6 +26,8 @@ const OffCanvas: FunctionComponent<OffCanvasProps> = ({
     onClose,
     children,
     style,
+    onKeyDown,
+
     ...restProps
 }) => {
     const PREFIX = "offcanvas"

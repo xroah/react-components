@@ -1,26 +1,19 @@
 import { ReactNode } from "react"
+import { breakpoints, modalSizes } from "../commons/constants"
 import {
-    breakpoints,
-    modalCloseTypes,
-    modalSizes
-} from "../commons/constants"
-import {
-    DivProps,
+    CloseType,
+    LayerProps,
     OneOf,
     ToggleEvents
 } from "../commons/types"
 
-export type CloseType = OneOf<typeof modalCloseTypes>
 
-export interface DialogProps extends DivProps {
+export interface DialogProps extends LayerProps {
     contentScrollable?: boolean
-    closable?: boolean
-    title?: string
     size?: OneOf<typeof modalSizes>
     center?: boolean
     header?: ReactNode
     footer?: ReactNode
-    keyboard?: boolean
     fullscreen?: boolean | OneOf<typeof breakpoints>
     okText?: string
     cancelText?: string
