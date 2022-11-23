@@ -31,7 +31,12 @@ export default function Backdrop(
             return null
         }
 
-        return <div className={classes} style={{ zIndex }} />
+        return (
+            <div
+                className={classes}
+                style={{ zIndex }}
+                {...restProps} />
+        )
     }
 
     return (
@@ -53,7 +58,8 @@ export default function Backdrop(
                         <div
                             ref={nodeRef}
                             className={classes}
-                            style={{ ...style, zIndex }} />
+                            style={{ ...style, zIndex }}
+                            {...restProps} />
                     )
                 }
             }
