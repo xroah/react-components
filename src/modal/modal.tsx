@@ -15,7 +15,7 @@ import { getZIndex } from "../commons/utils"
 import Dialog from "./dialog"
 import NOTransition from "../commons/no-transition"
 import { breakpoints, sizes } from "../commons/constants"
-import { toggleEventTypes } from "../commons/prop-types"
+import { layerCommonPropTypes, toggleEventPropTypes } from "../commons/prop-types"
 
 const bodyStyleStack: CSSProperties[] = []
 
@@ -203,13 +203,10 @@ const Modal: FunctionComponent<ModalProps> = function Modal(
 
 Modal.propTypes = {
     contentScrollable: bool,
-    closable: bool,
-    title: string,
     size: oneOf(sizes),
     center: bool,
     header: node,
     footer: node,
-    keyboard: bool,
     fullscreen: oneOfType([
         bool,
         oneOf(breakpoints)
@@ -218,11 +215,9 @@ Modal.propTypes = {
     cancelText: string,
     onOk: func,
     onCancel: func,
-    onClose: func,
-    visible: bool,
     transition: bool,
-    backdrop: oneOfType([bool, oneOf(["static"] as const)]),
-    ...toggleEventTypes
+    ...toggleEventPropTypes,
+    ...layerCommonPropTypes
 }
 
 export default Modal
