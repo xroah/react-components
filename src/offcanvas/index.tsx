@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from "react"
 import classNames from "classnames"
-import { OffCanvasPlacements } from "../commons/constants"
+import { breakpoints, OffCanvasPlacements } from "../commons/constants"
 import { LayerProps, OneOf } from "../commons/types"
 import { Transition, TransitionStatus } from "react-transition-group"
 import CloseBtn from "../commons/close-btn"
@@ -11,6 +11,7 @@ interface OffCanvasProps extends LayerProps {
     header?: React.ReactNode
     placement?: OneOf<typeof OffCanvasPlacements>
     scroll?: boolean
+    breakpoint?: OneOf<typeof breakpoints>
 }
 
 const OffCanvas: FunctionComponent<OffCanvasProps> = ({
@@ -27,7 +28,7 @@ const OffCanvas: FunctionComponent<OffCanvasProps> = ({
     children,
     style,
     onKeyDown,
-
+    breakpoint,
     ...restProps
 }) => {
     const PREFIX = "offcanvas"
@@ -48,6 +49,7 @@ const OffCanvas: FunctionComponent<OffCanvasProps> = ({
         const classes = classNames(
             PREFIX,
             `${PREFIX}-${placement}`,
+            breakpoint && `${PREFIX}-${breakpoint}`,
             state === "entering" && "showing",
             (state === "entered" || state === "exiting") && "show",
             state === "exiting" && "hiding"
@@ -68,11 +70,17 @@ const OffCanvas: FunctionComponent<OffCanvasProps> = ({
             </div>
         )
     }
+    const handleClickBackdrop = () => {
+        if (backdrop !== "static") {
+            onClose?.("backdrop")
+        }
+    }
     const _backdrop = (
         backdrop ? (
             <Backdrop
                 visible={!!visible}
-                zIndex={zIndex} />
+                zIndex={zIndex} 
+                onClick={handleClickBackdrop}/>
         ) : null
     )
 
