@@ -16,6 +16,7 @@ export default () => {
                 title="Off canvas"
                 onClose={handleClose}
                 visible={visible}
+                backdrop={"static"}
                 placement="bottom">
                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Quidem eum voluptatibus corporis quisquam nisi, quas veritatis, nulla voluptates voluptatum repellat sunt quaerat molestias aspernatur deserunt. Soluta at accusantium culpa numquam!
             </OffCanvas>

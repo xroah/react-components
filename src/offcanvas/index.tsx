@@ -6,6 +6,8 @@ import { Transition, TransitionStatus } from "react-transition-group"
 import CloseBtn from "../commons/close-btn"
 import { getZIndex } from "../commons/utils"
 import Backdrop from "../commons/backdrop"
+import { layerCommonPropTypes } from "../commons/prop-types"
+import { bool, node, oneOf } from "prop-types"
 
 interface OffCanvasProps extends LayerProps {
     header?: React.ReactNode
@@ -94,6 +96,13 @@ const OffCanvas: FunctionComponent<OffCanvasProps> = ({
             {_backdrop}
         </>
     )
+}
+
+OffCanvas.propTypes = {
+    ...layerCommonPropTypes,
+    header: node,
+    scroll: bool,
+    breakpoint: oneOf(breakpoints)
 }
 
 export default OffCanvas
