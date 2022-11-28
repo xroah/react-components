@@ -66,7 +66,7 @@ const OffCanvas: FunctionComponent<OffCanvasProps> = ({
                 }}
                 {...restProps}>
                 {_header}
-                <div className={PREFIX + "body"}>
+                <div className={PREFIX + "-body"}>
                     {children}
                 </div>
             </div>
