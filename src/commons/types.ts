@@ -28,7 +28,9 @@ export interface LayerProps extends
 
 export interface ButtonProps extends
     ButtonHTMLAttributes<HTMLButtonElement> {
-    variant?: OneOf<typeof variants>
+    variant?: Variant
     size?: OneOf<typeof sizes>
     disabled?: boolean
 }
+
+export type Variant = OneOf<typeof variants>
