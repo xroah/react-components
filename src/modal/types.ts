@@ -19,12 +19,9 @@ export interface DialogProps extends LayerProps {
     cancelText?: string
     onOk?: VoidFunction
     onCancel?: VoidFunction
-    onClose?: VoidFunction
 }
 
 export interface ModalProps extends ToggleEvents, DialogProps {
-    visible?: boolean
     transition?: boolean
     backdrop?: boolean | "static"
-    onClose?: (type?: CloseType) => unknown
 }

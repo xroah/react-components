@@ -1,4 +1,4 @@
-import { HTMLAttributes, ButtonHTMLAttributes  } from "react"
+import { HTMLAttributes, ButtonHTMLAttributes } from "react"
 import { closeTypes, sizes, variants } from "./constants"
 
 export type OneOf<T extends ReadonlyArray<unknown>> = T[number]
@@ -14,16 +14,20 @@ export interface ToggleEvents {
     onHidden?: VoidFunction
 }
 
-export interface LayerProps extends ToggleEvents, DivProps {
+export interface ClosableProps {
     visible?: boolean
     closable?: boolean
-    onClose?: (type?: CloseType) => unknown
+    onClose?: VoidFunction
+}
+export interface LayerProps extends
+    ToggleEvents, DivProps, ClosableProps {
     backdrop?: boolean | "static"
     keyboard?: boolean
+    onClose?: (type?: CloseType) => unknown
 }
 
 export interface ButtonProps extends
-ButtonHTMLAttributes<HTMLButtonElement> {
+    ButtonHTMLAttributes<HTMLButtonElement> {
     variant?: OneOf<typeof variants>
     size?: OneOf<typeof sizes>
     disabled?: boolean
