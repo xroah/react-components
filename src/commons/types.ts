@@ -15,12 +15,12 @@ export interface ToggleEvents {
 }
 
 export interface ClosableProps {
-    visible?: boolean
     closable?: boolean
     onClose?: VoidFunction
 }
 export interface LayerProps extends
     ToggleEvents, DivProps, ClosableProps {
+    visible?: boolean
     backdrop?: boolean | "static"
     keyboard?: boolean
     onClose?: (type?: CloseType) => unknown

@@ -17,7 +17,6 @@ export interface AlertProps extends DivProps, ClosableProps {
 }
 
 const Alert: FunctionComponent<AlertProps> = ({
-    visible,
     variant,
     onClose,
     closable,
