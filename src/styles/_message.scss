@@ -1,0 +1,21 @@
+.r-message-wrapper {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    position: fixed;
+    left: 0;
+    top: 10px;
+    width: 100%;
+    pointer-events: none;
+
+    .r-message-item {
+        transform: translateY(-100%);
+        opacity: 0;
+        transition: transform .15s, opacity .15s;
+
+        &.show {
+            transform: none;
+            opacity: 1;
+        }
+    }
+}
