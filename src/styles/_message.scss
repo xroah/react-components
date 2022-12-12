@@ -14,6 +14,7 @@
         margin-top: -100px;
         opacity: 0;
         transition: margin .15s, opacity .15s;
+        pointer-events: auto;
 
         &.show {
             margin-top: 0;

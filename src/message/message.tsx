@@ -8,13 +8,20 @@ const DEFAULT_DURATION = 3000
 
 export interface MessageProps extends AlertProps, ToggleEvents {
     duration?: number
+    container: HTMLElement
+}
+
+interface UnmountProps {
+    container: HTMLElement
 }
 
 interface State {
     visible: boolean
 }
 
-class Message extends React.Component<MessageProps, State> {
+type Props = MessageProps & UnmountProps
+
+class Message extends React.Component<Props, State> {
     private timer = -1
 
     constructor(props: MessageProps) {
@@ -34,6 +41,7 @@ class Message extends React.Component<MessageProps, State> {
     }
 
     close = () => {
+        this.clearTimeout()
         this.setState({ visible: false })
     }
 
@@ -49,7 +57,10 @@ class Message extends React.Component<MessageProps, State> {
     }
 
     componentWillUnmount() {
+        const {container} = this.props
+
         this.clearTimeout()
+        container.remove()
     }
 
     render() {

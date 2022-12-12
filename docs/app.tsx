@@ -8,7 +8,8 @@ import Button from "../src/commons/button"
 export default function App() {
     const showMsg = () => {
         showMessage("msg", {
-            variant: "primary"
+            variant: "primary",
+            closable: true
         })
     }
 
