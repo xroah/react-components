@@ -8,28 +8,21 @@ const DEFAULT_DURATION = 3000
 
 export interface MessageProps extends AlertProps, ToggleEvents {
     duration?: number
-    container: HTMLElement
 }
 
 interface UnmountProps {
+    visible: boolean
     container: HTMLElement
 }
 
-interface State {
-    visible: boolean
-}
 
 type Props = MessageProps & UnmountProps
 
-class Message extends React.Component<Props, State> {
+class Message extends React.Component<Props> {
     private timer = -1
 
-    constructor(props: MessageProps) {
+    constructor(props: Props) {
         super(props)
-
-        this.state = {
-            visible: true
-        }
     }
 
     clearTimeout() {
@@ -42,7 +35,7 @@ class Message extends React.Component<Props, State> {
 
     close = () => {
         this.clearTimeout()
-        this.setState({ visible: false })
+        this.props.onClose?.()
     }
 
     componentDidMount() {
@@ -70,15 +63,16 @@ class Message extends React.Component<Props, State> {
             className,
             onHide,
             onHidden,
+            visible,
             ...restProps
         } = this.props
 
-        delete restProps.onClose
         delete restProps.duration
+        delete restProps.onClose
 
         return (
             <Transition
-                in={this.state.visible}
+                in={visible}
                 timeout={150}
                 onEnter={onShow}
                 onEntered={onShown}

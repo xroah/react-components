@@ -9,7 +9,8 @@ export default function App() {
     const showMsg = () => {
         showMessage("msg", {
             variant: "primary",
-            closable: true
+            closable: true,
+            duration: 10000
         })
     }
 

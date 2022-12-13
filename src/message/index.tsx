@@ -2,21 +2,14 @@ import React, { ReactNode } from "react"
 import { createRoot, Root } from "react-dom/client"
 import Message, { MessageProps } from "./message"
 
-type MessageOptions = Omit<MessageProps, "onClose" | "container">
-
-interface MessageItem {
-    root: Root,
-    container: HTMLElement
-}
-
 let uid = 0
 
 const wrapper = document.createElement("div")
-const msgMap = new Map<number, MessageItem>()
+const msgMap = new Map<number, VoidFunction>()
 
 wrapper.classList.add("r-message-wrapper")
 
-function showMessage(msg: ReactNode, options: MessageOptions) {
+function showMessage(msg: ReactNode, options: MessageProps) {
     const {
         className,
         closable,
@@ -31,6 +24,26 @@ function showMessage(msg: ReactNode, options: MessageOptions) {
     const container = document.createElement("div")
     const root = createRoot(container)
     const id = uid++
+    const close = () => render(false)
+    const render = (visible: boolean) => {
+        root.render(
+            <Message
+                variant={variant}
+                className={className}
+                duration={duration}
+                closable={closable}
+                visible={visible}
+                icon={icon}
+                onClose={close}
+                onShow={onShow}
+                onShown={onShown}
+                onHide={onHide}
+                container={container}
+                onHidden={handleHidden}>
+                {msg}
+            </Message>
+        )
+    }
     const handleHidden = () => {
         onHidden?.()
         Promise.resolve().then(
@@ -45,26 +58,19 @@ function showMessage(msg: ReactNode, options: MessageOptions) {
         document.body.appendChild(wrapper)
     }
 
-    msgMap.set(id, { root, container })
+    msgMap.set(id, close)
 
     wrapper.appendChild(container)
-    root.render(
-        <Message
-            variant={variant}
-            className={className}
-            duration={duration}
-            closable={closable}
-            icon={icon}
-            onShow={onShow}
-            onShown={onShown}
-            onHide={onHide}
-            container={container}
-            onHidden={handleHidden}>
-            {msg}
-        </Message>
-    )
+    render(true)
+}
+
+function closeAll() {
+    for (const [_, close] of msgMap) {
+        close()
+    }
 }
 
 export {
-    showMessage
+    showMessage,
+    closeAll
 }
