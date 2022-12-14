@@ -1,6 +1,27 @@
+@use "./mixins";
+
+.alert {
+    @include mixins.flex-align-center();
+
+    .alert-body {
+        @include mixins.flex-align-center();
+        flex-grow: 1;
+        margin-right: 10px;
+    }
+
+    .r-icon {
+        flex-shrink: 0;
+        margin-right: 10px;
+    }
+
+    .btn-close {
+        flex-shrink: 0;
+        margin-left: auto;
+    }
+}
+
 .r-message-wrapper {
-    display: flex;
-    align-items: center;
+    @include mixins.flex-align-center();
     flex-direction: column;
     position: fixed;
     left: 0;

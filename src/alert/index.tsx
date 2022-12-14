@@ -28,15 +28,16 @@ const Alert: FunctionComponent<AlertProps> = ({
     const PREFIX = "alert"
     const classes = classNames(
         PREFIX,
-        `${PREFIX}-${variant}`,
-        closable && `${PREFIX}-dismissible`
+        `${PREFIX}-${variant}`
     )
 
     return (
         <div className={classes} {...restProps}>
-            {icon}
-            {children}
-            {closable ? <CloseBtn onClick={onClose}/> : null}
+            <div className="alert-body">
+                {icon}
+                {children}
+            </div>
+            {closable ? <CloseBtn onClick={onClose} /> : null}
         </div>
     )
 }

@@ -4,6 +4,7 @@ import OffCanvas from "./examples/offcanvas"
 import Alert from "../src/alert"
 import { showMessage } from "../src/message"
 import Button from "../src/commons/button"
+import CheckFill from "../src/icons/check-fill"
 
 export default function App() {
     const showMsg = () => {
@@ -19,6 +20,7 @@ export default function App() {
             <ModalExample />
             <OffCanvas />
             <Alert closable variant="primary" >
+                <CheckFill/>
                 A simple primary alert—check it out!
             </Alert>
             <div>
