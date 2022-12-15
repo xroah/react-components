@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from "react"
+import React, { FunctionComponent, ReactElement } from "react"
 
 export interface SVGIconProps {
     size?: number
@@ -24,4 +24,17 @@ const SVG: FunctionComponent<SVGIconProps> = ({
     )
 }
 
-export default SVG
+function createSVGIcon(paths: ReactElement, name?: string) {
+    const IconComp: FunctionComponent<SVGIconProps> = (props) => {
+        return <SVG {...props}>{paths}</SVG>
+    }
+
+    if (name) {
+        IconComp.displayName = name
+    }
+
+    return IconComp
+}
+
+export {SVG}
+export default createSVGIcon
