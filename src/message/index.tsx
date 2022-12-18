@@ -1,5 +1,5 @@
 import React, { ReactNode } from "react"
-import { createRoot, Root } from "react-dom/client"
+import { createRoot } from "react-dom/client"
 import Message, { MessageProps } from "./message"
 
 const wrapper = document.createElement("div")

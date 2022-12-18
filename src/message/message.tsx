@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import React, { FunctionComponent } from "react"
+import React from "react"
 import { Transition } from "react-transition-group"
 import Alert, { AlertProps } from "../alert";
 import { ToggleEvents } from "../commons/types";
@@ -14,7 +14,6 @@ interface UnmountProps {
     visible: boolean
     container: HTMLElement
 }
-
 
 type Props = MessageProps & UnmountProps
 
