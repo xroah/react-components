@@ -2,7 +2,7 @@ import React from "react"
 import ModalExample from "./examples/modal"
 import OffCanvas from "./examples/offcanvas"
 import Alert from "../src/alert"
-import { showMessage } from "../src/message"
+import { show as showMessage } from "../src/message"
 import Button from "../src/commons/button"
 import CheckFill from "../src/icons/check-fill"
 

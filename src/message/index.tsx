@@ -2,14 +2,12 @@ import React, { ReactNode } from "react"
 import { createRoot, Root } from "react-dom/client"
 import Message, { MessageProps } from "./message"
 
-let uid = 0
-
 const wrapper = document.createElement("div")
-const msgMap = new Map<number, VoidFunction>()
+const closeSet = new Set<VoidFunction>()
 
 wrapper.classList.add("r-message-wrapper")
 
-function showMessage(msg: ReactNode, options: MessageProps) {
+function show(msg: ReactNode, options: MessageProps) {
     const {
         className,
         closable,
@@ -23,7 +21,6 @@ function showMessage(msg: ReactNode, options: MessageProps) {
     } = options
     const container = document.createElement("div")
     const root = createRoot(container)
-    const id = uid++
     const close = () => render(false)
     const render = (visible: boolean) => {
         root.render(
@@ -49,7 +46,9 @@ function showMessage(msg: ReactNode, options: MessageProps) {
         Promise.resolve().then(
             () => {
                 root.unmount()
-                msgMap.delete(id)
+                closeSet.delete(close)
+
+                console.log(closeSet.size)
             }
         )
     }
@@ -58,19 +57,21 @@ function showMessage(msg: ReactNode, options: MessageProps) {
         document.body.appendChild(wrapper)
     }
 
-    msgMap.set(id, close)
+    closeSet.add(close)
 
     wrapper.appendChild(container)
     render(true)
+
+    return close
 }
 
 function closeAll() {
-    for (const [_, close] of msgMap) {
+    for (const close of closeSet) {
         close()
     }
 }
 
 export {
-    showMessage,
+    show,
     closeAll
 }
