@@ -1,23 +1,25 @@
-import React from "react"
+import React, { FunctionComponent } from "react"
 import classNames from "classnames"
 import { ButtonProps } from "./types"
 
-export default function Button(
+const Button: FunctionComponent<ButtonProps> = (
     {
         disabled,
         className,
         size,
         variant = "primary",
         ...restProps
-    }: ButtonProps
-) {
+    }
+) => {
+    const classes = classNames(
+        "btn",
+        `btn-${variant}`,
+        size && `btn-${size}`
+    )
+
     return (
         <button
-            className={classNames(
-                "btn",
-                `btn-${variant}`,
-                size && `btn-${size}`
-            )}
+            className={classes}
             disabled={disabled}
             {...restProps} />
     )
