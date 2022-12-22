@@ -1,10 +1,9 @@
 import React from "react"
-import { EndListenerProps } from "react-transition-group/Transition"
-import { ToggleEvents } from "./types"
+import { TimeoutProps } from "react-transition-group/Transition"
 
-type BaseProps = Omit<EndListenerProps<HTMLElement>, "addEndListener">
+type BaseProps = Partial<TimeoutProps<HTMLElement>>
 
-interface NOTransitionProps extends ToggleEvents, BaseProps {
+interface NOTransitionProps extends BaseProps {
     children: React.ReactNode
 }
 
@@ -34,11 +33,17 @@ class NOTransition extends React.Component<NOTransitionProps> {
     }
 
     render() {
-        if (this.props.unmountOnExit) {
+        const {
+            children,
+            unmountOnExit,
+            in: _in
+        } = this.props
+
+        if (!_in && unmountOnExit) {
             return null
         }
 
-        return this.props.children
+        return children
     }
 }
 
