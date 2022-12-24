@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from "react"
 import classNames from "classnames"
-import { breakpoints, OffCanvasPlacements } from "../commons/constants"
+import { breakpoints, offCanvasPlacements } from "../commons/constants"
 import { LayerProps, OneOf } from "../commons/types"
 import { Transition, TransitionStatus } from "react-transition-group"
 import CloseBtn from "../commons/close-btn"
@@ -11,7 +11,7 @@ import { bool, node, oneOf } from "prop-types"
 
 interface OffCanvasProps extends LayerProps {
     header?: React.ReactNode
-    placement?: OneOf<typeof OffCanvasPlacements>
+    placement?: OneOf<typeof offCanvasPlacements>
     scroll?: boolean
     breakpoint?: OneOf<typeof breakpoints>
 }

@@ -27,9 +27,14 @@ export const breakpoints = [
     "xxl"
 ] as const
 
-export const OffCanvasPlacements = [
+export const offCanvasPlacements = [
     "start",
     "top",
     "bottom",
     "end"
 ] as const
+
+export const SpinnerAnimations = [
+    "border",
+    "grow"
+]
