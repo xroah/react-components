@@ -12,10 +12,14 @@ export const toggleEventPropTypes = {
     onHidden: func
 }
 
-export const layerCommonPropTypes = {
+export const closablePropTypes = {
     onClose: func,
+    closable: bool,
+}
+
+export const layerCommonPropTypes = {
+    ...closablePropTypes,
     visible: bool,
     keyboard: bool,
     backdrop: oneOfType([bool, oneOf(["static"] as const)]),
-    closable: bool,
 }

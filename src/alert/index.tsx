@@ -10,6 +10,9 @@ import {
     DivProps,
     Variant
 } from "../commons/types";
+import { node, oneOf } from "prop-types";
+import { variants } from "../commons/constants";
+import { closablePropTypes } from "../commons/prop-types";
 
 export interface AlertProps extends DivProps, ClosableProps {
     variant: Variant
@@ -40,6 +43,12 @@ const Alert: FunctionComponent<AlertProps> = ({
             {closable ? <CloseBtn onClick={onClose} /> : null}
         </div>
     )
+}
+
+Alert.propTypes = {
+    icon: node,
+    variant: oneOf(variants).isRequired,
+    ...closablePropTypes
 }
 
 export default Alert

@@ -3,6 +3,7 @@ import React from "react"
 import { Transition } from "react-transition-group"
 import Alert, { AlertProps } from "../alert";
 import { ToggleEvents } from "../commons/types";
+import { number } from "prop-types";
 
 const DEFAULT_DURATION = 3000
 
@@ -19,6 +20,9 @@ type Props = MessageProps & UnmountProps
 
 class Message extends React.Component<Props> {
     private timer = -1
+    static propTypes = {
+        duration: number
+    }
 
     constructor(props: Props) {
         super(props)
