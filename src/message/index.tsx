@@ -19,6 +19,7 @@ function show(msg: ReactNode, options: MessageProps) {
         duration,
         variant,
         icon,
+        style,
         onShow,
         onShown,
         onHide,
@@ -32,6 +33,7 @@ function show(msg: ReactNode, options: MessageProps) {
             <Message
                 variant={variant}
                 className={className}
+                style={style}
                 duration={duration}
                 closable={closable}
                 visible={visible}
