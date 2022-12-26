@@ -24,3 +24,5 @@ const Button: FunctionComponent<ButtonProps> = (
             {...restProps} />
     )
 }
+
+export default Button
