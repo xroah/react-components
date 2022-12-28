@@ -34,7 +34,7 @@ export const offCanvasPlacements = [
     "end"
 ] as const
 
-export const SpinnerAnimations = [
+export const spinnerAnimations = [
     "border",
     "grow"
-]
+] as const

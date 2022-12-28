@@ -5,6 +5,7 @@ import Alert from "../src/alert"
 import { show as showMessage } from "../src/message"
 import Button from "../src/commons/button"
 import CheckFill from "../src/icons/check-fill"
+import Spinner from "./examples/spinner"
 
 export default function App() {
     const showMsg = () => {
@@ -27,6 +28,9 @@ export default function App() {
                 <Button onClick={showMsg}>
                     Show message
                 </Button>
+            </div>
+            <div>
+                <Spinner/>
             </div>
         </div>
     )

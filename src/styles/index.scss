@@ -3,6 +3,7 @@
 @import "~bootstrap/scss/maps";
 @import "~bootstrap/scss/mixins";
 @import "~bootstrap/scss/utilities";
+@import "~bootstrap/scss/utilities/api";
 @import "~bootstrap/scss/root";
 @import "~bootstrap/scss/reboot";
 @import "~bootstrap/scss/type";
@@ -12,5 +13,6 @@
 @import "~bootstrap/scss/modal";
 @import "~bootstrap/scss/offcanvas";
 @import "~bootstrap/scss/alert";
+@import "~bootstrap/scss/spinners";
 @import "./backdrop";
 @import "./message";
