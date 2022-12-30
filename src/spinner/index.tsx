@@ -9,7 +9,7 @@ import {
     string
 } from "prop-types";
 
-interface SpinnerProps extends DivProps {
+export interface SpinnerProps extends DivProps {
     animation?: OneOf<typeof spinnerAnimations>
     variant?: Variant
     size?: number | string
