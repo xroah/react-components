@@ -1,9 +1,13 @@
 import React, { CSSProperties, FunctionComponent } from "react"
 import { DivProps, OneOf, Variant } from "../commons/types";
-import { spinnerAnimations } from "../commons/constants";
+import { spinnerAnimations, variants } from "../commons/constants";
 import classNames from "classnames";
-
-const sizes = ["sm"] as const
+import {
+    number,
+    oneOf,
+    oneOfType,
+    string
+} from "prop-types";
 
 interface SpinnerProps extends DivProps {
     animation?: OneOf<typeof spinnerAnimations>
@@ -47,6 +51,12 @@ const Spinner: FunctionComponent<SpinnerProps> = ({
             style={{ ...style, ...sizeStyle }}
             {...restProps} />
     )
+}
+
+Spinner.propTypes = {
+    animation: oneOf(spinnerAnimations),
+    variant: oneOf(variants),
+    size: oneOfType([number, string])
 }
 
 export default Spinner
