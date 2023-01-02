@@ -5,7 +5,7 @@ import Alert from "../src/alert"
 import { show as showMessage } from "../src/message"
 import Button from "../src/commons/button"
 import CheckFill from "../src/icons/check-fill"
-import Spinner from "./examples/spinner"
+import Loading from "./examples/loading"
 
 export default function App() {
     const showMsg = () => {
@@ -30,7 +30,7 @@ export default function App() {
                 </Button>
             </div>
             <div>
-                <Spinner/>
+                <Loading/>
             </div>
         </div>
     )

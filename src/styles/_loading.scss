@@ -1,0 +1,15 @@
+@use "./mixins";
+
+.r-loading-wrapper {
+    @include mixins.flex-all-center();
+    position: relative;
+    padding: 10px;
+    background-color: rgba(255, 255, 255, .5);
+
+    .btn-close {
+        $dis: 10px;
+        position: absolute;
+        top: $dis;
+        right: $dis;
+    }
+}
