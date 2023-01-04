@@ -4,6 +4,7 @@ import Spinner, { SpinnerProps } from "../spinner";
 import { Transition, TransitionStatus } from "react-transition-group";
 import CloseBtn from "../commons/close-btn";
 import classNames from "classnames";
+import { bool } from "prop-types";
 
 type Base = SpinnerProps & ClosableProps & ToggleEvents
 
@@ -58,6 +59,10 @@ const Loading: FunctionComponent<LoadingProps> = ({
             {render}
         </Transition>
     )
+}
+
+Loading.propTypes = {
+    loading: bool
 }
 
 export default Loading
