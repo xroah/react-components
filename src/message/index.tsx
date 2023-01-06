@@ -7,10 +7,8 @@ import InfoFill from "../icons/info-fill"
 import CheckFill from "../icons/check-fill"
 import WarnFill from "../icons/warn-fill"
 
-const wrapper = document.createElement("div")
+let wrapper: HTMLElement | null = null
 const closeSet = new Set<VoidFunction>()
-
-wrapper.classList.add("r-message-wrapper")
 
 function show(msg: ReactNode, options: MessageProps) {
     const {
@@ -54,8 +52,19 @@ function show(msg: ReactNode, options: MessageProps) {
             () => {
                 root.unmount()
                 closeSet.delete(close)
+
+                if (closeSet.size === 0) {
+                    wrapper?.remove()
+
+                    wrapper = null
+                }
             }
         )
+    }
+
+    if (!wrapper) {
+        wrapper = document.createElement("div")
+        wrapper.classList.add("r-message-wrapper")
     }
 
     if (!wrapper.parentElement) {
