@@ -1,6 +1,6 @@
 import classNames from "classnames";
 import React from "react"
-import { Transition } from "react-transition-group"
+import { Transition, TransitionStatus } from "react-transition-group"
 import Alert, { AlertProps } from "../alert";
 import { ToggleEvents } from "../commons/types";
 import { number } from "prop-types";
@@ -22,10 +22,6 @@ class Message extends React.Component<Props> {
     private timer = -1
     static propTypes = {
         duration: number
-    }
-
-    constructor(props: Props) {
-        super(props)
     }
 
     clearTimeout() {
@@ -53,7 +49,7 @@ class Message extends React.Component<Props> {
     }
 
     componentWillUnmount() {
-        const {container} = this.props
+        const { container } = this.props
 
         this.clearTimeout()
         container.remove()
@@ -69,6 +65,20 @@ class Message extends React.Component<Props> {
             visible,
             ...restProps
         } = this.props
+        const render = (s: TransitionStatus) => {
+            const show = s === "entering" || s === "entered"
+            const classes = classNames(
+                className,
+                "r-message-item",
+                show && "show"
+            )
+
+            return (
+                <div className={classes}>
+                    <Alert onClose={this.close} {...restProps} />
+                </div>
+            )
+        }
 
         delete restProps.duration
         delete restProps.onClose
@@ -83,27 +93,7 @@ class Message extends React.Component<Props> {
                 onExited={onHidden}
                 appear
                 unmountOnExit>
-                {
-                    state => {
-                        const isEnter = (
-                            state === "entering" ||
-                            state === "entered"
-                        )
-                        const classes = classNames(
-                            className,
-                            "r-message-item",
-                            isEnter && "show"
-                        )
-
-                        return (
-                            <div className={classes}>
-                                <Alert
-                                    onClose={this.close}
-                                    {...restProps} />
-                            </div>
-                        )
-                    }
-                }
+                {render}
             </Transition>
         )
     }
