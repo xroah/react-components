@@ -26,8 +26,8 @@ const Loading: FunctionComponent<LoadingProps> = ({
     onHide,
     ...restProps
 }) => {
-    const render = (state: TransitionStatus) => {
-        const show = state === "entering" || state === "entered"
+    const render = (s: TransitionStatus) => {
+        const show = s === "entering" || s === "entered"
         const classes = classNames(
             className,
             "r-loading-wrapper",
