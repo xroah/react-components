@@ -1,10 +1,9 @@
 import React, { FunctionComponent } from "react";
 import { ClosableProps, ToggleEvents } from "../commons/types";
 import Spinner, { SpinnerProps } from "../spinner";
-import { Transition, TransitionStatus } from "react-transition-group";
 import CloseBtn from "../commons/close-btn";
-import classNames from "classnames";
 import { bool } from "prop-types";
+import Fade from "../commons/Fade";
 
 type Base = SpinnerProps & ClosableProps & ToggleEvents
 
@@ -26,28 +25,13 @@ const Loading: FunctionComponent<LoadingProps> = ({
     onHide,
     ...restProps
 }) => {
-    const render = (s: TransitionStatus) => {
-        const show = s === "entering" || s === "entered"
-        const classes = classNames(
-            className,
-            "r-loading-wrapper",
-            "fade",
-            show && "show"
-        )
-
-        return (
-            <div className={classes} {...restProps}>
-                <Spinner
-                    variant={variant}
-                    size={size}
-                    animation={animation} />
-                {closable ? <CloseBtn onClick={onClose} /> : null}
-            </div>
-        )
-    }
+    const classes = [
+        className,
+        "r-loading-wrapper"
+    ].join(" ").trim()
 
     return (
-        <Transition
+        <Fade
             in={loading}
             timeout={150}
             onEnter={onShow}
@@ -56,8 +40,14 @@ const Loading: FunctionComponent<LoadingProps> = ({
             onExited={onHidden}
             appear
             unmountOnExit>
-            {render}
-        </Transition>
+            <div className={classes} {...restProps}>
+                <Spinner
+                    variant={variant}
+                    size={size}
+                    animation={animation} />
+                {closable ? <CloseBtn onClick={onClose} /> : null}
+            </div>
+        </Fade>
     )
 }
 
