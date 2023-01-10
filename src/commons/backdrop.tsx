@@ -15,25 +15,26 @@ export default function Backdrop(
         zIndex,
         transition = true,
         style,
+        className,
         ...restProps
     }: BackdropProps
 ) {
     const nodeRef = React.useRef<HTMLDivElement>(null)
-    const CLASS = "r-backdrop"
+    const classes = [
+        className,
+        "r-backdrop"
+    ]
 
     if (!transition) {
-        const classes = classNames(
-            CLASS,
-            visible && "show"
-        )
-
         if (!visible) {
             return null
         }
 
+        classes.push("show")
+
         return (
             <div
-                className={classes}
+                className={classes.join(" ").trim()}
                 style={{ zIndex }}
                 {...restProps} />
         )
@@ -48,7 +49,7 @@ export default function Backdrop(
             timeout={150}>
             {
                 state => {
-                    let classes = `${CLASS} fade`
+                    let classes = `r-backdrop fade`
 
                     if (state === "entering" || state === "entered") {
                         classes += " show"
