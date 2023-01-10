@@ -12,11 +12,13 @@ import { TimeoutProps } from "react-transition-group/Transition";
 
 interface FadeProps extends Partial<TimeoutProps<HTMLElement>> {
     fadeClass?: string
+    showClass?: string
     children: ReactElement
 }
 
 const Fade: FunctionComponent<FadeProps> = ({
     fadeClass = "fade",
+    showClass = "show",
     children,
     timeout = 150,
     ...restProps
@@ -41,7 +43,7 @@ const Fade: FunctionComponent<FadeProps> = ({
                     const classes = classNames(
                         childrenClass,
                         fadeClass,
-                        show && "show"
+                        show && showClass
                     )
 
                     return cloneElement(
