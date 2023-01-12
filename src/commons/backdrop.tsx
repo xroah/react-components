@@ -1,7 +1,6 @@
 import React from "react"
-import { Transition } from "react-transition-group"
-import classNames from "classnames"
 import { DivProps } from "./types"
+import Fade from "./Fade"
 
 interface BackdropProps extends DivProps {
     visible: boolean
@@ -20,10 +19,7 @@ export default function Backdrop(
     }: BackdropProps
 ) {
     const nodeRef = React.useRef<HTMLDivElement>(null)
-    const classes = [
-        className,
-        "r-backdrop"
-    ]
+    const classes = [className, "r-backdrop"]
 
     if (!transition) {
         if (!visible) {
@@ -41,29 +37,17 @@ export default function Backdrop(
     }
 
     return (
-        <Transition
+        <Fade
             appear
             nodeRef={nodeRef}
             in={visible}
             unmountOnExit
             timeout={150}>
-            {
-                state => {
-                    let classes = `r-backdrop fade`
-
-                    if (state === "entering" || state === "entered") {
-                        classes += " show"
-                    }
-
-                    return (
-                        <div
-                            ref={nodeRef}
-                            className={classes}
-                            style={{ ...style, zIndex }}
-                            {...restProps} />
-                    )
-                }
-            }
-        </Transition>
+            <div
+                ref={nodeRef}
+                className={classes.join(" ").trim()}
+                style={{ ...style, zIndex }}
+                {...restProps} />
+        </Fade>
     )
 }
