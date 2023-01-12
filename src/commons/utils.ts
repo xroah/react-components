@@ -26,3 +26,10 @@ export function omit<T>(
 
     return o
 }
+
+export function classnames(...classes: unknown[]): string {
+    return classes
+        .filter(c => !!c)
+        .map(c => String(c).trim())
+        .join(" ")
+}

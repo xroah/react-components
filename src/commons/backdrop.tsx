@@ -1,7 +1,7 @@
 import React from "react"
 import { DivProps } from "./types"
 import Fade from "./Fade"
-
+import { classnames } from "./utils"
 interface BackdropProps extends DivProps {
     visible: boolean
     zIndex?: number
@@ -30,7 +30,7 @@ export default function Backdrop(
 
         return (
             <div
-                className={classes.join(" ").trim()}
+                className={classnames(...classes)}
                 style={{ zIndex }}
                 {...restProps} />
         )
@@ -45,7 +45,7 @@ export default function Backdrop(
             timeout={150}>
             <div
                 ref={nodeRef}
-                className={classes.join(" ").trim()}
+                className={classnames(...classes)}
                 style={{ ...style, zIndex }}
                 {...restProps} />
         </Fade>
