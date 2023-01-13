@@ -1,6 +1,5 @@
 import React, { CSSProperties, FunctionComponent } from "react"
 import { Transition } from "react-transition-group"
-import classNames from "classnames"
 import {
     bool,
     string,
@@ -11,7 +10,7 @@ import {
 } from "prop-types"
 import { ModalProps } from "./types"
 import Backdrop from "../commons/backdrop"
-import { getZIndex } from "../commons/utils"
+import { classnames, getZIndex } from "../commons/utils"
 import Dialog from "./dialog"
 import NOTransition from "../commons/no-transition"
 import { breakpoints, sizes } from "../commons/constants"
@@ -52,7 +51,7 @@ const Modal: FunctionComponent<ModalProps> = function Modal(
     }
 ) {
     const modalRef = React.useRef<HTMLDivElement>(null)
-    const classes = classNames(
+    const classes = classnames(
         className,
         "modal",
         transition && "fade"

@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from "react"
-import classNames from "classnames"
 import { ButtonProps } from "./types"
+import { classnames } from "./utils"
 
 const Button: FunctionComponent<ButtonProps> = (
     {
@@ -11,7 +11,7 @@ const Button: FunctionComponent<ButtonProps> = (
         ...restProps
     }
 ) => {
-    const classes = classNames(
+    const classes = classnames(
         "btn",
         `btn-${variant}`,
         size && `btn-${size}`

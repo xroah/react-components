@@ -4,6 +4,7 @@ import Spinner, { SpinnerProps } from "../spinner";
 import CloseBtn from "../commons/close-btn";
 import { bool } from "prop-types";
 import Fade from "../commons/Fade";
+import { classnames } from "../commons/utils";
 
 type Base = SpinnerProps & ClosableProps & ToggleEvents
 
@@ -25,10 +26,10 @@ const Loading: FunctionComponent<LoadingProps> = ({
     onHide,
     ...restProps
 }) => {
-    const classes = [
+    const classes = classnames(
         className,
         "r-loading-wrapper"
-    ].join(" ").trim()
+        )
 
     return (
         <Fade

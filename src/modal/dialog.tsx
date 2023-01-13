@@ -1,8 +1,8 @@
 import React from "react"
 import { DialogProps } from "./types"
-import classnames from "classnames"
 import CloseBtn from "../commons/close-btn"
 import Button from "../commons/button"
+import { classnames } from "../commons/utils"
 
 export default function Dialog(
     {

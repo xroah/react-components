@@ -1,16 +1,14 @@
-import classNames from "classnames";
 import React from "react"
 import { Transition, TransitionStatus } from "react-transition-group"
 import Alert, { AlertProps } from "../alert";
 import { ToggleEvents } from "../commons/types";
 import { number } from "prop-types";
+import { classnames } from "../commons/utils";
 
 const DEFAULT_DURATION = 3000
-
 export interface MessageProps extends AlertProps, ToggleEvents {
     duration?: number
 }
-
 interface UnmountProps {
     visible: boolean
     container: HTMLElement
@@ -67,7 +65,7 @@ class Message extends React.Component<Props> {
         } = this.props
         const render = (s: TransitionStatus) => {
             const show = s === "entering" || s === "entered"
-            const classes = classNames(
+            const classes = classnames(
                 className,
                 "r-message-item",
                 show && "show"

@@ -1,13 +1,13 @@
 import React, { CSSProperties, FunctionComponent } from "react"
 import { DivProps, OneOf, Variant } from "../commons/types";
 import { spinnerAnimations, variants } from "../commons/constants";
-import classNames from "classnames";
 import {
     number,
     oneOf,
     oneOfType,
     string
 } from "prop-types";
+import { classnames } from "../commons/utils";
 
 export interface SpinnerProps extends DivProps {
     animation?: OneOf<typeof spinnerAnimations>
@@ -25,7 +25,7 @@ const Spinner: FunctionComponent<SpinnerProps> = ({
 }) => {
     const PREFIX = "spinner"
     const animationClass = `${PREFIX}-${animation}`
-    const classes = classNames(
+    const classes = classnames(
         className,
         animationClass,
         size === "sm" && `${animationClass}-sm`,

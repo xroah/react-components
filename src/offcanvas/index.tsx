@@ -1,10 +1,9 @@
 import React, { FunctionComponent } from "react"
-import classNames from "classnames"
 import { breakpoints, offCanvasPlacements } from "../commons/constants"
 import { LayerProps, OneOf } from "../commons/types"
 import { Transition, TransitionStatus } from "react-transition-group"
 import CloseBtn from "../commons/close-btn"
-import { getZIndex } from "../commons/utils"
+import { classnames, getZIndex } from "../commons/utils"
 import Backdrop from "../commons/backdrop"
 import { layerCommonPropTypes } from "../commons/prop-types"
 import { bool, node, oneOf } from "prop-types"
@@ -48,7 +47,7 @@ const OffCanvas: FunctionComponent<OffCanvasProps> = ({
             )
     )
     const render = (state: TransitionStatus) => {
-        const classes = classNames(
+        const classes = classnames(
             PREFIX,
             `${PREFIX}-${placement}`,
             breakpoint && `${PREFIX}-${breakpoint}`,

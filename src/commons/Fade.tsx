@@ -6,12 +6,12 @@ import React,
     ReactElement
 } from "react";
 import { isFragment } from "react-is"
-import classNames from "classnames";
 import { Transition } from "react-transition-group";
 import {
     TimeoutProps,
     TransitionStatus
 } from "react-transition-group/Transition";
+import { classnames } from "./utils";
 
 interface FadeProps extends Partial<TimeoutProps<HTMLElement>> {
     fadeClass?: string
@@ -38,7 +38,7 @@ const Fade: FunctionComponent<FadeProps> = ({
         const c = children as ReactElement
         const childrenClass = c.props.className
         const show = s === "entering" || s === "entered"
-        const classes = classNames(
+        const classes = classnames(
             childrenClass,
             fadeClass,
             show && showClass
