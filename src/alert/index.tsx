@@ -1,4 +1,3 @@
-import classNames from "classnames";
 import React,
 {
     FunctionComponent,
@@ -29,10 +28,7 @@ const Alert: FunctionComponent<AlertProps> = ({
     ...restProps
 }) => {
     const PREFIX = "alert"
-    const classes = classNames(
-        PREFIX,
-        `${PREFIX}-${variant}`
-    )
+    const classes = `${PREFIX} ${PREFIX}-${variant} `
 
     return (
         <div className={classes} {...restProps}>
