@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from "react";
+import { classnames } from "../commons/utils";
 import Loading, { LoadingProps } from "./loading";
-import classNames from "classnames";
 
 const NestedLoading: FunctionComponent<LoadingProps> = ({
     variant,
@@ -17,7 +17,7 @@ const NestedLoading: FunctionComponent<LoadingProps> = ({
     children,
     ...restProps
 }) => {
-    const classes = classNames(
+    const classes = classnames(
         className,
         "r-loading-nested"
     )
