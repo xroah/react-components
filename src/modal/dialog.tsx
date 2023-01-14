@@ -4,6 +4,10 @@ import CloseBtn from "../commons/close-btn"
 import Button from "../commons/button"
 import { classnames } from "../commons/utils"
 
+type WithOnClose = {
+    onClose: VoidFunction
+}
+
 export default function Dialog(
     {
         contentScrollable,
@@ -20,7 +24,7 @@ export default function Dialog(
         okText = "确定",
         fullscreen,
         children
-    }: DialogProps
+    }: Omit<DialogProps, "onClose"> & WithOnClose
 ) {
     const dialogRef = React.useRef<HTMLDivElement>(null)
     const DIALOG_PREFIX = "modal-dialog"
