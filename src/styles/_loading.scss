@@ -14,9 +14,20 @@
     }
 }
 
+.r-loading-fullscreen {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+}
+
 .r-loading-nested {
     position: relative;
+}
 
+.r-loading-nested,
+.r-loading-fullscreen {
     .r-loading-wrapper {
         position: absolute;
         width: 100%;

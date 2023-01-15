@@ -29,7 +29,7 @@ const Loading: FunctionComponent<LoadingProps> = ({
     const classes = classnames(
         className,
         "r-loading-wrapper"
-        )
+    )
 
     return (
         <Fade
