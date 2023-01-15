@@ -4,6 +4,7 @@ import { omit } from "../commons/utils"
 import Loading, { LoadingProps } from "./loading"
 
 let wrapper: HTMLElement | null = null
+let closeFunc: VoidFunction | null = null
 
 interface FullscreenLoadingProps extends LoadingProps {
     visible?: boolean
@@ -34,6 +35,11 @@ function show(
         onHidden
     }: LoadingProps = {}
 ) {
+    // prev loading still showing
+    if (closeFunc) {
+        return closeFunc
+    }
+
     const handleHidden = () => {
         onHidden?.()
 
@@ -42,7 +48,7 @@ function show(
                 root.unmount()
                 wrapper?.remove()
 
-                wrapper = null
+                wrapper = closeFunc = null
             }
         )
     }
@@ -68,6 +74,7 @@ function show(
         )
     }
     const close = () => render(false)
+    closeFunc = close
 
     if (!wrapper) {
         wrapper = document.createElement("div")
