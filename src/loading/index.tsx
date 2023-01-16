@@ -1,5 +1,5 @@
 import React from "react"
-import { createRoot, Root } from "react-dom/client"
+import { createRoot } from "react-dom/client"
 import { omit } from "../commons/utils"
 import Loading, { LoadingProps } from "./loading"
 

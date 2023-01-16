@@ -27,24 +27,24 @@ function show(msg: ReactNode, options: MessageProps) {
     const root = createRoot(container)
     const close = () => render(false)
     const render = (visible: boolean) => {
-        root.render(
-            <Message
-                variant={variant}
-                className={className}
-                style={style}
-                duration={duration}
-                closable={closable}
-                visible={visible}
-                icon={icon}
-                onClose={close}
-                onShow={onShow}
-                onShown={onShown}
-                onHide={onHide}
-                container={container}
-                onHidden={handleHidden}>
-                {msg}
-            </Message>
-        )
+        const props = {
+            variant,
+            className,
+            style,
+            duration,
+            closable,
+            visible,
+            icon,
+            onClose: close,
+            onShown,
+            onShow,
+            onHide,
+            onHidden: handleHidden,
+            container,
+            children: msg
+        }
+
+        root.render(<Message {...props} />)
     }
     const handleHidden = () => {
         onHidden?.()
