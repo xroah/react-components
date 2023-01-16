@@ -1,7 +1,15 @@
 import React, { ButtonHTMLAttributes } from "react"
 
 export default function CloseBtn(
-    props: ButtonHTMLAttributes<HTMLButtonElement>
+    {
+        type = "button",
+        ...restProps
+    }: ButtonHTMLAttributes<HTMLButtonElement>
 ) {
-    return <button className="btn-close" {...props} />
+    return (
+        <button
+            type={type}
+            className="btn-close"
+            {...restProps} />
+    )
 }
