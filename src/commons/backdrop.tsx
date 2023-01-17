@@ -2,6 +2,7 @@ import React from "react"
 import { DivProps } from "./types"
 import Fade from "./Fade"
 import { classnames } from "./utils"
+import NOTransition from "./no-transition"
 interface BackdropProps extends DivProps {
     visible: boolean
     zIndex?: number
@@ -19,33 +20,33 @@ export default function Backdrop(
     }: BackdropProps
 ) {
     const nodeRef = React.useRef<HTMLDivElement>(null)
-    const classes = [className, "r-backdrop"]
+    const classes = classnames(className, "r-backdrop")
+    const transitionProps = {
+        in: visible,
+        unmountOnExit: true,
+        timeout: 150
+    }
 
     if (!transition) {
-        if (!visible) {
-            return null
-        }
-
-        classes.push("show")
-
         return (
-            <div
-                className={classnames(...classes)}
-                style={{ zIndex }}
-                {...restProps} />
+            <NOTransition {...transitionProps}>
+                <div
+                    className={classes}
+                    style={{ zIndex }}
+                    {...restProps} />
+            </NOTransition>
         )
     }
+
 
     return (
         <Fade
             appear
             nodeRef={nodeRef}
-            in={visible}
-            unmountOnExit
-            timeout={150}>
+        {...transitionProps}>
             <div
                 ref={nodeRef}
-                className={classnames(...classes)}
+                className={classes}
                 style={{ ...style, zIndex }}
                 {...restProps} />
         </Fade>

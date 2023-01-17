@@ -1,10 +1,12 @@
-import React from "react"
+import React, { cloneElement, ReactElement } from "react"
 import { TimeoutProps } from "react-transition-group/Transition"
+import { classnames } from "./utils"
 
 type BaseProps = Partial<TimeoutProps<HTMLElement>>
 
 interface NOTransitionProps extends BaseProps {
     children: React.ReactNode
+    showClass?: string
 }
 
 class NOTransition extends React.Component<NOTransitionProps> {
@@ -36,14 +38,21 @@ class NOTransition extends React.Component<NOTransitionProps> {
         const {
             children,
             unmountOnExit,
-            in: _in
+            in: _in,
+            showClass = "show"
         } = this.props
 
         if (!_in && unmountOnExit) {
             return null
         }
 
-        return children
+        const c = children as ReactElement
+        const classes = classnames(
+            c.props.className,
+            _in && showClass
+        )
+
+        return cloneElement(c, {className: classes})
     }
 }
 
