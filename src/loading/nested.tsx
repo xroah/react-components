@@ -21,20 +21,23 @@ const NestedLoading: FunctionComponent<LoadingProps> = ({
         className,
         "r-loading-nested"
     )
+    const loadingProps = {
+        animation,
+        loading,
+        variant,
+        closable,
+        onClose,
+        size,
+        onShow,
+        onShown,
+        onHide,
+        onHidden,
+        children
+    }
 
     return (
         <div className={classes} {...restProps}>
-            <Loading
-                loading={loading}
-                variant={variant}
-                closable={closable}
-                onClose={onClose}
-                size={size}
-                onShow={onShow}
-                onShown={onShow}
-                onHide={onHide}
-                onHidden={onHidden}
-                animation={animation} />
+            <Loading {...loadingProps} />
             {children}
         </div>
     )
