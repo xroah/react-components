@@ -44,7 +44,7 @@ const Fade: FunctionComponent<FadeProps> = ({
             show && showClass
         )
 
-        return cloneElement(children, { className: classes })
+        return cloneElement(c, { className: classes })
     }
 
     return (
