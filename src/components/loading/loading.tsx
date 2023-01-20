@@ -4,7 +4,7 @@ import Spinner, { SpinnerProps } from "../spinner";
 import CloseBtn from "../basics/close-btn";
 import { bool } from "prop-types";
 import Fade from "../basics/fade";
-import { classnames } from "../../commons/utils";
+import { classnames } from "../utils";
 
 type Base = SpinnerProps & ClosableProps & ToggleEvents
 

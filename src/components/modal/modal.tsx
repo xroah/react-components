@@ -10,7 +10,7 @@ import {
 } from "prop-types"
 import { ModalProps } from "./types"
 import Backdrop from "../basics/backdrop"
-import { classnames, getZIndex } from "../../commons/utils"
+import { classnames, getZIndex } from "../utils"
 import Dialog from "./dialog"
 import NOTransition from "../basics/no-transition"
 import { breakpoints, sizes } from "../../commons/constants"

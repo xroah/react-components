@@ -7,7 +7,7 @@ import {
     oneOfType,
     string
 } from "prop-types";
-import { classnames } from "../../commons/utils";
+import { classnames } from "../utils";
 
 export interface SpinnerProps extends DivProps {
     animation?: OneOf<typeof spinnerAnimations>

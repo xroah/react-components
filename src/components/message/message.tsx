@@ -3,7 +3,7 @@ import { Transition, TransitionStatus } from "react-transition-group"
 import Alert, { AlertProps } from "../alert";
 import { ToggleEvents } from "../../commons/types";
 import { number } from "prop-types";
-import { classnames, omit } from "../../commons/utils";
+import { classnames, omit } from "../utils";
 
 const DEFAULT_DURATION = 3000
 export interface MessageProps extends AlertProps, ToggleEvents {

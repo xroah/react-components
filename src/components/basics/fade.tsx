@@ -11,7 +11,7 @@ import {
     TimeoutProps,
     TransitionStatus
 } from "react-transition-group/Transition";
-import { classnames } from "../../commons/utils";
+import { classnames } from "../utils";
 
 interface FadeProps extends Partial<TimeoutProps<HTMLElement>> {
     fadeClass?: string

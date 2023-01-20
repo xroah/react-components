@@ -1,6 +1,6 @@
 import React, { cloneElement, ReactElement } from "react"
 import { TimeoutProps } from "react-transition-group/Transition"
-import { classnames } from "../../commons/utils"
+import { classnames } from "../utils"
 
 type BaseProps = Partial<TimeoutProps<HTMLElement>>
 

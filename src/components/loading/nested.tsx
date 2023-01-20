@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from "react";
-import { classnames } from "../../commons/utils";
+import { classnames } from "../utils";
 import Loading, { LoadingProps } from "./loading";
 
 const NestedLoading: FunctionComponent<LoadingProps> = ({

@@ -2,7 +2,7 @@ import React from "react"
 import { DialogProps } from "./types"
 import CloseBtn from "../basics/close-btn"
 import Button from "../basics/button"
-import { classnames } from "../../commons/utils"
+import { classnames } from "../utils"
 
 type WithOnClose = {
     onClose: VoidFunction
