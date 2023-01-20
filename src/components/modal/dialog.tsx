@@ -1,8 +1,8 @@
 import React from "react"
 import { DialogProps } from "./types"
-import CloseBtn from "../commons/close-btn"
-import Button from "../commons/button"
-import { classnames } from "../commons/utils"
+import CloseBtn from "../basics/close-btn"
+import Button from "../basics/button"
+import { classnames } from "../../commons/utils"
 
 type WithOnClose = {
     onClose: VoidFunction

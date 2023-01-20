@@ -3,15 +3,15 @@ import React,
     FunctionComponent,
     ReactNode
 } from "react"
-import CloseBtn from "../commons/close-btn";
+import CloseBtn from "../basics/close-btn";
 import {
     ClosableProps,
     DivProps,
     Variant
-} from "../commons/types";
+} from "../../commons/types";
 import { node, oneOf } from "prop-types";
-import { variants } from "../commons/constants";
-import { closablePropTypes } from "../commons/prop-types";
+import { variants } from "../../commons/constants";
+import { closablePropTypes } from "../../commons/prop-types";
 
 export interface AlertProps extends DivProps, ClosableProps {
     variant: Variant

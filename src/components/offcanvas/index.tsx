@@ -1,11 +1,11 @@
 import React, { FunctionComponent } from "react"
-import { breakpoints, offCanvasPlacements } from "../commons/constants"
-import { LayerProps, OneOf } from "../commons/types"
+import { breakpoints, offCanvasPlacements } from "../../commons/constants"
+import { LayerProps, OneOf } from "../../commons/types"
 import { Transition, TransitionStatus } from "react-transition-group"
-import CloseBtn from "../commons/close-btn"
-import { classnames, getZIndex } from "../commons/utils"
-import Backdrop from "../commons/backdrop"
-import { layerCommonPropTypes } from "../commons/prop-types"
+import CloseBtn from "../basics/close-btn"
+import { classnames, getZIndex } from "../../commons/utils"
+import Backdrop from "../basics/backdrop"
+import { layerCommonPropTypes } from "../../commons/prop-types"
 import { bool, node, oneOf } from "prop-types"
 
 interface OffCanvasProps extends LayerProps {

@@ -9,12 +9,12 @@ import {
     oneOfType
 } from "prop-types"
 import { ModalProps } from "./types"
-import Backdrop from "../commons/backdrop"
-import { classnames, getZIndex } from "../commons/utils"
+import Backdrop from "../basics/backdrop"
+import { classnames, getZIndex } from "../../commons/utils"
 import Dialog from "./dialog"
-import NOTransition from "../commons/no-transition"
-import { breakpoints, sizes } from "../commons/constants"
-import { layerCommonPropTypes, toggleEventPropTypes } from "../commons/prop-types"
+import NOTransition from "../basics/no-transition"
+import { breakpoints, sizes } from "../../commons/constants"
+import { layerCommonPropTypes, toggleEventPropTypes } from "../../commons/prop-types"
 
 const bodyStyleStack: CSSProperties[] = []
 

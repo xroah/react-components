@@ -1,7 +1,7 @@
 import React from "react"
-import { DivProps } from "./types"
-import Fade from "./Fade"
-import { classnames } from "./utils"
+import { DivProps } from "../../commons/types"
+import Fade from "./fade"
+import { classnames } from "../../commons/utils"
 import NOTransition from "./no-transition"
 interface BackdropProps extends DivProps {
     visible: boolean

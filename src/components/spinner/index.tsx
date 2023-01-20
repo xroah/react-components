@@ -1,13 +1,13 @@
 import React, { CSSProperties, FunctionComponent } from "react"
-import { DivProps, OneOf, Variant } from "../commons/types";
-import { spinnerAnimations, variants } from "../commons/constants";
+import { DivProps, OneOf, Variant } from "../../commons/types";
+import { spinnerAnimations, variants } from "../../commons/constants";
 import {
     number,
     oneOf,
     oneOfType,
     string
 } from "prop-types";
-import { classnames } from "../commons/utils";
+import { classnames } from "../../commons/utils";
 
 export interface SpinnerProps extends DivProps {
     animation?: OneOf<typeof spinnerAnimations>
