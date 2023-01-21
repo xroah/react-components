@@ -1,8 +1,8 @@
 import React from "react"
-import NestedLoading from "../../src/loading/nested"
-import Button from "../../src/commons/button"
-import Alert from "../../src/alert"
-import { show } from "../../src/loading"
+import NestedLoading from "r-layers/loading/nested"
+import Button from "r-layers/basics/button"
+import Alert from "r-layers/alert"
+import { show } from "r-layers/loading"
 console.log(show)
 export default () => {
     const [loading, toggle] = React.useState(false)

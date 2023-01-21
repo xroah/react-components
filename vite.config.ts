@@ -10,6 +10,10 @@ export default defineConfig({
             {
                 find: /~(.+)/,
                 replacement: path.join(process.cwd(), 'node_modules/$1'),
+            },
+            {
+                find: "r-layers",
+                replacement: path.join(process.cwd(), "./src/components")
             }
         ]
     },

@@ -1,10 +1,10 @@
 import React from "react"
 import ModalExample from "./examples/modal"
 import OffCanvas from "./examples/offcanvas"
-import Alert from "../src/alert"
-import { show as showMessage } from "../src/message"
-import Button from "../src/commons/button"
-import CheckFill from "../src/icons/check-fill"
+import Alert from "r-layers/alert"
+import { show as showMessage } from "r-layers/message"
+import Button from "r-layers/basics/button"
+import CheckFill from "r-layers/icons/check-fill"
 import Loading from "./examples/loading"
 
 export default function App() {

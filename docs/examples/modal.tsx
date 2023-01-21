@@ -1,6 +1,6 @@
 import React from "react"
-import Modal from "../../src/modal/modal"
-import Button from "../../src/commons/button"
+import Modal from "r-layers/modal/modal"
+import Button from "r-layers/basics/button"
 
 export default function ModalExample() {
     const [visible, toggle] = React.useState(false)

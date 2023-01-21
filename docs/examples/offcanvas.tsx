@@ -1,6 +1,6 @@
 import React from "react"
-import Button from "../../src/commons/button"
-import OffCanvas from "../../src/offcanvas"
+import Button from "r-layers/basics/button"
+import OffCanvas from "r-layers/offcanvas"
 
 export default () => {
     const [visible, toggle] = React.useState(false)

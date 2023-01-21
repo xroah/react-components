@@ -1,5 +1,5 @@
 import React from "react";
-import Spinner from "../../src/spinner"
+import Spinner from "r-layers/spinner"
 
 export default () => {
     return (
