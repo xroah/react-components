@@ -16,8 +16,7 @@ import NOTransition from "../basics/no-transition"
 import { breakpoints, sizes } from "../../commons/constants"
 import { layerCommonPropTypes, toggleEventPropTypes } from "../../commons/prop-types"
 import { useZIndex } from "r-layers/hooks"
-
-const bodyStyleStack: CSSProperties[] = []
+import bodyStyleStack from "r-layers/utils/body-style-stack"
 
 const Modal: FunctionComponent<ModalProps> = function Modal(
     {
@@ -66,17 +65,7 @@ const Modal: FunctionComponent<ModalProps> = function Modal(
         zIndex: zIndex + 1
     })
     const handleEnter = () => {
-        const body = document.body
-        const paddingRight = window.innerWidth - body.offsetWidth
-
-        bodyStyleStack.push({
-            paddingRight: body.style.paddingRight,
-            overflow: body.style.overflow
-        })
-
-        body.style.overflow = "hidden"
-        body.style.paddingRight = paddingRight + "px"
-
+        bodyStyleStack.push()
         updateStyle({
             ...modalStyle,
             display: "block"
@@ -104,14 +93,7 @@ const Modal: FunctionComponent<ModalProps> = function Modal(
         onHide?.()
     }
     const handleExited = () => {
-        const body = document.body
-        const bodyStyle = bodyStyleStack.pop()
-
-        if (bodyStyle) {
-            body.style.overflow = bodyStyle.overflow as string
-            body.style.paddingRight = bodyStyle.paddingRight as string
-        }
-
+        bodyStyleStack.pop()
         updateStyle({
             ...modalStyle,
             display: "none"
