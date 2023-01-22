@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from "react"
-import { ButtonProps } from "../../commons/types"
+import { ButtonProps } from "../commons/types"
 import { classnames } from "../utils"
 
 const Button: FunctionComponent<ButtonProps> = (

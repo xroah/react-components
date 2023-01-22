@@ -8,10 +8,10 @@ import {
     ClosableProps,
     DivProps,
     Variant
-} from "../../commons/types";
+} from "../commons/types";
 import { node, oneOf } from "prop-types";
-import { variants } from "../../commons/constants";
-import { closablePropTypes } from "../../commons/prop-types";
+import { variants } from "../commons/constants";
+import { closablePropTypes } from "../commons/prop-types";
 
 export interface AlertProps extends DivProps, ClosableProps {
     variant: Variant

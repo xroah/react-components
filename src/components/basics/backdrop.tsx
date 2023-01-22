@@ -1,5 +1,5 @@
 import React from "react"
-import { DivProps } from "../../commons/types"
+import { DivProps } from "../commons/types"
 import Fade from "./fade"
 import { classnames } from "../utils"
 import NOTransition from "./no-transition"

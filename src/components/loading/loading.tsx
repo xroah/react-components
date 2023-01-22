@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from "react";
-import { ClosableProps, ToggleEvents } from "../../commons/types";
+import { ClosableProps, ToggleEvents } from "../commons/types";
 import Spinner, { SpinnerProps } from "../spinner";
 import CloseBtn from "../basics/close-btn";
 import { bool } from "prop-types";

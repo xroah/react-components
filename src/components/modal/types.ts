@@ -1,11 +1,11 @@
 import { ReactNode } from "react"
-import { breakpoints, modalSizes } from "../../commons/constants"
+import { breakpoints, modalSizes } from "../commons/constants"
 import {
     CloseType,
     LayerProps,
     OneOf,
     ToggleEvents
-} from "../../commons/types"
+} from "../commons/types"
 
 
 export interface DialogProps extends LayerProps {

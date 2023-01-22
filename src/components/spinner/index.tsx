@@ -1,6 +1,6 @@
 import React, { CSSProperties, FunctionComponent } from "react"
-import { DivProps, OneOf, Variant } from "../../commons/types";
-import { spinnerAnimations, variants } from "../../commons/constants";
+import { DivProps, OneOf, Variant } from "../commons/types";
+import { spinnerAnimations, variants } from "../commons/constants";
 import {
     number,
     oneOf,
