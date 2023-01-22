@@ -10,11 +10,12 @@ import {
 } from "prop-types"
 import { ModalProps } from "./types"
 import Backdrop from "../basics/backdrop"
-import { classnames, getZIndex } from "../utils"
+import { classnames } from "../utils"
 import Dialog from "./dialog"
 import NOTransition from "../basics/no-transition"
 import { breakpoints, sizes } from "../../commons/constants"
 import { layerCommonPropTypes, toggleEventPropTypes } from "../../commons/prop-types"
+import { useZIndex } from "r-layers/hooks"
 
 const bodyStyleStack: CSSProperties[] = []
 
@@ -56,7 +57,7 @@ const Modal: FunctionComponent<ModalProps> = function Modal(
         "modal",
         transition && "fade"
     )
-    const [zIndex] = React.useState(getZIndex())
+    const [zIndex] = useZIndex()
     const [
         modalStyle,
         updateStyle
@@ -109,7 +110,7 @@ const Modal: FunctionComponent<ModalProps> = function Modal(
         if (bodyStyle) {
             body.style.overflow = bodyStyle.overflow as string
             body.style.paddingRight = bodyStyle.paddingRight as string
-        } 
+        }
 
         updateStyle({
             ...modalStyle,

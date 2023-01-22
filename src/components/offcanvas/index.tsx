@@ -3,10 +3,11 @@ import { breakpoints, offCanvasPlacements } from "../../commons/constants"
 import { LayerProps, OneOf } from "../../commons/types"
 import { Transition, TransitionStatus } from "react-transition-group"
 import CloseBtn from "../basics/close-btn"
-import { classnames, getZIndex } from "../utils"
+import { classnames } from "../utils"
 import Backdrop from "../basics/backdrop"
 import { layerCommonPropTypes } from "../../commons/prop-types"
 import { bool, node, oneOf } from "prop-types"
+import { useZIndex } from "r-layers/hooks"
 
 interface OffCanvasProps extends LayerProps {
     header?: React.ReactNode
@@ -34,7 +35,7 @@ const OffCanvas: FunctionComponent<OffCanvasProps> = ({
 }) => {
     const PREFIX = "offcanvas"
     const handleClickClose = () => onClose?.("close")
-    const [zIndex] = React.useState(getZIndex())
+    const [zIndex] = useZIndex()
     const _header = (
         header === null ? null :
             header ? header : (
