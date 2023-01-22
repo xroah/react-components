@@ -36,6 +36,7 @@ const OffCanvas: FunctionComponent<OffCanvasProps> = ({
     const PREFIX = "offcanvas"
     const handleClickClose = () => onClose?.("close")
     const [zIndex] = useZIndex()
+    const nodeRef = React.useRef<HTMLDivElement>(null)
     const _header = (
         header === null ? null :
             header ? header : (
@@ -64,6 +65,8 @@ const OffCanvas: FunctionComponent<OffCanvasProps> = ({
                     ...style,
                     zIndex: zIndex + 1
                 }}
+                ref={nodeRef}
+                tabIndex={-1}
                 {...restProps}>
                 {_header}
                 <div className={PREFIX + "-body"}>
@@ -85,12 +88,17 @@ const OffCanvas: FunctionComponent<OffCanvasProps> = ({
                 onClick={handleClickBackdrop}/>
         ) : null
     )
+    const handleEntered = () => {
+        nodeRef?.current?.focus()
+    }
 
     return (
         <>
             <Transition
                 in={visible}
-                timeout={300}>
+                timeout={300}
+                nodeRef={nodeRef}
+                onEntered={handleEntered}>
                 {render}
             </Transition>
             {_backdrop}
