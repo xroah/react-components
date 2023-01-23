@@ -17,20 +17,19 @@ interface OffCanvasProps extends LayerProps {
 }
 
 const OffCanvas: FunctionComponent<OffCanvasProps> = ({
-    className,
     closable = true,
-    header,
-    title,
     placement = "bottom",
     backdrop = true,
-    scroll,
     keyboard = true,
+    scroll,
+    className,
+    header,
+    title,
     visible,
-    onClose,
     children,
     style,
-    onKeyDown,
     breakpoint,
+    onClose,
     ...restProps
 }) => {
     const PREFIX = "offcanvas"
@@ -48,6 +47,20 @@ const OffCanvas: FunctionComponent<OffCanvasProps> = ({
                 </div>
             )
     )
+
+    if (keyboard) {
+        const origOnKeyDown = restProps.onKeyDown
+        restProps.onKeyDown = (
+            ev: React.KeyboardEvent<HTMLDivElement>
+        ) => {
+            if (ev.key.toLocaleLowerCase() === "escape") {
+                onClose?.("keyboard")
+            }
+
+            origOnKeyDown?.(ev)
+        }
+    }
+
     const render = (state: TransitionStatus) => {
         const classes = classnames(
             PREFIX,
@@ -84,8 +97,8 @@ const OffCanvas: FunctionComponent<OffCanvasProps> = ({
         backdrop ? (
             <Backdrop
                 visible={!!visible}
-                zIndex={zIndex} 
-                onClick={handleClickBackdrop}/>
+                zIndex={zIndex}
+                onClick={handleClickBackdrop} />
         ) : null
     )
     const handleEntered = () => {
