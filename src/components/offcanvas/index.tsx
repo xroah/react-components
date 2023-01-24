@@ -30,6 +30,10 @@ const OffCanvas: FunctionComponent<OffCanvasProps> = ({
     style,
     breakpoint,
     onClose,
+    onShow,
+    onShown,
+    onHide,
+    onHidden,
     ...restProps
 }) => {
     const PREFIX = "offcanvas"
@@ -103,6 +107,8 @@ const OffCanvas: FunctionComponent<OffCanvasProps> = ({
     )
     const handleEntered = () => {
         nodeRef?.current?.focus()
+
+        onShown?.()
     }
 
     return (
@@ -111,7 +117,10 @@ const OffCanvas: FunctionComponent<OffCanvasProps> = ({
                 in={visible}
                 timeout={300}
                 nodeRef={nodeRef}
-                onEntered={handleEntered}>
+                onEnter={onShow}
+                onEntered={handleEntered}
+                onExit={onHide}
+                onExited={onHidden}>
                 {render}
             </Transition>
             {_backdrop}
