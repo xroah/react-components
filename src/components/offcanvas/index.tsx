@@ -8,6 +8,7 @@ import Backdrop from "../basics/backdrop"
 import { layerCommonPropTypes } from "../commons/prop-types"
 import { bool, node, oneOf } from "prop-types"
 import { useZIndex } from "r-layers/hooks"
+import bodyStyleStack from "r-layers/utils/body-style-stack"
 
 interface OffCanvasProps extends LayerProps {
     header?: React.ReactNode
@@ -21,7 +22,7 @@ const OffCanvas: FunctionComponent<OffCanvasProps> = ({
     placement = "bottom",
     backdrop = true,
     keyboard = true,
-    scroll,
+    scroll = false,
     className,
     header,
     title,
@@ -105,10 +106,24 @@ const OffCanvas: FunctionComponent<OffCanvasProps> = ({
                 onClick={handleClickBackdrop} />
         ) : null
     )
+    const handleEnter = () => {
+        onShow?.()
+
+        if (!scroll) {
+            bodyStyleStack.push()
+        }
+    }
     const handleEntered = () => {
         nodeRef?.current?.focus()
 
         onShown?.()
+    }
+    const handleExited = () => {
+        onHidden?.()
+
+        if (!scroll) {
+            bodyStyleStack.pop()
+        }
     }
 
     return (
@@ -117,10 +132,10 @@ const OffCanvas: FunctionComponent<OffCanvasProps> = ({
                 in={visible}
                 timeout={300}
                 nodeRef={nodeRef}
-                onEnter={onShow}
+                onEnter={handleEnter}
                 onEntered={handleEntered}
                 onExit={onHide}
-                onExited={onHidden}>
+                onExited={handleExited}>
                 {render}
             </Transition>
             {_backdrop}
