@@ -7,7 +7,7 @@ import { classnames } from "../utils"
 import Backdrop from "../basics/backdrop"
 import { layerCommonPropTypes } from "../commons/prop-types"
 import { bool, node, oneOf } from "prop-types"
-import { useZIndex } from "r-layers/hooks"
+import { useKeyboardClose, useZIndex } from "r-layers/hooks"
 import bodyStyleStack from "r-layers/utils/body-style-stack"
 
 interface OffCanvasProps extends LayerProps {
@@ -35,6 +35,7 @@ const OffCanvas: FunctionComponent<OffCanvasProps> = ({
     onShown,
     onHide,
     onHidden,
+    onKeyDown,
     ...restProps
 }) => {
     const PREFIX = "offcanvas"
@@ -52,20 +53,11 @@ const OffCanvas: FunctionComponent<OffCanvasProps> = ({
                 </div>
             )
     )
-
-    if (keyboard) {
-        const origOnKeyDown = restProps.onKeyDown
-        restProps.onKeyDown = (
-            ev: React.KeyboardEvent<HTMLDivElement>
-        ) => {
-            if (ev.key.toLocaleLowerCase() === "escape") {
-                onClose?.("keyboard")
-            }
-
-            origOnKeyDown?.(ev)
-        }
-    }
-
+    const handleKeyDown = useKeyboardClose({
+        onClose,
+        keyboard,
+        onKeyDown
+    })
     const render = (state: TransitionStatus) => {
         const classes = classnames(
             PREFIX,
@@ -85,6 +77,7 @@ const OffCanvas: FunctionComponent<OffCanvasProps> = ({
                 }}
                 ref={nodeRef}
                 tabIndex={-1}
+                onKeyDown={handleKeyDown}
                 {...restProps}>
                 {_header}
                 <div className={PREFIX + "-body"}>

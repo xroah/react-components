@@ -15,7 +15,7 @@ import Dialog from "./dialog"
 import NOTransition from "../basics/no-transition"
 import { breakpoints, sizes } from "../commons/constants"
 import { layerCommonPropTypes, toggleEventPropTypes } from "../commons/prop-types"
-import { useZIndex } from "r-layers/hooks"
+import { useKeyboardClose, useZIndex } from "r-layers/hooks"
 import bodyStyleStack from "r-layers/utils/body-style-stack"
 
 const Modal: FunctionComponent<ModalProps> = function Modal(
@@ -101,13 +101,11 @@ const Modal: FunctionComponent<ModalProps> = function Modal(
 
         onHidden?.()
     }
-    const handleKeyDown = (ev: React.KeyboardEvent<HTMLDivElement>) => {
-        if (keyboard && ev.key.toLowerCase() === "escape") {
-            onClose?.("keyboard")
-        }
-
-        onKeyDown?.(ev)
-    }
+    const handleKeyDown = useKeyboardClose({
+        onKeyDown,
+        onClose,
+        keyboard
+    })
     const handleClickClose = () => onClose?.("close")
     const transitionProps = {
         in: visible,
