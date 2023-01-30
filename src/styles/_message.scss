@@ -2,6 +2,7 @@
 
 .alert {
     @include mixins.flex-align-center();
+    padding: 10px;
 
     .alert-body {
         @include mixins.flex-align-center();
