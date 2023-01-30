@@ -1,8 +1,4 @@
-import React,
-{
-    FunctionComponent,
-    ReactNode
-} from "react"
+import React, { FunctionComponent, ReactNode } from "react"
 import CloseBtn from "../basics/close-btn";
 import {
     ClosableProps,

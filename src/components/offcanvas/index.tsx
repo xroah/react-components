@@ -58,34 +58,6 @@ const OffCanvas: FunctionComponent<OffCanvasProps> = ({
         keyboard,
         onKeyDown
     })
-    const render = (state: TransitionStatus) => {
-        const classes = classnames(
-            PREFIX,
-            `${PREFIX}-${placement}`,
-            breakpoint && `${PREFIX}-${breakpoint}`,
-            state === "entering" && "showing",
-            (state === "entered" || state === "exiting") && "show",
-            state === "exiting" && "hiding"
-        )
-
-        return (
-            <div
-                className={classes}
-                style={{
-                    ...style,
-                    zIndex: zIndex + 1
-                }}
-                ref={nodeRef}
-                tabIndex={-1}
-                onKeyDown={handleKeyDown}
-                {...restProps}>
-                {_header}
-                <div className={PREFIX + "-body"}>
-                    {children}
-                </div>
-            </div>
-        )
-    }
     const handleClickBackdrop = () => {
         if (backdrop !== "static") {
             onClose?.("backdrop")
@@ -117,6 +89,34 @@ const OffCanvas: FunctionComponent<OffCanvasProps> = ({
         if (!scroll) {
             bodyStyleStack.pop()
         }
+    }
+    const render = (state: TransitionStatus) => {
+        const classes = classnames(
+            PREFIX,
+            `${PREFIX}-${placement}`,
+            breakpoint && `${PREFIX}-${breakpoint}`,
+            state === "entering" && "showing",
+            (state === "entered" || state === "exiting") && "show",
+            state === "exiting" && "hiding"
+        )
+
+        return (
+            <div
+                className={classes}
+                style={{
+                    ...style,
+                    zIndex: zIndex + 1
+                }}
+                ref={nodeRef}
+                tabIndex={-1}
+                onKeyDown={handleKeyDown}
+                {...restProps}>
+                {_header}
+                <div className={PREFIX + "-body"}>
+                    {children}
+                </div>
+            </div>
+        )
     }
 
     return (
