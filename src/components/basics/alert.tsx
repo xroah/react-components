@@ -1,5 +1,5 @@
 import React, { FunctionComponent, ReactNode } from "react"
-import CloseBtn from "../basics/close-btn";
+import CloseBtn from "./close-btn";
 import {
     ClosableProps,
     DivProps,

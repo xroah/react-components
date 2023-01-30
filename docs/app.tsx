@@ -1,7 +1,7 @@
 import React from "react"
 import ModalExample from "./examples/modal"
 import OffCanvas from "./examples/offcanvas"
-import Alert from "r-layers/alert"
+import Alert from "r-layers/basics/alert"
 import { show as showMessage } from "r-layers/message"
 import Button from "r-layers/basics/button"
 import CheckFill from "r-layers/icons/check-fill"

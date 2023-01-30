@@ -1,6 +1,6 @@
 import React from "react"
 import { Transition, TransitionStatus } from "react-transition-group"
-import Alert, { AlertProps } from "../alert";
+import Alert, { AlertProps } from "../basics/alert";
 import { ToggleEvents } from "../commons/types";
 import { number } from "prop-types";
 import { classnames, omit } from "../utils";

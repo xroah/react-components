@@ -1,7 +1,7 @@
 import React from "react"
 import NestedLoading from "r-layers/loading/nested"
 import Button from "r-layers/basics/button"
-import Alert from "r-layers/alert"
+import Alert from "r-layers/basics/alert"
 import { show } from "r-layers/loading"
 console.log(show)
 export default () => {
