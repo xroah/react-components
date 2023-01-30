@@ -8,6 +8,7 @@ const Button: FunctionComponent<ButtonProps> = (
         className,
         size,
         variant = "primary",
+        type = "button",
         ...restProps
     }
 ) => {
@@ -19,6 +20,7 @@ const Button: FunctionComponent<ButtonProps> = (
 
     return (
         <button
+            type={type}
             className={classes}
             disabled={disabled}
             {...restProps} />
