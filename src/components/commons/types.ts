@@ -5,6 +5,8 @@ export type OneOf<T extends ReadonlyArray<unknown>> = T[number]
 
 export type DivProps = HTMLAttributes<HTMLDivElement>
 
+export type DivPropsWithoutTitle = Omit<DivProps, "title">
+
 export type CloseType = OneOf<typeof closeTypes>
 
 export interface ToggleEvents {
