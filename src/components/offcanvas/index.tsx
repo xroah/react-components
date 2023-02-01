@@ -7,8 +7,8 @@ import { classnames } from "../utils"
 import Backdrop from "../basics/backdrop"
 import { layerCommonPropTypes } from "../commons/prop-types"
 import { bool, node, oneOf } from "prop-types"
-import { useKeyboardClose, useZIndex } from "r-layers/hooks"
-import bodyStyleStack from "r-layers/utils/body-style-stack"
+import { useKeyboardClose, useZIndex } from "../hooks"
+import bodyStyleStack from "../utils/body-style-stack"
 
 interface OffCanvasProps extends LayerProps {
     header?: React.ReactNode

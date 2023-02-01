@@ -15,8 +15,8 @@ import Dialog from "./dialog"
 import NOTransition from "../basics/no-transition"
 import { breakpoints, sizes } from "../commons/constants"
 import { layerCommonPropTypes, toggleEventPropTypes } from "../commons/prop-types"
-import { useKeyboardClose, useZIndex } from "r-layers/hooks"
-import bodyStyleStack from "r-layers/utils/body-style-stack"
+import { useKeyboardClose, useZIndex } from "../hooks"
+import bodyStyleStack from "../utils/body-style-stack"
 
 const Modal: FunctionComponent<ModalProps> = function Modal(
     {

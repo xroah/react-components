@@ -1,4 +1,4 @@
-import { LayerProps } from "r-layers/commons/types"
+import { LayerProps } from "../commons/types"
 import { useCallback, useState } from "react"
 
 let zIndex = 1000
