@@ -1,11 +1,17 @@
-import { HTMLAttributes, ButtonHTMLAttributes } from "react"
+import {
+    HTMLAttributes,
+    ButtonHTMLAttributes,
+    ReactNode
+} from "react"
 import { closeTypes, sizes, variants } from "./constants"
 
 export type OneOf<T extends ReadonlyArray<unknown>> = T[number]
 
 export type DivProps = HTMLAttributes<HTMLDivElement>
 
-export type DivPropsWithoutTitle = Omit<DivProps, "title">
+export interface DivPropsWithNodeTitle extends Omit<DivProps, "title"> {
+    title?: ReactNode
+}
 
 export type CloseType = OneOf<typeof closeTypes>
 
@@ -21,7 +27,7 @@ export interface ClosableProps {
     onClose?: VoidFunction
 }
 export interface LayerProps extends
-    ToggleEvents, DivProps, ClosableProps {
+    ToggleEvents, DivPropsWithNodeTitle, ClosableProps {
     visible?: boolean
     backdrop?: boolean | "static"
     keyboard?: boolean

@@ -1,7 +1,6 @@
 import { ReactNode } from "react"
 import { breakpoints, modalSizes } from "../commons/constants"
 import {
-    CloseType,
     LayerProps,
     OneOf,
     ToggleEvents

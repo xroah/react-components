@@ -14,7 +14,10 @@ import { classnames } from "../utils"
 import Dialog from "./dialog"
 import NOTransition from "../basics/no-transition"
 import { breakpoints, sizes } from "../commons/constants"
-import { layerCommonPropTypes, toggleEventPropTypes } from "../commons/prop-types"
+import {
+    layerCommonPropTypes,
+    toggleEventPropTypes
+} from "../commons/prop-types"
 import { useKeyboardClose, useZIndex } from "../hooks"
 import bodyStyleStack from "../utils/body-style-stack"
 
