@@ -6,6 +6,7 @@ import { show as showMessage } from "r-layers/message"
 import Button from "r-layers/basics/button"
 import CheckFill from "r-layers/icons/check-fill"
 import Loading from "./examples/loading"
+import Notification from "./examples/notification"
 
 export default function App() {
     const showMsg = () => {
@@ -32,6 +33,7 @@ export default function App() {
             <div>
                 <Loading/>
             </div>
+            <Notification/>
         </div>
     )
 }
