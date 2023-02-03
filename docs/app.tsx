@@ -7,6 +7,7 @@ import Button from "r-layers/basics/button"
 import CheckFill from "r-layers/icons/check-fill"
 import Loading from "./examples/loading"
 import Notification from "./examples/notification"
+import ButtonGroup from "r-layers/basics/button-group"
 
 export default function App() {
     const showMsg = () => {
@@ -34,6 +35,10 @@ export default function App() {
                 <Loading/>
             </div>
             <Notification/>
+            <ButtonGroup>
+                <Button variant="danger">Left</Button>
+                <Button variant="warning">Left</Button>
+            </ButtonGroup>
         </div>
     )
 }
