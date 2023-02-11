@@ -46,9 +46,9 @@ const OffCanvas: FunctionComponent<OffCanvasProps> = ({
         header === null ? null :
             header ? header : (
                 <div className={PREFIX + "-header"}>
-                    <div className={PREFIX + "-title"}>
+                    <h5 className={PREFIX + "-title"}>
                         {title}
-                    </div>
+                    </h5>
                     <CloseBtn onClick={handleClickClose} />
                 </div>
             )
