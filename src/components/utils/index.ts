@@ -1,3 +1,5 @@
+import { Root } from "react-dom/client"
+
 export function noop() {
     // do nothing
 }
@@ -32,4 +34,23 @@ export function classnames(...classes: unknown[]): string {
         .filter(c => !!c)
         .map(c => String(c).trim())
         .join(" ")
+}
+
+export function callAsync(callback: VoidFunction) {
+    return Promise.resolve().then(callback)
+}
+
+/**
+ * To avoid React Warning: Attempted to synchronously unmount a root 
+ * while React was already rendering. React cannot finish unmounting 
+ * the root until the current render has completed,
+ * which may lead to a race condition.
+ */
+export function unmountAsync(root: Root, callback?: VoidFunction) {
+    const unmount = () => {
+        root.unmount()
+        callback?.()
+    }
+
+   return callAsync(unmount)
 }

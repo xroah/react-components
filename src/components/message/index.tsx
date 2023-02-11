@@ -6,6 +6,7 @@ import { Variant } from "../commons/types"
 import InfoFill from "../icons/info-fill"
 import CheckFill from "../icons/check-fill"
 import WarnFill from "../icons/warn-fill"
+import { unmountAsync } from "r-layers/utils"
 
 let wrapper: HTMLElement | null = null
 const closeSet = new Set<VoidFunction>()
@@ -48,9 +49,9 @@ function show(msg: ReactNode, options: MessageProps) {
     }
     const handleHidden = () => {
         onHidden?.()
-        Promise.resolve().then(
+        unmountAsync(
+            root,
             () => {
-                root.unmount()
                 closeSet.delete(close)
 
                 if (closeSet.size === 0) {

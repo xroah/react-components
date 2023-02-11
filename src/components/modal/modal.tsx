@@ -10,7 +10,7 @@ import {
 } from "prop-types"
 import { ModalProps } from "./types"
 import Backdrop from "../basics/backdrop"
-import { classnames } from "../utils"
+import { callAsync, classnames } from "../utils"
 import Dialog from "./dialog"
 import NOTransition from "../basics/no-transition"
 import { breakpoints, sizes } from "../commons/constants"
@@ -86,9 +86,7 @@ const Modal: FunctionComponent<ModalProps> = function Modal(
     }
     const handleEntered = () => {
         // if no transition, may not focus
-        Promise.resolve().then(
-            () => modalRef.current?.focus()
-        )
+        callAsync(() => modalRef.current?.focus())
         onShown?.()
     }
     const handleExit = () => {

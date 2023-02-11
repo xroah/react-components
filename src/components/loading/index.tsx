@@ -1,6 +1,6 @@
 import React from "react"
 import { createRoot } from "react-dom/client"
-import { omit } from "../utils"
+import { omit, unmountAsync } from "../utils"
 import Loading, { LoadingProps } from "./loading"
 
 let wrapper: HTMLElement | null = null
@@ -42,10 +42,9 @@ function show(
 
     const handleHidden = () => {
         onHidden?.()
-
-        Promise.resolve().then(
+        unmountAsync(
+            root,
             () => {
-                root.unmount()
                 wrapper?.remove()
 
                 wrapper = closeFunc = null
