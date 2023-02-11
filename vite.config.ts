@@ -8,12 +8,18 @@ export default defineConfig({
     resolve: {
         alias: [
             {
-                find: /~(.+)/,
-                replacement: path.join(process.cwd(), 'node_modules/$1'),
+                find: "boot-scss",
+                replacement: path.join(
+                    process.cwd(),
+                    'node_modules/bootstrap/scss'
+                ),
             },
             {
                 find: "r-layers",
-                replacement: path.join(process.cwd(), "./src/components")
+                replacement: path.join(
+                    process.cwd(),
+                    "./src/components"
+                )
             }
         ]
     },
