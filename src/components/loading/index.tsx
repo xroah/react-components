@@ -1,6 +1,6 @@
 import React from "react"
 import { createRoot } from "react-dom/client"
-import { omit, unmountAsync } from "../utils"
+import { getDynamicWrapper, omit, unmountAsync } from "../utils"
 import Loading, { LoadingProps } from "./loading"
 
 let wrapper: HTMLElement | null = null
@@ -74,16 +74,7 @@ function show(
     }
     const close = () => render(false)
     closeFunc = close
-
-    if (!wrapper) {
-        wrapper = document.createElement("div")
-        wrapper.classList.add("r-loading-fullscreen")
-    }
-
-    if (!wrapper.parentElement) {
-        document.body.appendChild(wrapper)
-    }
-
+    wrapper = getDynamicWrapper(wrapper, "r-loading-fullscreen")
     const root = createRoot(wrapper)
 
     render(true)

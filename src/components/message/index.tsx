@@ -6,7 +6,7 @@ import { Variant } from "../commons/types"
 import InfoFill from "../icons/info-fill"
 import CheckFill from "../icons/check-fill"
 import WarnFill from "../icons/warn-fill"
-import { unmountAsync } from "r-layers/utils"
+import { getDynamicWrapper, unmountAsync } from "r-layers/utils"
 
 let wrapper: HTMLElement | null = null
 const closeSet = new Set<VoidFunction>()
@@ -62,20 +62,11 @@ function show(msg: ReactNode, options: MessageProps) {
             }
         )
     }
-
-    if (!wrapper) {
-        wrapper = document.createElement("div")
-        wrapper.classList.add("r-message-wrapper")
-    }
-
-    if (!wrapper.parentElement) {
-        document.body.appendChild(wrapper)
-    }
+    wrapper = getDynamicWrapper(wrapper, "r-message-wrapper")
 
     closeSet.add(close)
-
-    wrapper.appendChild(container)
     render(true)
+    wrapper.appendChild(container)
 
     return close
 }
