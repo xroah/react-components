@@ -30,10 +30,7 @@ export function omit<T>(
 }
 
 export function classnames(...classes: unknown[]): string {
-    return classes
-        .filter(c => !!c)
-        .map(c => String(c).trim())
-        .join(" ")
+    return classes.filter(c => !!c).join(" ").trim()
 }
 
 export function callAsync(callback: VoidFunction) {
@@ -52,5 +49,5 @@ export function unmountAsync(root: Root, callback?: VoidFunction) {
         callback?.()
     }
 
-   return callAsync(unmount)
+    return callAsync(unmount)
 }
