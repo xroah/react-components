@@ -29,7 +29,7 @@ const Spinner: FunctionComponent<SpinnerProps> = ({
         className,
         animationClass,
         size === "sm" && `${animationClass}-sm`,
-        variant && `text-${variant}`
+        variant && `spinner-${variant}`
     )
     const sizeStyle: CSSProperties = {}
 
