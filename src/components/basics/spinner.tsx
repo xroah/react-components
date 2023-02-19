@@ -34,13 +34,7 @@ const Spinner: FunctionComponent<SpinnerProps> = ({
     const sizeStyle: CSSProperties = {}
 
     if (size !== "sm") {
-        let sizeStr = ""
-
-        if (typeof size === "string") {
-            sizeStr = size
-        } else {
-            sizeStr = `${size}px`
-        }
+        let sizeStr = typeof size === "string" ? size : `${size}px`
 
         sizeStyle.width = sizeStyle.height = sizeStr
     }

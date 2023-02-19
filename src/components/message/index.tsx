@@ -6,7 +6,7 @@ import { Variant } from "../commons/types"
 import InfoFill from "../icons/info-fill"
 import CheckFill from "../icons/check-fill"
 import WarnFill from "../icons/warn-fill"
-import { getDynamicWrapper, unmountAsync } from "r-layers/utils"
+import { getDynamicWrapper, unmountAsync } from "../utils"
 
 let wrapper: HTMLElement | null = null
 const closeSet = new Set<VoidFunction>()

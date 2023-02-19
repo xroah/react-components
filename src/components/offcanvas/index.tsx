@@ -103,10 +103,7 @@ const OffCanvas: FunctionComponent<OffCanvasProps> = ({
         return (
             <div
                 className={classes}
-                style={{
-                    ...style,
-                    zIndex: zIndex + 1
-                }}
+                style={{ ...style, zIndex: zIndex + 1 }}
                 ref={nodeRef}
                 tabIndex={-1}
                 onKeyDown={handleKeyDown}
