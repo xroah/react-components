@@ -1,4 +1,4 @@
-import React, { FunctionComponent, ReactNode } from "react"
+import React, { CSSProperties, FunctionComponent, ReactNode } from "react"
 import { ClosableProps, DivPropsWithNodeTitle } from "../commons/types";
 import { classnames } from "../utils";
 import CloseBtn from "./close-btn";
@@ -25,15 +25,15 @@ const Toast: FunctionComponent<ToastProps> = ({
         "toast",
         "show"
     )
-    const titleClasses = classnames(
-        icon ? "ms-2" : "",
-        "me-auto"
-    )
+    const titleStyle: CSSProperties = {
+        marginLeft: icon ? "15px" : "",
+        marginRight: "auto"
+    }
     const _header = header === null ? null :
         header ? header : (
             <div className="toast-header">
                 {icon}
-                <strong className={titleClasses}>
+                <strong style={titleStyle}>
                     {title}
                 </strong>
                 <small>{secondaryTitle}</small>
