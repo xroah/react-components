@@ -63,10 +63,7 @@ const Modal: FunctionComponent<ModalProps> = function Modal(
     const [
         modalStyle,
         updateStyle
-    ] = React.useState<CSSProperties>({
-        ...style,
-        zIndex: zIndex + 1
-    })
+    ] = React.useState<CSSProperties>({ zIndex: zIndex + 1 })
     const handleEnter = () => {
         bodyStyleStack.push()
         updateStyle({
@@ -131,7 +128,7 @@ const Modal: FunctionComponent<ModalProps> = function Modal(
         <div
             className={classes}
             ref={modalRef}
-            style={modalStyle}
+            style={{...style, ...modalStyle}}
             tabIndex={tabIndex}
             onKeyDown={handleKeyDown}
             onClick={handleClick}
