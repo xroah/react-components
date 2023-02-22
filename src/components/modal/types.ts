@@ -3,21 +3,27 @@ import { breakpoints, modalSizes } from "../commons/constants"
 import {
     LayerProps,
     OneOf,
-    ToggleEvents
+    ToggleEvents,
+    ClosableProps,
+    DivPropsWithNodeTitle
 } from "../commons/types"
 
+export type HeaderProps = ClosableProps & DivPropsWithNodeTitle
 
-export interface DialogProps extends LayerProps {
+export interface FooterProps {
+    okText?: string
+    cancelText?: string
+    onOk?: VoidFunction
+    onCancel?: VoidFunction
+}
+
+export interface DialogProps extends LayerProps, FooterProps {
     contentScrollable?: boolean
     size?: OneOf<typeof modalSizes>
     center?: boolean
     header?: ReactNode
     footer?: ReactNode
     fullscreen?: boolean | OneOf<typeof breakpoints>
-    okText?: string
-    cancelText?: string
-    onOk?: VoidFunction
-    onCancel?: VoidFunction
 }
 
 export interface ModalProps extends ToggleEvents, DialogProps {

@@ -1,12 +1,8 @@
 import React from "react"
 import { DialogProps } from "./types"
-import CloseBtn from "../basics/close-btn"
-import Button from "../basics/button"
 import { classnames } from "../utils"
-
-type WithOnClose = {
-    onClose: VoidFunction
-}
+import Header from "./header"
+import Footer from "./footer"
 
 export default function Dialog(
     {
@@ -24,7 +20,7 @@ export default function Dialog(
         okText = "确定",
         fullscreen,
         children
-    }: Omit<DialogProps, "onClose"> & WithOnClose
+    }: DialogProps 
 ) {
     const dialogRef = React.useRef<HTMLDivElement>(null)
     const DIALOG_PREFIX = "modal-dialog"
@@ -40,42 +36,24 @@ export default function Dialog(
                 `${FULLSCREEN_CLASS}-${fullscreen}-down` :
             ""
     )
-    const _header = (
-        header === null ? null :
-            header ? header : (
-                <div className="modal-header">
-                    <h5 className="modal-title">
-                        {title}
-                    </h5>
-                    {closable && <CloseBtn onClick={onClose} />}
-                </div>
-            )
-    )
-    const _footer = (
-        footer === null ? null :
-            footer ? footer : (
-                <div className="modal-footer">
-                    <Button
-                        type="button"
-                        variant="secondary"
-                        onClick={onCancel}>
-                        {cancelText}
-                    </Button>
-                    <Button type="button" onClick={onOk}>
-                        {okText}
-                    </Button>
-                </div>
-            )
-    )
 
     return (
         <div className={classes} ref={dialogRef}>
             <div className="modal-content">
-                {_header}
+                <Header
+                    title={title}
+                    closable={closable}
+                    onClose={onClose}
+                    defaultHeader={header} />
                 <div className="modal-body">
                     {children}
                 </div>
-                {_footer}
+                <Footer
+                    okText={okText}
+                    cancelText={cancelText}
+                    onOk={onOk}
+                    onCancel={onCancel}
+                    defaultFooter={footer} />
             </div>
         </div>
     )
