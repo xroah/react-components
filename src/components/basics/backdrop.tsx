@@ -43,7 +43,7 @@ export default function Backdrop(
         <Fade
             appear
             nodeRef={nodeRef}
-        {...transitionProps}>
+            {...transitionProps}>
             <div
                 ref={nodeRef}
                 className={classes}

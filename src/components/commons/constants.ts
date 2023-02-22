@@ -20,10 +20,8 @@ export const closeTypes = [
 ] as const
 
 export const breakpoints = [
-    "sm",
+    ...modalSizes,
     "md",
-    "lg",
-    "xl",
     "xxl"
 ] as const
 

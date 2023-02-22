@@ -1,4 +1,8 @@
-import React, { CSSProperties, FunctionComponent, ReactNode } from "react"
+import React, {
+    CSSProperties,
+    FunctionComponent,
+    ReactNode
+} from "react"
 import { ClosableProps, DivPropsWithNodeTitle } from "../commons/types";
 import { classnames } from "../utils";
 import CloseBtn from "./close-btn";
@@ -37,7 +41,7 @@ const Toast: FunctionComponent<ToastProps> = ({
                     {title}
                 </strong>
                 <small>{secondaryTitle}</small>
-                {closable ? <CloseBtn onClick={onClose}/> : null}
+                {closable ? <CloseBtn onClick={onClose} /> : null}
             </div>
         )
 
