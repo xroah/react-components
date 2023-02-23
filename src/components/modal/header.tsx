@@ -1,10 +1,11 @@
 import CloseBtn from "../basics/close-btn";
 import React, {
     FunctionComponent,
-    ReactNode,
-    isValidElement
+    ReactElement,
+    ReactNode
 } from "react";
 import { HeaderProps } from "./types";
+import { getNullableNode } from "../utils/react";
 
 type Props = HeaderProps & { defaultHeader: ReactNode }
 
@@ -14,22 +15,19 @@ const Header: FunctionComponent<Props> = ({
     onClose,
     defaultHeader
 }) => {
-    if (defaultHeader === null) {
-        return defaultHeader
-    }
-
     const CLASS_NAME = "modal-header"
-
-    if (defaultHeader) {
-        if (isValidElement(defaultHeader)) {
-            return defaultHeader
-        }
-
-        return <div className={CLASS_NAME}>{defaultHeader}</div>
+    const node = getNullableNode(
+        defaultHeader,
+        "div",
+        CLASS_NAME
+    )
+    
+    if(node !== false) {
+        return node as ReactElement
     }
 
     return (
-        <div className="modal-header">
+        <div className={CLASS_NAME}>
             <h5 className="modal-title">
                 {title}
             </h5>

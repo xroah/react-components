@@ -1,10 +1,11 @@
 import React, {
     FunctionComponent,
-    ReactNode,
-    isValidElement
+    ReactElement,
+    ReactNode
 } from "react";
 import { FooterProps } from "./types";
-import Button from "r-layers/basics/button";
+import Button from "../basics/button";
+import { getNullableNode } from "../utils/react";
 
 type Props = FooterProps & { defaultFooter: ReactNode }
 
@@ -18,22 +19,19 @@ const Footer: FunctionComponent<Props> = (
         footerBtnSize
     }
 ) => {
-    if (defaultFooter === null) {
-        return null
-    }
-
     const CLASS_NAME = "modal-footer"
+    const node = getNullableNode(
+        defaultFooter,
+        "div",
+        CLASS_NAME
+    )
 
-    if (defaultFooter) {
-        if (isValidElement(defaultFooter)) {
-            return defaultFooter
-        }
-
-        return <div className={CLASS_NAME}>{defaultFooter}</div>
+    if (node !== false) {
+        return node as ReactElement
     }
 
     return (
-        <div className="modal-footer">
+        <div className={CLASS_NAME}>
             <Button
                 type="button"
                 variant="secondary"
