@@ -5,7 +5,8 @@ import {
     OneOf,
     ToggleEvents,
     ClosableProps,
-    DivPropsWithNodeTitle
+    DivPropsWithNodeTitle,
+    ButtonProps
 } from "../commons/types"
 
 export type HeaderProps = ClosableProps & DivPropsWithNodeTitle
@@ -15,6 +16,7 @@ export interface FooterProps {
     cancelText?: string
     onOk?: VoidFunction
     onCancel?: VoidFunction
+    footerBtnSize?: ButtonProps["size"]
 }
 
 export interface DialogProps extends LayerProps, FooterProps {

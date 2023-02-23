@@ -50,6 +50,7 @@ const Modal: FunctionComponent<ModalProps> = function Modal(
         onKeyDown,
         onClick,
         fullscreen,
+        footerBtnSize,
         ...restProps
     }
 ) {
@@ -146,7 +147,8 @@ const Modal: FunctionComponent<ModalProps> = function Modal(
                 footer={footer}
                 onClose={handleClickClose}
                 contentScrollable={contentScrollable}
-                fullscreen={fullscreen} >
+                fullscreen={fullscreen}
+                footerBtnSize={footerBtnSize} >
                 {children}
             </Dialog>
         </div>

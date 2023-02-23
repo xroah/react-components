@@ -19,7 +19,8 @@ export default function Dialog(
         cancelText = "取消",
         okText = "确定",
         fullscreen,
-        children
+        children,
+        footerBtnSize
     }: DialogProps 
 ) {
     const dialogRef = React.useRef<HTMLDivElement>(null)
@@ -53,7 +54,8 @@ export default function Dialog(
                     cancelText={cancelText}
                     onOk={onOk}
                     onCancel={onCancel}
-                    defaultFooter={footer} />
+                    defaultFooter={footer}
+                    footerBtnSize={footerBtnSize} />
             </div>
         </div>
     )

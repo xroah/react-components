@@ -14,7 +14,8 @@ const Footer: FunctionComponent<Props> = (
         cancelText,
         onOk,
         onCancel,
-        defaultFooter
+        defaultFooter,
+        footerBtnSize
     }
 ) => {
     if (defaultFooter === null) {
@@ -36,10 +37,14 @@ const Footer: FunctionComponent<Props> = (
             <Button
                 type="button"
                 variant="secondary"
-                onClick={onCancel}>
+                onClick={onCancel}
+                size={footerBtnSize}>
                 {cancelText}
             </Button>
-            <Button type="button" onClick={onOk}>
+            <Button
+                type="button"
+                onClick={onOk}
+                size={footerBtnSize}>
                 {okText}
             </Button>
         </div>
