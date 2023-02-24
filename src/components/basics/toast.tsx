@@ -6,6 +6,7 @@ import React, {
 import { ClosableProps, DivPropsWithNodeTitle } from "../commons/types";
 import { classnames } from "../utils";
 import CloseBtn from "./close-btn";
+import { getNullableNode } from "r-layers/utils/react";
 
 interface ToastProps extends DivPropsWithNodeTitle, ClosableProps {
     header?: ReactNode
@@ -33,17 +34,18 @@ const Toast: FunctionComponent<ToastProps> = ({
         marginLeft: icon ? "15px" : "",
         marginRight: "auto"
     }
-    const _header = header === null ? null :
-        header ? header : (
-            <div className="toast-header">
-                {icon}
-                <strong style={titleStyle}>
-                    {title}
-                </strong>
-                <small>{secondaryTitle}</small>
-                {closable ? <CloseBtn onClick={onClose} /> : null}
-            </div>
-        )
+    const HEADER_CLASS = "toast-header"
+    const headerNode = getNullableNode(header)
+    const _header = headerNode === false ? (
+        <div className={HEADER_CLASS}>
+            {icon}
+            <strong style={titleStyle}>
+                {title}
+            </strong>
+            <small>{secondaryTitle}</small>
+            {closable ? <CloseBtn onClick={onClose} /> : null}
+        </div>
+    ) : headerNode
 
     return (
         <div className={classes} {...restProps}>
