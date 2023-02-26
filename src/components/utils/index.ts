@@ -70,3 +70,18 @@ export function getDynamicWrapper(
 
     return ret
 }
+
+// create close function for messages,loading etc
+export function createCloseFunc(render: (arg: boolean) => void) {
+    let closed = false
+
+    return () => {
+        if (closed) {
+            return
+        }
+
+        closed = true
+
+        render(false)
+    }
+}

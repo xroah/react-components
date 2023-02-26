@@ -1,6 +1,6 @@
 import React from "react"
 import { createRoot } from "react-dom/client"
-import { getDynamicWrapper, unmountAsync } from "../utils"
+import { createCloseFunc, getDynamicWrapper, unmountAsync } from "../utils"
 import Loading, { LoadingProps } from "./loading"
 
 let wrapper: HTMLElement | null = null
@@ -72,16 +72,7 @@ function show(
                 {...props} />
         )
     }
-    let closed = false
-    const close = closeFunc = () => {
-        if (closed) {
-            return 
-        }
-
-        closed = true
-
-        render(false)
-    }
+    const close = closeFunc = createCloseFunc(render)
     wrapper = getDynamicWrapper(wrapper, "r-loading-fullscreen")
     const root = createRoot(wrapper)
 
