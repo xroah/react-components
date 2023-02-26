@@ -83,7 +83,7 @@ class Message extends React.Component<Props> {
         return (
             <Transition
                 in={visible}
-                timeout={150}
+                timeout={200}
                 onEnter={onShow}
                 onEntered={onShown}
                 onExit={onHide}
