@@ -72,7 +72,16 @@ function show(
                 {...props} />
         )
     }
-    const close = closeFunc = () => render(false)
+    let closed = false
+    const close = closeFunc = () => {
+        if (closed) {
+            return 
+        }
+
+        closed = true
+
+        render(false)
+    }
     wrapper = getDynamicWrapper(wrapper, "r-loading-fullscreen")
     const root = createRoot(wrapper)
 

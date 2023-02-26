@@ -26,7 +26,6 @@ function show(msg: ReactNode, options: MessageProps) {
     } = options
     const container = document.createElement("div")
     const root = createRoot(container)
-    const close = () => render(false)
     const render = (visible: boolean) => {
         const props = {
             variant,
@@ -61,6 +60,16 @@ function show(msg: ReactNode, options: MessageProps) {
                 }
             }
         )
+    }
+    let closed = false
+    const close = () => {
+        if (closed) {
+            return
+        }
+
+        closed = true
+
+        render(false)
     }
     wrapper = getDynamicWrapper(wrapper, "r-message-wrapper")
 
