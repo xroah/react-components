@@ -51,6 +51,7 @@ const Modal: FunctionComponent<ModalProps> = function Modal(
         onClick,
         fullscreen,
         footerBtnSize,
+        timeout = 150,
         ...restProps
     }
 ) {
@@ -165,7 +166,7 @@ const Modal: FunctionComponent<ModalProps> = function Modal(
             {
                 transition ? (
                     <Transition
-                        timeout={150}
+                        timeout={timeout}
                         nodeRef={modalRef}
                         {...transitionProps}>
                         {dialog}

@@ -31,4 +31,5 @@ export interface DialogProps extends LayerProps, FooterProps {
 export interface ModalProps extends ToggleEvents, DialogProps {
     transition?: boolean
     backdrop?: boolean | "static"
+    timeout?: number
 }
