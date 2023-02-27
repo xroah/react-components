@@ -4,6 +4,7 @@ import {
     oneOfType,
     oneOf
 } from "prop-types"
+import { variants } from "./constants"
 
 export const toggleEventPropTypes = {
     onShow: func,
@@ -23,3 +24,5 @@ export const layerCommonPropTypes = {
     keyboard: bool,
     backdrop: oneOfType([bool, oneOf(["static"] as const)]),
 }
+
+export const variantPropType = oneOf(variants)
