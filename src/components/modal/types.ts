@@ -6,14 +6,19 @@ import {
     ToggleEvents,
     ClosableProps,
     DivPropsWithNodeTitle,
-    ButtonProps
+    ButtonProps,
+    Variant
 } from "../commons/types"
 
 export type HeaderProps = ClosableProps & DivPropsWithNodeTitle
 
 export interface FooterProps {
+    ok?: boolean
     okText?: string
+    okVariant?: Variant
+    cancel?: boolean
     cancelText?: string
+    cancelVariant?: Variant
     onOk?: VoidFunction
     onCancel?: VoidFunction
     footerBtnSize?: ButtonProps["size"]

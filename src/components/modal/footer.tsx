@@ -9,21 +9,26 @@ import { getNullableNode } from "../utils/react";
 
 type Props = FooterProps & { defaultFooter: ReactNode }
 
+export const FOOTER_CLASS = "modal-footer"
+
 const Footer: FunctionComponent<Props> = (
     {
+        ok,
         okText,
+        okVariant,
+        cancel,
         cancelText,
+        cancelVariant,
         onOk,
         onCancel,
         defaultFooter,
         footerBtnSize
     }
 ) => {
-    const CLASS_NAME = "modal-footer"
     const node = getNullableNode(
         defaultFooter,
         "div",
-        CLASS_NAME
+        FOOTER_CLASS
     )
 
     if (node !== false) {
@@ -31,20 +36,29 @@ const Footer: FunctionComponent<Props> = (
     }
 
     return (
-        <div className={CLASS_NAME}>
-            <Button
-                type="button"
-                variant="secondary"
-                onClick={onCancel}
-                size={footerBtnSize}>
-                {cancelText}
-            </Button>
-            <Button
-                type="button"
-                onClick={onOk}
-                size={footerBtnSize}>
-                {okText}
-            </Button>
+        <div className={FOOTER_CLASS}>
+            {
+                cancel === false ? null : (
+                    <Button
+                        type="button"
+                        variant={cancelVariant}
+                        onClick={onCancel}
+                        size={footerBtnSize}>
+                        {cancelText}
+                    </Button>
+                )
+            }
+            {
+                ok === false ? null : (
+                    <Button
+                        type="button"
+                        onClick={onOk}
+                        variant={okVariant}
+                        size={footerBtnSize}>
+                        {okText}
+                    </Button>
+                )
+            }
         </div>
     )
 }

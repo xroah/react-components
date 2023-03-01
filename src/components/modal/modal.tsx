@@ -15,7 +15,8 @@ import NOTransition from "../basics/no-transition"
 import { breakpoints, sizes } from "../commons/constants"
 import {
     layerCommonPropTypes,
-    toggleEventPropTypes
+    toggleEventPropTypes,
+    variantPropType
 } from "../commons/prop-types"
 import { useKeyboardClose, useZIndex } from "../hooks"
 import bodyStyleStack from "../utils/body-style-stack"
@@ -36,6 +37,10 @@ const Modal: FC<ModalProps> = function Modal(
         footer,
         okText = "确定",
         cancelText = "取消",
+        okVariant = "primary",
+        cancelVariant = "secondary",
+        ok = true,
+        cancel = true,
         className,
         children,
         style,
@@ -159,7 +164,11 @@ const Modal: FC<ModalProps> = function Modal(
                     </div>
                     <Footer
                         okText={okText}
+                        okVariant={okVariant}
+                        ok={ok}
                         cancelText={cancelText}
+                        cancelVariant={cancelVariant}
+                        cancel={cancel}
                         onOk={onOk}
                         onCancel={onCancel}
                         defaultFooter={footer}
@@ -206,6 +215,10 @@ Modal.propTypes = {
         bool,
         oneOf(breakpoints)
     ]),
+    ok: bool,
+    cancel: bool,
+    okVariant: variantPropType,
+    cancelVariant: variantPropType,
     okText: string,
     cancelText: string,
     onOk: func,
