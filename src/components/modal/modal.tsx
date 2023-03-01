@@ -1,4 +1,4 @@
-import React, { CSSProperties, FunctionComponent } from "react"
+import React, { CSSProperties, FC } from "react"
 import { Transition } from "react-transition-group"
 import {
     bool,
@@ -11,7 +11,6 @@ import {
 import { ModalProps } from "./types"
 import Backdrop from "../basics/backdrop"
 import { callAsync, classnames } from "../utils"
-import Dialog from "./dialog"
 import NOTransition from "../basics/no-transition"
 import { breakpoints, sizes } from "../commons/constants"
 import {
@@ -20,8 +19,10 @@ import {
 } from "../commons/prop-types"
 import { useKeyboardClose, useZIndex } from "../hooks"
 import bodyStyleStack from "../utils/body-style-stack"
+import Header from "./header"
+import Footer from "./footer"
 
-const Modal: FunctionComponent<ModalProps> = function Modal(
+const Modal: FC<ModalProps> = function Modal(
     {
         visible,
         transition = true,
@@ -33,33 +34,45 @@ const Modal: FunctionComponent<ModalProps> = function Modal(
         center,
         header,
         footer,
-        onOk,
-        onClose,
-        okText,
-        cancelText,
-        onCancel,
-        onShow,
-        onShown,
-        onHide,
-        onHidden,
+        okText = "确定",
+        cancelText = "取消",
         className,
         children,
         style,
         tabIndex = -1,
         keyboard = true,
-        onKeyDown,
-        onClick,
         fullscreen,
         footerBtnSize,
         timeout = 150,
+        onKeyDown,
+        onClick,
+        onOk,
+        onClose,
+        onCancel,
+        onShow,
+        onShown,
+        onHide,
+        onHidden,
         ...restProps
     }
 ) {
     const modalRef = React.useRef<HTMLDivElement>(null)
+    const dialogRef = React.useRef<HTMLDivElement>(null)
+    const DIALOG_PREFIX = "modal-dialog"
+    const FULLSCREEN_CLASS = "modal-fullscreen"
     const classes = classnames(
         className,
         "modal",
         transition && "fade"
+    )
+    const dialogClasses = classnames(
+        DIALOG_PREFIX,
+        contentScrollable && `${DIALOG_PREFIX}-scrollable`,
+        center && `${DIALOG_PREFIX}-centered`,
+        size && `modal-${size}`,
+        fullscreen ?
+            fullscreen === true ? FULLSCREEN_CLASS :
+                `${FULLSCREEN_CLASS}-${fullscreen}-down` : ""
     )
     const [zIndex] = useZIndex()
     const [
@@ -98,7 +111,6 @@ const Modal: FunctionComponent<ModalProps> = function Modal(
             ...modalStyle,
             display: "none"
         })
-
         onHidden?.()
     }
     const handleKeyDown = useKeyboardClose({
@@ -130,28 +142,30 @@ const Modal: FunctionComponent<ModalProps> = function Modal(
         <div
             className={classes}
             ref={modalRef}
-            style={{...style, ...modalStyle}}
+            style={{ ...style, ...modalStyle }}
             tabIndex={tabIndex}
             onKeyDown={handleKeyDown}
             onClick={handleClick}
             {...restProps}>
-            <Dialog
-                size={size}
-                center={center}
-                onOk={onOk}
-                onCancel={onCancel}
-                okText={okText}
-                cancelText={cancelText}
-                closable={closable}
-                title={title}
-                header={header}
-                footer={footer}
-                onClose={handleClickClose}
-                contentScrollable={contentScrollable}
-                fullscreen={fullscreen}
-                footerBtnSize={footerBtnSize} >
-                {children}
-            </Dialog>
+            <div className={dialogClasses} ref={dialogRef}>
+                <div className="modal-content">
+                    <Header
+                        title={title}
+                        closable={closable}
+                        onClose={handleClickClose}
+                        defaultHeader={header} />
+                    <div className="modal-body">
+                        {children}
+                    </div>
+                    <Footer
+                        okText={okText}
+                        cancelText={cancelText}
+                        onOk={onOk}
+                        onCancel={onCancel}
+                        defaultFooter={footer}
+                        footerBtnSize={footerBtnSize} />
+                </div>
+            </div>
         </div>
     )
     const _backdrop = backdrop ? (
