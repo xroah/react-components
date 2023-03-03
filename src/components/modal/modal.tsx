@@ -23,6 +23,36 @@ import bodyStyleStack from "../utils/body-style-stack"
 import Header from "./header"
 import Footer from "./footer"
 
+function getDialogClass(
+    {
+        contentScrollable,
+        center,
+        size,
+        fullscreen
+    }: ModalProps
+) {
+    const DIALOG_PREFIX = "modal-dialog"
+    const FULLSCREEN_CLASS = "modal-fullscreen"
+
+    let fsClass = ""
+
+    if (fullscreen) {
+        if (fullscreen === true) {
+            fsClass = FULLSCREEN_CLASS
+        } else {
+            fsClass = `${FULLSCREEN_CLASS}-${fullscreen}-down`
+        }
+    } 
+
+    return classnames(
+        DIALOG_PREFIX,
+        contentScrollable && `${DIALOG_PREFIX}-scrollable`,
+        center && `${DIALOG_PREFIX}-centered`,
+        size && `modal-${size}`,
+        fsClass
+    )
+}
+
 const Modal: FC<ModalProps> = function Modal(
     {
         visible,
@@ -62,23 +92,17 @@ const Modal: FC<ModalProps> = function Modal(
     }
 ) {
     const modalRef = React.useRef<HTMLDivElement>(null)
-    const dialogRef = React.useRef<HTMLDivElement>(null)
-    const DIALOG_PREFIX = "modal-dialog"
-    const FULLSCREEN_CLASS = "modal-fullscreen"
     const classes = classnames(
         className,
         "modal",
         transition && "fade"
     )
-    const dialogClasses = classnames(
-        DIALOG_PREFIX,
-        contentScrollable && `${DIALOG_PREFIX}-scrollable`,
-        center && `${DIALOG_PREFIX}-centered`,
-        size && `modal-${size}`,
-        fullscreen ?
-            fullscreen === true ? FULLSCREEN_CLASS :
-                `${FULLSCREEN_CLASS}-${fullscreen}-down` : ""
-    )
+    const dialogClasses = getDialogClass({
+        fullscreen,
+        size,
+        contentScrollable,
+        center
+    })
     const [zIndex] = useZIndex()
     const [
         modalStyle,
@@ -152,7 +176,7 @@ const Modal: FC<ModalProps> = function Modal(
             onKeyDown={handleKeyDown}
             onClick={handleClick}
             {...restProps}>
-            <div className={dialogClasses} ref={dialogRef}>
+            <div className={dialogClasses}>
                 <div className="modal-content">
                     <Header
                         title={title}

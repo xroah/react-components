@@ -6,7 +6,7 @@ import React, {
 import { ClosableProps, DivPropsWithNodeTitle } from "../commons/types";
 import { classnames } from "../utils";
 import CloseBtn from "./close-btn";
-import { getNullableNode } from "r-layers/utils/react";
+import { getNullableNode } from "../utils/react";
 
 interface ToastProps extends DivPropsWithNodeTitle, ClosableProps {
     header?: ReactNode
