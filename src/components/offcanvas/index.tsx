@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from "react"
+import React, { FC } from "react"
 import { breakpoints, offCanvasPlacements } from "../commons/constants"
 import { LayerProps, OneOf } from "../commons/types"
 import { Transition, TransitionStatus } from "react-transition-group"
@@ -17,7 +17,7 @@ interface OffCanvasProps extends LayerProps {
     breakpoint?: OneOf<typeof breakpoints>
 }
 
-const OffCanvas: FunctionComponent<OffCanvasProps> = ({
+const OffCanvas: FC<OffCanvasProps> = ({
     closable = true,
     placement = "bottom",
     backdrop = true,

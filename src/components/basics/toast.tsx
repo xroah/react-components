@@ -1,6 +1,6 @@
 import React, {
     CSSProperties,
-    FunctionComponent,
+    FC,
     ReactNode
 } from "react"
 import { ClosableProps, DivPropsWithNodeTitle } from "../commons/types";
@@ -14,7 +14,7 @@ interface ToastProps extends DivPropsWithNodeTitle, ClosableProps {
     secondaryTitle?: ReactNode
 }
 
-const Toast: FunctionComponent<ToastProps> = ({
+const Toast: FC<ToastProps> = ({
     className,
     header,
     icon,

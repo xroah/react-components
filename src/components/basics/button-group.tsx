@@ -1,8 +1,8 @@
 import { DivProps } from "../commons/types";
 import { classnames } from "../utils";
-import React, { FunctionComponent } from "react";
+import React, { FC } from "react";
 
-const ButtonGroup: FunctionComponent<DivProps> = ({
+const ButtonGroup: FC<DivProps> = ({
     className,
     ...restProps
 }) => {

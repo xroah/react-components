@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from "react";
+import React, { FC } from "react";
 import { ClosableProps, ToggleEvents } from "../commons/types";
 import Spinner, { SpinnerProps } from "../basics/spinner";
 import CloseBtn from "../basics/close-btn";
@@ -12,7 +12,7 @@ export interface LoadingProps extends Base {
     loading?: boolean
 }
 
-const Loading: FunctionComponent<LoadingProps> = ({
+const Loading: FC<LoadingProps> = ({
     loading,
     closable,
     className,

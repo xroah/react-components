@@ -1,6 +1,6 @@
 import CloseBtn from "../basics/close-btn";
 import React, {
-    FunctionComponent,
+    FC,
     ReactElement,
     ReactNode
 } from "react";
@@ -9,7 +9,7 @@ import { getNullableNode } from "../utils/react";
 
 type Props = HeaderProps & { defaultHeader: ReactNode }
 
-const Header: FunctionComponent<Props> = ({
+const Header: FC<Props> = ({
     closable,
     title,
     onClose,

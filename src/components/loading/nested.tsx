@@ -1,8 +1,8 @@
-import React, { FunctionComponent } from "react";
+import React, { FC } from "react";
 import { classnames } from "../utils";
 import Loading, { LoadingProps } from "./loading";
 
-const NestedLoading: FunctionComponent<LoadingProps> = ({
+const NestedLoading: FC<LoadingProps> = ({
     variant,
     closable,
     onClose,

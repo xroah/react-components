@@ -1,4 +1,4 @@
-import React, { CSSProperties, FunctionComponent } from "react"
+import React, { CSSProperties, FC } from "react"
 import { DivProps, OneOf, Variant } from "../commons/types";
 import { spinnerAnimations, variants } from "../commons/constants";
 import {
@@ -15,7 +15,7 @@ export interface SpinnerProps extends DivProps {
     size?: number | string
 }
 
-const Spinner: FunctionComponent<SpinnerProps> = ({
+const Spinner: FC<SpinnerProps> = ({
     animation = "border",
     variant,
     size,

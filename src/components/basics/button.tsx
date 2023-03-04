@@ -1,8 +1,8 @@
-import React, { FunctionComponent } from "react"
+import React, { FC } from "react"
 import { ButtonProps } from "../commons/types"
 import { classnames } from "../utils"
 
-const Button: FunctionComponent<ButtonProps> = (
+const Button: FC<ButtonProps> = (
     {
         disabled,
         className,

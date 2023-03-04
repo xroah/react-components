@@ -1,5 +1,5 @@
 import React, {
-    FunctionComponent,
+    FC,
     ReactElement,
     ReactNode
 } from "react";
@@ -11,7 +11,7 @@ type Props = FooterProps & { defaultFooter: ReactNode }
 
 export const FOOTER_CLASS = "modal-footer"
 
-const Footer: FunctionComponent<Props> = (
+const Footer: FC<Props> = (
     {
         ok,
         okText,

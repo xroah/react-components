@@ -1,4 +1,4 @@
-import React, { FunctionComponent, ReactElement } from "react"
+import React, { FC, ReactElement } from "react"
 
 export interface SVGIconProps {
     size?: number
@@ -6,7 +6,7 @@ export interface SVGIconProps {
     stroke?: string
 }
 
-const SVG: FunctionComponent<SVGIconProps> = ({
+const SVG: FC<SVGIconProps> = ({
     size = 16,
     fill = "currentColor",
     stroke,
@@ -25,7 +25,7 @@ const SVG: FunctionComponent<SVGIconProps> = ({
 }
 
 function createSVGIcon(paths: ReactElement, name?: string) {
-    const IconComp: FunctionComponent<SVGIconProps> = (props) => {
+    const IconComp: FC<SVGIconProps> = (props) => {
         return <SVG {...props}>{paths}</SVG>
     }
 

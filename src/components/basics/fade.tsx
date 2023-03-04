@@ -1,7 +1,7 @@
 import React,
 {
     cloneElement,
-    FunctionComponent,
+    FC,
     isValidElement,
     ReactElement
 } from "react";
@@ -19,7 +19,7 @@ interface FadeProps extends Partial<TimeoutProps<HTMLElement>> {
     children: ReactElement
 }
 
-const Fade: FunctionComponent<FadeProps> = ({
+const Fade: FC<FadeProps> = ({
     fadeClass = "fade",
     showClass = "show",
     children,

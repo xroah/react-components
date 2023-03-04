@@ -1,4 +1,4 @@
-import React, { FunctionComponent, ReactNode } from "react"
+import React, { FC, ReactNode } from "react"
 import CloseBtn from "./close-btn";
 import {
     ClosableProps,
@@ -14,7 +14,7 @@ export interface AlertProps extends DivProps, ClosableProps {
     icon?: ReactNode
 }
 
-const Alert: FunctionComponent<AlertProps> = ({
+const Alert: FC<AlertProps> = ({
     variant,
     onClose,
     closable,
