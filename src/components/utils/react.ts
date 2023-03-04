@@ -1,9 +1,13 @@
-import {
+import React,
+{
     ElementType,
+    HTMLAttributes,
     ReactNode,
     createElement,
-    isValidElement
+    isValidElement,
+    FC
 } from "react";
+import { classnames } from ".";
 
 export function getNullableNode(
     node?: ReactNode,
@@ -33,4 +37,37 @@ export function getNullableNode(
     }
 
     return false
+}
+
+export function createComponentByClassName<
+    T extends HTMLElement,
+    P extends HTMLAttributes<T>
+>(
+    className: string,
+    tag: ElementType = "div",
+    displayName?: string
+): FC<P> {
+    const component: FC<P> = (
+        {
+            className: propClassName,
+            ...restProps
+        }
+    ) => {
+        return React.createElement(
+            tag,
+            {
+                className: classnames(
+                    propClassName,
+                    className
+                ),
+                ...restProps
+            }
+        )
+    }
+
+    if (displayName) {
+        component.displayName = displayName
+    }
+
+    return component
 }
