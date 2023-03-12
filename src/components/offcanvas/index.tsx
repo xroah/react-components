@@ -9,6 +9,7 @@ import { layerCommonPropTypes } from "../commons/prop-types"
 import { bool, node, oneOf } from "prop-types"
 import { useKeyboardClose, useZIndex } from "../hooks"
 import bodyStyleStack from "../utils/body-style-stack"
+import { getNullableNode } from "r-layers/utils/react"
 
 interface OffCanvasProps extends LayerProps {
     header?: React.ReactNode
@@ -42,17 +43,7 @@ const OffCanvas: FC<OffCanvasProps> = ({
     const handleClickClose = () => onClose?.("close")
     const [zIndex] = useZIndex()
     const nodeRef = React.useRef<HTMLDivElement>(null)
-    const _header = (
-        header === null ? null :
-            header ? header : (
-                <div className={PREFIX + "-header"}>
-                    <h5 className={PREFIX + "-title"}>
-                        {title}
-                    </h5>
-                    <CloseBtn onClick={handleClickClose} />
-                </div>
-            )
-    )
+    let _header = getNullableNode(header)
     const handleKeyDown = useKeyboardClose({
         onClose,
         keyboard,
@@ -90,8 +81,21 @@ const OffCanvas: FC<OffCanvasProps> = ({
             bodyStyleStack.pop()
         }
     }
+
+    if (_header === false) {
+        _header = (
+            <div className={PREFIX + "-header"}>
+                <h5 className={PREFIX + "-title"}>
+                    {title}
+                </h5>
+                {closable && <CloseBtn onClick={handleClickClose} />}
+            </div>
+        )
+    }
+
     const render = (state: TransitionStatus) => {
         const classes = classnames(
+            className,
             PREFIX,
             `${PREFIX}-${placement}`,
             breakpoint && `${PREFIX}-${breakpoint}`,
