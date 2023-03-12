@@ -26,10 +26,8 @@ export function getNullableNode(
         if (wrapperTag) {
             return createElement(
                 wrapperTag,
-                {
-                    className,
-                    children: node
-                }
+                {className},
+                node
             )
         }
 
