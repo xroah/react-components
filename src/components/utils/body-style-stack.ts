@@ -1,4 +1,4 @@
-import { CSSProperties } from "react";
+import { CSSProperties } from "react"
 
 class BodyStyleStack {
     private _styles: CSSProperties[] = []

@@ -4,14 +4,14 @@ import React,
     FC,
     isValidElement,
     ReactElement
-} from "react";
+} from "react"
 import { isFragment } from "react-is"
-import { Transition } from "react-transition-group";
+import { Transition } from "react-transition-group"
 import {
     TimeoutProps,
     TransitionStatus
-} from "react-transition-group/Transition";
-import { classnames } from "../utils";
+} from "react-transition-group/Transition"
+import { classnames } from "../utils"
 
 interface FadeProps extends Partial<TimeoutProps<HTMLElement>> {
     fadeClass?: string

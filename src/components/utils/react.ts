@@ -6,8 +6,8 @@ import React,
     createElement,
     isValidElement,
     FC
-} from "react";
-import { classnames } from ".";
+} from "react"
+import { classnames } from "."
 
 export function getNullableNode(
     node?: ReactNode,

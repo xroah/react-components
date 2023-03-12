@@ -1,6 +1,6 @@
-import React, { FC } from "react";
-import { classnames } from "../utils";
-import Loading, { LoadingProps } from "./loading";
+import React, { FC } from "react"
+import { classnames } from "../utils"
+import Loading, { LoadingProps } from "./loading"
 
 const NestedLoading: FC<LoadingProps> = ({
     variant,

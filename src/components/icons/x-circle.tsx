@@ -1,5 +1,5 @@
-import React from "react";
-import createSVGIcon from "./svg";
+import React from "react"
+import createSVGIcon from "./svg"
 
 export default createSVGIcon(
     <>

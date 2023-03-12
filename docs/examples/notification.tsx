@@ -1,5 +1,5 @@
-import Toast from "r-layers/basics/toast";
-import React from "react";
+import Toast from "r-layers/basics/toast"
+import React from "react"
 
 export default () => {
     return (

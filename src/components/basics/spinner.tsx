@@ -1,13 +1,13 @@
 import React, { CSSProperties, FC } from "react"
-import { DivProps, OneOf, Variant } from "../commons/types";
-import { spinnerAnimations, variants } from "../commons/constants";
+import { DivProps, OneOf, Variant } from "../commons/types"
+import { spinnerAnimations, variants } from "../commons/constants"
 import {
     number,
     oneOf,
     oneOfType,
     string
-} from "prop-types";
-import { classnames } from "../utils";
+} from "prop-types"
+import { classnames } from "../utils"
 
 export interface SpinnerProps extends DivProps {
     animation?: OneOf<typeof spinnerAnimations>
@@ -34,7 +34,7 @@ const Spinner: FC<SpinnerProps> = ({
     const sizeStyle: CSSProperties = {}
 
     if (size !== "sm") {
-        let sizeStr = typeof size === "string" ? size : `${size}px`
+        const sizeStr = typeof size === "string" ? size : `${size}px`
 
         sizeStyle.width = sizeStyle.height = sizeStr
     }

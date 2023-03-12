@@ -3,10 +3,10 @@ import React, {
     FC,
     ReactNode
 } from "react"
-import { ClosableProps, DivPropsWithNodeTitle } from "../commons/types";
-import { classnames } from "../utils";
-import CloseBtn from "./close-btn";
-import { getNullableNode } from "../utils/react";
+import { ClosableProps, DivPropsWithNodeTitle } from "../commons/types"
+import { classnames } from "../utils"
+import CloseBtn from "./close-btn"
+import { getNullableNode } from "../utils/react"
 
 interface ToastProps extends DivPropsWithNodeTitle, ClosableProps {
     header?: ReactNode

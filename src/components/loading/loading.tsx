@@ -1,10 +1,10 @@
-import React, { FC } from "react";
-import { ClosableProps, ToggleEvents } from "../commons/types";
-import Spinner, { SpinnerProps } from "../basics/spinner";
-import CloseBtn from "../basics/close-btn";
-import { bool } from "prop-types";
-import Fade from "../basics/fade";
-import { classnames } from "../utils";
+import React, { FC } from "react"
+import { ClosableProps, ToggleEvents } from "../commons/types"
+import Spinner, { SpinnerProps } from "../basics/spinner"
+import CloseBtn from "../basics/close-btn"
+import { bool } from "prop-types"
+import Fade from "../basics/fade"
+import { classnames } from "../utils"
 
 type Base = SpinnerProps & ClosableProps & ToggleEvents
 

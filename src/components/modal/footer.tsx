@@ -2,10 +2,10 @@ import React, {
     FC,
     ReactElement,
     ReactNode
-} from "react";
-import { FooterProps } from "./types";
-import Button from "../basics/button";
-import { getNullableNode } from "../utils/react";
+} from "react"
+import { FooterProps } from "./types"
+import Button from "../basics/button"
+import { getNullableNode } from "../utils/react"
 
 type Props = FooterProps & { defaultFooter: ReactNode }
 

@@ -6,7 +6,9 @@
   "scripts": {
     "test": "",
     "build": "",
-    "start": "vite serve"
+    "start": "vite serve",
+    "lint": "eslint src docs",
+    "lint-fix": "eslint src docs --fix"
   },
   "repository": {
     "type": "git",
@@ -26,8 +28,12 @@
     "@types/react-is": "^17.0.3",
     "@types/react-transition-group": "^4.4.5",
     "@types/warning": "^3.0.0",
+    "@typescript-eslint/eslint-plugin": "^5.55.0",
+    "@typescript-eslint/parser": "^5.55.0",
     "@vitejs/plugin-react": "^2.0.1",
     "bootstrap": "^5.2.1",
+    "eslint": "^8.36.0",
+    "eslint-plugin-react": "^7.32.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.4.0",

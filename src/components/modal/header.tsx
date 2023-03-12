@@ -1,11 +1,11 @@
-import CloseBtn from "../basics/close-btn";
+import CloseBtn from "../basics/close-btn"
 import React, {
     FC,
     ReactElement,
     ReactNode
-} from "react";
-import { HeaderProps } from "./types";
-import { getNullableNode } from "../utils/react";
+} from "react"
+import { HeaderProps } from "./types"
+import { getNullableNode } from "../utils/react"
 
 type Props = HeaderProps & { defaultHeader: ReactNode }
 
