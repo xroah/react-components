@@ -8,6 +8,7 @@ import {
 import { node, oneOf } from "prop-types"
 import { variants } from "../commons/constants"
 import { closablePropTypes } from "../commons/prop-types"
+import { classnames } from "../utils"
 
 export interface AlertProps extends DivProps, ClosableProps {
     variant: Variant
@@ -24,7 +25,11 @@ const Alert: FC<AlertProps> = ({
     ...restProps
 }) => {
     const PREFIX = "alert"
-    const classes = `${PREFIX} ${PREFIX}-${variant} `
+    const classes = classnames(
+        className,
+        PREFIX,
+        `${PREFIX}-${variant}`
+    )
 
     return (
         <div className={classes} {...restProps}>
