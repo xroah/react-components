@@ -13,6 +13,7 @@ const Button: FC<ButtonProps> = (
     }
 ) => {
     const classes = classnames(
+        className,
         "btn",
         `btn-${variant}`,
         size && `btn-${size}`
