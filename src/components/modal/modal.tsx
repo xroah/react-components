@@ -42,7 +42,7 @@ function getDialogClass(
         } else {
             fsClass = `${FULLSCREEN_CLASS}-${fullscreen}-down`
         }
-    } 
+    }
 
     return classnames(
         DIALOG_PREFIX,
@@ -215,6 +215,7 @@ const Modal: FC<ModalProps> = function Modal(
                     <Transition
                         timeout={timeout}
                         nodeRef={modalRef}
+                        appear
                         {...transitionProps}>
                         {dialog}
                     </Transition>

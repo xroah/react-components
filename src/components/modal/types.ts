@@ -38,3 +38,7 @@ export interface ModalProps extends ToggleEvents, DialogProps {
     backdrop?: boolean | "static"
     timeout?: number
 }
+
+export interface OpenOptions extends ModalProps {
+    content?: ReactNode
+}

@@ -1,5 +1,6 @@
 import React from "react"
 import Modal from "r-layers/modal/modal"
+import {open} from "r-layers/modal/functions"
 import Button from "r-layers/basics/button"
 
 export default function ModalExample() {
@@ -26,11 +27,33 @@ export default function ModalExample() {
         console.log("cancel")
         handleClose()
     }
+    const openModal = () => {
+        open({
+            title: "Modal title",
+            content: "内容内容内容内容内容内容内容内容内容内容",
+            onOk() {
+                return new Promise<void>(resolve => {
+                    console.log("请稍后")
+
+                    setTimeout(
+                        () => {
+                            resolve()
+                            console.log("close")
+                        },
+                        Math.random() * 10000
+                    )
+                })
+            }
+        })
+    }
 
     return (
         <div>
             <Button onClick={handleClick}>
                 Show modal
+            </Button>
+            <Button onClick={openModal}>
+                Open dynamic modal
             </Button>
             <Modal
                 visible={visible}
