@@ -15,13 +15,14 @@ export type HeaderProps = ClosableProps & DivPropsWithNodeTitle
 export interface FooterProps {
     ok?: boolean
     okText?: string
+    okLoading?: boolean
     okVariant?: Variant
     cancel?: boolean
     cancelText?: string
     cancelVariant?: Variant
+    footerBtnSize?: ButtonProps["size"]
     onOk?: VoidFunction
     onCancel?: VoidFunction
-    footerBtnSize?: ButtonProps["size"]
 }
 
 export interface DialogProps extends LayerProps, FooterProps {

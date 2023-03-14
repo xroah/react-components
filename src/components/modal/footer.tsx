@@ -6,6 +6,7 @@ import React, {
 import { FooterProps } from "./types"
 import Button from "../basics/button"
 import { getNullableNode } from "../utils/react"
+import Spinner from "r-layers/basics/spinner"
 
 type Props = FooterProps & { defaultFooter: ReactNode }
 
@@ -16,13 +17,14 @@ const Footer: FC<Props> = (
         ok,
         okText,
         okVariant,
+        okLoading,
         cancel,
         cancelText,
         cancelVariant,
+        defaultFooter,
+        footerBtnSize,
         onOk,
         onCancel,
-        defaultFooter,
-        footerBtnSize
     }
 ) => {
     const node = getNullableNode(
@@ -34,6 +36,13 @@ const Footer: FC<Props> = (
     if (node !== false) {
         return node as ReactElement
     }
+
+    const spinner = okLoading ? (
+        <Spinner
+            variant="light"
+            size="sm"
+            style={{ marginRight: 5 }} />
+    ) : null
 
     return (
         <div className={FOOTER_CLASS}>
@@ -54,7 +63,9 @@ const Footer: FC<Props> = (
                         type="button"
                         onClick={onOk}
                         variant={okVariant}
-                        size={footerBtnSize}>
+                        size={footerBtnSize}
+                        disabled={okLoading}>
+                        {spinner}
                         {okText}
                     </Button>
                 )

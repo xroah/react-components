@@ -69,6 +69,7 @@ const Modal: FC<ModalProps> = function Modal(
         cancelText = "取消",
         okVariant = "primary",
         cancelVariant = "secondary",
+        okLoading = false,
         ok = true,
         cancel = true,
         className,
@@ -190,6 +191,7 @@ const Modal: FC<ModalProps> = function Modal(
                         okText={okText}
                         okVariant={okVariant}
                         ok={ok}
+                        okLoading={okLoading}
                         cancelText={cancelText}
                         cancelVariant={cancelVariant}
                         cancel={cancel}
