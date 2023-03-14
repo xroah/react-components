@@ -71,8 +71,15 @@ export function getDynamicWrapper(
     return ret
 }
 
+type ClosedObject = {
+    closed?: boolean
+}
+
 // create close function for messages,loading etc
-export function createCloseFunc(render: (arg: boolean) => void) {
+export function createCloseFunc(
+    render: (arg: boolean) => void,
+    o?: ClosedObject
+) {
     let closed = false
 
     return () => {
@@ -81,6 +88,10 @@ export function createCloseFunc(render: (arg: boolean) => void) {
         }
 
         closed = true
+
+        if (o) {
+            o.closed = closed
+        }
 
         render(false)
     }
