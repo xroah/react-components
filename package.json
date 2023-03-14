@@ -21,35 +21,35 @@
   },
   "homepage": "https://github.com/xroah/react-layers#readme",
   "devDependencies": {
-    "@types/node": "^18.14.6",
+    "@types/node": "^18.15.3",
     "@types/prop-types": "^15.7.5",
-    "@types/react": "^18.0.20",
-    "@types/react-dom": "^18.0.6",
+    "@types/react": "^18.0.28",
+    "@types/react-dom": "^18.0.11",
     "@types/react-is": "^17.0.3",
     "@types/react-transition-group": "^4.4.5",
     "@types/warning": "^3.0.0",
     "@typescript-eslint/eslint-plugin": "^5.55.0",
     "@typescript-eslint/parser": "^5.55.0",
-    "@vitejs/plugin-react": "^2.0.1",
-    "bootstrap": "^5.2.1",
+    "@vitejs/plugin-react": "^3.1.0",
+    "bootstrap": "^5.2.3",
     "eslint": "^8.36.0",
     "eslint-plugin-react": "^7.32.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^6.4.0",
-    "sass": "^1.58.3",
-    "typescript": "^4.8.1-rc",
-    "vite": "^3.0.8"
-  },
-  "dependencies": {
-    "@floating-ui/dom": "^1.0.1",
-    "prop-types": "^15.8.1",
-    "react-is": "^18.2.0",
-    "react-transition-group": "^4.4.5",
-    "warning": "^4.0.3"
+    "react-router-dom": "^6.9.0",
+    "sass": "^1.59.2",
+    "typescript": "^4.9.5",
+    "vite": "^4.1.4"
   },
   "files": [
     "lib",
     "es"
-  ]
+  ],
+  "dependencies": {
+    "@floating-ui/dom": "^1.2.4",
+    "prop-types": "^15.8.1",
+    "react-is": "^18.2.0",
+    "react-transition-group": "^4.4.5",
+    "warning": "^4.0.3"
+  }
 }

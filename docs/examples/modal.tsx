@@ -37,16 +37,13 @@ export default function ModalExample() {
                 title="Modal"
                 backdrop={"static"}
                 transition={false}
-                size="lg"
-                fullscreen="md"
                 onClose={handleClose}
                 onOk={handleOk}
                 onCancel={handleCancel}
                 onShow={onShow}
                 onShown={onShown}
                 onHide={onHide}
-                onHidden={onHidden}
-                footerBtnSize="sm">
+                onHidden={onHidden}>
                 <div>
                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Natus libero obcaecati, minus maiores id magnam tempore et officiis eveniet ex voluptatem consequuntur, iste dolores quaerat eius inventore vitae omnis animi.
                 </div>
