@@ -11,7 +11,7 @@ import { createCloseFunc, getDynamicWrapper, unmountAsync } from "../utils"
 let wrapper: HTMLElement | null = null
 const closeSet = new Set<VoidFunction>()
 
-function show(msg: ReactNode, options: MessageProps) {
+function open(msg: ReactNode, options: MessageProps) {
     const {
         className,
         closable,
@@ -80,7 +80,7 @@ function createShortcut(variant: Variant, defaultIcon: ReactNode) {
             ...restOptions
         } = options
 
-        return show(
+        return open(
             msg,
             {
                 icon,
@@ -103,7 +103,7 @@ const success = createShortcut("success", <CheckFill />)
 const warn = createShortcut("warning", <WarnFill />)
 
 export {
-    show,
+    open,
     closeAll,
     error,
     info,
