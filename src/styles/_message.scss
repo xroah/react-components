@@ -3,6 +3,7 @@
 .alert {
     @include mixins.flex-align-center();
     padding: 10px;
+    margin: 0;
 
     .alert-body {
         @include mixins.flex-align-center();
@@ -33,13 +34,14 @@
 
     .r-message-item {
         min-width: 200px;
-        margin-top: -100px;
+        margin-top: 20px;
         opacity: 0;
-        transition: margin .2s linear, opacity .2s linear;
+        transform: translateY(-100px);
+        transition: transform .2s linear, opacity .2s linear;
         pointer-events: auto;
 
         &.show {
-            margin-top: 0;
+            transform: none;
             opacity: 1;
         }
     }
