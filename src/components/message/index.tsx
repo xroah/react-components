@@ -40,7 +40,6 @@ function open(msg: ReactNode, options: MessageProps) {
             onShow,
             onHide,
             onHidden: handleHidden,
-            container,
             children: msg
         }
 
@@ -52,6 +51,7 @@ function open(msg: ReactNode, options: MessageProps) {
             root,
             () => {
                 closeSet.delete(close)
+                container.remove()
 
                 if (closeSet.size === 0) {
                     wrapper?.remove()

@@ -3,6 +3,7 @@ import ModalExample from "./examples/modal"
 import OffCanvas from "./examples/offcanvas"
 import Alert from "r-layers/basics/alert"
 import { open as showMessage } from "r-layers/message"
+import { useMessage } from "r-layers/message/message-hook"
 import Button from "r-layers/basics/button"
 import CheckFill from "r-layers/icons/check-fill"
 import Loading from "./examples/loading"
@@ -11,9 +12,15 @@ import Notification from "./examples/notification"
 export default function App() {
     const showMsg = () => {
         showMessage("msg", {
-            variant: "primary",
-            closable: true,
-            duration: 10000
+            variant: "warning",
+            closable: true
+        })
+    }
+    const [open, wrapper] = useMessage()
+    const handleOpen = () => {
+        open({
+            content: "哈哈哈哈哈哈哈哈哈哈",
+            variant: "info"
         })
     }
 
@@ -22,7 +29,7 @@ export default function App() {
             <ModalExample />
             <OffCanvas />
             <Alert closable variant="primary" >
-                <CheckFill/>
+                <CheckFill />
                 A simple primary alert—check it out!
             </Alert>
             <div>
@@ -31,9 +38,13 @@ export default function App() {
                 </Button>
             </div>
             <div>
-                <Loading/>
+                <Loading />
             </div>
-            <Notification/>
+            <Button variant="info" onClick={handleOpen}>
+                Open message use hook
+            </Button>
+            {wrapper}
+            <Notification />
         </div>
     )
 }

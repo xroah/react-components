@@ -6,17 +6,14 @@ import { number } from "prop-types"
 import { classnames, omit } from "../utils"
 
 const DEFAULT_DURATION = 3000
+export const WRAPPER_CLASS = "r-message-wrapper"
+
 export interface MessageProps extends AlertProps, ToggleEvents {
     duration?: number
-}
-interface UnmountProps {
-    visible: boolean
-    container: HTMLElement
+    visible?: boolean
 }
 
-type Props = MessageProps & UnmountProps
-
-class Message extends React.Component<Props> {
+class Message extends React.Component<MessageProps> {
     private timer = -1
     static propTypes = {
         duration: number
@@ -47,10 +44,7 @@ class Message extends React.Component<Props> {
     }
 
     componentWillUnmount() {
-        const { container } = this.props
-
         this.clearTimeout()
-        container.remove()
     }
 
     render() {
@@ -79,7 +73,7 @@ class Message extends React.Component<Props> {
         }
 
         omit(restProps, ["duration", "onClose"])
-
+        
         return (
             <Transition
                 in={visible}
