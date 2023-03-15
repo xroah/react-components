@@ -23,6 +23,7 @@
 }
 
 .r-message-wrapper {
+    $transition: .2s linear;
     @include mixins.flex-align-center();
     flex-direction: column;
     position: fixed;
@@ -34,10 +35,10 @@
 
     .r-message-item {
         min-width: 200px;
-        margin-top: 20px;
-        opacity: 0;
-        transform: translateY(-100px);
-        transition: transform .2s linear, opacity .2s linear;
+        margin-top: 15px;
+        transition: transform #{$transition},
+        height #{$transition},
+        opacity #{$transition};
         pointer-events: auto;
 
         &.show {
