@@ -20,6 +20,8 @@ export function omit<T>(
 
     if (!Array.isArray(k)) {
         keys = [k]
+    } else {
+        keys = k
     }
 
     for (const key of keys) {
