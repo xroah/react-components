@@ -1,6 +1,6 @@
 import React from "react"
 import { createRoot } from "react-dom/client"
-import { OpenOptions } from "./types"
+import { ModalProps, OpenOptions } from "./types"
 import {
     callAsync,
     createCloseFunc,
@@ -14,7 +14,7 @@ function closeWhenNeeded(ret: unknown, close: VoidFunction) {
         const p = ret as Promise<unknown>
 
         p.then(close)
-        
+
         return
     }
 
@@ -25,16 +25,16 @@ function closeWhenNeeded(ret: unknown, close: VoidFunction) {
 
 function open(
     {
+        content,
+        children,
         onOk = noop,
         onCancel = noop,
         onClose = noop,
-        content,
-        children,
-        
         onHidden,
         ...restProps
     }: OpenOptions
 ) {
+    let props: ModalProps = {}
     const handleOk = () => {
         closeWhenNeeded(onOk(), close)
     }
@@ -54,26 +54,56 @@ function open(
     }
     const container = document.createElement("div")
     const root = createRoot(container)
+    const o = { closed: false }
     const render = (visible: boolean) => {
-        restProps.visible = visible
+        props.visible = visible
 
-        root.render(
-            <Modal
-                onOk={handleOk}
-                onCancel={handleCancel}
-                onClose={handleClose}
-                onHidden={handleHidden}
-                {...restProps}>
-                {content ?? children}
-            </Modal>
-        )
+        root.render(<Modal {...props} />)
     }
-    const close = createCloseFunc(render)
+    const close = createCloseFunc(render, o)
+    const update = ({
+        content,
+        onOk: uOnOk,
+        onCancel: uOnCancel,
+        onClose: uOnClose,
+        onHidden: uOnHidden,
+        visible,
+        ...rest
+    }: OpenOptions
+    ) => {
+        if (o.closed) {
+            return
+        }
+
+        onOk = onOk ?? uOnOk
+        onCancel = onCancel ?? uOnCancel
+        onClose = onClose ?? uOnClose
+        onHidden = onHidden ?? uOnHidden
+
+        props.children = content ?? props.children
+        props = {
+            ...props,
+            ...rest
+        }
+
+        render(visible ?? true)
+    }
+    props = {
+        ...restProps,
+        onOk: handleOk,
+        onCancel: handleCancel,
+        onClose: handleClose,
+        onHidden: handleHidden,
+        children: content ?? children
+    }
 
     render(true)
     document.body.appendChild(container)
 
-    return close
+    return {
+        update,
+        close
+    }
 }
 
 export {

@@ -1,6 +1,6 @@
 import React from "react"
 import Modal from "r-layers/modal/modal"
-import {open} from "r-layers/modal/functions"
+import {open} from "r-layers/modal/modal-methods"
 import Button from "r-layers/basics/button"
 
 export default function ModalExample() {
