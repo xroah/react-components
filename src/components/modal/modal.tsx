@@ -137,13 +137,17 @@ const Modal: FC<ModalProps> = function Modal(
     }
     const display = style?.display ?? "block"
     const modalStyle = {
-        display: display === "none" ? "block" : display
+        display: display === "none" ? "block" : display,
     }
-    const dialog = (
+    const modal = (
         <div
             className={classes}
             ref={modalRef}
-            style={{ ...style, ...modalStyle }}
+            style={{
+                zIndex: zIndex + 1,
+                ...style,
+                ...modalStyle
+            }}
             tabIndex={tabIndex}
             onKeyDown={handleKeyDown}
             onClick={handleClick}
@@ -205,7 +209,7 @@ const Modal: FC<ModalProps> = function Modal(
     )
 
     return (
-        <div style={{display: wrapperVisible ? "block" : "none"}}>
+        <div style={{ display: wrapperVisible ? "block" : "none" }}>
             {
                 transition ? (
                     <Fade
@@ -213,11 +217,11 @@ const Modal: FC<ModalProps> = function Modal(
                         nodeRef={modalRef}
                         appear
                         {...transitionProps}>
-                        {dialog}
+                        {modal}
                     </Fade>
                 ) : (
                     <NOTransition {...transitionProps}>
-                        {dialog}
+                        {modal}
                     </NOTransition>
                 )
             }
