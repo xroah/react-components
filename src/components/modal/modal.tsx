@@ -21,7 +21,8 @@ import { useKeyboardClose, useZIndex } from "../hooks"
 import bodyStyleStack from "../utils/body-style-stack"
 import Header from "./header"
 import Footer from "./footer"
-import Fade from "r-layers/basics/fade"
+import Fade from "../basics/fade"
+import Timer from "../utils/timer"
 
 function getDialogClass(
     {
@@ -92,18 +93,26 @@ const Modal: FC<ModalProps> = function Modal(
         ...restProps
     }
 ) {
+    const [zIndex] = useZIndex()
+    const [staticClass, updateStaticClass] = React.useState("")
+    const [wrapperVisible, updateWrapperState] = React.useState(visible)
+    const [modalVisible, updateModalState] = React.useState(!!visible)
     const modalRef = React.useRef<HTMLDivElement>(null)
-    const classes = classnames(className, "modal")
+    const activeEl = React.useRef<HTMLElement | null>(null)
+    const classes = classnames(className, "modal", staticClass)
     const dialogClasses = getDialogClass({
         fullscreen,
         size,
         contentScrollable,
         center
     })
-    const [zIndex] = useZIndex()
-    const [wrapperVisible, updateWrapperState] = React.useState(visible)
-    const [modalVisible, updateModalState] = React.useState(!!visible)
+    const removeStaticClass = React.useCallback(
+        () => updateStaticClass(""),
+        []
+    )
+    const timer = new Timer(300, removeStaticClass)
     const handleEnter = () => {
+        activeEl.current = document.activeElement as HTMLElement
         bodyStyleStack.push()
         onShow?.()
     }
@@ -117,6 +126,7 @@ const Modal: FC<ModalProps> = function Modal(
         // make the wrapper invisible
         updateWrapperState(false)
         onHidden?.()
+        activeEl.current?.focus()
     }
     const handleKeyDown = useKeyboardClose({
         onKeyDown,
@@ -124,11 +134,20 @@ const Modal: FC<ModalProps> = function Modal(
         keyboard
     })
     const handleClickClose = () => onClose?.("close")
-    const handleClick = (ev: React.MouseEvent<HTMLDivElement>) => {
-        if (backdrop && backdrop !== "static") {
+    const handleClickBackdrop = (
+        ev: React.MouseEvent<HTMLDivElement>
+    ) => {
+        if (backdrop) {
             const target = ev.target as HTMLElement
 
-            if (target === modalRef.current) {
+            if (target !== modalRef.current) {
+                return
+            }
+
+            if (backdrop === "static") {
+                updateStaticClass("modal-static")
+                timer.delay()
+            } else {
                 onClose?.("backdrop")
             }
         }
@@ -150,7 +169,7 @@ const Modal: FC<ModalProps> = function Modal(
             }}
             tabIndex={tabIndex}
             onKeyDown={handleKeyDown}
-            onClick={handleClick}
+            onClick={handleClickBackdrop}
             {...restProps}>
             <div className={dialogClasses}>
                 <div className="modal-content">
@@ -159,9 +178,7 @@ const Modal: FC<ModalProps> = function Modal(
                         closable={closable}
                         onClose={handleClickClose}
                         defaultHeader={header} />
-                    <div className="modal-body">
-                        {children}
-                    </div>
+                    <div className="modal-body">{children}</div>
                     <Footer
                         okText={okText}
                         okVariant={okVariant}
