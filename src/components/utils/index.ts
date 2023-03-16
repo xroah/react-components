@@ -8,7 +8,7 @@ export function isPlainObject(o: unknown) {
     return Object.prototype.toString.call(o) === "[object Object]"
 }
 
-export function omit<T>(
+export function omit<T extends object>(
     o: T,
     k: keyof T | Array<keyof T>
 ): Partial<T> {
@@ -97,4 +97,43 @@ export function createCloseFunc(
 
         render(false)
     }
+}
+
+type Func = (...args: unknown[]) => unknown
+
+export function chainFunction(
+    ...fns: Array<Func | undefined | null>
+): Func {
+    if (!fns.length) {
+        return noop
+    }
+
+    return fns.reduce(
+        (acc, current) => {
+            return (...args: unknown[]) => {
+                acc?.(...args)
+                current?.(...args)
+            }
+        }
+    ) as Func
+}
+
+export function pick<T extends object>(
+    o: T,
+    keys: keyof T | Array<keyof T>
+): Partial<T> {
+    const ret: Partial<T> = {}
+    let _keys: Array<keyof T> = []
+
+    if (!Array.isArray(keys)) {
+        _keys = [keys]
+    } else {
+        _keys = keys
+    }
+
+    for (const k of _keys) {
+        ret[k] = o[k]
+    }
+
+    return ret
 }
