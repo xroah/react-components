@@ -1,5 +1,4 @@
-import React, { CSSProperties, FC } from "react"
-import { Transition } from "react-transition-group"
+import React, { FC } from "react"
 import {
     bool,
     string,
@@ -22,6 +21,7 @@ import { useKeyboardClose, useZIndex } from "../hooks"
 import bodyStyleStack from "../utils/body-style-stack"
 import Header from "./header"
 import Footer from "./footer"
+import Fade from "r-layers/basics/fade"
 
 function getDialogClass(
     {
@@ -93,11 +93,7 @@ const Modal: FC<ModalProps> = function Modal(
     }
 ) {
     const modalRef = React.useRef<HTMLDivElement>(null)
-    const classes = classnames(
-        className,
-        "modal",
-        transition && "fade"
-    )
+    const classes = classnames(className, "modal")
     const dialogClasses = getDialogClass({
         fullscreen,
         size,
@@ -105,42 +101,21 @@ const Modal: FC<ModalProps> = function Modal(
         center
     })
     const [zIndex] = useZIndex()
-    const [
-        modalStyle,
-        updateStyle
-    ] = React.useState<CSSProperties>({ zIndex: zIndex + 1 })
+    const [wrapperVisible, updateWrapperState] = React.useState(visible)
+    const [modalVisible, updateModalState] = React.useState(!!visible)
     const handleEnter = () => {
         bodyStyleStack.push()
-        updateStyle({
-            ...modalStyle,
-            display: "block"
-        })
         onShow?.()
-    }
-    const handleEntering = () => {
-        const modalEl = modalRef.current
-
-        if (modalEl) {
-            // reflow
-            transition && modalEl.offsetHeight
-            modalEl.classList.add("show")
-        }
     }
     const handleEntered = () => {
         // if no transition, may not focus
         callAsync(() => modalRef.current?.focus())
         onShown?.()
     }
-    const handleExit = () => {
-        modalRef.current?.classList.remove("show")
-        onHide?.()
-    }
     const handleExited = () => {
         bodyStyleStack.pop()
-        updateStyle({
-            ...modalStyle,
-            display: "none"
-        })
+        // make the wrapper invisible
+        updateWrapperState(false)
         onHidden?.()
     }
     const handleKeyDown = useKeyboardClose({
@@ -149,14 +124,6 @@ const Modal: FC<ModalProps> = function Modal(
         keyboard
     })
     const handleClickClose = () => onClose?.("close")
-    const transitionProps = {
-        in: visible,
-        onEnter: handleEnter,
-        onEntering: handleEntering,
-        onEntered: handleEntered,
-        onExit: handleExit,
-        onExited: handleExited
-    }
     const handleClick = (ev: React.MouseEvent<HTMLDivElement>) => {
         if (backdrop && backdrop !== "static") {
             const target = ev.target as HTMLElement
@@ -167,6 +134,10 @@ const Modal: FC<ModalProps> = function Modal(
         }
 
         onClick?.(ev)
+    }
+    const display = style?.display ?? "block"
+    const modalStyle = {
+        display: display === "none" ? "block" : display
     }
     const dialog = (
         <div
@@ -205,22 +176,45 @@ const Modal: FC<ModalProps> = function Modal(
     )
     const _backdrop = backdrop ? (
         <Backdrop
-            visible={!!visible}
+            visible={!!modalVisible}
             zIndex={zIndex}
             transition={transition} />
     ) : null
+    const transitionProps = {
+        in: modalVisible,
+        onEnter: handleEnter,
+        onEntered: handleEntered,
+        onExit: onHide,
+        onExited: handleExited
+    }
+
+    React.useEffect(
+        () => {
+            if (visible) {
+                // make the wrapper visible first
+                updateWrapperState(true)
+
+                if (wrapperVisible) {
+                    updateModalState(true)
+                }
+            } else {
+                updateModalState(false)
+            }
+        },
+        [visible, wrapperVisible, modalVisible]
+    )
 
     return (
-        <>
+        <div style={{display: wrapperVisible ? "block" : "none"}}>
             {
                 transition ? (
-                    <Transition
+                    <Fade
                         timeout={timeout}
                         nodeRef={modalRef}
                         appear
                         {...transitionProps}>
                         {dialog}
-                    </Transition>
+                    </Fade>
                 ) : (
                     <NOTransition {...transitionProps}>
                         {dialog}
@@ -228,7 +222,7 @@ const Modal: FC<ModalProps> = function Modal(
                 )
             }
             {_backdrop}
-        </>
+        </div>
     )
 }
 
