@@ -1,7 +1,8 @@
 import React from "react"
 import Modal from "r-layers/modal/modal"
-import {open} from "r-layers/modal/modal-methods"
+import { open } from "r-layers/modal/modal-methods"
 import Button from "r-layers/basics/button"
+import { useModal } from "r-layers/modal/modal-hook"
 
 export default function ModalExample() {
     const [visible, toggle] = React.useState(false)
@@ -43,10 +44,42 @@ export default function ModalExample() {
                         Math.random() * 10000
                     )
                 })
+            },
+            onClose() {
+                console.log("on closed called")
             }
         })
     }
+    const [hookApi, modal] = useModal()
+    const handleOpenModalByHook = () => {
+        hookApi.open({
+            title: "Hook modal title",
+            content: "hook内容 hook内容 hook内容 hook内容",
+            onOk() {
+                console.log("onOk called")
+            },
+            onCancel() {
+                console.log("onCancel called")
+            },
+            onShown() {
+                console.log("Modal shown")
+            },
+            onClose() {
+                return new Promise<void>(resolve => {
+                    console.log("请稍后")
 
+                    setTimeout(
+                        () => {
+                            resolve()
+                            console.log("close")
+                        },
+                        Math.random() * 10000
+                    )
+                })
+            }
+        })
+    }
+    
     return (
         <div>
             <Button onClick={handleClick}>
@@ -55,6 +88,10 @@ export default function ModalExample() {
             <Button onClick={openModal}>
                 Open dynamic modal
             </Button>
+            <Button onClick={handleOpenModalByHook}>
+                Open modal by hook
+            </Button>
+            {modal}
             <Modal
                 visible={visible}
                 title="Modal"

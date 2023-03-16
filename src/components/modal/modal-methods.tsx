@@ -1,15 +1,21 @@
 import React from "react"
 import { createRoot } from "react-dom/client"
-import { ModalProps, OpenOptions } from "./types"
-import {
-    callAsync,
-    createCloseFunc,
-    noop
-} from "../utils"
+import { Callbacks, ModalProps, OpenOptions } from "./types"
+import { callAsync, createCloseFunc, pick } from "../utils"
 import { CloseType } from "../commons/types"
 import Modal from "./modal"
 
-function closeWhenNeeded(ret: unknown, close: VoidFunction) {
+export const callbackKeys: Array<keyof Callbacks> = [
+    "onHidden",
+    "onClose",
+    "onOk",
+    "onCancel"
+]
+
+export function closeWhenNeeded(
+    ret: unknown,
+    close: VoidFunction
+) {
     if (ret instanceof Promise) {
         const p = ret as Promise<unknown>
 
@@ -23,35 +29,31 @@ function closeWhenNeeded(ret: unknown, close: VoidFunction) {
     }
 }
 
-function open(
+export function getCloseCallbacks(
+    callbacks: Callbacks,
+    close: VoidFunction
+) {
+    return {
+        onOk() {
+            closeWhenNeeded(callbacks.onOk?.(), close)
+        },
+        onCancel() {
+            closeWhenNeeded(callbacks.onCancel?.(), close)
+        },
+        onClose(t?: CloseType) {
+            closeWhenNeeded(callbacks.onClose?.(t), close)
+        }
+    }
+}
+
+export function open(
     {
         content,
         children,
-        onOk = noop,
-        onCancel = noop,
-        onClose = noop,
-        onHidden,
         ...restProps
     }: OpenOptions
 ) {
-    let props: ModalProps = {}
-    const handleOk = () => {
-        closeWhenNeeded(onOk(), close)
-    }
-    const handleCancel = () => {
-        closeWhenNeeded(onCancel(), close)
-    }
-    const handleClose = (t?: CloseType) => {
-        closeWhenNeeded(onClose(t), close)
-    }
-    const handleHidden = () => {
-        onHidden?.()
-
-        callAsync(() => {
-            root.unmount()
-            container.remove()
-        })
-    }
+    let callbacks: Callbacks = pick(restProps, callbackKeys)
     const container = document.createElement("div")
     const root = createRoot(container)
     const o = { closed: false }
@@ -60,41 +62,35 @@ function open(
 
         root.render(<Modal {...props} />)
     }
+    const handleHidden = () => {
+        callbacks.onHidden?.()
+
+        callAsync(() => {
+            root.unmount()
+            container.remove()
+        })
+    }
     const close = createCloseFunc(render, o)
-    const update = ({
+    let props: ModalProps = {
+        children: content ?? children,
+        onHidden: handleHidden,
+        ...restProps,
+        ...getCloseCallbacks(callbacks, close)
+    }
+    const update: (opts: OpenOptions) => void = ({
         content,
-        onOk: uOnOk,
-        onCancel: uOnCancel,
-        onClose: uOnClose,
-        onHidden: uOnHidden,
         visible,
         ...rest
-    }: OpenOptions
-    ) => {
+    }) => {
         if (o.closed) {
             return
         }
 
-        onOk = onOk ?? uOnOk
-        onCancel = onCancel ?? uOnCancel
-        onClose = onClose ?? uOnClose
-        onHidden = onHidden ?? uOnHidden
-
         props.children = content ?? props.children
-        props = {
-            ...props,
-            ...rest
-        }
+        props = { ...props, ...rest }
+        callbacks = pick(rest, callbackKeys)
 
         render(visible ?? true)
-    }
-    props = {
-        ...restProps,
-        onOk: handleOk,
-        onCancel: handleCancel,
-        onClose: handleClose,
-        onHidden: handleHidden,
-        children: content ?? children
     }
 
     render(true)
@@ -104,8 +100,4 @@ function open(
         update,
         close
     }
-}
-
-export {
-    open
 }

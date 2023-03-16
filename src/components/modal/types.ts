@@ -43,3 +43,18 @@ export interface ModalProps extends ToggleEvents, DialogProps {
 export interface OpenOptions extends ModalProps {
     content?: ReactNode
 }
+
+export type Callbacks = Pick<
+    ModalProps,
+    "onHidden" | "onClose" | "onOk" | "onCancel"
+>
+
+export type OpenFunc = (options: OpenOptions) => void
+
+export type HookReturn = [
+    {
+        close: VoidFunction,
+        open: OpenFunc
+    },
+    ReactNode
+]
