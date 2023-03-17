@@ -9,11 +9,11 @@ import { classnames } from "../utils"
 type Base = SpinnerProps & ClosableProps & ToggleEvents
 
 export interface LoadingProps extends Base {
-    loading?: boolean
+    visible?: boolean
 }
 
 const Loading: FC<LoadingProps> = ({
-    loading,
+    visible,
     closable,
     className,
     animation,
@@ -33,7 +33,7 @@ const Loading: FC<LoadingProps> = ({
 
     return (
         <Fade
-            in={loading}
+            in={visible}
             timeout={150}
             onEnter={onShow}
             onEntered={onShown}
@@ -53,7 +53,7 @@ const Loading: FC<LoadingProps> = ({
 }
 
 Loading.propTypes = {
-    loading: bool
+    visible: bool
 }
 
 export default Loading

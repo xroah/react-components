@@ -11,7 +11,7 @@ const NestedLoading: FC<LoadingProps> = ({
     onHidden,
     onHide,
     size,
-    loading,
+    visible,
     className,
     animation,
     children,
@@ -23,7 +23,7 @@ const NestedLoading: FC<LoadingProps> = ({
     )
     const loadingProps = {
         animation,
-        loading,
+        visible,
         variant,
         closable,
         onClose,

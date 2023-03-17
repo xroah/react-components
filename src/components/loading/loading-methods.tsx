@@ -6,20 +6,7 @@ import Loading, { LoadingProps } from "./loading"
 let wrapper: HTMLElement | null = null
 let closeFunc: VoidFunction | null = null
 
-interface FullscreenLoadingProps extends LoadingProps {
-    visible?: boolean
-}
-
-function FullScreenLoading(
-    {
-        visible,
-        ...restProps
-    }: FullscreenLoadingProps
-) {
-    restProps.loading = visible
-
-    return <Loading {...restProps} />
-}
+export const WRAPPER_CLASS = "r-loading-fullscreen"
 
 function show(
     {
@@ -28,9 +15,10 @@ function show(
         animation,
         variant,
         size,
+        style,
+        visible,
         onShow,
         onShown,
-        style,
         onHide,
         onHidden
     }: LoadingProps = {}
@@ -66,17 +54,17 @@ function show(
         }
 
         root?.render(
-            <FullScreenLoading
+            <Loading
                 visible={visible}
                 onClose={close}
                 {...props} />
         )
     }
     const close = closeFunc = createCloseFunc(render)
-    wrapper = getDynamicWrapper(wrapper, "r-loading-fullscreen")
+    wrapper = getDynamicWrapper(wrapper, WRAPPER_CLASS)
     const root = createRoot(wrapper)
 
-    render(true)
+    render(visible ?? true)
 
     return close
 }

@@ -31,7 +31,7 @@ export function useModal(): HookReturn {
         const handleHidden = () => {
             updateModal(null)
             onHidden?.()
-
+            
             modalClosed.current = true
         }
         const handleShow = () => {

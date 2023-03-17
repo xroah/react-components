@@ -2,19 +2,30 @@ import React from "react"
 import NestedLoading from "r-layers/loading/nested"
 import Button from "r-layers/basics/button"
 import Alert from "r-layers/basics/alert"
-import { show } from "r-layers/loading"
-console.log(show)
-export default () => {
+import { useLoading } from "r-layers/loading/loading-hook"
+
+export default function Loading() {
     const [loading, toggle] = React.useState(false)
     const handleClick = () => toggle(!loading)
-
+    const [hookApi, wrapper] = useLoading()
+    const showLoadingByHook = () => {
+        hookApi.open({
+            variant: "primary",
+            closable: true
+        })
+    }
+    
     return (
         <>
             <Button onClick={handleClick}>
                 Toggle
             </Button>
+            <Button variant="info" onClick={showLoadingByHook}>
+                Show loading by hook
+            </Button>
+            {wrapper}
             <NestedLoading
-                loading={loading}
+                visible={loading}
                 variant="primary"
                 closable
                 onClose={handleClick}
