@@ -5,16 +5,16 @@ import Loading, { LoadingProps } from "./loading"
 const NestedLoading: FC<LoadingProps> = ({
     variant,
     closable,
-    onClose,
-    onShow,
-    onShown,
-    onHidden,
-    onHide,
     size,
     visible,
     className,
     animation,
     children,
+    onClose,
+    onShow,
+    onShown,
+    onHidden,
+    onHide,
     ...restProps
 }) => {
     const classes = classnames(
@@ -26,13 +26,13 @@ const NestedLoading: FC<LoadingProps> = ({
         visible,
         variant,
         closable,
-        onClose,
         size,
+        children,
+        onClose,
         onShow,
         onShown,
         onHide,
-        onHidden,
-        children
+        onHidden
     }
 
     return (
