@@ -1,26 +1,22 @@
-import React, { ReactNode } from "react"
+import React from "react"
 import { createPortal } from "react-dom"
-import Modal from "./modal"
 import { getCloseCallbacks } from "./modal-methods"
 import { HookReturn, ModalProps, OpenFunc } from "./types"
+import Modal from "./modal"
 
 export function useModal(): HookReturn {
-    let props: ModalProps = {}
-    const [modal, updateModal] = React.useState<ReactNode>()
+    const [props, updateModal] = React.useState<ModalProps | null>(null)
     const modalClosed = React.useRef(false)
-    const close = React.useCallback(
-        () => {
-            if (modalClosed.current) {
-                return
-            }
+    const close = () => {
+        if (modalClosed.current) {
+            return
+        }
 
-            open({
-                ...props,
-                visible: false
-            })
-        },
-        [modal]
-    )
+        open({
+            ...props,
+            visible: false
+        })
+    }
     const open: OpenFunc = ({
         content,
         children,
@@ -43,7 +39,8 @@ export function useModal(): HookReturn {
 
             modalClosed.current = false
         }
-        props = {
+
+        updateModal({
             ...restProps,
             ...getCloseCallbacks(
                 {
@@ -55,19 +52,14 @@ export function useModal(): HookReturn {
             ),
             visible,
             onShow: handleShow,
-            onHidden: handleHidden
-        }
-        const el = (
-            <Modal {...props}>
-                {content ?? children}
-            </Modal>
-        )
-
-        updateModal(el)
+            onHidden: handleHidden,
+            children: content ?? children
+        })
     }
+    const modal = <Modal {...props}/>
 
     return [
         { open, close },
-        modal ? createPortal(modal, document.body) : null
+        props ? createPortal(modal, document.body) : null
     ]
 }
