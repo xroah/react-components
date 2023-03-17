@@ -1,8 +1,4 @@
-import React, {
-    ReactElement,
-    ReactNode,
-    cloneElement
-} from "react"
+import React, { ReactNode } from "react"
 import Message, { MessageProps, WRAPPER_CLASS } from "./message"
 import { createPortal } from "react-dom"
 
@@ -10,40 +6,33 @@ let uuid = 0
 
 export interface OpenOptions extends MessageProps {
     content?: ReactNode
-}
-
-
-interface MessageItem {
-    el: ReactElement
-    key: string
-    visible: boolean
+    key?: string
 }
 
 export function useMessage(): [(o: OpenOptions) => void, ReactNode] {
     const ref = React.useRef<HTMLDivElement>(null)
-    const [items, update] = React.useState<MessageItem[]>([])
+    const [propsArray, update] = React.useState<OpenOptions[]>([])
     const open = (
         {
             content,
             children,
+            key,
+            visible,
             ...restProps
         }: OpenOptions
     ) => {
-        const key = `r-message-${uuid++}`
+        const newKey = key ?? `r-message-${uuid++}`
         update([
-            ...items,
+            ...propsArray,
             {
-                el: (
-                    <Message {...restProps}>
-                        {content ?? children}
-                    </Message>
-                ),
-                key,
-                visible: true
+                key: newKey,
+                visible: visible ?? true,
+                children: content ?? children,
+                ...restProps,
             }
         ])
     }
-    const close = (items: MessageItem[], key: string) => {
+    const close = (items: OpenOptions[], key?: string) => {
         const toBeClosed = items.find(item => item.key === key)
 
         if (toBeClosed) {
@@ -51,36 +40,35 @@ export function useMessage(): [(o: OpenOptions) => void, ReactNode] {
             update([...items])
         }
     }
-    const del = (items: MessageItem[], key: string) => {
+    const del = (items: OpenOptions[], key?: string) => {
         update(items.filter(item => item.key !== key))
     }
-    const children = items.map(item => {
-        const {
-            key,
-            el,
-            visible
-        } = item
+    const children = propsArray.map(({
+        onClose,
+        onHidden,
+        key,
+        ...restProps
+    }) => {
+        const handleClose = () => {
+            close(propsArray, key)
 
-        return cloneElement(
-            el,
-            {
-                key,
-                visible,
-                onClose() {
-                    el.props.onClose?.()
+            onClose?.()
+        }
+        const handleHidden = () => {
+            del(propsArray, key)
 
-                    close(items, key)
-                },
-                onHidden() {
-                    el.props.onHidden?.()
-
-                    del(items, key)
-                }
-            }
+            onHidden?.()
+        }
+        return (
+            <Message
+                key={key}
+                onClose={handleClose}
+                onHidden={handleHidden}
+                {...restProps} />
         )
     })
 
-    const wrapper = items.length ? createPortal(
+    const wrapper = propsArray.length ? createPortal(
         <div ref={ref} className={WRAPPER_CLASS}>
             {children}
         </div>,
