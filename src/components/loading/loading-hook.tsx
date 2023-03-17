@@ -2,50 +2,43 @@ import React, { ReactNode } from "react"
 import { createPortal } from "react-dom"
 import Loading, { LoadingProps } from "./loading"
 import { WRAPPER_CLASS } from "./loading-methods"
+import { HookApi } from "../commons/types"
 
-type OpenFunc = (options: LoadingProps) => void
-
-type HookApi = {
-    open: OpenFunc,
-    close: VoidFunction
-}
-
-export function useLoading(): [HookApi, ReactNode] {
+export function useLoading(): [HookApi<LoadingProps>, ReactNode] {
     const [
         props,
         updateLoading
     ] = React.useState<LoadingProps | null>(null)
     const closed = React.useRef(false)
-    const open: OpenFunc = ({
-        visible,
-        onClose,
-        onShow,
-        onHidden,
-        ...restProps
-    }) => {
+    const open = (
+        {
+            visible,
+            onClose,
+            onShow,
+            onHidden,
+            ...restProps
+        }: LoadingProps
+    ) => {
         const handleShow = () => {
             closed.current = false
-            
             onShow?.()
         }
         const handleHidden = () => {
             updateLoading(null)
-            
             onHidden?.()
         }
         const handleClose = () => {
             close()
-
             onClose?.()
         }
 
         updateLoading({
             ...props,
+            ...restProps,
             visible: visible ?? true,
             onShow: handleShow,
             onHidden: handleHidden,
-            onClose: handleClose,
-            ...restProps
+            onClose: handleClose
         })
     }
     const close = () => {
@@ -53,7 +46,7 @@ export function useLoading(): [HookApi, ReactNode] {
             return
         }
 
-        open({visible: false})
+        open({ visible: false })
     }
 
     return [

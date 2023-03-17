@@ -42,3 +42,8 @@ export interface ButtonProps extends
 }
 
 export type Variant = OneOf<typeof variants>
+
+export interface HookApi<O, K = string> {
+    open: (options: O) => void
+    close: (k: K) => void
+}

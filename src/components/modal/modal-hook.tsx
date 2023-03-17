@@ -1,38 +1,41 @@
-import React from "react"
+import React, { ReactNode } from "react"
 import { createPortal } from "react-dom"
 import { getCloseCallbacks } from "./modal-methods"
-import { HookReturn, ModalProps, OpenFunc } from "./types"
+import { HookApi } from "../commons/types"
 import Modal from "./modal"
+import { ModalProps, OpenOptions } from "./types"
 
-export function useModal(): HookReturn {
-    const [props, updateModal] = React.useState<ModalProps | null>(null)
+export function useModal(): [HookApi<OpenOptions>, ReactNode] {
+    const [
+        props,
+        updateModal
+    ] = React.useState<ModalProps | null>(null)
     const modalClosed = React.useRef(false)
     const close = () => {
         if (modalClosed.current) {
             return
         }
 
-        open({
-            ...props,
-            visible: false
-        })
+        modalClosed.current = true
+
+        open({ visible: false })
     }
-    const open: OpenFunc = ({
-        content,
-        children,
-        visible = true,
-        onOk,
-        onCancel,
-        onClose,
-        onShow,
-        onHidden,
-        ...restProps
-    }) => {
+    const open = (
+        {
+            content,
+            children,
+            visible = true,
+            onOk,
+            onCancel,
+            onClose,
+            onShow,
+            onHidden,
+            ...restProps
+        }: OpenOptions
+    ) => {
         const handleHidden = () => {
             updateModal(null)
             onHidden?.()
-            
-            modalClosed.current = true
         }
         const handleShow = () => {
             onShow?.()
@@ -41,6 +44,7 @@ export function useModal(): HookReturn {
         }
 
         updateModal({
+            ...props,
             ...restProps,
             ...getCloseCallbacks(
                 {
@@ -56,7 +60,7 @@ export function useModal(): HookReturn {
             children: content ?? children
         })
     }
-    const modal = <Modal {...props}/>
+    const modal = <Modal {...props} />
 
     return [
         { open, close },
