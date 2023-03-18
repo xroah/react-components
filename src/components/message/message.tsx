@@ -34,10 +34,10 @@ class Message extends React.Component<MessageProps> {
         this.props.onClose?.()
     }
 
-    componentDidMount() {
+    delayClose() {
         const { duration = DEFAULT_DURATION } = this.props
 
-        if (duration! > 0) {
+        if (duration > 0) {
             this.timer = window.setTimeout(
                 this.close,
                 duration
@@ -45,7 +45,20 @@ class Message extends React.Component<MessageProps> {
         }
     }
 
-    componentWillUnmount() {
+    override componentDidMount() {
+        this.delayClose()
+    }
+
+    override componentDidUpdate(prevProps: Readonly<MessageProps>) {
+        const { duration } = this.props
+
+        if (prevProps.duration !== duration) {
+            this.clearTimeout()
+            this.delayClose()
+        }
+    }
+
+    override componentWillUnmount() {
         this.clearTimeout()
     }
 
