@@ -11,12 +11,12 @@ import { closablePropTypes } from "../commons/prop-types"
 import { classnames } from "../utils"
 
 export interface AlertProps extends DivProps, ClosableProps {
-    variant: Variant
+    variant?: Variant
     icon?: ReactNode
 }
 
 const Alert: FC<AlertProps> = ({
-    variant,
+    variant = "primary",
     onClose,
     closable,
     className,
@@ -44,7 +44,7 @@ const Alert: FC<AlertProps> = ({
 
 Alert.propTypes = {
     icon: node,
-    variant: oneOf(variants).isRequired,
+    variant: oneOf(variants),
     ...closablePropTypes
 }
 
