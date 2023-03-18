@@ -137,3 +137,7 @@ export function pick<T extends object>(
 
     return ret
 }
+
+export function isUndef(o: unknown) {
+    return o === null || o === undefined
+}

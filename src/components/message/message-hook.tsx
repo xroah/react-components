@@ -1,6 +1,8 @@
 import React, { ReactNode } from "react"
-import Message, { MessageProps, WRAPPER_CLASS } from "./message"
 import { createPortal } from "react-dom"
+import Message, { MessageProps, WRAPPER_CLASS } from "./message"
+import { HookApi } from "../commons/types"
+import { isUndef } from "../utils"
 
 let uuid = 0
 
@@ -9,9 +11,14 @@ export interface OpenOptions extends MessageProps {
     key?: string
 }
 
-export function useMessage(): [(o: OpenOptions) => void, ReactNode] {
+const propsArray: OpenOptions[] = []
+
+export function useMessage(): [HookApi<OpenOptions>, ReactNode] {
     const ref = React.useRef<HTMLDivElement>(null)
-    const [propsArray, update] = React.useState<OpenOptions[]>([])
+    // for triggering update
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const [_, update] = React.useState(0)
+    const reRender = () => update(Math.random())
     const open = (
         {
             content,
@@ -21,27 +28,93 @@ export function useMessage(): [(o: OpenOptions) => void, ReactNode] {
             ...restProps
         }: OpenOptions
     ) => {
-        const newKey = key ?? `r-message-${uuid++}`
-        update([
-            ...propsArray,
-            {
-                key: newKey,
-                visible: visible ?? true,
-                children: content ?? children,
-                ...restProps,
+        const _children = content ?? children
+        if (!isUndef(key)) {
+            const existIndex = propsArray.findIndex(
+                props => props.key === key
+            )
+
+            // update the message
+            if (existIndex > -1) {
+                const exist = propsArray[existIndex]
+                exist.visible = visible ?? exist.visible
+                exist.children = _children ?? exist.children
+                
+                propsArray[existIndex] = {
+                    ...exist,
+                    ...restProps
+                }
+
+                return reRender()
             }
-        ])
+        }
+
+        const newKey = key ?? `r-message-${uuid++}`
+
+        propsArray.push({
+            key: newKey,
+            visible: visible ?? true,
+            children: _children,
+            ...restProps,
+        })
+        reRender()
     }
-    const close = (items: OpenOptions[], key?: string) => {
-        const toBeClosed = items.find(item => item.key === key)
+    const close = (key?: string) => {
+        const toBeClosed = propsArray.find(
+            props => props.key === key
+        )
 
         if (toBeClosed) {
             toBeClosed.visible = false
-            update([...items])
+
+            reRender()
         }
     }
-    const del = (items: OpenOptions[], key?: string) => {
-        update(items.filter(item => item.key !== key))
+    const del = (key?: string) => {
+        const len = propsArray.length
+
+        for (let i = 0; i < len; i++) {
+            const props = propsArray[i]
+
+            if (props.key === key) {
+                propsArray.splice(i, 1)
+                reRender()
+
+                break
+            }
+        }
+    }
+    const closeMsg = (keys?: string | string[]) => {
+        if (!propsArray.length) {
+            return
+        }
+
+        // close all
+        if (isUndef(keys)) {
+            propsArray.forEach(props => props.visible = false)
+
+            return reRender()
+        }
+
+        let _keys: string[] = []
+        let shouldReRender = false
+
+        if (!Array.isArray(keys)) {
+            _keys = [keys!]
+        } else {
+            _keys = keys
+        }
+
+        propsArray.forEach(props => {
+            if (_keys.includes(props.key!)) {
+                shouldReRender = true
+                props.visible = false
+            }
+        })
+
+        if (shouldReRender) {
+            reRender()
+        }
     }
     const children = propsArray.map(({
         onClose,
@@ -50,15 +123,16 @@ export function useMessage(): [(o: OpenOptions) => void, ReactNode] {
         ...restProps
     }) => {
         const handleClose = () => {
-            close(propsArray, key)
+            close(key)
 
             onClose?.()
         }
         const handleHidden = () => {
-            del(propsArray, key)
+            del(key)
 
             onHidden?.()
         }
+
         return (
             <Message
                 key={key}
@@ -75,5 +149,5 @@ export function useMessage(): [(o: OpenOptions) => void, ReactNode] {
         document.body
     ) : null
 
-    return [open, wrapper]
+    return [{ open, close: closeMsg }, wrapper]
 }
