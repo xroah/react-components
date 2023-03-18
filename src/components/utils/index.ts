@@ -141,3 +141,11 @@ export function pick<T extends object>(
 export function isUndef(o: unknown) {
     return o === null || o === undefined
 }
+
+export function getKeys(keys: string | string[]) {
+    if (Array.isArray(keys)) {
+        return keys
+    }
+
+    return [keys]
+}

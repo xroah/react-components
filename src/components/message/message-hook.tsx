@@ -1,15 +1,9 @@
 import React, { ReactNode } from "react"
 import { createPortal } from "react-dom"
-import Message, { MessageProps, WRAPPER_CLASS } from "./message"
+import Message, { WRAPPER_CLASS } from "./message"
 import { HookApi } from "../commons/types"
-import { isUndef } from "../utils"
-
-let uuid = 0
-
-export interface OpenOptions extends MessageProps {
-    content?: ReactNode
-    key?: string
-}
+import { getKeys, isUndef } from "../utils"
+import { generateKey, OpenOptions } from "./message-methods"
 
 const propsArray: OpenOptions[] = []
 
@@ -39,7 +33,7 @@ export function useMessage(): [HookApi<OpenOptions>, ReactNode] {
                 const exist = propsArray[existIndex]
                 exist.visible = visible ?? exist.visible
                 exist.children = _children ?? exist.children
-                
+
                 propsArray[existIndex] = {
                     ...exist,
                     ...restProps
@@ -49,7 +43,7 @@ export function useMessage(): [HookApi<OpenOptions>, ReactNode] {
             }
         }
 
-        const newKey = key ?? `r-message-${uuid++}`
+        const newKey = key ?? generateKey()
 
         propsArray.push({
             key: newKey,
@@ -96,14 +90,8 @@ export function useMessage(): [HookApi<OpenOptions>, ReactNode] {
             return reRender()
         }
 
-        let _keys: string[] = []
+        const _keys = getKeys(keys!)
         let shouldReRender = false
-
-        if (!Array.isArray(keys)) {
-            _keys = [keys!]
-        } else {
-            _keys = keys
-        }
 
         propsArray.forEach(props => {
             if (_keys.includes(props.key!)) {
