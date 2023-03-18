@@ -41,7 +41,7 @@ const OffCanvas: FC<OffCanvasProps> = ({
 }) => {
     const PREFIX = "offcanvas"
     const handleClickClose = () => onClose?.("close")
-    const [zIndex] = useZIndex()
+    const zIndex = useZIndex()
     const nodeRef = React.useRef<HTMLDivElement>(null)
     let _header = getNullableNode(header)
     const handleKeyDown = useKeyboardClose({

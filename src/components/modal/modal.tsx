@@ -93,7 +93,7 @@ const Modal: FC<ModalProps> = function Modal(
         ...restProps
     }
 ) {
-    const [zIndex] = useZIndex()
+    const zIndex = useZIndex()
     const [staticClass, updateStaticClass] = React.useState("")
     const [wrapperVisible, updateWrapperState] = React.useState(visible)
     const [modalVisible, updateModalState] = React.useState(!!visible)
