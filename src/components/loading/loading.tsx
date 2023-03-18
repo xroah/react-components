@@ -1,4 +1,4 @@
-import React, { FC } from "react"
+import React, { FC, ReactNode } from "react"
 import { ClosableProps, ToggleEvents } from "../commons/types"
 import Spinner, { SpinnerProps } from "../basics/spinner"
 import CloseBtn from "../basics/close-btn"
@@ -10,6 +10,7 @@ type Base = SpinnerProps & ClosableProps & ToggleEvents
 
 export interface LoadingProps extends Base {
     visible?: boolean
+    text?: ReactNode
 }
 
 const Loading: FC<LoadingProps> = ({
@@ -19,6 +20,7 @@ const Loading: FC<LoadingProps> = ({
     animation,
     variant,
     size,
+    text,
     onClose,
     onShow,
     onShown,
@@ -47,6 +49,7 @@ const Loading: FC<LoadingProps> = ({
                     size={size}
                     animation={animation} />
                 {closable ? <CloseBtn onClick={onClose} /> : null}
+                {text}
             </div>
         </Fade>
     )

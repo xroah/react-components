@@ -169,6 +169,10 @@ function close(keys?: string | string[]) {
     }
 }
 
+function closeAll() {
+    close()
+}
+
 const error = createShortcut("danger", <XFill />)
 const info = createShortcut("info", <InfoFill />)
 const success = createShortcut("success", <CheckFill />)
@@ -176,9 +180,10 @@ const warn = createShortcut("warning", <WarnFill />)
 
 export {
     open,
-    close,
     error,
     info,
     success,
-    warn
+    warn,
+    close,
+    closeAll
 }

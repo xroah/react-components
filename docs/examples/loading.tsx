@@ -11,7 +11,8 @@ export default function Loading() {
     const showLoadingByHook = () => {
         hookApi.open({
             variant: "primary",
-            closable: true
+            closable: true,
+            text: "正在加载..."
         })
     }
     

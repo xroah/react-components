@@ -11,14 +11,15 @@ import Notification from "./examples/notification"
 
 export default function App() {
     const showMsg = () => {
-        showMessage("msg", {
+        showMessage({
+            content: "消息内容消息内容",
             variant: "warning",
             closable: true
         })
     }
-    const [open, wrapper] = useMessage()
+    const [api, wrapper] = useMessage()
     const handleOpen = () => {
-        open({
+        api.open({
             content: "哈哈哈哈哈哈哈哈哈哈",
             variant: "info"
         })
