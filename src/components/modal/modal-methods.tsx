@@ -1,16 +1,9 @@
 import React from "react"
 import { createRoot } from "react-dom/client"
 import { Callbacks, ModalProps, OpenOptions } from "./types"
-import { callAsync, createCloseFunc, pick } from "../utils"
+import { callAsync, chainFunction, createCloseFunc } from "../utils"
 import { CloseType } from "../commons/types"
 import Modal from "./modal"
-
-export const callbackKeys: Array<keyof Callbacks> = [
-    "onHidden",
-    "onClose",
-    "onOk",
-    "onCancel"
-]
 
 export function closeWhenNeeded(
     ret: unknown,
@@ -53,30 +46,37 @@ export function open(
         ...restProps
     }: OpenOptions
 ) {
-    let callbacks: Callbacks = pick(restProps, callbackKeys)
+
+    let props: ModalProps = {
+        children: content ?? children,
+        visible: true,
+        ...restProps,
+    }
     const container = document.createElement("div")
     const root = createRoot(container)
     const o = { closed: false }
-    const render = (visible: boolean) => {
-        props.visible = visible
-
-        root.render(<Modal {...props} />)
+    const render = (props: ModalProps) => {
+        const handleHidden = () => {
+            callAsync(() => {
+                root.unmount()
+                container.remove()
+            })
+        }
+        const newProps: ModalProps = {
+            ...props,
+            onHidden: chainFunction(handleHidden, props.onHidden),
+            ...getCloseCallbacks(props, close)
+        }
+        
+        root.render(<Modal {...newProps} />)
     }
-    const handleHidden = () => {
-        callbacks.onHidden?.()
-
-        callAsync(() => {
-            root.unmount()
-            container.remove()
-        })
-    }
-    const close = createCloseFunc(render, o)
-    let props: ModalProps = {
-        children: content ?? children,
-        onHidden: handleHidden,
-        ...restProps,
-        ...getCloseCallbacks(callbacks, close)
-    }
+    const close = createCloseFunc(
+        () => render({
+            ...props,
+            visible: false
+        }),
+        o
+    )
     const update: (opts: OpenOptions) => void = ({
         content,
         visible,
@@ -86,14 +86,14 @@ export function open(
             return
         }
 
+        props.visible = visible ?? props.visible
         props.children = content ?? props.children
         props = { ...props, ...rest }
-        callbacks = pick(rest, callbackKeys)
 
-        render(visible ?? true)
+        render(props)
     }
 
-    render(true)
+    render(props)
     document.body.appendChild(container)
 
     return {
