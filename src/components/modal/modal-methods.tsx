@@ -1,7 +1,7 @@
 import React from "react"
 import { createRoot } from "react-dom/client"
 import { Callbacks, ModalProps, OpenOptions } from "./types"
-import { callAsync, chainFunction, createCloseFunc } from "../utils"
+import { callAsync, chainFunction, wrapCloseFunc } from "../utils"
 import { CloseType } from "../commons/types"
 import Modal from "./modal"
 
@@ -70,7 +70,7 @@ export function open(
         
         root.render(<Modal {...newProps} />)
     }
-    const close = createCloseFunc(
+    const close = wrapCloseFunc(
         () => render({
             ...props,
             visible: false

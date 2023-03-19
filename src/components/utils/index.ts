@@ -77,9 +77,10 @@ type ClosedObject = {
     closed?: boolean
 }
 
-// create close function for messages,loading etc
-export function createCloseFunc(
-    render: (arg: boolean) => void,
+// wrap the close function for messages,loading etc
+// in case of calling the function multiple times
+export function wrapCloseFunc(
+    close: VoidFunction,
     o?: ClosedObject
 ) {
     let closed = false
@@ -95,7 +96,7 @@ export function createCloseFunc(
             o.closed = closed
         }
 
-        render(false)
+        close()
     }
 }
 

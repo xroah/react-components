@@ -1,6 +1,6 @@
 import React from "react"
 import { createRoot } from "react-dom/client"
-import { createCloseFunc, getDynamicWrapper, unmountAsync } from "../utils"
+import { wrapCloseFunc, getDynamicWrapper, unmountAsync } from "../utils"
 import Loading, { LoadingProps } from "./loading"
 
 let wrapper: HTMLElement | null = null
@@ -60,7 +60,7 @@ function show(
                 {...props} />
         )
     }
-    const close = closeFunc = createCloseFunc(render)
+    const close = closeFunc = wrapCloseFunc(() => render(false))
     wrapper = getDynamicWrapper(wrapper, WRAPPER_CLASS)
     const root = createRoot(wrapper)
 

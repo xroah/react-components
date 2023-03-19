@@ -7,7 +7,7 @@ import InfoFill from "../icons/info-fill"
 import CheckFill from "../icons/check-fill"
 import WarnFill from "../icons/warn-fill"
 import {
-    createCloseFunc,
+    wrapCloseFunc,
     getDynamicWrapper,
     getKeys,
     isUndef,
@@ -48,7 +48,7 @@ function open(
 ) {
     const newKey = key ?? generateKey()
     const _children = content ?? children
-    const close = createCloseFunc(() => {
+    const close = wrapCloseFunc(() => {
         open({
             key: newKey,
             visible: false
