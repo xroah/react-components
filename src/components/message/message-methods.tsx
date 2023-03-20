@@ -11,7 +11,8 @@ import {
     getDynamicWrapper,
     getKeys,
     isUndef,
-    unmountAsync
+    unmountAsync,
+    chainFunction
 } from "../utils"
 
 export interface OpenOptions extends MessageProps {
@@ -54,33 +55,8 @@ function open(
             visible: false
         })
     })
-    const handleClose = () => {
-        close()
-        onClose?.()
-    }
-    const update = () => {
-        const item = messageMap.get(key!)
-        const {
-            visible: oldVisible,
-            children: oldChildren,
-            ...restOldProps
-        } = item!.props
-        const newProps = {
-            ...restOldProps,
-            ...restProps,
-            onHidden: handleHidden,
-            onClose: handleClose,
-            children: _children ?? oldChildren,
-            visible: visible ?? oldVisible
-        }
-        item!.props = newProps
-
-        return item!.root.render(<Message {...newProps} />)
-    }
     const handleHidden = () => {
         const item = messageMap.get(newKey)
-
-        onHidden?.()
 
         if (!item) {
             return
@@ -100,6 +76,29 @@ function open(
             }
         )
     }
+    const update = () => {
+        const item = messageMap.get(key!)
+        const {
+            visible: oldVisible,
+            children: oldChildren,
+            onHidden: oldOnHidden,
+            onClose: oldOnClose,
+            ...restOldProps
+        } = item!.props
+        const newProps = {
+            ...restOldProps,
+            ...restProps,
+            onHidden: onHidden ?
+                chainFunction(handleHidden, onHidden) : oldOnHidden,
+            onClose: onClose ?
+                chainFunction(close, onClose) : oldOnClose,
+            children: _children ?? oldChildren,
+            visible: visible ?? oldVisible
+        }
+        item!.props = newProps
+
+        return item!.root.render(<Message {...newProps} />)
+    }
 
     if (!messageMap.has(newKey)) {
         const container = document.createElement("div")
@@ -110,8 +109,8 @@ function open(
             children: _children,
             key: newKey,
             visible: visible ?? true,
-            onHidden: handleHidden,
-            onClose: handleClose,
+            onHidden: chainFunction(handleHidden, onHidden),
+            onClose: chainFunction(close, onClose),
             ...restProps
         }
 
