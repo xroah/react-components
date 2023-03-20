@@ -7,7 +7,7 @@ import { HookApi } from "../commons/types"
 export function useLoading(): [HookApi<LoadingProps>, ReactNode] {
     const [
         props,
-        updateLoading
+        setProps
     ] = React.useState<LoadingProps | null>(null)
     const closed = React.useRef(false)
     const open = (
@@ -24,7 +24,7 @@ export function useLoading(): [HookApi<LoadingProps>, ReactNode] {
             onShow?.()
         }
         const handleHidden = () => {
-            updateLoading(null)
+            setProps(null)
             onHidden?.()
         }
         const handleClose = () => {
@@ -32,14 +32,16 @@ export function useLoading(): [HookApi<LoadingProps>, ReactNode] {
             onClose?.()
         }
 
-        updateLoading({
-            ...props,
-            ...restProps,
-            visible: visible ?? true,
-            onShow: handleShow,
-            onHidden: handleHidden,
-            onClose: handleClose
-        })
+        setProps(
+            props => ({
+                ...props,
+                ...restProps,
+                visible: visible ?? true,
+                onShow: handleShow,
+                onHidden: handleHidden,
+                onClose: handleClose
+            })
+        )
     }
     const close = () => {
         if (closed.current) {
@@ -48,14 +50,14 @@ export function useLoading(): [HookApi<LoadingProps>, ReactNode] {
 
         open({ visible: false })
     }
+    const loading = (
+        <div className={WRAPPER_CLASS}>
+            <Loading {...props} />
+        </div>
+    )
 
     return [
         { open, close },
-        props ? createPortal(
-            <div className={WRAPPER_CLASS}>
-                <Loading {...props} />
-            </div>,
-            document.body
-        ) : null
+        props ? createPortal(loading, document.body) : null
     ]
 }

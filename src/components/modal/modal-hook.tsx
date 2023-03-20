@@ -8,7 +8,7 @@ import { ModalProps, OpenOptions } from "./types"
 export function useModal(): [HookApi<OpenOptions>, ReactNode] {
     const [
         props,
-        updateModal
+        setProps
     ] = React.useState<ModalProps | null>(null)
     const modalClosed = React.useRef(false)
     const close = () => {
@@ -34,7 +34,7 @@ export function useModal(): [HookApi<OpenOptions>, ReactNode] {
         }: OpenOptions
     ) => {
         const handleHidden = () => {
-            updateModal(null)
+            setProps(null)
             onHidden?.()
         }
         const handleShow = () => {
@@ -43,22 +43,24 @@ export function useModal(): [HookApi<OpenOptions>, ReactNode] {
             modalClosed.current = false
         }
 
-        updateModal({
-            ...props,
-            ...restProps,
-            ...getCloseCallbacks(
-                {
-                    onOk,
-                    onCancel,
-                    onClose
-                },
-                close
-            ),
-            visible,
-            onShow: handleShow,
-            onHidden: handleHidden,
-            children: content ?? children
-        })
+        setProps(
+            props => ({
+                ...props,
+                ...restProps,
+                ...getCloseCallbacks(
+                    {
+                        onOk,
+                        onCancel,
+                        onClose
+                    },
+                    close
+                ),
+                visible,
+                onShow: handleShow,
+                onHidden: handleHidden,
+                children: content ?? children
+            })
+        )
     }
     const modal = <Modal {...props} />
 
