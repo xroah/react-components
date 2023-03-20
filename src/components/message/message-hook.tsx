@@ -2,135 +2,146 @@ import React, { ReactNode } from "react"
 import { createPortal } from "react-dom"
 import Message, { WRAPPER_CLASS } from "./message"
 import { HookApi } from "../commons/types"
-import { getKeys, isUndef } from "../utils"
+import { chainFunction, getKeys, isUndef } from "../utils"
 import { generateKey, OpenOptions } from "./message-methods"
-
-const propsArray: OpenOptions[] = []
 
 export function useMessage(): [HookApi<OpenOptions>, ReactNode] {
     const ref = React.useRef<HTMLDivElement>(null)
-    // for triggering update
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [_, update] = React.useState(0)
-    const reRender = () => update(Math.random())
+    const [
+        messagesProps,
+        setMessagesProps
+    ] = React.useState<OpenOptions[]>([])
+    const closeMsg = (keys?: string | string[]) => {
+        setMessagesProps(
+            messagesProps => {
+                if (!messagesProps.length) {
+                    return messagesProps
+                }
+
+                // close all
+                if (isUndef(keys)) {
+                    messagesProps.forEach(
+                        props => props.visible = false
+                    )
+
+                    return [...messagesProps]
+                }
+
+                const _keys = getKeys(keys!)
+
+                return messagesProps.map(
+                    props => {
+                        if (_keys.includes(props.key!)) {
+                            props.visible = false
+                        }
+
+                        return props
+                    }
+                )
+            }
+        )
+    }
+    const close = (key?: string) => {
+        setMessagesProps(
+            messagesProps => {
+                const toBeClosed = messagesProps.find(
+                    props => props.key === key
+                )
+
+                if (toBeClosed) {
+                    toBeClosed.visible = false
+
+                    return [...messagesProps]
+                }
+
+                return messagesProps
+            }
+        )
+    }
+    const del = (key?: string) => {
+        setMessagesProps(
+            messagesProps => {
+                const len = messagesProps.length
+                let shouldUpdate = false
+
+                for (let i = 0; i < len; i++) {
+                    const props = messagesProps[i]
+
+                    if (props.key === key) {
+                        shouldUpdate = true
+
+                        messagesProps.splice(i, 1)
+
+                        break
+                    }
+                }
+
+                return shouldUpdate ?
+                    [...messagesProps] : messagesProps
+            }
+        )
+    }
     const open = (
         {
             content,
             children,
             key,
             visible,
+            onHidden,
+            onClose,
             ...restProps
         }: OpenOptions
     ) => {
-        const _children = content ?? children
-        if (!isUndef(key)) {
-            const existIndex = propsArray.findIndex(
-                props => props.key === key
-            )
-
-            // update the message
-            if (existIndex > -1) {
-                const exist = propsArray[existIndex]
-                exist.visible = visible ?? exist.visible
-                exist.children = _children ?? exist.children
-
-                propsArray[existIndex] = {
-                    ...exist,
-                    ...restProps
+        setMessagesProps(
+            messagesProps => {
+                const _children = content ?? children
+                const newKey = key ?? generateKey()
+                const handleClose = () => close(newKey)
+                const handleHidden = () => del(newKey)
+                const callbacks = {
+                    onClose: chainFunction(handleClose, onClose),
+                    onHidden: chainFunction(handleHidden, onHidden)
                 }
 
-                return reRender()
+                if (!isUndef(key)) {
+                    const existIndex = messagesProps.findIndex(
+                        props => props.key === key
+                    )
+
+                    // update the message
+                    if (existIndex > -1) {
+                        const exist = messagesProps[existIndex]
+                        exist.visible = visible ?? exist.visible
+                        exist.children = _children ?? exist.children
+
+                        messagesProps[existIndex] = {
+                            ...exist,
+                            ...restProps,
+                            ...callbacks
+                        }
+
+                        return [...messagesProps]
+                    }
+                }
+
+                return [
+                    ...messagesProps,
+                    {
+                        key: newKey,
+                        visible: visible ?? true,
+                        children: _children,
+                        ...restProps,
+                        ...callbacks
+                    }
+                ]
             }
-        }
-
-        const newKey = key ?? generateKey()
-
-        propsArray.push({
-            key: newKey,
-            visible: visible ?? true,
-            children: _children,
-            ...restProps,
-        })
-        reRender()
-    }
-    const close = (key?: string) => {
-        const toBeClosed = propsArray.find(
-            props => props.key === key
         )
-
-        if (toBeClosed) {
-            toBeClosed.visible = false
-
-            reRender()
-        }
     }
-    const del = (key?: string) => {
-        const len = propsArray.length
+    const children = messagesProps.map(
+        ({ key, ...rest }) => <Message key={key} {...rest} />
+    )
 
-        for (let i = 0; i < len; i++) {
-            const props = propsArray[i]
-
-            if (props.key === key) {
-                propsArray.splice(i, 1)
-                reRender()
-
-                break
-            }
-        }
-    }
-    const closeMsg = (keys?: string | string[]) => {
-        if (!propsArray.length) {
-            return
-        }
-
-        // close all
-        if (isUndef(keys)) {
-            propsArray.forEach(props => props.visible = false)
-
-            return reRender()
-        }
-
-        const _keys = getKeys(keys!)
-        let shouldReRender = false
-
-        propsArray.forEach(props => {
-            if (_keys.includes(props.key!)) {
-                shouldReRender = true
-                props.visible = false
-            }
-        })
-
-        if (shouldReRender) {
-            reRender()
-        }
-    }
-    const children = propsArray.map(({
-        onClose,
-        onHidden,
-        key,
-        ...restProps
-    }) => {
-        const handleClose = () => {
-            close(key)
-
-            onClose?.()
-        }
-        const handleHidden = () => {
-            del(key)
-
-            onHidden?.()
-        }
-
-        return (
-            <Message
-                key={key}
-                onClose={handleClose}
-                onHidden={handleHidden}
-                {...restProps} />
-        )
-    })
-
-    const wrapper = propsArray.length ? createPortal(
+    const wrapper = messagesProps.length ? createPortal(
         <div ref={ref} className={WRAPPER_CLASS}>
             {children}
         </div>,
