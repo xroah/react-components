@@ -64,10 +64,13 @@ export function open(
         }
         const newProps: ModalProps = {
             ...props,
-            onHidden: chainFunction(handleHidden, props.onHidden),
             ...getCloseCallbacks(props, close)
         }
-        
+        newProps.onHidden = chainFunction(
+            handleHidden,
+            props.onHidden
+        )
+
         root.render(<Modal {...newProps} />)
     }
     const close = wrapCloseFunc(
@@ -80,6 +83,7 @@ export function open(
     const update: (opts: OpenOptions) => void = ({
         content,
         visible,
+        children,
         ...rest
     }) => {
         if (o.closed) {
@@ -87,7 +91,7 @@ export function open(
         }
 
         props.visible = visible ?? props.visible
-        props.children = content ?? props.children
+        props.children = content ?? children ?? props.children
         props = { ...props, ...rest }
 
         render(props)
