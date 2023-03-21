@@ -4,6 +4,7 @@ import Alert, { AlertProps } from "../basics/alert"
 import { ToggleEvents } from "../commons/types"
 import { number } from "prop-types"
 import { omit } from "../utils"
+import Timer from "r-layers/utils/timer"
 
 const DEFAULT_DURATION = 3000
 export const WRAPPER_CLASS = "r-message-wrapper"
@@ -14,23 +15,21 @@ export interface MessageProps extends AlertProps, ToggleEvents {
 }
 
 class Message extends React.Component<MessageProps> {
-    private timer = -1
+    private timer: Timer
     private ref = React.createRef<HTMLDivElement>()
 
     static propTypes = {
         duration: number
     }
 
-    clearTimeout() {
-        if (this.timer !== -1) {
-            window.clearTimeout(this.timer)
+    constructor(props: MessageProps) {
+        super(props)
 
-            this.timer = -1
-        }
+        this.timer = new Timer(0, this.close)
     }
 
     close = () => {
-        this.clearTimeout()
+        this.timer.clear()
         this.props.onClose?.()
     }
 
@@ -38,10 +37,9 @@ class Message extends React.Component<MessageProps> {
         const { duration = DEFAULT_DURATION } = this.props
 
         if (duration > 0) {
-            this.timer = window.setTimeout(
-                this.close,
-                duration
-            )
+            this.timer.timeout = duration
+
+            this.timer.delay(true)
         }
     }
 
@@ -53,13 +51,13 @@ class Message extends React.Component<MessageProps> {
         const { duration } = this.props
 
         if (prevProps.duration !== duration) {
-            this.clearTimeout()
+            this.timer.clear()
             this.delayClose()
         }
     }
 
     override componentWillUnmount() {
-        this.clearTimeout()
+        this.timer.clear()
     }
 
     render() {
