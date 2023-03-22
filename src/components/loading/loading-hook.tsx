@@ -3,6 +3,7 @@ import { createPortal } from "react-dom"
 import Loading, { LoadingProps } from "./loading"
 import { WRAPPER_CLASS } from "./loading-methods"
 import { HookApi } from "../commons/types"
+import { classnames } from "r-layers/utils"
 
 export function useLoading(): [HookApi<LoadingProps>, ReactNode] {
     const [
@@ -50,14 +51,18 @@ export function useLoading(): [HookApi<LoadingProps>, ReactNode] {
 
         open({ visible: false })
     }
-    const loading = (
-        <div className={WRAPPER_CLASS}>
-            <Loading {...props} />
-        </div>
-    )
+    let el: ReactNode = null
 
-    return [
-        { open, close },
-        props ? createPortal(loading, document.body) : null
-    ]
+    if (props) {
+        props.className = classnames(
+            props.className,
+            WRAPPER_CLASS
+        )
+        el = createPortal(
+            <Loading {...props} />,
+            document.body
+        )
+    }
+
+    return [{ open, close }, el]
 }

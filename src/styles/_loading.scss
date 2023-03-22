@@ -11,7 +11,8 @@ $variant_map: (
     "dark": $dark
 );
 
-@each $name, $color in $variant_map {
+@each $name,
+$color in $variant_map {
     .spinner-#{$name} {
         color: $color;
     }
@@ -24,6 +25,14 @@ $variant_map: (
     padding: 10px;
     background-color: rgba(255, 255, 255, .5);
 
+    &.r-loading-fullscreen {
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100vw;
+        height: 100vh;
+    }
+
     .btn-close {
         $dis: 10px;
         position: absolute;
@@ -32,20 +41,9 @@ $variant_map: (
     }
 }
 
-.r-loading-fullscreen {
-    position: fixed;
-    left: 0;
-    top: 0;
-    width: 100vw;
-    height: 100vh;
-}
-
 .r-loading-nested {
     position: relative;
-}
 
-.r-loading-nested,
-.r-loading-fullscreen {
     .r-loading-wrapper {
         position: absolute;
         width: 100%;

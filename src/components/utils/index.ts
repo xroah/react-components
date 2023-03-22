@@ -153,3 +153,17 @@ export function getKeys(keys: string | string[]) {
 
     return [keys]
 }
+
+export function removeNode(
+    node: HTMLElement | null,
+    onRemove?: VoidFunction
+) {
+    if (!node || !node.parentElement) {
+        return
+    }
+
+    if (!node.children.length) {
+        node.remove()
+        onRemove?.()
+    }
+}

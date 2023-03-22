@@ -1,72 +1,79 @@
 import React from "react"
-import { createRoot } from "react-dom/client"
-import { wrapCloseFunc, getDynamicWrapper, unmountAsync } from "../utils"
+import { Root, createRoot } from "react-dom/client"
+import {
+    wrapCloseFunc,
+    getDynamicWrapper,
+    unmountAsync,
+    classnames,
+    chainFunction,
+    removeNode
+} from "../utils"
 import Loading, { LoadingProps } from "./loading"
 
 let wrapper: HTMLElement | null = null
-let closeFunc: VoidFunction | null = null
+let root: Root | null = null
+let props: LoadingProps = {}
 
 export const WRAPPER_CLASS = "r-loading-fullscreen"
 
-function show(
+function open(
     {
-        closable,
         className,
-        animation,
-        variant,
-        size,
-        style,
         visible,
-        onShow,
-        onShown,
-        onHide,
-        onHidden
+        onHidden,
+        onClose,
+        ...restProps
     }: LoadingProps = {}
 ) {
-    // prev loading still showing
-    if (closeFunc) {
-        return closeFunc
+    props = {
+        className: classnames(className, WRAPPER_CLASS),
+        // maybe update, get props.visible first
+        visible: props.visible ?? visible ?? true,
+        ...restProps
     }
-
     const handleHidden = () => {
-        onHidden?.()
         unmountAsync(
-            root,
+            root!,
             () => {
-                wrapper?.remove()
-
-                wrapper = closeFunc = null
+                removeNode(
+                    wrapper,
+                    () => {
+                        wrapper = root = null
+                        props = {}
+                    }
+                )
             }
         )
     }
-    const render = (visible: boolean) => {
-        const props = {
-            closable,
-            className,
-            animation,
-            variant,
-            size,
-            onShow,
-            onShown,
-            onHide,
-            onHidden: handleHidden,
-            style
-        }
-
-        root?.render(
-            <Loading
-                visible={visible}
-                onClose={close}
-                {...props} />
+    const render = () => {
+        props.onClose = chainFunction(
+            close,
+            props.onClose ?? onClose
         )
-    }
-    const close = closeFunc = wrapCloseFunc(() => render(false))
-    wrapper = getDynamicWrapper(wrapper, WRAPPER_CLASS)
-    const root = createRoot(wrapper)
+        props.onHidden = chainFunction(
+            handleHidden,
+            props.onHidden ?? onHidden
+        )
 
-    render(visible ?? true)
+        root?.render(<Loading {...props} />)
+    }
+    const close = wrapCloseFunc(
+        () => {
+            props.visible = false
+
+            render()
+        }
+    )
+
+    //can open only one loading, if root is not null, just update
+    if (!root) {
+        wrapper = getDynamicWrapper(wrapper, WRAPPER_CLASS)
+        root = createRoot(wrapper)
+    }
+
+    render()
 
     return close
 }
 
-export { show }
+export { open }
