@@ -5,13 +5,16 @@ import path from "path"
 export default defineConfig({
     plugins: [react()],
     base: "./",
+    css: {
+        devSourcemap: true
+    },
     resolve: {
         alias: [
             {
                 find: "boot-scss",
                 replacement: path.join(
                     process.cwd(),
-                    'node_modules/bootstrap/scss'
+                    "node_modules/bootstrap/scss"
                 ),
             },
             {
