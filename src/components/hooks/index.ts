@@ -1,14 +1,5 @@
 import { LayerProps } from "../commons/types"
-import { useCallback, useEffect, useState } from "react"
-import { getZIndex, updateZIndex } from "../utils/z-index"
-
-export function useZIndex() {
-    const [zIndex] = useState(getZIndex())
-
-    useEffect(updateZIndex, [zIndex])
-    
-    return zIndex
-}
+import { useCallback } from "react"
 
 export function useKeyboardClose(
     {

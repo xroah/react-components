@@ -7,7 +7,7 @@ import { classnames } from "../utils"
 import Backdrop from "../basics/backdrop"
 import { layerCommonPropTypes } from "../commons/prop-types"
 import { bool, node, oneOf } from "prop-types"
-import { useKeyboardClose, useZIndex } from "../hooks"
+import { useKeyboardClose } from "../hooks"
 import bodyStyleStack from "../utils/body-style-stack"
 import { getNullableNode } from "r-layers/utils/react"
 
@@ -29,7 +29,6 @@ const OffCanvas: FC<OffCanvasProps> = ({
     title,
     visible,
     children,
-    style,
     breakpoint,
     onClose,
     onShow,
@@ -41,7 +40,6 @@ const OffCanvas: FC<OffCanvasProps> = ({
 }) => {
     const PREFIX = "offcanvas"
     const handleClickClose = () => onClose?.("close")
-    const zIndex = useZIndex()
     const nodeRef = React.useRef<HTMLDivElement>(null)
     let _header = getNullableNode(header)
     const handleKeyDown = useKeyboardClose({
@@ -58,7 +56,7 @@ const OffCanvas: FC<OffCanvasProps> = ({
         backdrop ? (
             <Backdrop
                 visible={!!visible}
-                zIndex={zIndex}
+                className="offcanvas-backdrop"
                 onClick={handleClickBackdrop} />
         ) : null
     )
@@ -107,7 +105,6 @@ const OffCanvas: FC<OffCanvasProps> = ({
         return (
             <div
                 className={classes}
-                style={{ ...style, zIndex: zIndex + 1 }}
                 ref={nodeRef}
                 tabIndex={-1}
                 onKeyDown={handleKeyDown}

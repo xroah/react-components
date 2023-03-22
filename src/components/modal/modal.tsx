@@ -17,7 +17,7 @@ import {
     toggleEventPropTypes,
     variantPropType
 } from "../commons/prop-types"
-import { useKeyboardClose, useZIndex } from "../hooks"
+import { useKeyboardClose } from "../hooks"
 import bodyStyleStack from "../utils/body-style-stack"
 import Header from "./header"
 import Footer from "./footer"
@@ -93,7 +93,6 @@ const Modal: FC<ModalProps> = function Modal(
         ...restProps
     }
 ) {
-    const zIndex = useZIndex()
     const [staticClass, updateStaticClass] = React.useState("")
     const [wrapperVisible, updateWrapperState] = React.useState(visible)
     const [modalVisible, updateModalState] = React.useState(!!visible)
@@ -163,7 +162,6 @@ const Modal: FC<ModalProps> = function Modal(
             className={classes}
             ref={modalRef}
             style={{
-                zIndex: zIndex + 1,
                 ...style,
                 ...modalStyle
             }}
@@ -198,7 +196,7 @@ const Modal: FC<ModalProps> = function Modal(
     const _backdrop = backdrop ? (
         <Backdrop
             visible={!!modalVisible}
-            zIndex={zIndex}
+            className="modal-backdrop"
             transition={transition} />
     ) : null
     const transitionProps = {
