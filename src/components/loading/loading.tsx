@@ -28,10 +28,7 @@ const Loading: FC<LoadingProps> = ({
     onHide,
     ...restProps
 }) => {
-    const classes = classnames(
-        className,
-        "r-loading-wrapper"
-    )
+    const classes = classnames(className, "r-loading")
 
     return (
         <Fade

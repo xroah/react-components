@@ -1,6 +1,6 @@
 import React, { ReactNode } from "react"
 import { createRoot, Root } from "react-dom/client"
-import Message, { MessageProps } from "./message"
+import Message, { MessageProps, WRAPPER_CLASS } from "./message"
 import XFill from "../icons/x-fill"
 import { Variant } from "../commons/types"
 import InfoFill from "../icons/info-fill"
@@ -103,7 +103,7 @@ function open(
     if (!messageMap.has(newKey)) {
         const container = document.createElement("div")
         const root = createRoot(container)
-        wrapper = getDynamicWrapper(wrapper, "r-message-wrapper")
+        wrapper = getDynamicWrapper(wrapper, WRAPPER_CLASS)
         wrapper.appendChild(container)
         const props = {
             children: _children,

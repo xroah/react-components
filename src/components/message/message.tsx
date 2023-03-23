@@ -7,7 +7,7 @@ import { omit } from "../utils"
 import Timer from "r-layers/utils/timer"
 
 const DEFAULT_DURATION = 3000
-export const WRAPPER_CLASS = "r-message-wrapper"
+export const WRAPPER_CLASS = "r-message"
 
 export interface MessageProps extends AlertProps, ToggleEvents {
     duration?: number

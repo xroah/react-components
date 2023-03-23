@@ -18,7 +18,7 @@ $color in $variant_map {
     }
 }
 
-.r-loading-wrapper {
+.r-loading {
     @include mixins.flex-all-center();
     flex-direction: column;
     position: relative;
@@ -44,7 +44,7 @@ $color in $variant_map {
 .r-loading-nested {
     position: relative;
 
-    .r-loading-wrapper {
+    .r-loading {
         position: absolute;
         width: 100%;
         height: 100%;

@@ -22,7 +22,7 @@
     }
 }
 
-.r-message-wrapper {
+.r-message {
     $transition: .2s linear;
     @include mixins.flex-align-center();
     flex-direction: column;
