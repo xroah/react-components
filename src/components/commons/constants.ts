@@ -36,3 +36,14 @@ export const spinnerAnimations = [
     "border",
     "grow"
 ] as const
+
+export const notificationPlacements = [
+    "top-left",
+    "top-right",
+    "bottom-left",
+    "bottom-right",
+    "tl",
+    "tr",
+    "bl",
+    "br"
+] as const

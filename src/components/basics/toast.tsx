@@ -8,7 +8,8 @@ import { classnames } from "../utils"
 import CloseBtn from "./close-btn"
 import { getNullableNode } from "../utils/react"
 
-interface ToastProps extends DivPropsWithNodeTitle, ClosableProps {
+export interface ToastProps extends
+    DivPropsWithNodeTitle, ClosableProps {
     header?: ReactNode
     icon?: ReactNode,
     secondaryTitle?: ReactNode

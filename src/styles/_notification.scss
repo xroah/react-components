@@ -1,0 +1,33 @@
+.r-notification {
+    position: fixed;
+    overflow: hidden;
+}
+
+.r-notification-topleft {
+    top: 0;
+    left: 0;
+}
+
+.r-notification-top-right {
+    top: 0;
+    right: 0;
+}
+
+.r-notification-bottom-left {
+    bottom: 0;
+    left: 0;
+}
+
+.r-notification-bottom-right {
+    bottom: 0;
+    right: 0;
+}
+
+.r-notification-item {
+    transition: transform .3s cubic-bezier(.52, .27, .62, 1.47),
+        opacity .3s, height .3s;
+
+    &+& {
+        margin-top: 15px;
+    }
+}
