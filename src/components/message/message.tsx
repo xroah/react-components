@@ -83,7 +83,6 @@ class Message extends React.Component<MessageProps> {
                 style.height = this.ref.current?.scrollHeight
             } else if (s === "exiting") {
                 style.height = 0
-                style.opacity = 0
             }
 
             return (

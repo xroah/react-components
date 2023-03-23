@@ -1,6 +1,7 @@
 .r-notification {
     position: fixed;
     overflow: hidden;
+    z-index: 1000;
 }
 
 .r-notification-topleft {

@@ -3,7 +3,7 @@ import { OneOf, ToggleEvents } from "../commons/types"
 import Toast, { ToastProps } from "../basics/toast"
 import { notificationPlacements } from "../commons/constants"
 import { Transition, TransitionStatus } from "react-transition-group"
-import {classnames } from "../utils"
+import { classnames } from "../utils"
 
 type Placement = OneOf<typeof notificationPlacements>
 
@@ -66,6 +66,7 @@ const Notification: React.FC<NotificationProps> = ({
         closable,
         header,
         secondaryTitle,
+        children,
         onClose
     }
 
@@ -79,14 +80,11 @@ const Notification: React.FC<NotificationProps> = ({
             if (s === "entered") {
                 newStyle.height = nodeRef.current?.scrollHeight
             }
-        } else {
+        } else if (s === "exiting") {
             newStyle.height = 0
-
-            if (s === "exiting") {
-                newStyle.transform = "none"
-            }
+            newStyle.transform = "none"
         }
-        
+
         return (
             <div
                 className={classes}
@@ -97,9 +95,7 @@ const Notification: React.FC<NotificationProps> = ({
                     ...newStyle
                 }}
                 {...restProps}>
-                <Toast {...toastProps}>
-                    {children}
-                </Toast>
+                <Toast {...toastProps}/>
             </div>
         )
     }
