@@ -38,7 +38,8 @@ function render() {
     const newProps = {
         ...props,
         onClose: chainFunction(close, props.onClose),
-        onHidden: chainFunction(handleHidden, props.onHidden)
+        onHidden: chainFunction(handleHidden, props.onHidden),
+        visible: props.visible ?? true
     }
 
     root?.render(<Loading {...newProps} />)
@@ -47,16 +48,13 @@ function render() {
 function open(
     {
         className,
-        visible,
         ...restProps
     }: LoadingProps = {}
 ) {
     props = {
         ...props,
         ...restProps,
-        className: classnames(className, WRAPPER_CLASS),
-        // maybe update, get props.visible
-        visible: visible ?? props.visible ?? true
+        className: classnames(className, WRAPPER_CLASS)
     }
 
     //can open only one loading, if root is not null, just update

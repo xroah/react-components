@@ -83,25 +83,13 @@ export function useMessage(): [HookApi<OpenOptions>, ReactNode] {
     }
     const open = (
         {
-            content,
-            children,
             key,
-            visible,
-            onHidden,
-            onClose,
             ...restProps
         }: OpenOptions
     ) => {
         setMessagesProps(
             messagesProps => {
-                const _children = content ?? children
                 const newKey = key ?? generateKey()
-                const handleClose = () => close(newKey)
-                const handleHidden = () => del(newKey)
-                const callbacks = {
-                    onClose: chainFunction(handleClose, onClose),
-                    onHidden: chainFunction(handleHidden, onHidden)
-                }
 
                 if (!isUndef(key)) {
                     const existIndex = messagesProps.findIndex(
@@ -111,13 +99,10 @@ export function useMessage(): [HookApi<OpenOptions>, ReactNode] {
                     // update the message
                     if (existIndex > -1) {
                         const exist = messagesProps[existIndex]
-                        exist.visible = visible ?? exist.visible
-                        exist.children = _children ?? exist.children
 
                         messagesProps[existIndex] = {
                             ...exist,
-                            ...restProps,
-                            ...callbacks
+                            ...restProps
                         }
 
                         return [...messagesProps]
@@ -128,17 +113,32 @@ export function useMessage(): [HookApi<OpenOptions>, ReactNode] {
                     ...messagesProps,
                     {
                         key: newKey,
-                        visible: visible ?? true,
-                        children: _children,
-                        ...restProps,
-                        ...callbacks
+                        ...restProps
                     }
                 ]
             }
         )
     }
     const children = messagesProps.map(
-        ({ key, ...rest }) => <Message key={key} {...rest} />
+        ({
+            key,
+            visible,
+            content,
+            children,
+            onHidden,
+            onClose,
+            ...rest
+        }) => {
+            const newProps = {
+                visible: visible ?? true,
+                children: content ?? children,
+                onHidden: chainFunction(() => del(key), onHidden),
+                onClose: chainFunction(() => close(key), onClose),
+                ...rest
+            }
+
+            return <Message key={key} {...newProps} />
+        }
     )
 
     const wrapper = messagesProps.length ? createPortal(

@@ -4,68 +4,52 @@ import { getCloseCallbacks } from "./modal-methods"
 import { HookApi } from "../commons/types"
 import Modal from "./modal"
 import { ModalProps, OpenOptions } from "./types"
+import { chainFunction } from "../utils"
 
 export function useModal(): [HookApi<OpenOptions>, ReactNode] {
     const [
         props,
         setProps
-    ] = React.useState<ModalProps | null>(null)
-    const modalClosed = React.useRef(false)
+    ] = React.useState<OpenOptions | null>(null)
+    const closed = React.useRef(false)
     const close = () => {
-        if (modalClosed.current) {
+        if (closed.current) {
             return
         }
 
-        modalClosed.current = true
+        closed.current = true
 
         open({ visible: false })
     }
-    const open = (
-        {
+    const open = (options: OpenOptions) => {
+        setProps(props => ({ ...props, ...options }))
+    }
+    let el: ReactNode = null
+
+    if (props) {
+        const handleHidden = () => setProps(null)
+        const handleShow = () => closed.current = false
+        const {
             content,
             children,
-            visible = true,
-            onOk,
-            onCancel,
-            onClose,
             onShow,
             onHidden,
+            visible,
             ...restProps
-        }: OpenOptions
-    ) => {
-        const handleHidden = () => {
-            setProps(null)
-            onHidden?.()
+        } = props
+        const newProps: ModalProps = {
+            ...restProps,
+            ...getCloseCallbacks(props, close),
+            visible: visible ?? true,
+            children: content ?? children,
+            onShow: chainFunction(handleShow, onShow),
+            onHidden: chainFunction(handleHidden, onHidden)
         }
-        const handleShow = () => {
-            onShow?.()
-
-            modalClosed.current = false
-        }
-
-        setProps(
-            props => ({
-                ...props,
-                ...restProps,
-                ...getCloseCallbacks(
-                    {
-                        onOk,
-                        onCancel,
-                        onClose
-                    },
-                    close
-                ),
-                visible,
-                onShow: handleShow,
-                onHidden: handleHidden,
-                children: content ?? children
-            })
+        el = createPortal(
+            <Modal {...newProps} />,
+            document.body
         )
     }
-    const modal = <Modal {...props} />
 
-    return [
-        { open, close },
-        props ? createPortal(modal, document.body) : null
-    ]
+    return [{ open, close }, el]
 }

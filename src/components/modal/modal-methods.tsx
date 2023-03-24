@@ -39,37 +39,32 @@ export function getCloseCallbacks(
     }
 }
 
-export function open(
-    {
-        content,
-        children,
-        ...restProps
-    }: OpenOptions
-) {
-
-    let props: ModalProps = {
-        children: content ?? children,
-        visible: true,
-        ...restProps,
-    }
+export function open(options: OpenOptions) {
+    let props: OpenOptions = {...options}
     const container = document.createElement("div")
     const root = createRoot(container)
     const o = { closed: false }
-    const render = (props: ModalProps) => {
+    const render = (props: OpenOptions) => {
         const handleHidden = () => {
             callAsync(() => {
                 root.unmount()
                 container.remove()
             })
         }
+        const {
+            visible,
+            content,
+            children,
+            onHidden,
+            ...restProps
+        } = props
         const newProps: ModalProps = {
-            ...props,
-            ...getCloseCallbacks(props, close)
+            ...restProps,
+            ...getCloseCallbacks(restProps, close),
+            onHidden: chainFunction(handleHidden, onHidden),
+            visible: visible ?? true,
+            children: content ?? children
         }
-        newProps.onHidden = chainFunction(
-            handleHidden,
-            props.onHidden
-        )
 
         root.render(<Modal {...newProps} />)
     }
@@ -80,19 +75,12 @@ export function open(
         }),
         o
     )
-    const update: (opts: OpenOptions) => void = ({
-        content,
-        visible,
-        children,
-        ...rest
-    }) => {
+    const update: (opts: OpenOptions) => void = options => {
         if (o.closed) {
             return
         }
 
-        props.visible = visible ?? props.visible
-        props.children = content ?? children ?? props.children
-        props = { ...props, ...rest }
+        props = { ...props, ...options }
 
         render(props)
     }

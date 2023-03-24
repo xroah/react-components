@@ -30,7 +30,7 @@ interface MapItem {
 let uuid = 0
 let wrapper: HTMLElement | null = null
 
-const messageMap = new Map<string, MapItem>
+const messageMap = new Map<string, MapItem>()
 
 export function generateKey() {
     return `r-message-${uuid++}`
@@ -38,17 +38,11 @@ export function generateKey() {
 
 function open(
     {
-        visible,
         key,
-        children,
-        content,
-        onHidden,
-        onClose,
         ...restProps
     }: OpenOptions
 ) {
     const newKey = key ?? generateKey()
-    const _children = content ?? children
     const close = wrapCloseFunc(() => {
         open({
             key: newKey,
@@ -76,28 +70,35 @@ function open(
             }
         )
     }
-    const update = () => {
-        const item = messageMap.get(key!)
+    const getRenderProps = (o: OpenOptions): MessageProps => {
         const {
-            visible: oldVisible,
-            children: oldChildren,
-            onHidden: oldOnHidden,
-            onClose: oldOnClose,
-            ...restOldProps
-        } = item!.props
-        const newProps = {
-            ...restOldProps,
-            ...restProps,
-            onHidden: onHidden ?
-                chainFunction(handleHidden, onHidden) : oldOnHidden,
-            onClose: onClose ?
-                chainFunction(close, onClose) : oldOnClose,
-            children: _children ?? oldChildren,
-            visible: visible ?? oldVisible
-        }
-        item!.props = newProps
+            visible,
+            content,
+            children,
+            onHidden,
+            onClose,
+            ...rest
+        } = o
 
-        return item!.root.render(<Message {...newProps} />)
+        return {
+            visible: visible ?? true,
+            children: content ?? children,
+            onHidden: chainFunction(handleHidden, onHidden),
+            onClose: chainFunction(close, onClose),
+            ...rest
+        }
+    }
+    const update = () => {
+        const item = messageMap.get(key!)!
+        const newProps = {
+            ...item.props,
+            ...restProps
+        }
+        item.props = newProps
+
+        return item.root.render(
+            <Message {...getRenderProps(newProps)} />
+        )
     }
 
     if (!messageMap.has(newKey)) {
@@ -106,11 +107,7 @@ function open(
         wrapper = getDynamicWrapper(wrapper, WRAPPER_CLASS)
         wrapper.appendChild(container)
         const props = {
-            children: _children,
             key: newKey,
-            visible: visible ?? true,
-            onHidden: chainFunction(handleHidden, onHidden),
-            onClose: chainFunction(close, onClose),
             ...restProps
         }
 
@@ -123,7 +120,7 @@ function open(
                 close
             }
         )
-        root.render(<Message {...props} />)
+        root.render(<Message {...getRenderProps(props)} />)
 
         return close
     }

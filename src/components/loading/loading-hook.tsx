@@ -11,19 +11,13 @@ export function useLoading(): [HookApi<LoadingProps>, ReactNode] {
         setProps
     ] = React.useState<LoadingProps | null>(null)
     const closed = React.useRef(false)
-    const open = (
-        {
-            visible,
-            ...restProps
-        }: LoadingProps
-    ) => {
+    const open = (newProps: LoadingProps) => {
 
 
         setProps(
             props => ({
                 ...props,
-                ...restProps,
-                visible: visible ?? true
+                ...newProps
             })
         )
     }
@@ -48,6 +42,7 @@ export function useLoading(): [HookApi<LoadingProps>, ReactNode] {
         const newProps: LoadingProps = {
             ...props,
             className: classes,
+            visible: props.visible ?? true,
             onShow: chainFunction(handleShow, props.onShow),
             onHidden: chainFunction(handleHidden, props.onHidden),
             onClose: chainFunction(close, props.onClose)
