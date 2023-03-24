@@ -8,6 +8,7 @@ import Button from "r-layers/basics/button"
 import CheckFill from "r-layers/icons/check-fill"
 import Loading from "./examples/loading"
 import Notification from "./examples/notification"
+import Input from "r-layers/basics/input"
 
 export default function App() {
     const showMsg = () => {
@@ -46,6 +47,9 @@ export default function App() {
             </Button>
             {wrapper}
             <Notification />
+            <div>
+                <Input/>
+            </div>
         </div>
     )
 }
