@@ -5,12 +5,17 @@ import { HookApi } from "../commons/types"
 import { chainFunction, getKeys, isUndef } from "../utils"
 import { generateKey, OpenOptions } from "./message-methods"
 
+interface HookOptions extends OpenOptions {
+    _onHidden?: VoidFunction
+    _onClose?: VoidFunction
+}
+
 export function useMessage(): [HookApi<OpenOptions>, ReactNode] {
     const ref = React.useRef<HTMLDivElement>(null)
     const [
         messagesProps,
         setMessagesProps
-    ] = React.useState<OpenOptions[]>([])
+    ] = React.useState<HookOptions[]>([])
     const closeMsg = (keys?: string | string[]) => {
         setMessagesProps(
             messagesProps => {
@@ -90,6 +95,10 @@ export function useMessage(): [HookApi<OpenOptions>, ReactNode] {
         setMessagesProps(
             messagesProps => {
                 const newKey = key ?? generateKey()
+                const handleHidden = () => del(newKey)
+                const handleClose = () => close(newKey)
+                let index = -1
+                let newProps: HookOptions = {}
 
                 if (!isUndef(key)) {
                     const existIndex = messagesProps.findIndex(
@@ -98,24 +107,33 @@ export function useMessage(): [HookApi<OpenOptions>, ReactNode] {
 
                     // update the message
                     if (existIndex > -1) {
+                        index = existIndex
                         const exist = messagesProps[existIndex]
-
-                        messagesProps[existIndex] = {
-                            ...exist,
-                            ...restProps
-                        }
-
-                        return [...messagesProps]
+                        newProps = { ...exist, ...restProps }
                     }
+                } 
+                
+                if (index === -1) {
+                    index = messagesProps.length
+                    newProps = { key: newKey, ...restProps }
                 }
-
-                return [
-                    ...messagesProps,
-                    {
-                        key: newKey,
-                        ...restProps
-                    }
-                ]
+                
+                const {
+                    onHidden,
+                    onClose,
+                    ...rest
+                } = newProps
+                rest._onHidden = chainFunction(
+                    handleHidden,
+                    onHidden
+                )
+                rest._onClose = chainFunction(
+                    handleClose,
+                    onClose
+                )
+                messagesProps[index] = rest
+                
+                return [...messagesProps]
             }
         )
     }
@@ -125,15 +143,15 @@ export function useMessage(): [HookApi<OpenOptions>, ReactNode] {
             visible,
             content,
             children,
-            onHidden,
-            onClose,
+            _onClose,
+            _onHidden,
             ...rest
         }) => {
             const newProps = {
                 visible: visible ?? true,
                 children: content ?? children,
-                onHidden: chainFunction(() => del(key), onHidden),
-                onClose: chainFunction(() => close(key), onClose),
+                onHidden: _onHidden,
+                onClose: _onClose,
                 ...rest
             }
 
