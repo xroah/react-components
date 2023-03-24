@@ -3,7 +3,7 @@ import { createPortal } from "react-dom"
 import Loading, { LoadingProps } from "./loading"
 import { WRAPPER_CLASS } from "./loading-methods"
 import { HookApi } from "../commons/types"
-import { chainFunction, classnames } from "r-layers/utils"
+import { chainFunction, classnames } from "../utils"
 
 export function useLoading(): [HookApi<LoadingProps>, ReactNode] {
     const [
@@ -14,9 +14,6 @@ export function useLoading(): [HookApi<LoadingProps>, ReactNode] {
     const open = (
         {
             visible,
-            onClose,
-            onShow,
-            onHidden,
             ...restProps
         }: LoadingProps
     ) => {
@@ -26,10 +23,7 @@ export function useLoading(): [HookApi<LoadingProps>, ReactNode] {
             props => ({
                 ...props,
                 ...restProps,
-                visible: visible ?? true,
-                onShow: onShow ?? props?.onShow,
-                onHidden: onHidden ?? props?.onHidden,
-                onClose: onClose ?? props?.onClose
+                visible: visible ?? true
             })
         )
     }
