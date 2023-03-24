@@ -46,16 +46,15 @@ function open(
         )
     }
     const render = () => {
-        props.onClose = chainFunction(
-            close,
-            props.onClose ?? onClose
-        )
-        props.onHidden = chainFunction(
-            handleHidden,
-            props.onHidden ?? onHidden
-        )
+        props.onClose = onClose ?? props.onClose
+        props.onHidden = onHidden ?? props.onHidden
+        const newProps = {
+            ...props,
+            onClose: chainFunction(close, onClose),
+            onHidden: chainFunction(handleHidden, onHidden)
+        }
 
-        root?.render(<Loading {...props} />)
+        root?.render(<Loading {...newProps} />)
     }
     const close = wrapCloseFunc(
         () => {

@@ -3,7 +3,7 @@ import { createPortal } from "react-dom"
 import Loading, { LoadingProps } from "./loading"
 import { WRAPPER_CLASS } from "./loading-methods"
 import { HookApi } from "../commons/types"
-import { classnames } from "r-layers/utils"
+import { chainFunction, classnames } from "r-layers/utils"
 
 export function useLoading(): [HookApi<LoadingProps>, ReactNode] {
     const [
@@ -20,27 +20,16 @@ export function useLoading(): [HookApi<LoadingProps>, ReactNode] {
             ...restProps
         }: LoadingProps
     ) => {
-        const handleShow = () => {
-            closed.current = false
-            onShow?.()
-        }
-        const handleHidden = () => {
-            setProps(null)
-            onHidden?.()
-        }
-        const handleClose = () => {
-            close()
-            onClose?.()
-        }
+
 
         setProps(
             props => ({
                 ...props,
                 ...restProps,
                 visible: visible ?? true,
-                onShow: handleShow,
-                onHidden: handleHidden,
-                onClose: handleClose
+                onShow: onShow ?? props?.onShow,
+                onHidden: onHidden ?? props?.onHidden,
+                onClose: onClose ?? props?.onClose
             })
         )
     }
@@ -49,17 +38,28 @@ export function useLoading(): [HookApi<LoadingProps>, ReactNode] {
             return
         }
 
+        closed.current = true
+
         open({ visible: false })
     }
     let el: ReactNode = null
 
     if (props) {
-        props.className = classnames(
+        const classes = classnames(
             props.className,
             WRAPPER_CLASS
         )
+        const handleShow = () => closed.current = false
+        const handleHidden = () => setProps(null)
+        const newProps: LoadingProps = {
+            ...props,
+            className: classes,
+            onShow: chainFunction(handleShow, props.onShow),
+            onHidden: chainFunction(handleHidden, props.onHidden),
+            onClose: chainFunction(close, props.onClose)
+        }
         el = createPortal(
-            <Loading {...props} />,
+            <Loading {...newProps} />,
             document.body
         )
     }
