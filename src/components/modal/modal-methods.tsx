@@ -1,6 +1,6 @@
 import React from "react"
 import { createRoot } from "react-dom/client"
-import { Callbacks, ModalProps, OpenOptions } from "./types"
+import { Callbacks, ModalProps, OpenOptions, Shortcut, ShortcutOptions } from "./types"
 import { callAsync, chainFunction, wrapCloseFunc } from "../utils"
 import { CloseType } from "../commons/types"
 import Modal from "./modal"
@@ -40,7 +40,7 @@ export function getCloseCallbacks(
 }
 
 export function open(options: OpenOptions) {
-    let props: OpenOptions = {...options}
+    let props: OpenOptions = { ...options }
     const container = document.createElement("div")
     const root = createRoot(container)
     const o = { closed: false }
@@ -93,3 +93,39 @@ export function open(options: OpenOptions) {
         close
     }
 }
+
+export function createShortcut(t: Shortcut) {
+    return (
+        msg: string,
+        title = "提示",
+        {
+            backdrop,
+            closable,
+            okText,
+            cancelText,
+            keyboard,
+            okVariant,
+            cancelVariant
+        }: ShortcutOptions = {}
+    ) => {
+        return new Promise((resolve, reject) => {
+            open({
+                cancel: t !== "alert",
+                onClose: (t?: CloseType) => reject(t),
+                onOk: () => resolve(null),
+                title: title ?? "提示",
+                content: msg,
+                backdrop,
+                keyboard,
+                okText,
+                cancelText,
+                closable,
+                okVariant,
+                cancelVariant
+            })
+        })
+    }
+}
+
+export const alert = createShortcut("alert")
+export const confirm = createShortcut("confirm")

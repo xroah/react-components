@@ -48,3 +48,16 @@ export type Callbacks = Pick<
     ModalProps,
     "onHidden" | "onClose" | "onOk" | "onCancel"
 >
+
+export type ShortcutOptions = Pick<
+    ModalProps,
+    "backdrop" |
+    "keyboard" |
+    "closable" |
+    "okText" |
+    "cancelText" |
+    "okVariant" |
+    "cancelVariant"
+>
+
+export type Shortcut = "alert" | "confirm" | "prompt"
