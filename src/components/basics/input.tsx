@@ -7,7 +7,8 @@ import { classnames } from "../utils"
 import { sizes } from "../commons/constants"
 import { OneOf } from "../commons/types"
 
-interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
+export interface InputProps
+    extends InputHTMLAttributes<HTMLInputElement> {
     sizing?: OneOf<typeof sizes>
     plaintext?: boolean
 }

@@ -1,9 +1,20 @@
-import React from "react"
+import React, { createRef, ReactNode } from "react"
 import { createRoot } from "react-dom/client"
-import { Callbacks, ModalProps, OpenOptions, Shortcut, ShortcutOptions } from "./types"
-import { callAsync, chainFunction, wrapCloseFunc } from "../utils"
+import {
+    Callbacks,
+    ModalProps,
+    OpenOptions,
+    ShortcutOptions,
+    ShortcutType
+} from "./types"
+import {
+    callAsync,
+    chainFunction,
+    wrapCloseFunc
+} from "../utils"
 import { CloseType } from "../commons/types"
 import Modal from "./modal"
+import Input from "../basics/input"
 
 export function closeWhenNeeded(
     ret: unknown,
@@ -62,7 +73,7 @@ export function open(options: OpenOptions) {
             ...getCloseCallbacks(restProps, close),
             onHidden: chainFunction(handleHidden, onHidden),
             visible: visible ?? true,
-            children: content 
+            children: content
         }
 
         root.render(<Modal {...newProps} />)
@@ -93,9 +104,9 @@ export function open(options: OpenOptions) {
     }
 }
 
-export function createShortcut(t: Shortcut) {
+export function createShortcut(t: ShortcutType) {
     return (
-        msg: string,
+        msg: ReactNode,
         title = "提示",
         {
             backdrop,
@@ -104,16 +115,33 @@ export function createShortcut(t: Shortcut) {
             cancelText,
             keyboard,
             okVariant,
-            cancelVariant
+            cancelVariant,
+            inputOptions
         }: ShortcutOptions = {}
     ) => {
+        const ref = createRef<HTMLInputElement>()
+        let newContent = msg
+
+        if (t === "prompt") {
+            newContent = (
+                <>
+                    {msg}
+                    <Input ref={ref} {...inputOptions} />
+                </>
+            )
+        }
+
         return new Promise((resolve, reject) => {
             open({
                 cancel: t !== "alert",
                 onClose: (t?: CloseType) => reject(t),
-                onOk: () => resolve(null),
+                onOk: () => {
+                    resolve(
+                        t === "prompt" ? ref.current?.value : null
+                    )
+                },
                 title: title ?? "提示",
-                content: msg,
+                content: newContent,
                 backdrop,
                 keyboard,
                 okText,
@@ -128,3 +156,4 @@ export function createShortcut(t: Shortcut) {
 
 export const alert = createShortcut("alert")
 export const confirm = createShortcut("confirm")
+export const prompt = createShortcut("prompt")

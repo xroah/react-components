@@ -1,3 +1,4 @@
+import { InputProps } from "r-layers/basics/input"
 import { ReactNode } from "react"
 import { breakpoints, modalSizes } from "../commons/constants"
 import {
@@ -58,6 +59,8 @@ export type ShortcutOptions = Pick<
     "cancelText" |
     "okVariant" |
     "cancelVariant"
->
+> & {
+    inputOptions?: InputProps
+}
 
-export type Shortcut = "alert" | "confirm" | "prompt"
+export type ShortcutType = "alert" | "confirm" | "prompt"
