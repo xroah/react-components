@@ -36,7 +36,7 @@ export function useMessage(): [HookApi<OpenOptions>, ReactNode] {
 
                 return messagesProps.map(
                     props => {
-                        if (_keys.includes(props.key!)) {
+                        if (_keys.has(props.key!)) {
                             props.visible = false
                         }
 
@@ -158,7 +158,6 @@ export function useMessage(): [HookApi<OpenOptions>, ReactNode] {
             return <Message key={key} {...newProps} />
         }
     )
-
     const wrapper = messagesProps.length ? createPortal(
         <div ref={ref} className={WRAPPER_CLASS}>
             {children}

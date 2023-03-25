@@ -159,7 +159,7 @@ function close(keys?: string | string[]) {
     const _keys = getKeys(keys!)
 
     for (const [key, item] of messageMap) {
-        if (_keys.includes(key)) {
+        if (_keys.has(key)) {
             item.close()
         }
     }

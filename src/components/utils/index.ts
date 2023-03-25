@@ -147,11 +147,9 @@ export function isUndef(o: unknown) {
 }
 
 export function getKeys(keys: string | string[]) {
-    if (Array.isArray(keys)) {
-        return keys
-    }
-
-    return [keys]
+    return new Set(
+        Array.isArray(keys) ? keys : [keys]
+    )
 }
 
 export function removeNode(
