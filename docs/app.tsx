@@ -20,10 +20,7 @@ export default function App() {
     }
     const [api, wrapper] = useMessage()
     const handleOpen = () => {
-        api.open({
-            content: "哈哈哈哈哈哈哈哈哈哈",
-            variant: "info"
-        })
+        api.info("士大夫士大夫大师傅地方")
     }
 
     return (
