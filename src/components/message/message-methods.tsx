@@ -1,6 +1,6 @@
 import React, { ReactNode } from "react"
-import { createRoot, Root } from "react-dom/client"
-import Message, { MessageProps, WRAPPER_CLASS } from "./message"
+import { createRoot } from "react-dom/client"
+import Message, { WRAPPER_CLASS } from "./message"
 import { Variant } from "../commons/types"
 import XFill from "../icons/x-fill"
 import InfoFill from "../icons/info-fill"
@@ -14,29 +14,21 @@ import {
     unmountAsync,
     chainFunction
 } from "../utils"
-
-export interface OpenOptions extends Omit<MessageProps, "children"> {
-    content?: ReactNode
-    key?: string
-}
-
-export type ShortcutOptions = Omit<MessageProps, "variant" | "content">
-
-type Shortcut = (msg: ReactNode, opts?: ShortcutOptions) => VoidFunction
-
-interface MapItem {
-    root: Root,
-    container: HTMLElement
-    props: OpenOptions
-    close: VoidFunction
-}
+import {
+    MapItem,
+    MessageProps,
+    OpenFunc,
+    OpenOptions,
+    Shortcut,
+    ShortcutOptions
+} from "./types"
 
 let uuid = 0
 let wrapper: HTMLElement | null = null
 
 const messageMap = new Map<string, MapItem>()
 
-export function generateKey() {
+function generateKey() {
     return `r-message-${uuid++}`
 }
 
@@ -133,12 +125,10 @@ function open(
     return messageMap.get(newKey)!.close
 }
 
-
-
-export function createShortcut(
+function createShortcut(
     variant: Variant,
     defaultIcon: ReactNode,
-    openFunc: (opts: OpenOptions) => (VoidFunction | void) = open
+    openFunc: OpenFunc = open
 ) {
     return (msg: ReactNode, options: ShortcutOptions = {}) => {
         const {
@@ -188,5 +178,8 @@ export {
     success,
     warn,
     close,
-    closeAll
+    closeAll,
+    // internal
+    createShortcut,
+    generateKey
 }

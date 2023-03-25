@@ -1,32 +1,13 @@
 import React, { ReactNode } from "react"
 import { createPortal } from "react-dom"
 import Message, { WRAPPER_CLASS } from "./message"
-import { HookApi } from "../commons/types"
 import { chainFunction, getKeys, isUndef } from "../utils"
-import {
-    createShortcut,
-    generateKey,
-    OpenOptions,
-    ShortcutOptions
-} from "./message-methods"
+import { createShortcut, generateKey } from "./message-methods"
 import XFill from "../icons/x-fill"
 import InfoFill from "../icons/info-fill"
 import CheckFill from "../icons/check-fill"
 import WarnFill from "../icons/warn-fill"
-
-interface HookOptions extends OpenOptions {
-    _onHidden?: VoidFunction
-    _onClose?: VoidFunction
-}
-
-type Shortcut = (msg: ReactNode, opts?: ShortcutOptions) => void
-
-interface MessageHookApi extends HookApi<OpenOptions> {
-    info: Shortcut
-    error: Shortcut
-    success: Shortcut
-    warn: Shortcut
-}
+import { HookOptions, MessageHookApi, OpenOptions } from "./types"
 
 export function useMessage(): [MessageHookApi, ReactNode] {
     const ref = React.useRef<HTMLDivElement>(null)
@@ -187,9 +168,9 @@ export function useMessage(): [MessageHookApi, ReactNode] {
             open,
             close: closeMsg,
             info: createShortcut("info", <InfoFill />, open),
-            warn: createShortcut("warning", <WarnFill/>, open),
-            success: createShortcut("success", <CheckFill/>, open),
-            error: createShortcut("danger", <XFill/>, open)
+            warn: createShortcut("warning", <WarnFill />, open),
+            success: createShortcut("success", <CheckFill />, open),
+            error: createShortcut("danger", <XFill />, open)
         },
         wrapper
     ]

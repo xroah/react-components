@@ -1,18 +1,13 @@
 import React, { CSSProperties } from "react"
 import { Transition, TransitionStatus } from "react-transition-group"
-import Alert, { AlertProps } from "../basics/alert"
-import { ToggleEvents } from "../commons/types"
+import Alert  from "../basics/alert"
 import { number } from "prop-types"
 import { omit } from "../utils"
 import Timer from "r-layers/utils/timer"
+import { MessageProps } from "./types"
 
 const DEFAULT_DURATION = 3000
 export const WRAPPER_CLASS = "r-message"
-
-export interface MessageProps extends AlertProps, ToggleEvents {
-    duration?: number
-    visible?: boolean
-}
 
 class Message extends React.Component<MessageProps> {
     private timer: Timer
