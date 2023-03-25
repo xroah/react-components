@@ -15,7 +15,7 @@ import {
     chainFunction
 } from "../utils"
 
-export interface OpenOptions extends MessageProps {
+export interface OpenOptions extends Omit<MessageProps, "children"> {
     content?: ReactNode
     key?: string
 }
@@ -74,18 +74,17 @@ function open(
         const {
             visible,
             content,
-            children,
             onHidden,
             onClose,
             ...rest
         } = o
 
         return {
+            ...rest,
             visible: visible ?? true,
-            children: content ?? children,
+            children: content,
             onHidden: chainFunction(handleHidden, onHidden),
-            onClose: chainFunction(close, onClose),
-            ...rest
+            onClose: chainFunction(close, onClose)
         }
     }
     const update = () => {
@@ -130,7 +129,7 @@ function open(
     return messageMap.get(newKey)!.close
 }
 
-function createShortcut(variant: Variant, defaultIcon: ReactNode) {
+export function createShortcut(variant: Variant, defaultIcon: ReactNode) {
     type Options = Omit<MessageProps, "variant" | "content">
 
     return (msg: ReactNode, options: Options = {}) => {

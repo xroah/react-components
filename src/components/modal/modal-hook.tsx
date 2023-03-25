@@ -31,7 +31,6 @@ export function useModal(): [HookApi<OpenOptions>, ReactNode] {
         const handleShow = () => closed.current = false
         const {
             content,
-            children,
             onShow,
             onHidden,
             visible,
@@ -41,7 +40,7 @@ export function useModal(): [HookApi<OpenOptions>, ReactNode] {
             ...restProps,
             ...getCloseCallbacks(props, close),
             visible: visible ?? true,
-            children: content ?? children,
+            children: content,
             onShow: chainFunction(handleShow, onShow),
             onHidden: chainFunction(handleHidden, onHidden)
         }

@@ -54,7 +54,6 @@ export function open(options: OpenOptions) {
         const {
             visible,
             content,
-            children,
             onHidden,
             ...restProps
         } = props
@@ -63,7 +62,7 @@ export function open(options: OpenOptions) {
             ...getCloseCallbacks(restProps, close),
             onHidden: chainFunction(handleHidden, onHidden),
             visible: visible ?? true,
-            children: content ?? children
+            children: content 
         }
 
         root.render(<Modal {...newProps} />)

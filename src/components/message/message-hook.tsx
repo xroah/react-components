@@ -142,17 +142,16 @@ export function useMessage(): [HookApi<OpenOptions>, ReactNode] {
             key,
             visible,
             content,
-            children,
             _onClose,
             _onHidden,
             ...rest
         }) => {
             const newProps = {
+                ...rest,
                 visible: visible ?? true,
                 children: content ?? children,
                 onHidden: _onHidden,
-                onClose: _onClose,
-                ...rest
+                onClose: _onClose
             }
 
             return <Message key={key} {...newProps} />

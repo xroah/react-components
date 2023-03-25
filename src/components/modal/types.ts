@@ -40,7 +40,7 @@ export interface ModalProps extends ToggleEvents, DialogProps {
     timeout?: number
 }
 
-export interface OpenOptions extends ModalProps {
+export interface OpenOptions extends Omit<ModalProps, "children"> {
     content?: ReactNode
 }
 
