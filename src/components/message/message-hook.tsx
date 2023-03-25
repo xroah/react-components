@@ -3,14 +3,32 @@ import { createPortal } from "react-dom"
 import Message, { WRAPPER_CLASS } from "./message"
 import { HookApi } from "../commons/types"
 import { chainFunction, getKeys, isUndef } from "../utils"
-import { generateKey, OpenOptions } from "./message-methods"
+import {
+    createShortcut,
+    generateKey,
+    OpenOptions,
+    ShortcutOptions
+} from "./message-methods"
+import XFill from "../icons/x-fill"
+import InfoFill from "../icons/info-fill"
+import CheckFill from "../icons/check-fill"
+import WarnFill from "../icons/warn-fill"
 
 interface HookOptions extends OpenOptions {
     _onHidden?: VoidFunction
     _onClose?: VoidFunction
 }
 
-export function useMessage(): [HookApi<OpenOptions>, ReactNode] {
+type Shortcut = (msg: ReactNode, opts?: ShortcutOptions) => void
+
+interface MessageHookApi extends HookApi<OpenOptions> {
+    info: Shortcut
+    error: Shortcut
+    success: Shortcut
+    warn: Shortcut
+}
+
+export function useMessage(): [MessageHookApi, ReactNode] {
     const ref = React.useRef<HTMLDivElement>(null)
     const [
         messagesProps,
@@ -111,13 +129,13 @@ export function useMessage(): [HookApi<OpenOptions>, ReactNode] {
                         const exist = messagesProps[existIndex]
                         newProps = { ...exist, ...restProps }
                     }
-                } 
-                
+                }
+
                 if (index === -1) {
                     index = messagesProps.length
                     newProps = { key: newKey, ...restProps }
                 }
-                
+
                 const {
                     onHidden,
                     onClose,
@@ -132,7 +150,7 @@ export function useMessage(): [HookApi<OpenOptions>, ReactNode] {
                     onClose
                 )
                 messagesProps[index] = rest
-                
+
                 return [...messagesProps]
             }
         )
@@ -164,5 +182,15 @@ export function useMessage(): [HookApi<OpenOptions>, ReactNode] {
         document.body
     ) : null
 
-    return [{ open, close: closeMsg }, wrapper]
+    return [
+        {
+            open,
+            close: closeMsg,
+            info: createShortcut("info", <InfoFill />, open),
+            warn: createShortcut("warning", <WarnFill/>, open),
+            success: createShortcut("success", <CheckFill/>, open),
+            error: createShortcut("danger", <XFill/>, open)
+        },
+        wrapper
+    ]
 }

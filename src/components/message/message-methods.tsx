@@ -1,8 +1,8 @@
 import React, { ReactNode } from "react"
 import { createRoot, Root } from "react-dom/client"
 import Message, { MessageProps, WRAPPER_CLASS } from "./message"
-import XFill from "../icons/x-fill"
 import { Variant } from "../commons/types"
+import XFill from "../icons/x-fill"
 import InfoFill from "../icons/info-fill"
 import CheckFill from "../icons/check-fill"
 import WarnFill from "../icons/warn-fill"
@@ -19,6 +19,10 @@ export interface OpenOptions extends Omit<MessageProps, "children"> {
     content?: ReactNode
     key?: string
 }
+
+export type ShortcutOptions = Omit<MessageProps, "variant" | "content">
+
+type Shortcut = (msg: ReactNode, opts?: ShortcutOptions) => VoidFunction
 
 interface MapItem {
     root: Root,
@@ -129,16 +133,20 @@ function open(
     return messageMap.get(newKey)!.close
 }
 
-export function createShortcut(variant: Variant, defaultIcon: ReactNode) {
-    type Options = Omit<MessageProps, "variant" | "content">
 
-    return (msg: ReactNode, options: Options = {}) => {
+
+export function createShortcut(
+    variant: Variant,
+    defaultIcon: ReactNode,
+    openFunc: (opts: OpenOptions) => (VoidFunction | void) = open
+) {
+    return (msg: ReactNode, options: ShortcutOptions = {}) => {
         const {
             icon = defaultIcon,
             ...restOptions
         } = options
 
-        return open(
+        return openFunc(
             {
                 ...restOptions,
                 icon,
@@ -168,10 +176,10 @@ function closeAll() {
     close()
 }
 
-const error = createShortcut("danger", <XFill />)
-const info = createShortcut("info", <InfoFill />)
-const success = createShortcut("success", <CheckFill />)
-const warn = createShortcut("warning", <WarnFill />)
+const error = createShortcut("danger", <XFill />) as Shortcut
+const info = createShortcut("info", <InfoFill />) as Shortcut
+const success = createShortcut("success", <CheckFill />) as Shortcut
+const warn = createShortcut("warning", <WarnFill />) as Shortcut
 
 export {
     open,
