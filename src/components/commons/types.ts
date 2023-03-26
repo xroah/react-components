@@ -34,13 +34,6 @@ export interface LayerProps extends
     onClose?: (type?: CloseType) => unknown
 }
 
-export interface ButtonProps extends
-    ButtonHTMLAttributes<HTMLButtonElement> {
-    variant?: Variant
-    size?: OneOf<typeof sizes>
-    disabled?: boolean
-}
-
 export type Variant = OneOf<typeof variants>
 
 export interface HookApi<O, K = string> {

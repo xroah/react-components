@@ -1,31 +1,46 @@
-import React, { FC } from "react"
-import { ButtonProps } from "../commons/types"
+import React, {
+    ButtonHTMLAttributes,
+    ForwardedRef,
+    forwardRef
+} from "react"
+import { OneOf, Variant } from "../commons/types"
 import { classnames } from "../utils"
+import { sizes } from "../commons/constants"
 
-const Button: FC<ButtonProps> = (
-    {
-        disabled,
-        className,
-        size,
-        variant = "primary",
-        type = "button",
-        ...restProps
-    }
-) => {
-    const classes = classnames(
-        className,
-        "btn",
-        `btn-${variant}`,
-        size && `btn-${size}`
-    )
-
-    return (
-        <button
-            type={type}
-            className={classes}
-            disabled={disabled}
-            {...restProps} />
-    )
+interface ButtonProps extends
+    ButtonHTMLAttributes<HTMLButtonElement> {
+    variant?: Variant
+    size?: OneOf<typeof sizes>
+    disabled?: boolean
 }
+
+const Button = forwardRef(
+    (
+        {
+            className,
+            size,
+            variant = "primary",
+            type = "button",
+            ...restProps
+        }: ButtonProps,
+        ref: ForwardedRef<HTMLButtonElement>
+    ) => {
+        const classes = classnames(
+            className,
+            "btn",
+            `btn-${variant}`,
+            size && `btn-${size}`
+        )
+
+        return (
+            <button
+                type={type}
+                ref={ref}
+                className={classes}
+                {...restProps} />
+        )
+    }
+)
+Button.displayName = "Button"
 
 export default Button
