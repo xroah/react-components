@@ -7,7 +7,7 @@ import { OneOf, Variant } from "../commons/types"
 import { classnames } from "../utils"
 import { sizes } from "../commons/constants"
 
-interface ButtonProps extends
+export interface ButtonProps extends
     ButtonHTMLAttributes<HTMLButtonElement> {
     variant?: Variant
     size?: OneOf<typeof sizes>

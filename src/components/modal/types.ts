@@ -1,5 +1,6 @@
-import { InputProps } from "r-layers/basics/input"
 import { ReactNode } from "react"
+import { ButtonProps } from "../basics/button"
+import { InputProps } from "../basics/input"
 import { breakpoints, modalSizes } from "../commons/constants"
 import {
     LayerProps,
@@ -7,8 +8,8 @@ import {
     ToggleEvents,
     ClosableProps,
     DivPropsWithNodeTitle,
-    ButtonProps,
-    Variant
+    Variant,
+    HookApi
 } from "../commons/types"
 
 export type HeaderProps = ClosableProps & DivPropsWithNodeTitle
@@ -64,3 +65,29 @@ export type ShortcutOptions = Pick<
 }
 
 export type ShortcutType = "alert" | "confirm" | "prompt"
+
+export interface UpdateFunc {
+    (opts: OpenOptions): void
+}
+
+export type HookOpenFunc = UpdateFunc
+
+export interface OpenFunc {
+    (opts: OpenOptions): { update: UpdateFunc, close: VoidFunction }
+}
+
+export interface Shortcut {
+    (
+        msg: ReactNode,
+        title?: ReactNode,
+        opts?: ShortcutOptions
+    ): Promise<unknown>
+}
+
+export interface ModalHookApi extends HookApi<OpenOptions> {
+    open: HookOpenFunc
+    close: VoidFunction
+    alert: Shortcut
+    confirm: Shortcut
+    prompt: Shortcut
+}

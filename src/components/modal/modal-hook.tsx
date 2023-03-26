@@ -1,12 +1,11 @@
 import React, { ReactNode } from "react"
 import { createPortal } from "react-dom"
-import { getCloseCallbacks } from "./modal-methods"
-import { HookApi } from "../commons/types"
+import { createShortcut, getCloseCallbacks } from "./modal-methods"
 import Modal from "./modal"
-import { ModalProps, OpenOptions } from "./types"
+import { ModalHookApi, ModalProps, OpenOptions } from "./types"
 import { chainFunction } from "../utils"
 
-export function useModal(): [HookApi<OpenOptions>, ReactNode] {
+export function useModal(): [ModalHookApi, ReactNode] {
     const [
         props,
         setProps
@@ -50,5 +49,14 @@ export function useModal(): [HookApi<OpenOptions>, ReactNode] {
         )
     }
 
-    return [{ open, close }, el]
+    return [
+        {
+            open,
+            close,
+            alert: createShortcut("alert", open),
+            confirm: createShortcut("confirm", open),
+            prompt: createShortcut("prompt", open)
+        },
+        el
+    ]
 }

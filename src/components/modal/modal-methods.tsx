@@ -2,7 +2,9 @@ import React, { createRef, ReactNode } from "react"
 import { createRoot } from "react-dom/client"
 import {
     Callbacks,
+    HookOpenFunc,
     ModalProps,
+    OpenFunc,
     OpenOptions,
     ShortcutOptions,
     ShortcutType
@@ -104,10 +106,13 @@ export function open(options: OpenOptions) {
     }
 }
 
-export function createShortcut(t: ShortcutType) {
+export function createShortcut(
+    t: ShortcutType,
+    openFunc: OpenFunc | HookOpenFunc = open
+) {
     return (
         msg: ReactNode,
-        title = "提示",
+        title: ReactNode = "提示",
         {
             backdrop,
             closable,
@@ -132,7 +137,7 @@ export function createShortcut(t: ShortcutType) {
         }
 
         return new Promise((resolve, reject) => {
-            open({
+            openFunc({
                 cancel: t !== "alert",
                 onClose: (t?: CloseType) => reject(t),
                 onOk: () => {
