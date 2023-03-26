@@ -9,8 +9,6 @@ import CheckFill from "r-layers/icons/check-fill"
 import Loading from "./examples/loading"
 import Notification from "./examples/notification"
 import Input from "r-layers/basics/input"
-import {open as openNotification} from "r-layers/notification/notification-methods"
-console.log(openNotification)
 
 export default function App() {
     const showMsg = () => {

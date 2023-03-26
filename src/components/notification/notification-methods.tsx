@@ -31,7 +31,7 @@ interface Item {
     close: VoidFunction
 }
 
-const CLASS_PREFIX = "r-notification"
+export const CLASS_PREFIX = "r-notification"
 
 const tlMap = new Map<string, Item>()
 const trMap = new Map<string, Item>()
@@ -125,7 +125,8 @@ function open(
                     ...old.props,
                     ...restProps
                 }
-
+                old.props = props
+            
                 old.root.render(<Notification {...getRenderProps(props)} />)
 
                 return close
