@@ -6,7 +6,8 @@
   "scripts": {
     "test": "",
     "build": "",
-    "start": "vite serve",
+    "build:doc": "r-scripts build",
+    "start": "r-scripts serve -o -p 8000",
     "lint": "eslint src docs",
     "lint-fix": "eslint src docs --fix"
   },
@@ -30,16 +31,13 @@
     "@types/warning": "^3.0.0",
     "@typescript-eslint/eslint-plugin": "^5.55.0",
     "@typescript-eslint/parser": "^5.55.0",
-    "@vitejs/plugin-react": "^3.1.0",
     "bootstrap": "^5.2.3",
-    "eslint": "^8.36.0",
     "eslint-plugin-react": "^7.32.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.9.0",
     "sass": "^1.59.2",
-    "typescript": "^4.9.5",
-    "vite": "^4.1.4"
+    "typescript": "^4.9.5"
   },
   "files": [
     "lib",
@@ -47,6 +45,7 @@
   ],
   "dependencies": {
     "@floating-ui/dom": "^1.2.4",
+    "eslint": "^8.36.0",
     "prop-types": "^15.8.1",
     "react-is": "^18.2.0",
     "react-transition-group": "^4.4.5",
