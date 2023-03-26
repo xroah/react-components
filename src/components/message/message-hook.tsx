@@ -1,8 +1,13 @@
 import React, { ReactNode } from "react"
 import { createPortal } from "react-dom"
 import Message, { WRAPPER_CLASS } from "./message"
-import { chainFunction, getKeys, isUndef } from "../utils"
-import { createShortcut, generateKey } from "./message-methods"
+import {
+    chainFunction,
+    getKeys,
+    isUndef,
+    generateKey
+} from "../utils"
+import { createShortcut } from "./message-methods"
 import XFill from "../icons/x-fill"
 import InfoFill from "../icons/info-fill"
 import CheckFill from "../icons/check-fill"

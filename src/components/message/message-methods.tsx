@@ -12,7 +12,8 @@ import {
     getKeys,
     isUndef,
     unmountAsync,
-    chainFunction
+    chainFunction,
+    generateKey
 } from "../utils"
 import {
     MapItem,
@@ -23,14 +24,9 @@ import {
     ShortcutOptions
 } from "./types"
 
-let uuid = 0
 let wrapper: HTMLElement | null = null
 
 const messageMap = new Map<string, MapItem>()
-
-function generateKey() {
-    return `r-message-${uuid++}`
-}
 
 function open(
     {

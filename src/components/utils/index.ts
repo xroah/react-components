@@ -165,3 +165,9 @@ export function removeNode(
         onRemove?.()
     }
 }
+
+let uuid = 0
+
+export function generateKey() {
+    return `r-key-${uuid++}`
+}
