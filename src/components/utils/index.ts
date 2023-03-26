@@ -56,7 +56,7 @@ export function unmountAsync(root: Root, callback?: VoidFunction) {
 
 export function getDynamicWrapper(
     wrapper: HTMLElement | null,
-    className?: string,
+    className?: string | string[],
     container: HTMLElement = document.body
 ): HTMLElement {
     let ret = wrapper
@@ -65,7 +65,9 @@ export function getDynamicWrapper(
         ret = document.createElement("div")
 
         if (className) {
-            ret.classList.add(className)
+            const _className = Array.isArray(className) ? className : [className]
+
+            ret.classList.add(..._className)
         }
     }
 

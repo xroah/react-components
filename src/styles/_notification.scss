@@ -1,10 +1,11 @@
 .r-notification {
     position: fixed;
+    padding: 0 15px;
     overflow: hidden;
     z-index: 1000;
 }
 
-.r-notification-topleft {
+.r-notification-top-left {
     top: 0;
     left: 0;
 }
@@ -25,10 +26,11 @@
 }
 
 .r-notification-item {
-    transition: transform .3s cubic-bezier(.21,.66,.49,1.32),
+    margin: 15px;
+    transition: transform .3s cubic-bezier(.21, .66, .49, 1.32),
         opacity .3s, height .3s;
 
-    &+& {
-        margin-top: 15px;
+    .toast {
+        background-color: #fff;
     }
 }

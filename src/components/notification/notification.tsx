@@ -5,24 +5,41 @@ import { notificationPlacements } from "../commons/constants"
 import { Transition, TransitionStatus } from "react-transition-group"
 import { classnames } from "../utils"
 
-type Placement = OneOf<typeof notificationPlacements>
+export type Placement = OneOf<typeof notificationPlacements>
 
-interface NotificationProps extends ToastProps, ToggleEvents {
+export interface NotificationProps extends ToastProps, ToggleEvents {
     visible?: boolean
     placement?: Placement
 }
 
+export const TOP_LEFT: Placement = "top-left"
+export const TOP_RIGHT: Placement = "top-right"
+export const BOTTOM_LEFT: Placement = "bottom-left"
+export const BOTTOM_RIGHT: Placement = "bottom-right"
+
 const placementSet = new Set(notificationPlacements)
 export const placementMap = new Map<Placement, Placement>([
-    ["top-left", "top-left"],
-    ["tl", "top-left"],
-    ["top-right", "top-right"],
-    ["tr", "top-right"],
-    ["bottom-left", "bottom-left"],
-    ["bl", "bottom-left"],
-    ["bottom-right", "bottom-right"],
-    ["bl", "bottom-right"],
+    [TOP_LEFT, TOP_LEFT],
+    ["tl", TOP_LEFT],
+    [TOP_RIGHT, TOP_RIGHT],
+    ["tr", TOP_RIGHT],
+    [BOTTOM_LEFT, BOTTOM_LEFT],
+    ["bl", BOTTOM_LEFT],
+    [BOTTOM_RIGHT, BOTTOM_RIGHT],
+    ["br", BOTTOM_RIGHT]
 ])
+
+export function checkPlacement(placement: Placement) {
+    if (!placementSet.has(placement)) {
+        console.error(
+            `The placement prop should be one of '${notificationPlacements.join(",")}'`
+        )
+
+        return false
+    }
+
+    return true
+}
 
 const Notification: React.FC<NotificationProps> = ({
     placement = "bottom-right",
@@ -42,11 +59,7 @@ const Notification: React.FC<NotificationProps> = ({
     onHidden,
     ...restProps
 }) => {
-    if (!placementSet.has(placement)) {
-        console.error(
-            `The placement prop should be one of '${notificationPlacements.join(",")}'`
-        )
-
+    if (!checkPlacement(placement)) {
         return null
     }
 
