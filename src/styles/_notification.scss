@@ -27,7 +27,7 @@
 
 .r-notification-item {
     margin: 15px;
-    transition: transform .3s cubic-bezier(.21, .66, .49, 1.32),
+    transition: transform .3s cubic-bezier(.21,.66,.49,1.32),
         opacity .3s, height .3s;
 
     .toast {

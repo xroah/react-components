@@ -3,7 +3,7 @@ import { OneOf, ToggleEvents } from "../commons/types"
 import Toast, { ToastProps } from "../basics/toast"
 import { notificationPlacements } from "../commons/constants"
 import { Transition, TransitionStatus } from "react-transition-group"
-import { classnames, noop } from "../utils"
+import { classnames } from "../utils"
 import Timer from "r-layers/utils/timer"
 
 export type Placement = OneOf<typeof notificationPlacements>
@@ -131,11 +131,14 @@ const Notification: React.FC<NotificationProps> = ({
         )
     }
 
+    if (onClose) {
+        timer.current.callback = onClose
+    }
+
     useEffect(
         () => {
             const {current: t} = timer
             t.timeout = duration
-            t.callback = onClose || noop
 
             if (duration > 0) {
                 t.delay(true)
@@ -145,7 +148,7 @@ const Notification: React.FC<NotificationProps> = ({
 
             return () => timer.current.clear()
         },
-        [duration, onClose]
+        [duration]
     )
 
     return (

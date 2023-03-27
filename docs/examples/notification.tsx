@@ -29,11 +29,11 @@ export default function NotificationExample() {
     }
 
     return (
-        <>
+        <div>
             <Button onClick={open}>
-                Toggle
+                Open notification
             </Button>
             {wrapper}
-        </>
+        </div>
     )
 }
