@@ -122,20 +122,15 @@ export function useMessage(): [MessageHookApi, ReactNode] {
                     newProps = { key: newKey, ...restProps }
                 }
 
-                const {
-                    onHidden,
-                    onClose,
-                    ...rest
-                } = newProps
-                rest._onHidden = chainFunction(
+                newProps._onHidden = chainFunction(
                     handleHidden,
-                    onHidden
+                    newProps.onHidden
                 )
-                rest._onClose = chainFunction(
+                newProps._onClose = chainFunction(
                     handleClose,
-                    onClose
+                    newProps.onClose
                 )
-                messagesProps[index] = rest
+                messagesProps[index] = newProps
 
                 return [...messagesProps]
             }
