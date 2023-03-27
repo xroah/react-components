@@ -1,15 +1,17 @@
-import React from "react"
+import React, { useEffect, useRef } from "react"
 import { OneOf, ToggleEvents } from "../commons/types"
 import Toast, { ToastProps } from "../basics/toast"
 import { notificationPlacements } from "../commons/constants"
 import { Transition, TransitionStatus } from "react-transition-group"
-import { classnames } from "../utils"
+import { classnames, noop } from "../utils"
+import Timer from "r-layers/utils/timer"
 
 export type Placement = OneOf<typeof notificationPlacements>
 
 export interface NotificationProps extends ToastProps, ToggleEvents {
     visible?: boolean
     placement?: Placement
+    duration?: number
 }
 
 export const TOP_LEFT: Placement = "top-left"
@@ -52,17 +54,21 @@ const Notification: React.FC<NotificationProps> = ({
     title,
     header,
     secondaryTitle,
+    duration = 3000,
     onClose,
     onShow,
     onShown,
     onHide,
     onHidden,
+    onMouseEnter,
+    onMouseLeave,
     ...restProps
 }) => {
     if (!checkPlacement(placement)) {
         return null
     }
 
+    const timer = useRef(new Timer(duration))
     const classes = classnames(
         className,
         "r-notification-item"
@@ -82,7 +88,17 @@ const Notification: React.FC<NotificationProps> = ({
         children,
         onClose
     }
+    const handleMouseEnter = (e: React.MouseEvent<HTMLDivElement>) => {
+        timer.current.clear()
+        onMouseEnter?.(e)
+    }
+    const handleMouseLeave = (e: React.MouseEvent<HTMLDivElement>) => {
+        if (duration > 0) {
+            timer.current.delay(true)
+        }
 
+        onMouseLeave?.(e)
+    }
     const render = (s: TransitionStatus) => {
         const newStyle: React.CSSProperties = {}
 
@@ -102,6 +118,8 @@ const Notification: React.FC<NotificationProps> = ({
             <div
                 className={classes}
                 ref={nodeRef}
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
                 style={{
                     ...style,
                     ...initialStyle,
@@ -112,6 +130,23 @@ const Notification: React.FC<NotificationProps> = ({
             </div>
         )
     }
+
+    useEffect(
+        () => {
+            const {current: t} = timer
+            t.timeout = duration
+            t.callback = onClose || noop
+
+            if (duration > 0) {
+                t.delay(true)
+            } else {
+                t.clear()
+            }
+
+            return () => timer.current.clear()
+        },
+        [duration, onClose]
+    )
 
     return (
         <Transition
