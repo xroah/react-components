@@ -1,6 +1,6 @@
 import React, { CSSProperties } from "react"
 import { Transition, TransitionStatus } from "react-transition-group"
-import Alert  from "../basics/alert"
+import Alert from "../basics/alert"
 import { number } from "prop-types"
 import { omit } from "../utils"
 import Timer from "r-layers/utils/timer"
@@ -21,6 +21,24 @@ class Message extends React.Component<MessageProps> {
         super(props)
 
         this.timer = new Timer(0, this.close)
+    }
+
+    handleMouseEnter = (e: React.MouseEvent<HTMLDivElement>) => {
+        this.timer.clear()
+        this.props.onMouseEnter?.(e)
+    }
+
+    handleMouseLeave = (e: React.MouseEvent<HTMLDivElement>) => {
+        const {
+            duration = DEFAULT_DURATION,
+            onMouseLeave
+        } = this.props
+
+        if (duration > 0) {
+            this.timer.delay(true)
+        }
+
+        onMouseLeave?.(e)
     }
 
     close = () => {
@@ -87,13 +105,23 @@ class Message extends React.Component<MessageProps> {
                         ...defaultStyle,
                         ...style
                     }}
+                    onMouseEnter={this.handleMouseEnter}
+                    onMouseLeave={this.handleMouseLeave}
                     className="r-message-item">
                     <Alert onClose={this.close} {...restProps} />
                 </div>
             )
         }
 
-        omit(restProps, ["duration", "onClose"])
+        omit(
+            restProps,
+            [
+                "duration",
+                "onClose",
+                "onMouseLeave",
+                "onMouseEnter"
+            ]
+        )
 
         return (
             <Transition
