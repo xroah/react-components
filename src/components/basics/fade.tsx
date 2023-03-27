@@ -2,16 +2,15 @@ import React,
 {
     cloneElement,
     FC,
-    isValidElement,
     ReactElement
 } from "react"
-import { isFragment } from "react-is"
 import { Transition } from "react-transition-group"
 import {
     TimeoutProps,
     TransitionStatus
 } from "react-transition-group/Transition"
 import { classnames } from "../utils"
+import { isChildrenValidElement } from "../utils/react"
 
 interface FadeProps extends Partial<TimeoutProps<HTMLElement>> {
     fadeClass?: string
@@ -26,12 +25,8 @@ const Fade: FC<FadeProps> = ({
     timeout = 150,
     ...restProps
 }) => {
-    if (!isValidElement(children)) {
-        throw new TypeError("The children must be React element")
-    }
-
-    if (isFragment(children)) {
-        throw TypeError("The children can not be fragment")
+    if (!isChildrenValidElement(children)) {
+        return null
     }
 
     const render = (s: TransitionStatus) => {

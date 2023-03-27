@@ -8,6 +8,8 @@ import React,
     FC
 } from "react"
 import { classnames } from "."
+import warning from "warning"
+import { isFragment } from "react-is"
 
 export function getNullableNode(
     node?: ReactNode,
@@ -26,7 +28,7 @@ export function getNullableNode(
         if (wrapperTag) {
             return createElement(
                 wrapperTag,
-                {className},
+                { className },
                 node
             )
         }
@@ -68,4 +70,26 @@ export function createComponentByClassName<
     }
 
     return component
+}
+
+export function isChildrenValidElement(children: ReactNode) {
+    if (!isValidElement(children)) {
+        warning(
+            false,
+            "The children must be React element"
+        )
+
+        return false
+    }
+
+    if (isFragment(children)) {
+        warning(
+            false,
+            "The children can not be fragment"
+        )
+
+        return false
+    }
+
+    return true
 }
