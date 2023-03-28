@@ -5,7 +5,7 @@ class Timer {
         private _callback?: VoidFunction
     ) { }
 
-    set callback(callback: VoidFunction) {
+    set callback(callback: VoidFunction | undefined) {
         this._callback = callback
     }
 
