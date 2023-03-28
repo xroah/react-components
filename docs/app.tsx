@@ -32,7 +32,7 @@ export default function App() {
                 A simple primary alert—check it out!
             </Alert>
             <div>
-                <Button onClick={showMsg}>
+                <Button outlined onClick={showMsg}>
                     Show message
                 </Button>
             </div>

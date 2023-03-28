@@ -11,7 +11,7 @@ export interface ButtonProps extends
     ButtonHTMLAttributes<HTMLButtonElement> {
     variant?: Variant
     size?: OneOf<typeof sizes>
-    disabled?: boolean
+    outlined?: boolean
 }
 
 const Button = forwardRef(
@@ -19,6 +19,7 @@ const Button = forwardRef(
         {
             className,
             size,
+            outlined,
             variant = "primary",
             type = "button",
             ...restProps
@@ -28,7 +29,7 @@ const Button = forwardRef(
         const classes = classnames(
             className,
             "btn",
-            `btn-${variant}`,
+            outlined ? `btn-outline-${variant}` : `btn-${variant}`,
             size && `btn-${size}`
         )
 
