@@ -1,8 +1,4 @@
-import React, {
-    CSSProperties,
-    FC,
-    ReactNode
-} from "react"
+import React, { FC, ReactNode } from "react"
 import { ClosableProps, DivPropsWithNodeTitle } from "../commons/types"
 import { classnames } from "../utils"
 import CloseBtn from "./close-btn"
@@ -31,19 +27,23 @@ const Toast: FC<ToastProps> = ({
         "toast",
         "show"
     )
-    const titleStyle: CSSProperties = {
-        marginLeft: icon ? "15px" : "",
-        marginRight: "auto"
-    }
     const HEADER_CLASS = "toast-header"
     const headerNode = getNullableNode(header)
     const _header = headerNode === false ? (
         <div className={HEADER_CLASS}>
-            {icon}
-            <strong style={titleStyle}>
+            {
+                icon ? (
+                    <span className="toast-icon">
+                        {icon}
+                    </span>
+                ) : null
+            }
+            <strong className="toast-title">
                 {title}
             </strong>
-            <small>{secondaryTitle}</small>
+            <small className="toast-secondary-title">
+                {secondaryTitle}
+            </small>
             {closable ? <CloseBtn onClick={onClose} /> : null}
         </div>
     ) : headerNode
