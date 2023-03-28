@@ -50,6 +50,7 @@ export function createComponentByClassName<
     const component: FC<P> = (
         {
             className: propClassName,
+            children,
             ...restProps
         }
     ) => {
@@ -61,7 +62,8 @@ export function createComponentByClassName<
                     className
                 ),
                 ...restProps
-            }
+            },
+            children
         )
     }
 
@@ -81,7 +83,7 @@ export function isChildrenValidElement(children: ReactNode) {
 
         return false
     }
-    
+
     if (isFragment(children)) {
         warning(
             false,
