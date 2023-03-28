@@ -1,143 +1,113 @@
-import React, { CSSProperties } from "react"
+import React, {
+    CSSProperties,
+    FC,
+    useEffect,
+    useRef
+} from "react"
 import { Transition, TransitionStatus } from "react-transition-group"
 import Alert from "../basics/alert"
 import { number } from "prop-types"
-import { omit } from "../utils"
 import Timer from "r-layers/utils/timer"
 import { MessageProps } from "./types"
 
 const DEFAULT_DURATION = 3000
 export const WRAPPER_CLASS = "r-message"
 
-class Message extends React.Component<MessageProps> {
-    private timer: Timer
-    private ref = React.createRef<HTMLDivElement>()
-
-    static propTypes = {
-        duration: number
+const Message: FC<MessageProps> = (
+    {
+        onShow,
+        onShown,
+        onHide,
+        onHidden,
+        onClose,
+        onMouseLeave,
+        onMouseEnter,
+        visible,
+        duration = DEFAULT_DURATION,
+        ...restProps
     }
-
-    constructor(props: MessageProps) {
-        super(props)
-
-        this.timer = new Timer(0, this.close)
+) => {
+    const defaultStyle: CSSProperties = {
+        transform: "translateY(-150px)",
+        opacity: 0
     }
+    const timer = useRef(new Timer(duration))
+    const nodeRef = useRef<HTMLDivElement>(null)
 
-    handleMouseEnter = (e: React.MouseEvent<HTMLDivElement>) => {
-        this.timer.clear()
-        this.props.onMouseEnter?.(e)
+    const handleMouseEnter = (e: React.MouseEvent<HTMLDivElement>) => {
+        timer.current.clear()
+        onMouseEnter?.(e)
     }
-
-    handleMouseLeave = (e: React.MouseEvent<HTMLDivElement>) => {
-        const {
-            duration = DEFAULT_DURATION,
-            onMouseLeave
-        } = this.props
-
-        if (duration > 0) {
-            this.timer.delay(true)
-        }
-
-        onMouseLeave?.(e)
-    }
-
-    close = () => {
-        this.timer.clear()
-        this.props.onClose?.()
-    }
-
-    delayClose() {
-        const { duration = DEFAULT_DURATION } = this.props
-
-        if (duration > 0) {
-            this.timer.timeout = duration
-
-            this.timer.delay(true)
-        }
-    }
-
-    override componentDidMount() {
-        this.delayClose()
-    }
-
-    override componentDidUpdate(prevProps: Readonly<MessageProps>) {
-        const { duration } = this.props
-
-        if (prevProps.duration !== duration) {
-            this.timer.clear()
-            this.delayClose()
-        }
-    }
-
-    override componentWillUnmount() {
-        this.timer.clear()
-    }
-
-    render() {
-        const {
-            onShow,
-            onShown,
-            onHide,
-            onHidden,
-            visible,
-            ...restProps
-        } = this.props
-        const defaultStyle: CSSProperties = {
-            transform: "translateY(-150px)",
-            opacity: 0
-        }
-        const render = (s: TransitionStatus) => {
-            const show = s === "entering" || s === "entered"
-            const style: CSSProperties = {}
-
-            if (show) {
-                style.transform = "none"
-                style.opacity = 1
-                style.height = this.ref.current?.scrollHeight
-            } else if (s === "exiting") {
-                style.height = 0
+    const handleMouseLeave = React.useCallback(
+        (e: React.MouseEvent<HTMLDivElement>) => {
+            if (duration > 0) {
+                timer.current.delay(true)
             }
 
-            return (
-                <div
-                    ref={this.ref}
-                    style={{
-                        ...defaultStyle,
-                        ...style
-                    }}
-                    onMouseEnter={this.handleMouseEnter}
-                    onMouseLeave={this.handleMouseLeave}
-                    className="r-message-item">
-                    <Alert onClose={this.close} {...restProps} />
-                </div>
-            )
+            onMouseLeave?.(e)
+        },
+        [duration, onMouseLeave]
+    )
+    const render = (s: TransitionStatus) => {
+        const show = s === "entering" || s === "entered"
+        const style: CSSProperties = {}
+
+        if (show) {
+            style.transform = "none"
+            style.opacity = 1
+            style.height = nodeRef.current?.scrollHeight
+        } else if (s === "exiting") {
+            style.height = 0
         }
 
-        omit(
-            restProps,
-            [
-                "duration",
-                "onClose",
-                "onMouseLeave",
-                "onMouseEnter"
-            ]
-        )
-
         return (
-            <Transition
-                nodeRef={this.ref}
-                in={visible}
-                timeout={200}
-                onEnter={onShow}
-                onEntered={onShown}
-                onExit={onHide}
-                onExited={onHidden}
-                appear
-                unmountOnExit>
-                {render}
-            </Transition>
+            <div
+                ref={nodeRef}
+                style={{
+                    ...defaultStyle,
+                    ...style
+                }}
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
+                className="r-message-item">
+                <Alert onClose={onClose} {...restProps} />
+            </div>
         )
     }
+    timer.current.callback = onClose
+
+    useEffect(
+        () => {
+            const t = timer.current
+
+            t.clear()
+
+            if (duration > 0) {
+                t.delay(true)
+            }
+
+            return () => timer.current.clear()
+        },
+        [duration]
+    )
+
+    return (
+        <Transition
+            nodeRef={nodeRef}
+            in={visible}
+            timeout={200}
+            onEnter={onShow}
+            onEntered={onShown}
+            onExit={onHide}
+            onExited={onHidden}
+            appear
+            unmountOnExit>
+            {render}
+        </Transition>
+    )
+}
+Message.propTypes = {
+    duration: number
 }
 
 export default Message
