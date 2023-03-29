@@ -8,6 +8,7 @@ import React, {
     useState,
     CSSProperties,
     cloneElement,
+    useCallback,
 } from "react"
 import { createPortal } from "react-dom"
 import {
@@ -60,6 +61,7 @@ const Popup: FC<PopupProps> = (
         children,
         overlay,
         timeout,
+        flip,
         fallbackPlacements,
         placement = "bottom"
     }: PopupProps
@@ -75,25 +77,28 @@ const Popup: FC<PopupProps> = (
     const getOverlayElement = () => {
         return rootRef.current?.firstElementChild
     }
-    const getOffset = () => {
-        if (offset) {
-            if (Array.isArray(offset)) {
-                if (!offset.length) {
-                    return false
+    const getOffset = useCallback(
+        () => {
+            if (offset) {
+                if (Array.isArray(offset)) {
+                    if (!offset.length) {
+                        return false
+                    }
+
+                    if (offset.length === 1) {
+                        return [offset[0], offset[0]]
+                    }
+
+                    return offset
                 }
 
-                if (offset.length === 1) {
-                    return [offset[0], offset[0]]
-                }
-
-                return offset
+                return [offset, offset]
             }
 
-            return [offset, offset]
-        }
-
-        return false
-    }
+            return false
+        },
+        [offset]
+    )
     const updatePosition = () => {
         const overlayElement = getOverlayElement()
         const offset = getOffset()
@@ -108,7 +113,7 @@ const Popup: FC<PopupProps> = (
                         crossAxis: offset[1]
                     }),
                     inline(),
-                    flipMiddleware({
+                    flip && flipMiddleware({
                         fallbackPlacements
                     })
                 ],
