@@ -13,7 +13,7 @@ import { createPortal } from "react-dom"
 import {
     computePosition,
     autoUpdate,
-    autoPlacement,
+    flip as flipMiddleware,
     offset as offsetMiddleware,
     inline,
     Placement
@@ -30,7 +30,8 @@ import {
     shape,
     string,
     Requireable,
-    Validator
+    Validator,
+    oneOf
 } from "prop-types"
 
 // const triggers = ["hover", "focus", "click"] as const
@@ -59,8 +60,8 @@ const Popup: FC<PopupProps> = (
         children,
         overlay,
         timeout,
-        placement = "bottom",
-        fallbackPlacements
+        fallbackPlacements,
+        placement = "bottom"
     }: PopupProps
 ) => {
     if (!isValidElement(children)) {
@@ -107,10 +108,11 @@ const Popup: FC<PopupProps> = (
                         crossAxis: offset[1]
                     }),
                     inline(),
-                    autoPlacement({
-                        allowedPlacements: fallbackPlacements
+                    flipMiddleware({
+                        fallbackPlacements
                     })
-                ]
+                ],
+                placement
             }
         ).then(({ x, y }) => {
             setPos({
@@ -189,7 +191,21 @@ Popup.propTypes = {
     transition: bool,
     transitionClass: string,
     timeout: number,
-    visible: bool
+    visible: bool,
+    placement: oneOf([
+        "top",
+        "bottom",
+        "left",
+        "right",
+        "top-start",
+        "top-end",
+        "bottom-start",
+        "bottom-end",
+        "left-start",
+        "left-end",
+        "right-start",
+        "right-end"
+    ])
 }
 
 export default Popup
