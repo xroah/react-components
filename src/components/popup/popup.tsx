@@ -34,11 +34,13 @@ import {
     Validator,
     oneOf
 } from "prop-types"
+import { DivProps } from "r-layers/commons/types"
 
 // const triggers = ["hover", "focus", "click"] as const
 // type Trigger = OneOf<typeof triggers>
 
-export interface PopupProps {
+export interface PopupProps
+    extends Pick<DivProps, "className" | "style"> {
     anchorRef: RefObject<HTMLElement | null>
     overlay: ReactElement
     children: ReactElement
@@ -61,9 +63,11 @@ const Popup: FC<PopupProps> = (
         children,
         overlay,
         timeout,
-        flip,
         fallbackPlacements,
-        placement = "bottom"
+        flip = true,
+        placement = "bottom",
+        style,
+        className
     }: PopupProps
 ) => {
     if (!isValidElement(children)) {
@@ -166,10 +170,12 @@ const Popup: FC<PopupProps> = (
             <div
                 ref={rootRef}
                 style={{
+                    ...style,
                     position: "absolute",
                     left: "0",
                     top: "0"
-                }}>
+                }}
+                className={className}>
                 {newOverlay}
             </div>
         </Fade>
