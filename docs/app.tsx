@@ -9,6 +9,7 @@ import CheckFill from "r-layers/icons/check-fill"
 import Loading from "./examples/loading"
 import Notification from "./examples/notification"
 import Input from "r-layers/basics/input"
+import PopupExample from "./examples/popup"
 
 export default function App() {
     const showMsg = () => {
@@ -45,8 +46,9 @@ export default function App() {
             {wrapper}
             <Notification />
             <div>
-                <Input/>
+                <Input />
             </div>
+            <PopupExample />
         </div>
     )
 }

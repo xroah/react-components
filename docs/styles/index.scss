@@ -34,3 +34,10 @@ body {
 .needs-validation .form-item {
     position: relative
 }
+
+.overlay-example {
+    position: absolute;
+    width: 150px;
+    height: 200px;
+    background-color: aqua;
+}
