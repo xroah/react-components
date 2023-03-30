@@ -16,8 +16,10 @@ import {
     autoUpdate,
     flip as flipMiddleware,
     offset as offsetMiddleware,
+    arrow as arrowMiddleWare,
     inline,
-    Placement
+    Placement,
+    ComputePositionReturn
 } from "@floating-ui/dom"
 import Fade from "../basics/fade"
 import { noop } from "r-layers/utils"
@@ -39,10 +41,10 @@ import { DivProps } from "r-layers/commons/types"
 // const triggers = ["hover", "focus", "click"] as const
 // type Trigger = OneOf<typeof triggers>
 
-export interface PopupProps
+export interface PopupCommonProps
     extends Pick<DivProps, "className" | "style"> {
-    anchorRef: RefObject<HTMLElement | null>
-    overlay: ReactElement
+    anchorRef: RefObject<HTMLElement>
+    arrowRef?: RefObject<HTMLElement>
     children: ReactElement
     offset?: number | number[]
     flip?: boolean
@@ -52,6 +54,12 @@ export interface PopupProps
     placement?: Placement
     visible?: boolean
     fallbackPlacements?: Placement[]
+    onUpdate?: (data: ComputePositionReturn) => void
+}
+
+export interface PopupProps extends PopupCommonProps {
+    overlay: ReactElement
+    flipAlignment?: boolean
 }
 
 const Popup: FC<PopupProps> = (
@@ -64,10 +72,13 @@ const Popup: FC<PopupProps> = (
         overlay,
         timeout,
         fallbackPlacements,
+        arrowRef,
+        flipAlignment,
         flip = true,
         placement = "bottom",
         style,
-        className
+        className,
+        onUpdate
     }: PopupProps
 ) => {
     if (!isValidElement(children)) {
@@ -118,12 +129,22 @@ const Popup: FC<PopupProps> = (
                     }),
                     inline(),
                     flip && flipMiddleware({
-                        fallbackPlacements
+                        fallbackPlacements,
+                        flipAlignment
+                    }),
+                    arrowRef?.current && arrowMiddleWare({
+                        element: arrowRef.current
                     })
                 ],
                 placement
             }
-        ).then(({ x, y }) => {
+        ).then(({ x, y, ...rest }) => {
+            onUpdate?.({
+                x,
+                y,
+                ...rest
+            })
+
             setPos({
                 ...pos,
                 transform: `translateX(${x}px) translateY(${y}px)`
@@ -172,6 +193,7 @@ const Popup: FC<PopupProps> = (
                 style={{
                     ...style,
                     position: "absolute",
+                    width: "100%",
                     left: "0",
                     top: "0"
                 }}
