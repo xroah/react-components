@@ -10,6 +10,7 @@ import Loading from "./examples/loading"
 import Notification from "./examples/notification"
 import Input from "r-layers/basics/input"
 import PopupExample from "./examples/popup"
+import TooltipExample from "./examples/tooltip"
 
 export default function App() {
     const showMsg = () => {
@@ -49,6 +50,7 @@ export default function App() {
                 <Input />
             </div>
             <PopupExample />
+            <TooltipExample />
         </div>
     )
 }

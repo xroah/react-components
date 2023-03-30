@@ -8,7 +8,7 @@ export default function PopupExample() {
     const buttonRef = React.useRef(null)
 
     return (
-        <div style={{marginTop: 1000, marginBottom: 1000}}>
+        <div style={{margin: "200px 0"}}>
             <Popup
                 anchorRef={buttonRef}
                 visible={visible}

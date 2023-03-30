@@ -1,0 +1,13 @@
+.bs-tooltip-start,
+.bs-tooltip-end {
+    .tooltip-arrow {
+        top: 0;
+    }
+}
+
+.bs-tooltip-top,
+.bs-tooltip-bottom {
+    .tooltip-arrow {
+        left: 0;
+    }
+}
