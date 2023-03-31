@@ -10,7 +10,7 @@ export default function TooltipExample() {
     return (
         <div style={{ margin: "300px 100px" }}>
             <Tooltip
-                visible={visible}
+                // visible={visible}
                 anchorRef={ref}
                 title="tooltip"
                 placement="right">

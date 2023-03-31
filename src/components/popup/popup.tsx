@@ -36,13 +36,10 @@ import {
     Validator,
     oneOf
 } from "prop-types"
-import { DivProps } from "r-layers/commons/types"
 
-// const triggers = ["hover", "focus", "click"] as const
-// type Trigger = OneOf<typeof triggers>
-
-export interface PopupCommonProps
-    extends Pick<DivProps, "className" | "style"> {
+export interface PopupProps {
+    overlay: ReactElement
+    flipAlignment?: boolean
     anchorRef: RefObject<HTMLElement>
     arrowRef?: RefObject<HTMLElement>
     children: ReactElement
@@ -54,12 +51,9 @@ export interface PopupCommonProps
     placement?: Placement
     visible?: boolean
     fallbackPlacements?: Placement[]
+    style?: CSSProperties
+    className?: string
     onUpdate?: (data: ComputePositionReturn) => void
-}
-
-export interface PopupProps extends PopupCommonProps {
-    overlay: ReactElement
-    flipAlignment?: boolean
 }
 
 const Popup: FC<PopupProps> = (
