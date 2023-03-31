@@ -1,37 +1,30 @@
 import React, {
-    CSSProperties,
     FC,
-    ReactElement,
-    useRef,
+    ReactNode,
     useState
 } from "react"
-import Popup, { PopupCommonProps, PopupProps } from "../popup/popup"
-import { DivPropsWithNodeTitle, OneOf } from "../commons/types"
-import { classnames } from "r-layers/utils"
+import Trigger, {
+    PlacementsWithoutAlignment,
+    CommonProps,
+    placementsWithoutAlignment
+} from "../popup/trigger"
+import { classnames } from "../utils"
+import { ComputePositionReturn } from "@floating-ui/dom"
 
-const placements = ["top", "right", "bottom", "left"] as const
-type Placement = OneOf<typeof placements>
-
-interface TooltipProps
-    extends PopupCommonProps, DivPropsWithNodeTitle {
-    delay?: number
-    children: ReactElement
-    placement?: Placement
+interface TooltipProps extends Omit<CommonProps, "title"> {
+    placement: PlacementsWithoutAlignment
+    title: ReactNode
 }
 
 const Tooltip: FC<TooltipProps> = (
     {
-        anchorRef,
         title,
         children,
-        offset,
-        flip,
-        transition,
-        transitionClass,
-        timeout,
-        placement = "top",
-        visible,
         className,
+        placement = "top",
+        trigger = "hover",
+        fallbackPlacements = [...placementsWithoutAlignment],
+        onUpdate,
         ...restProps
     }: TooltipProps
 ) => {
@@ -42,7 +35,7 @@ const Tooltip: FC<TooltipProps> = (
         ["top", "top"],
         ["bottom", "bottom"]
     ])
-    const getClassName = (placement: Placement) => {
+    const getClassName = (placement: PlacementsWithoutAlignment) => {
         return classnames(
             className,
             "show",
@@ -50,60 +43,37 @@ const Tooltip: FC<TooltipProps> = (
             PREFIX
         )
     }
-    const arrowRef = useRef<HTMLDivElement>(null)
-    const [arrowStyle, setArrowStyle] = useState<CSSProperties>({
-        position: "absolute"
-    })
     const [
         tooltipClass,
         setTooltipClass
     ] = useState(getClassName(placement))
+    const handleUpdate = (data: ComputePositionReturn) => {
+        const { placement } = data
+
+        setTooltipClass(
+            getClassName(placement as PlacementsWithoutAlignment)
+        )
+        onUpdate?.(data)
+    }
     const overlay = (
-        <div className={tooltipClass} {...restProps}>
-            <div
-                ref={arrowRef}
-                style={arrowStyle}
-                className={`${PREFIX}-arrow`} />
-            <div className={`${PREFIX}-inner`}>
-                {title}
-            </div>
+        <div className={`${PREFIX}-inner`}>
+            {title}
         </div>
     )
-    const popupProps: PopupProps = {
-        anchorRef,
-        children,
-        offset,
-        flip,
-        flipAlignment: false,
-        transition,
-        transitionClass,
-        timeout,
-        placement,
-        visible,
-        arrowRef,
-        overlay,
-        onUpdate({
-            placement: updatedPlacement,
-            middlewareData
-        }) {
-            setTooltipClass(
-                getClassName(updatedPlacement as Placement)
-            )
-
-            const { x, y } = middlewareData.arrow || {}
-            console.log(middlewareData.arrow)
-            console.log(updatedPlacement)
-            setArrowStyle({
-                ...arrowStyle,
-                transform: `translate(${x ?? 0}px, ${y ?? 0}px)`
-            })
-        }
-    }
 
     return (
-        <Popup {...popupProps}>
+        <Trigger
+            className={tooltipClass}
+            overlay={overlay}
+            placement={placement}
+            // trigger={trigger}
+            arrowProps={{ className: `${PREFIX}-arrow` }}
+            onUpdate={handleUpdate}
+            fallbackPlacements={fallbackPlacements}
+            arrow
+            {...restProps}>
             {children}
-        </Popup>
+        </Trigger>
     )
 }
 
