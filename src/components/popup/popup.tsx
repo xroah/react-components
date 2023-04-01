@@ -19,7 +19,8 @@ import {
     shift,
     inline,
     Placement,
-    ComputePositionReturn
+    ComputePositionReturn,
+    limitShift
 } from "@floating-ui/dom"
 import Fade from "../basics/fade"
 import { noop } from "r-layers/utils"
@@ -121,7 +122,9 @@ const Popup: FC<PopupProps> = (
                         fallbackPlacements,
                         flipAlignment
                     }),
-                    shift(),
+                    shift({
+                        limiter: limitShift()
+                    }),
                     arrowRef?.current && arrowMiddleWare({
                         element: arrowRef.current
                     }),

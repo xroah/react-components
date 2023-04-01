@@ -11,6 +11,7 @@ import Notification from "./examples/notification"
 import Input from "r-layers/basics/input"
 import PopupExample from "./examples/popup"
 import TooltipExample from "./examples/tooltip"
+import PopoverExample from "./examples/popover"
 
 export default function App() {
     const showMsg = () => {
@@ -50,6 +51,7 @@ export default function App() {
                 <Input />
             </div>
             <PopupExample />
+            <PopoverExample />
             <TooltipExample />
         </div>
     )

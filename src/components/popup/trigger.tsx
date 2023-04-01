@@ -73,9 +73,9 @@ const Trigger: FC<TriggerProps> = (
         transitionClass,
         timeout,
         placement,
-        fallbackPlacements = [...placementsWithoutAlignment],
         visible: propVisible,
         floatingRef,
+        fallbackPlacements,
         getClass,
         onUpdate,
         ...restProps
@@ -216,8 +216,8 @@ const Trigger: FC<TriggerProps> = (
         timeout,
         placement,
         arrowRef,
-        fallbackPlacements,
         overlay: realOverlay,
+        fallbackPlacements,
         visible: controlled ? propVisible : visible,
         onUpdate: handleUpdate
     }

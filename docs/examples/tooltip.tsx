@@ -3,17 +3,15 @@ import Tooltip from "r-layers/tooltip"
 import Button from "r-layers/basics/button"
 
 export default function TooltipExample() {
-    const [visible, setVisible] = React.useState(false)
-    const toggle = () => setVisible(!visible)
     const ref = React.useRef(null)
 
     return (
         <div style={{ margin: "300px 100px" }}>
             <Tooltip
-                // visible={visible}
+                trigger={"click"}
                 anchorRef={ref}
                 title="This is a tooltip">
-                <Button ref={ref} onClick={toggle}>
+                <Button ref={ref}>
                     Toggle tooltip
                 </Button>
             </Tooltip>

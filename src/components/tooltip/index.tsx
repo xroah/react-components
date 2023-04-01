@@ -10,7 +10,7 @@ import Trigger, {
 import { classnames, getRealDir } from "../utils"
 import { Placement } from "@floating-ui/dom"
 
-interface TooltipProps extends Omit<CommonProps, "title"> {
+export interface TooltipProps extends Omit<CommonProps, "title"> {
     placement?: PlacementsWithoutAlignment
     title: ReactNode
 }
@@ -26,10 +26,10 @@ const Tooltip: FC<TooltipProps> = (
     }: TooltipProps
 ) => {
     const PREFIX = "tooltip"
-    const getClass = (placement: Placement) => {
+    const getClass = (placement?: Placement) => {
         return classnames(
             className,
-            `bs-tooltip-${getRealDir(placement)}`,
+            placement && `bs-tooltip-${getRealDir(placement)}`,
             PREFIX
         )
     }
