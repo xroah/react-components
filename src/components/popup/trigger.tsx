@@ -180,16 +180,26 @@ const Trigger: FC<TriggerProps> = (
         const {
             x,
             y,
-            middlewareData
+            middlewareData,
+            placement
         } = data
         
         if (arrow) {
             const { x, y } = middlewareData.arrow ?? {}
-
-            setArrowStyle({
-                ...arrowStyle,
+            const vReg = /top|bottom/
+            const hReg = /left|right/
+            const style: CSSProperties =  {
+                position: "absolute",
                 transform: `translate(${x ?? 0}px, ${y ?? 0}px)`
-            })
+            }
+
+            if (vReg.test(placement)) {
+                style.left = 0
+            } else if (hReg.test(placement)) {
+                style.top = 0
+            }
+            
+            setArrowStyle(style)
         }
 
         setPos({

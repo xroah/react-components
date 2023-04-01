@@ -117,14 +117,14 @@ const Popup: FC<PopupProps> = (
                         crossAxis: offset[1]
                     }),
                     inline(),
-                    shift(),
                     flip && flipMiddleware({
                         fallbackPlacements,
                         flipAlignment
                     }),
+                    shift(),
                     arrowRef?.current && arrowMiddleWare({
                         element: arrowRef.current
-                    })
+                    }),
                 ],
                 placement
             }
