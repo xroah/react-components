@@ -15,7 +15,7 @@ import React, {
 import Popup, { PopupProps } from "./popup"
 import { DivProps, OneOf, ToggleEvents } from "../commons/types"
 import { isUndef } from "r-layers/utils"
-import { ComputePositionReturn } from "@floating-ui/dom"
+import { ComputePositionReturn, Placement } from "@floating-ui/dom"
 
 export const placementsWithoutAlignment = [
     "top",
@@ -40,6 +40,7 @@ interface TriggerProps
     arrowProps?: DivProps
     wrapper?: ElementType | null
     children: ReactElement
+    getClass?: (placement: Placement) => string
 }
 
 export type CommonProps = Omit<
@@ -75,6 +76,7 @@ const Trigger: FC<TriggerProps> = (
         fallbackPlacements,
         visible: propVisible,
         floatingRef,
+        getClass,
         onUpdate,
         ...restProps
     }: TriggerProps
@@ -88,6 +90,7 @@ const Trigger: FC<TriggerProps> = (
     ] = useState<CSSProperties>({
         position: "absolute"
     })
+    const [wrapperClass, setWrapperClass] = useState("")
     const controlled = !isUndef(propVisible)
     const realTrigger = getTrigger(trigger)
     let childrenWithListeners: ReactElement = children
@@ -152,6 +155,7 @@ const Trigger: FC<TriggerProps> = (
             wrapper,
             {
                 ref: floatingRef,
+                className: wrapperClass,
                 ...restProps
             },
             <>
@@ -175,12 +179,12 @@ const Trigger: FC<TriggerProps> = (
             middlewareData,
             placement
         } = data
-        
+
         if (arrow) {
             const { x, y } = middlewareData.arrow ?? {}
             const vReg = /top|bottom/
             const hReg = /left|right/
-            const style: CSSProperties =  {
+            const style: CSSProperties = {
                 position: "absolute",
                 transform: `translate(${x ?? 0}px, ${y ?? 0}px)`
             }
@@ -190,10 +194,11 @@ const Trigger: FC<TriggerProps> = (
             } else if (hReg.test(placement)) {
                 style.top = 0
             }
-            
+
             setArrowStyle(style)
         }
 
+        setWrapperClass(getClass?.(placement) ?? "")
         onUpdate?.(data)
     }
     const popupProps: PopupProps = {

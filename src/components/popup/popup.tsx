@@ -2,12 +2,12 @@ import React, {
     isValidElement,
     RefObject,
     FC,
-    useEffect,
     ReactElement,
     useState,
     CSSProperties,
     cloneElement,
     useCallback,
+    useLayoutEffect,
 } from "react"
 import { createPortal } from "react-dom"
 import {
@@ -150,7 +150,7 @@ const Popup: FC<PopupProps> = (
         }
     )
 
-    useEffect(
+    useLayoutEffect(
         () => {
             let cleanup = noop
 

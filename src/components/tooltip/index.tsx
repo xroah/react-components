@@ -1,16 +1,14 @@
 import React, {
     FC,
     ReactNode,
-    useRef,
-    useState
+    useRef
 } from "react"
 import Trigger, {
     PlacementsWithoutAlignment,
-    CommonProps,
-    placementsWithoutAlignment
+    CommonProps
 } from "../popup/trigger"
-import { classnames } from "../utils"
-import { ComputePositionReturn } from "@floating-ui/dom"
+import { classnames, getRealDir } from "../utils"
+import { Placement } from "@floating-ui/dom"
 
 interface TooltipProps extends Omit<CommonProps, "title"> {
     placement?: PlacementsWithoutAlignment
@@ -24,36 +22,16 @@ const Tooltip: FC<TooltipProps> = (
         className,
         placement = "top",
         trigger = "hover",
-        fallbackPlacements = [...placementsWithoutAlignment],
-        onUpdate,
         ...restProps
     }: TooltipProps
 ) => {
     const PREFIX = "tooltip"
-    const placementMap = new Map([
-        ["right", "end"],
-        ["left", "start"],
-        ["top", "top"],
-        ["bottom", "bottom"]
-    ])
-    const getClassName = (placement: PlacementsWithoutAlignment) => {
+    const getClass = (placement: Placement) => {
         return classnames(
             className,
-            `bs-tooltip-${placementMap.get(placement)}`,
+            `bs-tooltip-${getRealDir(placement)}`,
             PREFIX
         )
-    }
-    const [
-        tooltipClass,
-        setTooltipClass
-    ] = useState(getClassName(placement))
-    const handleUpdate = (data: ComputePositionReturn) => {
-        const { placement } = data
-
-        setTooltipClass(
-            getClassName(placement as PlacementsWithoutAlignment)
-        )
-        onUpdate?.(data)
     }
     const overlay = (
         <div className={`${PREFIX}-inner`}>
@@ -64,14 +42,12 @@ const Tooltip: FC<TooltipProps> = (
 
     return (
         <Trigger
-            className={tooltipClass}
             floatingRef={floatingRef}
             overlay={overlay}
             placement={placement}
             trigger={trigger}
             arrowProps={{ className: `${PREFIX}-arrow` }}
-            onUpdate={handleUpdate}
-            fallbackPlacements={fallbackPlacements}
+            getClass={getClass}
             arrow
             {...restProps}>
             {children}

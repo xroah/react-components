@@ -173,3 +173,18 @@ let uuid = 0
 export function generateKey() {
     return `r-key-${uuid++}`
 }
+
+export function getRealDir(p: string) {
+    const placementMap = new Map([
+        ["right", "end"],
+        ["left", "start"],
+        ["top", "top"],
+        ["bottom", "bottom"]
+    ])
+
+    if (placementMap.has(p)) {
+        return placementMap.get(p)
+    }
+
+    return ""
+}
