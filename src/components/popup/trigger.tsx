@@ -44,7 +44,7 @@ interface TriggerProps
 
 export type CommonProps = Omit<
     TriggerProps,
-    "overlay" | "arrowRef"
+    "overlay" | "arrowRef" | "floatingRef"
 >
 
 const getTrigger = (trigger: TriggerType | TriggerType[]) => {
@@ -75,6 +75,7 @@ const Trigger: FC<TriggerProps> = (
         fallbackPlacements,
         visible: propVisible,
         style,
+        floatingRef,
         onUpdate,
         ...restProps
     }: TriggerProps
@@ -156,6 +157,7 @@ const Trigger: FC<TriggerProps> = (
                     ...style,
                     ...pos
                 },
+                ref: floatingRef,
                 ...restProps
             },
             <>
@@ -197,6 +199,7 @@ const Trigger: FC<TriggerProps> = (
     }
     const popupProps: PopupProps = {
         anchorRef,
+        floatingRef,
         children,
         offset,
         flip,

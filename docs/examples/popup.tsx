@@ -6,14 +6,20 @@ export default function PopupExample() {
     const [visible, setVisible] = React.useState(false)
     const toggle = () => setVisible(!visible)
     const buttonRef = React.useRef(null)
+    const floatingRef = React.useRef(null)
 
     return (
-        <div style={{margin: "200px 0"}}>
+        <div style={{ margin: "200px 0" }}>
             <Popup
                 anchorRef={buttonRef}
                 visible={visible}
                 offset={[10, 50]}
-                overlay={<div className="overlay-example" />}>
+                floatingRef={floatingRef}
+                overlay={
+                    <div
+                        ref={floatingRef}
+                        className="overlay-example" />
+                }>
                 <Button
                     ref={buttonRef}
                     variant="success"

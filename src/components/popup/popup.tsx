@@ -1,7 +1,6 @@
 import React, {
     isValidElement,
     RefObject,
-    useRef,
     FC,
     useEffect,
     ReactElement,
@@ -17,6 +16,7 @@ import {
     flip as flipMiddleware,
     offset as offsetMiddleware,
     arrow as arrowMiddleWare,
+    shift,
     inline,
     Placement,
     ComputePositionReturn
@@ -38,6 +38,7 @@ import {
 } from "prop-types"
 
 export interface PopupProps {
+    floatingRef: RefObject<HTMLElement>
     overlay: ReactElement
     flipAlignment?: boolean
     anchorRef: RefObject<HTMLElement>
@@ -51,8 +52,6 @@ export interface PopupProps {
     placement?: Placement
     visible?: boolean
     fallbackPlacements?: Placement[]
-    style?: CSSProperties
-    className?: string
     onUpdate?: (data: ComputePositionReturn) => void
 }
 
@@ -62,16 +61,15 @@ const Popup: FC<PopupProps> = (
         transitionClass,
         offset,
         anchorRef,
+        floatingRef,
         children,
         overlay,
         timeout,
         fallbackPlacements,
         arrowRef,
-        flipAlignment,
+        flipAlignment = true,
         flip = true,
         placement = "bottom",
-        style,
-        className,
         onUpdate
     }: PopupProps
 ) => {
@@ -79,13 +77,11 @@ const Popup: FC<PopupProps> = (
         return children
     }
 
-    const rootRef = useRef<HTMLDivElement>(null)
     const [pos, setPos] = useState<CSSProperties>({
-        position: "absolute"
+        position: "absolute",
+        left: 0,
+        top: 0
     })
-    const getOverlayElement = () => {
-        return rootRef.current?.firstElementChild
-    }
     const getOffset = useCallback(
         () => {
             if (offset) {
@@ -109,12 +105,11 @@ const Popup: FC<PopupProps> = (
         [offset]
     )
     const updatePosition = () => {
-        const overlayElement = getOverlayElement()
         const offset = getOffset()
 
         computePosition(
             anchorRef.current!,
-            overlayElement as HTMLElement,
+            floatingRef.current!,
             {
                 middleware: [
                     offset && offsetMiddleware({
@@ -122,6 +117,7 @@ const Popup: FC<PopupProps> = (
                         crossAxis: offset[1]
                     }),
                     inline(),
+                    shift(),
                     flip && flipMiddleware({
                         fallbackPlacements,
                         flipAlignment
@@ -158,13 +154,12 @@ const Popup: FC<PopupProps> = (
     useEffect(
         () => {
             let cleanup = noop
-            const overlayElement = getOverlayElement()
 
             if (visible) {
-                if (overlayElement && anchorRef.current) {
+                if (floatingRef.current && anchorRef.current) {
                     cleanup = autoUpdate(
                         anchorRef.current,
-                        overlayElement as HTMLElement,
+                        floatingRef.current as HTMLElement,
                         updatePosition
                     )
                 }
@@ -178,22 +173,11 @@ const Popup: FC<PopupProps> = (
         <Fade
             in={visible}
             timeout={timeout}
-            nodeRef={rootRef}
+            nodeRef={floatingRef}
             fadeClass={transitionClass}
             appear
             unmountOnExit>
-            <div
-                ref={rootRef}
-                style={{
-                    ...style,
-                    position: "absolute",
-                    width: "100%",
-                    left: "0",
-                    top: "0"
-                }}
-                className={className}>
-                {newOverlay}
-            </div>
+            {newOverlay}
         </Fade>
     )
 
@@ -204,10 +188,14 @@ const Popup: FC<PopupProps> = (
         </>
     )
 }
+
+const refType = shape({
+    current: instanceOf(HTMLElement) as Validator<HTMLElement | null>
+}).isRequired
+
 Popup.propTypes = {
-    anchorRef: shape({
-        current: instanceOf(HTMLElement) as Validator<HTMLElement | null>
-    }).isRequired,
+    anchorRef: refType,
+    floatingRef: refType,
     overlay: element.isRequired,
     children: element.isRequired,
     offset: oneOfType([

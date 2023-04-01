@@ -1,6 +1,7 @@
 import React, {
     FC,
     ReactNode,
+    useRef,
     useState
 } from "react"
 import Trigger, {
@@ -60,10 +61,12 @@ const Tooltip: FC<TooltipProps> = (
             {title}
         </div>
     )
+    const floatingRef = useRef<HTMLElement>(null)
 
     return (
         <Trigger
             className={tooltipClass}
+            floatingRef={floatingRef}
             overlay={overlay}
             placement={placement}
             // trigger={trigger}
