@@ -40,7 +40,7 @@ interface TriggerProps
     arrowProps?: DivProps
     wrapper?: ElementType | null
     children: ReactElement
-    getClass?: (placement: Placement) => string
+    getClass?: (placement?: Placement) => string
 }
 
 export type CommonProps = Omit<
@@ -73,7 +73,7 @@ const Trigger: FC<TriggerProps> = (
         transitionClass,
         timeout,
         placement,
-        fallbackPlacements,
+        fallbackPlacements = [...placementsWithoutAlignment],
         visible: propVisible,
         floatingRef,
         getClass,
@@ -90,7 +90,10 @@ const Trigger: FC<TriggerProps> = (
     ] = useState<CSSProperties>({
         position: "absolute"
     })
-    const [wrapperClass, setWrapperClass] = useState("")
+    const [
+        wrapperClass,
+        setWrapperClass
+    ] = useState(getClass?.(placement) || "")
     const controlled = !isUndef(propVisible)
     const realTrigger = getTrigger(trigger)
     let childrenWithListeners: ReactElement = children
