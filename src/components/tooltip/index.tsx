@@ -13,7 +13,7 @@ import { classnames } from "../utils"
 import { ComputePositionReturn } from "@floating-ui/dom"
 
 interface TooltipProps extends Omit<CommonProps, "title"> {
-    placement: PlacementsWithoutAlignment
+    placement?: PlacementsWithoutAlignment
     title: ReactNode
 }
 
@@ -39,7 +39,6 @@ const Tooltip: FC<TooltipProps> = (
     const getClassName = (placement: PlacementsWithoutAlignment) => {
         return classnames(
             className,
-            "show",
             `bs-tooltip-${placementMap.get(placement)}`,
             PREFIX
         )
@@ -69,7 +68,7 @@ const Tooltip: FC<TooltipProps> = (
             floatingRef={floatingRef}
             overlay={overlay}
             placement={placement}
-            // trigger={trigger}
+            trigger={trigger}
             arrowProps={{ className: `${PREFIX}-arrow` }}
             onUpdate={handleUpdate}
             fallbackPlacements={fallbackPlacements}

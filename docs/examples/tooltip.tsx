@@ -12,8 +12,7 @@ export default function TooltipExample() {
             <Tooltip
                 // visible={visible}
                 anchorRef={ref}
-                title="tooltip"
-                placement="right">
+                title="This is a tooltip">
                 <Button ref={ref} onClick={toggle}>
                     Toggle tooltip
                 </Button>

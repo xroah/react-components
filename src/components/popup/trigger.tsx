@@ -74,7 +74,6 @@ const Trigger: FC<TriggerProps> = (
         placement,
         fallbackPlacements,
         visible: propVisible,
-        style,
         floatingRef,
         onUpdate,
         ...restProps
@@ -83,7 +82,6 @@ const Trigger: FC<TriggerProps> = (
     let realOverlay = overlay
     const arrowRef = useRef<HTMLDivElement>(null)
     const [visible, setVisible] = useState(defaultVisible)
-    const [pos, setPos] = useState<CSSProperties>({})
     const [
         arrowStyle,
         setArrowStyle
@@ -153,10 +151,6 @@ const Trigger: FC<TriggerProps> = (
         realOverlay = createElement(
             wrapper,
             {
-                style: {
-                    ...style,
-                    ...pos
-                },
                 ref: floatingRef,
                 ...restProps
             },
@@ -178,8 +172,6 @@ const Trigger: FC<TriggerProps> = (
     }
     const handleUpdate = (data: ComputePositionReturn) => {
         const {
-            x,
-            y,
             middlewareData,
             placement
         } = data
@@ -202,9 +194,6 @@ const Trigger: FC<TriggerProps> = (
             setArrowStyle(style)
         }
 
-        setPos({
-            transform: `translate(${x}px, ${y}px)`
-        })
         onUpdate?.(data)
     }
     const popupProps: PopupProps = {

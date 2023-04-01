@@ -129,15 +129,14 @@ const Popup: FC<PopupProps> = (
                 placement
             }
         ).then(({ x, y, ...rest }) => {
+            setPos({
+                ...pos,
+                transform: `translateX(${x}px) translateY(${y}px)`
+            })
             onUpdate?.({
                 x,
                 y,
                 ...rest
-            })
-
-            setPos({
-                ...pos,
-                transform: `translateX(${x}px) translateY(${y}px)`
             })
         })
     }
@@ -159,7 +158,7 @@ const Popup: FC<PopupProps> = (
                 if (floatingRef.current && anchorRef.current) {
                     cleanup = autoUpdate(
                         anchorRef.current,
-                        floatingRef.current as HTMLElement,
+                        floatingRef.current,
                         updatePosition
                     )
                 }
