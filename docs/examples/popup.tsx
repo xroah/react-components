@@ -7,14 +7,19 @@ export default function PopupExample() {
     const toggle = () => setVisible(!visible)
     const buttonRef = React.useRef(null)
     const floatingRef = React.useRef(null)
+    
 
     return (
-        <div style={{ margin: "200px 0" }}>
+        <div style={{ margin: "200px 0", position: "relative" }}>
             <Popup
                 anchorRef={buttonRef}
                 visible={visible}
                 offset={[10, 50]}
                 floatingRef={floatingRef}
+                unmountOnHidden={false}
+                inline
+                placement="top"
+                transition={false}
                 overlay={
                     <div
                         ref={floatingRef}

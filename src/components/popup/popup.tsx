@@ -37,8 +37,10 @@ import {
     Validator,
     oneOf
 } from "prop-types"
+import NoTransition from "../basics/no-transition"
+import { ToggleEvents } from "../commons/types"
 
-export interface PopupProps {
+export interface PopupProps extends ToggleEvents {
     floatingRef: RefObject<HTMLElement>
     overlay: ReactElement
     flipAlignment?: boolean
@@ -53,12 +55,15 @@ export interface PopupProps {
     placement?: Placement
     visible?: boolean
     fallbackPlacements?: Placement[]
+    inline?: boolean
+    unmountOnHidden?: boolean
     onUpdate?: (data: ComputePositionReturn) => void
 }
 
 const Popup: FC<PopupProps> = (
     {
         visible,
+        transition = true,
         transitionClass,
         offset,
         anchorRef,
@@ -71,7 +76,13 @@ const Popup: FC<PopupProps> = (
         flipAlignment = true,
         flip = true,
         placement = "bottom",
-        onUpdate
+        unmountOnHidden = true,
+        inline: inlineProp,
+        onUpdate,
+        onShow,
+        onShown,
+        onHide,
+        onHidden
     }: PopupProps
 ) => {
     if (!isValidElement(children)) {
@@ -152,6 +163,30 @@ const Popup: FC<PopupProps> = (
             }
         }
     )
+    const transitionProps = {
+        in: visible,
+        unmountOnExit: unmountOnHidden,
+        onEnter: onShow,
+        onEntered: onShown,
+        onExit: onHide,
+        onExited: onHidden
+    }
+    const el = (
+        transition ? (
+            <Fade
+                timeout={timeout}
+                nodeRef={floatingRef}
+                fadeClass={transitionClass}
+                appear
+                {...transitionProps}>
+                {newOverlay}
+            </Fade>
+        ) : (
+            <NoTransition {...transitionProps}>
+                {newOverlay}
+            </NoTransition>
+        )
+    )
 
     useLayoutEffect(
         () => {
@@ -171,22 +206,11 @@ const Popup: FC<PopupProps> = (
         },
         [visible]
     )
-    const fade = (
-        <Fade
-            in={visible}
-            timeout={timeout}
-            nodeRef={floatingRef}
-            fadeClass={transitionClass}
-            appear
-            unmountOnExit>
-            {newOverlay}
-        </Fade>
-    )
 
     return (
         <>
             {children}
-            {createPortal(fade, document.body)}
+            {inlineProp ? el : createPortal(el, document.body)}
         </>
     )
 }
@@ -209,6 +233,8 @@ Popup.propTypes = {
     transitionClass: string,
     timeout: number,
     visible: bool,
+    inline: bool,
+    unmountOnHidden: bool,
     placement: oneOf([
         "top",
         "bottom",

@@ -11,8 +11,9 @@ import React, {
     createElement
 } from "react"
 import Popup, { PopupProps } from "./popup"
-import { DivProps, OneOf, ToggleEvents } from "../commons/types"
+import { DivProps, OneOf } from "../commons/types"
 import { isUndef } from "r-layers/utils"
+import Context, { TriggerContext } from "./trigger-context"
 
 export const placementsWithoutAlignment = [
     "top",
@@ -30,7 +31,7 @@ const triggers = ["hover", "focus", "click"] as const
 type TriggerType = OneOf<typeof triggers>
 
 interface TriggerProps
-    extends PopupProps, ToggleEvents, DivProps {
+    extends PopupProps, DivProps {
     trigger?: TriggerType | TriggerType[]
     defaultVisible?: boolean
     wrapper?: ElementType
@@ -103,16 +104,18 @@ const Trigger: FC<TriggerProps> = (
         visible: controlled ? propVisible : visible,
         onUpdate
     }
+    const ctx: TriggerContext = {}
     let childrenWithListeners: ReactElement = children
 
     if (!controlled && isValidElement(children)) {
         const show = () => setVisible(true)
         const hide = () => setVisible(false)
-        const toggle = () => {
-            setVisible(visible => !visible)
-        }
+        const toggle = () => setVisible(v => !v)
         const listeners: HTMLAttributes<Element> = {}
         const cProps = children.props as HTMLAttributes<HTMLElement>
+        ctx.show = show
+        ctx.hide = hide
+        ctx.toggle = toggle
 
         type ME = MouseEvent<HTMLElement>
         type FE = FocusEvent<HTMLElement>
@@ -157,9 +160,11 @@ const Trigger: FC<TriggerProps> = (
     }
 
     return (
-        <Popup {...popupProps}>
-            {childrenWithListeners}
-        </Popup>
+        <Context.Provider value={ctx}>
+            <Popup {...popupProps}>
+                {childrenWithListeners}
+            </Popup>
+        </Context.Provider>
     )
 }
 

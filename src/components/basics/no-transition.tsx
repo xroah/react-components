@@ -9,7 +9,7 @@ interface NOTransitionProps extends BaseProps {
     showClass?: string
 }
 
-class NOTransition extends React.Component<NOTransitionProps> {
+class NoTransition extends React.Component<NOTransitionProps> {
     componentDidUpdate(prevProps: NOTransitionProps) {
         const {
             onEnter,
@@ -52,8 +52,17 @@ class NOTransition extends React.Component<NOTransitionProps> {
             _in && showClass
         )
 
-        return cloneElement(c, {className: classes})
+        return cloneElement(
+            c,
+            {
+                className: classes,
+                style: {
+                    ...c.props.style,
+                    display: _in ? "" : "none"
+                }
+            }
+        )
     }
 }
 
-export default NOTransition
+export default NoTransition
