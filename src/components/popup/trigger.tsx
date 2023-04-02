@@ -76,6 +76,7 @@ const Trigger: FC<TriggerProps> = (
         ctx.show = show
         ctx.hide = hide
         ctx.toggle = toggle
+        ctx.visible = visible
 
         type ME = MouseEvent<HTMLElement>
         type FE = FocusEvent<HTMLElement>
