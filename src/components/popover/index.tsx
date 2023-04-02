@@ -6,11 +6,13 @@ import React, {
 } from "react"
 import Trigger, {
     CommonProps,
+    placementsWithoutAlignment,
     PlacementsWithoutAlignment
 } from "../popup/trigger"
 import { ComputePositionReturn, Placement } from "@floating-ui/dom"
 import { classnames, getRealDir } from "../utils"
 import useArrow from "../popup/arrow"
+import { node, oneOf } from "prop-types"
 
 interface PopoverProps extends Omit<CommonProps, "title"> {
     content: ReactNode
@@ -81,6 +83,12 @@ const Popover: FC<PopoverProps> = (
             {children}
         </Trigger>
     )
+}
+
+Popover.propTypes = {
+    content: node.isRequired,
+    placeholder: oneOf(placementsWithoutAlignment),
+    title: node
 }
 
 export default Popover

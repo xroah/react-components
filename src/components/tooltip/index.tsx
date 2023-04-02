@@ -6,11 +6,13 @@ import React, {
 } from "react"
 import Trigger, {
     PlacementsWithoutAlignment,
-    CommonProps
+    CommonProps,
+    placementsWithoutAlignment
 } from "../popup/trigger"
 import { classnames, getRealDir } from "../utils"
 import { ComputePositionReturn, Placement } from "@floating-ui/dom"
 import useArrow from "../popup/arrow"
+import { node, oneOf } from "prop-types"
 
 export interface TooltipProps extends Omit<CommonProps, "title"> {
     placement?: PlacementsWithoutAlignment
@@ -70,6 +72,11 @@ const Tooltip: FC<TooltipProps> = (
             {children}
         </Trigger>
     )
+}
+
+Tooltip.propTypes = {
+    placement: oneOf(placementsWithoutAlignment),
+    title: node
 }
 
 export default Tooltip

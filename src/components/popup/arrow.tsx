@@ -61,7 +61,7 @@ export default function useArrow(className: string): Return {
 
             style.left = undefined
         }
-        console.log(middlewareData)
+        
         setStyle(s => ({ ...s, ...style }))
     }
 
