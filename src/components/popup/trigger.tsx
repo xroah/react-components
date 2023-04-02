@@ -8,9 +8,10 @@ import React, {
     FocusEvent,
     cloneElement,
     ElementType,
-    createElement
+    createElement,
+    useRef
 } from "react"
-import Popup, { PopupProps } from "./popup"
+import Popup, { extractPopupProps, PopupProps } from "./popup"
 import { DivProps, OneOf } from "../commons/types"
 import { isUndef } from "r-layers/utils"
 import Context, { TriggerContext } from "./trigger-context"
@@ -30,20 +31,13 @@ const triggers = ["hover", "focus", "click"] as const
 
 type TriggerType = OneOf<typeof triggers>
 
-interface TriggerProps
-    extends PopupProps, DivProps {
+export interface TriggerProps
+    extends Omit<PopupProps, "floatingRef">, DivProps {
     trigger?: TriggerType | TriggerType[]
     defaultVisible?: boolean
     wrapper?: ElementType
     children: ReactElement
 }
-
-export type CommonProps = Omit<
-    TriggerProps,
-    "overlay" |
-    "arrowRef" |
-    "floatingRef"
->
 
 const getTrigger = (trigger: TriggerType | TriggerType[]) => {
     if (Array.isArray(trigger)) {
@@ -56,53 +50,33 @@ const getTrigger = (trigger: TriggerType | TriggerType[]) => {
 const Trigger: FC<TriggerProps> = (
     {
         trigger = "click",
-        anchorRef,
+        wrapper = "div",
         children,
         defaultVisible,
         overlay,
-        wrapper = "div",
-        offset,
-        flip,
-        flipAlignment,
-        transition,
-        transitionClass,
-        timeout,
-        placement,
-        arrowRef,
         visible: propVisible,
-        floatingRef,
-        fallbackPlacements,
-        onUpdate,
         ...restProps
     }: TriggerProps
 ) => {
     const [visible, setVisible] = useState(defaultVisible)
     const controlled = !isUndef(propVisible)
     const realTrigger = getTrigger(trigger)
+    const extractedProps = extractPopupProps(restProps)
+    const floatingRef = useRef<HTMLElement>(null)
     const realOverlay = createElement(
         wrapper,
         {
             ref: floatingRef,
-            ...restProps
+            ...extractedProps.otherProps
         },
         overlay
     )
     const popupProps: PopupProps = {
-        anchorRef,
+        ...extractedProps.popupProps,
         floatingRef,
         children,
-        offset,
-        flip,
-        flipAlignment,
-        transition,
-        transitionClass,
-        timeout,
-        placement,
-        arrowRef,
         overlay: realOverlay,
-        fallbackPlacements,
-        visible: controlled ? propVisible : visible,
-        onUpdate
+        visible: controlled ? propVisible : visible
     }
     const ctx: TriggerContext = {}
     let childrenWithListeners: ReactElement = children

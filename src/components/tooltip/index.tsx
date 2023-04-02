@@ -1,20 +1,20 @@
 import React, {
     FC,
     ReactNode,
-    useRef,
     useState
 } from "react"
 import Trigger, {
     PlacementsWithoutAlignment,
-    CommonProps,
-    placementsWithoutAlignment
+    placementsWithoutAlignment,
+    TriggerProps
 } from "../popup/trigger"
 import { classnames, getRealDir } from "../utils"
 import { ComputePositionReturn, Placement } from "@floating-ui/dom"
 import useArrow from "../popup/arrow"
 import { node, oneOf } from "prop-types"
 
-export interface TooltipProps extends Omit<CommonProps, "title"> {
+export interface TooltipProps extends
+    Omit<TriggerProps, "title" | "overlay" | "arrowRef"> {
     placement?: PlacementsWithoutAlignment
     title: ReactNode
 }
@@ -38,7 +38,6 @@ const Tooltip: FC<TooltipProps> = (
             PREFIX
         )
     }
-    const floatingRef = useRef<HTMLElement>(null)
     const [
         arrow,
         arrowRef,
@@ -61,7 +60,6 @@ const Tooltip: FC<TooltipProps> = (
 
     return (
         <Trigger
-            floatingRef={floatingRef}
             overlay={overlay}
             className={classes}
             placement={placement}

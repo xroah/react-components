@@ -38,7 +38,7 @@ import {
     oneOf
 } from "prop-types"
 import NoTransition from "../basics/no-transition"
-import { ToggleEvents } from "../commons/types"
+import { DivProps, ToggleEvents } from "../commons/types"
 
 export interface PopupProps extends ToggleEvents {
     floatingRef: RefObject<HTMLElement>
@@ -58,6 +58,54 @@ export interface PopupProps extends ToggleEvents {
     inline?: boolean
     unmountOnHidden?: boolean
     onUpdate?: (data: ComputePositionReturn) => void
+}
+
+export function extractPopupProps(
+    props: Partial<PopupProps & DivProps>
+) {
+    const keys = new Set([
+        "visible",
+        "transition",
+        "transitionClass",
+        "offset",
+        "anchorRef",
+        "floatingRef",
+        "children",
+        "overlay",
+        "timeout",
+        "fallbackPlacements",
+        "arrowRef",
+        "flipAlignment",
+        "flip",
+        "placement",
+        "unmountOnHidden",
+        "inline",
+        "onUpdate",
+        "onShow",
+        "onShown",
+        "onHide",
+        "onHidden"
+    ])
+    const popupProps: Partial<PopupProps> = {}
+    const otherProps: DivProps = {}
+    const realKeys = Object.keys(props)
+    type Key = keyof DivProps
+    type PopupKey = keyof PopupProps
+
+    for (const key of realKeys) {
+        if (keys.has(key)) {
+            (
+                popupProps[key as PopupKey] as PopupProps[PopupKey]
+            ) = props[key as PopupKey]
+        } else {
+            otherProps[key as Key] = props[key as Key]
+        }
+    }
+
+    return {
+        popupProps: popupProps as PopupProps,
+        otherProps
+    }
 }
 
 const Popup: FC<PopupProps> = (

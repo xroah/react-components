@@ -1,20 +1,20 @@
 import React, {
     FC,
     ReactNode,
-    useRef,
     useState
 } from "react"
 import Trigger, {
-    CommonProps,
     placementsWithoutAlignment,
-    PlacementsWithoutAlignment
+    PlacementsWithoutAlignment,
+    TriggerProps
 } from "../popup/trigger"
 import { ComputePositionReturn, Placement } from "@floating-ui/dom"
 import { classnames, getRealDir } from "../utils"
 import useArrow from "../popup/arrow"
 import { node, oneOf } from "prop-types"
 
-interface PopoverProps extends Omit<CommonProps, "title"> {
+interface PopoverProps
+    extends Omit<TriggerProps, "title" | "overlay" | "arrowRef"> {
     content: ReactNode
     placement?: PlacementsWithoutAlignment
     title?: ReactNode
@@ -34,7 +34,6 @@ const Popover: FC<PopoverProps> = (
     }: PopoverProps
 ) => {
     const PREFIX = "popover"
-    const floatingRef = useRef<HTMLElement>(null)
     const getClass = (placement: Placement) => {
         return classnames(
             className,
@@ -74,7 +73,6 @@ const Popover: FC<PopoverProps> = (
             className={classes}
             placement={placement}
             offset={offset}
-            floatingRef={floatingRef}
             trigger={trigger}
             overlay={overlay}
             arrowRef={arrowRef}
