@@ -6,13 +6,10 @@ import React, {
     useState,
     MouseEvent,
     FocusEvent,
-    cloneElement,
-    ElementType,
-    createElement,
-    useRef
+    cloneElement
 } from "react"
 import Popup, { extractPopupProps, PopupProps } from "./popup"
-import { DivProps, OneOf } from "../commons/types"
+import { OneOf } from "../commons/types"
 import { isUndef } from "r-layers/utils"
 import Context, { TriggerContext } from "./trigger-context"
 
@@ -31,11 +28,9 @@ const triggers = ["hover", "focus", "click"] as const
 
 type TriggerType = OneOf<typeof triggers>
 
-export interface TriggerProps
-    extends Omit<PopupProps, "floatingRef">, DivProps {
+export interface TriggerProps extends PopupProps {
     trigger?: TriggerType | TriggerType[]
     defaultVisible?: boolean
-    wrapper?: ElementType
     children: ReactElement
 }
 
@@ -50,10 +45,10 @@ const getTrigger = (trigger: TriggerType | TriggerType[]) => {
 const Trigger: FC<TriggerProps> = (
     {
         trigger = "click",
-        wrapper = "div",
         children,
         defaultVisible,
         overlay,
+        floatingRef,
         visible: propVisible,
         ...restProps
     }: TriggerProps
@@ -62,20 +57,11 @@ const Trigger: FC<TriggerProps> = (
     const controlled = !isUndef(propVisible)
     const realTrigger = getTrigger(trigger)
     const extractedProps = extractPopupProps(restProps)
-    const floatingRef = useRef<HTMLElement>(null)
-    const realOverlay = createElement(
-        wrapper,
-        {
-            ref: floatingRef,
-            ...extractedProps.otherProps
-        },
-        overlay
-    )
     const popupProps: PopupProps = {
         ...extractedProps.popupProps,
         floatingRef,
         children,
-        overlay: realOverlay,
+        overlay,
         visible: controlled ? propVisible : visible
     }
     const ctx: TriggerContext = {}

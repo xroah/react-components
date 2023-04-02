@@ -1,23 +1,27 @@
 import React, {
     FC,
+    ReactElement,
     ReactNode,
+    useRef,
     useState
 } from "react"
 import Trigger, {
     placementsWithoutAlignment,
-    PlacementsWithoutAlignment,
-    TriggerProps
+    PlacementsWithoutAlignment
 } from "../popup/trigger"
 import { ComputePositionReturn, Placement } from "@floating-ui/dom"
 import { classnames, getRealDir } from "../utils"
 import useArrow from "../popup/arrow"
 import { node, oneOf } from "prop-types"
+import { DivPropsWithNodeTitle } from "r-layers/commons/types"
+import { PublicProps } from "../tooltip"
 
 interface PopoverProps
-    extends Omit<TriggerProps, "title" | "overlay" | "arrowRef"> {
+    extends DivPropsWithNodeTitle, PublicProps {
     content: ReactNode
     placement?: PlacementsWithoutAlignment
     title?: ReactNode
+    children: ReactElement
 }
 
 const Popover: FC<PopoverProps> = (
@@ -29,6 +33,7 @@ const Popover: FC<PopoverProps> = (
         offset = [8, 0],
         placement = "right",
         trigger = "click",
+        defaultVisible,
         onUpdate,
         ...restProps
     }: PopoverProps
@@ -47,8 +52,9 @@ const Popover: FC<PopoverProps> = (
         arrowRef,
         updatePosition
     ] = useArrow(`${PREFIX}-arrow`)
+    const ref = useRef(null)
     const overlay = (
-        <>
+        <div ref={ref} className={classes}>
             {arrow}
             {
                 title ? (
@@ -60,7 +66,7 @@ const Popover: FC<PopoverProps> = (
             <div className={`${PREFIX}-body`}>
                 {content}
             </div>
-        </>
+        </div>
     )
     const handleUpdate = (data: ComputePositionReturn) => {
         updatePosition(data)
@@ -70,12 +76,13 @@ const Popover: FC<PopoverProps> = (
 
     return (
         <Trigger
-            className={classes}
             placement={placement}
             offset={offset}
             trigger={trigger}
             overlay={overlay}
+            floatingRef={ref}
             arrowRef={arrowRef}
+            defaultVisible={defaultVisible}
             onUpdate={handleUpdate}
             {...restProps}>
             {children}
@@ -85,7 +92,7 @@ const Popover: FC<PopoverProps> = (
 
 Popover.propTypes = {
     content: node.isRequired,
-    placeholder: oneOf(placementsWithoutAlignment),
+    placement: oneOf(placementsWithoutAlignment),
     title: node
 }
 

@@ -1,6 +1,8 @@
 import React, {
     FC,
+    ReactElement,
     ReactNode,
+    useRef,
     useState
 } from "react"
 import Trigger, {
@@ -12,11 +14,20 @@ import { classnames, getRealDir } from "../utils"
 import { ComputePositionReturn, Placement } from "@floating-ui/dom"
 import useArrow from "../popup/arrow"
 import { node, oneOf } from "prop-types"
+import { DivPropsWithNodeTitle } from "r-layers/commons/types"
 
-export interface TooltipProps extends
-    Omit<TriggerProps, "title" | "overlay" | "arrowRef"> {
+export type PublicProps = Omit<
+    TriggerProps,
+    "overlay" |
+    "arrowRef" |
+    "floatingRef"
+>
+
+export interface TooltipProps
+    extends PublicProps, DivPropsWithNodeTitle {
     placement?: PlacementsWithoutAlignment
     title: ReactNode
+    children: ReactElement
 }
 
 const Tooltip: FC<TooltipProps> = (
@@ -26,6 +37,7 @@ const Tooltip: FC<TooltipProps> = (
         className,
         placement = "top",
         trigger = "hover",
+        defaultVisible,
         onUpdate,
         ...restProps
     }: TooltipProps
@@ -49,22 +61,24 @@ const Tooltip: FC<TooltipProps> = (
         setClasses(getClass(data.placement))
         onUpdate?.(data)
     }
+    const floatingRef = useRef(null)
     const overlay = (
-        <>
+        <div ref={floatingRef} className={classes}>
             {arrow}
             <div className={`${PREFIX}-inner`}>
                 {title}
             </div>
-        </>
+        </div>
     )
 
     return (
         <Trigger
             overlay={overlay}
-            className={classes}
             placement={placement}
             trigger={trigger}
             arrowRef={arrowRef}
+            floatingRef={floatingRef}
+            defaultVisible={defaultVisible}
             onUpdate={handleUpdate}
             {...restProps}>
             {children}
