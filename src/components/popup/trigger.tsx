@@ -7,15 +7,12 @@ import React, {
     MouseEvent,
     FocusEvent,
     cloneElement,
-    useRef,
-    CSSProperties,
     ElementType,
     createElement
 } from "react"
 import Popup, { PopupProps } from "./popup"
 import { DivProps, OneOf, ToggleEvents } from "../commons/types"
 import { isUndef } from "r-layers/utils"
-import { ComputePositionReturn, Placement } from "@floating-ui/dom"
 
 export const placementsWithoutAlignment = [
     "top",
@@ -36,16 +33,15 @@ interface TriggerProps
     extends PopupProps, ToggleEvents, DivProps {
     trigger?: TriggerType | TriggerType[]
     defaultVisible?: boolean
-    arrow?: boolean
-    arrowProps?: DivProps
-    wrapper?: ElementType | null
+    wrapper?: ElementType
     children: ReactElement
-    getClass?: (placement?: Placement) => string
 }
 
 export type CommonProps = Omit<
     TriggerProps,
-    "overlay" | "arrowRef" | "floatingRef"
+    "overlay" |
+    "arrowRef" |
+    "floatingRef"
 >
 
 const getTrigger = (trigger: TriggerType | TriggerType[]) => {
@@ -64,8 +60,6 @@ const Trigger: FC<TriggerProps> = (
         defaultVisible,
         overlay,
         wrapper = "div",
-        arrow,
-        arrowProps,
         offset,
         flip,
         flipAlignment,
@@ -73,29 +67,42 @@ const Trigger: FC<TriggerProps> = (
         transitionClass,
         timeout,
         placement,
+        arrowRef,
         visible: propVisible,
         floatingRef,
         fallbackPlacements,
-        getClass,
         onUpdate,
         ...restProps
     }: TriggerProps
 ) => {
-    let realOverlay = overlay
-    const arrowRef = useRef<HTMLDivElement>(null)
     const [visible, setVisible] = useState(defaultVisible)
-    const [
-        arrowStyle,
-        setArrowStyle
-    ] = useState<CSSProperties>({
-        position: "absolute"
-    })
-    const [
-        wrapperClass,
-        setWrapperClass
-    ] = useState(getClass?.(placement) || "")
     const controlled = !isUndef(propVisible)
     const realTrigger = getTrigger(trigger)
+    const realOverlay = createElement(
+        wrapper,
+        {
+            ref: floatingRef,
+            ...restProps
+        },
+        overlay
+    )
+    const popupProps: PopupProps = {
+        anchorRef,
+        floatingRef,
+        children,
+        offset,
+        flip,
+        flipAlignment,
+        transition,
+        transitionClass,
+        timeout,
+        placement,
+        arrowRef,
+        overlay: realOverlay,
+        fallbackPlacements,
+        visible: controlled ? propVisible : visible,
+        onUpdate
+    }
     let childrenWithListeners: ReactElement = children
 
     if (!controlled && isValidElement(children)) {
@@ -147,79 +154,6 @@ const Trigger: FC<TriggerProps> = (
             children,
             { ...listeners }
         )
-    }
-
-    if (wrapper) {
-        const {
-            style: arrowPropStyle,
-            ...rest
-        } = arrowProps ?? {}
-        realOverlay = createElement(
-            wrapper,
-            {
-                ref: floatingRef,
-                className: wrapperClass,
-                ...restProps
-            },
-            <>
-                {
-                    arrow ? (
-                        <div
-                            ref={arrowRef}
-                            style={{
-                                ...arrowPropStyle,
-                                ...arrowStyle
-                            }}
-                            {...rest} />
-                    ) : null
-                }
-                {overlay}
-            </>
-        )
-    }
-    const handleUpdate = (data: ComputePositionReturn) => {
-        const {
-            middlewareData,
-            placement
-        } = data
-
-        if (arrow) {
-            const { x, y } = middlewareData.arrow ?? {}
-            const vReg = /top|bottom/
-            const hReg = /left|right/
-            const style: CSSProperties = {
-                position: "absolute",
-                transform: `translate(${x ?? 0}px, ${y ?? 0}px)`
-            }
-
-            if (vReg.test(placement)) {
-                style.left = 0
-            } else if (hReg.test(placement)) {
-                style.top = 0
-            }
-
-            setArrowStyle(style)
-        }
-
-        setWrapperClass(getClass?.(placement) ?? "")
-        onUpdate?.(data)
-    }
-    const popupProps: PopupProps = {
-        anchorRef,
-        floatingRef,
-        children,
-        offset,
-        flip,
-        flipAlignment,
-        transition,
-        transitionClass,
-        timeout,
-        placement,
-        arrowRef,
-        overlay: realOverlay,
-        fallbackPlacements,
-        visible: controlled ? propVisible : visible,
-        onUpdate: handleUpdate
     }
 
     return (

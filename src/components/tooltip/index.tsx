@@ -1,14 +1,16 @@
 import React, {
     FC,
     ReactNode,
-    useRef
+    useRef,
+    useState
 } from "react"
 import Trigger, {
     PlacementsWithoutAlignment,
     CommonProps
 } from "../popup/trigger"
 import { classnames, getRealDir } from "../utils"
-import { Placement } from "@floating-ui/dom"
+import { ComputePositionReturn, Placement } from "@floating-ui/dom"
+import useArrow from "../popup/arrow"
 
 export interface TooltipProps extends Omit<CommonProps, "title"> {
     placement?: PlacementsWithoutAlignment
@@ -22,33 +24,48 @@ const Tooltip: FC<TooltipProps> = (
         className,
         placement = "top",
         trigger = "hover",
+        onUpdate,
         ...restProps
     }: TooltipProps
 ) => {
     const PREFIX = "tooltip"
-    const getClass = (placement?: Placement) => {
+    const getClass = (placement: Placement) => {
         return classnames(
             className,
-            placement && `bs-tooltip-${getRealDir(placement)}`,
+            `bs-tooltip-${getRealDir(placement)}`,
             PREFIX
         )
     }
-    const overlay = (
-        <div className={`${PREFIX}-inner`}>
-            {title}
-        </div>
-    )
     const floatingRef = useRef<HTMLElement>(null)
+    const [
+        arrow,
+        arrowRef,
+        updatePosition
+    ] = useArrow(`${PREFIX}-arrow`)
+    const [classes, setClasses] = useState(getClass(placement))
+    const handleUpdate = (data: ComputePositionReturn) => {
+        updatePosition(data)
+        setClasses(getClass(data.placement))
+        onUpdate?.(data)
+    }
+    const overlay = (
+        <>
+            {arrow}
+            <div className={`${PREFIX}-inner`}>
+                {title}
+            </div>
+        </>
+    )
 
     return (
         <Trigger
             floatingRef={floatingRef}
             overlay={overlay}
+            className={classes}
             placement={placement}
             trigger={trigger}
-            arrowProps={{ className: `${PREFIX}-arrow` }}
-            getClass={getClass}
-            arrow
+            arrowRef={arrowRef}
+            onUpdate={handleUpdate}
             {...restProps}>
             {children}
         </Trigger>
