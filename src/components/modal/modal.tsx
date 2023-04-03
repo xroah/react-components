@@ -1,4 +1,4 @@
-import React, { FC } from "react"
+import React, { FC, useCallback, useRef, useState } from "react"
 import {
     bool,
     string,
@@ -75,7 +75,6 @@ const Modal: FC<ModalProps> = function Modal(
         cancel = true,
         className,
         children,
-        style,
         tabIndex = -1,
         keyboard = true,
         fullscreen,
@@ -93,11 +92,9 @@ const Modal: FC<ModalProps> = function Modal(
         ...restProps
     }
 ) {
-    const [staticClass, setStaticClass] = React.useState("")
-    const [wrapperVisible, setWrapperVisible] = React.useState(visible)
-    const [modalVisible, setModalVisible] = React.useState(!!visible)
-    const modalRef = React.useRef<HTMLDivElement>(null)
-    const activeEl = React.useRef<HTMLElement | null>(null)
+    const [staticClass, setStaticClass] = useState("")
+    const modalRef = useRef<HTMLDivElement>(null)
+    const activeEl = useRef<HTMLElement | null>(null)
     const classes = classnames(className, "modal", staticClass)
     const dialogClasses = getDialogClass({
         fullscreen,
@@ -105,7 +102,7 @@ const Modal: FC<ModalProps> = function Modal(
         contentScrollable,
         center
     })
-    const removeStaticClass = React.useCallback(
+    const removeStaticClass = useCallback(
         () => setStaticClass(""),
         []
     )
@@ -122,8 +119,6 @@ const Modal: FC<ModalProps> = function Modal(
     }
     const handleExited = () => {
         bodyStyleStack.pop()
-        // make the wrapper invisible
-        setWrapperVisible(false)
         onHidden?.()
         activeEl.current?.focus()
     }
@@ -153,18 +148,10 @@ const Modal: FC<ModalProps> = function Modal(
 
         onClick?.(ev)
     }
-    const display = style?.display ?? "block"
-    const modalStyle = {
-        display: display === "none" ? "block" : display,
-    }
     const modal = (
         <div
             className={classes}
             ref={modalRef}
-            style={{
-                ...style,
-                ...modalStyle
-            }}
             tabIndex={tabIndex}
             onKeyDown={handleKeyDown}
             onClick={handleClickBackdrop}
@@ -195,36 +182,21 @@ const Modal: FC<ModalProps> = function Modal(
     )
     const _backdrop = backdrop ? (
         <Backdrop
-            visible={!!modalVisible}
+            visible={!!visible}
             className="modal-backdrop"
             transition={transition} />
     ) : null
     const transitionProps = {
-        in: modalVisible,
+        in: visible,
+        showDisplay: "block",
         onEnter: handleEnter,
         onEntered: handleEntered,
         onExit: onHide,
         onExited: handleExited
     }
 
-    React.useEffect(
-        () => {
-            if (visible) {
-                // make the wrapper visible first
-                if (wrapperVisible) {
-                    setModalVisible(true)
-                } else {
-                    setWrapperVisible(true)
-                }
-            } else {
-                setModalVisible(false)
-            }
-        },
-        [visible, wrapperVisible]
-    )
-
     return (
-        <div style={{ display: wrapperVisible ? "block" : "none" }}>
+        <>
             {
                 transition ? (
                     <Fade
@@ -241,7 +213,7 @@ const Modal: FC<ModalProps> = function Modal(
                 )
             }
             {_backdrop}
-        </div>
+        </>
     )
 }
 

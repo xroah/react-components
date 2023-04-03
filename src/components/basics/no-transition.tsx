@@ -7,6 +7,7 @@ type BaseProps = Partial<TimeoutProps<HTMLElement>>
 interface NOTransitionProps extends BaseProps {
     children: React.ReactNode
     showClass?: string
+    showDisplay?: string
 }
 
 class NoTransition extends React.Component<NOTransitionProps> {
@@ -39,7 +40,8 @@ class NoTransition extends React.Component<NOTransitionProps> {
             children,
             unmountOnExit,
             in: _in,
-            showClass = "show"
+            showClass = "show",
+            showDisplay
         } = this.props
 
         if (!_in && unmountOnExit) {
@@ -58,7 +60,7 @@ class NoTransition extends React.Component<NOTransitionProps> {
                 className: classes,
                 style: {
                     ...c.props.style,
-                    display: _in ? "" : "none"
+                    display: _in ? showDisplay : "none"
                 }
             }
         )
