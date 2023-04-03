@@ -24,7 +24,7 @@ import {
     limitShift
 } from "@floating-ui/dom"
 import Fade from "../basics/fade"
-import { noop } from "r-layers/utils"
+import { classnames, noop } from "../utils"
 import {
     arrayOf,
     bool,
@@ -43,8 +43,10 @@ import { DivProps, ToggleEvents } from "../commons/types"
 
 export interface PopupProps extends ToggleEvents {
     overlay: ReactElement
-    flipAlignment?: boolean
     anchorRef: RefObject<HTMLElement>
+    flipAlignment?: boolean
+    className?: string
+    style?: CSSProperties
     arrowRef?: RefObject<HTMLElement>
     children: ReactElement
     offset?: number | number[]
@@ -69,7 +71,6 @@ export function extractPopupProps(
         "transitionClass",
         "offset",
         "anchorRef",
-        "floatingRef",
         "children",
         "overlay",
         "timeout",
@@ -80,6 +81,8 @@ export function extractPopupProps(
         "placement",
         "unmountOnHidden",
         "inline",
+        "className",
+        "style",
         "onUpdate",
         "onShow",
         "onShown",
@@ -125,6 +128,8 @@ const Popup: FC<PopupProps> = (
         placement = "bottom",
         unmountOnHidden = true,
         inline: inlineProp,
+        className,
+        style,
         onUpdate,
         onShow,
         onShown,
@@ -136,12 +141,22 @@ const Popup: FC<PopupProps> = (
         return children
     }
 
+    const PREFIX = "r-popup"
     const floatingRef = useRef<HTMLDivElement>(null)
     const [pos, setPos] = useState<CSSProperties>({
         position: "absolute",
         left: 0,
         top: 0
     })
+    const [
+        finalPlacement,
+        setFinalPlacement
+    ] = useState(placement)
+    const classes = classnames(
+        className,
+        PREFIX,
+        `${PREFIX}-${finalPlacement}`
+    )
     const getOffset = useCallback(
         () => {
             if (offset) {
@@ -196,22 +211,21 @@ const Popup: FC<PopupProps> = (
                 ],
                 placement
             }
-        ).then(({ x, y, ...rest }) => {
+        ).then(data => {
             setPos({
                 ...pos,
-                transform: `translateX(${x}px) translateY(${y}px)`
+                left: data.x,
+                top: data.y
             })
-            onUpdate?.({
-                x,
-                y,
-                ...rest
-            })
+            setFinalPlacement(data.placement)
+            onUpdate?.(data)
         })
     }
-    const newOverlay = (
+    const finalOverlay = (
         <div
             ref={floatingRef}
-            className="r-popup">
+            style={style}
+            className={classes}>
             {
                 cloneElement(
                     overlay,
@@ -241,11 +255,11 @@ const Popup: FC<PopupProps> = (
                 fadeClass={transitionClass}
                 appear
                 {...transitionProps}>
-                {newOverlay}
+                {finalOverlay}
             </Fade>
         ) : (
             <NoTransition {...transitionProps}>
-                {newOverlay}
+                {finalOverlay}
             </NoTransition>
         )
     )

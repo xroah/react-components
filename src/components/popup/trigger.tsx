@@ -48,7 +48,6 @@ const Trigger: FC<TriggerProps> = (
         children,
         defaultVisible,
         overlay,
-        floatingRef,
         visible: propVisible,
         ...restProps
     }: TriggerProps
@@ -59,7 +58,6 @@ const Trigger: FC<TriggerProps> = (
     const extractedProps = extractPopupProps(restProps)
     const popupProps: PopupProps = {
         ...extractedProps.popupProps,
-        floatingRef,
         children,
         overlay,
         visible: controlled ? propVisible : visible
