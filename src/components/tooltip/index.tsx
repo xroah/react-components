@@ -19,8 +19,7 @@ import { DivPropsWithNodeTitle } from "r-layers/commons/types"
 export type PublicProps = Omit<
     TriggerProps,
     "overlay" |
-    "arrowRef" |
-    "floatingRef"
+    "arrowRef" 
 >
 
 export interface TooltipProps
@@ -47,6 +46,7 @@ const Tooltip: FC<TooltipProps> = (
         return classnames(
             className,
             `bs-tooltip-${getRealDir(placement)}`,
+            "show",
             PREFIX
         )
     }
@@ -77,7 +77,6 @@ const Tooltip: FC<TooltipProps> = (
             placement={placement}
             trigger={trigger}
             arrowRef={arrowRef}
-            floatingRef={floatingRef}
             defaultVisible={defaultVisible}
             onUpdate={handleUpdate}
             {...restProps}>

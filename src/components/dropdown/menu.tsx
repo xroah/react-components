@@ -98,7 +98,11 @@ const Menu = forwardRef(
         ref: ForwardedRef<MenuApi>
     ) => {
         const triggerCtx = useContext(triggerContext)
-        const classes = classnames(className, "dropdown-menu")
+        const classes = classnames(
+            className,
+            "show",
+            "dropdown-menu"
+        )
         const elRef = nodeRef ?? useRef(null)
         const focusIndex = useRef(-1)
         const activeEl = useRef<HTMLElement | null>(null)
@@ -169,7 +173,7 @@ const Menu = forwardRef(
         const focusItem = (index: number | "last") => {
             const items = getEnabledMenuItems(elRef.current)
             const len = items.length
-            
+
             if (!items.length) {
                 return
             }
@@ -185,7 +189,7 @@ const Menu = forwardRef(
             }
 
             focusIndex.current = i
-            
+
             items[i].focus()
         }
         const focusFirst = () => focusItem(0)

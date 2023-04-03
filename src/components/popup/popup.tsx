@@ -8,6 +8,7 @@ import React, {
     cloneElement,
     useCallback,
     useLayoutEffect,
+    useRef,
 } from "react"
 import { createPortal } from "react-dom"
 import {
@@ -41,7 +42,6 @@ import NoTransition from "../basics/no-transition"
 import { DivProps, ToggleEvents } from "../commons/types"
 
 export interface PopupProps extends ToggleEvents {
-    floatingRef: RefObject<HTMLElement>
     overlay: ReactElement
     flipAlignment?: boolean
     anchorRef: RefObject<HTMLElement>
@@ -115,7 +115,6 @@ const Popup: FC<PopupProps> = (
         transitionClass,
         offset,
         anchorRef,
-        floatingRef,
         children,
         overlay,
         timeout,
@@ -137,6 +136,7 @@ const Popup: FC<PopupProps> = (
         return children
     }
 
+    const floatingRef = useRef<HTMLDivElement>(null)
     const [pos, setPos] = useState<CSSProperties>({
         position: "absolute",
         left: 0,
@@ -164,12 +164,18 @@ const Popup: FC<PopupProps> = (
         },
         [offset]
     )
+    const getFloatingEl = () => {
+        const el = floatingRef.current?.firstElementChild
+
+        return el as (HTMLElement | null)
+    }
     const updatePosition = () => {
         const offset = getOffset()
+        const floatingEl = getFloatingEl()
 
         computePosition(
             anchorRef.current!,
-            floatingRef.current!,
+            floatingEl!,
             {
                 middleware: [
                     offset && offsetMiddleware({
@@ -202,14 +208,22 @@ const Popup: FC<PopupProps> = (
             })
         })
     }
-    const newOverlay = cloneElement(
-        overlay,
-        {
-            style: {
-                ...overlay.props.style,
-                ...pos
+    const newOverlay = (
+        <div
+            ref={floatingRef}
+            className="r-popup">
+            {
+                cloneElement(
+                    overlay,
+                    {
+                        style: {
+                            ...overlay.props.style,
+                            ...pos
+                        }
+                    }
+                )
             }
-        }
+        </div>
     )
     const transitionProps = {
         in: visible,
@@ -241,10 +255,11 @@ const Popup: FC<PopupProps> = (
             let cleanup = noop
 
             if (visible) {
-                if (floatingRef.current && anchorRef.current) {
+                const floatingEl = getFloatingEl()
+                if (floatingEl && anchorRef.current) {
                     cleanup = autoUpdate(
                         anchorRef.current,
-                        floatingRef.current,
+                        floatingEl,
                         updatePosition
                     )
                 }
@@ -269,7 +284,6 @@ const refType = shape({
 
 Popup.propTypes = {
     anchorRef: refType,
-    floatingRef: refType,
     overlay: element.isRequired,
     children: element.isRequired,
     offset: oneOfType([

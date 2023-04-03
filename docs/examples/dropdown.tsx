@@ -5,7 +5,6 @@ import React from "react"
 export default function DropdownExample() {
     const ref = React.useRef<HTMLButtonElement>(null)
     const customRef = React.useRef<HTMLButtonElement>(null)
-    const customAnchorRef = React.useRef(null)
 
     return (
         <div style={{ margin: "500px 200px" }}>
@@ -44,16 +43,16 @@ export default function DropdownExample() {
             </Dropdown>
             <Dropdown
                 anchorRef={customRef}
-                floatingRef={customAnchorRef}
                 inline
-                menu={<div
-                    ref={customAnchorRef}
-                    style={{
-                        background: "indigo",
-                        width: 300,
-                        height: 200
-                    }} />}>
-                <button ref={customRef}>
+                menu={
+                    <div
+                        style={{
+                            background: "indigo",
+                            width: 300,
+                            height: 200
+                        }} />
+                }>
+                <button ref={customRef} type="button">
                     Toggle custom dropdown
                 </button>
             </Dropdown>

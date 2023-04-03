@@ -15,7 +15,6 @@ export default function PopupExample() {
                 anchorRef={buttonRef}
                 visible={visible}
                 offset={[10, 50]}
-                floatingRef={floatingRef}
                 unmountOnHidden={false}
                 inline
                 placement="top"

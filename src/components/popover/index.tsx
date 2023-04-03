@@ -80,7 +80,6 @@ const Popover: FC<PopoverProps> = (
             offset={offset}
             trigger={trigger}
             overlay={overlay}
-            floatingRef={ref}
             arrowRef={arrowRef}
             defaultVisible={defaultVisible}
             onUpdate={handleUpdate}

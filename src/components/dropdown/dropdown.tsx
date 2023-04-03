@@ -4,7 +4,6 @@ import React, {
     isValidElement,
     KeyboardEvent,
     ReactElement,
-    RefObject,
     useRef
 } from "react"
 import Trigger from "../popup/trigger"
@@ -13,16 +12,14 @@ import Menu, {
     MenuApi,
     MenuProps
 } from "./menu"
-import { classnames, isUndef } from "../utils"
+import { classnames } from "../utils"
 import { extractPopupProps } from "r-layers/popup/popup"
 import { DivProps } from "../commons/types"
-import { PublicProps } from "r-layers/tooltip"
-import warning from "warning"
+import { PublicProps } from "../tooltip"
 
 interface DropdownProps extends PublicProps, DivProps {
     menu: ReactElement | MenuProps
     children: ReactElement
-    floatingRef?: RefObject<HTMLElement>
 }
 
 const Dropdown: FC<DropdownProps> = (
@@ -32,9 +29,7 @@ const Dropdown: FC<DropdownProps> = (
         children,
         trigger,
         defaultVisible,
-        floatingRef,
         offset = [2, 0],
-
         ...restProps
     }: DropdownProps
 ) => {
@@ -43,25 +38,11 @@ const Dropdown: FC<DropdownProps> = (
         popupProps,
         otherProps
     } = extractPopupProps(restProps)
-    const isElement = isValidElement(menu)
     const menuApiRef = useRef<MenuApi>(null)
-    const menuRef = useRef(null)
-    const overlay = isElement ? menu : (
-        <Menu
-            nodeRef={menuRef}
-            ref={menuApiRef}
-            {...menu} />
-    )
+    const overlay = isValidElement(menu) ?
+        menu : <Menu ref={menuApiRef} {...menu as MenuProps} />
+
     popupProps.overlay = overlay
-
-    if (isElement && isUndef(floatingRef)) {
-        warning(
-            false,
-            `The floatingRef is required, received ${floatingRef}`
-        )
-
-        return children
-    }
 
     const newChildren = cloneElement(
         children,
@@ -92,14 +73,12 @@ const Dropdown: FC<DropdownProps> = (
             }
         }
     )
-    popupProps.floatingRef = isElement ? floatingRef! : menuRef
 
     return (
         <div className={classes} {...otherProps}>
             <Trigger
                 trigger={trigger}
                 defaultVisible={defaultVisible}
-                transition={false}
                 offset={offset}
                 unmountOnHidden={false}
                 {...popupProps}>
