@@ -10,6 +10,7 @@ export default function DropdownExample() {
         <div style={{ margin: "500px 200px" }}>
             <Dropdown
                 anchorRef={ref}
+                placement="bottom-end"
                 inline
                 menu={{
                     onSelect: console.log,
@@ -21,7 +22,8 @@ export default function DropdownExample() {
                         },
                         {
                             label: "Disabled action",
-                            command: "b"
+                            command: "b",
+                            disabled: true
                         },
                         {
                             label: "Something else here",

@@ -28,6 +28,7 @@ const Dropdown: FC<DropdownProps> = (
         menu,
         children,
         trigger,
+        placement = "bottom-end",
         defaultVisible,
         offset = [2, 0],
         ...restProps
@@ -41,7 +42,6 @@ const Dropdown: FC<DropdownProps> = (
     const menuApiRef = useRef<MenuApi>(null)
     const overlay = isValidElement(menu) ?
         menu : <Menu ref={menuApiRef} {...menu as MenuProps} />
-
     popupProps.overlay = overlay
 
     const newChildren = cloneElement(
@@ -81,6 +81,7 @@ const Dropdown: FC<DropdownProps> = (
                 defaultVisible={defaultVisible}
                 offset={offset}
                 unmountOnHidden={false}
+                placement={placement}
                 {...popupProps}>
                 {newChildren}
             </Trigger>

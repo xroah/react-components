@@ -4,3 +4,22 @@
     left: 0;
     top: 0;
 }
+
+.r-popup {
+    .dropdown-menu {
+        transition: transform .15s cubic-bezier(.9,.24,.14,.92);
+        transform-origin: center top;
+    }
+
+    &:not(.show) .dropdown-menu {
+        transform: scaleY(.5);
+    }
+}
+
+.r-popup-top,
+.r-popup-top-start,
+.r-popup-top-end {
+    .dropdown-menu {
+        transform-origin: center bottom;
+    }
+}
