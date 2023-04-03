@@ -29,6 +29,7 @@ const Fade: FC<FadeProps> = ({
     timeout = 150,
     showDisplay,
     nodeRef,
+    unmountOnExit,
     onEnter,
     onEntering,
     onExit,
@@ -39,14 +40,17 @@ const Fade: FC<FadeProps> = ({
         return null
     }
 
-    const [display, setDisplay] = useState("none")
+    const [
+        display,
+        setDisplay
+    ] = useState(unmountOnExit ? "" : "none")
     const [classes, setClasses] = useState(fadeClass)
     const handleEnter: EnterHandler<HTMLElement> = (...args) => {
         setDisplay(showDisplay ?? "")
         onEnter?.(...args)
     }
     const handleEntering: EnterHandler<HTMLElement> = (...args) => {
-        const el = (nodeRef as RefObject<HTMLElement>).current
+        const el = (nodeRef as RefObject<HTMLElement>)?.current
 
         //reflow
         el?.offsetHeight
@@ -58,7 +62,10 @@ const Fade: FC<FadeProps> = ({
         onExit?.(...args)
     }
     const handleExited: ExitHandler<HTMLElement> = (...args) => {
-        setDisplay("none")
+        if (!unmountOnExit) {
+            setDisplay("none")
+        }
+        
         onExited?.(...args)
     }
 
@@ -69,6 +76,7 @@ const Fade: FC<FadeProps> = ({
             onEntering={handleEntering}
             onExit={handleExit}
             onExited={handleExited}
+            unmountOnExit={unmountOnExit}
             {...restProps}>
             {
                 cloneElement(
