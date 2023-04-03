@@ -1,6 +1,7 @@
 import React,
 {
     cloneElement,
+    CSSProperties,
     FC,
     ReactElement,
     RefObject,
@@ -44,9 +45,15 @@ const Fade: FC<FadeProps> = ({
         display,
         setDisplay
     ] = useState(unmountOnExit ? "" : "none")
+    const style: CSSProperties = {
+        ...children.props.style
+    }
     const [classes, setClasses] = useState(fadeClass)
     const handleEnter: EnterHandler<HTMLElement> = (...args) => {
-        setDisplay(showDisplay ?? "")
+        if (!unmountOnExit) {
+            setDisplay(showDisplay ?? "")
+        }
+
         onEnter?.(...args)
     }
     const handleEntering: EnterHandler<HTMLElement> = (...args) => {
@@ -65,8 +72,12 @@ const Fade: FC<FadeProps> = ({
         if (!unmountOnExit) {
             setDisplay("none")
         }
-        
+
         onExited?.(...args)
+    }
+
+    if(display) {
+        style.display = display
     }
 
     return (
@@ -86,10 +97,7 @@ const Fade: FC<FadeProps> = ({
                             children.props.className,
                             classes
                         ),
-                        style: {
-                            ...children.props.style,
-                            display
-                        }
+                        style
                     }
                 )
             }
