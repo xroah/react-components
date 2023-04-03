@@ -93,9 +93,9 @@ const Modal: FC<ModalProps> = function Modal(
         ...restProps
     }
 ) {
-    const [staticClass, updateStaticClass] = React.useState("")
-    const [wrapperVisible, updateWrapperState] = React.useState(visible)
-    const [modalVisible, updateModalState] = React.useState(!!visible)
+    const [staticClass, setStaticClass] = React.useState("")
+    const [wrapperVisible, setWrapperVisible] = React.useState(visible)
+    const [modalVisible, setModalVisible] = React.useState(!!visible)
     const modalRef = React.useRef<HTMLDivElement>(null)
     const activeEl = React.useRef<HTMLElement | null>(null)
     const classes = classnames(className, "modal", staticClass)
@@ -106,7 +106,7 @@ const Modal: FC<ModalProps> = function Modal(
         center
     })
     const removeStaticClass = React.useCallback(
-        () => updateStaticClass(""),
+        () => setStaticClass(""),
         []
     )
     const timer = new Timer(300, removeStaticClass)
@@ -123,7 +123,7 @@ const Modal: FC<ModalProps> = function Modal(
     const handleExited = () => {
         bodyStyleStack.pop()
         // make the wrapper invisible
-        updateWrapperState(false)
+        setWrapperVisible(false)
         onHidden?.()
         activeEl.current?.focus()
     }
@@ -144,7 +144,7 @@ const Modal: FC<ModalProps> = function Modal(
             }
 
             if (backdrop === "static") {
-                updateStaticClass("modal-static")
+                setStaticClass("modal-static")
                 timer.delay()
             } else {
                 onClose?.("backdrop")
@@ -211,16 +211,16 @@ const Modal: FC<ModalProps> = function Modal(
         () => {
             if (visible) {
                 // make the wrapper visible first
-                updateWrapperState(true)
-
                 if (wrapperVisible) {
-                    updateModalState(true)
+                    setModalVisible(true)
+                } else {
+                    setWrapperVisible(true)
                 }
             } else {
-                updateModalState(false)
+                setModalVisible(false)
             }
         },
-        [visible, wrapperVisible, modalVisible]
+        [visible, wrapperVisible]
     )
 
     return (
