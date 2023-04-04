@@ -82,6 +82,7 @@ const Dropdown: FC<DropdownProps> = (
                 offset={offset}
                 unmountOnHidden={false}
                 placement={placement}
+                className="r-popup-dropdown"
                 {...popupProps}>
                 {newChildren}
             </Trigger>
