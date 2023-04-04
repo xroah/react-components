@@ -57,10 +57,13 @@ const Fade: FC<FadeProps> = ({
         onEnter?.(...args)
     }
     const handleEntering: EnterHandler<HTMLElement> = (...args) => {
-        const el = (nodeRef as RefObject<HTMLElement>)?.current
+        if (!unmountOnExit) {
+            const el = (nodeRef as RefObject<HTMLElement>)?.current
 
-        //reflow
-        el?.offsetHeight
+            //reflow
+            el?.offsetHeight
+        }
+
         setClasses(classnames(fadeClass, showClass))
         onEntering?.(...args)
     }
@@ -76,7 +79,7 @@ const Fade: FC<FadeProps> = ({
         onExited?.(...args)
     }
 
-    if(display) {
+    if (display) {
         style.display = display
     }
 
