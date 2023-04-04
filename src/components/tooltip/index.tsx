@@ -1,6 +1,5 @@
 import React, {
     FC,
-    ReactElement,
     ReactNode,
     useRef,
     useState
@@ -14,19 +13,14 @@ import { classnames, getRealDir } from "../utils"
 import { ComputePositionReturn, Placement } from "@floating-ui/dom"
 import useArrow from "../popup/arrow"
 import { node, oneOf } from "prop-types"
-import { DivPropsWithNodeTitle } from "r-layers/commons/types"
+import { DivPropsWithNodeTitle } from "../commons/types"
 
-export type PublicProps = Omit<
-    TriggerProps,
-    "overlay" |
-    "arrowRef" 
->
+export type OverlayProps = Omit<TriggerProps, "overlay" | "arrowRef"> &
+    Omit<DivPropsWithNodeTitle, "children">
 
-export interface TooltipProps
-    extends PublicProps, DivPropsWithNodeTitle {
+export interface TooltipProps extends OverlayProps {
     placement?: PlacementsWithoutAlignment
     title: ReactNode
-    children: ReactElement
 }
 
 const Tooltip: FC<TooltipProps> = (

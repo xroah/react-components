@@ -13,11 +13,9 @@ import { ComputePositionReturn, Placement } from "@floating-ui/dom"
 import { classnames, getRealDir } from "../utils"
 import useArrow from "../popup/arrow"
 import { node, oneOf } from "prop-types"
-import { DivPropsWithNodeTitle } from "r-layers/commons/types"
-import { PublicProps } from "../tooltip"
+import { OverlayProps } from "../tooltip"
 
-interface PopoverProps
-    extends DivPropsWithNodeTitle, PublicProps {
+interface PopoverProps extends OverlayProps {
     content: ReactNode
     placement?: PlacementsWithoutAlignment
     title?: ReactNode

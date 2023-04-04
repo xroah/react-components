@@ -10,7 +10,7 @@ import React, {
 } from "react"
 import Popup, { extractPopupProps, PopupProps } from "./popup"
 import { OneOf } from "../commons/types"
-import { isUndef } from "r-layers/utils"
+import { isUndef } from "../utils"
 import Context, { TriggerContext } from "./trigger-context"
 
 export const placementsWithoutAlignment = [
@@ -31,7 +31,6 @@ type TriggerType = OneOf<typeof triggers>
 export interface TriggerProps extends PopupProps {
     trigger?: TriggerType | TriggerType[]
     defaultVisible?: boolean
-    children: ReactElement
 }
 
 const getTrigger = (trigger: TriggerType | TriggerType[]) => {

@@ -13,13 +13,11 @@ import Menu, {
     MenuProps
 } from "./menu"
 import { classnames } from "../utils"
-import { extractPopupProps } from "r-layers/popup/popup"
-import { DivProps } from "../commons/types"
-import { PublicProps } from "../tooltip"
+import { extractPopupProps } from "../popup/popup"
+import { OverlayProps } from "../tooltip"
 
-interface DropdownProps extends PublicProps, DivProps {
+export interface DropdownProps extends Omit<OverlayProps, "title"> {
     menu: ReactElement | MenuProps
-    children: ReactElement
 }
 
 const Dropdown: FC<DropdownProps> = (

@@ -46,7 +46,6 @@ export interface PopupProps extends ToggleEvents {
     anchorRef: RefObject<HTMLElement>
     flipAlignment?: boolean
     className?: string
-    style?: CSSProperties
     arrowRef?: RefObject<HTMLElement>
     children: ReactElement
     offset?: number | number[]
@@ -82,7 +81,6 @@ export function extractPopupProps(
         "unmountOnHidden",
         "inline",
         "className",
-        "style",
         "onUpdate",
         "onShow",
         "onShown",
@@ -129,7 +127,6 @@ const Popup: FC<PopupProps> = (
         unmountOnHidden = true,
         inline: inlineProp,
         className,
-        style,
         onUpdate,
         onShow,
         onShown,
@@ -222,10 +219,7 @@ const Popup: FC<PopupProps> = (
         })
     }
     const finalOverlay = (
-        <div
-            ref={floatingRef}
-            style={style}
-            className={classes}>
+        <div ref={floatingRef} className={classes}>
             {
                 cloneElement(
                     overlay,
