@@ -61,7 +61,10 @@ const Trigger: FC<TriggerProps> = (
         overlay,
         visible: controlled ? propVisible : visible
     }
-    const ctx: TriggerContext = {}
+    const ctx: TriggerContext = {
+        visible: popupProps.visible,
+        controlled
+    }
     let childrenWithListeners: ReactElement = children
 
     if (!controlled && isValidElement(children)) {
@@ -73,7 +76,6 @@ const Trigger: FC<TriggerProps> = (
         ctx.show = show
         ctx.hide = hide
         ctx.toggle = toggle
-        ctx.visible = visible
 
         type ME = MouseEvent<HTMLElement>
         type FE = FocusEvent<HTMLElement>

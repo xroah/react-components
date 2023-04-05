@@ -5,6 +5,7 @@ export interface TriggerContext {
     show?: VoidFunction
     toggle?: VoidFunction
     visible?: boolean
+    controlled?: boolean
 }
 
 export default createContext<TriggerContext>({})
