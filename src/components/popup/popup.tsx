@@ -39,10 +39,12 @@ import {
 } from "prop-types"
 import NoTransition from "../basics/no-transition"
 import { ToggleEvents } from "../commons/types"
+import warning from "warning"
+import GetDomNode from "r-layers/utils/get-dom-node"
 
 export interface PopupProps extends ToggleEvents {
     overlay: ReactElement
-    anchorRef: RefObject<HTMLElement>
+    anchorRef?: RefObject<HTMLElement>
     flipAlignment?: boolean
     className?: string
     arrowRef?: RefObject<HTMLElement>
@@ -160,6 +162,7 @@ const Popup: FC<PopupProps> = (
 
     const rendered = useRef(false)
     const PREFIX = "r-popup"
+    const localAnchorRef = useRef<unknown>(null)
     const floatingRef = useRef<HTMLDivElement>(null)
     const [pos, setPos] = useState<CSSProperties>({
         position: "absolute",
@@ -180,12 +183,19 @@ const Popup: FC<PopupProps> = (
 
         return el as (HTMLElement | null)
     }
+    const getLocalAnchor = (el: Element | null) => {
+        localAnchorRef.current = el
+    }
+    const getAnchorEl = () => {
+        return anchorRef?.current ?? localAnchorRef.current
+    }
     const updatePosition = () => {
         const finalOffset = getOffset(offset)
         const floatingEl = getFloatingEl()
+        const anchorEl = getAnchorEl()
 
         computePosition(
-            anchorRef.current!,
+            anchorEl as Element,
             floatingEl!,
             {
                 middleware: [
@@ -263,14 +273,29 @@ const Popup: FC<PopupProps> = (
 
             if (visible) {
                 const floatingEl = getFloatingEl()
+                const anchorEl = getAnchorEl()
 
                 if (!rendered.current) {
                     rendered.current = true
                 }
 
-                if (floatingEl && anchorRef.current) {
+                if (!floatingEl) {
+                    warning(
+                        false,
+                        "Can not find the overlay element."
+                    )
+                }
+
+                if (!anchorEl) {
+                    warning(
+                        false,
+                        "Can not find the anchor element"
+                    )
+                }
+
+                if (floatingEl && anchorEl) {
                     cleanup = autoUpdate(
-                        anchorRef.current,
+                        anchorEl as Element,
                         floatingEl,
                         updatePosition
                     )
@@ -288,18 +313,22 @@ const Popup: FC<PopupProps> = (
 
     return (
         <>
-            {children}
+            {
+                anchorRef ? children : (
+                    <GetDomNode getRef={getLocalAnchor}>
+                        {children}
+                    </GetDomNode>
+                )
+            }
             {createPortal(el, document.body)}
         </>
     )
 }
 
-const refType = shape({
-    current: instanceOf(HTMLElement) as Validator<HTMLElement | null>
-}).isRequired
-
 Popup.propTypes = {
-    anchorRef: refType,
+    anchorRef: shape({
+        current: instanceOf(HTMLElement) as Validator<HTMLElement>
+    }),
     overlay: element.isRequired,
     children: element.isRequired,
     offset: oneOfType([
