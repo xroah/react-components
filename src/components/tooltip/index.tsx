@@ -1,7 +1,6 @@
 import React, {
     FC,
     ReactNode,
-    useRef,
     useState
 } from "react"
 import Trigger, {
@@ -55,9 +54,8 @@ const Tooltip: FC<TooltipProps> = (
         setClasses(getClass(data.placement))
         onUpdate?.(data)
     }
-    const floatingRef = useRef(null)
     const overlay = (
-        <div ref={floatingRef} className={classes}>
+        <div className={classes}>
             {arrow}
             <div className={`${PREFIX}-inner`}>
                 {title}
