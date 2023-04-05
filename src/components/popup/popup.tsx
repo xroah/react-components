@@ -6,9 +6,8 @@ import React, {
     useState,
     CSSProperties,
     cloneElement,
-    useCallback,
     useLayoutEffect,
-    useRef,
+    useRef
 } from "react"
 import { createPortal } from "react-dom"
 import {
@@ -39,7 +38,7 @@ import {
     oneOf
 } from "prop-types"
 import NoTransition from "../basics/no-transition"
-import { DivProps, ToggleEvents } from "../commons/types"
+import { ToggleEvents } from "../commons/types"
 
 export interface PopupProps extends ToggleEvents {
     overlay: ReactElement
@@ -56,14 +55,15 @@ export interface PopupProps extends ToggleEvents {
     placement?: Placement
     visible?: boolean
     fallbackPlacements?: Placement[]
-    inline?: boolean
     unmountOnHidden?: boolean
+    forceRender?: boolean
     onUpdate?: (data: ComputePositionReturn) => void
 }
 
-export function extractPopupProps(
-    props: Partial<PopupProps & DivProps>
-) {
+type CommonProps = { [index: string]: unknown }
+type PropsType = Partial<PopupProps> & CommonProps
+
+export function extractPopupProps(props: PropsType) {
     const keys = new Set([
         "visible",
         "transition",
@@ -79,7 +79,7 @@ export function extractPopupProps(
         "flip",
         "placement",
         "unmountOnHidden",
-        "inline",
+        "forceRender",
         "className",
         "onUpdate",
         "onShow",
@@ -88,9 +88,8 @@ export function extractPopupProps(
         "onHidden"
     ])
     const popupProps: Partial<PopupProps> = {}
-    const otherProps: DivProps = {}
+    const otherProps: CommonProps = {}
     const realKeys = Object.keys(props)
-    type Key = keyof DivProps
     type PopupKey = keyof PopupProps
 
     for (const key of realKeys) {
@@ -99,7 +98,7 @@ export function extractPopupProps(
                 popupProps[key as PopupKey] as PopupProps[PopupKey]
             ) = props[key as PopupKey]
         } else {
-            otherProps[key as Key] = props[key as Key]
+            otherProps[key] = props[key]
         }
     }
 
@@ -107,6 +106,26 @@ export function extractPopupProps(
         popupProps: popupProps as PopupProps,
         otherProps
     }
+}
+
+function getOffset(offset?: number | number[]) {
+    if (offset) {
+        if (Array.isArray(offset)) {
+            if (!offset.length) {
+                return false
+            }
+
+            if (offset.length === 1) {
+                return [offset[0], offset[0]]
+            }
+
+            return offset
+        }
+
+        return [offset, offset]
+    }
+
+    return false
 }
 
 const Popup: FC<PopupProps> = (
@@ -125,7 +144,7 @@ const Popup: FC<PopupProps> = (
         flip = true,
         placement = "bottom",
         unmountOnHidden = true,
-        inline: inlineProp,
+        forceRender,
         className,
         onUpdate,
         onShow,
@@ -134,10 +153,12 @@ const Popup: FC<PopupProps> = (
         onHidden
     }: PopupProps
 ) => {
+
     if (!isValidElement(children)) {
         return children
     }
 
+    const rendered = useRef(false)
     const PREFIX = "r-popup"
     const floatingRef = useRef<HTMLDivElement>(null)
     const [pos, setPos] = useState<CSSProperties>({
@@ -154,35 +175,13 @@ const Popup: FC<PopupProps> = (
         PREFIX,
         `${PREFIX}-${finalPlacement}`
     )
-    const getOffset = useCallback(
-        () => {
-            if (offset) {
-                if (Array.isArray(offset)) {
-                    if (!offset.length) {
-                        return false
-                    }
-
-                    if (offset.length === 1) {
-                        return [offset[0], offset[0]]
-                    }
-
-                    return offset
-                }
-
-                return [offset, offset]
-            }
-
-            return false
-        },
-        [offset]
-    )
     const getFloatingEl = () => {
         const el = floatingRef.current?.firstElementChild
 
         return el as (HTMLElement | null)
     }
     const updatePosition = () => {
-        const offset = getOffset()
+        const finalOffset = getOffset(offset)
         const floatingEl = getFloatingEl()
 
         computePosition(
@@ -190,9 +189,9 @@ const Popup: FC<PopupProps> = (
             floatingEl!,
             {
                 middleware: [
-                    offset && offsetMiddleware({
-                        mainAxis: offset[0],
-                        crossAxis: offset[1]
+                    finalOffset && offsetMiddleware({
+                        mainAxis: finalOffset[0],
+                        crossAxis: finalOffset[1]
                     }),
                     inline(),
                     flip && flipMiddleware({
@@ -264,6 +263,11 @@ const Popup: FC<PopupProps> = (
 
             if (visible) {
                 const floatingEl = getFloatingEl()
+
+                if (!rendered.current) {
+                    rendered.current = true
+                }
+
                 if (floatingEl && anchorRef.current) {
                     cleanup = autoUpdate(
                         anchorRef.current,
@@ -278,10 +282,14 @@ const Popup: FC<PopupProps> = (
         [visible]
     )
 
+    if (!forceRender && !rendered.current && !visible) {
+        return children
+    }
+
     return (
         <>
             {children}
-            {inlineProp ? el : createPortal(el, document.body)}
+            {createPortal(el, document.body)}
         </>
     )
 }
@@ -303,7 +311,7 @@ Popup.propTypes = {
     transitionClass: string,
     timeout: number,
     visible: bool,
-    inline: bool,
+    forceRender: bool,
     unmountOnHidden: bool,
     placement: oneOf([
         "top",
