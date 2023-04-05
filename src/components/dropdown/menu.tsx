@@ -36,13 +36,12 @@ export interface MenuApi {
     focusLast: VoidFunction
 }
 
-function getEnabledMenuItems(menu: HTMLDivElement | null) {
+function getMenuItems(menu: HTMLDivElement | null) {
     if (!menu) {
         return []
     }
 
-    const SELECTOR = ".dropdown-item:not(:disabled)"
-    const items = menu.querySelectorAll(SELECTOR)
+    const items = menu.querySelectorAll(".dropdown-item")
 
     return Array.from(items) as HTMLButtonElement[]
 }
@@ -59,13 +58,19 @@ export function handleArrowOrEscKeyDown(
     const ARROW_DOWN_KEY = "arrowdown"
     const ESCAPE_KEY = "escape"
     const key = ev.key.toLowerCase()
-    const isArrowKey = [
+    const isArrowOrEscapeKey = [
         ARROW_DOWN_KEY,
         ARROW_UP_KEY,
         ESCAPE_KEY
     ].includes(key)
+    const target = ev.target as HTMLElement
+    const isInput =  /input|textarea/i.test(target.tagName)
 
-    if (!isArrowKey) {
+    if (!isArrowOrEscapeKey) {
+        return
+    }
+
+    if (isInput && key !== ESCAPE_KEY) {
         return
     }
 
@@ -109,7 +114,7 @@ const Menu = forwardRef(
                 ev,
                 {
                     onArrowUp() {
-                        focusItem(focusIndex.current - 1)
+                        focusItem(focusIndex.current - 1, true)
                     },
                     onArrowDown() {
                         focusItem(focusIndex.current + 1)
@@ -162,14 +167,18 @@ const Menu = forwardRef(
                         type,
                         onClick: handleClick,
                         onKeyDown: handleKeyDown,
+                        key: generateKey(),
                         ...item
                     }
                 })
             },
             [items]
         )
-        const focusItem = (index: number | "last") => {
-            const items = getEnabledMenuItems(elRef.current)
+        const focusItem = (
+            index: number | "last",
+            reverse = false
+        ) => {
+            const items = getMenuItems(elRef.current)
             const len = items.length
 
             if (!items.length) {
@@ -186,12 +195,21 @@ const Menu = forwardRef(
                 i = index
             }
 
-            focusIndex.current = i
+            while (reverse ? i >= 0 : i < len) {
+                const item = items[i]
 
-            items[i].focus()
+                if (!item.disabled) {
+                    focusIndex.current = i
+                    item.focus()
+
+                    break
+                }
+
+                reverse ? i -= 1 : i += 1
+            }
         }
         const focusFirst = () => focusItem(0)
-        const focusLast = () => focusItem("last")
+        const focusLast = () => focusItem("last", true)
 
         useImperativeHandle(
             ref,
@@ -204,7 +222,10 @@ const Menu = forwardRef(
         useEffect(
             () => {
                 if (triggerCtx.visible) {
-                    activeEl.current = document.activeElement as HTMLElement
+                    const a = document.activeElement as HTMLElement
+                    activeEl.current = a
+                } else {
+                    activeEl.current = null
                 }
             },
             [triggerCtx.visible]
@@ -225,9 +246,11 @@ const Menu = forwardRef(
                     ) : null
                 }
                 {
-                    menuItems.map(item => (
-                        <MenuItem key={generateKey()} {...item} />
-                    ))
+                    menuItems.map(
+                        ({ key, ...rest }) => (
+                            <MenuItem key={key} {...rest} />
+                        )
+                    )
                 }
             </div>
         )

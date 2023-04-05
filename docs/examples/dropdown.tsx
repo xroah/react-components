@@ -9,8 +9,8 @@ export default function DropdownExample() {
         <div style={{ margin: "500px 200px" }}>
             <DropdownButton
                 placement="bottom-end"
-                visible={visible}
-                onClick={toggle}
+                // visible={visible}
+                // onClick={toggle}
                 menu={{
                     onSelect: console.log,
                     header: "Header",
@@ -35,6 +35,11 @@ export default function DropdownExample() {
                         {
                             label: "Separated link",
                             command: "d"
+                        },
+                        {
+                            label: "Another disabled link",
+                            command: "e",
+                            disabled: true
                         }
                     ]
                 }}>
