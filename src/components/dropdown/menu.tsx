@@ -32,10 +32,8 @@ export interface MenuProps extends Omit<DivProps, "onSelect"> {
 }
 
 export interface MenuApi {
-    showMenu: VoidFunction
     focusFirst: VoidFunction
     focusLast: VoidFunction
-    escape: VoidFunction
 }
 
 function getEnabledMenuItems(menu: HTMLDivElement | null) {
@@ -118,7 +116,7 @@ const Menu = forwardRef(
                     },
                     onEscape() {
                         activeEl.current?.focus()
-                        escape()
+                        triggerCtx.hide?.()
 
                         activeEl.current = null
                     }
@@ -194,21 +192,12 @@ const Menu = forwardRef(
         }
         const focusFirst = () => focusItem(0)
         const focusLast = () => focusItem("last")
-        const escape = () => {
-            triggerCtx.hide?.()
-        }
 
         useImperativeHandle(
             ref,
             () => ({
                 focusFirst,
-                focusLast,
-                showMenu() {
-                    if (triggerCtx.visible === false) {
-                        triggerCtx.show?.()
-                    }
-                },
-                escape
+                focusLast
             })
         )
 

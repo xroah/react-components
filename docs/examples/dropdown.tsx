@@ -1,17 +1,16 @@
-import Button from "r-layers/basics/button"
-import Dropdown from "r-layers/dropdown/dropdown"
+import DropdownButton from "r-layers/dropdown/dropdown-button"
 import React from "react"
 
 export default function DropdownExample() {
-    const ref = React.useRef<HTMLButtonElement>(null)
-    const customRef = React.useRef<HTMLButtonElement>(null)
+    const [visible, setVisible] = React.useState(false)
+    const toggle = () => setVisible(v => !v)
 
     return (
         <div style={{ margin: "500px 200px" }}>
-            <Dropdown
-                anchorRef={ref}
+            <DropdownButton
                 placement="bottom-end"
-                inline
+                visible={visible}
+                onClick={toggle}
                 menu={{
                     onSelect: console.log,
                     header: "Header",
@@ -39,13 +38,12 @@ export default function DropdownExample() {
                         }
                     ]
                 }}>
-                <Button ref={ref} variant="info">
-                    Toggle dropdown
-                </Button>
-            </Dropdown>
-            <Dropdown
-                anchorRef={customRef}
-                inline
+                Toggle dropdown
+            </DropdownButton>
+            <DropdownButton
+                split
+                size="lg"
+                variant="danger"
                 menu={
                     <div
                         style={{
@@ -54,10 +52,8 @@ export default function DropdownExample() {
                             height: 200
                         }} />
                 }>
-                <button ref={customRef} type="button">
-                    Toggle custom dropdown
-                </button>
-            </Dropdown>
+                Toggle custom dropdown
+            </DropdownButton>
         </div>
     )
 }
