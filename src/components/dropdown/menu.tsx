@@ -64,7 +64,7 @@ export function handleArrowOrEscKeyDown(
         ESCAPE_KEY
     ].includes(key)
     const target = ev.target as HTMLElement
-    const isInput =  /input|textarea/i.test(target.tagName)
+    const isInput = /input|textarea/i.test(target.tagName)
 
     if (!isArrowOrEscapeKey) {
         return
@@ -114,10 +114,10 @@ const Menu = forwardRef(
                 ev,
                 {
                     onArrowUp() {
-                        focusItem(focusIndex.current - 1, true)
+                        focusItem(true)
                     },
                     onArrowDown() {
-                        focusItem(focusIndex.current + 1)
+                        focusItem()
                     },
                     onEscape() {
                         activeEl.current?.focus()
@@ -174,27 +174,24 @@ const Menu = forwardRef(
             },
             [items]
         )
-        const focusItem = (
-            index: number | "last",
-            reverse = false
-        ) => {
+        const focusItem = (reverse = false) => {
             const items = getMenuItems(elRef.current)
             const len = items.length
-
+            
             if (!items.length) {
                 return
             }
 
-            let i: number
+            let i = focusIndex.current
 
-            if (index === "last" || index >= len) {
-                i = len - 1
-            } else if (index < 0) {
-                i = 0
-            } else {
-                i = index
+            if (i === -1) {
+                if (reverse) {
+                    i = len - 1
+                } else {
+                    i = 0
+                }
             }
-
+            
             while (reverse ? i >= 0 : i < len) {
                 const item = items[i]
 
@@ -208,8 +205,8 @@ const Menu = forwardRef(
                 reverse ? i -= 1 : i += 1
             }
         }
-        const focusFirst = () => focusItem(0)
-        const focusLast = () => focusItem("last", true)
+        const focusFirst = () => focusItem()
+        const focusLast = () => focusItem(true)
 
         useImperativeHandle(
             ref,
@@ -221,6 +218,8 @@ const Menu = forwardRef(
 
         useEffect(
             () => {
+                focusIndex.current = -1
+
                 if (triggerCtx.visible) {
                     const a = document.activeElement as HTMLElement
                     activeEl.current = a

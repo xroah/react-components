@@ -20,9 +20,8 @@ const Anchor: FC<AnchorProps> = ({
     ...restProps
 }) => {
     const triggerCtx = useContext(triggerContext)
-    const menuApi = menuApiRef?.current
 
-    if(triggerCtx.controlled) {
+    if (triggerCtx.controlled) {
         return children
     }
 
@@ -31,8 +30,9 @@ const Anchor: FC<AnchorProps> = ({
         {
             ...restProps,
             onKeyDown(ev: KeyboardEvent) {
-                children.props.onKeyDown?.(ev)
+                const menuApi = menuApiRef?.current
 
+                children.props.onKeyDown?.(ev)
                 handleArrowOrEscKeyDown(
                     ev,
                     {
@@ -45,7 +45,7 @@ const Anchor: FC<AnchorProps> = ({
                         },
                         onArrowUp() {
                             if (menuApi) {
-                                setTimeout(menuApi.focusFirst)
+                                setTimeout(menuApi.focusLast)
                             }
 
                             triggerCtx.show?.()
