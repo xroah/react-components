@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useRef, useState } from "react"
+import React, { FC, useRef, useState } from "react"
 import {
     bool,
     string,
@@ -102,10 +102,7 @@ const Modal: FC<ModalProps> = function Modal(
         contentScrollable,
         center
     })
-    const removeStaticClass = useCallback(
-        () => setStaticClass(""),
-        []
-    )
+    const removeStaticClass = () => setStaticClass("")
     const timer = new Timer(300, removeStaticClass)
     const handleEnter = () => {
         activeEl.current = document.activeElement as HTMLElement
@@ -162,8 +159,10 @@ const Modal: FC<ModalProps> = function Modal(
                         title={title}
                         closable={closable}
                         onClose={handleClickClose}
-                        defaultHeader={header} />
-                    <div className="modal-body">{children}</div>
+                        headerFromProps={header} />
+                    <div className="modal-body">
+                        {children}
+                    </div>
                     <Footer
                         okText={okText}
                         okVariant={okVariant}
@@ -174,7 +173,7 @@ const Modal: FC<ModalProps> = function Modal(
                         cancel={cancel}
                         onOk={onOk}
                         onCancel={onCancel}
-                        defaultFooter={footer}
+                        footerFromProps={footer}
                         footerBtnSize={footerBtnSize} />
                 </div>
             </div>

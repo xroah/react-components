@@ -7,17 +7,17 @@ import React, {
 import { HeaderProps } from "./types"
 import { getNullableNode } from "../utils/react"
 
-type Props = HeaderProps & { defaultHeader: ReactNode }
+type Props = HeaderProps & { headerFromProps: ReactNode }
 
 const Header: FC<Props> = ({
     closable,
     title,
     onClose,
-    defaultHeader
+    headerFromProps
 }) => {
     const CLASS_NAME = "modal-header"
     const node = getNullableNode(
-        defaultHeader,
+        headerFromProps,
         "div",
         CLASS_NAME
     )

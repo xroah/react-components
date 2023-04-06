@@ -8,7 +8,7 @@ import Button from "../basics/button"
 import { getNullableNode } from "../utils/react"
 import Spinner from "r-layers/basics/spinner"
 
-type Props = FooterProps & { defaultFooter: ReactNode }
+type Props = FooterProps & { footerFromProps: ReactNode }
 
 export const FOOTER_CLASS = "modal-footer"
 
@@ -21,14 +21,14 @@ const Footer: FC<Props> = (
         cancel,
         cancelText,
         cancelVariant,
-        defaultFooter,
         footerBtnSize,
+        footerFromProps,
         onOk,
         onCancel,
     }
 ) => {
     const node = getNullableNode(
-        defaultFooter,
+        footerFromProps,
         "div",
         FOOTER_CLASS
     )
