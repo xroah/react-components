@@ -48,6 +48,7 @@ const Trigger: FC<TriggerProps> = (
         defaultVisible,
         overlay,
         visible: propVisible,
+        onClickOutSide,
         ...restProps
     }: TriggerProps
 ) => {
@@ -65,6 +66,7 @@ const Trigger: FC<TriggerProps> = (
         visible: popupProps.visible,
         controlled
     }
+    let handleClickOutSide = onClickOutSide
     let childrenWithListeners: ReactElement = children
 
     if (!controlled && isValidElement(children)) {
@@ -76,6 +78,10 @@ const Trigger: FC<TriggerProps> = (
         ctx.show = show
         ctx.hide = hide
         ctx.toggle = toggle
+        handleClickOutSide = ev => {
+            hide()
+            onClickOutSide?.(ev)
+        }
 
         type ME = MouseEvent<HTMLElement>
         type FE = FocusEvent<HTMLElement>
@@ -121,7 +127,9 @@ const Trigger: FC<TriggerProps> = (
 
     return (
         <Context.Provider value={ctx}>
-            <Popup {...popupProps}>
+            <Popup
+                onClickOutSide={handleClickOutSide}
+                {...popupProps}>
                 {childrenWithListeners}
             </Popup>
         </Context.Provider>

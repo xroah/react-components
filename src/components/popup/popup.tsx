@@ -7,7 +7,8 @@ import React, {
     CSSProperties,
     cloneElement,
     useLayoutEffect,
-    useRef
+    useRef,
+    useEffect,
 } from "react"
 import { createPortal } from "react-dom"
 import {
@@ -59,6 +60,7 @@ export interface PopupProps extends ToggleEvents {
     fallbackPlacements?: Placement[]
     unmountOnHidden?: boolean
     forceRender?: boolean
+    onClickOutSide?: (e: MouseEvent) => void
     onUpdate?: (data: ComputePositionReturn) => void
 }
 
@@ -148,6 +150,7 @@ const Popup: FC<PopupProps> = (
         unmountOnHidden = true,
         forceRender,
         className,
+        onClickOutSide,
         onUpdate,
         onShow,
         onShown,
@@ -265,6 +268,41 @@ const Popup: FC<PopupProps> = (
                 {finalOverlay}
             </NoTransition>
         )
+    )
+    const handleClickOutSide = (ev: MouseEvent) => {
+        const target = ev.target as HTMLElement
+        const anchorEl = getAnchorEl() as HTMLElement
+        const floatingEl = getFloatingEl()
+
+        if (!anchorEl || !floatingEl) {
+            return
+        }
+
+        if (
+            target !== anchorEl &&
+            !anchorEl.contains(target) &&
+            target !== floatingEl &&
+            !floatingEl.contains(target)
+        ) {
+            onClickOutSide?.(ev)
+        }
+    }
+
+    useEffect(
+        () => {
+            if (visible) {
+                document.addEventListener(
+                    "click",
+                    handleClickOutSide
+                )
+            } else {
+                document.removeEventListener(
+                    "click",
+                    handleClickOutSide
+                )
+            }
+        },
+        [visible]
     )
 
     useLayoutEffect(
