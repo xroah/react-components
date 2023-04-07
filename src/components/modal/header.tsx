@@ -43,7 +43,8 @@ const Header: FC<Props> = ({
 
         startX.current = ev.clientX
         startY.current = ev.clientY
-
+        
+        ev.preventDefault()
         setMouseDown(true)
     }
     const getDis = (ev: MouseEvent): [number, number] => {
@@ -61,7 +62,7 @@ const Header: FC<Props> = ({
         const [disX, disY] = getDis(ev)
         posX.current += disX
         posY.current += disY
-
+        
         setMouseDown(false)
         onPosChange?.(posX.current, posY.current)
     }
@@ -69,7 +70,7 @@ const Header: FC<Props> = ({
     useEffect(
         () => {
             const doc = document
-
+            
             if (draggable && mouseDown) {
                 doc.addEventListener("mousemove", handleMouseMove)
                 doc.addEventListener("mouseup", handleMouseUp)
