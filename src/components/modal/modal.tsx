@@ -1,4 +1,4 @@
-import React, { FC, useRef, useState } from "react"
+import React, { CSSProperties, FC, useRef, useState } from "react"
 import {
     bool,
     string,
@@ -80,6 +80,8 @@ const Modal: FC<ModalProps> = function Modal(
         fullscreen,
         footerBtnSize,
         timeout = 150,
+        draggable,
+        dialogStyle: dialogStyleFromProps,
         onKeyDown,
         onClick,
         onOk,
@@ -145,6 +147,16 @@ const Modal: FC<ModalProps> = function Modal(
 
         onClick?.(ev)
     }
+    const [
+        dialogStyle,
+        setDialogStyle
+    ] = useState<CSSProperties>({})
+    const handlePosChange = (x: number, y: number) => {
+        setDialogStyle({
+            left: x,
+            top: y
+        })
+    }
     const modal = (
         <div
             className={classes}
@@ -153,13 +165,20 @@ const Modal: FC<ModalProps> = function Modal(
             onKeyDown={handleKeyDown}
             onClick={handleClickBackdrop}
             {...restProps}>
-            <div className={dialogClasses}>
+            <div
+                className={dialogClasses}
+                style={{
+                    ...dialogStyleFromProps,
+                    ...dialogStyle
+                }}>
                 <div className="modal-content">
                     <Header
                         title={title}
                         closable={closable}
                         onClose={handleClickClose}
-                        headerFromProps={header} />
+                        draggable={draggable}
+                        headerFromProps={header}
+                        onPosChange={handlePosChange} />
                     <div className="modal-body">
                         {children}
                     </div>

@@ -1,18 +1,17 @@
-import { ReactNode } from "react"
+import { CSSProperties, ReactNode } from "react"
 import { ButtonProps } from "../basics/button"
 import { InputProps } from "../basics/input"
 import { breakpoints, modalSizes } from "../commons/constants"
 import {
     LayerProps,
     OneOf,
-    ToggleEvents,
     ClosableProps,
     DivPropsWithNodeTitle,
     Variant,
     HookApi
 } from "../commons/types"
 
-export type HeaderProps = ClosableProps & DivPropsWithNodeTitle
+export type HeaderProps = ClosableProps & DivPropsWithNodeTitle 
 
 export interface FooterProps {
     ok?: boolean
@@ -27,19 +26,17 @@ export interface FooterProps {
     onCancel?: VoidFunction
 }
 
-export interface DialogProps extends LayerProps, FooterProps {
+export interface ModalProps extends LayerProps, FooterProps {
     contentScrollable?: boolean
     size?: OneOf<typeof modalSizes>
     center?: boolean
     header?: ReactNode
     footer?: ReactNode
     fullscreen?: boolean | OneOf<typeof breakpoints>
-}
-
-export interface ModalProps extends ToggleEvents, DialogProps {
     transition?: boolean
     backdrop?: boolean | "static"
     timeout?: number
+    dialogStyle?: CSSProperties
 }
 
 export interface OpenOptions extends Omit<ModalProps, "children"> {

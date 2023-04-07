@@ -96,14 +96,15 @@ export default function ModalExample() {
                 visible={visible}
                 title="Modal"
                 backdrop={"static"}
-                transition={false}
+                // transition={false}
                 onClose={handleClose}
                 onOk={handleOk}
                 onCancel={handleCancel}
                 onShow={onShow}
                 onShown={onShown}
                 onHide={onHide}
-                onHidden={onHidden}>
+                onHidden={onHidden}
+                draggable>
                 <div>
                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Natus libero obcaecati, minus maiores id magnam tempore et officiis eveniet ex voluptatem consequuntur, iste dolores quaerat eius inventore vitae omnis animi.
                 </div>
