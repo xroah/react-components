@@ -8,7 +8,7 @@ import React, {
     cloneElement,
     useLayoutEffect,
     useRef,
-    useEffect,
+    useEffect
 } from "react"
 import { createPortal } from "react-dom"
 import {
@@ -273,7 +273,7 @@ const Popup: FC<PopupProps> = (
         const target = ev.target as HTMLElement
         const anchorEl = getAnchorEl() as HTMLElement
         const floatingEl = getFloatingEl()
-
+        
         if (!anchorEl || !floatingEl) {
             return
         }
@@ -295,7 +295,9 @@ const Popup: FC<PopupProps> = (
                     "click",
                     handleClickOutSide
                 )
-            } else {
+            }
+
+            return () => {
                 document.removeEventListener(
                     "click",
                     handleClickOutSide
