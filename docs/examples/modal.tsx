@@ -96,7 +96,7 @@ export default function ModalExample() {
                 visible={visible}
                 title="Modal"
                 backdrop={"static"}
-                // transition={false}
+                transition={false}
                 onClose={handleClose}
                 onOk={handleOk}
                 onCancel={handleCancel}
