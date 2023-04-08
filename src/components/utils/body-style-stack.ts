@@ -4,17 +4,38 @@ class BodyStyleStack {
     private _styles: CSSProperties[] = []
     private _body = document.body
 
+    private _getScrollBarWidth() {
+        const div = document.createElement("div")
+        div.style.cssText = `
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 100%;
+        `
+        let ret = 0
+
+        document.body.appendChild(div)
+        
+        ret = window.innerWidth - div.clientWidth
+
+        document.body.removeChild(div)
+
+        return Math.abs(ret)
+    }
+
     public push() {
         const b = this._body
         const { paddingRight } = getComputedStyle(b)
-
+        const scrollBarWidth = this._getScrollBarWidth()
+        const paddingRightNum = Number.parseFloat(paddingRight)
+        
         this._styles.push({
             overflow: b.style.overflow,
             paddingRight: b.style.paddingRight
         })
 
         b.style.overflow = "hidden"
-        b.style.paddingRight = paddingRight
+        b.style.paddingRight = `${scrollBarWidth + paddingRightNum}px`
     }
 
     public pop() {
