@@ -1,0 +1,21 @@
+.btn-close {
+    $size: 24px;
+
+    box-sizing: content-box;
+    width: $size;
+    height: $size;
+    line-height: 1;
+    padding: 0.25em 0.25em;
+    border: 0;
+    border-radius: 0.375rem;
+    opacity: 0.5;
+    background-color: transparent;
+
+    &:hover {
+        opacity: .65;
+    }
+
+    &:active {
+        opacity: .8;
+    }
+}
