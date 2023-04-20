@@ -1,7 +1,6 @@
 import React from "react"
 import NestedLoading from "r-layers/loading/nested"
 import Button from "r-layers/basics/button"
-import Alert from "r-layers/basics/alert"
 import { useLoading } from "r-layers/loading/loading-hook"
 
 export default function Loading() {
@@ -30,10 +29,8 @@ export default function Loading() {
                 variant="primary"
                 closable
                 onClose={handleClick}
-                style={{ width: 500 }}>
-                <Alert variant="primary">
+                style={{ width: 500, padding: 15 }}>
                     Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi consectetur dolores perferendis itaque in doloribus nihil nemo ad. Omnis nam incidunt dolorum dolore ex veritatis itaque deleniti atque, repudiandae adipisci!
-                </Alert>
             </NestedLoading>
         </>
     )
