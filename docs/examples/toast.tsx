@@ -10,6 +10,7 @@ import {
     TOP_RIGHT,
     Placement
 } from "r-layers/toast/toast"
+import ToastInner from "r-layers/toast/toast-inner"
 
 export default function NotificationExample() {
     const [api, wrapper] = useNotification()
@@ -35,6 +36,9 @@ export default function NotificationExample() {
 
     return (
         <div>
+            <ToastInner variant="success" simple>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui rem adipisci, aut at ullam maxime asperiores dignissimos fugiat ea repudiandae molestias numquam? Illum, velit in voluptatibus maxime nesciunt harum rem!
+            </ToastInner>
             <Button onClick={open}>
                 Open notification
             </Button>

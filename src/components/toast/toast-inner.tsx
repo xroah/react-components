@@ -1,5 +1,9 @@
 import React, { FC, ReactNode } from "react"
-import { ClosableProps, DivPropsWithNodeTitle } from "../commons/types"
+import {
+    ClosableProps,
+    DivPropsWithNodeTitle,
+    Variant
+} from "../commons/types"
 import { classnames } from "../utils"
 import CloseBtn from "../basics/close-btn"
 import { getNullableNode } from "../utils/react"
@@ -9,6 +13,8 @@ export interface ToastInnerProps extends
     header?: ReactNode
     icon?: ReactNode,
     secondaryTitle?: ReactNode
+    simple?: boolean
+    variant?: Variant
 }
 
 const ToastInner: FC<ToastInnerProps> = ({
@@ -18,15 +24,35 @@ const ToastInner: FC<ToastInnerProps> = ({
     title,
     secondaryTitle,
     closable = true,
-    onClose,
     children,
+    simple,
+    variant,
+    onClose,
     ...restProps
 }) => {
     const classes = classnames(
         className,
         "toast",
+        simple && "toast-simple",
+        simple && variant && `text-bg-${variant}`,
         "show"
     )
+    const body = (
+        <div className="toast-body">
+            {children}
+        </div>
+    )
+    const closeBtn = closable ? <CloseBtn onClick={onClose} /> : null
+
+    if (simple) {
+        return (
+            <div className={classes} {...restProps}>
+                {body}
+                {closeBtn}
+            </div>
+        )
+    }
+
     const HEADER_CLASS = "toast-header"
     const headerNode = getNullableNode(header)
     const _header = headerNode === false ? (
@@ -44,16 +70,14 @@ const ToastInner: FC<ToastInnerProps> = ({
             <small className="toast-secondary-title">
                 {secondaryTitle}
             </small>
-            {closable ? <CloseBtn onClick={onClose} /> : null}
+            {closeBtn}
         </div>
     ) : headerNode
 
     return (
         <div className={classes} {...restProps}>
             {_header}
-            <div className="toast-body">
-                {children}
-            </div>
+            {body}
         </div>
     )
 }

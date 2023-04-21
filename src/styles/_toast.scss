@@ -1,5 +1,24 @@
 @use "./mixins";
 
+.toast-icon {
+    margin-right: 15px;
+}
+
+.toast-title {
+    margin-right: auto;
+}
+
+.toast-simple {
+    display: flex;
+    align-items: center;
+
+    .btn-close {
+        flex-shrink: 0;
+        margin: 0 5px;
+        color: inherit
+    }
+}
+
 .r-toast {
     position: fixed;
     z-index: 1000;
@@ -45,12 +64,4 @@
     margin: 10px;
     transition: transform .3s cubic-bezier(.21, .66, .49, 1.32),
         opacity .3s, height .3s;
-
-    .toast-icon {
-        margin-right: 15px;
-    }
-
-    .toast-title {
-        margin-right: auto;
-    }
 }
