@@ -25,11 +25,7 @@ const Header: FC<Props> = ({
     onPosChange
 }) => {
     const CLASS_NAME = "modal-header"
-    const node = getNullableNode(
-        headerFromProps,
-        "div",
-        CLASS_NAME
-    )
+    const node = getNullableNode(headerFromProps)
     const [mouseDown, setMouseDown] = useState(false)
     const startX = useRef(0)
     const startY = useRef(0)

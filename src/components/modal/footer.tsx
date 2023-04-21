@@ -27,11 +27,7 @@ const Footer: FC<Props> = (
         onCancel,
     }
 ) => {
-    const node = getNullableNode(
-        footerFromProps,
-        "div",
-        FOOTER_CLASS
-    )
+    const node = getNullableNode(footerFromProps)
 
     if (node !== false) {
         return node as ReactElement

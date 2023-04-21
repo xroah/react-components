@@ -3,7 +3,6 @@ import React,
     ElementType,
     HTMLAttributes,
     ReactNode,
-    createElement,
     isValidElement,
     FC
 } from "react"
@@ -11,28 +10,12 @@ import { classnames } from "."
 import warning from "warning"
 import { isFragment } from "react-is"
 
-export function getNullableNode(
-    node?: ReactNode,
-    wrapperTag?: ElementType,
-    className?: string,
-): ReactNode | false {
+export function getNullableNode(node?: ReactNode) {
     if (node === null) {
         return null
     }
 
     if (node) {
-        if (isValidElement(node)) {
-            return node
-        }
-
-        if (wrapperTag) {
-            return createElement(
-                wrapperTag,
-                { className },
-                node
-            )
-        }
-
         return node
     }
 
