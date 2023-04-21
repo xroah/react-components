@@ -29,7 +29,7 @@ interface HookOptions extends OpenOptions {
 
 type SetFunc = Dispatch<SetStateAction<HookOptions[]>>
 
-interface NotificationHookApi extends Omit<HookApi<OpenOptions>, "close"> {
+interface ToastHookApi extends Omit<HookApi<OpenOptions>, "close"> {
     close: (keys: string | string[], p: Placement) => void
 }
 
@@ -71,7 +71,7 @@ function delOne(
     )
 }
 
-export function useNotification(): [NotificationHookApi, ReactNode] {
+export function useNotification(): [ToastHookApi, ReactNode] {
     const [tItems, setTItems] = useState<HookOptions[]>([])
     const [bItems, setBItems] = useState<HookOptions[]>([])
     const [tlItems, setTlItems] = useState<HookOptions[]>([])

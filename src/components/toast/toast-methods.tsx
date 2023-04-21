@@ -34,28 +34,17 @@ interface Item {
     close: VoidFunction
 }
 
-
-const tMap = new Map<string, Item>()
-const bMap = new Map<string, Item>()
-const tlMap = new Map<string, Item>()
-const trMap = new Map<string, Item>()
-const blMap = new Map<string, Item>()
-const brMap = new Map<string, Item>()
+const getItemMap = () => new Map<string, Item>()
 const dirMap = new Map<Placement, Map<string, Item>>([
-    [TOP, tMap],
-    [BOTTOM, bMap],
-    [TOP_LEFT, tlMap],
-    [TOP_RIGHT, trMap],
-    [BOTTOM_LEFT, blMap],
-    [BOTTOM_RIGHT, brMap]
+    [TOP, getItemMap()],
+    [BOTTOM, getItemMap()],
+    [TOP_LEFT, getItemMap()],
+    [TOP_RIGHT, getItemMap()],
+    [BOTTOM_LEFT, getItemMap()],
+    [BOTTOM_RIGHT, getItemMap()]
 ])
 
-const wrapperMap = new Map<Placement, HTMLElement | null>([
-    ["top-right", null],
-    ["top-left", null],
-    ["bottom-left", null],
-    ["bottom-right", null]
-])
+const wrapperMap = new Map<Placement, HTMLElement | null>([])
 
 function open(
     {
@@ -68,14 +57,7 @@ function open(
         return
     }
 
-    const maps = [
-        tMap,
-        bMap,
-        tlMap,
-        trMap,
-        blMap,
-        brMap
-    ]
+    const maps = Object.values(dirMap)
     const newKey = key ?? generateKey()
     const realPlacement = placementMap.get(placement)!
     const close = () => open({
@@ -134,7 +116,7 @@ function open(
                     ...restProps
                 }
                 old.props = props
-            
+
                 old.root.render(<Notification {...getRenderProps(props)} />)
 
                 return close
@@ -183,11 +165,11 @@ function close(keys?: string | string[], placement?: Placement) {
 
         if (isUndef(keys)) {
             // close all of the real placement
-            itemMap.forEach(({close}) => close())
+            itemMap.forEach(({ close }) => close())
         } else {
             const _keys = getKeys(keys!)
 
-            for (const [key, {close}] of itemMap) {
+            for (const [key, { close }] of itemMap) {
                 if (_keys.has(key)) {
                     close()
                 }
@@ -200,7 +182,7 @@ function close(keys?: string | string[], placement?: Placement) {
     if (isUndef(keys)) {
         // close all directions
         dirMap.forEach(m => {
-            m.forEach(({close}) => close())
+            m.forEach(({ close }) => close())
         })
 
         return
@@ -214,7 +196,7 @@ function close(keys?: string | string[], placement?: Placement) {
             continue
         }
 
-        for (const [key, {close}] of m) {
+        for (const [key, { close }] of m) {
             if (_keys.has(key)) {
                 close()
             }
