@@ -4,12 +4,15 @@ import Notification, {
     BOTTOM_LEFT,
     BOTTOM_RIGHT,
     checkPlacement,
-    NotificationProps,
+    CLASS_PREFIX,
+    ToastProps,
     Placement,
     placementMap,
     TOP_LEFT,
-    TOP_RIGHT
-} from "./notification"
+    TOP_RIGHT,
+    TOP,
+    BOTTOM
+} from "./toast"
 import {
     isUndef,
     generateKey,
@@ -19,25 +22,28 @@ import {
     getKeys
 } from "../utils"
 
-export interface OpenOptions extends Omit<NotificationProps, "children"> {
+export interface OpenOptions extends Omit<ToastProps, "children"> {
     content?: ReactNode
     key?: string
 }
 
 interface Item {
     root: Root
-    props: NotificationProps
+    props: ToastProps
     container: HTMLElement
     close: VoidFunction
 }
 
-export const CLASS_PREFIX = "r-notification"
 
+const tMap = new Map<string, Item>()
+const bMap = new Map<string, Item>()
 const tlMap = new Map<string, Item>()
 const trMap = new Map<string, Item>()
 const blMap = new Map<string, Item>()
 const brMap = new Map<string, Item>()
 const dirMap = new Map<Placement, Map<string, Item>>([
+    [TOP, tMap],
+    [BOTTOM, bMap],
     [TOP_LEFT, tlMap],
     [TOP_RIGHT, trMap],
     [BOTTOM_LEFT, blMap],
@@ -63,6 +69,8 @@ function open(
     }
 
     const maps = [
+        tMap,
+        bMap,
         tlMap,
         trMap,
         blMap,
@@ -105,7 +113,7 @@ function open(
             onClose,
             ...rest
         }: OpenOptions
-    ): NotificationProps => {
+    ): ToastProps => {
         return {
             ...rest,
             visible: visible ?? true,
@@ -121,7 +129,7 @@ function open(
             if (map.has(newKey)) {
                 // update
                 const old = map.get(newKey)!
-                const props: NotificationProps = {
+                const props: ToastProps = {
                     ...old.props,
                     ...restProps
                 }

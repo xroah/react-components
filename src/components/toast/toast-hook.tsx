@@ -5,16 +5,19 @@ import React, {
     useMemo,
     useState
 } from "react"
-import Notification, {
+import Toast, {
     BOTTOM_LEFT,
     BOTTOM_RIGHT,
     checkPlacement,
     placementMap,
     TOP_LEFT,
     TOP_RIGHT,
-    Placement
-} from "./notification"
-import { CLASS_PREFIX, OpenOptions } from "./notification-methods"
+    Placement,
+    CLASS_PREFIX,
+    TOP,
+    BOTTOM
+} from "./toast"
+import { OpenOptions } from "./toast-methods"
 import { chainFunction, generateKey, getKeys, isUndef } from "../utils"
 import { createPortal } from "react-dom"
 import { HookApi } from "r-layers/commons/types"
@@ -69,6 +72,8 @@ function delOne(
 }
 
 export function useNotification(): [NotificationHookApi, ReactNode] {
+    const [tItems, setTItems] = useState<HookOptions[]>([])
+    const [bItems, setBItems] = useState<HookOptions[]>([])
     const [tlItems, setTlItems] = useState<HookOptions[]>([])
     const [trItems, setTrItems] = useState<HookOptions[]>([])
     const [blItems, setBlItems] = useState<HookOptions[]>([])
@@ -76,6 +81,8 @@ export function useNotification(): [NotificationHookApi, ReactNode] {
     const setFuncMap = useMemo(
         () => {
             return new Map([
+                [TOP, setTItems],
+                [BOTTOM, setBItems],
                 [TOP_LEFT, setTlItems],
                 [TOP_RIGHT, setTrItems],
                 [BOTTOM_LEFT, setBlItems],
@@ -113,6 +120,7 @@ export function useNotification(): [NotificationHookApi, ReactNode] {
                         item => item.key === key
                     )
 
+                    // update
                     if (existIndex > -1) {
                         index = existIndex
                         newOptions = {
@@ -227,12 +235,12 @@ export function useNotification(): [NotificationHookApi, ReactNode] {
                             rest.onClose = _onClose
 
                             return (
-                                <Notification
+                                <Toast
                                     key={key}
                                     visible={visible ?? true}
                                     {...rest} >
                                     {content}
-                                </Notification>
+                                </Toast>
                             )
                         }
                     )
@@ -244,6 +252,8 @@ export function useNotification(): [NotificationHookApi, ReactNode] {
     }
     const els = (
         <>
+            {genChildren(tItems, TOP)}
+            {genChildren(bItems, BOTTOM)}
             {genChildren(tlItems, TOP_LEFT)}
             {genChildren(trItems, TOP_RIGHT)}
             {genChildren(blItems, BOTTOM_LEFT)}

@@ -2,7 +2,7 @@ import React from "react"
 import ModalExample from "./examples/modal"
 import OffCanvas from "./examples/offcanvas"
 import Loading from "./examples/loading"
-import Notification from "./examples/notification"
+import Toast from "./examples/toast"
 import Input from "r-layers/basics/input"
 import PopupExample from "./examples/popup"
 import TooltipExample from "./examples/tooltip"
@@ -19,7 +19,7 @@ export default function App() {
             <div>
                 <Loading />
             </div>
-            <Notification />
+            <Toast />
             <div>
                 <Input />
             </div>

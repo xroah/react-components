@@ -1,17 +1,17 @@
 import React, { FC, ReactNode } from "react"
 import { ClosableProps, DivPropsWithNodeTitle } from "../commons/types"
 import { classnames } from "../utils"
-import CloseBtn from "./close-btn"
+import CloseBtn from "../basics/close-btn"
 import { getNullableNode } from "../utils/react"
 
-export interface ToastProps extends
+export interface ToastInnerProps extends
     DivPropsWithNodeTitle, ClosableProps {
     header?: ReactNode
     icon?: ReactNode,
     secondaryTitle?: ReactNode
 }
 
-const Toast: FC<ToastProps> = ({
+const ToastInner: FC<ToastInnerProps> = ({
     className,
     header,
     icon,
@@ -58,4 +58,4 @@ const Toast: FC<ToastProps> = ({
     )
 }
 
-export default Toast
+export default ToastInner

@@ -1,16 +1,21 @@
 import React from "react"
 import Button from "r-layers/basics/button"
-import { useNotification } from "r-layers/notification/notification-hook"
+import { useNotification } from "r-layers/toast/toast-hook"
 import {
+    TOP,
+    BOTTOM,
     BOTTOM_LEFT,
     BOTTOM_RIGHT,
     TOP_LEFT,
-    TOP_RIGHT
-} from "r-layers/notification/notification"
+    TOP_RIGHT,
+    Placement
+} from "r-layers/toast/toast"
 
 export default function NotificationExample() {
     const [api, wrapper] = useNotification()
-    const placements = [
+    const placements: Placement[] = [
+        TOP,
+        BOTTOM,
         TOP_LEFT,
         TOP_RIGHT,
         BOTTOM_LEFT,

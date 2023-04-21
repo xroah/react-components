@@ -1,26 +1,44 @@
 import React, { useEffect, useRef } from "react"
 import { OneOf, ToggleEvents } from "../commons/types"
-import Toast, { ToastProps } from "../basics/toast"
-import { notificationPlacements } from "../commons/constants"
+import ToastInner, { ToastInnerProps } from "./toast-inner"
 import { Transition, TransitionStatus } from "react-transition-group"
 import { classnames } from "../utils"
 import Timer from "r-layers/utils/timer"
 
-export type Placement = OneOf<typeof notificationPlacements>
+const toastPlacements = [
+    "top",
+    "bottom",
+    "top-left",
+    "top-right",
+    "bottom-left",
+    "bottom-right",
+    "tl",
+    "tr",
+    "bl",
+    "br"
+] as const
 
-export interface NotificationProps extends ToastProps, ToggleEvents {
+export const CLASS_PREFIX = "r-toast"
+
+export type Placement = OneOf<typeof toastPlacements>
+
+export interface ToastProps extends ToastInnerProps, ToggleEvents {
     visible?: boolean
     placement?: Placement
     duration?: number
 }
 
+export const TOP = "top"
+export const BOTTOM = "bottom"
 export const TOP_LEFT: Placement = "top-left"
 export const TOP_RIGHT: Placement = "top-right"
 export const BOTTOM_LEFT: Placement = "bottom-left"
 export const BOTTOM_RIGHT: Placement = "bottom-right"
 
-const placementSet = new Set(notificationPlacements)
+const placementSet = new Set(toastPlacements)
 export const placementMap = new Map<Placement, Placement>([
+    [TOP, TOP],
+    [BOTTOM, BOTTOM],
     [TOP_LEFT, TOP_LEFT],
     ["tl", TOP_LEFT],
     [TOP_RIGHT, TOP_RIGHT],
@@ -34,7 +52,7 @@ export const placementMap = new Map<Placement, Placement>([
 export function checkPlacement(placement: Placement) {
     if (!placementSet.has(placement)) {
         console.error(
-            `The placement prop should be one of '${notificationPlacements.join(",")}'`
+            `The placement prop should be one of '${toastPlacements.join(",")}'`
         )
 
         return false
@@ -43,7 +61,29 @@ export function checkPlacement(placement: Placement) {
     return true
 }
 
-const Notification: React.FC<NotificationProps> = ({
+function getInitialTransform(placement: Placement) {
+    const DIS = "100%"
+    let transform = ""
+
+    switch(placement) {
+        case "top":
+            transform = `translateY(-${DIS})`
+            break
+        case "bottom":
+            transform = `translateY(${DIS})`
+            break
+        case "top-left":
+        case "bottom-left":
+            transform = `translateX(-${DIS})`
+            break
+        default:
+            transform = `translateX(${DIS})`
+    }
+
+    return transform
+}
+
+const Toast: React.FC<ToastProps> = ({
     placement = "bottom-right",
     visible,
     className,
@@ -71,15 +111,14 @@ const Notification: React.FC<NotificationProps> = ({
     const timer = useRef(new Timer(duration))
     const classes = classnames(
         className,
-        "r-notification-item"
+        "r-toast-item"
     )
     const nodeRef = React.useRef<HTMLDivElement>(null)
-    const isLeft = placementMap.get(placement)?.includes("left")
     const initialStyle: React.CSSProperties = {
-        transform: `translateX(${isLeft ? -100 : 100}%)`,
+        transform: getInitialTransform(placement),
         opacity: 0
     }
-    const toastProps: ToastProps = {
+    const toastInnerProps: ToastInnerProps = {
         icon,
         title,
         closable,
@@ -126,7 +165,7 @@ const Notification: React.FC<NotificationProps> = ({
                     ...newStyle
                 }}
                 {...restProps}>
-                <Toast {...toastProps}/>
+                <ToastInner {...toastInnerProps}/>
             </div>
         )
     }
@@ -167,4 +206,4 @@ const Notification: React.FC<NotificationProps> = ({
     )
 }
 
-export default Notification
+export default Toast
