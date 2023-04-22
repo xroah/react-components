@@ -11,6 +11,7 @@ import {
     Placement
 } from "r-layers/toast/toast"
 import ToastInner from "r-layers/toast/toast-inner"
+import CheckFill from "r-layers/icons/check-fill"
 
 export default function NotificationExample() {
     const [api, wrapper] = useNotification()
@@ -24,7 +25,7 @@ export default function NotificationExample() {
     ]
     const open = () => {
         const random = Math.floor(Math.random() * 100)
-        const placement = placements[random % placements.length ]
+        const placement = placements[random % placements.length]
 
         api.open({
             title: "提示",
@@ -36,7 +37,10 @@ export default function NotificationExample() {
 
     return (
         <div>
-            <ToastInner variant="success" simple>
+            <ToastInner
+                variant="success"
+                icon={<CheckFill />}
+                simple>
                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui rem adipisci, aut at ullam maxime asperiores dignissimos fugiat ea repudiandae molestias numquam? Illum, velit in voluptatibus maxime nesciunt harum rem!
             </ToastInner>
             <Button onClick={open}>

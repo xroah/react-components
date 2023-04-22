@@ -9,12 +9,15 @@
 }
 
 .toast-simple {
-    display: flex;
-    align-items: center;
+    @include mixins.flex-align-center();
+    padding: 0 10px;
+
+    .toast-body {
+        margin-right: auto;
+    }
 
     .btn-close {
         flex-shrink: 0;
-        margin: 0 5px;
         color: inherit
     }
 }

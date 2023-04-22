@@ -42,11 +42,18 @@ const ToastInner: FC<ToastInnerProps> = ({
             {children}
         </div>
     )
-    const closeBtn = closable ? <CloseBtn onClick={onClose} /> : null
+    const iconEl = icon ? (
+        <span className="toast-icon">
+            {icon}
+        </span>
+    ) : null
+    const closeBtn = closable ?
+        <CloseBtn onClick={onClose} /> : null
 
     if (simple) {
         return (
             <div className={classes} {...restProps}>
+                {iconEl}
                 {body}
                 {closeBtn}
             </div>
@@ -57,13 +64,7 @@ const ToastInner: FC<ToastInnerProps> = ({
     const headerNode = getNullableNode(header)
     const _header = headerNode === false ? (
         <div className={HEADER_CLASS}>
-            {
-                icon ? (
-                    <span className="toast-icon">
-                        {icon}
-                    </span>
-                ) : null
-            }
+            {iconEl}
             <strong className="toast-title">
                 {title}
             </strong>
