@@ -22,10 +22,19 @@ import {
     getKeys,
     wrapCloseFunc
 } from "../utils"
+import XFill from "../icons/x-fill"
+import { Variant } from "r-layers/commons/types"
+import CheckFill from "r-layers/icons/check-fill"
+import WarnFill from "r-layers/icons/warn-fill"
+import InfoFill from "r-layers/icons/info-fill"
 
 export interface OpenOptions extends Omit<ToastProps, "children"> {
     content?: ReactNode
     key?: string
+}
+
+export interface OpenMsgFunc {
+    (c: ReactNode, opts?: OpenOptions): VoidFunction | void
 }
 
 type MethodOptions = Omit<OpenOptions, "onClose" | "visible">
@@ -218,4 +227,44 @@ function close(keys?: string | string[], placement?: Placement) {
     }
 }
 
-export { open, close }
+function openMessage(content: ReactNode, options?: OpenOptions) {
+    return open({
+        content,
+        ...options,
+        placement: options?.placement ?? "top",
+        simple: true
+    })
+}
+
+function factory(
+    variant: Variant,
+    icon: ReactNode,
+    openFunc: OpenMsgFunc = openMessage,
+) {
+    return (content: ReactNode, options?: OpenOptions) => {
+        return openFunc(
+            content,
+            {
+                ...options,
+                icon: options?.icon ?? icon,
+                variant
+            }
+        )
+    }
+}
+
+const openErrorMessage = factory("danger", <XFill />)
+const openSuccessMessage = factory("success", <CheckFill />)
+const openWarnMessage = factory("warning", <WarnFill />)
+const openInfoMessage = factory("info", <InfoFill />)
+
+export {
+    open,
+    close,
+    openMessage,
+    openErrorMessage,
+    openInfoMessage,
+    openWarnMessage,
+    openSuccessMessage,
+    factory
+}

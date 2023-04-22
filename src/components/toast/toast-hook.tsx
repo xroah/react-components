@@ -17,7 +17,7 @@ import Toast, {
     TOP,
     BOTTOM
 } from "./toast"
-import { OpenOptions } from "./toast-methods"
+import { OpenOptions, OpenMsgFunc, factory } from "./toast-methods"
 import {
     chainFunction,
     generateKey,
@@ -25,12 +25,21 @@ import {
     isUndef
 } from "../utils"
 import { createPortal } from "react-dom"
-import { HookApi } from "r-layers/commons/types"
+import { HookApi } from "../commons/types"
+import XFill from "r-layers/icons/x-fill"
+import CheckFill from "r-layers/icons/check-fill"
+import WarnFill from "r-layers/icons/warn-fill"
+import InfoFill from "r-layers/icons/info-fill"
 
 type SetFunc = Dispatch<SetStateAction<OpenOptions[]>>
 
 interface ToastHookApi extends Omit<HookApi<OpenOptions>, "close"> {
     close: (keys: string | string[], p: Placement) => void
+    openMessage: OpenMsgFunc
+    openErrorMessage: OpenMsgFunc
+    openSuccessMessage: OpenMsgFunc
+    openWarnMessage: OpenMsgFunc
+    openInfoMessage: OpenMsgFunc
 }
 
 function closeOne(key: string, set: SetFunc) {
@@ -149,6 +158,17 @@ export function useToast(): [ToastHookApi, ReactNode] {
             }
         )
     }
+    const openMessage = (
+        content: ReactNode,
+        options?: OpenOptions
+    ) => {
+        return open({
+            content: content,
+            ...options,
+            placement: options?.placement ?? "top",
+            simple: true
+        })
+    }
     const closeAll = (
         keys?: string | string[],
         placement?: Placement
@@ -174,6 +194,7 @@ export function useToast(): [ToastHookApi, ReactNode] {
                 }
             )
         }
+
         if (!isUndef(placement)) {
             if (!checkPlacement(placement!)) {
                 return
@@ -259,5 +280,32 @@ export function useToast(): [ToastHookApi, ReactNode] {
         </>
     )
 
-    return [{ open, close: closeAll }, els]
+    return [
+        {
+            open,
+            openMessage,
+            openErrorMessage: factory(
+                "danger",
+                <XFill />,
+                openMessage
+            ),
+            openSuccessMessage: factory(
+                "success",
+                <CheckFill />,
+                openMessage
+            ),
+            openWarnMessage: factory(
+                "warning",
+                <WarnFill />,
+                openMessage
+            ),
+            openInfoMessage: factory(
+                "info",
+                <InfoFill />,
+                openMessage
+            ),
+            close: closeAll
+        },
+        els
+    ]
 }

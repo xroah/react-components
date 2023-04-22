@@ -14,7 +14,7 @@ import ToastInner from "r-layers/toast/toast-inner"
 import CheckFill from "r-layers/icons/check-fill"
 import {} from "r-layers/toast/toast-methods"
 
-export default function NotificationExample() {
+export default function ToastExample() {
     const [api, wrapper] = useToast()
     const placements: Placement[] = [
         TOP,
@@ -28,12 +28,13 @@ export default function NotificationExample() {
         const random = Math.floor(Math.random() * 100)
         const placement = placements[random % placements.length]
 
-        api.open({
-            title: "提示",
-            secondaryTitle: "一分钟前",
-            content: "但是龙卷风撒赖打开方式劳动法九点十六分",
-            placement
-        })
+        // api.open({
+        //     title: "提示",
+        //     secondaryTitle: "一分钟前",
+        //     content: "但是龙卷风撒赖打开方式劳动法九点十六分",
+        //     placement
+        // })
+        api.openSuccessMessage("顶顶顶顶顶顶顶顶", {duration: 0})
     }
 
     return (
