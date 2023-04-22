@@ -65,7 +65,7 @@ function getInitialTransform(placement: Placement) {
     const DIS = "100%"
     let transform = ""
 
-    switch(placement) {
+    switch (placement) {
         case "top":
             transform = `translateY(-${DIS})`
             break
@@ -95,6 +95,8 @@ const Toast: React.FC<ToastProps> = ({
     header,
     secondaryTitle,
     duration = 3000,
+    variant,
+    simple,
     onClose,
     onShow,
     onShown,
@@ -125,6 +127,8 @@ const Toast: React.FC<ToastProps> = ({
         header,
         secondaryTitle,
         children,
+        variant,
+        simple,
         onClose
     }
     const handleMouseEnter = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -165,7 +169,7 @@ const Toast: React.FC<ToastProps> = ({
                     ...newStyle
                 }}
                 {...restProps}>
-                <ToastInner {...toastInnerProps}/>
+                <ToastInner {...toastInnerProps} />
             </div>
         )
     }
@@ -176,7 +180,7 @@ const Toast: React.FC<ToastProps> = ({
 
     useEffect(
         () => {
-            const {current: t} = timer
+            const { current: t } = timer
             t.timeout = duration
 
             if (duration > 0) {

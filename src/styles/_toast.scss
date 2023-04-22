@@ -12,6 +12,10 @@
     @include mixins.flex-align-center();
     padding: 0 10px;
 
+    .toast-icon {
+        margin: 0;
+    }
+
     .toast-body {
         margin-right: auto;
     }
