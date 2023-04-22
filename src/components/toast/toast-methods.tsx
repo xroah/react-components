@@ -23,10 +23,10 @@ import {
     wrapCloseFunc
 } from "../utils"
 import XFill from "../icons/x-fill"
-import { Variant } from "r-layers/commons/types"
-import CheckFill from "r-layers/icons/check-fill"
-import WarnFill from "r-layers/icons/warn-fill"
-import InfoFill from "r-layers/icons/info-fill"
+import { Variant } from "../commons/types"
+import CheckFill from "../icons/check-fill"
+import WarnFill from "../icons/warn-fill"
+import InfoFill from "../icons/info-fill"
 
 export interface OpenOptions extends Omit<ToastProps, "children"> {
     content?: ReactNode

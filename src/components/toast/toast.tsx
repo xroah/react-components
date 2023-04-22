@@ -3,7 +3,7 @@ import { OneOf, ToggleEvents } from "../commons/types"
 import ToastInner, { ToastInnerProps } from "./toast-inner"
 import { Transition, TransitionStatus } from "react-transition-group"
 import { classnames } from "../utils"
-import Timer from "r-layers/utils/timer"
+import Timer from "../utils/timer"
 
 const toastPlacements = [
     "top",

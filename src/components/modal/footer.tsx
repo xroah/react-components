@@ -6,7 +6,7 @@ import React, {
 import { FooterProps } from "./types"
 import Button from "../basics/button"
 import { getNullableNode } from "../utils/react"
-import Spinner from "r-layers/basics/spinner"
+import Spinner from "../basics/spinner"
 
 type Props = FooterProps & { footerFromProps: ReactNode }
 

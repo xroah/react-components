@@ -9,7 +9,7 @@ import { layerCommonPropTypes } from "../commons/prop-types"
 import { bool, node, oneOf } from "prop-types"
 import { useKeyboardClose } from "../hooks"
 import bodyStyleStack from "../utils/body-style-stack"
-import { getNullableNode } from "r-layers/utils/react"
+import { getNullableNode } from "../utils/react"
 
 interface OffCanvasProps extends LayerProps {
     header?: React.ReactNode

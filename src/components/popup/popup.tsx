@@ -41,7 +41,7 @@ import {
 import NoTransition from "../basics/no-transition"
 import { ToggleEvents } from "../commons/types"
 import warning from "warning"
-import GetDomNode from "r-layers/utils/get-dom-node"
+import GetDomNode from "../utils/get-dom-node"
 
 export interface PopupProps extends ToggleEvents {
     overlay: ReactElement

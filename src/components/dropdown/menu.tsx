@@ -14,7 +14,7 @@ import React, {
 import { classnames, generateKey } from "../utils"
 import MenuItem, { MenuItemProps } from "./menu-item"
 import triggerContext from "../popup/trigger-context"
-import { DivProps } from "r-layers/commons/types"
+import { DivProps } from "../commons/types"
 
 type ME = MouseEvent<HTMLButtonElement>
 type KE = KeyboardEvent<HTMLButtonElement>
