@@ -75,5 +75,5 @@
     margin: 10px;
     pointer-events: auto;
     transition: transform .3s cubic-bezier(.21, .66, .49, 1.32),
-        opacity .3s, height .3s;
+        opacity .3s, height .3s linear;
 }

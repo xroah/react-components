@@ -238,25 +238,31 @@ function openMessage(content: ReactNode, options?: OpenOptions) {
 
 function factory(
     variant: Variant,
-    icon: ReactNode,
     openFunc: OpenMsgFunc = openMessage,
 ) {
     return (content: ReactNode, options?: OpenOptions) => {
+        const defaultIconMap = new Map<Variant, ReactNode>([
+            ["danger", <XFill key="x-fill" />],
+            ["success", <CheckFill key="check-fill" />],
+            ["warning", <WarnFill key="warn-fill" />],
+            ["info", <InfoFill key="info-fill" />]
+        ])
+
         return openFunc(
             content,
             {
                 ...options,
-                icon: options?.icon ?? icon,
+                icon: options?.icon ?? defaultIconMap.get(variant),
                 variant
             }
         )
     }
 }
 
-const openErrorMessage = factory("danger", <XFill />)
-const openSuccessMessage = factory("success", <CheckFill />)
-const openWarnMessage = factory("warning", <WarnFill />)
-const openInfoMessage = factory("info", <InfoFill />)
+const openErrorMessage = factory("danger")
+const openSuccessMessage = factory("success")
+const openWarnMessage = factory("warning")
+const openInfoMessage = factory("info")
 
 export {
     open,

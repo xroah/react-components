@@ -28,13 +28,12 @@ export default function ToastExample() {
         const random = Math.floor(Math.random() * 100)
         const placement = placements[random % placements.length]
 
-        // api.open({
-        //     title: "提示",
-        //     secondaryTitle: "一分钟前",
-        //     content: "但是龙卷风撒赖打开方式劳动法九点十六分",
-        //     placement
-        // })
-        api.openSuccessMessage("顶顶顶顶顶顶顶顶", {duration: 0})
+        api.open({
+            title: "提示",
+            secondaryTitle: "一分钟前",
+            content: "但是龙卷风撒赖打开方式劳动法九点十六分",
+            placement
+        })
     }
 
     return (
