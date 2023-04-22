@@ -18,16 +18,16 @@ import Toast, {
     BOTTOM
 } from "./toast"
 import { OpenOptions } from "./toast-methods"
-import { chainFunction, generateKey, getKeys, isUndef } from "../utils"
+import {
+    chainFunction,
+    generateKey,
+    getKeys,
+    isUndef
+} from "../utils"
 import { createPortal } from "react-dom"
 import { HookApi } from "r-layers/commons/types"
 
-interface HookOptions extends OpenOptions {
-    _onHidden?: VoidFunction
-    _onClose?: VoidFunction
-}
-
-type SetFunc = Dispatch<SetStateAction<HookOptions[]>>
+type SetFunc = Dispatch<SetStateAction<OpenOptions[]>>
 
 interface ToastHookApi extends Omit<HookApi<OpenOptions>, "close"> {
     close: (keys: string | string[], p: Placement) => void
@@ -71,13 +71,13 @@ function delOne(
     )
 }
 
-export function useNotification(): [ToastHookApi, ReactNode] {
-    const [tItems, setTItems] = useState<HookOptions[]>([])
-    const [bItems, setBItems] = useState<HookOptions[]>([])
-    const [tlItems, setTlItems] = useState<HookOptions[]>([])
-    const [trItems, setTrItems] = useState<HookOptions[]>([])
-    const [blItems, setBlItems] = useState<HookOptions[]>([])
-    const [brItems, setBrItems] = useState<HookOptions[]>([])
+export function useToast(): [ToastHookApi, ReactNode] {
+    const [tItems, setTItems] = useState<OpenOptions[]>([])
+    const [bItems, setBItems] = useState<OpenOptions[]>([])
+    const [tlItems, setTlItems] = useState<OpenOptions[]>([])
+    const [trItems, setTrItems] = useState<OpenOptions[]>([])
+    const [blItems, setBlItems] = useState<OpenOptions[]>([])
+    const [brItems, setBrItems] = useState<OpenOptions[]>([])
     const setFuncMap = useMemo(
         () => {
             return new Map([
@@ -111,7 +111,7 @@ export function useNotification(): [ToastHookApi, ReactNode] {
         const newKey = key ?? generateKey()
         const realPlacement = placementMap.get(placement)!
         let index = -1
-        let newOptions: HookOptions = {}
+        let newOptions: OpenOptions = {}
 
         setFuncMap.get(realPlacement)!(
             items => {
@@ -139,15 +139,11 @@ export function useNotification(): [ToastHookApi, ReactNode] {
                     }
                 }
 
-                newOptions._onHidden = chainFunction(
-                    () => del(newKey, realPlacement),
-                    newOptions.onHidden
-                )
-                newOptions._onClose = chainFunction(
-                    () => close(newKey, realPlacement),
-                    newOptions._onClose
-                )
-                items[index] = newOptions
+                items[index] = {
+                    ...newOptions,
+                    visible: true,
+                    onClose: () => close(newKey, realPlacement)
+                }
 
                 return [...items]
             }
@@ -157,7 +153,7 @@ export function useNotification(): [ToastHookApi, ReactNode] {
         keys?: string | string[],
         placement?: Placement
     ) => {
-        const _closeAll = (items: HookOptions[]) => items.map(
+        const _closeAll = (items: OpenOptions[]) => items.map(
             item => {
                 item.visible = false
 
@@ -165,7 +161,7 @@ export function useNotification(): [ToastHookApi, ReactNode] {
             }
         )
         const _closeByKeys = (
-            items: HookOptions[],
+            items: OpenOptions[],
             keys: Set<string>
         ) => {
             return items.map(
@@ -211,7 +207,7 @@ export function useNotification(): [ToastHookApi, ReactNode] {
         )
     }
     const genChildren = (
-        items: HookOptions[],
+        items: OpenOptions[],
         placement: Placement
     ) => {
         if (!items.length) {
@@ -227,17 +223,19 @@ export function useNotification(): [ToastHookApi, ReactNode] {
                             key,
                             visible,
                             content,
-                            _onClose,
-                            _onHidden,
+                            onHidden,
                             ...rest
                         }) => {
-                            rest.onHidden = _onHidden
-                            rest.onClose = _onClose
+                            const _onHidden = chainFunction(
+                                () => del(key!, placement),
+                                onHidden
+                            )
 
                             return (
                                 <Toast
                                     key={key}
                                     visible={visible ?? true}
+                                    onHidden={_onHidden}
                                     {...rest} >
                                     {content}
                                 </Toast>

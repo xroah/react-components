@@ -1,6 +1,6 @@
 import React from "react"
 import Button from "r-layers/basics/button"
-import { useNotification } from "r-layers/toast/toast-hook"
+import { useToast } from "r-layers/toast/toast-hook"
 import {
     TOP,
     BOTTOM,
@@ -12,9 +12,10 @@ import {
 } from "r-layers/toast/toast"
 import ToastInner from "r-layers/toast/toast-inner"
 import CheckFill from "r-layers/icons/check-fill"
+import {} from "r-layers/toast/toast-methods"
 
 export default function NotificationExample() {
-    const [api, wrapper] = useNotification()
+    const [api, wrapper] = useToast()
     const placements: Placement[] = [
         TOP,
         BOTTOM,

@@ -1,6 +1,6 @@
 import React, { ReactNode } from "react"
 import { createRoot, Root } from "react-dom/client"
-import Notification, {
+import Toast, {
     BOTTOM_LEFT,
     BOTTOM_RIGHT,
     checkPlacement,
@@ -19,13 +19,16 @@ import {
     getDynamicWrapper,
     unmountAsync,
     chainFunction,
-    getKeys
+    getKeys,
+    wrapCloseFunc
 } from "../utils"
 
 export interface OpenOptions extends Omit<ToastProps, "children"> {
     content?: ReactNode
     key?: string
 }
+
+type MethodOptions = Omit<OpenOptions, "onClose" | "visible">
 
 interface Item {
     root: Root
@@ -51,20 +54,15 @@ function open(
         placement = "bottom-right",
         key,
         ...restProps
-    }: OpenOptions = {}
+    }: MethodOptions = {}
 ) {
     if (!checkPlacement(placement)) {
         return
     }
 
-    const maps = Object.values(dirMap)
+    const maps = dirMap.values()
     const newKey = key ?? generateKey()
     const realPlacement = placementMap.get(placement)!
-    const close = () => open({
-        key: newKey,
-        visible: false,
-        placement
-    })
     const handleHidden = () => {
         const realMap = dirMap.get(realPlacement)!
         const item = realMap.get(newKey)
@@ -77,6 +75,7 @@ function open(
             item.root,
             () => {
                 realMap.delete(newKey)
+                item.container.remove()
 
                 if (!realMap.size) {
                     const wrapper = wrapperMap.get(realPlacement)
@@ -89,21 +88,26 @@ function open(
     }
     const getRenderProps = (
         {
-            visible,
             content,
             onHidden,
-            onClose,
             ...rest
-        }: OpenOptions
+        }: MethodOptions
     ): ToastProps => {
         return {
             ...rest,
-            visible: visible ?? true,
             children: content,
             placement,
             onHidden: chainFunction(handleHidden, onHidden),
-            onClose: chainFunction(close, onClose)
         }
+    }
+    const render = (
+        root: Root,
+        props: ToastProps,
+        visible: boolean
+    ) => {
+        props.visible = visible
+
+        root.render(<Toast {...props} />)
     }
 
     if (!isUndef(newKey)) {
@@ -115,9 +119,18 @@ function open(
                     ...old.props,
                     ...restProps
                 }
+                const finalProps = getRenderProps(props)
+                const close = wrapCloseFunc(
+                    () => render(old.root, finalProps, false)
+                )
                 old.props = props
+                old.close = close
 
-                old.root.render(<Notification {...getRenderProps(props)} />)
+                render(
+                    old.root,
+                    { ...finalProps, onClose: close },
+                    true
+                )
 
                 return close
             }
@@ -138,8 +151,9 @@ function open(
     const container = document.createElement("div")
     const root = createRoot(container)
     const props = getRenderProps(restProps)
+    const close = () => render(root, props, false)
 
-    root.render(<Notification {...props} />)
+    render(root, { ...props, onClose: close }, true)
     wrapper.appendChild(container)
     dirMap.get(realPlacement)!.set(
         newKey,
