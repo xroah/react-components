@@ -2,6 +2,7 @@
 
 .toast-icon {
     margin-right: 15px;
+    font-size: 0;
 }
 
 .toast-title {
@@ -10,6 +11,8 @@
 
 .toast-simple {
     @include mixins.flex-align-center();
+    width: auto;
+    max-width: 90vw;
     padding: 0 10px;
 
     .toast-icon {
@@ -29,6 +32,7 @@
 .r-toast {
     position: fixed;
     z-index: 1000;
+    pointer-events: none;
 }
 
 .r-toast-top,
@@ -69,6 +73,7 @@
 
 .r-toast-item {
     margin: 10px;
+    pointer-events: auto;
     transition: transform .3s cubic-bezier(.21, .66, .49, 1.32),
         opacity .3s, height .3s;
 }
