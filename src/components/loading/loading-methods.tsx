@@ -54,6 +54,7 @@ function open(
     props = {
         ...props,
         ...restProps,
+        visible: true,
         className: classnames(className, WRAPPER_CLASS)
     }
 
