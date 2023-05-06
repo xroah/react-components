@@ -14,6 +14,7 @@ let root: Root | null = null
 let props: LoadingProps = {}
 
 export const WRAPPER_CLASS = "r-loading-fullscreen"
+export type Options = Omit<LoadingProps, "onClose">;
 
 function handleHidden() {
     if (!root) {
@@ -37,7 +38,7 @@ function handleHidden() {
 function render() {
     const newProps = {
         ...props,
-        onClose: chainFunction(close, props.onClose),
+        onClose: close,
         onHidden: chainFunction(handleHidden, props.onHidden),
         visible: props.visible ?? true
     }
@@ -49,7 +50,7 @@ function open(
     {
         className,
         ...restProps
-    }: LoadingProps = {}
+    }: Options = {}
 ) {
     props = {
         ...props,
