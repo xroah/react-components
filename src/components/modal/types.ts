@@ -11,7 +11,7 @@ import {
     HookApi
 } from "../commons/types"
 
-export type HeaderProps = ClosableProps & DivPropsWithNodeTitle 
+export type HeaderProps = ClosableProps & DivPropsWithNodeTitle
 
 export interface FooterProps {
     ok?: boolean
@@ -39,7 +39,8 @@ export interface ModalProps extends LayerProps, FooterProps {
     dialogStyle?: CSSProperties
 }
 
-export interface OpenOptions extends Omit<ModalProps, "children"> {
+export interface OpenOptions extends
+    Omit<ModalProps, "children" | "visible" | "onClose"> {
     content?: ReactNode
 }
 
@@ -70,7 +71,7 @@ export interface UpdateFunc {
 export type HookOpenFunc = UpdateFunc
 
 export interface OpenFunc {
-    (opts: OpenOptions): { update: UpdateFunc, close: VoidFunction }
+    (opts: ModalProps): { update: UpdateFunc, close: VoidFunction }
 }
 
 export interface Shortcut {

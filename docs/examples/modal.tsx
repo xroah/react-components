@@ -44,9 +44,6 @@ export default function ModalExample() {
                         Math.random() * 10000
                     )
                 })
-            },
-            onClose() {
-                console.log("on closed called")
             }
         })
     }
@@ -63,23 +60,10 @@ export default function ModalExample() {
             },
             onShown() {
                 console.log("Modal shown")
-            },
-            onClose() {
-                return new Promise<void>(resolve => {
-                    console.log("请稍后")
-
-                    setTimeout(
-                        () => {
-                            resolve()
-                            console.log("close")
-                        },
-                        Math.random() * 10000
-                    )
-                })
             }
         })
     }
-    
+
     return (
         <div>
             <Button onClick={handleClick}>

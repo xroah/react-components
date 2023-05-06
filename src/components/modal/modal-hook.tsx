@@ -10,6 +10,7 @@ export function useModal(): [ModalHookApi, ReactNode] {
         props,
         setProps
     ] = React.useState<OpenOptions | null>(null)
+    const [visible, setVisible] = React.useState(false)
     const closed = React.useRef(false)
     const close = () => {
         if (closed.current) {
@@ -18,10 +19,15 @@ export function useModal(): [ModalHookApi, ReactNode] {
 
         closed.current = true
 
-        open({ visible: false })
+        setProps(p => ({ ...p, visible: false }))
+        setVisible(false)
     }
     const open = (options: OpenOptions) => {
-        setProps(props => ({ ...props, ...options }))
+        setProps(props => ({
+            ...props,
+            ...options
+        }))
+        setVisible(true)
     }
     let el: ReactNode = null
 
@@ -32,13 +38,12 @@ export function useModal(): [ModalHookApi, ReactNode] {
             content,
             onShow,
             onHidden,
-            visible,
             ...restProps
         } = props
         const newProps: ModalProps = {
             ...restProps,
             ...getCloseCallbacks(props, close),
-            visible: visible ?? true,
+            visible,
             children: content,
             onShow: chainFunction(handleShow, onShow),
             onHidden: chainFunction(handleHidden, onHidden)
