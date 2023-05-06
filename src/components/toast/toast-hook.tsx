@@ -17,11 +17,7 @@ import Toast, {
     TOP,
     BOTTOM
 } from "./toast"
-import {
-    OpenOptions,
-    OpenMsgFunc,
-    factory
-} from "./toast-methods"
+import { OpenOptions } from "./toast-methods"
 import {
     chainFunction,
     generateKey,
@@ -35,11 +31,6 @@ type SetFunc = Dispatch<SetStateAction<OpenOptions[]>>
 
 interface ToastHookApi extends Omit<HookApi<OpenOptions>, "close"> {
     close: (keys: string | string[], p: Placement) => void
-    openMessage: OpenMsgFunc
-    openErrorMessage: OpenMsgFunc
-    openSuccessMessage: OpenMsgFunc
-    openWarnMessage: OpenMsgFunc
-    openInfoMessage: OpenMsgFunc
 }
 
 function closeOne(key: string, set: SetFunc) {
@@ -153,17 +144,6 @@ export function useToast(): [ToastHookApi, ReactNode] {
             }
         )
     }
-    const openMessage = (
-        content: ReactNode,
-        options?: OpenOptions
-    ) => {
-        return open({
-            content: content,
-            ...options,
-            placement: options?.placement ?? "top",
-            simple: true
-        })
-    }
     const closeAll = (
         keys?: string | string[],
         placement?: Placement
@@ -276,16 +256,5 @@ export function useToast(): [ToastHookApi, ReactNode] {
         </>
     )
 
-    return [
-        {
-            open,
-            openMessage,
-            openErrorMessage: factory("danger", openMessage),
-            openSuccessMessage: factory("success", openMessage),
-            openWarnMessage: factory("warning", openMessage),
-            openInfoMessage: factory("info", openMessage),
-            close: closeAll
-        },
-        els
-    ]
+    return [{ open, close: closeAll }, els]
 }

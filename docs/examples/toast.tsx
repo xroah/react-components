@@ -11,7 +11,6 @@ import {
     Placement
 } from "r-layers/toast/toast"
 import ToastInner from "r-layers/toast/toast-inner"
-import CheckFill from "r-layers/icons/check-fill"
 import {} from "r-layers/toast/toast-methods"
 
 export default function ToastExample() {
@@ -40,7 +39,6 @@ export default function ToastExample() {
         <div>
             <ToastInner
                 variant="success"
-                icon={<CheckFill />}
                 simple>
                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui rem adipisci, aut at ullam maxime asperiores dignissimos fugiat ea repudiandae molestias numquam? Illum, velit in voluptatibus maxime nesciunt harum rem!
             </ToastInner>

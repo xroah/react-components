@@ -22,11 +22,6 @@ import {
     getKeys,
     wrapCloseFunc
 } from "../utils"
-import XFill from "../icons/x-fill"
-import { Variant } from "../commons/types"
-import CheckFill from "../icons/check-fill"
-import WarnFill from "../icons/warn-fill"
-import InfoFill from "../icons/info-fill"
 
 export interface OpenOptions extends Omit<ToastProps, "children"> {
     content?: ReactNode
@@ -227,50 +222,7 @@ function close(keys?: string | string[], placement?: Placement) {
     }
 }
 
-function openMessage(content: ReactNode, options?: OpenOptions) {
-    return open({
-        content,
-        ...options,
-        placement: options?.placement ?? "top",
-        simple: true
-    })
-}
-
-function factory(
-    variant: Variant,
-    openFunc: OpenMsgFunc = openMessage,
-) {
-    return (content: ReactNode, options?: OpenOptions) => {
-        const defaultIconMap = new Map<Variant, ReactNode>([
-            ["danger", <XFill key="x-fill" />],
-            ["success", <CheckFill key="check-fill" />],
-            ["warning", <WarnFill key="warn-fill" />],
-            ["info", <InfoFill key="info-fill" />]
-        ])
-
-        return openFunc(
-            content,
-            {
-                ...options,
-                icon: options?.icon ?? defaultIconMap.get(variant),
-                variant
-            }
-        )
-    }
-}
-
-const openErrorMessage = factory("danger")
-const openSuccessMessage = factory("success")
-const openWarnMessage = factory("warning")
-const openInfoMessage = factory("info")
-
 export {
     open,
-    close,
-    openMessage,
-    openErrorMessage,
-    openInfoMessage,
-    openWarnMessage,
-    openSuccessMessage,
-    factory
+    close
 }
