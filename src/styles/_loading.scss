@@ -25,19 +25,6 @@ $color in $variant_map {
     padding: 10px;
     background-color: rgba(255, 255, 255, .5);
 
-    &.r-loading-fullscreen {
-        position: fixed;
-        left: 0;
-        top: 0;
-        width: 100vw;
-        height: 100vh;
-
-        .btn-close {
-            top: 20px;
-            right: 30px;
-        }
-    }
-
     .btn-close {
         $dis: 10px;
         position: absolute;
@@ -51,10 +38,28 @@ $color in $variant_map {
 
     .r-loading {
         position: absolute;
-        left: 0; 
+        left: 0;
         top: 0;
         width: 100%;
         height: 100%;
         z-index: 1000;
+    }
+}
+
+.r-loading-fullscreen {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+
+    .r-loading {
+        width: 100%;
+        height: 100%;
+
+        .btn-close {
+            top: 20px;
+            right: 30px;
+        }
     }
 }
