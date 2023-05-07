@@ -1,83 +1,60 @@
 import React from "react"
-import { Root, createRoot } from "react-dom/client"
+import { createRoot } from "react-dom/client"
 import {
     getDynamicWrapper,
     unmountAsync,
-    classnames,
     chainFunction,
-    removeNode
+    removeNode,
+    wrapCloseFunc
 } from "../utils"
 import Loading, { LoadingProps } from "./loading"
 
-let wrapper: HTMLElement | null = null
-let root: Root | null = null
-let props: LoadingProps = {}
-
 export const WRAPPER_CLASS = "r-loading-fullscreen"
-export type Options = Omit<LoadingProps, "onClose">;
-
-function handleHidden() {
-    if (!root) {
-        return
-    }
-
-    unmountAsync(
-        root,
-        () => {
-            removeNode(
-                wrapper,
-                () => {
-                    wrapper = root = null
-                    props = {}
-                }
-            )
-        }
-    )
-}
-
-function render() {
-    const newProps = {
-        ...props,
-        onClose: close,
-        onHidden: chainFunction(handleHidden, props.onHidden),
-        visible: props.visible ?? true
-    }
-
-    root?.render(<Loading {...newProps} />)
-}
+export type Options = Omit<LoadingProps, "onClose" | "visible">
 
 function open(
-    {
-        className,
-        ...restProps
-    }: Options = {}
+    options: Options = {}
 ) {
-    props = {
-        ...props,
-        ...restProps,
-        visible: true,
-        className: classnames(className, WRAPPER_CLASS)
+    let props = {
+        ...options,
+        visible: true
     }
+    const wrapper = getDynamicWrapper(null, WRAPPER_CLASS)
+    const root = createRoot(wrapper)
+    const handleHidden = () => {
+        unmountAsync(
+            root,
+            () => removeNode(wrapper)
+        )
+    }
+    const render = () => {
+        const newProps = {
+            ...props,
+            onClose: close,
+            onHidden: chainFunction(handleHidden, props.onHidden)
+        }
 
-    //can open only one loading, if root is not null, just update
-    if (!root) {
-        wrapper = getDynamicWrapper(wrapper, WRAPPER_CLASS)
-        root = createRoot(wrapper)
+        root.render(<Loading {...newProps} />)
     }
+    const update = (options: Options = {}) => {
+        props = {
+            ...props,
+            ...options,
+            visible: true
+        }
+
+        render()
+    }
+    const close = wrapCloseFunc(() => {
+        props.visible = false
+
+        render()
+    })
 
     render()
 
-    return close
+    return { update, close }
 }
 
-function close() {
-    if (props.visible !== true) {
-        return
-    }
 
-    props.visible = false
-
-    render()
-}
-
-export { open, close }
+export { open }

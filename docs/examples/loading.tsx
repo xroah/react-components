@@ -2,6 +2,7 @@ import React from "react"
 import NestedLoading from "r-layers/loading/nested"
 import Button from "r-layers/basics/button"
 import { useLoading } from "r-layers/loading/loading-hook"
+import {open} from "r-layers/loading/loading-methods"
 
 export default function Loading() {
     const [loading, toggle] = React.useState(false)
@@ -13,6 +14,8 @@ export default function Loading() {
             closable: true,
             text: "正在加载..."
         })
+
+        setTimeout(() => hookApi.close(), 3000)
     }
     
     return (
