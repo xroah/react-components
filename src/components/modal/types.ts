@@ -83,8 +83,6 @@ export interface Shortcut {
 }
 
 export interface ModalHookApi extends HookApi<OpenOptions> {
-    open: HookOpenFunc
-    close: VoidFunction
     alert: Shortcut
     confirm: Shortcut
     prompt: Shortcut

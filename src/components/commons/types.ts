@@ -1,9 +1,5 @@
-import {
-    HTMLAttributes,
-    ButtonHTMLAttributes,
-    ReactNode
-} from "react"
-import { closeTypes, sizes, variants } from "./constants"
+import { HTMLAttributes, ReactNode } from "react"
+import { closeTypes, variants } from "./constants"
 
 export type OneOf<T extends ReadonlyArray<unknown>> = T[number]
 
@@ -38,5 +34,5 @@ export type Variant = OneOf<typeof variants>
 
 export interface HookApi<O, K = string> {
     open: (options: O) => void
-    close: (k: K | K[]) => void
+    close: (k?: K | K[]) => void
 }
