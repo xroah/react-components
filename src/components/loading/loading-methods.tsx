@@ -12,9 +12,9 @@ import Loading, { LoadingProps } from "./loading"
 export const WRAPPER_CLASS = "r-loading-fullscreen"
 export type Options = Omit<LoadingProps, "onClose" | "visible">
 
-function open(
-    options: Options = {}
-) {
+const closeFuncSet = new Set<VoidFunction>()
+
+export function open(options: Options = {}) {
     let props = {
         ...options,
         visible: true
@@ -24,7 +24,11 @@ function open(
     const handleHidden = () => {
         unmountAsync(
             root,
-            () => removeNode(wrapper)
+            () => {
+                removeNode(wrapper)
+                closeFuncSet.delete(close)
+                console.log(closeFuncSet.size)
+            }
         )
     }
     const render = () => {
@@ -51,10 +55,14 @@ function open(
         render()
     })
 
+    closeFuncSet.add(close)
     render()
 
     return { update, close }
 }
 
-
-export { open }
+export function closeAll() {
+    for (const c of closeFuncSet) {
+        c()
+    }
+}
