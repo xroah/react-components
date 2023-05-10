@@ -1,12 +1,12 @@
 import React, {
     FC,
     HTMLAttributes,
-    ReactElement,
     isValidElement,
     useState,
     MouseEvent,
     FocusEvent,
-    cloneElement
+    cloneElement,
+    useRef
 } from "react"
 import Popup, { extractPopupProps, PopupProps } from "./popup"
 import { OneOf } from "../commons/types"
@@ -28,17 +28,41 @@ const triggers = ["hover", "focus", "click"] as const
 
 type TriggerType = OneOf<typeof triggers>
 
+interface Delay {
+    show?: number
+    hide?: number
+}
+
 export interface TriggerProps extends PopupProps {
     trigger?: TriggerType | TriggerType[]
     defaultVisible?: boolean
+    delay?: number | Delay
 }
 
-const getTrigger = (trigger: TriggerType | TriggerType[]) => {
+function getTrigger(trigger: TriggerType | TriggerType[]) {
     if (Array.isArray(trigger)) {
         return trigger
     }
 
     return [trigger]
+}
+
+function getDelay(delay?: number | Delay) {
+    if (!delay) {
+        return {
+            show: 0,
+            hide: 0
+        }
+    }
+
+    if (typeof delay === "number") {
+        return {
+            show: delay,
+            hide: delay
+        }
+    }
+
+    return delay
 }
 
 const Trigger: FC<TriggerProps> = (
@@ -56,6 +80,7 @@ const Trigger: FC<TriggerProps> = (
     const controlled = !isUndef(propVisible)
     const realTrigger = getTrigger(trigger)
     const extractedProps = extractPopupProps(restProps)
+    const timeId = useRef(-1)
     const popupProps: PopupProps = {
         ...extractedProps.popupProps,
         children,
@@ -67,7 +92,6 @@ const Trigger: FC<TriggerProps> = (
         controlled
     }
     let handleClickOutSide = onClickOutSide
-    let childrenWithListeners: ReactElement = children
 
     if (!controlled && isValidElement(children)) {
         const show = () => setVisible(true)
@@ -119,7 +143,7 @@ const Trigger: FC<TriggerProps> = (
             }
         })
 
-        childrenWithListeners = cloneElement(
+        popupProps.children = cloneElement(
             children,
             { ...listeners }
         )
@@ -129,9 +153,7 @@ const Trigger: FC<TriggerProps> = (
         <Context.Provider value={ctx}>
             <Popup
                 onClickOutSide={handleClickOutSide}
-                {...popupProps}>
-                {childrenWithListeners}
-            </Popup>
+                {...popupProps} />
         </Context.Provider>
     )
 }

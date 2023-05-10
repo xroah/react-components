@@ -8,7 +8,6 @@ export default function TooltipExample() {
     return (
         <div style={{ margin: "300px 100px" }}>
             <Tooltip
-                trigger={"click"}
                 anchorRef={ref}
                 title="This is a tooltip">
                 <Button ref={ref}>
