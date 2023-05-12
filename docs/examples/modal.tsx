@@ -33,13 +33,16 @@ export default function ModalExample() {
             title: "Modal title",
             content: "内容内容内容内容内容内容内容内容内容内容",
             onOk() {
-                return new Promise<void>(resolve => {
+                return new Promise<boolean>(resolve => {
                     console.log("请稍后")
 
                     setTimeout(
                         () => {
-                            resolve()
-                            console.log("close")
+                            const num = Math.random() * 100 >>> 0
+                            const ret = num % 2 === 0 ? true : false
+
+                            resolve(ret)
+                            console.log("ok,close, ret===", ret)
                         },
                         Math.random() * 10000
                     )

@@ -18,20 +18,37 @@ import { CloseType } from "../commons/types"
 import Modal from "./modal"
 import Input from "../basics/input"
 
-export function closeWhenNeeded(
-    ret: unknown,
+export function getCloseWhenNeeded(
     close: VoidFunction
 ) {
-    if (ret instanceof Promise) {
-        const p = ret as Promise<unknown>
+    let calling = false
 
-        p.then(close)
+    return (ret?: unknown) => {
+        if (calling) {
+            return
+        }
 
-        return
-    }
+        calling = true
 
-    if (ret !== false) {
-        close()
+        if (ret instanceof Promise) {
+            const p = ret as Promise<unknown>
+
+            p
+                .then(ret => {
+                    if (ret !== false) {
+                        close()
+                    }
+                })
+                .finally(() => calling = false)
+
+            return
+        }
+
+        if (ret !== false) {
+            close()
+        }
+
+        calling = false
     }
 }
 
@@ -39,15 +56,17 @@ export function getCloseCallbacks(
     callbacks: Callbacks,
     close: VoidFunction
 ) {
+    const closeWhenNeeded = getCloseWhenNeeded(close)
+
     return {
         onOk() {
-            closeWhenNeeded(callbacks.onOk?.(), close)
+            closeWhenNeeded(callbacks.onOk?.())
         },
         onCancel() {
-            closeWhenNeeded(callbacks.onCancel?.(), close)
+            closeWhenNeeded(callbacks.onCancel?.())
         },
         onClose() {
-            closeWhenNeeded(undefined, close)
+            closeWhenNeeded()
         }
     }
 }
