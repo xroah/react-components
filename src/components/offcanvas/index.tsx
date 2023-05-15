@@ -1,4 +1,4 @@
-import React, { FC } from "react"
+import React, { FC, useEffect, useRef } from "react"
 import { breakpoints, offCanvasPlacements } from "../commons/constants"
 import { LayerProps, OneOf } from "../commons/types"
 import { Transition, TransitionStatus } from "react-transition-group"
@@ -40,8 +40,8 @@ const OffCanvas: FC<OffCanvasProps> = ({
 }) => {
     const PREFIX = "offcanvas"
     const handleClickClose = () => onClose?.("close")
-    const nodeRef = React.useRef<HTMLDivElement>(null)
-    let _header = getNullableNode(header)
+    const nodeRef = useRef<HTMLDivElement>(null)
+    const activeEl = useRef<HTMLElement | null>(null)
     const handleKeyDown = useKeyboardClose({
         onClose,
         keyboard,
@@ -74,11 +74,24 @@ const OffCanvas: FC<OffCanvasProps> = ({
     }
     const handleExited = () => {
         onHidden?.()
+        activeEl.current?.focus()
+
+        activeEl.current = null
 
         if (!scroll) {
             bodyStyleStack.pop()
         }
     }
+    let _header = getNullableNode(header)
+
+    useEffect(
+        () => {
+            if (visible) {
+                activeEl.current = document.activeElement as HTMLElement
+            }
+        },
+        [visible]
+    )
 
     if (_header === false) {
         _header = (
