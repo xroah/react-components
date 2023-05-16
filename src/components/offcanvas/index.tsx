@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useRef } from "react"
+import React, { FC, useRef } from "react"
 import { breakpoints, offCanvasPlacements } from "../commons/constants"
 import { LayerProps, OneOf } from "../commons/types"
 import { Transition, TransitionStatus } from "react-transition-group"
@@ -61,6 +61,8 @@ const OffCanvas: FC<OffCanvasProps> = ({
         ) : null
     )
     const handleEnter = () => {
+        activeEl.current = document.activeElement as HTMLElement
+
         onShow?.()
 
         if (!scroll) {
@@ -75,7 +77,7 @@ const OffCanvas: FC<OffCanvasProps> = ({
     const handleExited = () => {
         onHidden?.()
         activeEl.current?.focus()
-
+        
         activeEl.current = null
 
         if (!scroll) {
@@ -83,15 +85,6 @@ const OffCanvas: FC<OffCanvasProps> = ({
         }
     }
     let _header = getNullableNode(header)
-
-    useEffect(
-        () => {
-            if (visible) {
-                activeEl.current = document.activeElement as HTMLElement
-            }
-        },
-        [visible]
-    )
 
     if (_header === false) {
         _header = (
