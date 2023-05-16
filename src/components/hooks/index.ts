@@ -1,5 +1,5 @@
 import { LayerProps } from "../commons/types"
-import { useCallback } from "react"
+import { useCallback, useRef } from "react"
 
 export function useKeyboardClose(
     {
@@ -18,4 +18,22 @@ export function useKeyboardClose(
         },
         [keyboard, onKeyDown, onClose]
     )
+}
+
+export function useActive() {
+    const activeEl = useRef<HTMLElement | null>(null)
+    const setActive = () => {
+        activeEl.current = document.activeElement as HTMLElement
+    }
+    const focus = () => {
+        const { current: el } = activeEl
+
+        if (el && el !== document.body) {
+            el.focus()
+        }
+
+        activeEl.current = null
+    }
+
+    return [setActive, focus]
 }

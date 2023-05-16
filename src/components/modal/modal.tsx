@@ -21,7 +21,7 @@ import {
     toggleEventPropTypes,
     variantPropType
 } from "../commons/prop-types"
-import { useKeyboardClose } from "../hooks"
+import { useActive, useKeyboardClose } from "../hooks"
 import bodyStyleStack from "../utils/body-style-stack"
 import Header from "./header"
 import Footer from "./footer"
@@ -98,8 +98,8 @@ const Modal: FC<ModalProps> = function Modal(
     }
 ) {
     const [staticClass, setStaticClass] = useState("")
+    const [setActive, focus] = useActive()
     const modalRef = useRef<HTMLDivElement>(null)
-    const activeEl = useRef<HTMLElement | null>(null)
     const classes = classnames(className, "modal", staticClass)
     const dialogClasses = getDialogClass({
         fullscreen,
@@ -110,7 +110,7 @@ const Modal: FC<ModalProps> = function Modal(
     const removeStaticClass = () => setStaticClass("")
     const timer = new Timer(300, removeStaticClass)
     const handleEnter = () => {
-        activeEl.current = document.activeElement as HTMLElement
+        setActive()
         bodyStyleStack.push()
         onShow?.()
     }
@@ -120,9 +120,9 @@ const Modal: FC<ModalProps> = function Modal(
         onShown?.()
     }
     const handleExited = () => {
+        focus()
         bodyStyleStack.pop()
         onHidden?.()
-        activeEl.current?.focus()
     }
     const handleKeyDown = useKeyboardClose({
         onKeyDown,

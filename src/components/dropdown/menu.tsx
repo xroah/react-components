@@ -15,6 +15,7 @@ import { classnames, generateKey } from "../utils"
 import MenuItem, { MenuItemProps } from "./menu-item"
 import triggerContext from "../popup/trigger-context"
 import { DivProps } from "../commons/types"
+import { useActive } from "r-layers/hooks"
 
 type ME = MouseEvent<HTMLButtonElement>
 type KE = KeyboardEvent<HTMLButtonElement>
@@ -108,7 +109,7 @@ const Menu = forwardRef(
         )
         const elRef = nodeRef ?? useRef(null)
         const focusIndex = useRef(-1)
-        const activeEl = useRef<HTMLElement | null>(null)
+        const [setActive, focus] = useActive()
         const handleKeyDown = (ev: KeyboardEvent<HTMLDivElement>) => {
             handleArrowOrEscKeyDown(
                 ev,
@@ -120,10 +121,8 @@ const Menu = forwardRef(
                         focusItem()
                     },
                     onEscape() {
-                        activeEl.current?.focus()
+                        focus()
                         triggerCtx.hide?.()
-
-                        activeEl.current = null
                     }
                 }
             )
@@ -221,10 +220,7 @@ const Menu = forwardRef(
                 focusIndex.current = -1
 
                 if (triggerCtx.visible) {
-                    const a = document.activeElement as HTMLElement
-                    activeEl.current = a
-                } else {
-                    activeEl.current = null
+                    setActive()
                 }
             },
             [triggerCtx.visible]

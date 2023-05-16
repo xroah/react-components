@@ -7,7 +7,7 @@ import { classnames } from "../utils"
 import Backdrop from "../basics/backdrop"
 import { layerCommonPropTypes } from "../commons/prop-types"
 import { bool, node, oneOf } from "prop-types"
-import { useKeyboardClose } from "../hooks"
+import { useActive, useKeyboardClose } from "../hooks"
 import bodyStyleStack from "../utils/body-style-stack"
 import { getNullableNode } from "../utils/react"
 
@@ -41,7 +41,7 @@ const OffCanvas: FC<OffCanvasProps> = ({
     const PREFIX = "offcanvas"
     const handleClickClose = () => onClose?.("close")
     const nodeRef = useRef<HTMLDivElement>(null)
-    const activeEl = useRef<HTMLElement | null>(null)
+    const [setActive, focus] = useActive()
     const handleKeyDown = useKeyboardClose({
         onClose,
         keyboard,
@@ -61,8 +61,7 @@ const OffCanvas: FC<OffCanvasProps> = ({
         ) : null
     )
     const handleEnter = () => {
-        activeEl.current = document.activeElement as HTMLElement
-
+        setActive()
         onShow?.()
 
         if (!scroll) {
@@ -75,11 +74,9 @@ const OffCanvas: FC<OffCanvasProps> = ({
         onShown?.()
     }
     const handleExited = () => {
+        focus()
         onHidden?.()
-        activeEl.current?.focus()
         
-        activeEl.current = null
-
         if (!scroll) {
             bodyStyleStack.pop()
         }
