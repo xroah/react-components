@@ -158,6 +158,7 @@ const Menu = forwardRef(
                                 triggerCtx.hide?.()
                             }
 
+                            ev.preventDefault()
                             onKeyDown?.(ev)
                         }
                     }
