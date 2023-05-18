@@ -182,18 +182,21 @@ const Menu = forwardRef(
             }
 
             let i = focusIndex.current
-
+            const update = () => reverse ? i -= 1 : i += 1
+            
             if (i === -1) {
                 if (reverse) {
                     i = len - 1
                 } else {
                     i = 0
                 }
+            } else {
+                update()
             }
             
             while (reverse ? i >= 0 : i < len) {
                 const item = items[i]
-
+                
                 if (!item.disabled) {
                     focusIndex.current = i
                     item.focus()
@@ -201,7 +204,7 @@ const Menu = forwardRef(
                     break
                 }
 
-                reverse ? i -= 1 : i += 1
+                update()
             }
         }
         const focusFirst = () => focusItem()
