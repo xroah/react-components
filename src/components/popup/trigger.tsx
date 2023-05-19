@@ -114,6 +114,12 @@ const Trigger: FC<TriggerProps> = (
             switch (t) {
                 case "click":
                     listeners.onClick = (ev: ME) => {
+                        const {currentTarget} = ev
+
+                        if (currentTarget) {
+                            currentTarget.focus()
+                        }
+
                         toggle()
                         cProps.onClick?.(ev)
                     }
