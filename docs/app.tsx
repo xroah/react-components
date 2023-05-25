@@ -8,6 +8,7 @@ import PopupExample from "./examples/popup"
 import TooltipExample from "./examples/tooltip"
 import PopoverExample from "./examples/popover"
 import DropdownExample from "./examples/dropdown"
+import BackToTop from "r-layers/back-to-top"
 
 export default function App() {
 
@@ -26,6 +27,7 @@ export default function App() {
             <PopupExample />
             <PopoverExample />
             <TooltipExample />
+            <BackToTop/>
         </div>
     )
 }
