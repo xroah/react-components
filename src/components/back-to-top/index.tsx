@@ -3,7 +3,6 @@ import React, {
     ReactNode,
     MouseEvent,
     useMemo,
-    useEffect,
     useRef
 } from "react"
 import Button, { ButtonProps } from "../basics/button"
@@ -27,7 +26,6 @@ const BackToTop: FC<BackToTopProps> = (
         ...restProps
     }
 ) => {
-    let reqId = -1
     const element = useMemo(
         () => {
             if (target !== undefined) {
@@ -56,7 +54,7 @@ const BackToTop: FC<BackToTopProps> = (
         if (newTop < THRESHOLD) {
             newTop = 0
         } else {
-            reqId = requestAnimationFrame(scrollToTop)
+            requestAnimationFrame(scrollToTop)
         }
 
         element!.scrollTop = newTop
@@ -77,13 +75,6 @@ const BackToTop: FC<BackToTopProps> = (
             scrollToTop()
         }
     }
-
-    useEffect(
-        () => {
-            console.log(element)
-        },
-        [element]
-    )
 
     return (
         <Button
