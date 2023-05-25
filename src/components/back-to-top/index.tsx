@@ -1,4 +1,11 @@
-import React, { FC, ReactNode, MouseEvent, useMemo, useEffect } from "react"
+import React, {
+    FC,
+    ReactNode,
+    MouseEvent,
+    useMemo,
+    useEffect,
+    useRef
+} from "react"
 import Button, { ButtonProps } from "../basics/button"
 import { classnames } from "../utils"
 import ArrowUp from "../icons/arrow-up"
@@ -28,8 +35,8 @@ const BackToTop: FC<BackToTopProps> = (
                     const node = document.querySelector(target)
 
                     return node as Element
-                } 
-                
+                }
+
                 return target
             }
 
@@ -41,11 +48,11 @@ const BackToTop: FC<BackToTopProps> = (
         "r-back-to-top",
         className
     )
+    const sTop = useRef(0)
     const scrollToTop = () => {
         const THRESHOLD = 10
-        const top = element!.scrollTop
-        let newTop = top / 3
-        
+        let newTop = sTop.current / 2
+
         if (newTop < THRESHOLD) {
             newTop = 0
         } else {
@@ -53,6 +60,7 @@ const BackToTop: FC<BackToTopProps> = (
         }
 
         element!.scrollTop = newTop
+        sTop.current = newTop
     }
     const handleClick = (ev: MouseEvent<HTMLButtonElement>) => {
         onClick?.(ev)
@@ -64,6 +72,8 @@ const BackToTop: FC<BackToTopProps> = (
         if (!smooth) {
             element.scrollTop = 0
         } else {
+            sTop.current = element.scrollTop
+
             scrollToTop()
         }
     }
