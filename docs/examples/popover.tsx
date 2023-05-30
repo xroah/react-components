@@ -1,6 +1,6 @@
 import React from "react"
-import Button from "r-layers/basics/button"
-import Popover from "r-layers/popover"
+import Button from "r-components/basics/button"
+import Popover from "r-components/popover"
 
 export default function PopoverExample() {
     const ref = React.useRef<HTMLButtonElement>(null)

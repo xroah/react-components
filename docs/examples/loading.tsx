@@ -1,8 +1,8 @@
 import React from "react"
-import NestedLoading from "r-layers/loading/nested"
-import Button from "r-layers/basics/button"
-import { useLoading } from "r-layers/loading/loading-hook"
-import {open} from "r-layers/loading/loading-methods"
+import NestedLoading from "r-components/loading/nested"
+import Button from "r-components/basics/button"
+import { useLoading } from "r-components/loading/loading-hook"
+import {open} from "r-components/loading/loading-methods"
 
 export default function Loading() {
     const [loading, toggle] = React.useState(false)

@@ -1,5 +1,5 @@
-import Button from "r-layers/basics/button"
-import Popup from "r-layers/popup/popup"
+import Button from "r-components/basics/button"
+import Popup from "r-components/popup/popup"
 import React from "react"
 
 export default function PopupExample() {

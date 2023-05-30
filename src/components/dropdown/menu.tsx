@@ -15,7 +15,7 @@ import { classnames, generateKey } from "../utils"
 import MenuItem, { MenuItemProps } from "./menu-item"
 import triggerContext from "../popup/trigger-context"
 import { DivProps } from "../commons/types"
-import { useActive } from "r-layers/hooks"
+import { useActive } from "r-components/hooks"
 
 type ME = MouseEvent<HTMLButtonElement>
 type KE = KeyboardEvent<HTMLButtonElement>

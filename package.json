@@ -1,5 +1,5 @@
 {
-  "name": "r-layers",
+  "name": "r-components",
   "version": "1.0.0",
   "description": "",
   "main": "lib/index.js",
@@ -13,14 +13,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/xroah/react-layers.git"
+    "url": "git+https://github.com/xroah/react-components.git"
   },
   "author": "xroah",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/xroah/react-layers/issues"
+    "url": "https://github.com/xroah/react-components/issues"
   },
-  "homepage": "https://github.com/xroah/react-layers#readme",
+  "homepage": "https://github.com/xroah/react-components#readme",
   "devDependencies": {
     "@testing-library/react": "^14.0.0",
     "@types/node": "^18.15.3",

@@ -3,12 +3,12 @@ import ModalExample from "./examples/modal"
 import OffCanvas from "./examples/offcanvas"
 import Loading from "./examples/loading"
 import Toast from "./examples/toast"
-import Input from "r-layers/basics/input"
+import Input from "r-components/basics/input"
 import PopupExample from "./examples/popup"
 import TooltipExample from "./examples/tooltip"
 import PopoverExample from "./examples/popover"
 import DropdownExample from "./examples/dropdown"
-import BackToTop from "r-layers/back-to-top"
+import BackToTop from "r-components/back-to-top"
 
 export default function App() {
 

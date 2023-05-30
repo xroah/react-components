@@ -1,8 +1,8 @@
 import React from "react"
-import Modal from "r-layers/modal/modal"
-import { open } from "r-layers/modal/modal-methods"
-import Button from "r-layers/basics/button"
-import { useModal } from "r-layers/modal/modal-hook"
+import Modal from "r-components/modal/modal"
+import { open } from "r-components/modal/modal-methods"
+import Button from "r-components/basics/button"
+import { useModal } from "r-components/modal/modal-hook"
 
 export default function ModalExample() {
     const [visible, toggle] = React.useState(false)

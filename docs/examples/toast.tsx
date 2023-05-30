@@ -1,6 +1,6 @@
 import React from "react"
-import Button from "r-layers/basics/button"
-import { useToast } from "r-layers/toast/toast-hook"
+import Button from "r-components/basics/button"
+import { useToast } from "r-components/toast/toast-hook"
 import {
     TOP,
     BOTTOM,
@@ -9,9 +9,9 @@ import {
     TOP_LEFT,
     TOP_RIGHT,
     Placement
-} from "r-layers/toast/toast"
-import ToastInner from "r-layers/toast/toast-inner"
-import {} from "r-layers/toast/toast-methods"
+} from "r-components/toast/toast"
+import ToastInner from "r-components/toast/toast-inner"
+import {} from "r-components/toast/toast-methods"
 
 export default function ToastExample() {
     const [api, wrapper] = useToast()

@@ -12,7 +12,7 @@ export default {
                     ),
                 },
                 {
-                    find: "r-layers",
+                    find: "r-components",
                     replacement: path.join(
                         process.cwd(),
                         "./src/components"

@@ -1,4 +1,4 @@
-import DropdownButton from "r-layers/dropdown/dropdown-button"
+import DropdownButton from "r-components/dropdown/dropdown-button"
 import React from "react"
 
 export default function DropdownExample() {
