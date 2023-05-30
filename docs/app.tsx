@@ -9,6 +9,7 @@ import TooltipExample from "./examples/tooltip"
 import PopoverExample from "./examples/popover"
 import DropdownExample from "./examples/dropdown"
 import BackToTop from "r-components/back-to-top"
+import Button from "r-components/basics/button"
 
 export default function App() {
 
@@ -27,7 +28,16 @@ export default function App() {
             <PopupExample />
             <PopoverExample />
             <TooltipExample />
-            <BackToTop/>
+            <BackToTop>
+                <Button
+                    variant="info"
+                    onClick={e => {
+                        console.log("Back to top")
+                        // e.preventDefault()
+                    }}>
+                    Top
+                </Button>
+            </BackToTop>
         </div>
     )
 }

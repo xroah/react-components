@@ -1,29 +1,24 @@
-import React, {
+import {
     FC,
-    ReactNode,
     MouseEvent,
+    ReactElement,
+    cloneElement,
     useMemo,
     useRef
 } from "react"
-import Button, { ButtonProps } from "../basics/button"
 import { classnames } from "../utils"
-import ArrowUp from "../icons/arrow-up"
 
-interface BackToTopProps extends ButtonProps {
+interface BackToTopProps {
     target?: string | Element
-    icon?: ReactNode
     smooth?: boolean
+    children: ReactElement
 }
 
 const BackToTop: FC<BackToTopProps> = (
     {
         target,
-        icon,
         smooth = true,
-        onClick,
-        className,
-        variant = "secondary",
-        ...restProps
+        children
     }
 ) => {
     const element = useMemo(
@@ -42,10 +37,7 @@ const BackToTop: FC<BackToTopProps> = (
         },
         [target]
     )
-    const classes = classnames(
-        "r-back-to-top",
-        className
-    )
+    const CLASS_NAME = "r-back-to-top"
     const sTop = useRef(0)
     const scrollToTop = () => {
         const THRESHOLD = 10
@@ -61,9 +53,13 @@ const BackToTop: FC<BackToTopProps> = (
         sTop.current = newTop
     }
     const handleClick = (ev: MouseEvent<HTMLButtonElement>) => {
-        onClick?.(ev)
+        children.props.onClick?.(ev)
 
-        if (!element) {
+        if (
+            !element ||
+            element.scrollTop === 0 ||
+            ev.defaultPrevented
+        ) {
             return
         }
 
@@ -76,14 +72,15 @@ const BackToTop: FC<BackToTopProps> = (
         }
     }
 
-    return (
-        <Button
-            className={classes}
-            variant={variant}
-            onClick={handleClick}
-            {...restProps}>
-            {icon ? icon : <ArrowUp />}
-        </Button>
+    return cloneElement(
+        children,
+        {
+            className: classnames(
+                children.props.className,
+                CLASS_NAME
+            ),
+            onClick: handleClick
+        }
     )
 }
 
