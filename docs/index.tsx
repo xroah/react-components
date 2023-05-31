@@ -4,8 +4,9 @@ import App from "./app"
 
 import "./styles/index.scss"
 import "../src/styles/index.scss"
+import "bootstrap/dist/css/bootstrap.css"
 
-const appEl = document.getElementById("app")
-const root = createRoot(appEl)
+const appEl = document.getElementById("app") as HTMLElement
+const root = createRoot(appEl) 
 
 root.render(<App />)
