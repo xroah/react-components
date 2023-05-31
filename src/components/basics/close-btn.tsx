@@ -1,6 +1,5 @@
 import React, { ButtonHTMLAttributes } from "react"
 import { classnames } from "../utils"
-import Close from "../icons/close"
 
 export default function CloseBtn(
     {
@@ -13,8 +12,6 @@ export default function CloseBtn(
         <button
             type={type}
             className={classnames(className, "btn-close")}
-            {...restProps}>
-            <Close />
-        </button>
+            {...restProps} />
     )
 }
