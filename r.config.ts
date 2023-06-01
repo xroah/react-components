@@ -5,13 +5,6 @@ export default {
         resolve: {
             alias: [
                 {
-                    find: "boot-scss",
-                    replacement: path.join(
-                        process.cwd(),
-                        "node_modules/bootstrap/scss"
-                    ),
-                },
-                {
                     find: "r-components",
                     replacement: path.join(
                         process.cwd(),
