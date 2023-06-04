@@ -2,7 +2,7 @@ import React from "react"
 import Button from "r-components/basics/button"
 import OffCanvas from "r-components/offcanvas"
 
-export default () => {
+export default function OffCanvasExample() {
     const [visible, toggle] = React.useState(false)
     const handleClick = () => toggle(!visible)
     const handleClose = () => toggle(false)

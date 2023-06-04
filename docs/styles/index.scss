@@ -41,3 +41,22 @@ body {
     height: 200px;
     background-color: aqua;
 }
+
+.examples-wrapper {
+    display: flex;
+
+    .examples-list {
+        display: flex;
+        flex-direction: column;
+        width: 150px;
+        flex-shrink: 0;
+
+        a {
+            margin: 5px 0;
+        }
+    }
+
+    .examples-details {
+        flex-grow: 1;
+    }
+}
