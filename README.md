@@ -1,2 +1,2 @@
-# react-layers
-React layers based on Bootstrap and floating-ui
+# react-components
+React componentsß based on Bootstrap and floating-ui
