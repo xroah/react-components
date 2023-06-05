@@ -5,6 +5,7 @@ import React,
     FC,
     ReactElement,
     RefObject,
+    useEffect,
     useState
 } from "react"
 import { Transition } from "react-transition-group"
@@ -23,24 +24,26 @@ interface FadeProps extends Partial<TimeoutProps<HTMLElement>> {
     children: ReactElement
 }
 
-const Fade: FC<FadeProps> = ({
-    fadeClass = "fade",
-    showClass = "show",
-    children,
-    timeout = 150,
-    showDisplay,
-    nodeRef,
-    unmountOnExit,
-    onEnter,
-    onEntering,
-    onExit,
-    onExited,
-    ...restProps
-}) => {
+const Fade: FC<FadeProps> = (
+    {
+        fadeClass = "fade",
+        showClass = "show",
+        children,
+        timeout = 150,
+        showDisplay,
+        nodeRef,
+        unmountOnExit,
+        onEnter,
+        onEntering,
+        onExit,
+        onExited,
+        ...restProps
+    }: FadeProps
+) => {
     if (!isChildrenValidElement(children)) {
         return null
     }
-
+    
     const [
         display,
         setDisplay
@@ -49,9 +52,11 @@ const Fade: FC<FadeProps> = ({
         ...children.props.style
     }
     const [classes, setClasses] = useState(fadeClass)
+    const removeDisplay = () => setDisplay(showDisplay ?? "")
+    const show = () => setClasses(classnames(fadeClass, showClass))
     const handleEnter: EnterHandler<HTMLElement> = (...args) => {
         if (!unmountOnExit) {
-            setDisplay(showDisplay ?? "")
+            removeDisplay()
         }
 
         onEnter?.(...args)
@@ -64,7 +69,7 @@ const Fade: FC<FadeProps> = ({
             el?.offsetHeight
         }
 
-        setClasses(classnames(fadeClass, showClass))
+        show()
         onEntering?.(...args)
     }
     const handleExit: ExitHandler<HTMLElement> = (...args) => {
@@ -83,11 +88,24 @@ const Fade: FC<FadeProps> = ({
         style.display = display
     }
 
+    useEffect(
+        () => {
+            // mounted, if in is true and appear is false
+            // the element may invisible
+            if (restProps.in && !restProps.appear) {
+                removeDisplay()
+                show()
+            }
+        },
+        []
+    )
+
     return (
         <Transition
             timeout={timeout}
             onEnter={handleEnter}
             onEntering={handleEntering}
+            onEntered={() => console.log("eee")}
             onExit={handleExit}
             onExited={handleExited}
             unmountOnExit={unmountOnExit}
