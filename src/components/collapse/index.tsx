@@ -3,7 +3,8 @@ import React, {
     useState,
     useRef,
     useCallback,
-    CSSProperties
+    CSSProperties,
+    useMemo
 } from "react"
 import { Transition } from "react-transition-group"
 import { DivProps } from "../commons/types"
@@ -27,33 +28,40 @@ const Collapse: FC<CollapseProps> = (
 ) => {
     const COLLAPSE = "collapse"
     const COLLAPSING = "collapsing"
-    const [classes, setClasses] = useState(classnames(
-        className,
-        COLLAPSE
-    ))
+    const collapseClass = useMemo(
+        () => classnames(
+            className,
+            COLLAPSE
+        ),
+        [className]
+    )
+    const collapsingClass = useMemo(
+        () => classnames(
+            className,
+            COLLAPSING
+        ),
+        [className]
+    )
+    const showClass = useMemo(
+        () => collapseClass + " show",
+        [collapseClass]
+    )
+    const [classes, setClasses] = useState(collapseClass)
     const [nodeStyle, setNodeStyle] = useState<CSSProperties>({})
     const nodeRef = useRef<HTMLDivElement>(null)
     const handleEnter = () => {
-        setClasses(classnames(
-            className,
-            COLLAPSING
-        ))
+        setClasses(collapsingClass)
     }
     const handleEntering = () => {
         setNodeStyle({
             ...style,
             height: nodeRef.current?.scrollHeight
         })
-        console.log(nodeRef.current?.scrollHeight)
     }
     const handleEntered = () => {
         onOpened?.()
-        setClasses(classnames(
-            className,
-            COLLAPSE,
-            "show"
-        ))
-        setNodeStyle({...style})
+        setClasses(showClass)
+        setNodeStyle({ ...style })
     }
     const handleExit = () => {
         setNodeStyle({
@@ -62,10 +70,7 @@ const Collapse: FC<CollapseProps> = (
         })
     }
     const handleExiting = () => {
-        setClasses(classnames(
-            className,
-            COLLAPSING
-        ))
+        setClasses(collapsingClass)
         // reflow
         nodeRef.current?.offsetHeight
         setNodeStyle({
@@ -76,11 +81,8 @@ const Collapse: FC<CollapseProps> = (
     const handleExited = useCallback(
         () => {
             onClosed?.()
-            setNodeStyle({...style})
-            setClasses(classnames(
-                className,
-                COLLAPSE
-            ))
+            setNodeStyle({ ...style })
+            setClasses(collapseClass)
         },
         [classes]
     )
