@@ -7,7 +7,7 @@ export default function Examples() {
     return (
         <div className="examples-wrapper">
             <div className="examples-list">
-                <NavLink to="/components/dropdown">Dropdown</NavLink>
+                <NavLink to="/components/Collapse">Collapse</NavLink>
                 <NavLink to="/components/loading">Loading</NavLink>
                 <NavLink to="/components/modal">Modal</NavLink>
                 <NavLink to="/components/offcanvas">OffCanvas</NavLink>
