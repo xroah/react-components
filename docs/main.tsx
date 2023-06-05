@@ -7,6 +7,7 @@ export default function Examples() {
     return (
         <div className="examples-wrapper">
             <div className="examples-list">
+                <NavLink to="/components/alert">Alert</NavLink>
                 <NavLink to="/components/Collapse">Collapse</NavLink>
                 <NavLink to="/components/loading">Loading</NavLink>
                 <NavLink to="/components/modal">Modal</NavLink>

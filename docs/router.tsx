@@ -10,12 +10,17 @@ import PopoverExample from "./examples/popover"
 import DropdownExample from "./examples/dropdown"
 import Main from "./main"
 import CollapseExample from "./examples/collapse"
+import AlertExample from "./examples/alert"
 
 const router = createHashRouter([
     {
         path: "/components",
         element: <Main />,
         children: [
+            {
+                path: "alert",
+                element: <AlertExample />
+            },
             {
                 path: "collapse",
                 element: <CollapseExample />
