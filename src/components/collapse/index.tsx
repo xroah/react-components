@@ -46,7 +46,9 @@ const Collapse: FC<CollapseProps> = (
         () => collapseClass + " show",
         [collapseClass]
     )
-    const [classes, setClasses] = useState(collapseClass)
+    const [classes, setClasses] = useState(() => classnames(
+        open ? showClass : collapseClass
+    ))
     const [nodeStyle, setNodeStyle] = useState<CSSProperties>({})
     const nodeRef = useRef<HTMLDivElement>(null)
     const handleEnter = () => {
