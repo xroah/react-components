@@ -42,10 +42,10 @@ body {
     background-color: aqua;
 }
 
-.examples-wrapper {
+.main-wrapper {
     display: flex;
 
-    .examples-list {
+    .menu-list {
         display: flex;
         flex-direction: column;
         width: 150px;
@@ -56,7 +56,7 @@ body {
         }
     }
 
-    .examples-details {
+    .details {
         flex-grow: 1;
     }
 }

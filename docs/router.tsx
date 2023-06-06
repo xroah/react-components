@@ -1,5 +1,5 @@
 import React from "react"
-import { createHashRouter, RouterProvider } from "react-router-dom"
+import { createHashRouter } from "react-router-dom"
 import Loading from "./examples/loading"
 import ModalExample from "./examples/modal"
 import OffCanvas from "./examples/offcanvas"
@@ -11,56 +11,59 @@ import DropdownExample from "./examples/dropdown"
 import Main from "./main"
 import CollapseExample from "./examples/collapse"
 import AlertExample from "./examples/alert"
+import Examples from "./examples"
 
-const router = createHashRouter([
+export default createHashRouter([
     {
-        path: "/components",
+        path: "/",
         element: <Main />,
         children: [
             {
-                path: "alert",
-                element: <AlertExample />
-            },
-            {
-                path: "collapse",
-                element: <CollapseExample />
-            },
-            {
-                path: "dropdown",
-                element: <DropdownExample />
-            },
-            {
-                path: "loading",
-                element: <Loading />
-            },
-            {
-                path: "modal",
-                element: <ModalExample />
-            },
-            {
-                path: "offcanvas",
-                element: <OffCanvas />
-            },
-            {
-                path: "popover",
-                element: <PopoverExample />
-            },
-            {
-                path: "popup",
-                element: <PopupExample />
-            },
-            {
-                path: "toast",
-                element: <Toast />
-            },
-            {
-                path: "tooltip",
-                element: <TooltipExample />
+                path: "components",
+                element: <Examples />,
+                children: [
+                    {
+                        path: "alert",
+                        element: <AlertExample />
+                    },
+                    {
+                        path: "collapse",
+                        element: <CollapseExample />
+                    },
+                    {
+                        path: "dropdown",
+                        element: <DropdownExample />
+                    },
+                    {
+                        path: "loading",
+                        element: <Loading />
+                    },
+                    {
+                        path: "modal",
+                        element: <ModalExample />
+                    },
+                    {
+                        path: "offcanvas",
+                        element: <OffCanvas />
+                    },
+                    {
+                        path: "popover",
+                        element: <PopoverExample />
+                    },
+                    {
+                        path: "popup",
+                        element: <PopupExample />
+                    },
+                    {
+                        path: "toast",
+                        element: <Toast />
+                    },
+                    {
+                        path: "tooltip",
+                        element: <TooltipExample />
+                    }
+                ]
             }
         ]
     }
 ])
-
-export default function Router() {
-    return <RouterProvider router={router} />
-}

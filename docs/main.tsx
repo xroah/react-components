@@ -3,10 +3,10 @@ import { NavLink, Outlet } from "react-router-dom"
 import BackToTop from "r-components/back-to-top"
 import Button from "r-components/basics/button"
 
-export default function Examples() {
+export default function Main() {
     return (
-        <div className="examples-wrapper">
-            <div className="examples-list">
+        <div className="main-wrapper">
+            <div className="menu-list">
                 <NavLink to="/components/alert">Alert</NavLink>
                 <NavLink to="/components/Collapse">Collapse</NavLink>
                 <NavLink to="/components/loading">Loading</NavLink>
@@ -17,7 +17,7 @@ export default function Examples() {
                 <NavLink to="/components/toast">Toast</NavLink>
                 <NavLink to="/components/tooltip">Tooltip</NavLink>
             </div>
-            <div className="example-details">
+            <div className="details">
                 <Outlet />
             </div>
             <BackToTop>
