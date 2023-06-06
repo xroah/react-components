@@ -1,10 +1,14 @@
 import React, {
+    Children,
     FC,
+    cloneElement,
+    isValidElement,
     useCallback,
-    useState
+    useState,
+    ReactElement
 } from "react"
 import { DivProps } from "../commons/types"
-import { KeyProp, PREFIX } from "./item"
+import { ItemProps, KeyProp, PREFIX } from "./item"
 import AccordionCtx from "./context"
 import { classnames } from "../utils"
 
@@ -12,6 +16,7 @@ interface AccordionProps extends DivProps {
     alwaysOpen?: boolean
     defaultActiveKey?: KeyProp
     activeKey?: KeyProp
+    flush?: boolean
 }
 
 function getKey(key?: KeyProp) {
@@ -31,6 +36,7 @@ const Accordion: FC<AccordionProps> = (
         alwaysOpen,
         defaultActiveKey,
         className,
+        flush,
         children,
         ...restProps
     }: AccordionProps
@@ -44,10 +50,22 @@ const Accordion: FC<AccordionProps> = (
         activeKey,
         setActiveKey
     ] = useState(() => getKey(defaultActiveKey))
-    const classes = classnames(className, PREFIX)
+    const classes = classnames(
+        className,
+        PREFIX,
+        flush && `${PREFIX}-flush`
+    )
     const toggle = useCallback(
         (key: string | number) => setActiveKey(
             keys => {
+                if (!alwaysOpen) {
+                    if (keys[0] === key) {
+                        return []
+                    }
+
+                    return [key]
+                }
+
                 if (keys.includes(key)) {
                     return keys.filter(k => k !== key)
                 }
@@ -55,7 +73,21 @@ const Accordion: FC<AccordionProps> = (
                 return [...keys, key]
             }
         ),
-        []
+        [alwaysOpen]
+    )
+    const newChildren = Children.toArray(children).map(
+        (c, index) => {
+            if (!isValidElement(c) || typeof c.type === "string") {
+                return c
+            }
+
+            const key = c.props.itemKey ?? index
+
+            return cloneElement(
+                c as ReactElement<ItemProps>,
+                { itemKey: String(key) }
+            )
+        }
     )
     let finalActiveKey: KeyProp
 
@@ -68,13 +100,15 @@ const Accordion: FC<AccordionProps> = (
     if (!alwaysOpen && finalActiveKey.length > 1) {
         finalActiveKey = [finalActiveKey[0]]
     }
-
+    
     return (
         <AccordionCtx.Provider value={{
             activeKey: finalActiveKey,
             toggle
         }}>
-            <div className={classes} {...props}></div>
+            <div className={classes} {...props}>
+                {newChildren}
+            </div>
         </AccordionCtx.Provider>
     )
 }
