@@ -5,7 +5,6 @@ import React,
     FC,
     ReactElement,
     RefObject,
-    useEffect,
     useState
 } from "react"
 import { Transition } from "react-transition-group"
@@ -33,6 +32,7 @@ const Fade: FC<FadeProps> = (
         showDisplay,
         nodeRef,
         unmountOnExit,
+        in: _in,
         onEnter,
         onEntering,
         onExit,
@@ -43,20 +43,20 @@ const Fade: FC<FadeProps> = (
     if (!isChildrenValidElement(children)) {
         return null
     }
-    
+
     const [
         display,
         setDisplay
-    ] = useState(unmountOnExit ? "" : "none")
+    ] = useState(() => unmountOnExit || _in ? "" : "none")
     const style: CSSProperties = {
         ...children.props.style
     }
-    const [classes, setClasses] = useState(fadeClass)
-    const removeDisplay = () => setDisplay(showDisplay ?? "")
-    const show = () => setClasses(classnames(fadeClass, showClass))
+    const [classes, setClasses] = useState(
+        () => classnames(fadeClass, _in && showClass)
+    )
     const handleEnter: EnterHandler<HTMLElement> = (...args) => {
         if (!unmountOnExit) {
-            removeDisplay()
+            setDisplay(showDisplay ?? "")
         }
 
         onEnter?.(...args)
@@ -69,7 +69,7 @@ const Fade: FC<FadeProps> = (
             el?.offsetHeight
         }
 
-        show()
+        setClasses(classnames(fadeClass, showClass))
         onEntering?.(...args)
     }
     const handleExit: ExitHandler<HTMLElement> = (...args) => {
@@ -88,26 +88,14 @@ const Fade: FC<FadeProps> = (
         style.display = display
     }
 
-    useEffect(
-        () => {
-            // mounted, if in is true and appear is false
-            // the element may invisible
-            if (restProps.in && !restProps.appear) {
-                removeDisplay()
-                show()
-            }
-        },
-        []
-    )
-
     return (
         <Transition
-            timeout={timeout}
             onEnter={handleEnter}
             onEntering={handleEntering}
-            onEntered={() => console.log("eee")}
             onExit={handleExit}
             onExited={handleExited}
+            timeout={timeout}
+            in={_in}
             unmountOnExit={unmountOnExit}
             {...restProps}>
             {
