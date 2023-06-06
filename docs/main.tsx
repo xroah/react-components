@@ -7,6 +7,7 @@ export default function Main() {
     return (
         <div className="main-wrapper">
             <div className="menu-list">
+                <NavLink to="/components/accordion">Accordion</NavLink>
                 <NavLink to="/components/alert">Alert</NavLink>
                 <NavLink to="/components/Collapse">Collapse</NavLink>
                 <NavLink to="/components/loading">Loading</NavLink>

@@ -12,6 +12,7 @@ import Main from "./main"
 import CollapseExample from "./examples/collapse"
 import AlertExample from "./examples/alert"
 import Examples from "./examples"
+import AccordionExample from "./examples/accordion"
 
 export default createHashRouter([
     {
@@ -22,6 +23,10 @@ export default createHashRouter([
                 path: "components",
                 element: <Examples />,
                 children: [
+                    {
+                        path: "accordion",
+                        element: <AccordionExample />
+                    },
                     {
                         path: "alert",
                         element: <AlertExample />
