@@ -85,7 +85,7 @@ const Accordion: FC<AccordionProps> = (
 
             return cloneElement(
                 c as ReactElement<ItemProps>,
-                { itemKey: String(key) }
+                { itemKey: key }
             )
         }
     )
