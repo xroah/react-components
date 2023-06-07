@@ -15,6 +15,7 @@ export default function Main() {
                 <NavLink to="/components/offcanvas">OffCanvas</NavLink>
                 <NavLink to="/components/popover">Popover</NavLink>
                 <NavLink to="/components/popup">Popup</NavLink>
+                <NavLink to="/components/tab">Tab</NavLink>
                 <NavLink to="/components/toast">Toast</NavLink>
                 <NavLink to="/components/tooltip">Tooltip</NavLink>
             </div>

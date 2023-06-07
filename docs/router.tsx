@@ -13,6 +13,7 @@ import CollapseExample from "./examples/collapse"
 import AlertExample from "./examples/alert"
 import Examples from "./examples"
 import AccordionExample from "./examples/accordion"
+import TabExample from "./examples/Tab"
 
 export default createHashRouter([
     {
@@ -58,6 +59,10 @@ export default createHashRouter([
                     {
                         path: "popup",
                         element: <PopupExample />
+                    },
+                    {
+                        path: "tab",
+                        element: <TabExample />
                     },
                     {
                         path: "toast",
