@@ -10,9 +10,7 @@ import { sizes } from "../commons/constants"
 import { classnames } from "../utils"
 import Item from "./item"
 import warning from "warning"
-import ThreeDots from "r-components/icons/three-dots"
-import ChevronDoubleLeft from "r-components/icons/chevron-double-left"
-import ChevronDoubleRight from "r-components/icons/chevron-double-right"
+import Dots from "./dots"
 
 const alignments = [
     "start",
@@ -115,8 +113,8 @@ const Pagination: FC<PaginationProps> = (
     let start = 0
     let end = 0
     let lastItem: ReactNode = null
-    let showPrevDot = false
-    let showNextDot = false
+    let showLeftDots = false
+    let showRightDots = false
 
     if (
         !realPageSize ||
@@ -156,17 +154,17 @@ const Pagination: FC<PaginationProps> = (
                 start = 2
                 end = threshold + 1
                 lastItem = createItem(totalPages)
-                showNextDot = true
+                showRightDots = true
             } else if (current > rightEdge) {
                 start = rightEdge
                 end = totalPages
-                showPrevDot = true
+                showLeftDots = true
             } else {
                 const num = Math.floor((VISIBLE_PAGES - 2) / 2)
                 start = current - num
                 end = current + num
                 lastItem = createItem(totalPages)
-                showPrevDot = showNextDot = true
+                showLeftDots = showRightDots = true
             }
         }
     }
@@ -178,23 +176,9 @@ const Pagination: FC<PaginationProps> = (
             </Item>
             {createItem(1)}
             {/* dots */}
-            {
-                showPrevDot ? (
-                    <Item onClick={goToPrevFive} className="page-dot">
-                        <span><ThreeDots /></span>
-                        <span><ChevronDoubleLeft /></span>
-                    </Item>
-                ) : null
-            }
+            {showLeftDots ? <Dots onClick={goToPrevFive} left /> : null}
             {generateItems(start, end)}
-            {
-                showNextDot ? (
-                    <Item onClick={goToNextFive} className="page-dot">
-                        <span><ThreeDots /></span>
-                        <span><ChevronDoubleRight /></span>
-                    </Item>
-                ) : null
-            }
+            {showRightDots ? <Dots onClick={goToNextFive} /> : null}
             {lastItem}
             {/* totalPages may be 0 */}
             <Item disabled={current >= totalPages} onClick={handleNext}>

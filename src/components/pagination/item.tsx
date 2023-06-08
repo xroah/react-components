@@ -1,7 +1,7 @@
 import React, { FC, MouseEvent, ReactNode } from "react"
 import { classnames } from "../utils"
 
-interface PaginationItemProps {
+export interface PaginationItemProps {
     disabled?: boolean
     active?: boolean
     onClick?: (page?: number) => void

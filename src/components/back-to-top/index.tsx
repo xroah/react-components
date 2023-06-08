@@ -79,6 +79,12 @@ const BackToTop: FC<BackToTopProps> = (
                 children.props.className,
                 CLASS_NAME
             ),
+            style: {
+                position: "fixed",
+                right: 30,
+                bottom: 30,
+                ...children.props.style
+            },
             onClick: handleClick
         }
     )
