@@ -5,6 +5,7 @@ import React,
     FC,
     ReactElement,
     RefObject,
+    useEffect,
     useState
 } from "react"
 import { Transition } from "react-transition-group"
@@ -47,13 +48,12 @@ const Fade: FC<FadeProps> = (
     const [
         display,
         setDisplay
-    ] = useState(() => unmountOnExit || _in ? "" : "none")
+    ] = useState(() => unmountOnExit ? "" : "none")
+    const show = () => setClasses(classnames(fadeClass, showClass))
     const style: CSSProperties = {
         ...children.props.style
     }
-    const [classes, setClasses] = useState(
-        () => classnames(fadeClass, _in && showClass)
-    )
+    const [classes, setClasses] = useState(fadeClass)
     const handleEnter: EnterHandler<HTMLElement> = (...args) => {
         if (!unmountOnExit) {
             setDisplay(showDisplay ?? "")
@@ -69,7 +69,7 @@ const Fade: FC<FadeProps> = (
             el?.offsetHeight
         }
 
-        setClasses(classnames(fadeClass, showClass))
+        show()
         onEntering?.(...args)
     }
     const handleExit: ExitHandler<HTMLElement> = (...args) => {
@@ -87,6 +87,17 @@ const Fade: FC<FadeProps> = (
     if (display) {
         style.display = display
     }
+
+    useEffect(
+        () => {
+            // just mounted, if appear is false, the element may invisible
+            if (_in && !restProps.appear) {
+                show()
+                setDisplay("")
+            }
+        },
+        []
+    )
 
     return (
         <Transition
