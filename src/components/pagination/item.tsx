@@ -7,6 +7,7 @@ interface PaginationItemProps {
     onClick?: (page?: number) => void
     children?: ReactNode
     page?: number
+    className?: string
 }
 
 const Item: FC<PaginationItemProps> = ({
@@ -14,7 +15,8 @@ const Item: FC<PaginationItemProps> = ({
     active,
     onClick,
     children,
-    page
+    page,
+    className
 }) => {
     const handleClick = (ev: MouseEvent) => {
         ev.preventDefault()
@@ -26,6 +28,7 @@ const Item: FC<PaginationItemProps> = ({
 
     return (
         <li className={classnames(
+            className,
             "page-item",
             disabled && "disabled"
         )}>

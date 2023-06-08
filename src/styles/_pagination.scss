@@ -1,0 +1,37 @@
+.pagination {
+    .page-dot {
+        @mixin hide {
+            width: 0;
+            opacity: 0;
+        }
+
+        a {
+            color: var(--bs-pagination-disabled-color);
+        }
+
+        span {
+            display: inline-block;
+        }
+
+        span:last-child {
+            @include hide();
+        }
+
+        a:hover {
+            color: var(--bs-pagination-color);
+            
+            span {
+                transition: opacity .15s;
+            }
+
+            span:first-child {
+                @include hide();
+            }
+
+            span:last-child {
+                width: auto;
+                opacity: 1;
+            }
+        }
+    }
+}

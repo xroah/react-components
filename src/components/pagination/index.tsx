@@ -11,6 +11,8 @@ import { classnames } from "../utils"
 import Item from "./item"
 import warning from "warning"
 import ThreeDots from "r-components/icons/three-dots"
+import ChevronDoubleLeft from "r-components/icons/chevron-double-left"
+import ChevronDoubleRight from "r-components/icons/chevron-double-right"
 
 const alignments = [
     "start",
@@ -73,23 +75,18 @@ const Pagination: FC<PaginationProps> = (
         }
     )
     const goTo = (page: number) => {
-        if (page === current) {
+        const newPage = page > totalPages ? totalPages :
+            page < 1 ? 1 : page
+
+        if (newPage === current) {
             return
         }
 
-        setCurrent(page)
-        onChange?.(page)
+        setCurrent(newPage)
+        onChange?.(newPage)
     }
-    const handleNext = () => {
-        if (current < totalPages) {
-            goTo(current + 1)
-        }
-    }
-    const handlePrev = () => {
-        if (current > 1) {
-            goTo(current - 1)
-        }
-    }
+    const handleNext = () => goTo(current + 1)
+    const handlePrev = () => goTo(current - 1)
     const handleClick = (n?: number) => {
         if (n) {
             goTo(n)
@@ -104,6 +101,8 @@ const Pagination: FC<PaginationProps> = (
             {p}
         </Item>
     )
+    const goToNextFive = () => goTo(current + 5)
+    const goToPrevFive = () => goTo(current - 5)
     const generateItems = (start: number, end: number) => {
         const items: ReactElement[] = []
 
@@ -179,9 +178,23 @@ const Pagination: FC<PaginationProps> = (
             </Item>
             {createItem(1)}
             {/* dots */}
-            {showPrevDot ? <Item disabled><ThreeDots /></Item> : null}
+            {
+                showPrevDot ? (
+                    <Item onClick={goToPrevFive} className="page-dot">
+                        <span><ThreeDots /></span>
+                        <span><ChevronDoubleLeft /></span>
+                    </Item>
+                ) : null
+            }
             {generateItems(start, end)}
-            {showNextDot ? <Item disabled><ThreeDots /></Item> : null}
+            {
+                showNextDot ? (
+                    <Item onClick={goToNextFive} className="page-dot">
+                        <span><ThreeDots /></span>
+                        <span><ChevronDoubleRight /></span>
+                    </Item>
+                ) : null
+            }
             {lastItem}
             {/* totalPages may be 0 */}
             <Item disabled={current >= totalPages} onClick={handleNext}>
