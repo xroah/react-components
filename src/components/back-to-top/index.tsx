@@ -1,4 +1,5 @@
 import {
+    CSSProperties,
     FC,
     MouseEvent,
     ReactElement,
@@ -7,10 +8,14 @@ import {
     useRef
 } from "react"
 import { classnames } from "../utils"
+import { styled } from "styled-components"
+import { isChildrenValidElement } from "r-components/utils/react"
 
 interface BackToTopProps {
     target?: string | Element
     smooth?: boolean
+    className?: string
+    style?: CSSProperties
     children: ReactElement
 }
 
@@ -18,9 +23,15 @@ const BackToTop: FC<BackToTopProps> = (
     {
         target,
         smooth = true,
-        children
+        children,
+        className,
+        style
     }
 ) => {
+    if (!isChildrenValidElement(children)) {
+        return
+    }
+
     const element = useMemo(
         () => {
             if (target !== undefined) {
@@ -76,13 +87,12 @@ const BackToTop: FC<BackToTopProps> = (
         children,
         {
             className: classnames(
+                className,
                 children.props.className,
                 CLASS_NAME
             ),
             style: {
-                position: "fixed",
-                right: 30,
-                bottom: 30,
+                ...style,
                 ...children.props.style
             },
             onClick: handleClick
@@ -90,4 +100,8 @@ const BackToTop: FC<BackToTopProps> = (
     )
 }
 
-export default BackToTop
+export default styled(BackToTop)`
+position: fixed;
+right: 30px;
+bottom: 30px;
+`
