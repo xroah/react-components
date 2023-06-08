@@ -14,6 +14,7 @@ import AlertExample from "./examples/alert"
 import Examples from "./examples"
 import AccordionExample from "./examples/accordion"
 import TabExample from "./examples/Tab"
+import PaginationExample from "./examples/pagination"
 
 export default createHashRouter([
     {
@@ -51,6 +52,10 @@ export default createHashRouter([
                     {
                         path: "offcanvas",
                         element: <OffCanvas />
+                    },
+                    {
+                        path: "pagination",
+                        element: <PaginationExample />
                     },
                     {
                         path: "popover",

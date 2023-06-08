@@ -13,6 +13,7 @@ export default function Main() {
                 <NavLink to="/components/loading">Loading</NavLink>
                 <NavLink to="/components/modal">Modal</NavLink>
                 <NavLink to="/components/offcanvas">OffCanvas</NavLink>
+                <NavLink to="/components/pagination">Pagination</NavLink>
                 <NavLink to="/components/popover">Popover</NavLink>
                 <NavLink to="/components/popup">Popup</NavLink>
                 <NavLink to="/components/tab">Tab</NavLink>
