@@ -1,3 +1,6 @@
+import { createGlobalStyle } from "styled-components"
+
+const PopupGlobalStyle = createGlobalStyle`
 .r-popup {
     position: absolute;
     width: 100%;
@@ -24,3 +27,6 @@
         }
     }
 }
+`
+
+export default PopupGlobalStyle

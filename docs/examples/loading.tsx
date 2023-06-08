@@ -15,7 +15,7 @@ export default function Loading() {
             text: "正在加载..."
         })
 
-        setTimeout(() => hookApi.close(), 3000)
+        // setTimeout(() => hookApi.close(), 3000)
     }
     
     return (

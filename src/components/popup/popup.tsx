@@ -42,6 +42,7 @@ import NoTransition from "../basics/no-transition"
 import { ToggleEvents } from "../commons/types"
 import warning from "warning"
 import GetDomNode from "../utils/get-dom-node"
+import PopupGlobalStyle from "./style"
 
 export interface PopupProps extends ToggleEvents {
     overlay: ReactElement
@@ -273,7 +274,7 @@ const Popup: FC<PopupProps> = (
         const target = ev.target as HTMLElement
         const anchorEl = getAnchorEl() as HTMLElement
         const floatingEl = getFloatingEl()
-        
+
         if (!anchorEl || !floatingEl) {
             return
         }
@@ -353,6 +354,7 @@ const Popup: FC<PopupProps> = (
 
     return (
         <>
+            <PopupGlobalStyle />
             {
                 anchorRef ? children : (
                     <GetDomNode getRef={getLocalAnchor}>

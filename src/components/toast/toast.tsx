@@ -4,6 +4,7 @@ import ToastInner, { ToastInnerProps } from "./toast-inner"
 import { Transition, TransitionStatus } from "react-transition-group"
 import { classnames } from "../utils"
 import Timer from "../utils/timer"
+import ToastGlobalStyle from "./style"
 
 const toastPlacements = [
     "top",
@@ -195,18 +196,21 @@ const Toast: React.FC<ToastProps> = ({
     )
 
     return (
-        <Transition
-            in={visible}
-            timeout={300}
-            nodeRef={nodeRef}
-            onEnter={onShow}
-            onEntered={onShown}
-            onExit={onHide}
-            onExited={onHidden}
-            appear
-            unmountOnExit>
-            {render}
-        </Transition>
+        <>
+            <ToastGlobalStyle />
+            <Transition
+                in={visible}
+                timeout={300}
+                nodeRef={nodeRef}
+                onEnter={onShow}
+                onEntered={onShown}
+                onExit={onHide}
+                onExited={onHidden}
+                appear
+                unmountOnExit>
+                {render}
+            </Transition>
+        </>
     )
 }
 

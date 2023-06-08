@@ -1,9 +1,0 @@
-@mixin flex-align-center {
-    display: flex;
-    align-items: center;
-}
-
-@mixin flex-all-center {
-    @include flex-align-center();
-    justify-content: center;
-}

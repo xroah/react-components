@@ -1,34 +1,6 @@
-@use "./mixins";
+import { createGlobalStyle } from "styled-components"
 
-.toast-icon {
-    margin-right: 15px;
-    font-size: 0;
-}
-
-.toast-title {
-    margin-right: auto;
-}
-
-.toast-simple {
-    @include mixins.flex-align-center();
-    width: auto;
-    max-width: 90vw;
-    padding: 0 10px;
-
-    .toast-icon {
-        margin: 0;
-    }
-
-    .toast-body {
-        margin-right: auto;
-    }
-
-    .btn-close {
-        flex-shrink: 0;
-        color: inherit
-    }
-}
-
+const ToastGlobalStyle = createGlobalStyle`
 .r-toast {
     position: fixed;
     z-index: 1000;
@@ -37,7 +9,8 @@
 
 .r-toast-top,
 .r-toast-bottom {
-    @include mixins.flex-align-center();
+    display: flex;
+    align-items: center;
     flex-direction: column;
     left: 0;
     width: 100%;
@@ -77,3 +50,6 @@
     transition: transform .3s cubic-bezier(.21, .66, .49, 1.32),
         opacity .3s, height .3s linear;
 }
+`
+
+export default ToastGlobalStyle

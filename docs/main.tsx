@@ -9,7 +9,8 @@ export default function Main() {
             <div className="menu-list">
                 <NavLink to="/components/accordion">Accordion</NavLink>
                 <NavLink to="/components/alert">Alert</NavLink>
-                <NavLink to="/components/Collapse">Collapse</NavLink>
+                <NavLink to="/components/collapse">Collapse</NavLink>
+                <NavLink to="/components/dropdown">Dropdown</NavLink>
                 <NavLink to="/components/loading">Loading</NavLink>
                 <NavLink to="/components/modal">Modal</NavLink>
                 <NavLink to="/components/offcanvas">OffCanvas</NavLink>

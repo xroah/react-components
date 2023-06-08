@@ -1,30 +1,19 @@
-@use "./mixins";
+import { createGlobalStyle } from "styled-components"
 
+const LoadingGlobalStyle = createGlobalStyle`
 .r-loading {
-    @include mixins.flex-all-center();
+    display: flex;
+    align-items: center;
+    justify-content: center;
     flex-direction: column;
     position: relative;
     padding: 10px;
     background-color: rgba(255, 255, 255, .5);
 
     .btn-close {
-        $dis: 10px;
         position: absolute;
-        top: $dis;
-        right: $dis;
-    }
-}
-
-.r-loading-nested {
-    position: relative;
-
-    .r-loading {
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        z-index: 1000;
+        top: 10px;
+        right: 10px;
     }
 }
 
@@ -34,6 +23,8 @@
     top: 0;
     width: 100vw;
     height: 100vh;
+    background-color: red;
+    z-index: 1000;
 
     .r-loading {
         width: 100%;
@@ -45,3 +36,6 @@
         }
     }
 }
+`
+
+export default LoadingGlobalStyle
