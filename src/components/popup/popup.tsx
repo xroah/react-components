@@ -42,7 +42,7 @@ import NoTransition from "../basics/no-transition"
 import { ToggleEvents } from "../commons/types"
 import warning from "warning"
 import GetDomNode from "../utils/get-dom-node"
-import PopupGlobalStyle from "./style"
+import Overlay from "./overlay"
 
 export interface PopupProps extends ToggleEvents {
     overlay: ReactElement
@@ -231,21 +231,6 @@ const Popup: FC<PopupProps> = (
             onUpdate?.(data)
         })
     }
-    const finalOverlay = (
-        <div ref={floatingRef} className={classes}>
-            {
-                cloneElement(
-                    overlay,
-                    {
-                        style: {
-                            ...overlay.props.style,
-                            ...pos
-                        }
-                    }
-                )
-            }
-        </div>
-    )
     const transitionProps = {
         in: visible,
         unmountOnExit: unmountOnHidden,
@@ -254,22 +239,6 @@ const Popup: FC<PopupProps> = (
         onExit: onHide,
         onExited: onHidden
     }
-    const el = (
-        transition ? (
-            <Fade
-                timeout={timeout}
-                nodeRef={floatingRef}
-                fadeClass={transitionClass}
-                appear
-                {...transitionProps}>
-                {finalOverlay}
-            </Fade>
-        ) : (
-            <NoTransition {...transitionProps}>
-                {finalOverlay}
-            </NoTransition>
-        )
-    )
     const handleClickOutSide = (ev: MouseEvent) => {
         const target = ev.target as HTMLElement
         const anchorEl = getAnchorEl() as HTMLElement
@@ -288,6 +257,21 @@ const Popup: FC<PopupProps> = (
             onClickOutSide?.(ev)
         }
     }
+    const finalOverlay = (
+        <Overlay ref={floatingRef} className={classes}>
+            {
+                cloneElement(
+                    overlay,
+                    {
+                        style: {
+                            ...overlay.props.style,
+                            ...pos
+                        }
+                    }
+                )
+            }
+        </Overlay>
+    )
 
     useEffect(
         () => {
@@ -296,6 +280,10 @@ const Popup: FC<PopupProps> = (
                     "click",
                     handleClickOutSide
                 )
+
+                if (!rendered.current) {
+                    rendered.current = true
+                }
             }
 
             return () => {
@@ -315,10 +303,6 @@ const Popup: FC<PopupProps> = (
             if (visible) {
                 const floatingEl = getFloatingEl()
                 const anchorEl = getAnchorEl()
-
-                if (!rendered.current) {
-                    rendered.current = true
-                }
 
                 if (!floatingEl) {
                     warning(
@@ -354,7 +338,6 @@ const Popup: FC<PopupProps> = (
 
     return (
         <>
-            <PopupGlobalStyle />
             {
                 anchorRef ? children : (
                     <GetDomNode getRef={getLocalAnchor}>
@@ -362,7 +345,25 @@ const Popup: FC<PopupProps> = (
                     </GetDomNode>
                 )
             }
-            {createPortal(el, document.body)}
+            {
+                createPortal(
+                    transition ? (
+                        <Fade
+                            timeout={timeout}
+                            nodeRef={floatingRef}
+                            fadeClass={transitionClass}
+                            appear
+                            {...transitionProps}>
+                            {finalOverlay}
+                        </Fade>
+                    ) : (
+                        <NoTransition {...transitionProps}>
+                            {finalOverlay}
+                        </NoTransition>
+                    ),
+                    document.body
+                )
+            }
         </>
     )
 }
