@@ -6,7 +6,8 @@ import React, {
     MouseEvent,
     FocusEvent,
     cloneElement,
-    useRef
+    useRef,
+    useMemo
 } from "react"
 import Popup, { extractPopupProps, PopupProps } from "./popup"
 import { OneOf } from "../commons/types"
@@ -62,7 +63,10 @@ function getDelay(delay?: number | Delay) {
         }
     }
 
-    return delay
+    return {
+        show: Number(delay.show) || 0,
+        hide: Number(delay.hide) || 0
+    }
 }
 
 const Trigger: FC<TriggerProps> = (
@@ -73,6 +77,7 @@ const Trigger: FC<TriggerProps> = (
         overlay,
         visible: propVisible,
         onClickOutSide,
+        delay,
         ...restProps
     }: TriggerProps
 ) => {
@@ -91,12 +96,54 @@ const Trigger: FC<TriggerProps> = (
         visible: popupProps.visible,
         controlled
     }
+    const realDelay = useMemo(
+        () => getDelay(delay),
+        [delay]
+    )
     let handleClickOutSide = onClickOutSide
 
     if (!controlled && isValidElement(children)) {
-        const show = () => setVisible(true)
-        const hide = () => setVisible(false)
-        const toggle = () => setVisible(v => !v)
+        const performDelay = (callback: VoidFunction, sec: number) => {
+            timeId.current = window.setTimeout(
+                () => {
+                    timeId.current = -1
+
+                    callback()
+                },
+                sec
+            )
+        }
+        const clearTimeout = () => {
+            if (timeId.current !== -1) {
+                window.clearTimeout(timeId.current)
+
+                timeId.current = -1
+
+                return true
+            }
+
+            return false
+        }
+        const performAction = (
+            callback: VoidFunction,
+            delay: number
+        ) => {
+            if (clearTimeout()) {
+                return
+            }
+
+            if (delay > 0) {
+                performDelay(callback, delay)
+            } else {
+                callback()
+            }
+        }
+
+        const _show = () => setVisible(true)
+        const _hide = () => setVisible(false)
+        const show = () => performAction(_show, realDelay.show)
+        const hide = () => performAction(_hide, realDelay.hide)
+        const toggle = () => visible ? hide() : show()
         const listeners: HTMLAttributes<Element> = {}
         const cProps = children.props as HTMLAttributes<HTMLElement>
         ctx.show = show
@@ -114,7 +161,7 @@ const Trigger: FC<TriggerProps> = (
             switch (t) {
                 case "click":
                     listeners.onClick = (ev: ME) => {
-                        const {currentTarget} = ev
+                        const { currentTarget } = ev
 
                         if (currentTarget) {
                             currentTarget.focus()
@@ -143,6 +190,19 @@ const Trigger: FC<TriggerProps> = (
                         hide()
                         cProps.onMouseLeave?.(ev)
                     }
+                    popupProps.overlay = cloneElement(
+                        overlay,
+                        {
+                            onMouseEnter(ev: MouseEvent) {
+                                clearTimeout()
+                                overlay.props?.onMouseEnter?.(ev)
+                            },
+                            onMouseLeave(ev: MouseEvent) {
+                                performAction(hide, realDelay.hide)
+                                overlay.props?.onMouseLeave?.(ev)
+                            }
+                        }
+                    )
                     break
                 default:
                 // do nothing

@@ -30,6 +30,8 @@ const Tooltip: FC<TooltipProps> = (
         placement = "top",
         trigger = "hover",
         defaultVisible,
+        offset=[6, 0],
+        delay = { show: 0, hide: 150 },
         onUpdate,
         ...restProps
     }: TooltipProps
@@ -46,11 +48,11 @@ const Tooltip: FC<TooltipProps> = (
     const [
         arrow,
         arrowRef,
-        updatePosition
+        updateArrowPosition
     ] = useArrow(`${PREFIX}-arrow`)
     const [classes, setClasses] = useState(getClass(placement))
     const handleUpdate = (data: ComputePositionReturn) => {
-        updatePosition(data)
+        updateArrowPosition(data)
         setClasses(getClass(data.placement))
         onUpdate?.(data)
     }
@@ -70,6 +72,8 @@ const Tooltip: FC<TooltipProps> = (
             trigger={trigger}
             arrowRef={arrowRef}
             defaultVisible={defaultVisible}
+            delay={delay}
+            offset={offset}
             onUpdate={handleUpdate}
             {...restProps}>
             {children}

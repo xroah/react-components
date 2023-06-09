@@ -1,5 +1,4 @@
 import React, {
-    isValidElement,
     FC,
     useState,
     CSSProperties,
@@ -39,6 +38,7 @@ import warning from "warning"
 import GetDomNode from "../utils/get-dom-node"
 import Overlay from "./overlay"
 import { PopupProps, getOffset } from "./misc"
+import { isChildrenValidElement } from "../utils/react"
 
 export { extractPopupProps } from "./misc"
 export type { PopupProps } from "./misc"
@@ -69,8 +69,7 @@ const Popup: FC<PopupProps> = (
         onHidden
     }: PopupProps
 ) => {
-
-    if (!isValidElement(children)) {
+    if (!isChildrenValidElement(children)) {
         return children
     }
 
