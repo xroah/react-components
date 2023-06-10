@@ -23,7 +23,6 @@ const LoadingGlobalStyle = createGlobalStyle`
     top: 0;
     width: 100vw;
     height: 100vh;
-    background-color: red;
     z-index: 1000;
 
     .r-loading {

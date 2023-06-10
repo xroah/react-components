@@ -29,7 +29,7 @@ const BackToTop: FC<BackToTopProps> = (
     }
 ) => {
     if (!isChildrenValidElement(children)) {
-        return
+        return null
     }
 
     const element = useMemo(
