@@ -9,6 +9,7 @@ export default function Main() {
             <div className="menu-list">
                 <NavLink to="/components/accordion">Accordion</NavLink>
                 <NavLink to="/components/alert">Alert</NavLink>
+                <NavLink to="/components/Carousel">Carousel</NavLink>
                 <NavLink to="/components/collapse">Collapse</NavLink>
                 <NavLink to="/components/dropdown">Dropdown</NavLink>
                 <NavLink to="/components/loading">Loading</NavLink>

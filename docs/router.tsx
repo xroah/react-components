@@ -15,6 +15,7 @@ import Examples from "./examples"
 import AccordionExample from "./examples/accordion"
 import TabExample from "./examples/Tab"
 import PaginationExample from "./examples/pagination"
+import CarouselExample from "./examples/carousel"
 
 export default createHashRouter([
     {
@@ -32,6 +33,10 @@ export default createHashRouter([
                     {
                         path: "alert",
                         element: <AlertExample />
+                    },
+                    {
+                        path: "carousel",
+                        element: <CarouselExample />
                     },
                     {
                         path: "collapse",
