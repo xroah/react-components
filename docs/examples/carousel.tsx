@@ -17,7 +17,7 @@ export default function CarouselExample() {
                     preserveAspectRatio="xMidYMid slice"
                     focusable="false">
                     <title>Placeholder</title>
-                    <rect width="100%" height="100%" fill="#777"></rect>
+                    <rect width="100%" height="100%" fill="indigo"></rect>
                     <text x="50%" y="50%" fill="#555" dy=".3em">First slide</text>
                 </svg>
             </Carousel.Item>
@@ -30,7 +30,7 @@ export default function CarouselExample() {
                     preserveAspectRatio="xMidYMid slice"
                     focusable="false">
                     <title>Placeholder</title>
-                    <rect width="100%" height="100%" fill="#777"></rect>
+                    <rect width="100%" height="100%" fill="royalblue"></rect>
                     <text x="50%" y="50%" fill="#555" dy=".3em">Second slide</text>
                 </svg>
             </Carousel.Item>
@@ -43,7 +43,7 @@ export default function CarouselExample() {
                     preserveAspectRatio="xMidYMid slice"
                     focusable="false">
                     <title>Placeholder</title>
-                    <rect width="100%" height="100%" fill="#777"></rect>
+                    <rect width="100%" height="100%" fill="aqua"></rect>
                     <text x="50%" y="50%" fill="#555" dy=".3em">Third slide</text>
                 </svg>
             </Carousel.Item>
