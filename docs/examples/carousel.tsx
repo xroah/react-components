@@ -3,7 +3,7 @@ import Carousel from "r-components/carousel"
 
 export default function CarouselExample() {
     return (
-        <Carousel>
+        <Carousel indicators>
             <Carousel.Item caption={
                 <>
                     <h5>First slide label</h5>
@@ -18,7 +18,7 @@ export default function CarouselExample() {
                     focusable="false">
                     <title>Placeholder</title>
                     <rect width="100%" height="100%" fill="indigo"></rect>
-                    <text x="50%" y="50%" fill="#555" dy=".3em">First slide</text>
+                    <text x="50%" y="50%" fill="#fff" dy=".3em">First slide</text>
                 </svg>
             </Carousel.Item>
             1
@@ -31,7 +31,7 @@ export default function CarouselExample() {
                     focusable="false">
                     <title>Placeholder</title>
                     <rect width="100%" height="100%" fill="royalblue"></rect>
-                    <text x="50%" y="50%" fill="#555" dy=".3em">Second slide</text>
+                    <text x="50%" y="50%" fill="#fff" dy=".3em">Second slide</text>
                 </svg>
             </Carousel.Item>
             <div>123</div>
@@ -43,8 +43,8 @@ export default function CarouselExample() {
                     preserveAspectRatio="xMidYMid slice"
                     focusable="false">
                     <title>Placeholder</title>
-                    <rect width="100%" height="100%" fill="aqua"></rect>
-                    <text x="50%" y="50%" fill="#555" dy=".3em">Third slide</text>
+                    <rect width="100%" height="100%" fill="coral"></rect>
+                    <text x="50%" y="50%" fill="#fff" dy=".3em">Third slide</text>
                 </svg>
             </Carousel.Item>
         </Carousel>

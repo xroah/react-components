@@ -11,6 +11,7 @@ import { classnames } from "../utils"
 import Item, { PREFIX } from "./item"
 import carouselContext from "./context"
 import ControlBtn from "./control-btn"
+import Indicators from "./indicators"
 
 interface CarouselProps extends DivProps {
     slide?: boolean
@@ -79,12 +80,11 @@ const Carousel: FC<CarouselProps> = (
     const handleSlid = () => {
         onSlid?.()
         setSliding(false)
-        console.log("onslid")
+        setDir("")
     }
     const handleSlide = () => {
         onSlide?.()
         setSliding(true)
-        console.log("onslide")
     }
 
     return (
@@ -110,6 +110,14 @@ const Carousel: FC<CarouselProps> = (
                                 variant="next"
                                 onClick={handleNext} />
                         </>
+                    ) : null
+                }
+                {
+                    indicators ? (
+                        <Indicators
+                            count={count}
+                            current={activeIndex}
+                            onSelect={to} />
                     ) : null
                 }
             </div>
