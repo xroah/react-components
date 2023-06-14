@@ -46,7 +46,6 @@ interface SwipeOptions<T> {
     onTouchStart?: TouchHandler<T>
     onTouchMove?: TouchHandler<T>
     onTouchEnd?: TouchHandler<T>
-    onEnd?: VoidFunction
     onPrev?: VoidFunction
     onNext?: VoidFunction
 }
@@ -83,7 +82,6 @@ export function useSwipe<T  extends Element = HTMLDivElement>(
             }
         }
 
-        options.onEnd?.()
         options.onTouchEnd?.(ev)
     }
 
