@@ -1,6 +1,7 @@
 import React, {
     Children,
     FC,
+    KeyboardEvent,
     ReactElement,
     cloneElement,
     isValidElement,
@@ -42,6 +43,7 @@ const Carousel: FC<CarouselProps> = (
         children,
         onSlid,
         onSlide,
+        onKeyDown,
         ...restProps
     }: CarouselProps
 ) => {
@@ -75,8 +77,8 @@ const Carousel: FC<CarouselProps> = (
 
         setActiveIndex(index)
     }
-    const handleNext = () => to(activeIndex + 1)
-    const handlePrev = () => to(activeIndex - 1)
+    const next = () => to(activeIndex + 1)
+    const prev = () => to(activeIndex - 1)
     const handleSlid = () => {
         onSlid?.()
         setSliding(false)
@@ -86,6 +88,19 @@ const Carousel: FC<CarouselProps> = (
         onSlide?.()
         setSliding(true)
     }
+    const handleKeyDown = (ev: KeyboardEvent<HTMLDivElement>) => {
+        onKeyDown?.(ev)
+
+        if (keyboard) {
+            const key = ev.key.toLowerCase()
+
+            if (key === "arrowleft") {
+                prev()
+            } else if (key === "arrowright") {
+                next()
+            }
+        }
+    }
 
     return (
         <carouselContext.Provider value={{
@@ -94,7 +109,11 @@ const Carousel: FC<CarouselProps> = (
             onSlid: handleSlid,
             onSlide: handleSlide
         }}>
-            <div className={classes} {...restProps}>
+            <div
+                className={classes}
+                tabIndex={keyboard ? -1 : undefined}
+                onKeyDown={handleKeyDown}
+                {...restProps}>
                 <div className={`${PREFIX}-inner`}>
                     {newChildren}
                 </div>
@@ -104,11 +123,11 @@ const Carousel: FC<CarouselProps> = (
                             <ControlBtn
                                 prefix={PREFIX}
                                 variant="prev"
-                                onClick={handlePrev} />
+                                onClick={prev} />
                             <ControlBtn
                                 prefix={PREFIX}
                                 variant="next"
-                                onClick={handleNext} />
+                                onClick={next} />
                         </>
                     ) : null
                 }
