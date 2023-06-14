@@ -19,6 +19,7 @@ import Indicators from "./indicators"
 import { useSwipe } from "../hooks"
 
 interface CarouselProps extends DivProps {
+    autoplay?: boolean
     slide?: boolean
     controls?: boolean
     indicators?: boolean
@@ -37,6 +38,7 @@ const Carousel: FC<CarouselProps> = (
         className,
         controls = true,
         slide = true,
+        autoplay = true,
         indicators = true,
         interval = 5000,
         ride = false,
@@ -76,11 +78,20 @@ const Carousel: FC<CarouselProps> = (
         },
         [children, activeIndex]
     )
+    const cycleTimeoutId = useRef(-1)
+    const clearCycleTimeout = () => {
+        if (cycleTimeoutId.current !== -1) {
+            window.clearTimeout(cycleTimeoutId.current)
+
+            cycleTimeoutId.current = -1
+        }
+    }
     const to = (index: number) => {
         if (sliding || index === activeIndex) {
             return
         }
 
+        clearCycleTimeout()
         setDir(index > activeIndex ? "next" : "prev")
 
         if (wrap) {
@@ -93,6 +104,18 @@ const Carousel: FC<CarouselProps> = (
     }
     const next = () => to(activeIndex + 1)
     const prev = () => to(activeIndex - 1)
+    const cycle = () => {
+        if (!autoplay) {
+            return
+        }
+
+        clearCycleTimeout()
+
+        cycleTimeoutId.current = window.setTimeout(
+            next,
+            currentChildPropsRef.current?.interval ?? interval
+        )
+    }
     const {
         handleTouchStart,
         handleTouchMove,
@@ -104,14 +127,15 @@ const Carousel: FC<CarouselProps> = (
         onPrev: prev,
         onNext: next
     })
+    const mounted = useRef(false)
+    const handleSlide = () => {
+        onSlide?.()
+        setSliding(true)
+    }
     const handleSlid = () => {
         onSlid?.()
         setSliding(false)
         setDir("")
-    }
-    const handleSlide = () => {
-        onSlide?.()
-        setSliding(true)
     }
     const handleKeyDown = (ev: KeyboardEvent<HTMLDivElement>) => {
         onKeyDown?.(ev)
@@ -141,9 +165,31 @@ const Carousel: FC<CarouselProps> = (
     useEffect(
         () => {
             currentChildPropsRef.current = newChildren[activeIndex].props
-            console.log(currentChildPropsRef.current)
         },
         [newChildren, activeIndex]
+    )
+
+    useEffect(
+        () => {
+            if (!sliding && mounted.current) {
+                cycle()
+            }
+        },
+        [sliding]
+    )
+
+
+    useEffect(
+        () => {
+            if (!ride) {
+                cycle()
+            }
+
+            mounted.current = true
+
+            return clearCycleTimeout
+        },
+        []
     )
 
     return (

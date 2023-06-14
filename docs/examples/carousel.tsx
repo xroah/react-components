@@ -3,7 +3,7 @@ import Carousel from "r-components/carousel"
 
 export default function CarouselExample() {
     return (
-        <Carousel indicators>
+        <Carousel indicators ride>
             <Carousel.Item caption={
                 <>
                     <h5>First slide label</h5>
