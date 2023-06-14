@@ -1,5 +1,5 @@
+import { useCallback, useRef, TouchEvent } from "react"
 import { LayerProps } from "../commons/types"
-import { useCallback, useRef } from "react"
 
 export function useKeyboardClose(
     {
@@ -36,4 +36,60 @@ export function useActive() {
     }
 
     return [setActive, focus]
+}
+
+type E<T> = TouchEvent<T>
+
+type TouchHandler<T> = (ev: E<T>) => unknown
+
+interface SwipeOptions<T> {
+    onTouchStart?: TouchHandler<T>
+    onTouchMove?: TouchHandler<T>
+    onTouchEnd?: TouchHandler<T>
+    onEnd?: VoidFunction
+    onPrev?: VoidFunction
+    onNext?: VoidFunction
+}
+
+export function useSwipe<T  extends Element = HTMLDivElement>(
+    threshold = 40,
+    options: SwipeOptions<T> = {}
+) {
+    const startX = useRef(0)
+    const deltaX = useRef(0)
+    const handleTouchStart = (ev: E<T>) => {
+        startX.current = ev.touches[0].clientX
+        deltaX.current = 0
+
+        options.onTouchStart?.(ev)
+    }
+    const handleTouchMove = (ev: E<T>) => {
+        if (ev.touches.length > 1) {
+            deltaX.current = 0
+        } else {
+            deltaX.current = ev.touches[0].clientX
+        }
+
+        options.onTouchMove?.(ev)
+    }
+    const handleTouchEnd = (ev: E<T>) => {
+        const moved = deltaX.current - startX.current
+
+        if (Math.abs(moved) >= threshold) {
+            if (moved > 0) {
+                options.onPrev?.()
+            } else {
+                options.onNext?.()
+            }
+        }
+
+        options.onEnd?.()
+        options.onTouchEnd?.(ev)
+    }
+
+    return {
+        handleTouchStart,
+        handleTouchMove,
+        handleTouchEnd
+    }
 }
