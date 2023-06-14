@@ -5,6 +5,9 @@ import React, {
     ReactElement,
     cloneElement,
     isValidElement,
+    useEffect,
+    useMemo,
+    useRef,
     useState
 } from "react"
 import { DivProps } from "../commons/types"
@@ -13,6 +16,7 @@ import Item, { PREFIX } from "./item"
 import carouselContext from "./context"
 import ControlBtn from "./control-btn"
 import Indicators from "./indicators"
+import { useSwipe } from "../hooks"
 
 interface CarouselProps extends DivProps {
     slide?: boolean
@@ -44,6 +48,9 @@ const Carousel: FC<CarouselProps> = (
         onSlid,
         onSlide,
         onKeyDown,
+        onTouchStart,
+        onTouchMove,
+        onTouchEnd,
         ...restProps
     }: CarouselProps
 ) => {
@@ -55,13 +62,20 @@ const Carousel: FC<CarouselProps> = (
     const [activeIndex, setActiveIndex] = useState(0)
     const [dir, setDir] = useState("")
     const [sliding, setSliding] = useState(false)
-    const newChildren = Children.toArray(children).filter(
-        c => isValidElement(c) && c.type === Item
-    ).map((c, index) => cloneElement(
-        c as ReactElement,
-        { __active: index === activeIndex }
-    ))
-    const count = newChildren.length
+    const currentChildPropsRef = useRef<CarouselProps | null>(null)
+    const [newChildren, count] = useMemo(
+        () => {
+            const newChildren = Children.toArray(children).filter(
+                c => isValidElement(c) && c.type === Item
+            ).map((c, index) => cloneElement(
+                c as ReactElement,
+                { __active: index === activeIndex }
+            ))
+
+            return [newChildren, newChildren.length]
+        },
+        [children, activeIndex]
+    )
     const to = (index: number) => {
         if (sliding || index === activeIndex) {
             return
@@ -79,6 +93,17 @@ const Carousel: FC<CarouselProps> = (
     }
     const next = () => to(activeIndex + 1)
     const prev = () => to(activeIndex - 1)
+    const {
+        handleTouchStart,
+        handleTouchMove,
+        handleTouchEnd
+    } = useSwipe(40, {
+        onTouchEnd,
+        onTouchMove,
+        onTouchStart,
+        onPrev: prev,
+        onNext: next
+    })
     const handleSlid = () => {
         onSlid?.()
         setSliding(false)
@@ -101,6 +126,25 @@ const Carousel: FC<CarouselProps> = (
             }
         }
     }
+    const touchHandlers = {
+        onTouchEnd,
+        onTouchStart,
+        onTouchMove
+    }
+
+    if (touch) {
+        touchHandlers.onTouchEnd = handleTouchEnd
+        touchHandlers.onTouchMove = handleTouchMove
+        touchHandlers.onTouchStart = handleTouchStart
+    }
+
+    useEffect(
+        () => {
+            currentChildPropsRef.current = newChildren[activeIndex].props
+            console.log(currentChildPropsRef.current)
+        },
+        [newChildren, activeIndex]
+    )
 
     return (
         <carouselContext.Provider value={{
@@ -113,6 +157,7 @@ const Carousel: FC<CarouselProps> = (
                 className={classes}
                 tabIndex={keyboard ? -1 : undefined}
                 onKeyDown={handleKeyDown}
+                {...touchHandlers}
                 {...restProps}>
                 <div className={`${PREFIX}-inner`}>
                     {newChildren}

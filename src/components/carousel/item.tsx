@@ -1,10 +1,17 @@
-import React, { FC, ReactNode, cloneElement, useContext, useEffect, useRef } from "react"
+import React, {
+    FC,
+    ReactNode,
+    cloneElement,
+    useContext,
+    useEffect,
+    useRef
+} from "react"
 import { DivProps } from "../commons/types"
 import { classnames, omit } from "../utils"
 import { Transition, TransitionStatus } from "react-transition-group"
 import carouselContext from "./context"
 
-interface CarouselItemProps extends DivProps {
+export interface CarouselItemProps extends DivProps {
     interval?: number
     caption?: ReactNode
     // internal

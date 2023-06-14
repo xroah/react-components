@@ -9,7 +9,8 @@ export default function CarouselExample() {
                     <h5>First slide label</h5>
                     <p>Some representative placeholder content for the first slide.</p>
                 </>
-            }>
+            }
+            interval={5000}>
                 <svg
                     width="800"
                     height="400"
@@ -22,7 +23,7 @@ export default function CarouselExample() {
                 </svg>
             </Carousel.Item>
             1
-            <Carousel.Item>
+            <Carousel.Item interval={6000}>
                 <svg
                     width="800"
                     height="400"
@@ -35,7 +36,7 @@ export default function CarouselExample() {
                 </svg>
             </Carousel.Item>
             <div>123</div>
-            <Carousel.Item>
+            <Carousel.Item interval={8000}>
                 <svg
                     width="800"
                     height="400"
