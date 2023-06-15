@@ -2,6 +2,7 @@ import React, {
     Children,
     FC,
     KeyboardEvent,
+    MouseEvent,
     ReactElement,
     cloneElement,
     isValidElement,
@@ -20,6 +21,7 @@ import { useSwipe } from "../hooks"
 
 interface CarouselProps extends DivProps {
     autoplay?: boolean
+    pauseOnHover?: boolean
     slide?: boolean
     controls?: boolean
     indicators?: boolean
@@ -39,6 +41,7 @@ const Carousel: FC<CarouselProps> = (
         controls = true,
         slide = true,
         autoplay = true,
+        pauseOnHover = true,
         indicators = true,
         interval = 5000,
         ride = false,
@@ -53,6 +56,8 @@ const Carousel: FC<CarouselProps> = (
         onTouchStart,
         onTouchMove,
         onTouchEnd,
+        onMouseEnter,
+        onMouseLeave,
         ...restProps
     }: CarouselProps
 ) => {
@@ -64,6 +69,7 @@ const Carousel: FC<CarouselProps> = (
     const [activeIndex, setActiveIndex] = useState(0)
     const [dir, setDir] = useState("")
     const [sliding, setSliding] = useState(false)
+    const [paused, setPaused] = useState(false)
     const currentChildPropsRef = useRef<CarouselProps | null>(null)
     const [newChildren, count] = useMemo(
         () => {
@@ -116,14 +122,40 @@ const Carousel: FC<CarouselProps> = (
             currentChildPropsRef.current?.interval ?? interval
         )
     }
+    const pause = () => {
+        if (pauseOnHover) {
+            setPaused(true)
+            clearCycleTimeout()
+        }
+    }
+    const play = () => {
+        if (pauseOnHover) {
+            setPaused(false)
+            cycle()
+        }
+    }
+    const handleMouseEnter = (ev: MouseEvent<HTMLDivElement>) => {
+        pause()
+        onMouseEnter?.(ev)
+    }
+    const handleMouseLeave = (ev: MouseEvent<HTMLDivElement>) => {
+        play()
+        onMouseLeave?.(ev)
+    }
     const {
         handleTouchStart,
         handleTouchMove,
         handleTouchEnd
     } = useSwipe(40, {
-        onTouchEnd,
+        onTouchEnd(ev) {
+            play()
+            onTouchEnd?.(ev)
+        },
         onTouchMove,
-        onTouchStart,
+        onTouchStart(ev) {
+            pause()
+            onTouchStart?.(ev)
+        },
         onPrev: prev,
         onNext: next
     })
@@ -171,13 +203,16 @@ const Carousel: FC<CarouselProps> = (
 
     useEffect(
         () => {
-            if (!sliding && mounted.current) {
+            if (!mounted.current) {
+                return
+            }
+
+            if (!sliding && !paused) {
                 cycle()
             }
         },
-        [sliding]
+        [sliding, paused]
     )
-
 
     useEffect(
         () => {
@@ -203,6 +238,8 @@ const Carousel: FC<CarouselProps> = (
                 className={classes}
                 tabIndex={keyboard ? -1 : undefined}
                 onKeyDown={handleKeyDown}
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
                 {...touchHandlers}
                 {...restProps}>
                 <div className={`${PREFIX}-inner`}>
