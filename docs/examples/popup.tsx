@@ -1,4 +1,4 @@
-import Button from "r-components/basics/button"
+import Button from "r-components/button"
 import Popup from "r-components/popup/popup"
 import React from "react"
 

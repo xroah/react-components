@@ -2,7 +2,7 @@ import React, { cloneElement, FC, useRef } from "react"
 import { TriggerProps } from "../popup/trigger"
 import { classnames } from "../utils"
 import { extractPopupProps } from "../popup/popup"
-import Button, { ButtonProps } from "../basics/button"
+import Button, { ButtonProps } from "../button"
 import { OneOf } from "../commons/types"
 import Dropdown, { DropdownProps } from "./dropdown"
 

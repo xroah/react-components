@@ -1,6 +1,6 @@
 import React, { useState } from "react"
 import Alert from "r-components/alert"
-import Button from "r-components/basics/button"
+import Button from "r-components/button"
 
 export default function AlertExample() {
     const [visible, setVisible] = useState(false)

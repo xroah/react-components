@@ -1,7 +1,7 @@
 import React from "react"
 import Modal from "r-components/modal/modal"
 import { open } from "r-components/modal/modal-methods"
-import Button from "r-components/basics/button"
+import Button from "r-components/button"
 import { useModal } from "r-components/modal/modal-hook"
 
 export default function ModalExample() {

@@ -1,6 +1,6 @@
 import React from "react"
 import NestedLoading from "r-components/loading/nested"
-import Button from "r-components/basics/button"
+import Button from "r-components/button"
 import { useLoading } from "r-components/loading/loading-hook"
 import {open} from "r-components/loading/loading-methods"
 

@@ -1,5 +1,5 @@
 import React from "react"
-import Button from "r-components/basics/button"
+import Button from "r-components/button"
 import { useToast } from "r-components/toast/toast-hook"
 import {
     TOP,

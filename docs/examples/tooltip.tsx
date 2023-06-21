@@ -1,6 +1,6 @@
 import React from "react"
 import Tooltip from "r-components/tooltip"
-import Button from "r-components/basics/button"
+import Button from "r-components/button"
 
 export default function TooltipExample() {
     const ref = React.useRef(null)

@@ -1,5 +1,5 @@
 import { CSSProperties, ReactNode } from "react"
-import { ButtonProps } from "../basics/button"
+import { ButtonProps } from "../button"
 import { InputProps } from "../basics/input"
 import { breakpoints, modalSizes } from "../commons/constants"
 import {

@@ -1,10 +1,12 @@
 import React, {
     ButtonHTMLAttributes,
     ForwardedRef,
-    forwardRef
+    forwardRef,
+    useState,
+    MouseEvent
 } from "react"
 import { OneOf, Variant } from "../commons/types"
-import { classnames } from "../utils"
+import { classnames, isUndef } from "../utils"
 import { sizes } from "../commons/constants"
 
 export interface ButtonProps extends
@@ -12,6 +14,9 @@ export interface ButtonProps extends
     variant?: Variant
     size?: OneOf<typeof sizes>
     outlined?: boolean
+    toggle?: boolean
+    active?: boolean
+    defaultActive?: boolean
 }
 
 const Button = forwardRef(
@@ -22,22 +27,36 @@ const Button = forwardRef(
             outlined,
             variant = "primary",
             type = "button",
+            toggle,
+            active: propActive,
+            defaultActive = false,
+            onClick,
             ...restProps
         }: ButtonProps,
         ref: ForwardedRef<HTMLButtonElement>
     ) => {
+        const [_active, setActive] = useState(defaultActive)
         const classes = classnames(
             className,
             "btn",
             outlined ? `btn-outline-${variant}` : `btn-${variant}`,
-            size && `btn-${size}`
+            size && `btn-${size}`,
+            toggle && (propActive ?? _active) && "active"
         )
+        const handleClick = (ev: MouseEvent<HTMLButtonElement>) => {
+            onClick?.(ev)
+            
+            if (toggle && isUndef(propActive)) {
+                setActive(!_active)
+            }
+        }
 
         return (
             <button
                 type={type}
                 ref={ref}
                 className={classes}
+                onClick={handleClick}
                 {...restProps} />
         )
     }

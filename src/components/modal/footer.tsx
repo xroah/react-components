@@ -4,7 +4,7 @@ import React, {
     ReactNode
 } from "react"
 import { FooterProps } from "./types"
-import Button from "../basics/button"
+import Button from "../button"
 import { getNullableNode } from "../utils/react"
 import Spinner from "../basics/spinner"
 
