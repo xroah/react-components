@@ -15,7 +15,7 @@ export function getNullableNode(node?: ReactNode) {
         return null
     }
 
-    if (node) {
+    if (node !== undefined) {
         return node
     }
 
