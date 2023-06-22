@@ -5,12 +5,13 @@ import React, {
     isValidElement,
     useCallback,
     useState,
-    ReactElement
+    ReactElement,
+    useMemo
 } from "react"
 import { DivProps } from "../commons/types"
 import { ItemProps, KeyProp, PREFIX } from "./item"
 import AccordionCtx from "./context"
-import { classnames } from "../utils"
+import { classnames, isUndef } from "../utils"
 
 interface AccordionProps extends DivProps {
     alwaysOpen?: boolean
@@ -38,14 +39,11 @@ const Accordion: FC<AccordionProps> = (
         className,
         flush,
         children,
+        activeKey: propActiveKey,
         ...restProps
     }: AccordionProps
 ) => {
-    const controlled = "activeKey" in restProps
-    const {
-        activeKey: propActiveKey,
-        ...props
-    } = restProps
+    const controlled = !isUndef(propActiveKey)
     const [
         activeKey,
         setActiveKey
@@ -75,19 +73,22 @@ const Accordion: FC<AccordionProps> = (
         ),
         [alwaysOpen]
     )
-    const newChildren = Children.toArray(children).map(
-        (c, index) => {
-            if (!isValidElement(c) || typeof c.type === "string") {
-                return c
+    const newChildren = useMemo(
+        () => Children.toArray(children).map(
+            (c, index) => {
+                if (!isValidElement(c) || typeof c.type === "string") {
+                    return c
+                }
+    
+                const key = c.props.itemKey ?? index
+    
+                return cloneElement(
+                    c as ReactElement<ItemProps>,
+                    { itemKey: key }
+                )
             }
-
-            const key = c.props.itemKey ?? index
-
-            return cloneElement(
-                c as ReactElement<ItemProps>,
-                { itemKey: key }
-            )
-        }
+        ),
+        [children]
     )
     let finalActiveKey: KeyProp
 
@@ -106,7 +107,7 @@ const Accordion: FC<AccordionProps> = (
             activeKey: finalActiveKey,
             toggle
         }}>
-            <div className={classes} {...props}>
+            <div className={classes} {...restProps}>
                 {newChildren}
             </div>
         </AccordionCtx.Provider>
