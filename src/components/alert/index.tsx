@@ -1,7 +1,12 @@
-import React, { FC, ReactNode, useMemo, useRef, useState } from "react"
+import React, {
+    FC,
+    ReactNode,
+    useRef,
+    useState
+} from "react"
 import { DivProps, Variant } from "../commons/types"
 import Fade from "../basics/fade"
-import { classnames } from "../utils"
+import { classnames, isUndef } from "../utils"
 import CloseBtn from "r-components/basics/close-btn"
 import NoTransition from "r-components/basics/no-transition"
 
@@ -22,6 +27,7 @@ const Alert: FC<AlertProps> = (
         fade = true,
         className,
         heading,
+        visible: propVisible,
         defaultVisible = true,
         children,
         onClose,
@@ -37,24 +43,8 @@ const Alert: FC<AlertProps> = (
     )
     const nodeRef = useRef<HTMLDivElement>(null)
     const [visible, setVisible] = useState(defaultVisible)
-    const controlled = "visible" in restProps
-    const finalVisible = useMemo(
-        () => {
-            let v: boolean
-
-            if (controlled) {
-                v = !!restProps.visible
-            } else {
-                v = visible
-            }
-
-            return v
-        },
-        [restProps, controlled, visible]
-    )
-
-    delete restProps.visible
-
+    const controlled = !isUndef(propVisible)
+    const finalVisible = controlled ? propVisible : visible
     const transitionProps = {
         in: finalVisible,
         unmountOnExit: true
@@ -63,7 +53,7 @@ const Alert: FC<AlertProps> = (
         onClose?.()
 
         if (!controlled) {
-            setVisible(() => false)
+            setVisible(false)
         }
     }
     const el = (
@@ -71,10 +61,7 @@ const Alert: FC<AlertProps> = (
             ref={nodeRef}
             className={classes}
             {...restProps}>
-            {
-                heading ?
-                    <h4 className="alert-heading">{heading}</h4> : null
-            }
+            {heading ? <h4 className="alert-heading">{heading}</h4> : null}
             {children}
             {
                 dismissible ?
@@ -82,7 +69,7 @@ const Alert: FC<AlertProps> = (
             }
         </div>
     )
-
+    
     return (
         fade ? (
             <Fade nodeRef={nodeRef} {...transitionProps}>
