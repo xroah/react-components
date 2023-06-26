@@ -7,8 +7,10 @@ import React, {
 import { DivProps, Variant } from "../commons/types"
 import Fade from "../basics/fade"
 import { classnames, isUndef } from "../utils"
-import CloseBtn from "r-components/basics/close-btn"
-import NoTransition from "r-components/basics/no-transition"
+import CloseBtn from "../basics/close-btn"
+import NoTransition from "../basics/no-transition"
+import { bool, func, node, oneOf } from "prop-types"
+import { variants } from "../commons/constants"
 
 interface AlertProps extends DivProps {
     dismissible?: boolean
@@ -77,6 +79,16 @@ const Alert: FC<AlertProps> = (
             </Fade>
         ) : <NoTransition {...transitionProps}>{el}</NoTransition>
     )
+}
+
+Alert.propTypes = {
+    dismissible: bool,
+    fade: bool,
+    variant: oneOf(variants),
+    visible: bool,
+    defaultVisible: bool,
+    heading: node,
+    onClose: func
 }
 
 export default Alert
