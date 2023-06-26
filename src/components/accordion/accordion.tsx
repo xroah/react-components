@@ -6,12 +6,14 @@ import React, {
     useCallback,
     useState,
     ReactElement,
-    useMemo
+    useMemo,
+    Validator
 } from "react"
 import { DivProps } from "../commons/types"
 import { ItemProps, KeyProp, PREFIX } from "./item"
 import AccordionCtx from "./context"
 import { classnames, isUndef } from "../utils"
+import { arrayOf, bool, number, oneOfType, string } from "prop-types"
 
 interface AccordionProps extends DivProps {
     alwaysOpen?: boolean
@@ -79,9 +81,9 @@ const Accordion: FC<AccordionProps> = (
                 if (!isValidElement(c) || typeof c.type === "string") {
                     return c
                 }
-    
+
                 const key = c.props.itemKey ?? index
-    
+
                 return cloneElement(
                     c as ReactElement<ItemProps>,
                     { itemKey: key }
@@ -101,7 +103,7 @@ const Accordion: FC<AccordionProps> = (
     if (!alwaysOpen && finalActiveKey.length > 1) {
         finalActiveKey = [finalActiveKey[0]]
     }
-    
+
     return (
         <AccordionCtx.Provider value={{
             activeKey: finalActiveKey,
@@ -112,6 +114,19 @@ const Accordion: FC<AccordionProps> = (
             </div>
         </AccordionCtx.Provider>
     )
+}
+
+const keyType = oneOfType([
+    string,
+    number,
+    arrayOf(string),
+    arrayOf(number)
+]) as Validator<KeyProp>
+Accordion.propTypes = {
+    alwaysOpen: bool,
+    defaultActiveKey: keyType,
+    activeKey: keyType,
+    flush: bool
 }
 
 export default Accordion

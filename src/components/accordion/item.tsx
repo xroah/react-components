@@ -9,6 +9,7 @@ import accordionCtx from "./context"
 import { DivProps } from "../commons/types"
 import { classnames } from "../utils"
 import Collapse from "../collapse"
+import { node, number, oneOfType, string } from "prop-types"
 
 export type KeyProp = Key | Key[]
 
@@ -61,6 +62,12 @@ const Item: FC<ItemProps> = (
             </Collapse>
         </div>
     )
+}
+
+Item.propTypes = {
+    title: string,
+    header: node,
+    itemKey: oneOfType([string, number])
 }
 
 export default Item
