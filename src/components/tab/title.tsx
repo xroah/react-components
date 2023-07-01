@@ -1,19 +1,30 @@
-import React, { FC, useContext } from "react"
+import React, {
+    FC,
+    Key,
+    useContext,
+    MouseEvent
+} from "react"
 import { PaneProps } from "./pane"
 import tabContext from "./context"
 import { classnames } from "../utils"
 
-const Title: FC<PaneProps> = (
+interface TitleProps extends Omit<PaneProps, "onClick"> {
+    onClick?: (k: Key, e: MouseEvent) => void
+}
+
+const Title: FC<TitleProps> = (
     (
         {
             title,
             disabled,
-            itemKey
-        }: PaneProps
+            itemKey,
+            onClick
+        }: TitleProps
     ) => {
         const ctx = useContext(tabContext)
-        const handleClick = () => {
+        const handleClick = (ev: MouseEvent) => {
             ctx.setActive(itemKey!)
+            onClick?.(itemKey!, ev)
         }
         const btnClasses = classnames(
             "nav-link",
@@ -22,6 +33,7 @@ const Title: FC<PaneProps> = (
 
         return (
             <button
+                type="button"
                 className={btnClasses}
                 disabled={disabled}
                 onClick={handleClick}>

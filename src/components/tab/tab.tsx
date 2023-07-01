@@ -2,9 +2,11 @@ import React, {
     Children,
     FC,
     Key,
+    MouseEvent,
     ReactElement,
     cloneElement,
     isValidElement,
+    useEffect,
     useMemo,
     useState
 } from "react"
@@ -14,11 +16,13 @@ import { PaneProps } from "./pane"
 import tabContext from "./context"
 import { classnames } from "r-components/utils"
 
-interface TabProps extends DivProps {
+interface TabProps extends Omit<DivProps, "onChange"> {
     activeKey?: Key
     defaultActiveKey?: Key
     vertical?: boolean
     pill?: boolean
+    onTabClick?: (k: Key, e: MouseEvent) => void
+    onChange?: (k: Key) => void
 }
 
 const Tab: FC<TabProps> = (
@@ -28,12 +32,14 @@ const Tab: FC<TabProps> = (
         children,
         pill,
         vertical,
+        onChange,
         ...restProps
     }: TabProps
 ) => {
     const controlled = "activeKey" in restProps
     const {
         activeKey: propActiveKey,
+        onTabClick,
         ...props
     } = restProps
     const [activeKey, setActiveKey] = useState(defaultActiveKey)
@@ -73,6 +79,7 @@ const Tab: FC<TabProps> = (
                             title={title}
                             key={key}
                             itemKey={key}
+                            onClick={onTabClick}
                             disabled={disabled} />
                     )
 
@@ -87,6 +94,13 @@ const Tab: FC<TabProps> = (
         },
         [children]
     )
+    const setActive = (k: Key) => {
+        if (controlled) {
+            return
+        }
+
+        setActiveKey(k)
+    }
     let finalActiveKey: Key
 
     if (controlled) {
@@ -95,10 +109,17 @@ const Tab: FC<TabProps> = (
         finalActiveKey = activeKey ?? firstKey!
     }
 
+    useEffect(
+        () => {
+            onChange?.(finalActiveKey)
+        },
+        [finalActiveKey]
+    )
+
     return (
         <tabContext.Provider value={{
             activeKey: finalActiveKey,
-            setActive: setActiveKey
+            setActive
         }}>
             <div className={classes} {...props}>
                 <div className={navClasses}>
