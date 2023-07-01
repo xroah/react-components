@@ -17,6 +17,7 @@ import TabExample from "./examples/Tab"
 import PaginationExample from "./examples/pagination"
 import CarouselExample from "./examples/carousel"
 import ButtonExample from "./examples/button"
+import ImageExample from "./examples/image"
 
 export default createHashRouter([
     {
@@ -50,6 +51,10 @@ export default createHashRouter([
                     {
                         path: "dropdown",
                         element: <DropdownExample />
+                    },
+                    {
+                        path: "image",
+                        element: <ImageExample />
                     },
                     {
                         path: "loading",
