@@ -8,6 +8,7 @@ import React, {
     isValidElement,
     useEffect,
     useMemo,
+    useRef,
     useState
 } from "react"
 import { DivProps } from "../commons/types"
@@ -109,11 +110,17 @@ const Tab: FC<TabProps> = (
         finalActiveKey = activeKey ?? firstKey!
     }
 
+    const activeKeyRef = useRef<Key>(finalActiveKey)
+
     useEffect(
         () => {
-            onChange?.(finalActiveKey)
+            if (finalActiveKey !== activeKeyRef.current) {
+                activeKeyRef.current = finalActiveKey
+
+                onChange?.(finalActiveKey)
+            }
         },
-        [finalActiveKey]
+        [finalActiveKey, onChange]
     )
 
     return (
