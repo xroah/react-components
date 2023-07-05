@@ -7,19 +7,29 @@ import React, {
     useState,
     ReactElement,
     useMemo,
-    Validator
+    Validator,
+    useEffect,
+    Key,
+    useRef
 } from "react"
 import { DivProps } from "../commons/types"
 import { ItemProps, KeyProp, PREFIX } from "./item"
 import AccordionCtx from "./context"
 import { classnames, isUndef } from "../utils"
-import { arrayOf, bool, number, oneOfType, string } from "prop-types"
+import {
+    arrayOf,
+    bool,
+    number,
+    oneOfType,
+    string
+} from "prop-types"
 
-interface AccordionProps extends DivProps {
+interface AccordionProps extends Omit<DivProps, "onChange"> {
     alwaysOpen?: boolean
     defaultActiveKey?: KeyProp
     activeKey?: KeyProp
     flush?: boolean
+    onChange?: (key: Key[]) => void
 }
 
 function getKey(key?: KeyProp) {
@@ -42,6 +52,7 @@ const Accordion: FC<AccordionProps> = (
         flush,
         children,
         activeKey: propActiveKey,
+        onChange,
         ...restProps
     }: AccordionProps
 ) => {
@@ -92,7 +103,7 @@ const Accordion: FC<AccordionProps> = (
         ),
         [children]
     )
-    let finalActiveKey: KeyProp
+    let finalActiveKey: Key[] = []
 
     if (controlled) {
         finalActiveKey = getKey(propActiveKey)
@@ -103,6 +114,21 @@ const Accordion: FC<AccordionProps> = (
     if (!alwaysOpen && finalActiveKey.length > 1) {
         finalActiveKey = [finalActiveKey[0]]
     }
+
+    const activeKeyRef = useRef<string>(finalActiveKey.toString())
+
+    useEffect(
+        () => {
+            const keyStr = finalActiveKey.toString()
+
+            if (activeKeyRef.current.toString() !== keyStr) {
+                activeKeyRef.current = keyStr
+
+                onChange?.(finalActiveKey)
+            }
+        },
+        [finalActiveKey, onChange]
+    )
 
     return (
         <AccordionCtx.Provider value={{
