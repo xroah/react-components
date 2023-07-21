@@ -8,7 +8,7 @@ import {
     useRef
 } from "react"
 import { classnames } from "../utils"
-import { isChildrenValidElement } from "r-components/utils/react"
+import { isChildrenValidElement } from "../utils/react"
 
 interface BackToTopProps {
     target?: string | Element

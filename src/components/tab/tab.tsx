@@ -15,7 +15,7 @@ import { DivProps } from "../commons/types"
 import Title from "./title"
 import { PaneProps } from "./pane"
 import tabContext from "./context"
-import { classnames } from "r-components/utils"
+import { classnames } from "../utils"
 
 interface TabProps extends Omit<DivProps, "onChange"> {
     activeKey?: Key

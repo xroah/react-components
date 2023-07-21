@@ -8,7 +8,7 @@ import Trigger from "../popup/trigger"
 import Menu, { MenuApi, MenuProps } from "./menu"
 import { OverlayProps } from "../tooltip"
 import Anchor from "./anchor"
-import { classnames } from "r-components/utils"
+import { classnames } from "../utils"
 
 export interface DropdownProps extends Omit<OverlayProps, "title"> {
     menu: ReactElement | MenuProps
