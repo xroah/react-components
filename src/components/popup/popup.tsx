@@ -36,7 +36,6 @@ import {
 import NoTransition from "../basics/no-transition"
 import warning from "warning"
 import GetDomNode from "../utils/get-dom-node"
-import Overlay from "./overlay"
 import { PopupProps, getOffset } from "./misc"
 import { isChildrenValidElement } from "../utils/react"
 
@@ -167,7 +166,16 @@ const Popup: FC<PopupProps> = (
         }
     }
     const finalOverlay = (
-        <Overlay ref={floatingRef} className={classes}>
+        <div
+            ref={floatingRef}
+            style={{
+                position: "absolute",
+                width: "100%",
+                left: 0,
+                top: 0,
+                zIndex: 1000
+            }}
+            className={classes} >
             {
                 cloneElement(
                     overlay,
@@ -179,7 +187,7 @@ const Popup: FC<PopupProps> = (
                     }
                 )
             }
-        </Overlay>
+        </div >
     )
 
     useEffect(

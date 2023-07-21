@@ -8,7 +8,6 @@ import {
     useRef
 } from "react"
 import { classnames } from "../utils"
-import { styled } from "styled-components"
 import { isChildrenValidElement } from "r-components/utils/react"
 
 interface BackToTopProps {
@@ -100,8 +99,4 @@ const BackToTop: FC<BackToTopProps> = (
     )
 }
 
-export default styled(BackToTop)`
-position: fixed;
-right: 30px;
-bottom: 30px;
-`
+export default BackToTop

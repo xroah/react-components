@@ -9,7 +9,6 @@ import Menu, { MenuApi, MenuProps } from "./menu"
 import { OverlayProps } from "../tooltip"
 import Anchor from "./anchor"
 import { classnames } from "r-components/utils"
-import { styled } from "styled-components"
 
 export interface DropdownProps extends Omit<OverlayProps, "title"> {
     menu: ReactElement | MenuProps
@@ -49,23 +48,4 @@ const Dropdown: FC<DropdownProps> = (
     )
 }
 
-export default styled(Dropdown)`
-& {
-    >* {
-        transition: transform .15s cubic-bezier(.9, .24, .14, .92);
-        transform-origin: center top;
-    }
-
-    &:not(.show)>* {
-        transform: scaleY(.5);
-    }
-
-    &.r-popup-top,
-    &.r-popup-top-start,
-    &.r-popup-top-end {
-        >* {
-            transform-origin: center bottom;
-        }
-    }
-}
-`
+export default Dropdown

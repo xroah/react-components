@@ -7,7 +7,6 @@ import {
 import { classnames } from "../utils"
 import CloseBtn from "../basics/close-btn"
 import { getNullableNode } from "../utils/react"
-import { styled } from "styled-components"
 
 export interface ToastInnerProps extends
     DivPropsWithNodeTitle, ClosableProps {
@@ -84,34 +83,4 @@ const ToastInner: FC<ToastInnerProps> = ({
     )
 }
 
-export default styled(ToastInner)`
-.toast-icon {
-    margin-right: 15px;
-    font-size: 0;
-}
-
-.toast-title {
-    margin-right: auto;
-}
-
-&.toast-simple {
-    display: flex;
-    align-items: center;
-    width: auto;
-    max-width: 90vw;
-    padding: 0 10px;
-
-    .toast-icon {
-        margin: 0;
-    }
-
-    .toast-body {
-        margin-right: auto;
-    }
-
-    .btn-close {
-        flex-shrink: 0;
-        color: inherit
-    }
-}
-`
+export default ToastInner

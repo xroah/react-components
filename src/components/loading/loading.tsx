@@ -5,7 +5,6 @@ import CloseBtn from "../basics/close-btn"
 import { bool } from "prop-types"
 import Fade from "../basics/fade"
 import { classnames } from "../utils"
-import LoadingGlobalStyle from "./style"
 
 type Base = SpinnerProps & ClosableProps & ToggleEvents
 
@@ -32,27 +31,24 @@ const Loading: FC<LoadingProps> = ({
     const classes = classnames(className, "r-loading")
 
     return (
-        <>
-            <LoadingGlobalStyle />
-            <Fade
-                in={visible}
-                timeout={150}
-                onEnter={onShow}
-                onEntered={onShown}
-                onExit={onHide}
-                onExited={onHidden}
-                appear
-                unmountOnExit>
-                <div className={classes} {...restProps}>
-                    <Spinner
-                        variant={variant}
-                        size={size}
-                        animation={animation} />
-                    {closable ? <CloseBtn onClick={onClose} /> : null}
-                    {text}
-                </div>
-            </Fade>
-        </>
+        <Fade
+            in={visible}
+            timeout={150}
+            onEnter={onShow}
+            onEntered={onShown}
+            onExit={onHide}
+            onExited={onHidden}
+            appear
+            unmountOnExit>
+            <div className={classes} {...restProps}>
+                <Spinner
+                    variant={variant}
+                    size={size}
+                    animation={animation} />
+                {closable ? <CloseBtn onClick={onClose} /> : null}
+                {text}
+            </div>
+        </Fade>
     )
 }
 

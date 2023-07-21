@@ -1,6 +1,6 @@
 import React, { FC } from "react"
 import Loading, { LoadingProps } from "./loading"
-import { styled } from "styled-components"
+import { classnames } from "../utils"
 
 const NestedLoading: FC<LoadingProps> = ({
     variant,
@@ -9,6 +9,7 @@ const NestedLoading: FC<LoadingProps> = ({
     visible,
     animation,
     children,
+    className,
     onClose,
     onShow,
     onShown,
@@ -29,24 +30,15 @@ const NestedLoading: FC<LoadingProps> = ({
         onHide,
         onHidden
     }
-    
+
     return (
-        <div {...restProps}>
+        <div
+            className={classnames(className, "r-loading-nested")}
+            {...restProps}>
             <Loading {...loadingProps} />
             {children}
         </div>
     )
 }
 
-export default styled(NestedLoading)`
-position: relative;
-
-& .r-loading {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 1000;
-}
-`
+export default NestedLoading
